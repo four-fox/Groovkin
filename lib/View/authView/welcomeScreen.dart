@@ -1,0 +1,100 @@
+
+
+
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/button.dart';
+import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/authView/autController.dart';
+
+class WelComeScreen extends StatelessWidget {
+  const WelComeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Scaffold(
+// appBar: AppBar(
+//   backgroundColor: theme.scaffoldBackgroundColor,
+//   elevation: 0,
+//   centerTitle: true,
+//   title: Text("Welcome Message",
+//   style: poppinsMediumStyle(
+//     fontSize: 16,
+//     color: theme.primaryColor,
+//     context: context,
+//   ),
+//   ),
+// ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 200,
+            width: double.infinity,
+            child: Image(
+              image: AssetImage("assets/welcomeScreen.png"),
+              fit: BoxFit.fill,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text('Welcome to Groovkin!',
+          style: poppinsMediumStyle(
+            fontSize: 18,
+            context: context,
+            color: theme.primaryColor,
+          ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text('Welcome to Groovkin!  We welcome you to our platform and encourage you to organize new and exciting events in your local area using our service.  Please complete the registration process to tell us about the services you can provide.',
+              style: poppinsRegularStyle(
+                fontSize: 14,
+                context: context,
+                color: DynamicColor.grayClr,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          SizedBox(
+              height: 130,
+              width: 130,
+              child: Image(image: AssetImage("assets/handshake.png")))
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        child: CustomButton(
+borderClr: Colors.transparent,
+          onTap: (){
+  if(API().sp.read("role")=="User"){
+    Get.offAllNamed(Routes.userQuickSurveyScreen);
+  }else if(API().sp.read("role")=="eventOrganizer"){
+    Get.offAllNamed(Routes.subscriptionScreen);
+  }else{
+    Get.offAllNamed(Routes.createCompanyProfileScreen,
+        arguments: {
+          "updationCondition": false,
+          "skipBtnHide": false,
+        }
+    );
+  }
+            // Get.toNamed(Routes.loginWithScreen);
+          },
+          text:sp.read("role") == "eventManager"? "Service Availability Survey":"Let's Get Started",
+        ),
+      ),
+    );
+  }
+}

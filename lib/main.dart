@@ -1,0 +1,69 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+
+void main() async{
+  await GetStorage.init();
+
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Groovkin',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Color(0xff040305),
+        // backgroundColor: Color(0xff040305),
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: TextTheme(
+          labelLarge: TextStyle(
+            color: Colors.white,
+            fontFamily: 'poppinsMedium'
+          ),
+        )
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+          primaryColor: Color(0xffFFFFFF),
+        // backgroundColor: Color(0xffFFFFFF),
+        scaffoldBackgroundColor: Colors.black,
+          textTheme: TextTheme(
+            labelLarge: TextStyle(
+                color: Colors.white,
+                fontFamily: 'poppinsMedium'
+            ),
+          )
+      ),
+      navigatorObservers: [BotToastNavigatorObserver()],
+      builder: (context, child) {
+        child = ScrollConfiguration(
+          behavior: MyBehavior(),
+          child:
+          EasyLoading.init(builder: BotToastInit())(context, child),
+        );
+        // child = SafeArea(top: false, child: child);
+        return child;
+      },
+      themeMode: ThemeMode.dark,
+      initialRoute: AppPages.initial,
+      getPages: AppPages.routes,
+    );
+  }
+}
+
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
+  }
+}

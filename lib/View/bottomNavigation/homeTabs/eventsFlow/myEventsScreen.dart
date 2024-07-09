@@ -1,0 +1,200 @@
+
+
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:groovkin/Components/button.dart';
+import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/customEventWidget.dart';
+import 'package:groovkin/Components/grayClrBgAppBar.dart';
+import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+import 'package:intl/intl.dart';
+
+class MyEventsScreen extends StatelessWidget {
+  MyEventsScreen({Key? key}) : super(key: key);
+
+  HomeController _controller = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Scaffold(
+      appBar: customAppBar(theme: theme,text: "My Events"),
+      body: NotificationListener<ScrollNotification>(
+      onNotification: (scrollNotification) {
+        if (scrollNotification.metrics.pixels ==
+            scrollNotification.metrics.maxScrollExtent) {
+          if (_controller.recommendedEventData!.data!.nextPageUrl != null) {
+            if (_controller.newsFeedWait == false) {
+              _controller.newsFeedWait = true;
+              Future.delayed(Duration(seconds: 2), () {
+                _controller.newsFeedWait = false;
+              });
+              _controller.getMyAllEvent(fullUrl: _controller.recommendedEventData!.data!.nextPageUrl);
+              return true;
+            }
+          }
+          return false;
+        }
+        return false;
+      },
+      child: GetBuilder<HomeController>(
+          initState: (v){
+            _controller.getMyAllEvent();
+          },
+          builder: (controller) {
+            return controller.getRecommendedLoader.value== false?SizedBox.shrink():
+            controller.recommendedEventData!.data!.data!.isEmpty?noData(context: context,theme: theme):
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              child: ListView.builder(
+                  itemCount: controller.recommendedEventData!.data!.data!.length,
+                  shrinkWrap: true,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context,index){
+                    EventData singleEventData = controller.recommendedEventData!.data!.data![index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 14.0),
+                      child: Container(
+                        // padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(13),
+                          border: Border.all(color: DynamicColor.grayClr.withOpacity(0.6)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+
+                                Padding(padding: EdgeInsets.all(6),
+                                  child: ImageIcon(AssetImage("assets/pin.png"),
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10)
+                                    ),
+                                    image:
+                                    DecorationImage(
+                                        image: AssetImage("assets/topbtnGradent.png"),
+                                        fit: BoxFit.fill
+                                    ),
+
+                                  ),
+                                  child: Center(
+                                    child: Text(singleEventData.status.toString(),
+                                      style: poppinsRegularStyle(
+                                        fontSize:11,context: context,
+                                        color: theme.scaffoldBackgroundColor,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 28,
+                                    backgroundImage:
+                                    NetworkImage(singleEventData.bannerImage == null?singleEventData.profilePicture![0].mediaPath!: singleEventData.bannerImage!.mediaPath.toString()),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(singleEventData.venue!.venueName!,
+                                          style: poppinsRegularStyle(fontSize: 12,context: context,color: theme.primaryColor,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Text('Want to book for an event.',
+                                          style: poppinsRegularStyle(fontSize: 12,context: context,color: DynamicColor.lightRedClr,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // venueBookingUser(
+                            // ,theme: theme,context: context),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 6),
+                              child: CustomButtonWithIcon(
+                                height: 35,
+                                bgColor: DynamicColor.avatarBgClr,
+                                color2:  DynamicColor.avatarBgClr.withOpacity(0.8),
+                                color1: DynamicColor.avatarBgClr.withOpacity(0.8),
+                                iconValue: false,
+                                style: poppinsRegularStyle(
+                                    fontSize: 13,
+                                    context: context,
+                                    color: theme.primaryColor,
+                                ),
+                                onTap: (){
+                                  Get.toNamed(Routes.upcomingScreen,
+                                      arguments: {
+                                        "eventId": singleEventData.id,
+                                        "reportedEventView":1,
+                                        "notInterestedBtn": 1,
+                                        "appBarTitle": singleEventData.status.toString().capitalize
+                                      }
+                                  );
+                                },
+                                text: "View Details",
+                              ),
+                            ),
+                            controller.selectedFilter.value ==4? Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 3),
+                              child: CustomButton(
+                                heights: 35,
+                                backgroundClr: false,
+                                borderClr: Colors.transparent,
+                                color2: DynamicColor.redClr,
+                                color1: DynamicColor.redClr,
+                                style: poppinsRegularStyle(
+                                    fontSize: 13,
+                                    context: context,
+                                    color:theme.primaryColor,
+                                ),
+                                text: "Cancellation Reason",
+                              ),
+                            ):SizedBox.shrink(),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            );
+          }
+      ),
+    ),
+      bottomNavigationBar: Padding(
+      padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+      child: CustomButton(
+        onTap: (){
+          EventController _eventController = Get.find();
+          _eventController.eventDetail = null;
+          Get.toNamed(Routes.upGradeEvents);
+        },
+        borderClr: Colors.transparent,
+        text: "Create new event",
+      ),
+    ),
+    );
+  }
+}

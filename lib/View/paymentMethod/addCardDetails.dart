@@ -1,0 +1,293 @@
+
+
+
+import 'package:flutter/material.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:get/get.dart';
+import 'package:groovkin/Components/alertmessage.dart';
+import 'package:groovkin/Components/button.dart';
+import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+
+class AddCardDetails extends StatefulWidget {
+  const AddCardDetails({Key? key}) : super(key: key);
+
+  @override
+  State<AddCardDetails> createState() => _AddCardDetailsState();
+}
+
+class _AddCardDetailsState extends State<AddCardDetails> {
+
+  String cardNumber = '';
+  String expiryDate = '';
+  String cardHolderName = '';
+  String cvvCode = '';
+  bool isCvvFocused = false;
+  bool useGlassMorphism = false;
+  bool useBackgroundImage = false;
+  RxBool defaultPayment = true.obs;
+  OutlineInputBorder? border;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  int paymentMethodFlow = Get.arguments['paymentMethod'];
+
+  @override
+  void initState() {
+    print(paymentMethodFlow);
+    border = OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.grey.withOpacity(0.7),
+        width: 2.0,
+      ),
+    );
+    super.initState();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
+          CreditCardWidget(
+            glassmorphismConfig:
+            useGlassMorphism ? Glassmorphism.defaultConfig() : null,
+            cardNumber: cardNumber,
+            expiryDate: expiryDate,
+            cardHolderName: cardHolderName,
+            cvvCode: cvvCode,
+            bankName: 'Axis Bank',
+            frontCardBorder:
+            !useGlassMorphism ? Border.all(color: Colors.grey) : null,
+            backCardBorder:
+            !useGlassMorphism ? Border.all(color: Colors.grey) : null,
+            showBackView: isCvvFocused,
+            obscureCardNumber: true,
+            obscureCardCvv: true,
+            isHolderNameVisible: true,
+            backgroundImage:
+            useBackgroundImage ? 'assets/card_bg.png' : null,
+            isSwipeGestureEnabled: true,
+            onCreditCardWidgetChange:
+                (CreditCardBrand creditCardBrand) {},
+            customCardTypeIcons: <CustomCardTypeIcon>[
+              CustomCardTypeIcon(
+                cardType: CardType.mastercard,
+                cardImage: Image.asset(
+                  'assets/mastercard.png',
+                  height: 48,
+                  width: 48,
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  CreditCardForm(
+                    formKey: formKey,
+                    obscureCvv: true,
+                    obscureNumber: true,
+                    cardNumber: cardNumber,
+                    cvvCode: cvvCode,
+                    isHolderNameVisible: true,
+                    isCardNumberVisible: true,
+                    isExpiryDateVisible: true,
+                    cardHolderName: cardHolderName,
+                    expiryDate: expiryDate,
+                    inputConfiguration:  InputConfiguration(
+                      // themeColor: Colors.blue,
+                      // textColor: Colors.white,
+                      cardNumberDecoration: InputDecoration(
+                        // labelText: 'Number',
+                        hintText: 'Card Number',
+                        hintStyle: TextStyle(color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                      ),
+                      expiryDateDecoration: InputDecoration(
+                        hintStyle: const TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                        // labelText: 'Expired Date',
+                        hintText: 'Expired Date',
+                      ),
+                      cvvCodeDecoration: InputDecoration(
+                        hintStyle: const TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                        // labelText: 'CVV',
+                        hintText: 'CVV',
+                      ),
+                      cardHolderDecoration: InputDecoration(
+                        hintStyle: const TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.background,
+                          ),
+                        ),
+                        // labelText: 'CVV',
+                        hintText: 'Card Holder',
+                      ),
+                    ),
+
+                    onCreditCardModelChange: onCreditCardModelChange,
+                  ),
+                  Row(
+                    children: [
+                      Obx(
+                            ()=> Theme(
+                          data: Theme.of(context).copyWith(
+                            unselectedWidgetColor: Colors.white,
+                          ),
+                          child: Checkbox(
+                              activeColor: DynamicColor.yellowClr,
+
+                              value: defaultPayment.value, onChanged: (v){
+                            defaultPayment.value = v!;
+                          }),
+                        ),
+                      ),
+                      Text('Set as default payment method.',
+                        style: poppinsRegularStyle(fontSize: 13,context: context,
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                      )
+                    ],
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        child: CustomButton(
+          borderClr: Colors.transparent,
+          onTap: (){
+            if(paymentMethodFlow == 1){
+
+              showDialog(
+                  barrierColor: Colors.transparent,
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return AlertWidget(
+                      height: kToolbarHeight*5,
+                      container: SizedBox(
+                        width: Get.width,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 4),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('Payment Success',
+                                style: poppinsMediumStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                  context: context,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                              CircleAvatar(
+                                radius: 38,
+                                backgroundColor: DynamicColor.yellowClr,
+                                child: Icon(
+                                  Icons.check,
+                                  size: 45,
+                                  color: Theme.of(context).colorScheme.background,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Text(
+                                  'Your Payment has been\nsuccessfully done ',
+                                  textAlign: TextAlign.center,
+                                  style: poppinsMediumStyle(
+                                    fontSize: 20,
+                                    context: context,
+                                    color: Theme.of(context).colorScheme.background,
+                                  ),
+                                )
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+              Future.delayed(Duration(seconds: 2), () {
+                Get.back();
+                Get.toNamed(Routes.serviceScreen,
+                    arguments: {
+                      "addMoreService": 1
+                    }
+                );
+              });
+            }else if(paymentMethodFlow == 2){
+              Get.back();
+              // Get.toNamed(Routes.viewPaymentMethod);
+            }else{
+              Get.toNamed(Routes.paymentConfirmationScreen);
+            }
+          },
+          text: "Add",
+        ),
+      ),
+    );
+  }
+
+  void onCreditCardModelChange(CreditCardModel? creditCardModel) {
+    setState(() {
+      cardNumber = creditCardModel!.cardNumber;
+      expiryDate = creditCardModel.expiryDate;
+      cardHolderName = creditCardModel.cardHolderName;
+      cvvCode = creditCardModel.cvvCode;
+      isCvvFocused = creditCardModel.isCvvFocused;
+    });
+  }
+}

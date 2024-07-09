@@ -1,0 +1,158 @@
+
+
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:groovkin/Components/button.dart';
+import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+
+class LoginSelection extends StatelessWidget {
+  const LoginSelection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Scaffold(
+body: Container(
+  padding: EdgeInsets.symmetric(horizontal: 10.0),
+  decoration: BoxDecoration(
+    image: DecorationImage(
+      image: AssetImage('assets/loginSelection2.png'),
+      fit: BoxFit.fill
+    )
+  ),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SizedBox(
+        height: kToolbarHeight,
+      ),
+      Padding(
+        padding: EdgeInsets.only(left: 5.0),
+        child: Text('Who are you?',
+        style: poppinsMediumStyle(
+          color: theme.primaryColor,
+          fontSize: 23,
+          fontWeight: FontWeight.w700
+        ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(left: 5.0),
+        child: Text('What type of account do you want\nto sign up for?',
+        style: poppinsRegularStyle(
+          color: theme.primaryColor,
+          fontSize: 14,
+        ),
+        ),
+      ),
+        SizedBox(
+          height: 50,
+        ),
+        DottedBorder(
+          borderType: BorderType.RRect,
+          radius: Radius.circular(30),
+          color: DynamicColor.whiteClr.withOpacity(0.8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            child: Container(
+              // height: 100,
+              width: Get.width,
+              color: theme.scaffoldBackgroundColor,
+              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("User",
+                    style: poppinsMediumStyle(
+                      color: theme.primaryColor,
+                      fontSize: 17,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomButton(
+                    borderClr: Colors.transparent,
+                    text: "Register as Groovkin User",
+                    heights: 45,
+                    onTap: (){
+                      sp.write('role', 'User');
+                      Get.toNamed(Routes.loginWithScreen);
+                      // Get.toNamed(Routes.welComeScreen);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 50,
+        ),
+        DottedBorder(
+          borderType: BorderType.RRect,
+          radius: Radius.circular(30),
+          color: DynamicColor.whiteClr.withOpacity(0.8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            child: Container(
+              // height: 100,
+              width: Get.width,
+              color: theme.scaffoldBackgroundColor,
+              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Business Users",
+                    style: poppinsMediumStyle(
+                      color: theme.primaryColor,
+                      fontSize: 17,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomButton(
+                    heights: 45,
+                    borderClr: Colors.transparent,
+                    onTap: (){
+                      sp.write('role', 'eventOrganizer');
+                      Get.toNamed(Routes.loginWithScreen);
+                      // Get.toNamed(Routes.welComeScreen);
+                      },
+                    text: "Register as Event Organizer",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomButton(
+                    heights: 45,
+                    borderClr: Colors.transparent,
+                    text: "Register as Venue Manager",
+                    onTap: (){
+                      sp.write('role', 'eventManager');
+                      Get.toNamed(Routes.loginWithScreen);
+                      // Get.toNamed(Routes.welComeScreen);
+                    },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+    ],
+  ),
+),
+    );
+  }
+}

@@ -1,0 +1,540 @@
+// ignore_for_file: prefer_final_fields
+import 'dart:io';
+
+import 'package:groovkin/Components/Network/Url.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:groovkin/Components/button.dart';
+import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/grayClrBgAppBar.dart';
+import 'package:groovkin/Components/showCustomMap.dart';
+import 'package:groovkin/Components/switchWidget.dart';
+import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/GroovkinManager/managerController.dart';
+import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+
+class EventPreview extends StatelessWidget {
+  EventPreview({Key? key}) : super(key: key);
+
+  int upComingDetail =Get.arguments['viewDetails']?? 1;
+
+  RxBool organizerFollowerVal = false.obs;
+  RxBool eventVal = false.obs;
+
+  EventController _controller = Get.find();
+  ManagerController _managerController = Get.find();
+  AuthController _authController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Scaffold(
+      appBar: customAppBar(theme: theme,text: "Event Preview",),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+SizedBox(
+  height: kToolbarHeight*3,
+child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    shrinkWrap: true,
+    itemCount: _managerController.mediaClass.length,
+    itemBuilder:
+        (BuildContext context, index) {
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                right: 10),
+            child: /*Stack(
+                                            children: [*/
+            _managerController.mediaClass[index]
+                .thumbnail !=
+                null
+                ? Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                  borderRadius:
+                  BorderRadius
+                      .circular(
+                      10),
+                  image: DecorationImage(
+                      fit: BoxFit
+                          .fill,
+                      image: _managerController.mediaClass[index].id ==
+                          null
+                          ? FileImage(File(_managerController
+                          .mediaClass[
+                      index]
+                          .thumbnail
+                          .toString()))
+                          : NetworkImage(_managerController.mediaClass[index].thumbnail.toString())
+                      as ImageProvider)),
+            )
+                : Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                  borderRadius:
+                  BorderRadius
+                      .circular(
+                      10),
+                  image: DecorationImage(
+                      fit: BoxFit
+                          .fill,
+                      image: _managerController.mediaClass[index].id ==
+                          null
+                          ? FileImage(File(_managerController
+                          .mediaClass[
+                      index]
+                          .filename
+                          .toString()))
+                          : NetworkImage(_managerController.mediaClass[index].filename.toString())
+                      as ImageProvider)),
+            ),
+          ),
+          _managerController.mediaClass[index].thumbnail ==null?SizedBox.shrink(): GestureDetector(
+            onTap: (){
+              Get.toNamed(Routes.videoPlayerClass, arguments: {
+                'url': _managerController.mediaClass[index].filename,
+                'type': "file"/*controller.mediaClass[index].fileType*/,
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: DynamicColor.blackClr,
+              radius: 15,
+              child: Icon(Icons.play_arrow,
+                color: DynamicColor.whiteClr,
+              ),
+            ),
+          ),
+        ],
+      );
+    }),
+),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(_controller.venuesDetails!.venueName.toString(),
+                textAlign: TextAlign.center,
+                style: poppinsMediumStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+              ),
+            ),
+            eventDateTime(context: context,iconBgClr: DynamicColor.darkGrayClr,theme: theme,
+              iconClr: DynamicColor.darkYellowClr,
+              iconSize: 17,
+                text: "${_controller.proposedTimeWindowsController.text} to ${_controller.endTimeController.text}"
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            eventDateTime(context: context,iconBgClr: DynamicColor.darkGrayClr,theme: theme,
+                iconClr: DynamicColor.darkYellowClr,
+                img: "assets/calender.png",
+                iconSize: 17,
+                text: "${_controller.eventDateController.text == _controller.eventEndDateController.text?"":_controller.eventDateController.text} ${_controller.eventEndDateController.text}",
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            eventDateTime(context: context,iconBgClr: DynamicColor.darkGrayClr,theme: theme,
+                iconClr: DynamicColor.darkYellowClr,
+                img: "assets/calender.png",
+                icon: true,
+                iconSize: 17,
+                text: _managerController.venueDetails!.data!.location.toString(),
+            ),
+            /// event organizer details
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Obx(() => aboutEventCreator(theme: theme,context: context,
+            //     icons:organizerFollowerVal.value?Icons.check: Icons.add,
+            //     followBg: organizerFollowerVal.value? DynamicColor.grayClr:DynamicColor.avatarBgClr,
+            //     textClr: organizerFollowerVal.value?theme.scaffoldBackgroundColor:theme.primaryColor,
+            //     onTap: (){
+            //       organizerFollowerVal.value = !organizerFollowerVal.value;
+            //     }
+            // ),),
+            SizedBox(
+              height: 12,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Location",
+                  style: poppinsMediumStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    context: context,
+                    color: DynamicColor.lightRedClr,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(_managerController.addressController.text,
+                  style: poppinsRegularStyle(
+                    fontSize: 15,
+                    context: context,
+                    color: theme.primaryColor,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ShowCustomMap(
+              lat: double.parse(_managerController.lat),
+              lng: double.parse(_managerController.lng),
+            ),
+         Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
+             avatarPadding: 8,
+             rowVerticalPadding: 0.0,
+             icon: eventVal.value?Icons.check:Icons.add,
+             textClr: eventVal.value?theme.scaffoldBackgroundColor:theme.primaryColor,
+             followBgClr: eventVal.value?DynamicColor.grayClr:DynamicColor.avatarBgClr,
+             onTap: (){
+               eventVal.value = !eventVal.value;
+             }
+         ),),
+           customContainer(context, theme),
+           customContainer(context, theme,title: "Featuring",text: _controller.featuringController.text),
+           customContainer(context, theme,title: "About",text: _controller.aboutController.text),
+           customContainer(context, theme,title: "Theme of Event",text: _controller.themeOfEventController.text),
+           customContainer(context, theme,title: "Event start time",text: _controller.proposedTimeWindowsController.text),
+           customContainer(context, theme,title: "Event end time",text: _controller.endTimeController.text),
+           customContainer(context, theme,title: "Hourly Rate",text: _controller.hourlyRateController.text),
+           customContainer(context, theme,title:"Start Date",text: _controller.eventDateController.text),
+           customContainer(context, theme,title: "End Date",text: _controller.eventEndDateController.text),
+           // customContainer(context, theme,text: _controller.eventHoursController.text),
+           customContainer(context, theme,title: "Max capacity",text: _controller.maxCapacityController.text),
+           customContainer(context, theme,title: "Comments",text: _controller.commentsController.text),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text("Services",
+                style: poppinsMediumStyle(
+                  fontSize: 13,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: kToolbarHeight/2,
+              child: Align(
+
+                alignment: Alignment.centerLeft,
+                child: ListView.builder(
+                    itemCount: _authController.serviceList.length,
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context,index){
+                  return Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: DynamicColor.lightRedClr,
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: Center(
+                        child: Text(_authController.serviceList[index].name.toString(),
+                        style: poppinsRegularStyle(
+                          fontSize: 12,
+                          context: context,
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text("Hardware",
+                style: poppinsMediumStyle(
+                  fontSize: 13,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: kToolbarHeight/2,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ListView.builder(
+                    itemCount: _authController.eventItemsList.length,
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context,index){
+                  return Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: DynamicColor.lightRedClr,
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: Center(
+                        child: Text(_authController.eventItemsList[index].name.toString(),
+                        style: poppinsRegularStyle(
+                          fontSize: 12,
+                          context: context,
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text("Music Genre",
+                style: poppinsMediumStyle(
+                  fontSize: 13,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: kToolbarHeight/2,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ListView.builder(
+                    itemCount: _authController.itemsList.length,
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context,index){
+                  return Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: DynamicColor.lightRedClr,
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: Center(
+                        child: Text(_authController.itemsList[index].name.toString(),
+                        style: poppinsRegularStyle(
+                          fontSize: 12,
+                          context: context,
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text("Music Choice",
+                style: poppinsMediumStyle(
+                  fontSize: 13,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: kToolbarHeight/2,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ListView.builder(
+                    itemCount: _controller.tagListPost.length,
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context,index){
+                  return Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: DynamicColor.lightRedClr,
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: Center(
+                        child: Text(_controller.tagListPost[index].name.toString(),
+                        style: poppinsRegularStyle(
+                          fontSize: 12,
+                          context: context,
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text("Activity Choice",
+                style: poppinsMediumStyle(
+                  fontSize: 13,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              height: kToolbarHeight/2,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ListView.builder(
+                    itemCount: _controller.activityListPost.length,
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context,index){
+                  return Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          color: DynamicColor.lightRedClr,
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: Center(
+                        child: Text(_controller.activityListPost[index].name.toString(),
+                        style: poppinsRegularStyle(
+                          fontSize: 12,
+                          context: context,
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: upComingDetail==1? Padding(
+        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        child: CustomButton(
+          borderClr: Colors.transparent,
+          onTap: (){
+            Get.toNamed(Routes.confirmationEventScreen);
+            // Get.toNamed(Routes.commentsAndAttachment);
+          },
+          text: "Continue",
+        ),
+      ):SizedBox.shrink(),
+    );
+  }
+
+  customContainer(context,theme, {text,title}) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          child: Container(
+            width: Get.width,
+            padding: EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+            decoration: BoxDecoration(
+                color: DynamicColor.lightRedClr.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(12)
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title??"Event Title",
+                  style: poppinsRegularStyle(
+                    fontSize: 10,
+                    context: context,
+                    color: theme.primaryColor,
+                  ),
+                ),
+                Text(text??_controller.eventTitleController.text,
+                  style: poppinsRegularStyle(
+                    fontSize: 13,
+                    context: context,
+                    color: theme.scaffoldBackgroundColor,
+                  ),),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
