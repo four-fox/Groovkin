@@ -407,7 +407,6 @@ class EventController extends GetxController{
     activityListPost.clear();
   }
 
-
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get my all events for organizer
   EventsListModel? allEvents;
   RxBool getAllEventsLoader = true.obs;
@@ -549,11 +548,27 @@ class EventController extends GetxController{
 
   ///hardware data are binding
   checkHardware({survey.SurveyObject? items, value, CategoryItem? serviceObj}) async{
+   List<String> a = [];
+   List<String> temp = [];
+   eventDetail!.data!.hardwareProvide?.forEach((element){
+     temp.add(element.eventItem!.name.toString());
+     for (var uuu in element.eventItem!.categoryItems!) {
+       a.add(uuu.name.toString());
+     }
+   });
     for (var action in _authController.hardwareListing) {
-      eventDetail!.data!.hardwareProvide?.forEach((element){
-        print(action);
-        print(element);
-      });
+      if(temp.contains(action.name)){
+        action.showItems!.value = true;
+      }else{
+        action.showItems!.value = false;
+      }
+      for (var items in action.categoryItems!) {
+        if(a.contains(items.name)){
+          items.selectedItem!.value = true;
+        }else{
+          items.selectedItem!.value = false;
+        }
+      }
     }
   }
 
