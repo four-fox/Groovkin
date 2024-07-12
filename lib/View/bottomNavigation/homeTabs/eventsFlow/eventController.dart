@@ -1,4 +1,5 @@
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -366,8 +367,155 @@ class EventController extends GetxController{
     }
   }
 
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
+  editEventFunction() async{
 
+    AuthController _authController = Get.find();
+    List<form.MultipartFile> mediaList = [];
+    for (var element in managerController.mediaClass) {
+      if(element.thumbnail != null){
+        mediaList.add( form.MultipartFile.fromFileSync(
+          element.filename!,
+          filename: "Video.${element.filename!.split('.').last}",
+          contentType:
+          MediaType("video", element.filename!.split('.').last),
+        ));
+      }else{
+        mediaList.add(form.MultipartFile.fromFileSync(
+          element.filename!,
+          filename: "Image.${element.filename!.split('.').last}",
+          contentType:
+          MediaType("image", element.filename!.split('.').last),
+        ));
+      }
+    }
 
+    ///bannerImage
+    List imageList = [];
+    if(_authController.imageBytes != null){
+      var a = multiPartingImage(_authController.imageBytes);
+      imageList.add(a);
+    }
+    List service = [];
+    for (var actions in _authController.serviceList) {
+      service.add(actions.id);
+    }
+    var formData = form.FormData.fromMap({
+      "event_title": eventTitleController.text,
+      "featuring": featuringController.text,
+      "about": aboutController.text,
+      "theme_of_event": themeOfEventController.text,
+      "start_date_time":"$datePost $postTime" /*datePost*/,
+      // "check_in": postTime,
+      "end_date_time": "$endDatePost $postEndTime",
+      "max_capacity": maxCapacityController.text,
+      "rate": hourlyRateController.text,
+      "rate_type": rateType!.value,
+      "payment_schedule": int.parse(paymentSchedule!.value.toString()),
+      "comment": commentsController.text,
+      "event_id": eventDetail!.data!.id,
+      if(mediaList.isNotEmpty)"image[]": mediaList,
+      if(imageList.isNotEmpty)"banner_image[]": imageList,
+      "service_id[]": service,
+      // "venue_id": eventDetail!.data!.venueId
+    });
+
+    /// todo hardware params
+    int? indexVal = -1;
+    int? iiid = -1;
+    int indexValue = -1;
+    for(var a = 0; a <= _authController.eventItemsList.length; a++){
+      if(a != _authController.eventItemsList.length){
+        if(iiid != _authController.eventItemsList[a].eventId){
+          indexVal = indexVal! + 1;
+          indexValue = -1;
+          formData.fields.add(MapEntry('hardware_provides[$indexVal]', _authController.eventItemsList[a].eventId.toString()));
+        }
+        if(_authController.eventItemsList[a].selectedItem!.value == true){
+          indexValue = indexValue+1;
+          iiid = _authController.eventItemsList[a].eventId;
+          formData.fields.add(MapEntry('hardware_item_ids[$indexVal][$indexValue]', _authController.eventItemsList[a].id.toString()));
+        }
+      }
+    }
+    /// todo hardware params
+
+    /// todo life Style params
+    int? indexVaal = -1;
+    int? iiad = -1;
+    int genreIndex = -1;
+    print(_authController.itemsList.length);
+    for(var a = 0; a <= _authController.itemsList.length; a++){
+      if(a != _authController.itemsList.length){
+        if(iiad != _authController.itemsList[a].categoryId){
+          indexVaal = indexVaal! + 1;
+          genreIndex = -1;
+          formData.fields.add(MapEntry('music_genre[$indexVaal]', _authController.itemsList[a].categoryId.toString()));
+        }
+        if(_authController.itemsList[a].selectedItem!.value == true){
+          iiad = _authController.itemsList[a].categoryId;
+          genreIndex = genreIndex+1;
+          formData.fields.add(MapEntry('music_genre_item_ids[$indexVaal][$genreIndex]', _authController.itemsList[a].id.toString()));
+        }
+      }
+    }
+    /// todo life Style params
+
+    /// todo music choice params
+    int? indexVall = -1;
+    int? iiidd = -1;
+    int musicChoiceIndex = -1;
+    for(var a = 0; a <= tagListPost.length; a++){
+      if(a != tagListPost.length){
+        if(iiidd != tagListPost[a].eventTagId){
+          indexVall = indexVall! + 1;
+          musicChoiceIndex = -1;
+          formData.fields.add(MapEntry('music_choice_tag[$indexVall]', tagListPost[a].eventTagId.toString()));
+        }
+        if(tagListPost[a].selected!.value == true){
+          iiidd = tagListPost[a].eventTagId;
+          musicChoiceIndex = musicChoiceIndex+1;
+          formData.fields.add(MapEntry('music_choice_tag_item_ids[$indexVall][$musicChoiceIndex]', tagListPost[a].id.toString()));
+        }
+      }
+    }
+    /// todo life Style params
+
+    /// todo activity choice
+    int? indexValll = -1;
+    int? iiiddd = -1;
+    int activityChoiceIndex = -1;
+    for(var a = 0; a <= activityListPost.length; a++){
+      if(a != activityListPost.length){
+        if(iiiddd != activityListPost[a].eventTagId){
+          indexValll = indexValll! + 1;
+          activityChoiceIndex = -1;
+          formData.fields.add(MapEntry('activity_choice_tag[$indexValll]', activityListPost[a].eventTagId.toString()));
+        }
+        if(activityListPost[a].selected!.value == true){
+          iiiddd = activityListPost[a].eventTagId;
+          activityChoiceIndex = activityChoiceIndex+1;
+          formData.fields.add(MapEntry('activity_choice_tag[$indexValll][$activityChoiceIndex]', activityListPost[a].id.toString()));
+        }
+      }
+    }
+    /// todo activity choice
+    print(formData);
+    var response = await API().postApi(formData, "update-event");
+    if(response.statusCode == 200){
+      BotToast.showText(text: response.data['message']);
+      Get.offAllNamed(Routes.bottomNavigationView,
+          arguments: {
+            "indexValue": 0
+          }
+      );
+    }
+  }
+
+  ///delete image
+  deleteImage() async{
+
+  }
 
   ///>>>>>>>>>>>>>>>>>>>>>>> event start and end time are checking
   checkingTime({sta}) async{
@@ -377,6 +525,7 @@ class EventController extends GetxController{
     });
     var response = await API().postApi(formData, "check-date-time");
     if(response.statusCode == 200){
+      await _authController.getAllService(type: "services");
       Get.toNamed(Routes.serviceScreen,
           arguments: {
             "addMoreService": 3
@@ -405,6 +554,10 @@ class EventController extends GetxController{
     _authController.eventItemsList.clear();
     _authController.lifeStyleItemsList.clear();
     activityListPost.clear();
+    eventDateController.clear();
+    eventEndDateController.clear();
+    proposedTimeWindowsController.clear();
+    endTimeController.clear();
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get my all events for organizer
@@ -491,8 +644,8 @@ class EventController extends GetxController{
     }
   }
 
+  List imageListtt = [];
   assignValueForUpdate() async{
-    // eventDetail
     eventTitleController.text = eventDetail!.data!.eventTitle.toString();
     featuringController.text = eventDetail!.data!.featuring.toString();
     aboutController.text = eventDetail!.data!.about.toString();
@@ -526,20 +679,19 @@ class EventController extends GetxController{
       paymentSchedule!.value = "70";
       paymentScheduleValue.value = 2;
     }
-    _authController.getAllService(type: "services");
+    commentsController.text = eventDetail!.data!.comment.toString();
     Get.toNamed(Routes.upGradeEvents);
   }
 
 
   ///service data are binding
   checkServices({survey.SurveyObject? surveyObj}) async{
-    _authController.serviceList.clear();
+    // _authController.serviceList.clear();
     for (var action in eventDetail!.data!.services!) {
       for (var service in _authController.serviceListing) {
-        if(action.eventItem!.name == service.name){
+        if(action.eventItem!.id == service.id){
           service.showItems!.value = true;
           _authController.serviceList.add(service);
-          print(_authController.serviceList);
           // _authController.serviceAddFtn(items: service);
         }
       }
@@ -548,13 +700,9 @@ class EventController extends GetxController{
 
   ///hardware data are binding
   checkHardware({survey.SurveyObject? items, value, CategoryItem? serviceObj}) async{
-   List<String> a = [];
    List<String> temp = [];
    eventDetail!.data!.hardwareProvide?.forEach((element){
-     temp.add(element.eventItem!.name.toString());
-     for (var uuu in element.eventItem!.categoryItems!) {
-       a.add(uuu.name.toString());
-     }
+     temp.add(element.hardwareItems!.id.toString());
    });
     for (var action in _authController.hardwareListing) {
       if(temp.contains(action.name)){
@@ -563,10 +711,67 @@ class EventController extends GetxController{
         action.showItems!.value = false;
       }
       for (var items in action.categoryItems!) {
-        if(a.contains(items.name)){
-          items.selectedItem!.value = true;
+        if(temp.contains(items.id.toString())){
+          items.selectedItem!.value =true;
+          _authController.eventItemsList.add(items);
         }else{
-          items.selectedItem!.value = false;
+          items.selectedItem!.value =false;
+        }
+      }
+    }
+  }
+
+  ///bind survey data
+  surveyDataBind() async {
+    List musicGenreId = [];
+    for (var action in eventDetail!.data!.musicGenre!) {
+      musicGenreId.add(action.itemId);
+    }
+    for (var element in _authController.surveyData!.data!) {
+      for (var ele in element.categoryItems!) {
+        if(musicGenreId.contains(ele.id)){
+          element.showItems!.value = true;
+          ele.selectedItem!.value = true;
+          _authController.itemsList.add(ele);
+        }else{
+          ele.selectedItem!.value = false;
+        }
+      }
+    }
+  }
+
+  musicChoiceBinding() async{
+    List musicChoice = [];
+    for (var action in eventDetail!.data!.eventMusicChoiceTags!) {
+      musicChoice.add(action.eventTagItemId);
+    }
+    for (var ele in tagList) {
+      for (var element in ele.categoryItems!) {
+        if(musicChoice.contains(element.id)){
+          ele.showSubCat!.value = true;
+          element.selected!.value = true;
+          tagListPost.add(element);
+        }else{
+          element.selected!.value = false;
+        }
+      }
+    }
+  }
+
+  ///create Event
+  activityChoice() async {
+    List activityChoiceList = [];
+    for (var action in eventDetail!.data!.eventActivityChoiceTags!) {
+      activityChoiceList.add(action.eventTagItemId);
+    }
+    for (var elementss in activityList) {
+      for (var ele in elementss.categoryItems!) {
+        if(activityChoiceList.contains(ele.id)){
+          elementss.showSubCat!.value = true;
+          ele.selected!.value = true;
+          activityListPost.add(ele);
+        }else{
+          ele.selected!.value = false;
         }
       }
     }

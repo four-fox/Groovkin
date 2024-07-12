@@ -588,7 +588,7 @@ class ViewOtherEventsDetails extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(color: DynamicColor.lightRedClr),
                           image: DecorationImage(
-                              image: NetworkImage(Url().imageUrl+_controller.venueDetails!.data!.user!.profilePicture!.mediaPath.toString()),
+                              image: NetworkImage(_controller.venueDetails!.data!.user!.profilePicture == null? groupPlaceholder:Url().imageUrl+_controller.venueDetails!.data!.user!.profilePicture!.mediaPath.toString()),
                               fit: BoxFit.fill
                           )
                           ),

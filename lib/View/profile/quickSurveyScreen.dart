@@ -9,6 +9,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class QuickSurveyScreen extends StatefulWidget {
   QuickSurveyScreen({Key? key}) : super(key: key);
@@ -24,7 +25,9 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
 
   bool createEvent = false;
 
-  AuthController _controller = Get.find();
+  final AuthController _controller = Get.find();
+  late EventController _eventController;
+
 
   @override
   void initState() {
@@ -34,6 +37,11 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
     if(Get.arguments['addMoreService'] == 1){
       createEvent = Get.arguments['createEvent'];
     }
+    if (Get.isRegistered<EventController>()) {
+      _eventController = Get.find<EventController>();
+    } else {
+      _eventController = Get.put(EventController());
+    }
   }
 
 
@@ -41,7 +49,6 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    print(addMoreSurvey);
     return Scaffold(
       appBar: customAppBar(onTap: () {
         Get.back();
@@ -56,7 +63,11 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
           // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
           //   _controller.getAllService(type: "lifestyle_preference");
           // }else{
+          if(_eventController.eventDetail == null){
             _controller.getLifeStyle(surveyType: "music_genre");
+          } else {
+            _eventController.surveyDataBind();
+          }
           // }
         },
         builder: (controller) {
@@ -168,7 +179,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
         padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () async{
             if(sp.read("role")=="User"){
               if(addMoreSurvey == 2){
               Get.back();
@@ -186,6 +197,9 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
               }else{
                 if(createEvent == true){
                   if(/*_controller.lifeStyleItemsList.isNotEmpty ||*/ _controller.itemsList.isNotEmpty){
+                 if(_eventController.eventDetail != null){
+                  await _eventController.getMusicTag(type: "music_choice");
+                 }
                     Get.toNamed(Routes.musicChoiceScreen);
                   }else{
                     bottomToast(text: "Please add life style for survey");

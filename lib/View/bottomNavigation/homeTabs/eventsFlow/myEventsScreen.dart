@@ -189,6 +189,7 @@ class MyEventsScreen extends StatelessWidget {
         onTap: (){
           EventController _eventController = Get.find();
           _eventController.eventDetail = null;
+          _eventController.clearFields();
           Get.toNamed(Routes.upGradeEvents);
         },
         borderClr: Colors.transparent,

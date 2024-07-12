@@ -31,11 +31,11 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    downPayment =int.parse(_controller.hourlyRateController.text)*int.parse(_controller.paymentSchedule!.value)/100;
-    tax = int.parse(_controller.hourlyRateController.text)*5/100;
-    groovkinTax = int.parse(_controller.hourlyRateController.text)*5/100;
-    stripeTax = int.parse(_controller.hourlyRateController.text)*10/100;
-    balanceDue = int.parse(_controller.hourlyRateController.text) - (downPayment!+ tax!+groovkinTax!+stripeTax!);
+    downPayment =double.parse(_controller.hourlyRateController.text)*double.parse(_controller.paymentSchedule!.value)/100;
+    tax = double.parse(_controller.hourlyRateController.text)*5/100;
+    groovkinTax = double.parse(_controller.hourlyRateController.text)*5/100;
+    stripeTax = double.parse(_controller.hourlyRateController.text)*10/100;
+    balanceDue = double.parse(_controller.hourlyRateController.text) - (downPayment!+ tax!+groovkinTax!+stripeTax!);
   }
 
   // AuthController _authController = Get.find();
@@ -56,14 +56,14 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
         SizedBox(
           height: 10,
     ),
-    Text(_controller.venuesDetails!.venueName!,
+    Text(_controller.eventDetail != null?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName!,
     style: poppinsRegularStyle(
     fontSize: 14,
     context: context,
     color: theme.primaryColor,
     ),
     ),
-    Text(_controller.venuesDetails!.location!,
+    Text(_controller.eventDetail != null?_controller.eventDetail!.data!.venue!.location!: _controller.venuesDetails!.location!,
     style: poppinsRegularStyle(
     fontSize: 14,
     context: context,

@@ -1,5 +1,7 @@
 import 'dart:io';
-
+import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart' as form;
 import 'package:flutter/cupertino.dart';
@@ -7,7 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/CustomMultipart.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/alertmessage.dart';
+import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart';
 import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
@@ -188,6 +193,58 @@ class AuthController extends GetxController{
     }
   }
 
+  /// change password
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final newConfirmPasswordController = TextEditingController();
+  changePassword(context,theme) async{
+    var formData = form.FormData.fromMap({
+      "old_password": oldPasswordController.text,
+      "password": newPasswordController.text,
+      "password_confirmation": newConfirmPasswordController.text,
+    });
+    var response = await API().postApi(formData, "change-password");
+    if(response.statusCode == 200){
+      showDialog(
+          barrierColor: Colors.transparent,
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext context) {
+            return AlertWidget(
+                height: kToolbarHeight*5,
+                bgColor: true,
+                container: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Image(image: AssetImage("assets/sucses.png")),
+                    Text("Successfully change\nPassword",
+                      textAlign: TextAlign.center,
+                      style: poppinsMediumStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: theme.scaffoldBackgroundColor,
+                          context: context
+                      ),
+                    ),
+                    CustomButton(
+                      borderClr: Colors.transparent,
+                      color1: DynamicColor.blackClr,
+                      color2: DynamicColor.blackClr,
+                      widths: 120,
+                      heights: 35,
+                      onTap: (){
+                        Get.back();
+                        Get.back();
+                        Get.back();
+                      },
+                      text: "Done",
+                    ),
+                  ],
+                )
+            );
+          });
+    }
+  }
 
   /// todo forgot password functionality
 
@@ -508,8 +565,44 @@ class AuthController extends GetxController{
     }
   }
 
-
   /// todo organizer flow have services
+
+
+  RxBool sendingEmailLoader = true.obs;
+  List<UserClass> invitationList = [];
+  sendEmail(BuildContext context) async {
+    sendingEmailLoader(false);
+    List eventInvitation = [];
+    for (var action in invitationList) {
+      eventInvitation.add(action.emailController.text);
+    }
+    String username = 'william@gologonow.com'; //Your Email
+    String password = 'ppqcxmrssiezdyrh'; // 16 Digits App Password Generated From Google Account
+    final smtpServer = gmail(username, password);
+    // Create our message.
+    final message = Message()
+      ..from = Address('william@gologonow','Groovkin',)
+      ..recipients = eventInvitation
+      ..subject = 'Event Invitation'
+      ..text = 'Event Invitation users';
+    try {
+      sendingEmailLoader(false);
+      // final sendReport =
+      await send(message, smtpServer);
+      invitationList.clear();
+      Get.offNamed(Routes.sendInvitationScreen);
+      sendingEmailLoader(true);
+      update();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Mail Send Successfully")));
+    } on MailerException catch (e) {
+      sendingEmailLoader(true);
+      print('Message not sent.');
+      print(e.message);
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
+  }
 
 }
 

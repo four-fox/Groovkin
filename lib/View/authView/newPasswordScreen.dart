@@ -11,9 +11,12 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/authView/autController.dart';
 
 class NewPasswordScreen extends StatelessWidget {
-  const NewPasswordScreen({Key? key}) : super(key: key);
+  NewPasswordScreen({Key? key}) : super(key: key);
+
+  late AuthController _authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +53,21 @@ class NewPasswordScreen extends StatelessWidget {
             ),
             CustomTextFields(
               labelText: "Old Password",
+              controller: _authController.oldPasswordController,
             ),
             SizedBox(
               height: 10,
             ),
             CustomTextFields(
               labelText: "New Password",
+              controller: _authController.newPasswordController,
             ),
             SizedBox(
               height: 10,
             ),
             CustomTextFields(
               labelText: "Confirm Password",
+              controller: _authController.newConfirmPassController,
             ),
             SizedBox(
               height: 10,
@@ -76,44 +82,7 @@ class NewPasswordScreen extends StatelessWidget {
           color1: DynamicColor.blackClr,
           color2: DynamicColor.blackClr,
           onTap: (){
-            showDialog(
-                barrierColor: Colors.transparent,
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return AlertWidget(
-                    height: kToolbarHeight*5,
-                    bgColor: true,
-                    container: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Image(image: AssetImage("assets/sucses.png")),
-                        Text("Successfully change\nPassword",
-                        textAlign: TextAlign.center,
-                          style: poppinsMediumStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                            color: theme.scaffoldBackgroundColor,
-                            context: context
-                          ),
-                        ),
-                        CustomButton(
-                          borderClr: Colors.transparent,
-                          color1: DynamicColor.blackClr,
-                          color2: DynamicColor.blackClr,
-                          widths: 120,
-                          heights: 35,
-                          onTap: (){
-                            Get.back();
-                            Get.back();
-                            Get.back();
-                          },
-                          text: "Done",
-                        ),
-                      ],
-                    )
-                  );
-                });
+            _authController.changePassword(context,theme);
             // Get.toNamed(Routes.newPasswordScreen);
           },
           text: "Continue",

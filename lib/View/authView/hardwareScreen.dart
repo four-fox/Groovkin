@@ -68,7 +68,7 @@ class HardwareScreen extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: hardwareWidget(theme: theme,context: context,onTap: (){
+                          child: hardwareWidget(text: controller.hardwareListing[index].name.toString(),theme: theme,context: context,onTap: (){
                             controller.hardwareListing[index].showItems!.value = !controller.hardwareListing[index].showItems!.value;
                             controller.update();
                           },icon: controller.hardwareListing[index].showItems!.value?Icons.keyboard_arrow_up: Icons.keyboard_arrow_down,),
@@ -149,13 +149,17 @@ class HardwareScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () async{
             // Get.toNamed(Routes.surveyLifeStyleScreen,
             //   arguments: {
             //     "update": false
             //   }
             // );
+
             if(_controller.eventItemsList.isNotEmpty){
+              if(_eventController.eventDetail != null){
+               await _controller.getLifeStyle(surveyType: "music_genre");
+              }
               Get.toNamed(Routes.quickSurveyScreen,
                   arguments: {
                     "addMoreService": 1,

@@ -147,7 +147,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         img: "assets/lock.png",
                       text: "Change Password",
                       onTap: (){
-                      Get.toNamed(Routes.sendEmailForOtp);
+                      Get.toNamed(Routes.newPasswordScreen);
+                      // Get.toNamed(Routes.sendEmailForOtp);
                       }
                     ),
                     Obx(
@@ -177,7 +178,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           }
                       ),
                     ),
-                    API().sp.read("role") !="User"?  customWidget(context: context,
+                    API().sp.read("role") !="User"?
+                    customWidget(context: context,
                     img: "assets/groovkinInvite.png",
                       text: "Groovkin Invites",
                       onTap: (){

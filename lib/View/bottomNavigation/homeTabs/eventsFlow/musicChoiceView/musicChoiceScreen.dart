@@ -26,7 +26,11 @@ class MusicChoiceScreen extends StatelessWidget {
       appBar: customAppBar(theme: theme,text: "Create Event",),
       body: GetBuilder<EventController>(
           initState: (v){
-            _controller.getMusicTag(type: "music_choice");
+            if(_controller.eventDetail != null){
+              _controller.musicChoiceBinding();
+            }else{
+              _controller.getMusicTag(type: "music_choice");
+            }
           },
         builder: (controller) {
           return controller.getMusicTagLoader.value == false?SizedBox.shrink(): Padding(
@@ -249,8 +253,11 @@ class MusicChoiceScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () async{
             if(_controller.tagListPost.isNotEmpty){
+              if(_controller.eventDetail != null){
+               await _controller.getMusicTag(type: "activity_choice");
+              }
               Get.toNamed(Routes.activityChoiceScreen);
             }else{
               bottomToast(text: "Please add music event");
@@ -283,7 +290,11 @@ class ActivityChoiceScreen extends StatelessWidget {
       appBar: customAppBar(theme: theme,text: "Create Event",),
       body: GetBuilder<EventController>(
           initState: (v){
-            _controller.getMusicTag(type: "activity_choice");
+            if(_controller.eventDetail != null){
+              _controller.activityChoice();
+            }else{
+              _controller.getMusicTag(type: "activity_choice");
+            }
           },
         builder: (controller) {
           return controller.getMusicTagLoader.value== false?SizedBox.shrink():
@@ -495,8 +506,16 @@ class ActivityChoiceScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () {
             if(_controller.activityListPost.isNotEmpty){
+              if(_controller.eventDetail != null){
+                _controller.imageListtt.clear();
+                for (var ele in _controller.eventDetail!.data!.profilePicture!) {
+                  _controller.imageListtt.add(ele);
+                }
+              }else{
+                _controller.imageListtt.clear();
+              }
               Get.toNamed(Routes.commentsAndAttachment);
             }else{
              bottomToast(text: "Please select activity choice");

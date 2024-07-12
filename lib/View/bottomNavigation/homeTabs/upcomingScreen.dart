@@ -497,29 +497,45 @@ class UpcomingScreen extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 physics: AlwaysScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context,index){
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems!.length,
-                                      itemBuilder: (BuildContext context,indx){
-                                        return Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 6),
-                                          child: Chip(
-                                            backgroundColor: DynamicColor.lightBlackClr,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                            ),
-                                            label: Text(controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString(),
-                                              style: poppinsRegularStyle(
-                                                  fontSize: 14,
-                                                  context: context,
-                                                  color: theme.primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      });
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 6),
+                                    child: Chip(
+                                      backgroundColor: DynamicColor.lightBlackClr,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      label: Text(controller.eventDetail!.data!.hardwareProvide![index].hardwareItems!.name.toString(),
+                                        style: poppinsRegularStyle(
+                                          fontSize: 14,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     physics: NeverScrollableScrollPhysics(),
+                                  //     itemCount: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems!.length,
+                                  //     itemBuilder: (BuildContext context,indx){
+                                  //       return Padding(
+                                  //         padding: EdgeInsets.symmetric(horizontal: 6),
+                                  //         child: Chip(
+                                  //           backgroundColor: DynamicColor.lightBlackClr,
+                                  //           shape: RoundedRectangleBorder(
+                                  //             borderRadius: BorderRadius.circular(8),
+                                  //           ),
+                                  //           label: Text(controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString(),
+                                  //             style: poppinsRegularStyle(
+                                  //                 fontSize: 14,
+                                  //                 context: context,
+                                  //                 color: theme.primaryColor,
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     });
                                 }),
                           ),
                         ),
@@ -586,7 +602,23 @@ class UpcomingScreen extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 physics: AlwaysScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context,index){
-                                  return ListView.builder(
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 6),
+                                    child: Chip(
+                                      backgroundColor: DynamicColor.lightBlackClr,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      label: Text(controller.eventDetail!.data!.eventMusicChoiceTags![index].musicChoiceItems!.name.toString(),
+                                        style: poppinsRegularStyle(
+                                          fontSize: 14,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                  /*return ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       physics: NeverScrollableScrollPhysics(),
@@ -608,7 +640,7 @@ class UpcomingScreen extends StatelessWidget {
                                             ),
                                           ),
                                         );
-                                      });
+                                      });*/
                                 }),
                           ),
                         ),
@@ -634,29 +666,45 @@ class UpcomingScreen extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 physics: AlwaysScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context,index){
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                      itemBuilder: (BuildContext context,indx){
-                                        return Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 6),
-                                          child: Chip(
-                                            backgroundColor: DynamicColor.lightBlackClr,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                            ),
-                                            label: Text(controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
-                                              style: poppinsRegularStyle(
-                                                  fontSize: 14,
-                                                  context: context,
-                                                  color: theme.primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      });
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 6),
+                                    child: Chip(
+                                      backgroundColor: DynamicColor.lightBlackClr,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      label: Text(controller.eventDetail!.data!.eventActivityChoiceTags![index].activityChoiceItems!.name.toString(),
+                                        style: poppinsRegularStyle(
+                                          fontSize: 14,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     physics: NeverScrollableScrollPhysics(),
+                                  //     itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
+                                  //     itemBuilder: (BuildContext context,indx){
+                                  //       return Padding(
+                                  //         padding: EdgeInsets.symmetric(horizontal: 6),
+                                  //         child: Chip(
+                                  //           backgroundColor: DynamicColor.lightBlackClr,
+                                  //           shape: RoundedRectangleBorder(
+                                  //             borderRadius: BorderRadius.circular(8),
+                                  //           ),
+                                  //           label: Text(controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
+                                  //             style: poppinsRegularStyle(
+                                  //                 fontSize: 14,
+                                  //                 context: context,
+                                  //                 color: theme.primaryColor,
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     });
                                 }),
                           ),
                         ),

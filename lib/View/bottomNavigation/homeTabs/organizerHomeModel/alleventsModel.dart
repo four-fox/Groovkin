@@ -169,7 +169,6 @@ class EventData {
     this.bannerImage,
     this.user,
     this.services,
-
     this.hardwareProvide,
     this.musicGenre,
     this.eventMusicChoiceTags,
@@ -919,6 +918,7 @@ class Venue {
   String? createdAt;
   String? updatedAt;
   VenueUser? user;
+  List<BannerImage>? profilePicture;
 
   Venue({
     this.id,
@@ -934,6 +934,7 @@ class Venue {
     this.createdAt,
     this.updatedAt,
     this.user,
+    this.profilePicture,
   });
 
   factory Venue.fromJson(Map<String, dynamic> json) => Venue(
@@ -950,6 +951,7 @@ class Venue {
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     user: json["user"] == null ? null : VenueUser.fromJson(json["user"]),
+    profilePicture: json["profile_picture"] == null ? [] : List<BannerImage>.from(json["profile_picture"]!.map((x) => BannerImage.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -966,6 +968,7 @@ class Venue {
     "created_at": createdAt,
     "updated_at": updatedAt,
     "user": user?.toJson(),
+    "profile_picture": profilePicture == null ? [] : List<dynamic>.from(profilePicture!.map((x) => x.toJson())),
   };
 }
 

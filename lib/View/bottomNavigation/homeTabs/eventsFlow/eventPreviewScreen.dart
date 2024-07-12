@@ -118,7 +118,7 @@ child: ListView.builder(
 ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(_controller.venuesDetails!.venueName.toString(),
+              child: Text(_controller.eventDetail != null?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName.toString(),
                 textAlign: TextAlign.center,
                 style: poppinsMediumStyle(
                   fontSize: 17,
@@ -150,7 +150,7 @@ child: ListView.builder(
                 img: "assets/calender.png",
                 icon: true,
                 iconSize: 17,
-                text: _managerController.venueDetails!.data!.location.toString(),
+                text:_controller.eventDetail != null? _controller.eventDetail!.data!.venue!.location!: _managerController.venueDetails!.data!.location.toString(),
             ),
             /// event organizer details
             // SizedBox(
@@ -198,8 +198,8 @@ child: ListView.builder(
               height: 10,
             ),
             ShowCustomMap(
-              lat: double.parse(_managerController.lat),
-              lng: double.parse(_managerController.lng),
+              lat: double.parse(_controller.eventDetail !=null?_controller.eventDetail!.data!.venue!.latitude!: _managerController.lat),
+              lng: double.parse(_controller.eventDetail !=null?_controller.eventDetail!.data!.venue!.longitude!: _managerController.lng),
             ),
          Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
              avatarPadding: 8,

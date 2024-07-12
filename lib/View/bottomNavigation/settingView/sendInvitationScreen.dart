@@ -43,7 +43,7 @@ class SendInvitationScreen extends StatelessWidget {
               SizedBox(
                 height: 60,
               ),
-              Text(' Your event invitations have been sent successfully. Thank you for spreading the excitement!',
+              Text(' The invitation for the GROOVKIN has been sent successfully.',
               textAlign: TextAlign.center,
                 style: poppinsRegularStyle(
                 fontSize: 14,

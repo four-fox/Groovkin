@@ -571,14 +571,15 @@ class PendingEventDetails extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 physics: AlwaysScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context,index){
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems!.length,
-                                      itemBuilder: (BuildContext context,indx){
-                                        return controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].userEventSubItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString());
-                                      });
+                                  return controller.eventDetail!.data!.hardwareProvide![index].hardwareItems!.name == null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.hardwareProvide![index].hardwareItems!.name.toString());
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     physics: NeverScrollableScrollPhysics(),
+                                  //     itemCount: controller.eventDetail!.data!.hardwareProvide![index].hardwareItems!.categoryItems!.length,
+                                  //     itemBuilder: (BuildContext context,indx){
+                                  //       return controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].userEventSubItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString());
+                                  //     });
                                 }),
                           ),
                         ),
@@ -604,14 +605,15 @@ class PendingEventDetails extends StatelessWidget {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: controller.eventDetail!.data!.musicGenre!.length,
                                 itemBuilder: (BuildContext context,indx){
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems!.length,
-                                      itemBuilder: (BuildContext context,indxess){
-                                        return controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].userCategoryItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].name.toString());
-                                      });
+                                  return controller.eventDetail!.data!.musicGenre![indx].musicGenreItems!.name ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.musicGenre![indx].musicGenreItems!.name.toString());
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     physics: NeverScrollableScrollPhysics(),
+                                  //     itemCount: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems!.length,
+                                  //     itemBuilder: (BuildContext context,indxess){
+                                  //       return controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].userCategoryItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].name.toString());
+                                  //     });
                                 }),
                           ),
                         ),
@@ -637,16 +639,8 @@ class PendingEventDetails extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 physics: AlwaysScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context,index){
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                      itemBuilder: (BuildContext context,indx){
-                                        return
-                                          controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems![indx].userEventTagItems ==null?SizedBox.shrink():
-                                          customList(context: context, theme: theme,name: controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString());
-                                      });
+                                  return controller.eventDetail!.data!.eventMusicChoiceTags![index].musicChoiceItems!.name ==null?SizedBox.shrink():
+                                    customList(context: context, theme: theme,name: controller.eventDetail!.data!.eventMusicChoiceTags![index].musicChoiceItems!.name.toString());
                                 }),
                           ),
                         ),
@@ -672,16 +666,18 @@ class PendingEventDetails extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 physics: AlwaysScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context,index){
-                                  return ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                      itemBuilder: (BuildContext context,indx){
-                                        return
-                                          controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].userEventTagItems == null?SizedBox.shrink():
-                                          customList(context: context, theme: theme,name: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString());
-                                      });
+                                  return controller.eventDetail!.data!.eventActivityChoiceTags![index].activityChoiceItems!.name == null?SizedBox.shrink():
+                                    customList(context: context, theme: theme,name: controller.eventDetail!.data!.eventActivityChoiceTags![index].activityChoiceItems!.name.toString());
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     physics: NeverScrollableScrollPhysics(),
+                                  //     itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
+                                  //     itemBuilder: (BuildContext context,indx){
+                                  //       return
+                                  //         controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].userEventTagItems == null?SizedBox.shrink():
+                                  //         customList(context: context, theme: theme,name: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString());
+                                  //     });
                                 }),
                           ),
                         ),

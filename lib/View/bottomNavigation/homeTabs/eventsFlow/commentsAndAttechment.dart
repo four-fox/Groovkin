@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
+import 'package:groovkin/Components/mediaModel.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
@@ -18,18 +19,38 @@ import 'package:map_location_picker/map_location_picker.dart';
 
 import '../../../../Components/Network/Url.dart';
 
-class CommentsAndAttachment extends StatelessWidget {
+class CommentsAndAttachment extends StatefulWidget {
   CommentsAndAttachment({Key? key}) : super(key: key);
 
+  @override
+  State<CommentsAndAttachment> createState() => _CommentsAndAttachmentState();
+}
+
+class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
   String address = "null";
+
   String autocompletePlace = "null";
+
   Prediction? initialValue;
+
   AuthController authController = Get.find();
 
   EventController _controller = Get.find();
-  ManagerController managerController = Get.find();
+
+  // ManagerController managerController = Get.find();
 
   final commentsForm = GlobalKey<FormState>();
+
+  late ManagerController managerController;
+
+  @override
+  void initState() {
+    if (Get.isRegistered<ManagerController>()) {
+      managerController = Get.find<ManagerController>();
+    } else {
+      managerController = Get.put(ManagerController());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,88 +109,24 @@ class CommentsAndAttachment extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          controller.mediaClass.isNotEmpty? SizedBox(
+                          _controller.imageListtt.isNotEmpty || controller.mediaClass.isNotEmpty? SizedBox(
                             height: 180,
                             width: Get.width,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
-                                itemCount: controller.mediaClass.length,
-                                itemBuilder:
-                                    (BuildContext context, index) {
-                                  return Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            right: 10),
-                                        child: /*Stack(
-                                                children: [*/
-                                        controller.mediaClass[index]
-                                            .thumbnail !=
-                                            null
-                                            ? Container(
-                                          height: 200,
-                                          width: 200,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(
-                                                  10),
-                                              image: DecorationImage(
-                                                  fit: BoxFit
-                                                      .fill,
-                                                  image: controller.mediaClass[index].id ==
-                                                      null
-                                                      ? FileImage(File(controller
-                                                      .mediaClass[
-                                                  index]
-                                                      .thumbnail
-                                                      .toString()))
-                                                      : NetworkImage(controller.mediaClass[index].thumbnail.toString())
-                                                  as ImageProvider)),
-                                        )
-                                            : Container(
-                                          height: 200,
-                                          width: 200,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(
-                                                  10),
-                                              image: DecorationImage(
-                                                  fit: BoxFit
-                                                      .fill,
-                                                  image: controller.mediaClass[index].id ==
-                                                      null
-                                                      ? FileImage(File(controller
-                                                      .mediaClass[
-                                                  index]
-                                                      .filename
-                                                      .toString()))
-                                                      : NetworkImage(controller.mediaClass[index].filename.toString())
-                                                  as ImageProvider)),
-                                        ),
-                                      ),
-                                      controller.mediaClass[index].thumbnail ==null?SizedBox.shrink(): GestureDetector(
-                                        onTap: (){
-                                          Get.toNamed(Routes.videoPlayerClass, arguments: {
-                                            'url':controller.mediaClass[index].filename,
-                                            'type': "file"/*controller.mediaClass[index].fileType*/,
-                                          });
-                                        },
-                                        child: CircleAvatar(
-                                          backgroundColor: DynamicColor.blackClr,
-                                          radius: 15,
-                                          child: Icon(Icons.play_arrow,
-                                            color: DynamicColor.whiteClr,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                itemCount: controller.mediaClass.isNotEmpty?
+                                controller.mediaClass.length:_controller.imageListtt.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return _assetImage(
+                                    controller: controller,
+                                    mediaItem: controller.mediaClass.isNotEmpty?
+                                    controller.mediaClass[index]:_controller.imageListtt[index],
                                   );
                                 }),
-                          ): Padding(padding: EdgeInsets.symmetric(vertical: 10.0),
+                          ): Padding(
+                            padding:
+                            EdgeInsets.symmetric(vertical: 10.0),
                             child: Icon(Icons.attach_file_outlined,
                             color: DynamicColor.grayClr,
                               size: 35,
@@ -220,108 +177,118 @@ class CommentsAndAttachment extends StatelessWidget {
           borderClr: Colors.transparent,
           onTap: (){
             if(commentsForm.currentState!.validate()){
-              if(managerController.mediaClass.isNotEmpty){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return
-                        MapLocationPicker(
-                          onTappp: (){
-                            Get.toNamed(Routes.listOfVenuesScreen);
-                          },
-                          onTapShow: true,
-                          // hideLocation: true,
-                          // lat: double.parse(eventData.latitude.toString()),
-                          // long: double.parse(eventData.longitude.toString()),
-                          minMaxZoomPreference: MinMaxZoomPreference(0, 15),
-                          apiKey:
-                          "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
-                          canPopOnNextButtonTaped: true,
-                          searchHintText:
-                          managerController.address != "null"
-                              ? managerController.address
-                              : "Start typing to search",
-                          // canPopOnNextButtonTaped: true,
-                          latLng: managerController.latLng,
-                          initAddress: managerController.address,
-                          onNext: (GeocodingResult? result) {
-                            if (result != null) {
-                              managerController.lat = result
-                                  .geometry.location.lat
-                                  .toString();
-                              managerController.lng = result
-                                  .geometry.location.lng
-                                  .toString();
-                              managerController.address =
-                                  result.formattedAddress ?? "";
-                              managerController.latLng = LatLng(
-                                  result.geometry.location.lat,
-                                  result.geometry.location.lng);
-                              managerController.addressController.text = result.formattedAddress!;
+              if(managerController.mediaClass.isNotEmpty || _controller.imageListtt.isNotEmpty){
+                if(_controller.eventDetail !=null){
+                  Get.toNamed(Routes.eventPreview,
+                  arguments: {
+                    "viewDetails": 1
+                  }
+                  );
+                }else{
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return
+                          MapLocationPicker(
+                            onTappp: (){
+                              print(managerController.lat);
+                              print(managerController.lng);
                               Get.toNamed(Routes.listOfVenuesScreen);
-                              managerController.update();
-                            }
-                          },
-                          onSuggestionSelected:
-                              (PlacesDetailsResponse? result) {
-                            if (result != null) {
-                              managerController.lat = result
-                                  .result.geometry!.location.lat
-                                  .toString();
-                              managerController.lng = result
-                                  .result.geometry!.location.lng
-                                  .toString();
-                              managerController.autocompletePlace =
-                                  result.result
-                                      .formattedAddress ??
-                                      "";
-                              managerController.address = result
-                                  .result.formattedAddress ??
-                                  "";
-                              managerController.latLng = LatLng(
-                                  result.result.geometry!.location
-                                      .lat,
-                                  result.result.geometry!.location
-                                      .lng);
-                              managerController.addressController.text = result.result.formattedAddress!;
+                            },
+                            onTapShow: true,
+                            // hideLocation: true,
+                            // lat: double.parse(eventData.latitude.toString()),
+                            // long: double.parse(eventData.longitude.toString()),
+                            minMaxZoomPreference: MinMaxZoomPreference(0, 15),
+                            apiKey:
+                            "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                            canPopOnNextButtonTaped: true,
+                            searchHintText:
+                            managerController.address != "null"
+                                ? managerController.address
+                                : "Start typing to search",
+                            // canPopOnNextButtonTaped: true,
+                            latLng: managerController.latLng,
+                            initAddress: managerController.address,
+                            onNext: (GeocodingResult? result) {
+                              if (result != null) {
+                                managerController.lat = result
+                                    .geometry.location.lat
+                                    .toString();
+                                managerController.lng = result
+                                    .geometry.location.lng
+                                    .toString();
+                                managerController.address =
+                                    result.formattedAddress ?? "";
+                                managerController.latLng = LatLng(
+                                    result.geometry.location.lat,
+                                    result.geometry.location.lng);
+                                managerController.addressController.text = result.formattedAddress!;
+                                Get.toNamed(Routes.listOfVenuesScreen);
+                                managerController.update();
+                              }
+                            },
+                            onSuggestionSelected:
+                                (PlacesDetailsResponse? result) {
+                              if (result != null) {
+                                managerController.lat = result
+                                    .result.geometry!.location.lat
+                                    .toString();
+                                managerController.lng = result
+                                    .result.geometry!.location.lng
+                                    .toString();
+                                managerController.autocompletePlace =
+                                    result.result
+                                        .formattedAddress ??
+                                        "";
+                                managerController.address = result
+                                    .result.formattedAddress ??
+                                    "";
+                                managerController.latLng = LatLng(
+                                    result.result.geometry!.location
+                                        .lat,
+                                    result.result.geometry!.location
+                                        .lng);
+                                managerController.addressController.text = result.result.formattedAddress!;
 
-                              Get.toNamed(Routes.listOfVenuesScreen);
-                              managerController.update();
-                            }
-                          },
-                        );
+                                Get.toNamed(Routes.listOfVenuesScreen);
+                                managerController.update();
+                              }
+                            },
+                          );
 
-                      //   MapLocationPicker(
-                      //   apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
-                      //   popOnNextButtonTaped: true,
-                      //   currentLatLng: const LatLng(29.146727, 76.464895),
-                      //   btnOnTap: (){
-                      //     Get.toNamed(Routes.listOfVenuesScreen);
-                      //   },
-                      //   onNext: (GeocodingResult? result) {
-                      //     if (result != null) {
-                      //       managerController.address = result.formattedAddress ?? "";
-                      //       managerController.addressController.text = managerController.address;
-                      //       managerController.lat = result.geometry.location.lat.toString();
-                      //       managerController.lng = result.geometry.location.lng.toString();
-                      //       managerController.update();
-                      //     }
-                      //   },
-                      //   onSuggestionSelected: (PlacesDetailsResponse? result) {
-                      //     if (result != null) {
-                      //       managerController.autocompletePlace =
-                      //           result.result.formattedAddress ?? "";
-                      //       managerController.addressController.text = managerController.autocompletePlace;
-                      //       managerController.lat = result.result.geometry!.location.lat.toString();
-                      //       managerController.lng = result.result.geometry!.location.lng.toString();
-                      //       managerController.update();
-                      //     }
-                      //   },
-                      // );
-                    },
-                  ),
-                );
+                        //   MapLocationPicker(
+                        //   apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                        //   popOnNextButtonTaped: true,
+                        //   currentLatLng: const LatLng(29.146727, 76.464895),
+                        //   btnOnTap: (){
+                        //     Get.toNamed(Routes.listOfVenuesScreen);
+                        //   },
+                        //   onNext: (GeocodingResult? result) {
+                        //     if (result != null) {
+                        //       managerController.address = result.formattedAddress ?? "";
+                        //       managerController.addressController.text = managerController.address;
+                        //       managerController.lat = result.geometry.location.lat.toString();
+                        //       managerController.lng = result.geometry.location.lng.toString();
+                        //       managerController.update();
+                        //     }
+                        //   },
+                        //   onSuggestionSelected: (PlacesDetailsResponse? result) {
+                        //     if (result != null) {
+                        //       managerController.autocompletePlace =
+                        //           result.result.formattedAddress ?? "";
+                        //       managerController.addressController.text = managerController.autocompletePlace;
+                        //       managerController.lat = result.result.geometry!.location.lat.toString();
+                        //       managerController.lng = result.result.geometry!.location.lng.toString();
+                        //       managerController.update();
+                        //     }
+                        //   },
+                        // );
+                      },
+                    ),
+                  );
+                }
               }else{
                 bottomToast(text: "Please choose image");
               }
@@ -333,6 +300,107 @@ class CommentsAndAttachment extends StatelessWidget {
       ),
     );
   }
+}
+
+
+_assetImage({controller, mediaItem}){
+  return Stack(
+    alignment: Alignment.center,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: mediaItem!.thumbnail != null ?
+        Container(
+          height: 200,
+          width: 200,
+          decoration: BoxDecoration(
+              borderRadius:
+              BorderRadius.circular(10),
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: mediaItem.id == null
+                      ? FileImage(File(mediaItem.thumbnail.toString()))
+                      : NetworkImage(mediaItem.mediaPath.toString())
+                  as ImageProvider)),
+          child: GestureDetector(
+            onTap: (){
+              if(mediaItem!.thumbnail == null ){
+                print("tapping123");
+              }else{
+                if(mediaItem.id == null){
+                  print(mediaItem);
+                }
+                // controller.mediaClass.remove(mediaItem);
+              }
+              // controller.mediaClass.remove(mediaItem);
+            },
+            child: Align(
+              alignment: Alignment.topRight,
+              child: CircleAvatar(
+                  radius: 15,
+                  child: Icon(Icons.clear)),
+            ),
+          ),
+        ) :
+        Container(
+          height: 200,
+          width: 200,
+          decoration: BoxDecoration(
+              borderRadius:
+              BorderRadius
+                  .circular(
+                  10),
+              image: DecorationImage(
+                  fit: BoxFit
+                      .fill,
+                  image: mediaItem.id ==
+                      null
+                      ? FileImage(File(mediaItem.filename.toString()))
+                      : NetworkImage(mediaItem.mediaPath.toString())
+                  as ImageProvider)),
+        child: GestureDetector(
+          onTap: (){
+            if(mediaItem!.thumbnail == null ){
+              if(mediaItem.id == null){
+                controller.mediaClass.remove(mediaItem);
+                controller.update();
+              }
+              print("tapping22");
+            }else{
+              print("tapping11");
+            }
+            // controller.mediaClass.remove(mediaItem);
+          },
+          child: Align(
+            alignment: Alignment.topRight,
+            child: CircleAvatar(
+                radius: 15,
+                child: Icon(Icons.clear)),
+          ),
+        ),
+        ),
+
+      ),
+
+      mediaItem.thumbnail ==null?
+      SizedBox.shrink():
+      GestureDetector(
+        onTap: (){
+          Get.toNamed(Routes.videoPlayerClass, arguments: {
+            'url': mediaItem.filename,
+            'type': "file"/*controller.mediaClass[index].fileType*/,
+          });
+        },
+        child: CircleAvatar(
+          backgroundColor: DynamicColor.blackClr,
+          radius: 15,
+          child: Icon(Icons.play_arrow,
+            color: DynamicColor.whiteClr,
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 
@@ -475,10 +543,10 @@ class CommentsAndAttachment extends StatelessWidget {
                             backgroundColor: DynamicColor.darkYellowClr,
                             child: CircleAvatar(
                               radius: 24,
-                              backgroundImage:
-                              NetworkImage(controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail ==null?
-                              Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].mediaPath.toString():
-                              Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail.toString()),
+                              // backgroundImage:
+                              // NetworkImage(controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail ==null?
+                              // Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].mediaPath.toString():
+                              // Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail.toString()),
                             ),
                           ),
                           Padding(

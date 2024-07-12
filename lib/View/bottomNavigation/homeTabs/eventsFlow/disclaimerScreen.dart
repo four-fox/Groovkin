@@ -197,7 +197,11 @@ class DisclaimerScreen extends StatelessWidget {
               borderClr: Colors.transparent,
               onTap: (){
                 if(checkBoxValue.value == true){
-                  _controller.postEventFunction(context,theme);
+                  if(_controller.eventDetail != null){
+                    _controller.editEventFunction();
+                  }else{
+                    _controller.postEventFunction(context,theme);
+                  }
                 }else{
                   bottomToast(text: "Please accept terms and condition");
                 }

@@ -192,7 +192,7 @@ class ServiceScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () async{
                 if(moreServiceAdd == 2){
                   Get.toNamed(Routes.quickSurveyScreen,
                   arguments: {
@@ -202,7 +202,7 @@ class ServiceScreen extends StatelessWidget {
                 }else if(moreServiceAdd == 3){
                   if(_controller.serviceList.isNotEmpty){
                     if(_eventController.eventDetail != null) {
-                      _controller.getAllService(type: "hardware_provided");
+                      await _controller.getAllService(type: "hardware_provided");
                     }
                     Get.toNamed(Routes.hardwareScreen, arguments: {"createEvent": true});
                   }else{

@@ -22,16 +22,34 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
-class UpGradeEvents extends StatelessWidget {
+class UpGradeEvents extends StatefulWidget {
   UpGradeEvents({Key? key}) : super(key: key);
 
+  @override
+  State<UpGradeEvents> createState() => _UpGradeEventsState();
+}
+
+class _UpGradeEventsState extends State<UpGradeEvents> {
   final format = DateFormat("HH:mm");
+
   String address = "null";
+
   String autocompletePlace = "null";
+
   Prediction? initialValue;
 
-  AuthController _authController = Get.find();
+  late AuthController _authController;
+
   final eventForm = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -637,7 +655,7 @@ class UpGradeEvents extends StatelessWidget {
                         borderClr: Colors.transparent,
                         onTap: (){
                           if(eventForm.currentState!.validate()){
-                            if(_authController.imageBytes !=null || controller.eventDetail!.data!.bannerImage!.mediaPath != null){
+                            if(_authController.imageBytes !=null || ((controller.eventDetail !=null) && (controller.eventDetail!.data!.bannerImage!.mediaPath != null))){
                               controller.checkingTime();
                             }else{
                               bottomToast(text: "Please choose event banner");
