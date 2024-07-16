@@ -113,18 +113,35 @@ class ViewProfileScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     customFollowingBtn(context,onTap: (){
-                      Get.toNamed(Routes.followingScreen);
+                      Get.toNamed(Routes.followingScreen,
+                        arguments: {
+                          "appBarText": "Followings"
+                        }
+                      );
                     }),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
                       child: customFollowingBtn(context,onTap: (){
-                        Get.toNamed(Routes.followingScreen);
+                        Get.toNamed(Routes.followingScreen,
+                            arguments: {
+                              "appBarText": "Followers"
+                            }
+                        );
                       },text: "Followers"
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: customFollowingBtn(context,onTap: (){
+                        Get.toNamed(Routes.allUserScreen);
+                      },text: "Follow"
+                      ),
+                    ),
+
                     customFollowingBtn(context,onTap: (){
                       _controller.profileDataBind();
-                    },customWidget: Row(
+                    },
+                     customWidget: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ImageIcon(AssetImage("assets/profileEditIcons.png"),color: DynamicColor.yellowClr,),
@@ -239,7 +256,7 @@ class ViewProfileScreen extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height:height?? 40,
-        width:width?? 100,
+        width:width?? 80,
         // padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
         decoration: BoxDecoration(
           color:DynamicColor.lightBlackClr.withOpacity(0.8),

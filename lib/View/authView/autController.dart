@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -19,6 +20,8 @@ import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../GroovkinManager/venueDetailsModel.dart';
 
 class AuthController extends GetxController{
   ///intro functionality
@@ -601,6 +604,77 @@ class AuthController extends GetxController{
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
       }
+    }
+  }
+
+  /// following and unfollow
+  RxBool getAllUnfollowingLoader = true.obs;
+  AllUnFollowUserModel? allUnFollower;
+  bool getAllUnfollowingWait = false;
+  getAllUnfollowing({nextUrl}) async{
+    getAllUnfollowingLoader(false);
+    var response = await API().getApi(url: "nonfollowed",fullUrl: nextUrl);
+    if(response.statusCode == 200){
+      if(nextUrl == null){
+        allUnFollower = AllUnFollowUserModel.fromJson(response.data);
+        getAllUnfollowingWait = false;
+      }else{
+        allUnFollower!.data!.data!
+            .addAll(AllUnFollowUserModel.fromJson(response.data).data!.data!);
+        allUnFollower!.data!.nextPageUrl =
+            AllUnFollowUserModel.fromJson(response.data).data!.nextPageUrl;
+        getAllUnfollowingWait = false;
+      }
+      getAllUnfollowingLoader(true);
+      update();
+    }
+  }
+
+  ///follow user
+  followUser({User? userData}) async{
+    var formData = form.FormData.fromMap({
+      "follower_id": userData!.id,
+      "type": userData.role.toString(),
+    });
+    var response = await API().postApi(formData, "follow");
+    if(response.statusCode == 200){
+      allUnFollower!.data!.data!.remove(userData);
+      update();
+    }
+  }
+
+  /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> unfollow
+  unfollow({User? userData}) async{
+    var formData = form.FormData.fromMap({
+      "follower_id": userData!.id
+    });
+    var response = await API().postApi(formData, "unfollow");
+    if(response.statusCode == 200){
+      allUnFollower!.data!.data!.remove(userData);
+      update();
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get all follower
+  RxBool getAllFollowersLoader = true.obs;
+  getAllFollowers({type}) async{
+    getAllFollowersLoader(false);
+    var response = await API().getApi(url: "followers?type=$type");
+    if(response.statusCode == 200){
+      getAllFollowersLoader(true);
+    }
+  }
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get all followings
+  getAllFollowings({userType, apiHit = "Followings"}) async{
+    getAllUnfollowingLoader(false);
+    var response = apiHit=="Followings"?
+    await API().getApi(url: "followings?type=$userType"):
+    await API().getApi(url: "followers?type=$userType");
+    if(response.statusCode == 200){
+      allUnFollower = AllUnFollowUserModel.fromJson(response.data);
+      getAllUnfollowingLoader(true);
+      update();
     }
   }
 

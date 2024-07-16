@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "549725868575",
+    "project_id": "groovkin-a2676",
+    "storage_bucket": "groovkin-a2676.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549725868575:android:b537348a10ef4d7c687b2a",
+        "android_client_info": {
+          "package_name": "com.gologonow.groovkin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7UUbIq1eM5CHfwffzsKdC6t8ILIdDQKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

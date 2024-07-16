@@ -480,7 +480,7 @@ class ManagerController extends GetxController{
     if(response.statusCode == 200){
       venueDetails = venueDtail.VenueDetailsModel.fromJson(response.data);
       for (var element in venueDetails!.data!.profilePicture!) {
-       imageList.add(Url().imageUrl+element.mediaPath!);
+       imageList.add(element.mediaPath!);
       }
       getVenueDetailsLoader(true);
       update();

@@ -698,8 +698,8 @@ class ViewOtherEventsDetails extends StatelessWidget {
                                   fit: BoxFit
                                       .fill,
                                   image:
-                                  controller.venueDetails!.data!.profilePicture![index].thumbnail !=null?NetworkImage(Url().imageUrl+controller.venueDetails!.data!.profilePicture![index].thumbnail.toString()):
-                                  NetworkImage(Url().imageUrl+controller.venueDetails!.data!.profilePicture![index].mediaPath.toString())
+                                  controller.venueDetails!.data!.profilePicture![index].thumbnail !=null?NetworkImage(controller.venueDetails!.data!.profilePicture![index].thumbnail.toString()):
+                                  NetworkImage(controller.venueDetails!.data!.profilePicture![index].mediaPath.toString())
                               )
                           ),
                           child:controller.venueDetails!.data!.profilePicture![index].thumbnail != null? GestureDetector(
@@ -707,7 +707,7 @@ class ViewOtherEventsDetails extends StatelessWidget {
                               Get.toNamed(Routes.videoPlayerClass,
                                   arguments: {
                                     "type": "filedsaf",
-                                    "url":Url().imageUrl+ controller.venueDetails!.data!.profilePicture![index].mediaPath.toString()
+                                    "url":controller.venueDetails!.data!.profilePicture![index].mediaPath.toString()
                                   }
                               );
                             },

@@ -507,10 +507,11 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                       builder: (context, state, child) {
                                         return FormBuilderTypeAhead<Prediction>(
                                           decoration: InputDecoration(
+
                                               labelStyle: TextStyle(
                                                 color: Colors.white,
                                               ),
-                                            hintStyle: TextStyle(color: Colors.black),
+                                            hintStyle: TextStyle(color: Colors.white),
                                             hintText: widget.searchHintText,
                                             border: InputBorder.none,
                                             filled: true,
@@ -535,7 +536,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                   continent.description ?? "",
                                                   style: const TextStyle(
                                                     fontSize: 14,
-                                                    color: Colors.black,
+                                                    color: Colors.white,
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily:
                                                         'poppinsLight',

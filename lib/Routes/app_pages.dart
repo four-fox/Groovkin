@@ -32,6 +32,7 @@ import 'package:groovkin/View/authView/newPasswordScreen.dart';
 import 'package:groovkin/View/authView/sendEmailForOtpScreen.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/ongoingEvents/ongoingEventsCompleteScreen.dart';
+import 'package:groovkin/View/bottomNavigation/settingView/AllUsersScreen.dart';
 import 'package:groovkin/unuses/venueInfoScreen.dart';
 import 'package:groovkin/View/counters/counterScreen.dart';
 import 'package:groovkin/View/paymentMethod/transectionHistoryScreen.dart';
@@ -326,6 +327,10 @@ class AppPages {
     GetPage(
       name: _Path.followingScreen,
       page: () => FollowingScreen(),
+    ),
+    GetPage(
+      name: _Path.allUserScreen,
+      page: () => AllUserScreen(),
     ),
     // GetPage(
     //   name: _Path.groovkinManagerScreen,

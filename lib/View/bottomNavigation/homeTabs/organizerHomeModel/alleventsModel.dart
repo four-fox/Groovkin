@@ -11,6 +11,7 @@ import 'package:groovkin/View/GroovkinManager/managerPendingEventModel.dart';
 import '../../../../Components/Network/API.dart';
 import '../../../../Components/Network/Url.dart';
 import '../../../../links.dart';
+import '../../../GroovkinManager/venueDetailsModel.dart';
 
 EventsListModel eventsListModelFromJson(String str) => EventsListModel.fromJson(json.decode(str));
 
@@ -917,7 +918,7 @@ class Venue {
   int? userId;
   String? createdAt;
   String? updatedAt;
-  VenueUser? user;
+  User? user;
   List<BannerImage>? profilePicture;
 
   Venue({
@@ -950,7 +951,7 @@ class Venue {
     userId: json["user_id"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
-    user: json["user"] == null ? null : VenueUser.fromJson(json["user"]),
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
     profilePicture: json["profile_picture"] == null ? [] : List<BannerImage>.from(json["profile_picture"]!.map((x) => BannerImage.fromJson(x))),
   );
 
@@ -969,122 +970,6 @@ class Venue {
     "updated_at": updatedAt,
     "user": user?.toJson(),
     "profile_picture": profilePicture == null ? [] : List<dynamic>.from(profilePicture!.map((x) => x.toJson())),
-  };
-}
-
-class VenueUser {
-  int? id;
-  String? name;
-  String? email;
-  String? deviceToken;
-  dynamic emailVerifiedAt;
-  dynamic otp;
-  String? createdAt;
-  String? updatedAt;
-  FluffyProfile? profile;
-
-  VenueUser({
-    this.id,
-    this.name,
-    this.email,
-    this.deviceToken,
-    this.emailVerifiedAt,
-    this.otp,
-    this.createdAt,
-    this.updatedAt,
-    this.profile,
-  });
-
-  factory VenueUser.fromJson(Map<String, dynamic> json) => VenueUser(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    deviceToken: json["device_token"],
-    emailVerifiedAt: json["email_verified_at"],
-    otp: json["otp"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    profile: json["profile"] == null ? null : FluffyProfile.fromJson(json["profile"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "device_token": deviceToken,
-    "email_verified_at": emailVerifiedAt,
-    "otp": otp,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "profile": profile?.toJson(),
-  };
-}
-
-class FluffyProfile {
-  int? id;
-  String? firstName;
-  String? lastName;
-  dynamic birthYear;
-  String? phoneNumber;
-  dynamic companyName;
-  dynamic selectState;
-  dynamic location;
-  dynamic latitude;
-  dynamic longitude;
-  int? isInsurance;
-  int? userId;
-  String? createdAt;
-  String? updatedAt;
-
-  FluffyProfile({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.birthYear,
-    this.phoneNumber,
-    this.companyName,
-    this.selectState,
-    this.location,
-    this.latitude,
-    this.longitude,
-    this.isInsurance,
-    this.userId,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory FluffyProfile.fromJson(Map<String, dynamic> json) => FluffyProfile(
-    id: json["id"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    birthYear: json["birth_year"],
-    phoneNumber: json["phone_number"],
-    companyName: json["company_name"],
-    selectState: json["select_state"],
-    location: json["location"],
-    latitude: json["latitude"],
-    longitude: json["longitude"],
-    isInsurance: json["is_insurance"],
-    userId: json["user_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "first_name": firstName,
-    "last_name": lastName,
-    "birth_year": birthYear,
-    "phone_number": phoneNumber,
-    "company_name": companyName,
-    "select_state": selectState,
-    "location": location,
-    "latitude": latitude,
-    "longitude": longitude,
-    "is_insurance": isInsurance,
-    "user_id": userId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
   };
 }
 

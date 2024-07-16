@@ -119,6 +119,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                 controller.mediaClass.length:_controller.imageListtt.length,
                                 itemBuilder: (BuildContext context, index) {
                                   return _assetImage(
+                                    eventController: _controller,
                                     controller: controller,
                                     mediaItem: controller.mediaClass.isNotEmpty?
                                     controller.mediaClass[index]:_controller.imageListtt[index],
@@ -303,7 +304,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
 }
 
 
-_assetImage({controller, mediaItem}){
+_assetImage({eventController,controller, mediaItem}){
   return Stack(
     alignment: Alignment.center,
     children: [
@@ -359,10 +360,16 @@ _assetImage({controller, mediaItem}){
                       : NetworkImage(mediaItem.mediaPath.toString())
                   as ImageProvider)),
         child: GestureDetector(
-          onTap: (){
+          onTap: () async{
             if(mediaItem!.thumbnail == null ){
               if(mediaItem.id == null){
                 controller.mediaClass.remove(mediaItem);
+                controller.update();
+              }else{
+                eventController.removeImageList.add(mediaItem.id);
+               await eventController.deleteImage(id: eventController.eventDetail!.data!.id,eventImg: true);
+                eventController.imageListtt.remove(mediaItem);
+                eventController.update();
                 controller.update();
               }
               print("tapping22");
@@ -522,7 +529,6 @@ _assetImage({controller, mediaItem}){
                           "editBtn": false
                         }
                     );
-                    print(controller.allVenueList!.data!.data![index]);
                     // Get.toNamed(Routes.venueInfoScreen);
                   },
                   child: Padding(
@@ -543,10 +549,10 @@ _assetImage({controller, mediaItem}){
                             backgroundColor: DynamicColor.darkYellowClr,
                             child: CircleAvatar(
                               radius: 24,
-                              // backgroundImage:
-                              // NetworkImage(controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail ==null?
-                              // Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].mediaPath.toString():
-                              // Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail.toString()),
+                              backgroundImage:
+                              NetworkImage(controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail ==null?
+                              Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].mediaPath.toString():
+                              Url().imageUrl+controller.allVenueList!.data!.data![index].profilePicture![0].thumbnail.toString()),
                             ),
                           ),
                           Padding(

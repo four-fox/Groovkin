@@ -22,8 +22,8 @@ class API {
   factory API() {
     return _singleton;
   }
-  Dio dio = Dio(BaseOptions(connectTimeout: Duration(seconds: 10),
-    receiveTimeout: Duration(seconds: 10),));
+  Dio dio = Dio(BaseOptions(connectTimeout: Duration(seconds: 18),
+    receiveTimeout: Duration(seconds: 18),));
 
   API._internal();
   Dio addInterceptors() {
@@ -65,7 +65,6 @@ class API {
     multiPart = false,
     showProgress = true,
     context,
-
     /*required RoundedLoadingButtonController postButton*/
   }) async {
     print(Url().baseUrl + url);

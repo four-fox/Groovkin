@@ -24,7 +24,7 @@ class UpcomingScreen extends StatelessWidget {
   int flowBtn = Get.arguments['notInterestedBtn'];
   String appBarTitle = Get.arguments['appBarTitle'];
   RxBool organizerGuestVal = false.obs;
-  int eventId = Get.arguments['eventId'];
+  int eventId = Get.arguments['eventId']??1;
 
   final EventController _controller = Get.find();
 

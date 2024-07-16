@@ -29,8 +29,17 @@ import 'ongoingEvents/ongoingEventsModel.dart';
 class EventController extends GetxController{
 
   AuthController _authController = Get.find();
-  ManagerController managerController = Get.find();
+  late ManagerController managerController;
 
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.isRegistered<ManagerController>()) {
+      managerController = Get.find<ManagerController>();
+    } else {
+      managerController = Get.put(ManagerController());
+    }
+  }
 
     ///quick survey condition Value
 
@@ -50,7 +59,8 @@ class EventController extends GetxController{
       ListClass(text: "hip 2",condition: false.obs),
       ListClass(text: "hip 3",condition: false.obs),
       ListClass(text: "hip 4",condition: false.obs),
-    ]; List<ListClass> africanList = [
+    ];
+    List<ListClass> africanList = [
       ListClass(text: "african 1",condition: false.obs),
       ListClass(text: "african 2",condition: false.obs),
       ListClass(text: "african 3",condition: false.obs),
@@ -495,7 +505,7 @@ class EventController extends GetxController{
         if(activityListPost[a].selected!.value == true){
           iiiddd = activityListPost[a].eventTagId;
           activityChoiceIndex = activityChoiceIndex+1;
-          formData.fields.add(MapEntry('activity_choice_tag[$indexValll][$activityChoiceIndex]', activityListPost[a].id.toString()));
+          formData.fields.add(MapEntry('activity_choice_tag_item_ids[$indexValll][$activityChoiceIndex]', activityListPost[a].id.toString()));
         }
       }
     }
@@ -504,6 +514,7 @@ class EventController extends GetxController{
     var response = await API().postApi(formData, "update-event");
     if(response.statusCode == 200){
       BotToast.showText(text: response.data['message']);
+      clearFields();
       Get.offAllNamed(Routes.bottomNavigationView,
           arguments: {
             "indexValue": 0
@@ -513,8 +524,17 @@ class EventController extends GetxController{
   }
 
   ///delete image
-  deleteImage() async{
+  List removeImageList = [];
+  deleteImage({id, bool eventImg = false}) async{
+    var formData = form.FormData.fromMap({
+     if(eventImg == false) "venue_image_id[]": removeImageList,
+      if(eventImg == true) "event_image_id[]": removeImageList,
+      "source_id": id,
+    });
+    var response = await API().postApi(formData, "remove-media");
+    if(response.statusCode == 200){
 
+    }
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>> event start and end time are checking
@@ -636,7 +656,7 @@ class EventController extends GetxController{
     if(response.statusCode == 200){
       eventDetail = UserEventDetailsModel.fromJson(response.data);
       venueImageList.clear();
-      for (var element in eventDetail!.data!.venue!.profilePicture!) {
+      for (var element in eventDetail!.data!.profilePicture!) {
        venueImageList.add(element.mediaPath!);
       }
       eventDetailsLoader(true);

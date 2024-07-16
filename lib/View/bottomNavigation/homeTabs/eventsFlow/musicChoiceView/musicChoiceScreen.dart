@@ -510,6 +510,7 @@ class ActivityChoiceScreen extends StatelessWidget {
             if(_controller.activityListPost.isNotEmpty){
               if(_controller.eventDetail != null){
                 _controller.imageListtt.clear();
+                _controller.removeImageList.clear();
                 for (var ele in _controller.eventDetail!.data!.profilePicture!) {
                   _controller.imageListtt.add(ele);
                 }

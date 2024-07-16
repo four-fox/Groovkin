@@ -462,6 +462,7 @@ class PendingEventDetails extends StatelessWidget {
                       icons: organizerFollowVal.value==true?Icons.check:Icons.add,
                       followBg: organizerFollowVal.value ==false?DynamicColor.avatarBgClr:DynamicColor.grayClr,
                       textClr: organizerFollowVal.value==true?theme.scaffoldBackgroundColor:theme.primaryColor,
+                          text: controller.eventDetail!.data!.venue!.user!.profile!.about.toString(),
                       onTap: (){
                         organizerFollowVal.value = !organizerFollowVal.value;
                       }

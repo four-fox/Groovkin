@@ -7,6 +7,12 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:groovkin/Components/colors.dart';
+
+import '../../Components/Network/API.dart';
+import '../../Components/Network/Url.dart';
+
 VenueDetailsModel venueDetailsModelFromJson(String str) => VenueDetailsModel.fromJson(json.decode(str));
 
 String venueDetailsModelToJson(VenueDetailsModel data) => json.encode(data.toJson());
@@ -130,6 +136,8 @@ class User {
   String? updatedAt;
   Profile? profile;
   ProfilePicture? profilePicture;
+  RxBool? isFollow = false.obs;
+  String? role;
 
   User({
     this.id,
@@ -142,19 +150,23 @@ class User {
     this.updatedAt,
     this.profile,
     this.profilePicture,
+    this.isFollow,
+    this.role,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"],
     email: json["email"],
+    isFollow: json["isFollow"] == null?false.obs:true.obs,
     deviceToken: json["device_token"],
     emailVerifiedAt: json["email_verified_at"],
     otp: json["otp"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     profile: json["profile"] == null ? null : Profile.fromJson(json["profile"]),
-    profilePicture: json["profile_picture"] == null?null:ProfilePicture.fromJson(json["profile_picture"]),
+    profilePicture:json["profile_picture"] == null?null: ProfilePicture.fromJson(json["profile_picture"]),
+    role: json["role"]==null?null: json["role"]["name"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -168,6 +180,7 @@ class User {
     "updated_at": updatedAt,
     "profile": profile?.toJson(),
     "profile_picture": profilePicture,
+    "role": role,
   };
 }
 
@@ -183,6 +196,7 @@ class Profile {
   dynamic latitude;
   dynamic longitude;
   int? isInsurance;
+  String? about;
   int? userId;
   String? createdAt;
   String? updatedAt;
@@ -195,6 +209,7 @@ class Profile {
     this.phoneNumber,
     this.companyName,
     this.selectState,
+    this.about,
     this.location,
     this.latitude,
     this.longitude,
@@ -208,6 +223,7 @@ class Profile {
     id: json["id"],
     firstName: json["first_name"],
     lastName: json["last_name"],
+    about: json["about"],
     birthYear: json["birth_year"],
     phoneNumber: json["phone_number"],
     companyName: json["company_name"],
@@ -225,6 +241,7 @@ class Profile {
     "id": id,
     "first_name": firstName,
     "last_name": lastName,
+    "about": about,
     "birth_year": birthYear,
     "phone_number": phoneNumber,
     "company_name": companyName,
@@ -398,7 +415,7 @@ class ProfilePicture {
     id: json["id"],
     mediaFor: json["media_for"],
     thumbnail: json["thumbnail"],
-    mediaPath: json["media_path"],
+    mediaPath: json["media_path"] != null?Url().imageUrl+json["media_path"]:dummyProfile,
     mediaType: json["media_type"],
     galleryableType: json["galleryable_type"],
     galleryableId: json["galleryable_id"],

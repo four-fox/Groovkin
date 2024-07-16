@@ -5,14 +5,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/View/authView/autController.dart';
 
 class FollowingScreen extends StatelessWidget {
   FollowingScreen({Key? key}) : super(key: key);
 
   RxInt selectedVal = 0.obs;
+
+  final AuthController _controller = Get.find();
+
+  String appBarText = Get.arguments["appBarText"]?? "Following";
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +43,12 @@ class FollowingScreen extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     children: [
                       Center(
-                        child: Text("Following",style: poppinsMediumStyle(
-                          fontSize: 17,
-                          color: theme.primaryColor,
-                        ),),
+                        child: Text(appBarText,
+                          style: poppinsMediumStyle(
+                            fontSize: 17,
+                            color: theme.primaryColor,
+                          ),
+                        ),
                       ),
                       GestureDetector(
                         onTap: (){
@@ -71,6 +79,13 @@ class FollowingScreen extends StatelessWidget {
                   indicatorColor: Colors.transparent,
                   onTap: (v){
                     selectedVal.value = v;
+                    if(v == 0){
+                      _controller.getAllFollowings(userType: "user", apiHit: appBarText);
+                    }else if (v == 1){
+                      _controller.getAllFollowings(userType: "event_organizer",apiHit: appBarText);
+                    }else{
+                      _controller.getAllFollowings(userType: "venue_manager",apiHit: appBarText);
+                    }
                   },
                   tabs: [
                     Tab(child: Obx(
@@ -138,12 +153,27 @@ class FollowingScreen extends StatelessWidget {
               ]),
 
         ),
-        body: TabBarView(
-          children: [
-            AllUsers(userValue: "User",),
-            AllUsers(userValue: "Event Organizer",),
-            AllUsers(userValue: "Event Organizer",),
-          ],
+        body: GetBuilder<AuthController>(
+          initState: (v){
+            _controller.allUnFollower = null;
+            _controller.getAllFollowings(userType: "user",apiHit: appBarText);
+          },
+          builder: (controller) {
+            return Obx(
+              ()=> TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  controller.getAllUnfollowingLoader.value==false?
+                  SizedBox.shrink():
+                  AllUsers(userValue: "User",type: appBarText,),
+                  controller.getAllUnfollowingLoader.value==false?
+                  SizedBox.shrink(): AllUsers(userValue: "Event Organizer",type: appBarText,),
+                  controller.getAllUnfollowingLoader.value==false?
+                  SizedBox.shrink():AllUsers(userValue: "Event Organizer",type: appBarText,),
+                ],
+              ),
+            );
+          }
         ),
       ),
     );
@@ -152,18 +182,21 @@ class FollowingScreen extends StatelessWidget {
 
 
 class AllUsers extends StatelessWidget {
-  AllUsers({Key? key,this.userValue}) : super(key: key);
-  List list =[false.obs,false.obs,false.obs,false.obs,false.obs,false.obs,false.obs,false.obs,];
+  AllUsers({Key? key,this.userValue,this.heights,this.type}) : super(key: key);
 
   String? userValue;
+  double? heights;
+  String? type;
+
+  final AuthController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return SizedBox(
-      height: Get.height/1.25,
-      child: ListView.builder(
-          itemCount: list.length,
+      height:heights?? Get.height/1.25,
+      child: _controller.allUnFollower!.data!.data!.isEmpty?noData(theme: theme): ListView.builder(
+          itemCount: _controller.allUnFollower!.data!.data!.length,
           shrinkWrap: true,
           physics: AlwaysScrollableScrollPhysics(),
           itemBuilder: (BuildContext context,index){
@@ -179,15 +212,17 @@ class AllUsers extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(left: 12.0,bottom: 15),
+                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
                       child: Container(
+                        height: 50,
+                        width: 50,
                         decoration: BoxDecoration(
                           color: DynamicColor.blackClr,
                           shape:BoxShape.circle,
                           border: Border.all(color: DynamicColor.lightYellowClr),
-                        ),
-                        child: Image(
-                          image: AssetImage("assets/profileImg.png"),
+                        image: DecorationImage(
+                          image: NetworkImage(_controller.allUnFollower ==null?dummyProfile:_controller.allUnFollower!.data!.data![index].profilePicture == null?dummyProfile: _controller.allUnFollower!.data!.data![index].profilePicture!.mediaPath!),
+                        )
                         ),
                       ),
                     ),
@@ -195,20 +230,20 @@ class AllUsers extends StatelessWidget {
                       width: 8,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 8.0,top: 10,bottom: 3),
+                      padding: EdgeInsets.symmetric(vertical: 8),
                       child: SizedBox(
                         width: Get.width/2.3,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('I believe "Be our guest events',
+                            Text(_controller.allUnFollower!.data!.data![index].name.toString(),
                               style: poppinsMediumStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
                                 color: DynamicColor.grayClr,
                               ),
                             ),
-                            Text(userValue!,
+                            Text(_controller.allUnFollower!.data!.data![index].role.toString().replaceAll("_", " ").capitalize!,
                               style: poppinsRegularStyle(
                                 fontSize: 14,
                                 context: context,
@@ -220,41 +255,39 @@ class AllUsers extends StatelessWidget {
                       ),
                     ),
                     Spacer(),
-                    Obx(
-                          ()=> Align(
+                    Align(
                         alignment: Alignment.bottomRight,
                         child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
                           onTap: (){
-                            list[index].value = !list[index].value;
+                            if(type ==null){
+                              _controller.followUser(userData: _controller.allUnFollower!.data!.data![index]);
+                            }else if(type == "Followings"){
+                              _controller.unfollow(userData: _controller.allUnFollower!.data!.data![index]);
+                            }
+                            // list[index].value = !list[index].value;
                           },
                           child: Container(
                             width: 100,
+                            padding: EdgeInsets.symmetric(vertical: 6),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(10),
                                 ),
-                                color:list[index].value ==true?DynamicColor.grayClr.withOpacity(0.3): DynamicColor.grayClr
+                                color:/*_controller.allUnFollower!.data!.data![index].isFollow!.value ==true?DynamicColor.grayClr.withOpacity(0.3): */DynamicColor.grayClr
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.check,
-                                  size: 25,
-                                  color:list[index].value ==true?theme.primaryColor: theme.scaffoldBackgroundColor,
+                            child: Center(
+                              child: Text(type == "Followings"?"UnFollow":"Follow",
+                                style: poppinsRegularStyle(
+                                  fontSize: 14,
+                                  context: context,
+                                  color:/*list[index].value ==true?theme.primaryColor:*/ theme.scaffoldBackgroundColor,
                                 ),
-                                Text(list[index].value ==true?"Following":"Follow",
-                                  style: poppinsRegularStyle(
-                                    fontSize: 14,
-                                    context: context,
-                                    color:list[index].value ==true?theme.primaryColor: theme.scaffoldBackgroundColor,
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),

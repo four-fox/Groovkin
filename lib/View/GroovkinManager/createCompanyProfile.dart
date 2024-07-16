@@ -294,7 +294,7 @@ class _CreateCompanyProfileScreenState extends State<CreateCompanyProfileScreen>
                                                           null
                                                           ? FileImage(File(controller.profilePictures[index].mediaPath.toString()))
                                                           : FileImage(File(controller.profilePictures[index].thumbnail.toString())):
-                                                      NetworkImage(controller.profilePictures[index].thumbnail !=null? Url().imageUrl+controller.profilePictures[index].thumbnail.toString():Url().imageUrl+controller.profilePictures[index].mediaPath.toString()) as ImageProvider)),
+                                                      NetworkImage(controller.profilePictures[index].thumbnail !=null? controller.profilePictures[index].thumbnail.toString():controller.profilePictures[index].mediaPath.toString()) as ImageProvider)),
                                               child:controller.profilePictures[index].thumbnail !=
                                                   null? GestureDetector(
                                                 onTap: (){

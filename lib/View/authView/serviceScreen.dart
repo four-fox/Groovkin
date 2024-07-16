@@ -13,14 +13,31 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
-class ServiceScreen extends StatelessWidget {
+class ServiceScreen extends StatefulWidget {
   ServiceScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ServiceScreen> createState() => _ServiceScreenState();
+}
+
+class _ServiceScreenState extends State<ServiceScreen> {
   AuthController _controller = Get.find();
 
   int moreServiceAdd = Get.arguments['addMoreService']??1;
 
-  EventController _eventController = Get.find();
+  late EventController _eventController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if (Get.isRegistered<EventController>()) {
+      _eventController = Get.find<EventController>();
+    } else {
+      _eventController = Get.put(EventController());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +244,6 @@ class ServiceScreen extends StatelessWidget {
     );
   }
 
-
   Widget serviceWidget({theme,image,context,onChanged,djValue,text,GestureTapCallback? onTap}){
     return GestureDetector(
       onTap: onTap,
@@ -271,6 +287,7 @@ class ServiceScreen extends StatelessWidget {
       ),
     );
   }
+
   List<ServiceList> list = [
     ServiceList(text: 'DJing',img: "assets/djing.png",clickCondition: false.obs),
     ServiceList(text: 'Lighting',img: "assets/lighting.png",clickCondition: false.obs),

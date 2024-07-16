@@ -56,6 +56,7 @@ abstract class Routes{
   static const chatRoom = _Path.chatRoom;
   static const chatCenterScreen = _Path.chatCenterScreen;
   static const followingScreen = _Path.followingScreen;
+  static const allUserScreen = _Path.allUserScreen;
   // static const groovkinManagerScreen = _Path.groovkinManagerScreen;
   static const sendInvitationScreen = _Path.sendInvitationScreen;
   static const myTagCollection = _Path.myTagCollection;
@@ -164,6 +165,7 @@ abstract class _Path{
   static const chatRoom = "/ChatRoom";
   static const chatCenterScreen = "/ChatCenterScreen";
   static const followingScreen = "/FollowingScreen";
+  static const allUserScreen = "/AllUserScreen";
   // static const groovkinManagerScreen = "/GroovkinManagerScreen";
   static const sendInvitationScreen = "/SendInvitationScreen";
   static const myTagCollection = "/MyTagCollection";
