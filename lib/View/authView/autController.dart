@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
 import 'package:mailer/mailer.dart';
@@ -386,6 +387,24 @@ class AuthController extends GetxController{
     if(response.statusCode == 200){
       clearLists();
       surveyData = SurveyModel.fromJson(response.data);
+      final EventController _eventController = Get.find();
+      if(_eventController.eventDetail != null){
+        List musicGenreId = [];
+        for (var action in _eventController.eventDetail!.data!.musicGenre!) {
+          musicGenreId.add(action.itemId);
+        }
+        for (var element in surveyData!.data!) {
+          for (var ele in element.categoryItems!) {
+            if(musicGenreId.contains(ele.id)){
+              element.showItems!.value = true;
+              ele.selectedItem!.value = true;
+              itemsList.add(ele);
+            }else{
+              ele.selectedItem!.value = false;
+            }
+          }
+        }
+      }
       getLifeStyleLoader(true);
       update();
     }
@@ -465,6 +484,7 @@ class AuthController extends GetxController{
   List<SurveyObject> serviceListing = [];
   List<SurveyObject> hardwareListing = [];
   List<SurveyObject> lifeStyleListing = [];
+
   getAllService({type}) async{
     getAllServiceLoader(false);
     var response = await API().getApi(url: "show-event-with-sub-items?type=$type");
@@ -476,17 +496,72 @@ class AuthController extends GetxController{
         for (var element in surveyData!.data!) {
           serviceListing.add(element);
         }
+       final EventController _eventController = Get.find();
+        if(_eventController.eventDetail != null) {
+          List serviceLista = [];
+          for (var action in _eventController.eventDetail!.data!.services!) {
+            serviceLista.add(action.eventItemId);
+          }
+          for (var service in serviceListing) {
+            if(serviceLista.contains(service.id)){
+              service.showItems!.value = true;
+              serviceList.add(service);
+              // _authController.serviceAddFtn(items: service);
+            }
+          }
+          // _eventController.checkServices();
+        }
       }else if(type == "hardware_provided"){
         hardwareListing.clear();
         eventItemsList.clear();
         for (var element in surveyData!.data!) {
           hardwareListing.add(element);
         }
+        final EventController _eventController = Get.find();
+        if(_eventController.eventDetail != null){
+          List<String> temp = [];
+          _eventController.eventDetail!.data!.hardwareProvide?.forEach((element){
+            temp.add(element.hardwareItems!.id.toString());
+          });
+          for (var action in hardwareListing) {
+            if(temp.contains(action.name)){
+              action.showItems!.value = true;
+            }else{
+              action.showItems!.value = false;
+            }
+            for (var items in action.categoryItems!) {
+              if(temp.contains(items.id.toString())){
+                items.selectedItem!.value =true;
+                eventItemsList.add(items);
+              }else{
+                items.selectedItem!.value =false;
+              }
+            }
+          }
+        }
       }else{
         lifeStyleItemsList.clear();
         lifeStyleListing.clear();
         for (var element in surveyData!.data!) {
           lifeStyleListing.add(element);
+        }
+        final EventController _eventController = Get.find();
+        if(_eventController.eventDetail != null){
+          List musicGenreId = [];
+          for (var action in _eventController.eventDetail!.data!.musicGenre!) {
+            musicGenreId.add(action.itemId);
+          }
+          for (var element in surveyData!.data!) {
+            for (var ele in element.categoryItems!) {
+              if(musicGenreId.contains(ele.id)){
+                element.showItems!.value = true;
+                ele.selectedItem!.value = true;
+                itemsList.add(ele);
+              }else{
+                ele.selectedItem!.value = false;
+              }
+            }
+          }
         }
       }
       getAllServiceLoader(true);
@@ -657,6 +732,7 @@ class AuthController extends GetxController{
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get all follower
   RxBool getAllFollowersLoader = true.obs;
+
   getAllFollowers({type}) async{
     getAllFollowersLoader(false);
     var response = await API().getApi(url: "followers?type=$type");
@@ -666,13 +742,24 @@ class AuthController extends GetxController{
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get all followings
-  getAllFollowings({userType, apiHit = "Followings"}) async{
-    getAllUnfollowingLoader(false);
+  bool getAllFollowersWait = false;
+  getAllFollowings({nextUrl,userType, apiHit = "Followings"}) async{
+    if(nextUrl == null){
+      getAllUnfollowingLoader(false);
+    }
     var response = apiHit=="Followings"?
-    await API().getApi(url: "followings?type=$userType"):
-    await API().getApi(url: "followers?type=$userType");
+    await API().getApi(url: "followings?type=$userType",fullUrl: nextUrl, isLoader:nextUrl != null? false:true):
+    await API().getApi(url: "followers?type=$userType",fullUrl: nextUrl, isLoader:nextUrl != null? false:true);
     if(response.statusCode == 200){
-      allUnFollower = AllUnFollowUserModel.fromJson(response.data);
+      if(nextUrl == null){
+        allUnFollower = AllUnFollowUserModel.fromJson(response.data);
+        getAllFollowersWait = false;
+      }else{
+        allUnFollower!.data!.data!.addAll(AllUnFollowUserModel.fromJson(response.data).data!.data!);
+        allUnFollower!.data!.nextPageUrl =
+            AllUnFollowUserModel.fromJson(response.data).data!.nextPageUrl;
+        getAllFollowersWait = false;
+      }
       getAllUnfollowingLoader(true);
       update();
     }

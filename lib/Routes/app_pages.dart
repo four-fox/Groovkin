@@ -157,7 +157,7 @@ class AppPages {
     GetPage(
       name: _Path.serviceScreen,
       page: () => ServiceScreen(),
-      binding: AuthBinding()
+      bindings: [AuthBinding(),EventBinding()]
     ),
     GetPage(
       name: _Path.subscriptionScreen,

@@ -82,7 +82,7 @@ class FollowingScreen extends StatelessWidget {
                     if(v == 0){
                       _controller.getAllFollowings(userType: "user", apiHit: appBarText);
                     }else if (v == 1){
-                      _controller.getAllFollowings(userType: "event_organizer",apiHit: appBarText);
+                      _controller.getAllFollowings(userType: "event_owner",apiHit: appBarText);
                     }else{
                       _controller.getAllFollowings(userType: "venue_manager",apiHit: appBarText);
                     }
@@ -160,17 +160,37 @@ class FollowingScreen extends StatelessWidget {
           },
           builder: (controller) {
             return Obx(
-              ()=> TabBarView(
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  controller.getAllUnfollowingLoader.value==false?
-                  SizedBox.shrink():
-                  AllUsers(userValue: "User",type: appBarText,),
-                  controller.getAllUnfollowingLoader.value==false?
-                  SizedBox.shrink(): AllUsers(userValue: "Event Organizer",type: appBarText,),
-                  controller.getAllUnfollowingLoader.value==false?
-                  SizedBox.shrink():AllUsers(userValue: "Event Organizer",type: appBarText,),
-                ],
+              ()=>  NotificationListener<ScrollNotification>(
+                onNotification: (scrollNotification) {
+                  if (scrollNotification.metrics.pixels ==
+                      scrollNotification.metrics.maxScrollExtent) {
+
+                    if (_controller.getAllFollowersWait == false) {
+                      _controller.getAllFollowersWait = true;
+                      if (_controller.allUnFollower!.data!.nextPageUrl != null) {
+                        String link =
+                        _controller.allUnFollower!.data!.nextPageUrl!;
+                        _controller.getAllFollowings(nextUrl: link,userType: selectedVal.value==0? "user" :
+                        selectedVal.value==1?"event_owner":"venue_manager",apiHit: appBarText);
+                        return true;
+                      }
+                    }
+                    return false;
+                  }
+                  return false;
+                },
+                child: TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    controller.getAllUnfollowingLoader.value==false?
+                    SizedBox.shrink():
+                    AllUsers(userValue: "User",type: appBarText,),
+                    controller.getAllUnfollowingLoader.value==false?
+                    SizedBox.shrink(): AllUsers(userValue: "Event Organizer",type: appBarText,),
+                    controller.getAllUnfollowingLoader.value==false?
+                    SizedBox.shrink():AllUsers(userValue: "Event Organizer",type: appBarText,),
+                  ],
+                ),
               ),
             );
           }
@@ -195,67 +215,69 @@ class AllUsers extends StatelessWidget {
     var theme = Theme.of(context);
     return SizedBox(
       height:heights?? Get.height/1.25,
-      child: _controller.allUnFollower!.data!.data!.isEmpty?noData(theme: theme): ListView.builder(
-          itemCount: _controller.allUnFollower!.data!.data!.length,
-          shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context,index){
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 12),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: DynamicColor.darkGrayClr
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
-                      child: Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: DynamicColor.blackClr,
-                          shape:BoxShape.circle,
-                          border: Border.all(color: DynamicColor.lightYellowClr),
-                        image: DecorationImage(
-                          image: NetworkImage(_controller.allUnFollower ==null?dummyProfile:_controller.allUnFollower!.data!.data![index].profilePicture == null?dummyProfile: _controller.allUnFollower!.data!.data![index].profilePicture!.mediaPath!),
-                        )
+      child:
+      _controller.allUnFollower!.data!.data!.isEmpty?noData(theme: theme):
+      ListView.builder(
+            itemCount: _controller.allUnFollower!.data!.data!.length,
+            shrinkWrap: true,
+            physics: AlwaysScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context,index){
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 12),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: DynamicColor.darkGrayClr
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: DynamicColor.blackClr,
+                              shape:BoxShape.circle,
+                              border: Border.all(color: DynamicColor.lightYellowClr),
+                              image: DecorationImage(
+                                image: NetworkImage(_controller.allUnFollower ==null?dummyProfile:_controller.allUnFollower!.data!.data![index].profilePicture == null?dummyProfile: _controller.allUnFollower!.data!.data![index].profilePicture!.mediaPath!),
+                              )
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: SizedBox(
-                        width: Get.width/2.3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(_controller.allUnFollower!.data!.data![index].name.toString(),
-                              style: poppinsMediumStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14,
-                                color: DynamicColor.grayClr,
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: SizedBox(
+                          width: Get.width/2.3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(_controller.allUnFollower!.data!.data![index].name.toString(),
+                                style: poppinsMediumStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: DynamicColor.grayClr,
+                                ),
                               ),
-                            ),
-                            Text(_controller.allUnFollower!.data!.data![index].role.toString().replaceAll("_", " ").capitalize!,
-                              style: poppinsRegularStyle(
-                                fontSize: 14,
-                                context: context,
-                                color: theme.primaryColor,
+                              Text(_controller.allUnFollower!.data!.data![index].role.toString().replaceAll("_", " ").capitalize!,
+                                style: poppinsRegularStyle(
+                                  fontSize: 14,
+                                  context: context,
+                                  color: theme.primaryColor,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Spacer(),
-                    Align(
+                      Spacer(),
+                      Align(
                         alignment: Alignment.bottomRight,
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
@@ -288,11 +310,11 @@ class AllUsers extends StatelessWidget {
                           ),
                         ),
                       ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            })
     );
   }
 }

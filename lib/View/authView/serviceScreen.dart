@@ -58,11 +58,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
       // ),
       body: GetBuilder<AuthController>(
         initState: (v){
-          if(_eventController.eventDetail == null){
-            _controller.getAllService(type: "services");
-          }else{
-            _eventController.checkServices();
-          }
+          _controller.getAllService(type: "services");
+          // if(_eventController.eventDetail == null){
+          //   _controller.getAllService(type: "services");
+          // }else{
+          //   _eventController.checkServices();
+          // }
         },
         builder: (controller) {
           return controller.getAllServiceLoader.value==false?
@@ -218,9 +219,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   );
                 }else if(moreServiceAdd == 3){
                   if(_controller.serviceList.isNotEmpty){
-                    if(_eventController.eventDetail != null) {
-                      await _controller.getAllService(type: "hardware_provided");
-                    }
+                    // if(_eventController.eventDetail != null) {
+                    //   await _controller.getAllService(type: "hardware_provided");
+                    // }
                     Get.toNamed(Routes.hardwareScreen, arguments: {"createEvent": true});
                   }else{
                     bottomToast(text: "Please add service");

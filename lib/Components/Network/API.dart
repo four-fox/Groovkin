@@ -36,14 +36,16 @@ class API {
 
   ///Get
   Future<dynamic> getApi(
-      {url, fullUrl, Map<String, dynamic>? queryParameters}) async {
+      {url, fullUrl, Map<String, dynamic>? queryParameters,bool isLoader = true}) async {
     dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
     dio.options.headers['Accept'] = "application/json";
 
     if (url != "") {
       try {
         print(url);
-        showLoading();
+        if(isLoader == true){
+          showLoading();
+        }
         final response = await dio.get(fullUrl ?? Url().baseUrl + url,
             queryParameters: queryParameters,
         );

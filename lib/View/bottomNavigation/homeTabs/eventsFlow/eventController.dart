@@ -28,7 +28,7 @@ import 'ongoingEvents/ongoingEventsModel.dart';
 
 class EventController extends GetxController{
 
-  AuthController _authController = Get.find();
+  late AuthController _authController;
   late ManagerController managerController;
 
   @override
@@ -38,6 +38,11 @@ class EventController extends GetxController{
       managerController = Get.find<ManagerController>();
     } else {
       managerController = Get.put(ManagerController());
+    }
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
     }
   }
 
@@ -545,7 +550,6 @@ class EventController extends GetxController{
     });
     var response = await API().postApi(formData, "check-date-time");
     if(response.statusCode == 200){
-      await _authController.getAllService(type: "services");
       Get.toNamed(Routes.serviceScreen,
           arguments: {
             "addMoreService": 3
@@ -707,13 +711,15 @@ class EventController extends GetxController{
   ///service data are binding
   checkServices({survey.SurveyObject? surveyObj}) async{
     // _authController.serviceList.clear();
+  List serviceList = [];
     for (var action in eventDetail!.data!.services!) {
-      for (var service in _authController.serviceListing) {
-        if(action.eventItem!.id == service.id){
-          service.showItems!.value = true;
-          _authController.serviceList.add(service);
-          // _authController.serviceAddFtn(items: service);
-        }
+      serviceList.add(action.eventItemId);
+    }
+    for (var service in _authController.serviceListing) {
+      if(serviceList.contains(service.id)){
+        service.showItems!.value = true;
+        _authController.serviceList.add(service);
+        // _authController.serviceAddFtn(items: service);
       }
     }
   }

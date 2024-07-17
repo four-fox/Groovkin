@@ -53,7 +53,7 @@ class UpcomingScreen extends StatelessWidget {
                   onTap: (){
                     _controller.assignValueForUpdate();
                   },
-                  child: Icon(appBarTitle=="Pending"?Icons.edit_calendar:Icons.more_vert)),
+                  child: appBarTitle == "Pending" ? Icon(Icons.edit_calendar):SizedBox.shrink()),
             )],
             imagee: false,
           ),
@@ -359,7 +359,7 @@ class UpcomingScreen extends StatelessWidget {
                 // ):SizedBox.shrink(),
                 ///todo dalta counter button data
                 SizedBox(
-                  height:flowBtn==3?0: 10,
+                  height: flowBtn==3?0: 10,
                 ),
                 SizedBox(
                   height: kToolbarHeight*3,
@@ -413,9 +413,7 @@ class UpcomingScreen extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                eventDateTime(theme: theme,context: context,icon: true,text: "${controller.eventDetail!.data!.location}",iconClr: DynamicColor.yellowClr,
-
-                ),
+                eventDateTime(theme: theme,context: context,icon: true,text: "${controller.eventDetail!.data!.location}",iconClr: DynamicColor.yellowClr,),
                 customWidget(context,theme,title: "Event Comments",value: controller.eventDetail!.data!.comment.toString()),
                 customWidget(context,theme,title: "Event About",value: controller.eventDetail!.data!.about.toString()),
                 customWidget(context,theme,title: "Event theme",value: controller.eventDetail!.data!.themeOfEvent.toString()),
@@ -775,8 +773,7 @@ class UpcomingScreen extends StatelessWidget {
                           // followBgClr.value = !followBgClr.value;
                         }
                 ),
-
-                API().sp.read("role") == "eventOrganizer"?    Row(
+                API().sp.read("role") == "eventOrganizer"? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     interestedWidget(

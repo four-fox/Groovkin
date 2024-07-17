@@ -63,11 +63,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
           // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
           //   _controller.getAllService(type: "lifestyle_preference");
           // }else{
-          if(_eventController.eventDetail == null){
             _controller.getLifeStyle(surveyType: "music_genre");
-          } else {
-            _eventController.surveyDataBind();
-          }
           // }
         },
         builder: (controller) {

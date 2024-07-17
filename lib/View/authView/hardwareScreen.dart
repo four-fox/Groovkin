@@ -26,11 +26,7 @@ class HardwareScreen extends StatelessWidget {
       appBar: customAppBar(theme: theme,text: "Hardware"),
       body: GetBuilder<AuthController>(
         initState: (v){
-          if(_eventController.eventDetail == null){
             _controller.getAllService(type: "hardware_provided");
-          }else{
-            _eventController.checkHardware();
-          }
         },
         builder: (controller) {
           return controller.getAllServiceLoader.value == false?SizedBox.shrink(): Padding(
@@ -157,9 +153,9 @@ class HardwareScreen extends StatelessWidget {
             // );
 
             if(_controller.eventItemsList.isNotEmpty){
-              if(_eventController.eventDetail != null){
-               await _controller.getLifeStyle(surveyType: "music_genre");
-              }
+              // if(_eventController.eventDetail != null){
+              //  await _controller.getLifeStyle(surveyType: "music_genre");
+              // }
               Get.toNamed(Routes.quickSurveyScreen,
                   arguments: {
                     "addMoreService": 1,
