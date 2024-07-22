@@ -75,6 +75,7 @@ body: Column(
           Get.toNamed(Routes.surveyLifeStyleScreen,
           arguments: {
             "update": false,
+            "appBarTitle": "Quick Survey"
           }
           );
         },

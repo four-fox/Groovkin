@@ -367,7 +367,7 @@ class AppPages {
     GetPage(
       name: _Path.surveyLifeStyleScreen,
       page: () => SurveyLifeStyleScreen(),
-      binding: AuthBinding(),
+      bindings: [EventBinding(),AuthBinding()],
     ),
     GetPage(
       name: _Path.userBottomNavigationNav,

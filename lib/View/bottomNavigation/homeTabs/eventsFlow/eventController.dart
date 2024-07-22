@@ -125,13 +125,14 @@ class EventController extends GetxController{
   final proposedTimeWindowsController = TextEditingController();
   final endTimeController = TextEditingController();
   final hourlyRateController = TextEditingController();
+  final otherRateController = TextEditingController();
   final eventHoursController = TextEditingController();
   final maxCapacityController = TextEditingController();
   final commentsController = TextEditingController();
   RxInt eventRateHourly = 0.obs;
   RxInt paymentScheduleValue = 0.obs;
-  RxString? rateType = "flat".obs;
-  RxString? paymentSchedule = "50".obs;
+  RxString? rateType = "hourly".obs;
+  RxString? paymentSchedule = "0".obs;
   final format = DateFormat('dd-MM-yyyy');
 
 
@@ -238,7 +239,7 @@ class EventController extends GetxController{
       "start_date_time":"$datePost $postTime" /*datePost*/,
       // "check_in": postTime,
       "end_date_time": "$endDatePost $postEndTime",
-      "max_capacity": maxCapacityController.text,
+      // "max_capacity": maxCapacityController.text,
       "rate": hourlyRateController.text,
       "rate_type": rateType!.value,
       "payment_schedule": int.parse(paymentSchedule!.value.toString()),
@@ -423,7 +424,7 @@ class EventController extends GetxController{
       "start_date_time":"$datePost $postTime" /*datePost*/,
       // "check_in": postTime,
       "end_date_time": "$endDatePost $postEndTime",
-      "max_capacity": maxCapacityController.text,
+      // "max_capacity": maxCapacityController.text,
       "rate": hourlyRateController.text,
       "rate_type": rateType!.value,
       "payment_schedule": int.parse(paymentSchedule!.value.toString()),
@@ -572,8 +573,8 @@ class EventController extends GetxController{
     postTime = null;
     endDatePost = null;
     postEndTime = null;
-    rateType!.value = "flat";
-    paymentSchedule!.value = "50";
+    rateType!.value = "hourly";
+    paymentSchedule!.value = "0";
     _authController.serviceList.clear();
     _authController.eventItemsList.clear();
     _authController.lifeStyleItemsList.clear();

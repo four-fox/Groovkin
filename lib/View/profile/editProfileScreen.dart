@@ -212,7 +212,6 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomTextFields(
                         labelText: "Username",
-
                       validationError: "username",
                       iconShow: false,
                           controller: controller.displayNameController,
@@ -224,6 +223,25 @@ class _editProfileScreenState extends State<editProfileScreen> {
                         // readOnly: userName.value,
                       ),
                   ),
+                  SizedBox(
+                    height:sp.read('role')=="eventManager"? 15:0,
+                  ),
+                  sp.read('role')=="eventManager"?  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: CustomTextFields(
+                        labelText: "Company name",
+                      validationError: "company name",
+                      iconShow: false,
+                          ignoredValidation: true,
+                          controller: controller.companyNameController,
+                        labelStyling: poppinsRegularStyle(
+                              context: context,
+                              fontSize: 14,
+                              color: DynamicColor.grayClr
+                          ),
+                        // readOnly: userName.value,
+                      ),
+                  ):SizedBox.shrink(),
                   SizedBox(
                     height: 15,
                   ),

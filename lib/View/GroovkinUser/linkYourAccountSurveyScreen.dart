@@ -74,7 +74,8 @@ body: Padding(
             Get.toNamed(Routes.quickSurveyScreen,
                 arguments: {
                   'addMoreService': 1,
-                  "createEvent": false
+                  "createEvent": false,
+                  "title": "Quick Survey"
                 }
             );
           },

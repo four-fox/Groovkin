@@ -67,6 +67,7 @@ class CreateProfile extends StatelessWidget {
             _controller.dobController.clear();
           },
           builder: (controller) {
+            print(sp.read('role'));
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
@@ -143,6 +144,15 @@ class CreateProfile extends StatelessWidget {
                       controller: controller.displayNameController,
                       validationError: "display name",
                     ),
+                    SizedBox(
+                      height:sp.read('role')=="eventManager"? 15:0,
+                    ),
+                    CustomTextFields(
+                      labelText: "Company name",
+                      controller: controller.companyNameController,
+                      ignoredValidation: true,
+                    ),
+
                     SizedBox(
                       height: sp.read("role")=="User"? 15:0,
                     ),
@@ -375,7 +385,7 @@ class CreateProfile extends StatelessWidget {
                     ),
 
 
-                    sp.read("role")=="eventOrganizer"? CountryStateCityPicker(
+                    CountryStateCityPicker(
                         country: controller.countryController,
                         state: controller.stateController,
                         // dialogColor: Colors.grey.shade200,
@@ -400,7 +410,7 @@ class CreateProfile extends StatelessWidget {
                             borderSide: BorderSide(color: DynamicColor.grayClr.withOpacity(0.6)), //<-- SEE HERE
                           ),
                         )
-                    ):SizedBox.shrink(),
+                    ),
 
 
                     // sp.read("role")=="eventOrganizer"? CustomTextFields(

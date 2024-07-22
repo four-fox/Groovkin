@@ -167,6 +167,7 @@ class MapLocationPicker extends StatefulWidget {
   bool hideLocation = false;
   double? lat;
   double? long;
+  bool? backBtnn = false;
 
   /// address
   String? initAddress;
@@ -184,6 +185,7 @@ class MapLocationPicker extends StatefulWidget {
     this.geoCodingHttpClient,
     this.geoCodingApiHeaders,
     this.language,
+    this.backBtnn,
     this.locationType = const [],
     this.resultType = const [],
     this.minMaxZoomPreference = const MinMaxZoomPreference(10, 20),
@@ -716,6 +718,9 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                         widget.onNext.call(_geocodingResult);
                                         if (widget.canPopOnNextButtonTaped) {
                                           Navigator.pop(context);
+                                          if(widget.backBtnn == true){
+                                            Navigator.pop(context);
+                                          }
                                         }
                                       },
                                     ),

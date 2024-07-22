@@ -135,14 +135,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       controller: controller.themeOfEventController,
                         error: "theme of event"
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      textFields(theme: theme,labelText: "Max capacity",
-                      controller: controller.maxCapacityController,
-                        error: "max capacity",
-                        keyBoardType: true
-                      ),
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
+                      // textFields(theme: theme,labelText: "Max capacity",
+                      // controller: controller.maxCapacityController,
+                      //   error: "max capacity",
+                      //   keyBoardType: true
+                      // ),
                       SizedBox(
                         height: 15,
                       ),
@@ -532,8 +532,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       SizedBox(
                         height: 10,
                       ),
-                      textFields(theme: theme,labelText: "Hourly Rate",keyBoardType: true,
-                      error: "hourly rate",
+                      textFields(theme: theme,labelText: "${controller.rateType!.value.capitalize} Rate",keyBoardType: true,
+                      error: "${controller.rateType!.value} rate",
                         controller: controller.hourlyRateController
                       ),
                       // SizedBox(
@@ -568,7 +568,31 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 child: Radio(
                                     activeColor: DynamicColor.yellowClr,
                                     value: 0, groupValue: controller.paymentScheduleValue.value, onChanged: (v){
-                                 controller.paymentSchedule!.value = "25";
+                                 controller.paymentSchedule!.value = "0";
+                                  controller.paymentScheduleValue.value = v!;
+                                  controller.update();
+                                }),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7.0),
+                              child: Text("0% Down Payment",
+                                style: poppinsRegularStyle(
+                                  fontSize: 12,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            Spacer(),
+                            SizedBox(
+                              width: 23,
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  unselectedWidgetColor: theme.primaryColor,),
+                                child: Radio(
+                                    activeColor: DynamicColor.yellowClr,
+                                    value: 1, groupValue: controller.paymentScheduleValue.value, onChanged: (v){
+                                  controller.paymentSchedule!.value = "25";
                                   controller.paymentScheduleValue.value = v!;
                                   controller.update();
                                 }),
@@ -583,36 +607,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 1, groupValue: controller.paymentScheduleValue.value, onChanged: (v){
-                                  controller.paymentSchedule!.value = "50";
-                                   controller.paymentScheduleValue.value = v!;
-                                  controller.update();
-                                }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text("50% Down Payment",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ),
+
                           ],
                         ),
                       ),
@@ -626,9 +621,33 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 data: Theme.of(context).copyWith(
                                   unselectedWidgetColor: theme.primaryColor,),
                                 child: Radio(
-
                                     activeColor: DynamicColor.yellowClr,
                                     value: 2, groupValue: controller.paymentScheduleValue.value, onChanged: (v){
+                                  controller.paymentSchedule!.value = "50";
+                                  controller.paymentScheduleValue.value = v!;
+                                  controller.update();
+                                }),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7.0),
+                              child: Text("50% Down Payment",
+                                style: poppinsRegularStyle(
+                                  fontSize: 12,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            Spacer(),
+                            SizedBox(
+                              width: 23,
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  unselectedWidgetColor: theme.primaryColor,),
+                                child: Radio(
+
+                                    activeColor: DynamicColor.yellowClr,
+                                    value: 3, groupValue: controller.paymentScheduleValue.value, onChanged: (v){
                                   controller.paymentSchedule!.value = "75";
                                   controller.paymentScheduleValue.value = v!;
                                   controller.update();
@@ -648,6 +667,57 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                       ),
                       SizedBox(
+                        height: 40,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 23,
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  unselectedWidgetColor: theme.primaryColor,),
+                                child: Radio(
+                                    activeColor: DynamicColor.yellowClr,
+                                    value: 4, groupValue: controller.paymentScheduleValue.value, onChanged: (v){
+                                  controller.paymentSchedule!.value = "0";
+                                  controller.paymentScheduleValue.value = v!;
+                                  controller.update();
+                                }),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7.0),
+                              child: Text("Other Down Payment",
+                                style: poppinsRegularStyle(
+                                  fontSize: 12,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      controller.paymentScheduleValue.value ==4? textFields(
+                          theme: theme,
+                          labelText: "Other Rate",
+                          keyBoardType: true,
+                          error: "Other Rate",
+                        iconShow: true,
+                          suffixWidget: Padding(
+                            padding: EdgeInsets.only(left: 10,top: 8.0),
+                            child: Text("%",
+                              style: poppinsRegularStyle(
+                                  context: context,
+                                  fontSize: 24,
+                                  color: DynamicColor.grayClr
+                              ),
+                            ),
+                          ),
+                          controller: controller.otherRateController
+                      ):SizedBox.shrink(),
+                      SizedBox(
                         height: 20,
                       ),
                       CustomButton(
@@ -656,7 +726,11 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         onTap: (){
                           if(eventForm.currentState!.validate()){
                             if(_authController.imageBytes !=null || ((controller.eventDetail !=null) && (controller.eventDetail!.data!.bannerImage!.mediaPath != null))){
-                              controller.checkingTime();
+                              if(controller.paymentScheduleValue.value == 4){
+                              controller.paymentSchedule!.value =
+                                  controller.otherRateController.text;
+                            }
+                            controller.checkingTime();
                             }else{
                               bottomToast(text: "Please choose event banner");
                             }
@@ -705,14 +779,15 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     );
   }
 
-  Widget textFields({theme,labelText,maxLine=1,String? error,bool keyBoardType = false,TextEditingController? controller}){
+  Widget textFields({theme, bool iconShow = false, Widget? suffixWidget,labelText,maxLine=1,String? error,bool keyBoardType = false,TextEditingController? controller}){
     return CustomTextFields(
       controller: controller,
+      suffixWidget: suffixWidget,
+      iconShow: iconShow,
       keyBoardType: keyBoardType,
       textClr: theme.primaryColor,
       labelText:labelText?? "Event Title",
       maxLine: maxLine,
-
       validationError: error,
     );
   }

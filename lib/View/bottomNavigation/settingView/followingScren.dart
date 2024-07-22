@@ -282,9 +282,13 @@ class AllUsers extends StatelessWidget {
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: (){
-                            if(type ==null){
+                            if(heights != null){
                               _controller.followUser(userData: _controller.allUnFollower!.data!.data![index]);
-                            }else if(type == "Followings"){
+                            }else if((_controller.allUnFollower!.data!.data![index].following == null)
+                                &&(_controller.allUnFollower!.data!.data![index].follower
+                                    != null)){
+                              _controller.followUser(userData: _controller.allUnFollower!.data!.data![index]);
+                            }else{
                               _controller.unfollow(userData: _controller.allUnFollower!.data!.data![index]);
                             }
                             // list[index].value = !list[index].value;
@@ -299,7 +303,15 @@ class AllUsers extends StatelessWidget {
                                 color:/*_controller.allUnFollower!.data!.data![index].isFollow!.value ==true?DynamicColor.grayClr.withOpacity(0.3): */DynamicColor.grayClr
                             ),
                             child: Center(
-                              child: Text(type == "Followings"?"UnFollow":"Follow",
+                              child: Text(
+                                  heights != null?"Follow":
+                                _controller.allUnFollower!.data!.data![index].follower == null
+                                  && _controller.allUnFollower!.data!.data![index].following
+                                      == null?"Follow"
+                                  :((_controller.allUnFollower!.data!.data![index].following == null)
+                                    &&(_controller.allUnFollower!.data!.data![index].follower
+                                        != null))?
+                              "FollowBack": "UnFollow",
                                 style: poppinsRegularStyle(
                                   fontSize: 14,
                                   context: context,

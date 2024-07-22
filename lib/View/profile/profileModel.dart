@@ -96,7 +96,7 @@ class Profile {
   dynamic birthYear;
   String? phoneNumber;
   String? about;
-  dynamic companyName;
+  String? companyName;
   String? selectState;
   String? country;
   dynamic location;

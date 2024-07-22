@@ -23,6 +23,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(title);
     var theme = Theme.of(context);
     return Scaffold(
       appBar: customAppBar(
@@ -46,7 +47,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Text(updatedCond==true? title=="Lifestyle"?"How is your lifestyle?": "Imported Genre Form Spotify":'Let us know more about your\nlifestyle preference',
+                Text(updatedCond==true? title=="Lifestyle"?"How is your lifestyle?": "Imported Genre Form Spotify":title=="Quick Survey"?"How is your lifestyle?":'Let us know more about your\nlifestyle preference',
                   textAlign: TextAlign.center,
                   style: poppinsRegularStyle(
                     fontSize: 16,

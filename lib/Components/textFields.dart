@@ -24,11 +24,13 @@ class CustomTextFields extends StatelessWidget {
     this.controller,
     this.obscureText = false,
     this.validationError,
-    this.isEmail = false
+    this.isEmail = false,
+    this.onChanged,
+    this.ignoredValidation = false,
   }) : super(key: key);
 
   String? labelText;
-  Color ? textClr;
+  Color? textClr;
   int? maxLine=1;
   bool keyBoardType = false;
   Color? borderClr;
@@ -42,14 +44,15 @@ class CustomTextFields extends StatelessWidget {
   TextEditingController? controller = TextEditingController();
   bool obscureText = false;
   String? validationError;
+  bool? ignoredValidation = false;
   bool? isEmail = false;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       maxLines: maxLine!,
-
       style:style?? poppinsRegularStyle(
           context: context,
           fontSize: 14,
@@ -57,8 +60,10 @@ class CustomTextFields extends StatelessWidget {
       ),
       readOnly: readOnly,
       obscureText: obscureText,
+      onChanged: onChanged,
       keyboardType:keyBoardType==false? TextInputType.text:TextInputType.number,
       decoration: InputDecoration(
+
         alignLabelWithHint: true,
         suffixIcon:iconShow==true? GestureDetector(
           onTap: onTap,
@@ -86,6 +91,7 @@ class CustomTextFields extends StatelessWidget {
         ),
       ),
         validator: (value) {
+        if(ignoredValidation == false){
           if (value!.isEmpty) {
             return 'Please enter $validationError';
           } else {
@@ -97,6 +103,10 @@ class CustomTextFields extends StatelessWidget {
               return null;
             }
           }
+        }else{
+          return null;
+        }
+
         }
     );
   }

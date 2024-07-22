@@ -385,6 +385,14 @@ class _CreateCompanyProfileScreenState extends State<CreateCompanyProfileScreen>
                     SizedBox(
                       height: 20,
                     ),
+                    CustomTextFields(
+                      labelText: "City",
+                      controller: controller.cityController,
+                      validationError: "city",
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
                         validateMobile(number.phoneNumber!);

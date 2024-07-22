@@ -138,6 +138,8 @@ class User {
   ProfilePicture? profilePicture;
   RxBool? isFollow = false.obs;
   String? role;
+  Following? follower;
+  Following? following;
 
   User({
     this.id,
@@ -152,6 +154,8 @@ class User {
     this.profilePicture,
     this.isFollow,
     this.role,
+    this.follower,
+    this.following,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -167,6 +171,8 @@ class User {
     profile: json["profile"] == null ? null : Profile.fromJson(json["profile"]),
     profilePicture:json["profile_picture"] == null?null: ProfilePicture.fromJson(json["profile_picture"]),
     role: json["role"]==null?null: json["role"]["name"],
+    follower: json["follower"] == null ? null : Following.fromJson(json["follower"]),
+    following: json["following"] == null ? null : Following.fromJson(json["following"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -181,6 +187,46 @@ class User {
     "profile": profile?.toJson(),
     "profile_picture": profilePicture,
     "role": role,
+  };
+}
+
+class Following {
+  int? id;
+  int? userId;
+  int? followerId;
+  String? type;
+  String? status;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  Following({
+    this.id,
+    this.userId,
+    this.followerId,
+    this.type,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Following.fromJson(Map<String, dynamic> json) => Following(
+    id: json["id"],
+    userId: json["user_id"],
+    followerId: json["follower_id"],
+    type: json["type"],
+    status: json["status"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "follower_id": followerId,
+    "type": type,
+    "status": status,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
   };
 }
 

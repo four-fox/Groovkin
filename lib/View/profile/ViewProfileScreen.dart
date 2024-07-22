@@ -163,12 +163,13 @@ class ViewProfileScreen extends StatelessWidget {
               TabBar(
                 unselectedLabelStyle: poppinsMediumStyle(
                     fontSize: 14,
-                    context: context
+                    context: context,
+                  color: DynamicColor.grayClr.withOpacity(0.5)
                 ),
                 labelStyle: poppinsMediumStyle(
                     fontSize: 14,
                     context: context,
-                    color: DynamicColor.grayClr.withOpacity(0.5)
+                    color: DynamicColor.grayClr
                 ),
                 labelPadding: EdgeInsets.all(6),
                 indicatorPadding: EdgeInsets.all(10),

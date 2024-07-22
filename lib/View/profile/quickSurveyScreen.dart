@@ -34,6 +34,8 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
     // TODO: implement initState
     super.initState();
     print(Get.arguments['addMoreService']);
+    print(Get.arguments['title']);
+    print(appBarTitle);
     if(Get.arguments['addMoreService'] == 1){
       createEvent = Get.arguments['createEvent'];
     }

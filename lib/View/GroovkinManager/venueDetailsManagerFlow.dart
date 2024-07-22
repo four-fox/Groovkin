@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
@@ -24,6 +25,10 @@ class VenueDetailsManagerScreen extends StatelessWidget {
 
   ManagerController _controller = Get.find();
 
+  RxDouble latAssign = 0.0.obs;
+  RxDouble lngAssign = 0.0.obs;
+  RxBool mapUpdate = true.obs;
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -31,6 +36,16 @@ class VenueDetailsManagerScreen extends StatelessWidget {
       appBar:serviceCondition==true?null: customAppBar(theme: theme,text: "Venue Detail",backArrow: true),
       body: GetBuilder<ManagerController>(
         builder: (controller) {
+          latAssign.value = double.parse(controller.lat);
+          lngAssign.value = double.parse(controller.lng);
+          print("object789");
+          print(controller.lat);
+          print(controller.lng);
+          print("object789");
+          print("object789");
+          print(_controller.lat);
+          print(_controller.lng);
+          print("object789");
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -437,9 +452,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                controller.lat != "null"? ShowCustomMap(horizontalPadding:12.0,
-                  lat: double.parse(controller.lat),
-                  lng: double.parse(controller.lng),
+                controller.lat != "null"?
+                Obx(
+                  ()=> mapUpdate.value == false?SizedBox.shrink():
+                  ShowCustomMap(horizontalPadding:12.0,
+                    lat: double.parse(latAssign.value.toString()),
+                    lng: double.parse(lngAssign.value.toString()),
+                  ),
                 ):SizedBox.shrink(),
 
               ],
@@ -447,90 +466,148 @@ class VenueDetailsManagerScreen extends StatelessWidget {
           );
         }
       ),
-      bottomNavigationBar:serviceCondition==true?SizedBox.shrink(): Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomButton(
-              color2: Colors.transparent,
-              color1: Colors.transparent,
-              backgroundClr: false,
-              textClr: DynamicColor.yellowClr,
-              widths: Get.width/2.3,
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return
-
-                        MapLocationPicker(
-                          hideLocation: true,
-                          // lat: double.parse(eventData.latitude.toString()),
-                          // long: double.parse(eventData.longitude.toString()),
-                          minMaxZoomPreference: MinMaxZoomPreference(0, 16),
-                          apiKey:
-                          "AIzaSyCPDZxZYp3Su6ReZTh4lHRoie6HAM2P0sU",
-                          // canPopOnNextButtonTaped: true,
-
-                          onNext: (GeocodingResult? result) {
-                          },
-                        );
-                      /*MapLocationPicker(
-                        apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
-                        popOnNextButtonTaped: true,
-                        currentLatLng: _controller.lat != "null"?
-                        LatLng(double.parse(_controller.lat.toString()), double.parse(_controller.lng.toString())):
-                        LatLng(28.8993468, 76.6250249),
-                        btnOnTap: (){
-                          Get.back();
+      bottomNavigationBar: serviceCondition==true?SizedBox.shrink(): GetBuilder<ManagerController>(
+        builder: (controller) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  color2: Colors.transparent,
+                  color1: Colors.transparent,
+                  backgroundClr: false,
+                  textClr: DynamicColor.yellowClr,
+                  widths: Get.width/2.3,
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return MapLocationPicker(
+                              // hideLocation: true,
+                              // lat: double.parse(eventData.latitude.toString()),
+                              // long: double.parse(eventData.longitude.toString()),
+                              minMaxZoomPreference: MinMaxZoomPreference(0, 16),
+                              apiKey:
+                              "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                              // canPopOnNextButtonTaped: true,
+                              canPopOnNextButtonTaped: true,
+                              searchHintText:
+                              controller.address != "null"
+                                  ? controller.address
+                                  : "Start typing to search",
+                              latLng: controller.latLng,
+                              initAddress: controller.address,
+                              backBtnn: true,
+                              onTappp: (){
+                                print("object2222");
+                              },
+                              onNext: (GeocodingResult? result) {
+                                if (result != null) {
+                                  mapUpdate(false);
+                                  controller.lat = result
+                                      .geometry.location.lat
+                                      .toString();
+                                  controller.lng = result
+                                      .geometry.location.lng
+                                      .toString();
+                                  controller.address =
+                                      result.formattedAddress ?? "";
+                                  _controller.latLng = LatLng(
+                                      result.geometry.location.lat,
+                                      result.geometry.location.lng);
+                                  controller.addressController.text = result.formattedAddress!;
+                                 Get.back();
+                                  mapUpdate(true);
+                                  _controller.update();
+                                }
+                              },
+                              onSuggestionSelected:
+                                  (PlacesDetailsResponse? result) {
+                                if (result != null) {
+                                  mapUpdate(false);
+                                  controller.lat = result
+                                      .result.geometry!.location.lat
+                                      .toString();
+                                  controller.lng = result
+                                      .result.geometry!.location.lng
+                                      .toString();
+                                  controller.autocompletePlace =
+                                      result.result
+                                          .formattedAddress ??
+                                          "";
+                                  controller.address = result
+                                      .result.formattedAddress ??
+                                      "";
+                                  controller.latLng = LatLng(
+                                      result.result.geometry!.location
+                                          .lat,
+                                      result.result.geometry!.location
+                                          .lng);
+                                  controller.addressController.text = result.result.formattedAddress!;
+                                  mapUpdate(true);
+                                  controller
+                                      .update();
+                                }
+                              },
+                            );
+                          /*MapLocationPicker(
+                            apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                            popOnNextButtonTaped: true,
+                            currentLatLng: _controller.lat != "null"?
+                            LatLng(double.parse(_controller.lat.toString()), double.parse(_controller.lng.toString())):
+                            LatLng(28.8993468, 76.6250249),
+                            btnOnTap: (){
+                              Get.back();
+                            },
+                            onNext: (GeocodingResult? result) {
+                              if (result != null) {
+                                _controller.address = result.formattedAddress ?? "";
+                                _controller.addressController.text = _controller.address;
+                                _controller.lat = result.geometry.location.lat.toString();
+                                _controller.lng = result.geometry.location.lng.toString();
+                                _controller.update();
+                              }
+                            },
+                            onSuggestionSelected: (PlacesDetailsResponse? result) {
+                              if (result != null) {
+                                _controller.autocompletePlace =
+                                    result.result.formattedAddress ?? "";
+                                _controller.addressController.text = _controller.autocompletePlace;
+                                _controller.lat = result.result.geometry!.location.lat.toString();
+                                _controller.lng = result.result.geometry!.location.lng.toString();
+                                _controller.update();
+                              }
+                            },
+                          );*/
                         },
-                        onNext: (GeocodingResult? result) {
-                          if (result != null) {
-                            _controller.address = result.formattedAddress ?? "";
-                            _controller.addressController.text = _controller.address;
-                            _controller.lat = result.geometry.location.lat.toString();
-                            _controller.lng = result.geometry.location.lng.toString();
-                            _controller.update();
-                          }
-                        },
-                        onSuggestionSelected: (PlacesDetailsResponse? result) {
-                          if (result != null) {
-                            _controller.autocompletePlace =
-                                result.result.formattedAddress ?? "";
-                            _controller.addressController.text = _controller.autocompletePlace;
-                            _controller.lat = result.result.geometry!.location.lat.toString();
-                            _controller.lng = result.result.geometry!.location.lng.toString();
-                            _controller.update();
-                          }
-                        },
-                      );*/
-                    },
-                  ),
-                );
-              },
-              fontSized: 13,
-              text: "Add another location",
+                      ),
+                    );
+                  },
+                  fontSized: 13,
+                  text: "Add another location",
+                ),
+                CustomButton(
+                  borderClr: Colors.transparent,
+                  widths: Get.width/2.3,
+                  onTap: (){
+                    if(_controller.updateAmenities.value == true){
+                      _controller.editVenue();
+                    }else{
+                      if(_controller.mediaClass.isNotEmpty){
+                        _controller.createVenue(context,theme);
+                      }else{
+                        bottomToast(text: "Please venue pictures is required");
+                      }
+                    }
+                  },
+                  text:_controller.updateAmenities.value == true?"Updated": "Completed",
+                ),
+              ],
             ),
-            CustomButton(
-              borderClr: Colors.transparent,
-              widths: Get.width/2.3,
-              onTap: (){
-                if(_controller.updateAmenities.value == true){
-                  _controller.editVenue();
-                }else{
-                  if(_controller.mediaClass.isNotEmpty){
-                    _controller.createVenue(context,theme);
-                  }else{
-                    bottomToast(text: "Please venue pictures is required");
-                  }
-                }
-              },
-              text:_controller.updateAmenities.value == true?"Updated": "Completed",
-            ),
-          ],
-        ),
+          );
+        }
       ),
     );
   }

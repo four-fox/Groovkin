@@ -208,6 +208,7 @@ class ManagerController extends GetxController{
   final venueNameController = TextEditingController();
   final streetAddressController = TextEditingController();
   final stateController = TextEditingController();
+  final cityController = TextEditingController();
   final zipController = TextEditingController();
   final addressController = TextEditingController();
   final phoneNumController = TextEditingController();
@@ -327,6 +328,7 @@ class ManagerController extends GetxController{
       "licenses_and_permit_items[]": permitList,
       "house_event_items[]": houseEvent,
       "image[]": multiPartImg,
+      "city": cityController.text,
     });
     print(formData);
     var response = await API().postApi(formData, "add-venue", multiPart: true);
@@ -422,6 +424,7 @@ class ManagerController extends GetxController{
       "licenses_and_permit_items[]": permitList,
       "house_event_items[]": houseEvent,
      if(multiPartImg.isNotEmpty) "image[]": multiPartImg,
+      "city": cityController.text
     });
     print(formData);
     var response = await API().postApi(formData, "edit-venue/${venueDetails!.data!.id}");

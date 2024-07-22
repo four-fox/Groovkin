@@ -96,9 +96,10 @@ class AuthController extends GetxController{
      if(API().sp.read("role") == "User") "birth_year": dobController.text,
       "phone_number": phoneNumController.text,
       "password": passwordController.text,
+     if((API().sp.read("role") == "eventManager") && (companyNameController.text.isNotEmpty)) "company_name": companyNameController.text,
       "password_confirmation": confirmPasswordController.text,
-     if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty) "select_state": stateController.text,
-      if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty) "country": countryController.text,
+     /*if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty)*/ "select_state": stateController.text,
+      /*if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty)*/ "country": countryController.text,
       "role": API().sp.read("role")=="User"?"user":API().sp.read("role") == "eventManager"?"venue_manager":"event_owner",
      if(imageList.isNotEmpty) "image[]": imageList,
       "device_token": "jkhkjhkjhkjhasd",
@@ -318,8 +319,8 @@ class AuthController extends GetxController{
   profileDataBind() async{
     firstNameController.text = userData!.data!.profile!.firstName.toString();
     lastNameController.text = userData!.data!.profile!.lastName.toString();
-    lastNameController.text = userData!.data!.profile!.lastName.toString();
     displayNameController.text = userData!.data!.name.toString();
+    companyNameController.text = userData!.data!.profile!.companyName.toString();
     emailController.text = userData!.data!.email.toString();
     aboutController.text = userData!.data!.profile!.about.toString();
     dobController.text = userData!.data!.profile!.birthYear.toString();
@@ -337,6 +338,7 @@ class AuthController extends GetxController{
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final displayNameController = TextEditingController();
+  final companyNameController = TextEditingController();
   final phoneNumController = TextEditingController();
   final countryController = TextEditingController();
   final stateController = TextEditingController();
@@ -354,6 +356,7 @@ class AuthController extends GetxController{
       "phone_number": phoneNumController.text,
       "birth_year": dobController.text,
       "about": aboutController.text,
+      if((API().sp.read("role") == "eventManager") && (companyNameController.text.isNotEmpty)) "company_name": companyNameController.text,
       if(API().sp.read("role") == "User") "birth_year": dobController.text,
       if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty) "select_state": stateController.text,
       if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty) "country": countryController.text,
@@ -746,6 +749,8 @@ class AuthController extends GetxController{
   getAllFollowings({nextUrl,userType, apiHit = "Followings"}) async{
     if(nextUrl == null){
       getAllUnfollowingLoader(false);
+    }else{
+      nextUrl = "$nextUrl&type=$userType";
     }
     var response = apiHit=="Followings"?
     await API().getApi(url: "followings?type=$userType",fullUrl: nextUrl, isLoader:nextUrl != null? false:true):
