@@ -23,7 +23,18 @@ class HardwareScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Hardware"),
+      appBar: customAppBar(theme: theme,text: "Hardware",
+          actions: [
+            ((_eventController.eventDetail == null) && (_eventController.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _eventController.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+      ),
       body: GetBuilder<AuthController>(
         initState: (v){
             _controller.getAllService(type: "hardware_provided");

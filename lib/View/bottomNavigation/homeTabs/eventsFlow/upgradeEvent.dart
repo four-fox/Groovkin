@@ -51,11 +51,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     }
   }
 
+  EventController _eventController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-        appBar: customAppBar(theme: theme,text: "Create Event",),
+        appBar: customAppBar(theme: theme,text: "Create Event"
+        ),
       body: GetBuilder<EventController>(
         builder: (controller) {
           return Form(
@@ -86,8 +89,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         CircleAvatar(
                           radius: ((controller.eventDetail != null) && (controller.eventDetail!.data!.bannerImage != null))?50: 30,
                           backgroundColor: DynamicColor.avatarBgClr,
-                          backgroundImage:((controller.eventDetail != null) && (controller.eventDetail!.data!.bannerImage != null))? NetworkImage(controller.eventDetail!.data!.bannerImage!.mediaPath!):null,
-                          child:((_authController.imageBytes !=null) && (controller.eventDetail!.data!.bannerImage != null))?SizedBox.shrink(): ImageIcon(
+                          backgroundImage:((controller.duplicateValue.value == false)&&(controller.eventDetail != null) &&
+                              (controller.eventDetail!.data!.bannerImage != null))?
+                          NetworkImage(controller.eventDetail!.data!.bannerImage!.mediaPath!):null,
+                          child:((_authController.imageBytes !=null) &&
+                              ((controller.eventDetail!.data!.bannerImage != null)))
+                              ?SizedBox.shrink(): ImageIcon(
                             AssetImage("assets/imageUploadIcon.png"),
                             color: DynamicColor.yellowClr,
                           ),
@@ -725,7 +732,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         borderClr: Colors.transparent,
                         onTap: (){
                           if(eventForm.currentState!.validate()){
-                            if(_authController.imageBytes !=null || ((controller.eventDetail !=null) && (controller.eventDetail!.data!.bannerImage!.mediaPath != null))){
+                            if(_authController.imageBytes !=null || ((controller.duplicateValue.value == false)&&(controller.eventDetail !=null) && (controller.eventDetail!.data!.bannerImage!.mediaPath != null))){
                               if(controller.paymentScheduleValue.value == 4){
                               controller.paymentSchedule!.value =
                                   controller.otherRateController.text;

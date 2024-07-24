@@ -28,12 +28,26 @@ class DisclaimerScreen extends StatelessWidget {
             SizedBox(
               height: kToolbarHeight,
             ),
-            Text("Disclaimer",
-              style: poppinsMediumStyle(
-                fontSize: 20,
-                context: context,
-                color: theme.primaryColor,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Disclaimer",
+                  style: poppinsMediumStyle(
+                    fontSize: 20,
+                    context: context,
+                    color: theme.primaryColor,
+                  ),
+                ),
+                ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+                GestureDetector(
+                    onTap: (){
+                      _controller.postEventFunction(context,theme,draft: true);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 8.0),
+                      child: Icon(Icons.drafts),),
+                  ):SizedBox.shrink()
+              ],
             ),
             SizedBox(
               height: 15,
@@ -197,10 +211,10 @@ class DisclaimerScreen extends StatelessWidget {
               borderClr: Colors.transparent,
               onTap: (){
                 if(checkBoxValue.value == true){
-                  if(_controller.eventDetail != null){
+                  if(_controller.eventDetail != null && _controller.duplicateValue.value == false && _controller.draftValue.value ==false){
                     _controller.editEventFunction();
                   }else{
-                    _controller.postEventFunction(context,theme);
+                    _controller.postEventFunction(context,theme, location: _controller.duplicateValue.value == false?null:_controller.eventDetail);
                   }
                 }else{
                   bottomToast(text: "Please accept terms and condition");

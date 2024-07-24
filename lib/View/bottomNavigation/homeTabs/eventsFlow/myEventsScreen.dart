@@ -19,6 +19,8 @@ class MyEventsScreen extends StatelessWidget {
 
   HomeController _controller = Get.find();
 
+  String pageCondition = Get.arguments['pageTitle'];
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -34,7 +36,7 @@ class MyEventsScreen extends StatelessWidget {
               Future.delayed(Duration(seconds: 2), () {
                 _controller.newsFeedWait = false;
               });
-              _controller.getMyAllEvent(fullUrl: _controller.recommendedEventData!.data!.nextPageUrl);
+              _controller.getMyAllEvent(fullUrl: _controller.recommendedEventData!.data!.nextPageUrl,title: pageCondition);
               return true;
             }
           }
@@ -44,7 +46,7 @@ class MyEventsScreen extends StatelessWidget {
       },
       child: GetBuilder<HomeController>(
           initState: (v){
-            _controller.getMyAllEvent();
+            _controller.getMyAllEvent(title: pageCondition);
           },
           builder: (controller) {
             return controller.getRecommendedLoader.value== false?SizedBox.shrink():
@@ -71,7 +73,6 @@ class MyEventsScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-
                                 Padding(padding: EdgeInsets.all(6),
                                   child: ImageIcon(AssetImage("assets/pin.png"),
                                     color: theme.primaryColor,
@@ -92,9 +93,10 @@ class MyEventsScreen extends StatelessWidget {
 
                                   ),
                                   child: Center(
-                                    child: Text(singleEventData.status.toString(),
+                                    child: Text(pageCondition== "drafts"?"Drafts": singleEventData.status.toString(),
                                       style: poppinsRegularStyle(
-                                        fontSize:11,context: context,
+                                        fontSize: 11,
+                                        context: context,
                                         color: theme.scaffoldBackgroundColor,
                                       ),
                                     ),
@@ -116,7 +118,7 @@ class MyEventsScreen extends StatelessWidget {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(singleEventData.venue!.venueName!,
+                                        Text(singleEventData.eventTitle!,
                                           style: poppinsRegularStyle(fontSize: 12,context: context,color: theme.primaryColor,
                                               fontWeight: FontWeight.w600),
                                         ),
@@ -151,7 +153,7 @@ class MyEventsScreen extends StatelessWidget {
                                         "eventId": singleEventData.id,
                                         "reportedEventView":1,
                                         "notInterestedBtn": 1,
-                                        "appBarTitle": singleEventData.status.toString().capitalize
+                                        "appBarTitle": pageCondition== "drafts"?"Drafts": singleEventData.status.toString().capitalize
                                       }
                                   );
                                 },

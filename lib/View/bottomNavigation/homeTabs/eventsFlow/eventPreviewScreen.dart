@@ -13,6 +13,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/commentsAndAttechment.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class EventPreview extends StatelessWidget {
@@ -31,7 +32,18 @@ class EventPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Event Preview",),
+      appBar: customAppBar(theme: theme,text: "Event Preview",
+          actions: [
+            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _controller.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -40,17 +52,25 @@ SizedBox(
 child: ListView.builder(
     scrollDirection: Axis.horizontal,
     shrinkWrap: true,
-    itemCount: _managerController.mediaClass.length,
+    itemCount: _managerController.mediaClass.isNotEmpty?
+    _managerController.mediaClass.length: _controller.imageListtt.length,
     itemBuilder:
         (BuildContext context, index) {
-      return Stack(
+          return assetImage(
+            eventController: _controller,
+            closedIcon: false,
+            controller: _controller,
+            mediaItem: _managerController.mediaClass.isNotEmpty?
+            _managerController.mediaClass[index]:_controller.imageListtt[index],
+          );
+      /*return Stack(
         alignment: Alignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.only(
                 right: 10),
-            child: /*Stack(
-                                            children: [*/
+            child: *//*Stack(
+                                            children: [*//*
             _managerController.mediaClass[index]
                 .thumbnail !=
                 null
@@ -101,7 +121,7 @@ child: ListView.builder(
             onTap: (){
               Get.toNamed(Routes.videoPlayerClass, arguments: {
                 'url': _managerController.mediaClass[index].filename,
-                'type': "file"/*controller.mediaClass[index].fileType*/,
+                'type': "file"*//*controller.mediaClass[index].fileType*//*,
               });
             },
             child: CircleAvatar(
@@ -113,12 +133,12 @@ child: ListView.builder(
             ),
           ),
         ],
-      );
+      );*/
     }),
 ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(_controller.eventDetail != null?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName.toString(),
+              child: Text(((_controller.eventDetail != null) && (_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName.toString(),
                 textAlign: TextAlign.center,
                 style: poppinsMediumStyle(
                   fontSize: 17,
@@ -150,7 +170,7 @@ child: ListView.builder(
                 img: "assets/calender.png",
                 icon: true,
                 iconSize: 17,
-                text:_controller.eventDetail != null? _controller.eventDetail!.data!.venue!.location!: _managerController.venueDetails!.data!.location.toString(),
+                text:((_controller.eventDetail != null) && (_controller.eventDetail!.data!.venue != null))? _controller.eventDetail!.data!.venue!.location!: _managerController.venueDetails!.data!.location.toString(),
             ),
             /// event organizer details
             // SizedBox(
@@ -198,8 +218,8 @@ child: ListView.builder(
               height: 10,
             ),
             ShowCustomMap(
-              lat: double.parse(_controller.eventDetail !=null?_controller.eventDetail!.data!.venue!.latitude!: _managerController.lat),
-              lng: double.parse(_controller.eventDetail !=null?_controller.eventDetail!.data!.venue!.longitude!: _managerController.lng),
+              lat: double.parse(((_controller.eventDetail !=null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.latitude!: _managerController.lat),
+              lng: double.parse(((_controller.eventDetail !=null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.longitude!: _managerController.lng),
             ),
          Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
              avatarPadding: 8,
@@ -221,7 +241,7 @@ child: ListView.builder(
            customContainer(context, theme,title:"Start Date",text: _controller.eventDateController.text),
            customContainer(context, theme,title: "End Date",text: _controller.eventEndDateController.text),
            // customContainer(context, theme,text: _controller.eventHoursController.text),
-           customContainer(context, theme,title: "Max capacity",text: _controller.maxCapacityController.text),
+           // customContainer(context, theme,title: "Max capacity",text: _controller.maxCapacityController.text),
            customContainer(context, theme,title: "Comments",text: _controller.commentsController.text),
             SizedBox(
               height: 10,

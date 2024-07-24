@@ -80,16 +80,48 @@ class UserBottomNavigationNav extends StatelessWidget {
           color: DynamicColor.yellowClr,
           items: [
             BottomBarItem(
-              iconBuilder: ImageIcon(AssetImage("assets/userHomeIcon.png"),color:selectUserIndexxx.value==0? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              label: "Home",
+              labelTextStyle: poppinsMediumStyle(
+                  fontSize: 12,
+                  context: context,
+                  color: theme.scaffoldBackgroundColor),
+              iconBuilder: Padding(
+                padding: const EdgeInsets.only(bottom: 6.0),
+                child: ImageIcon(AssetImage("assets/userHomeIcon.png"),color:selectUserIndexxx.value==0? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              ),
             ),
             BottomBarItem(
-              iconBuilder: ImageIcon(AssetImage("assets/userMyEvents.png"),color:selectUserIndexxx.value==1? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              label: "My Events",
+              labelTextStyle: poppinsMediumStyle(
+                  fontSize: 12,
+                  context: context,
+                  color: theme.scaffoldBackgroundColor),
+              iconBuilder: Padding(
+                padding: const EdgeInsets.only(bottom: 6.0),
+                child: ImageIcon(AssetImage("assets/userMyEvents.png"),color:selectUserIndexxx.value==1? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              ),
             ),
             BottomBarItem(
-              iconBuilder: ImageIcon(AssetImage("assets/groups.png"),color:selectUserIndexxx.value==2? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              label: "Groups",
+              labelTextStyle: poppinsMediumStyle(
+                  fontSize: 12,
+                  context: context,
+                  color: theme.scaffoldBackgroundColor),
+              iconBuilder: Padding(
+                padding: const EdgeInsets.only(bottom: 6.0),
+                child: ImageIcon(AssetImage("assets/groups.png"),color:selectUserIndexxx.value==2? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              ),
             ),
             BottomBarItem(
-              iconBuilder: ImageIcon(AssetImage("assets/settingIcon.png"),color:selectUserIndexxx.value==3? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              label: "Setting",
+              labelTextStyle: poppinsMediumStyle(
+                  fontSize: 12,
+                  context: context,
+                  color: theme.scaffoldBackgroundColor),
+              iconBuilder: Padding(
+                padding: const EdgeInsets.only(bottom: 6.0),
+                child: ImageIcon(AssetImage("assets/settingIcon.png"),color:selectUserIndexxx.value==3? DynamicColor.yellowClr:DynamicColor.grayClr,),
+              ),
             ),
           ],
           selectedIndex: selectUserIndexxx.value,

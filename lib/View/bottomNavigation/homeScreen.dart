@@ -92,14 +92,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: DynamicColor.darkGrayClr,
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(
-                                  color: theme.primaryColor,)),
+                                color: theme.primaryColor,
+                              )),
                           child: Center(
                             child: Text(
                               "View All",
                               style: poppinsMediumStyle(
-                                  fontSize: 14,
-                                  context: context,
-                                  color: theme.primaryColor,),
+                                fontSize: 14,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
                             ),
                           ),
                         ),
@@ -121,8 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Text(
                         API().sp.read("role") == "eventOrganizer"
-                            ? "Welcome to Event Organizer"
-                            : "Welcome to Event Manager",
+                            ? "Welcome To Event Organizer"
+                            : "Welcome To Venue Manager",
                         style: poppinsMediumStyle(
                           fontSize: 16,
                           context: context,
@@ -178,7 +180,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       sp.read("role") == "eventOrganizer"
                           ? GestureDetector(
                               onTap: () {
-                                Get.toNamed(Routes.myEventsScreen);
+                                Get.toNamed(Routes.myEventsScreen,
+                                    arguments: {"pageTitle": "myEvents"});
                               },
                               child: Container(
                                   height: 50,
@@ -222,9 +225,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     : DynamicColor.lightBlackClr),
                             child: Center(
                               child: Text(
-                                sp.read("role") == "eventManager"
+                                /*sp.read("role") == "eventManager"
                                     ? "Upcoming"
-                                    : "Scheduled",
+                                    :*/ "Scheduled",
                                 style: poppinsMediumStyle(
                                     fontSize: 14,
                                     context: context,
@@ -270,9 +273,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     : DynamicColor.lightBlackClr),
                             child: Center(
                               child: Text(
-                                sp.read("role") == "eventManager"
+                                /*sp.read("role") == "eventManager"
                                     ? "Pending"
-                                    : "Requested",
+                                    :*/ "Requests",
                                 style: poppinsMediumStyle(
                                     fontSize: 14,
                                     context: context,
@@ -538,9 +541,10 @@ class ManagerUpcomingEventsView extends StatelessWidget {
                       Text(
                         "Upcoming Events",
                         style: poppinsMediumStyle(
-                            fontSize: 14,
-                            context: context,
-                            color: theme.primaryColor,),
+                          fontSize: 14,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
                       ),
                       Obx(
                         () => GestureDetector(
@@ -573,9 +577,10 @@ class ManagerUpcomingEventsView extends StatelessWidget {
                                 child: Text(
                                   "No Data",
                                   style: poppinsMediumStyle(
-                                      fontSize: 17,
-                                      context: context,
-                                      color: theme.primaryColor,),
+                                    fontSize: 17,
+                                    context: context,
+                                    color: theme.primaryColor,
+                                  ),
                                 ),
                               ),
                             )
@@ -612,9 +617,10 @@ class ManagerUpcomingEventsView extends StatelessWidget {
                       Text(
                         "Ongoing Events",
                         style: poppinsMediumStyle(
-                            fontSize: 14,
-                            context: context,
-                            color: theme.primaryColor,),
+                          fontSize: 14,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
                       ),
                       Obx(
                         () => GestureDetector(
@@ -647,9 +653,10 @@ class ManagerUpcomingEventsView extends StatelessWidget {
                                 child: Text(
                                   "No Data",
                                   style: poppinsMediumStyle(
-                                      fontSize: 17,
-                                      context: context,
-                                      color: theme.primaryColor,),
+                                    fontSize: 17,
+                                    context: context,
+                                    color: theme.primaryColor,
+                                  ),
                                 ),
                               ),
                             )
@@ -909,8 +916,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                           style: poppinsRegularStyle(
                                               fontSize: 12,
                                               context: context,
-                                              color:
-                                              theme.primaryColor,
+                                              color: theme.primaryColor,
                                               fontWeight: FontWeight.w600),
                                         ),
                                         Text(
@@ -994,8 +1000,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                             fontSize: 20,
                                                             context: context,
                                                             color: theme
-                                                                .colorScheme
-                                                                .background,
+                                                                .primaryColor,
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -1011,8 +1016,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                             fontSize: 13,
                                                             context: context,
                                                             color: theme
-                                                                .colorScheme
-                                                                .background,
+                                                                .primaryColor,
                                                           ),
                                                         ),
                                                         SizedBox(
@@ -1060,8 +1064,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                   context:
                                                                       context,
                                                                   color: theme
-                                                                      .colorScheme
-                                                                      .background,
+                                                                      .primaryColor,
                                                                 ),
                                                               ),
                                                             )
@@ -1086,7 +1089,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                             } else {
                                                               bottomToast(
                                                                   text:
-                                                                      "Please select disclaimer");
+                                                                      "Please agree with the disclaimer to accept the event request");
                                                             }
                                                           },
                                                           color2: DynamicColor

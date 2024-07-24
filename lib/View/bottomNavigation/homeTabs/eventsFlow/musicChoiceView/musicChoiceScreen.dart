@@ -23,7 +23,18 @@ class MusicChoiceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Create Event",),
+      appBar: customAppBar(theme: theme,text: "Create Event",
+          actions: [
+            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _controller.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+      ),
       body: GetBuilder<EventController>(
           initState: (v){
             if(_controller.eventDetail != null){
@@ -287,7 +298,18 @@ class ActivityChoiceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Create Event",),
+      appBar: customAppBar(theme: theme,text: "Create Event",
+          actions: [
+            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _controller.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+      ),
       body: GetBuilder<EventController>(
           initState: (v){
             if(_controller.eventDetail != null){

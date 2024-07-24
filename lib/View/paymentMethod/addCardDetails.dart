@@ -50,11 +50,19 @@ class _AddCardDetailsState extends State<AddCardDetails> {
     var theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        leading: GestureDetector(
+            onTap: (){
+              Get.back();
+            },
+            child: Icon(Icons.arrow_back_ios),
+        ),
+      ),
       body: Column(
         children: <Widget>[
-          SizedBox(
-            height: 30,
-          ),
+          // SizedBox(
+          //   height: 30,
+          // ),
           CreditCardWidget(
             glassmorphismConfig:
             useGlassMorphism ? Glassmorphism.defaultConfig() : null,
@@ -112,12 +120,12 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         labelStyle: TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                       ),
@@ -126,12 +134,12 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         labelStyle: const TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         // labelText: 'Expired Date',
@@ -142,12 +150,12 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         labelStyle: const TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         // labelText: 'CVV',
@@ -158,12 +166,12 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         labelStyle: const TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                         // labelText: 'CVV',
@@ -190,7 +198,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                       ),
                       Text('Set as default payment method.',
                         style: poppinsRegularStyle(fontSize: 13,context: context,
-                          color: Theme.of(context).colorScheme.background,
+                          color: Theme.of(context).primaryColor,
                         ),
                       )
                     ],

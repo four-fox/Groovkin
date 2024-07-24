@@ -59,7 +59,18 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
         context: context,
         color: theme.primaryColor,
         // color: DynamicColor.lightYellowClr,
-      )),
+      ),
+          actions: [
+            ((_eventController.eventDetail == null) && (_eventController.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _eventController.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+      ),
       body: GetBuilder<AuthController>(
         initState: (v){
           // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){

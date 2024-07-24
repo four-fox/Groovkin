@@ -26,7 +26,7 @@ class UpcomingScreen extends StatelessWidget {
   RxBool organizerGuestVal = false.obs;
   int eventId = Get.arguments['eventId']??1;
 
-  final EventController _controller = Get.find();
+  EventController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +138,7 @@ class UpcomingScreen extends StatelessWidget {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(_controller.eventDetail!.data!.venue!.location.toString(),
+                                        _controller.eventDetail!.data!.venue ==null?SizedBox.shrink(): Text(_controller.eventDetail!.data!.venue!.location.toString(),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: poppinsRegularStyle(fontSize: 12,context: context,color: theme.primaryColor,
@@ -361,6 +361,7 @@ class UpcomingScreen extends StatelessWidget {
                 SizedBox(
                   height: flowBtn==3?0: 10,
                 ),
+                controller.venueImageList.isEmpty?SizedBox.shrink():
                 SizedBox(
                   height: kToolbarHeight*3,
                   width: Get.width,
@@ -413,8 +414,8 @@ class UpcomingScreen extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                eventDateTime(theme: theme,context: context,icon: true,text: "${controller.eventDetail!.data!.location}",iconClr: DynamicColor.yellowClr,),
-                customWidget(context,theme,title: "Event Comments",value: controller.eventDetail!.data!.comment.toString()),
+                controller.eventDetail!.data!.location==null ?SizedBox.shrink(): eventDateTime(theme: theme,context: context,icon: true,text: "${controller.eventDetail!.data!.location}",iconClr: DynamicColor.yellowClr,),
+                controller.eventDetail!.data!.comment==null?SizedBox.shrink():  customWidget(context,theme,title: "Event Comments",value: controller.eventDetail!.data!.comment.toString()),
                 customWidget(context,theme,title: "Event About",value: controller.eventDetail!.data!.about.toString()),
                 customWidget(context,theme,title: "Event theme",value: controller.eventDetail!.data!.themeOfEvent.toString()),
                 customWidget(context,theme,title: "Featuring",value: controller.eventDetail!.data!.featuring.toString()),
@@ -429,7 +430,7 @@ class UpcomingScreen extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        Align(
+                        controller.eventDetail!.data!.services!.isEmpty?SizedBox.shrink(): Align(
                           alignment: Alignment.topLeft,
                           child: Text("Service",
                             style: poppinsRegularStyle(
@@ -441,7 +442,7 @@ class UpcomingScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        controller.eventDetail!.data!.services!.isEmpty?SizedBox.shrink():  SizedBox(
                           height: kToolbarHeight,
                           child: Align(
                             alignment: Alignment.topLeft,
@@ -473,7 +474,7 @@ class UpcomingScreen extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
-                        Align(
+                        controller.eventDetail!.data!.hardwareProvide!.isEmpty?SizedBox.shrink():  Align(
                           alignment: Alignment.topLeft,
                           child: Text("Hardware Provided",
                             style: poppinsRegularStyle(
@@ -485,6 +486,7 @@ class UpcomingScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        controller.eventDetail!.data!.hardwareProvide!.isEmpty?SizedBox.shrink():
                         SizedBox(
                           height: kToolbarHeight,
                           child: Align(
@@ -537,7 +539,7 @@ class UpcomingScreen extends StatelessWidget {
                                 }),
                           ),
                         ),
-                        Align(
+                        controller.eventDetail!.data!.services!.isEmpty?SizedBox.shrink():  Align(
                           alignment: Alignment.topLeft,
                           child: Text("Music Genre",
                             style: poppinsRegularStyle(
@@ -549,7 +551,7 @@ class UpcomingScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        controller.eventDetail!.data!.services!.isEmpty?SizedBox.shrink(): SizedBox(
                           height: kToolbarHeight,
                           child: Align(
                             alignment: Alignment.topLeft,
@@ -578,7 +580,7 @@ class UpcomingScreen extends StatelessWidget {
                                 }),
                           ),
                         ),
-                        Align(
+                        controller.eventDetail!.data!.eventMusicChoiceTags!.isEmpty?SizedBox.shrink(): Align(
                           alignment: Alignment.topLeft,
                           child: Text("Music Choice",
                             style: poppinsRegularStyle(
@@ -590,7 +592,7 @@ class UpcomingScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        controller.eventDetail!.data!.eventMusicChoiceTags!.isEmpty?SizedBox.shrink():  SizedBox(
                           height: kToolbarHeight,
                           child: Align(
                             alignment: Alignment.topLeft,
@@ -642,7 +644,7 @@ class UpcomingScreen extends StatelessWidget {
                                 }),
                           ),
                         ),
-                        Align(
+                        controller.eventDetail!.data!.eventActivityChoiceTags!.isEmpty?SizedBox.shrink(): Align(
                           alignment: Alignment.topLeft,
                           child: Text("Activity Choice",
                             style: poppinsRegularStyle(
@@ -654,7 +656,7 @@ class UpcomingScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        controller.eventDetail!.data!.eventActivityChoiceTags!.isEmpty?SizedBox.shrink():  SizedBox(
                           height: kToolbarHeight,
                           child: Align(
                             alignment: Alignment.topLeft,
@@ -724,7 +726,7 @@ class UpcomingScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
+                controller.eventDetail!.data!.location ==null?SizedBox.shrink():  Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(controller.eventDetail!.data!.location.toString(),
                     style: poppinsMediumStyle(
@@ -737,7 +739,7 @@ class UpcomingScreen extends StatelessWidget {
                 SizedBox(
                   height: 6,
                 ),
-                ShowCustomMap(
+                ((controller.eventDetail!.data!.latitude ==null) && (controller.eventDetail!.data!.longitude == null))?SizedBox.shrink(): ShowCustomMap(
                   lat: double.parse(controller.eventDetail!.data!.latitude!),
                   lng: double.parse(controller.eventDetail!.data!.longitude!),
                 ),
@@ -746,7 +748,7 @@ class UpcomingScreen extends StatelessWidget {
                 ),
                 sp.read('role')=="eventManager"?
                 SizedBox.shrink():
-                    aboutEventCreator(
+                ((controller.eventDetail!.data!.profilePicture!.isEmpty) && (controller.venueImageList.isEmpty))?SizedBox.shrink():   aboutEventCreator(
                       // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
                         horizontalPadding: 12,theme: theme,context: context,
                         image:controller.eventDetail!.data!.profilePicture!.isNotEmpty?
@@ -796,7 +798,24 @@ class UpcomingScreen extends StatelessWidget {
           ),
         );
       }
-    )
+    ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 3),
+        child: CustomButton(
+          borderClr: Colors.transparent,
+          onTap: (){
+            if(appBarTitle != "Drafts"){
+              _controller.duplicateValue.value = true;
+              _controller.draftValue.value = false;
+            }else{
+              _controller.draftValue.value = true;
+              _controller.duplicateValue.value = false;
+            }
+            _controller.assignValueForUpdate();
+          },
+          text:appBarTitle == "Drafts"?"Submit Draft Event": "Duplicate",
+        ),
+      ),
     );
   }
 

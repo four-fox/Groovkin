@@ -27,6 +27,7 @@ import 'package:dio/dio.dart' as form;
 import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
@@ -147,18 +148,15 @@ class ManagerController extends GetxController{
 
 
   Future<void> pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
 
-      type: FileType.any,
-    );
-    if (result != null) {
+    final List<XFile> result = await _picker.pickMultipleMedia();
+    if (result.isNotEmpty) {
       // mediaClass.clear();
       // multiPartImg.clear();
-      for (int i = 0; i < result.files.length; i++) {
-        if (result.files[i].extension == 'mp4') {
+      for (int i = 0; i < result.length; i++) {
+        if (result[i].path.split(".").last == 'mp4') {
           final fileName = await VideoThumbnail.thumbnailFile(
-            video: result.files[i].path!,
+            video: result[i].path,
             thumbnailPath: (await getTemporaryDirectory()).path,
             imageFormat: ImageFormat.PNG,
             maxHeight:
@@ -166,32 +164,32 @@ class ManagerController extends GetxController{
             quality: 75,
           );
           if(updateAmenities.value == true){
-            profilePictures.add(venueDtail.ProfilePicture(mediaPath: result.files[i].path,thumbnail: fileName));
+            profilePictures.add(venueDtail.ProfilePicture(mediaPath: result[i].path,thumbnail: fileName));
           }
           mediaClass.add(MediaClass(
-              filename: result.files[i].path,
-              fileType: result.files[i].extension,
+              filename: result[i].path,
+              fileType: result[i].path.split('.').last,
               thumbnail: fileName));
           multiPartImg.add(form.MultipartFile.fromFileSync(
-            result.files[i].path!,
-            filename: "Video.${result.files[i].path!.split('.').last}",
+            result[i].path,
+            filename: "Video.${result[i].path.split('.').last}",
             contentType:
-            MediaType("video", result.files[i].path!.split('.').last),
+            MediaType("video", result[i].path.split('.').last),
           ));
         }
         else {
           if(updateAmenities.value == true){
-            profilePictures.add(venueDtail.ProfilePicture(mediaPath: result.files[i].path));
+            profilePictures.add(venueDtail.ProfilePicture(mediaPath: result[i].path));
           }
           mediaClass.add(MediaClass(
-            filename: result.files[i].path,
-            fileType: result.files[i].extension,
+            filename: result[i].path,
+            fileType: result[i].path.split('.').last,
           ));
           multiPartImg.add(form.MultipartFile.fromFileSync(
-            result.files[i].path!,
-            filename: "Image.${result.files[i].path!.split('.').last}",
+            result[i].path,
+            filename: "Image.${result[i].path.split('.').last}",
             contentType:
-            MediaType("image", result.files[i].path!.split('.').last),
+            MediaType("image", result[i].path.split('.').last),
           ));
         }
       }
@@ -497,6 +495,7 @@ class ManagerController extends GetxController{
     profilePictures.clear();
     venueNameController.text = venueDetails!.data!.venueName!;
     streetAddressController.text = venueDetails!.data!.streetAddress!;
+    cityController.text = venueDetails!.data!.city.toString();
     stateController.text = venueDetails!.data!.state!;
     zipController.text = venueDetails!.data!.zipCode!;
     lat = venueDetails!.data!.latitude!;

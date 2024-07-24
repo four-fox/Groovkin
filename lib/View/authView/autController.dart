@@ -96,6 +96,7 @@ class AuthController extends GetxController{
      if(API().sp.read("role") == "User") "birth_year": dobController.text,
       "phone_number": phoneNumController.text,
       "password": passwordController.text,
+     if(referralCodeController.text.isNotEmpty) "referral_code": referralCodeController.text,
      if((API().sp.read("role") == "eventManager") && (companyNameController.text.isNotEmpty)) "company_name": companyNameController.text,
       "password_confirmation": confirmPasswordController.text,
      /*if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty)*/ "select_state": stateController.text,
@@ -266,6 +267,7 @@ class AuthController extends GetxController{
     confirmPasswordController.clear();
     stateController.clear();
     countryController.clear();
+    referralCodeController.clear();
   }
 
   /// todo create profile functionality
@@ -339,6 +341,7 @@ class AuthController extends GetxController{
   final lastNameController = TextEditingController();
   final displayNameController = TextEditingController();
   final companyNameController = TextEditingController();
+  final referralCodeController = TextEditingController();
   final phoneNumController = TextEditingController();
   final countryController = TextEditingController();
   final stateController = TextEditingController();

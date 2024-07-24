@@ -44,7 +44,18 @@ class _ServiceScreenState extends State<ServiceScreen> {
     var theme = Theme.of(context);
     print(moreServiceAdd);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Service", /*imagee:moreServiceAdd==2?false:true*/),
+      appBar: customAppBar(theme: theme,text: "Service",
+          actions: [
+            ((_eventController.eventDetail == null) && (_eventController.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _eventController.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+        /*imagee:moreServiceAdd==2?false:true*/),
       // appBar: AppBar(
       //   backgroundColor: theme.scaffoldBackgroundColor,
       //   centerTitle: true,

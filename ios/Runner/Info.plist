@@ -30,6 +30,8 @@
     <string>Used to capture audio for audio plugin</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Used to demonstrate image picker plugin</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>We need access to save images to your photo library.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Location required for google map</string>
     <key>NSLocationAlwaysUsageDescription</key>

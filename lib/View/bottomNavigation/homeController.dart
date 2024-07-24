@@ -134,10 +134,12 @@ class HomeController extends GetxController{
   }
 
   /// get my all event
-  getMyAllEvent({fullUrl}) async{
+  getMyAllEvent({fullUrl, title}) async{
     getRecommendedLoader(false);
     recommendedEventData = null;
-    var response = await API().getApi(url: "my-events",fullUrl: fullUrl);
+    print(title);
+    var response = title== "drafts"? await API().getApi(url: "save-draft-list",fullUrl: fullUrl)
+    :await API().getApi(url: "my-events",fullUrl: fullUrl);
     if(response.statusCode == 200){
       recommendedEventData = RecommendedEventsModel.fromJson(response.data);
       getRecommendedLoader(true);

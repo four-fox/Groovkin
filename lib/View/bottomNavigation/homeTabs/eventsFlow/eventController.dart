@@ -3,6 +3,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/CustomMultipart.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -203,7 +204,7 @@ class EventController extends GetxController{
   String? endDatePost;
   String? postTime;
   String? postEndTime;
-  postEventFunction(context,theme) async {
+  postEventFunction(context,theme,{location,bool draft = false}) async {
     AuthController _authController = Get.find();
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
@@ -230,7 +231,7 @@ class EventController extends GetxController{
       var a = multiPartingImage(_authController.imageBytes);
       imageList.add(a);
     }
-
+    print(location);
     form.FormData formData = form.FormData.fromMap({
       "event_title": eventTitleController.text,
       "featuring": featuringController.text,
@@ -243,14 +244,15 @@ class EventController extends GetxController{
       "rate": hourlyRateController.text,
       "rate_type": rateType!.value,
       "payment_schedule": int.parse(paymentSchedule!.value.toString()),
-      "comment": commentsController.text,
-      "location": venuesDetails!.location,
-      "latitude": double.parse(managerController.lat),
-      "longitude": double.parse(managerController.lng),
-      "venue_id": venuesDetails!.id,
-      "image[]": mediaList,
+     if(commentsController.text.isNotEmpty) "comment": commentsController.text,
+      if(venuesDetails != null || location != null) "location": location == null? venuesDetails!.location:location.data.location,
+      if(venuesDetails != null || location != null) "latitude": double.parse(location == null? managerController.lat:location.data.latitude),
+      if(venuesDetails != null || location != null) "longitude": double.parse(location == null? managerController.lng:location.data.longitude),
+      if(venuesDetails != null || location != null)"venue_id": location == null? venuesDetails!.id:location.data.venueId,
+      if(mediaList.isNotEmpty)"image[]": mediaList,
       "banner_image[]": imageList,
-      "venue_user_id": managerController.venueDetails!.data!.userId
+      if(venuesDetails != null || location != null)"venue_user_id":location == null? managerController.venueDetails!.data!.userId:location.data.userId,
+      "save_draft": draft
     });
 
     /// todo service params
@@ -278,7 +280,6 @@ class EventController extends GetxController{
       }
     }
     /// todo hardware params
-
 
     /// todo life Style params
     int? indexVaal = -1;
@@ -333,53 +334,60 @@ class EventController extends GetxController{
     print(formData);
     var response = await API().postApi(formData, 'create-event');
     if(response.statusCode == 200){
-      Get.back();
-      Future.delayed(Duration(seconds: 2),(){
+      if(draft == false){
+        Get.back();
+        Future.delayed(Duration(seconds: 2), () {
+          Get.offAllNamed(Routes.bottomNavigationView,
+              arguments: {"indexValue": 0});
+        });
+        showDialog(
+            barrierColor: Colors.transparent,
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext context) {
+              return AlertWidget(
+                height: kToolbarHeight * 4.4,
+                container: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Congratulation!',
+                        style: poppinsRegularStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                      Text(
+                        'The proposal has been sent to\nthe Venue Manager',
+                        style: poppinsRegularStyle(
+                          fontSize: 16,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 90,
+                        child: Image(
+                          image: AssetImage("assets/handshake.png"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      }else{
         Get.offAllNamed(Routes.bottomNavigationView,
             arguments: {
               "indexValue": 0
             }
         );
-      });
-      showDialog(
-          barrierColor: Colors.transparent,
-          context: context,
-          barrierDismissible: true,
-          builder: (BuildContext context) {
-            return AlertWidget(
-              height: kToolbarHeight*4.4,
-              container: Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('Congratulation!',
-                      style: poppinsRegularStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        context: context,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                    Text('The proposal has been sent to\nthe Venue Manager',
-                      style: poppinsRegularStyle(
-                        fontSize: 16,
-                        context: context,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 90,
-                      child: Image(
-                        image: AssetImage("assets/handshake.png"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          });
+      }
     }
   }
 
@@ -560,7 +568,9 @@ class EventController extends GetxController{
   }
 
   /// clear fields
+  RxBool draftCondition = false.obs;
   clearFields() async{
+    draftCondition(true);
     _authController.imageBytes = null;
     eventTitleController.clear();
     featuringController.clear();
@@ -655,8 +665,12 @@ class EventController extends GetxController{
   UserEventDetailsModel? eventDetail;
   RxBool eventDetailsLoader = true.obs;
   List<String> venueImageList = [];
+  RxBool duplicateValue = false.obs;
+  RxBool draftValue = false.obs;
   eventDetails({eventId}) async{
     eventDetailsLoader(false);
+    duplicateValue(false);
+    duplicateValue(false);
     var response = await API().getApi(url: "event-details/$eventId");
     if(response.statusCode == 200){
       eventDetail = UserEventDetailsModel.fromJson(response.data);
@@ -704,7 +718,9 @@ class EventController extends GetxController{
       paymentSchedule!.value = "70";
       paymentScheduleValue.value = 2;
     }
-    commentsController.text = eventDetail!.data!.comment.toString();
+    if(eventDetail!.data!.comment != null){
+      commentsController.text = eventDetail!.data!.comment.toString();
+    }
     Get.toNamed(Routes.upGradeEvents);
   }
 

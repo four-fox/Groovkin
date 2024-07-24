@@ -55,6 +55,7 @@ class VenueDetailsData {
   String? createdAt;
   String? updatedAt;
   User? user;
+  String? city;
   VenueProperty? venueProperty;
   List<ProfilePicture>? profilePicture;
   List<Amenity>? amenities;
@@ -74,6 +75,8 @@ class VenueDetailsData {
     this.userId,
     this.createdAt,
     this.updatedAt,
+    this.city,
+
     this.user,
     this.venueProperty,
     this.profilePicture,
@@ -88,6 +91,7 @@ class VenueDetailsData {
     venueName: json["venue_name"],
     streetAddress: json["street_address"],
     state: json["state"],
+    city: json["city"],
     zipCode: json["zip_code"],
     phoneNumber: json["phone_number"],
     latitude: json["latitude"],
@@ -109,6 +113,7 @@ class VenueDetailsData {
     "venue_name": venueName,
     "street_address": streetAddress,
     "state": state,
+    "city": city,
     "user": user?.toJson(),
     "zip_code": zipCode,
     "phone_number": phoneNumber,

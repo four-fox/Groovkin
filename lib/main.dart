@@ -16,52 +16,52 @@ import 'notification.dart';
 
 void main() async{
   await GetStorage.init();
-  await Firebase.initializeApp(
-    name: "Groovkin",
-    options: ConfigFirebaseConfig.platformOptions,
-  );
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  if (!kIsWeb) {
-    channel = const AndroidNotificationChannel(
-        'high_importance_channel', // id
-        'High Importance Notifications', // title
-        description:
-        'This channel is used for important notifications.', // description
-        importance: Importance.max,
-        enableVibration: true);
-
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    /// Create an Android Notification Channel.
-    ///
-    /// We use this channel in the `AndroidManifest.xml` file to override the
-    /// default FCM channel to enable heads up notifications.
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    //d/ Update the iOS foreground notification presentation options to allow
-    /// heads up notifications.
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-    await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-  }
-  if (Platform.isMacOS) {
-    // Disable Metal rendering on macOS
-    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-  }
+  // await Firebase.initializeApp(
+  //   name: "Groovkin",
+  //   options: ConfigFirebaseConfig.platformOptions,
+  // );
+  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  // if (!kIsWeb) {
+  //   channel = const AndroidNotificationChannel(
+  //       'high_importance_channel', // id
+  //       'High Importance Notifications', // title
+  //       description:
+  //       'This channel is used for important notifications.', // description
+  //       importance: Importance.max,
+  //       enableVibration: true);
+  //
+  //   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //   /// Create an Android Notification Channel.
+  //   ///
+  //   /// We use this channel in the `AndroidManifest.xml` file to override the
+  //   /// default FCM channel to enable heads up notifications.
+  //   await flutterLocalNotificationsPlugin
+  //       .resolvePlatformSpecificImplementation<
+  //       AndroidFlutterLocalNotificationsPlugin>()
+  //       ?.createNotificationChannel(channel);
+  //
+  //   //d/ Update the iOS foreground notification presentation options to allow
+  //   /// heads up notifications.
+  //   await FirebaseMessaging.instance
+  //       .setForegroundNotificationPresentationOptions(
+  //     alert: true,
+  //     badge: true,
+  //     sound: true,
+  //   );
+  //   await FirebaseMessaging.instance.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
+  // }
+  // if (Platform.isMacOS) {
+  //   // Disable Metal rendering on macOS
+  //   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  // }
   runApp(const MyApp());
 }
 
@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    initStateNotification();
+    // initStateNotification();
   }
 
   initStateNotification() {

@@ -67,7 +67,6 @@ class CreateProfile extends StatelessWidget {
             _controller.dobController.clear();
           },
           builder: (controller) {
-            print(sp.read('role'));
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
@@ -147,9 +146,19 @@ class CreateProfile extends StatelessWidget {
                     SizedBox(
                       height:sp.read('role')=="eventManager"? 15:0,
                     ),
-                    CustomTextFields(
+                    sp.read('role')=="eventManager"? CustomTextFields(
                       labelText: "Company name",
                       controller: controller.companyNameController,
+                      ignoredValidation: true,
+                    ):SizedBox.shrink(),
+
+                    SizedBox(
+                      height:/*sp.read('role') !="User"?*/ 15/*:0*/,
+                    ),
+                    /*sp.read('role') !="User"?*/ CustomTextFields(
+                      labelText: "Referral code",
+                      keyBoardType: true,
+                      controller: controller.referralCodeController,
                       ignoredValidation: true,
                     ),
 

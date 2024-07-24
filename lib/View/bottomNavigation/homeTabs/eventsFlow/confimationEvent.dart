@@ -35,7 +35,9 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
     tax = double.parse(_controller.hourlyRateController.text)*5/100;
     groovkinTax = double.parse(_controller.hourlyRateController.text)*5/100;
     stripeTax = double.parse(_controller.hourlyRateController.text)*10/100;
-    balanceDue = double.parse(_controller.hourlyRateController.text) - (downPayment!+ tax!+groovkinTax!+stripeTax!);
+    num aa = (downPayment!+ tax!+ groovkinTax!+ stripeTax!);
+    print(aa);
+    balanceDue =(downPayment!+ tax!+groovkinTax!+stripeTax!) -  double.parse(_controller.hourlyRateController.text);
   }
 
   // AuthController _authController = Get.find();
@@ -43,7 +45,18 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Confirmation",),
+      appBar: customAppBar(theme: theme,text: "Confirmation",
+          actions: [
+            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _controller.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -56,14 +69,14 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
         SizedBox(
           height: 10,
     ),
-    Text(_controller.eventDetail != null?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName!,
+    Text(((_controller.eventDetail != null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName!,
     style: poppinsRegularStyle(
     fontSize: 14,
     context: context,
     color: theme.primaryColor,
     ),
     ),
-    Text(_controller.eventDetail != null?_controller.eventDetail!.data!.venue!.location!: _controller.venuesDetails!.location!,
+    Text(((_controller.eventDetail != null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.location!: _controller.venuesDetails!.location!,
     style: poppinsRegularStyle(
     fontSize: 14,
     context: context,

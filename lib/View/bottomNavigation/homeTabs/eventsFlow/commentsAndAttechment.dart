@@ -56,7 +56,18 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "",imagee: true,),
+      appBar: customAppBar(theme: theme,text: "",imagee: true,
+          actions: [
+            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+            GestureDetector(
+              onTap: (){
+                _controller.postEventFunction(context,theme,draft: true);
+              },
+              child: Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.drafts),),
+            ):SizedBox.shrink()]
+      ),
       body: GetBuilder<ManagerController>(
         builder: (controller) {
           return Padding(
@@ -109,16 +120,16 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                       ),
                       child: Column(
                         children: [
-                          _controller.imageListtt.isNotEmpty || controller.mediaClass.isNotEmpty? SizedBox(
+                          ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false)) || controller.mediaClass.isNotEmpty? SizedBox(
                             height: 180,
                             width: Get.width,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
-                                itemCount: controller.mediaClass.isNotEmpty?
+                                itemCount: ((controller.mediaClass.isNotEmpty))?
                                 controller.mediaClass.length:_controller.imageListtt.length,
                                 itemBuilder: (BuildContext context, index) {
-                                  return _assetImage(
+                                  return assetImage(
                                     eventController: _controller,
                                     controller: controller,
                                     mediaItem: controller.mediaClass.isNotEmpty?
@@ -178,8 +189,8 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
           borderClr: Colors.transparent,
           onTap: (){
             if(commentsForm.currentState!.validate()){
-              if(managerController.mediaClass.isNotEmpty || _controller.imageListtt.isNotEmpty){
-                if(_controller.eventDetail !=null){
+              if(managerController.mediaClass.isNotEmpty || ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false))){
+                if(_controller.eventDetail !=null && _controller.eventDetail!.data!.location != null){
                   Get.toNamed(Routes.eventPreview,
                   arguments: {
                     "viewDetails": 1
@@ -304,7 +315,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
 }
 
 
-_assetImage({eventController,controller, mediaItem}){
+assetImage({eventController,controller, mediaItem, bool closedIcon = true}){
   return Stack(
     alignment: Alignment.center,
     children: [
@@ -323,9 +334,9 @@ _assetImage({eventController,controller, mediaItem}){
                       ? FileImage(File(mediaItem.thumbnail.toString()))
                       : NetworkImage(mediaItem.mediaPath.toString())
                   as ImageProvider)),
-          child: GestureDetector(
+          child: closedIcon == false?SizedBox.shrink(): GestureDetector(
             onTap: (){
-              if(mediaItem!.thumbnail == null ){
+              if(mediaItem!.thumbnail == null){
                 print("tapping123");
               }else{
                 if(mediaItem.id == null){
@@ -378,7 +389,7 @@ _assetImage({eventController,controller, mediaItem}){
             }
             // controller.mediaClass.remove(mediaItem);
           },
-          child: Align(
+          child:closedIcon == false?SizedBox.shrink(): Align(
             alignment: Alignment.topRight,
             child: CircleAvatar(
                 radius: 15,
@@ -388,9 +399,9 @@ _assetImage({eventController,controller, mediaItem}){
         ),
 
       ),
-
       mediaItem.thumbnail ==null?
       SizedBox.shrink():
+      closedIcon ==false?SizedBox.shrink():
       GestureDetector(
         onTap: (){
           Get.toNamed(Routes.videoPlayerClass, arguments: {

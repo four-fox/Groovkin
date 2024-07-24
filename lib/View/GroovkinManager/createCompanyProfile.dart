@@ -86,7 +86,7 @@ class _CreateCompanyProfileScreenState extends State<CreateCompanyProfileScreen>
                   ),
                 ),
               ):SizedBox.shrink(),
-                Text("Create your company profile",
+                Text("Add a new venue",
                 style: poppinsMediumStyle(
                   fontSize: 17,
                   color: theme.primaryColor,
@@ -143,11 +143,12 @@ class _CreateCompanyProfileScreenState extends State<CreateCompanyProfileScreen>
                     GestureDetector(
                       onTap: (){
                         if((controller.mediaClass.isEmpty) || (controller.profilePictures.isEmpty)){
-                          if(Platform.isAndroid){
-                            controller.pickFile();
-                          }else{
-                            controller.pickFileee();
-                          }
+                          controller.pickFile();
+                          // if(Platform.isAndroid){
+                          //   controller.pickFile();
+                          // }else{
+                          //   controller.pickFileee();
+                          // }
                         }
                       },
                       child: DottedBorder(
