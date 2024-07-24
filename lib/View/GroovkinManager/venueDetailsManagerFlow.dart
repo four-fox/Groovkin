@@ -38,14 +38,14 @@ class VenueDetailsManagerScreen extends StatelessWidget {
         builder: (controller) {
           latAssign.value = double.parse(controller.lat);
           lngAssign.value = double.parse(controller.lng);
-          print("object789");
-          print(controller.lat);
-          print(controller.lng);
-          print("object789");
-          print("object789");
-          print(_controller.lat);
-          print(_controller.lng);
-          print("object789");
+          // print("object789");
+          // print(controller.lat);
+          // print(controller.lng);
+          // print("object789");
+          // print("object789");
+          // print(_controller.lat);
+          // print(_controller.lng);
+          // print("object789");
           return SingleChildScrollView(
             child: Column(
               children: [
