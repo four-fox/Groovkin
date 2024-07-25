@@ -173,6 +173,7 @@ class MapLocationPicker extends StatefulWidget {
   String? initAddress;
   GestureTapCallback? onTappp;
   bool onTapShow = false;
+  GestureTapCallback? nextPage;
   MapLocationPicker({
     Key? key,
     this.desiredAccuracy = LocationAccuracy.high,
@@ -181,6 +182,7 @@ class MapLocationPicker extends StatefulWidget {
     this.lat,
     this.onTappp,
     this.onTapShow = false,
+    this.nextPage,
     this.long,
     this.geoCodingHttpClient,
     this.geoCodingApiHeaders,
@@ -717,9 +719,10 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                       onPressed: () async {
                                         widget.onNext.call(_geocodingResult);
                                         if (widget.canPopOnNextButtonTaped) {
-                                          Navigator.pop(context);
                                           if(widget.backBtnn == true){
                                             Navigator.pop(context);
+                                          }else{
+                                            widget.nextPage;
                                           }
                                         }
                                       },

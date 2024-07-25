@@ -163,9 +163,9 @@ class CreateProfile extends StatelessWidget {
                     ),
 
                     SizedBox(
-                      height: sp.read("role")=="User"? 15:0,
+                      height: 15,
                     ),
-                    sp.read("role")=="User"? TextField(
+                    TextField(
                       keyboardType: TextInputType.none,
                       style:poppinsRegularStyle(
                           context: context,
@@ -264,7 +264,7 @@ class CreateProfile extends StatelessWidget {
                         ),
                       )
                       ),
-                    ):SizedBox.shrink(),
+                    ),
                     SizedBox(
                       height: 15,
                     ),

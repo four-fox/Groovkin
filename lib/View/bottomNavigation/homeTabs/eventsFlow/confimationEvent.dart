@@ -27,17 +27,42 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   num? groovkinTax;
   num? stripeTax;
   num? balanceDue;
+  num? subTotalWithText;
+  num? subTotal;
+  double? hoursDifference;
+
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    downPayment =double.parse(_controller.hourlyRateController.text)*double.parse(_controller.paymentSchedule!.value)/100;
-    tax = double.parse(_controller.hourlyRateController.text)*5/100;
-    groovkinTax = double.parse(_controller.hourlyRateController.text)*5/100;
-    stripeTax = double.parse(_controller.hourlyRateController.text)*10/100;
-    num aa = (downPayment!+ tax!+ groovkinTax!+ stripeTax!);
-    print(aa);
-    balanceDue =(downPayment!+ tax!+groovkinTax!+stripeTax!) -  double.parse(_controller.hourlyRateController.text);
+    String startStr = '${_controller.datePost} ${_controller.postTime}';
+    String endStr = '${_controller.endDatePost} ${_controller.postEndTime}';
+    DateTime startDt = DateTime.parse(startStr);
+    DateTime endDt = DateTime.parse(endStr);
+    Duration difference = endDt.difference(startDt);
+    hoursDifference = difference.inSeconds / 3600;
+    if(_controller.rateType!.value == "hourly"){
+      subTotal = double.parse(_controller.hourlyRateController.text)*hoursDifference!;
+      double tempDownPayment = (subTotal!*
+          (double.parse(_controller.paymentSchedule!.value)/100));
+      stripeTax = 0.10*subTotal!;
+      groovkinTax = 0.05*subTotal!;
+      subTotalWithText = subTotal!+(0.20*subTotal!);
+      tax = 0.05*subTotal!;
+      downPayment =tempDownPayment+(0.20*subTotal!);
+      balanceDue = subTotalWithText! - downPayment!;
+    }else{
+      subTotal = double.parse(_controller.hourlyRateController.text);
+      double tempDownPayment = (subTotal!*
+          (double.parse(_controller.paymentSchedule!.value)/100));
+      stripeTax = 0.10*subTotal!;
+      groovkinTax = 0.05*subTotal!;
+      subTotalWithText = subTotal!+(0.20*subTotal!);
+      tax = 0.05*subTotal!;
+      downPayment =tempDownPayment+(0.20*subTotal!);
+      balanceDue = subTotalWithText! - downPayment!;
+    }
   }
 
   // AuthController _authController = Get.find();
@@ -94,27 +119,32 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
             SizedBox(
               height: 10,
             ),
-            customWidget(theme: theme,context: context,title: "Subtotal",value: "\$ ${_controller.hourlyRateController.text}"),
+            customWidget(theme: theme,context: context,title: "No. hours",value: hoursDifference!.toStringAsFixed(2)),
             SizedBox(
               height: 10,
             ),
-            customWidget(theme: theme,context: context,title: "${_controller.paymentSchedule!.value}% Down Payment",value: "\$$downPayment"),
+            customWidget(theme: theme,context: context,title: "Subtotal",value: "\$ ${subTotal!.toStringAsFixed(2)}"),
             SizedBox(
               height: 10,
             ),
-            customWidget(theme: theme,context: context,title: "Tax (5%) ",value: "\$$tax"),
+
+            customWidget(theme: theme,context: context,title: "Tax (5%) ",value: "\$${tax!.toStringAsFixed(2)}"),
             SizedBox(
               height: 10,
             ),
-            customWidget(theme: theme,context: context,title: "Groovkin Tax(5%)",value: "\$$groovkinTax"),
+            customWidget(theme: theme,context: context,title: "Groovkin Tax(5%)",value: "\$${groovkinTax!.toStringAsFixed(2)}"),
             SizedBox(
               height: 10,
             ),
-            customWidget(theme: theme,context: context,title: "Stripe Tax(10%)",value: "\$$stripeTax"),
+            customWidget(theme: theme,context: context,title: "Stripe Tax(10%)",value: "\$${stripeTax!.toStringAsFixed(2)}"),
             SizedBox(
               height: 10,
             ),
-            customWidget(theme: theme,context: context,title: "Balance Due",value: "\$$balanceDue"),
+            customWidget(theme: theme,context: context,title: "Down Payment Inc. Tax",value: "\$${downPayment!.toStringAsFixed(2)}"),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(theme: theme,context: context,title: "Balance Due",value: "\$${balanceDue!.toStringAsFixed(2)}"),
             SizedBox(
               height: 10,
             ),

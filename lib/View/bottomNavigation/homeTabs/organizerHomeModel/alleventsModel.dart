@@ -919,6 +919,8 @@ class Venue {
   String? createdAt;
   String? updatedAt;
   User? user;
+  Following? following;
+  Following? follower;
   List<BannerImage>? profilePicture;
 
   Venue({
@@ -936,6 +938,8 @@ class Venue {
     this.updatedAt,
     this.user,
     this.profilePicture,
+    this.following,
+    this.follower,
   });
 
   factory Venue.fromJson(Map<String, dynamic> json) => Venue(
@@ -951,6 +955,8 @@ class Venue {
     userId: json["user_id"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
+    following: json["following"] == null ? null : Following.fromJson(json["following"]),
+    follower: json["follower"] == null ? null : Following.fromJson(json["follower"]),
     user: json["user"] == null ? null : User.fromJson(json["user"]),
     profilePicture: json["profile_picture"] == null ? [] : List<BannerImage>.from(json["profile_picture"]!.map((x) => BannerImage.fromJson(x))),
   );

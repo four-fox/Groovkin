@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 
 UserEventDetailsModel userEventDetailsModelFromJson(String str) => UserEventDetailsModel.fromJson(json.decode(str));
@@ -72,7 +73,7 @@ class EventDetails {
   Venue? venue;
   List<BannerImage>? profilePicture;
   BannerImage? bannerImage;
-  DataUser? user;
+  User? user;
   List<Service>? services;
   List<HardwareProvide>? hardwareProvide;
   List<MusicGenre>? musicGenre;
@@ -157,7 +158,7 @@ class EventDetails {
     venue: json["venue"] == null ? null : Venue.fromJson(json["venue"]),
     profilePicture: json["profile_picture"] == null ? [] : List<BannerImage>.from(json["profile_picture"]!.map((x) => BannerImage.fromJson(x))),
     bannerImage: json["banner_image"] == null ? null : BannerImage.fromJson(json["banner_image"]),
-    user: json["user"] == null ? null : DataUser.fromJson(json["user"]),
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
     services: json["services"] == null ? [] : List<Service>.from(json["services"]!.map((x) => Service.fromJson(x))),
     hardwareProvide: json["hardware_provide"] == null ? [] : List<HardwareProvide>.from(json["hardware_provide"]!.map((x) => HardwareProvide.fromJson(x))),
     musicGenre: json["music_genre"] == null ? [] : List<MusicGenre>.from(json["music_genre"]!.map((x) => MusicGenre.fromJson(x))),
@@ -595,129 +596,5 @@ class EventItem {
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
     "category_items": categoryItems == null ? [] : List<dynamic>.from(categoryItems!.map((x) => x)),
-  };
-}
-
-class DataUser {
-  int? id;
-  String? name;
-  String? email;
-  String? deviceToken;
-  dynamic emailVerifiedAt;
-  dynamic otp;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  PurpleProfile? profile;
-
-  DataUser({
-    this.id,
-    this.name,
-    this.email,
-    this.deviceToken,
-    this.emailVerifiedAt,
-    this.otp,
-    this.createdAt,
-    this.updatedAt,
-    this.profile,
-  });
-
-  factory DataUser.fromJson(Map<String, dynamic> json) => DataUser(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    deviceToken: json["device_token"],
-    emailVerifiedAt: json["email_verified_at"],
-    otp: json["otp"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    profile: json["profile"] == null ? null : PurpleProfile.fromJson(json["profile"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "device_token": deviceToken,
-    "email_verified_at": emailVerifiedAt,
-    "otp": otp,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "profile": profile?.toJson(),
-  };
-}
-
-class PurpleProfile {
-  int? id;
-  String? firstName;
-  String? lastName;
-  dynamic birthYear;
-  String? phoneNumber;
-  dynamic companyName;
-  String? country;
-  String? selectState;
-  dynamic location;
-  String? about;
-  dynamic latitude;
-  dynamic longitude;
-  int? isInsurance;
-  int? userId;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-
-  PurpleProfile({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.birthYear,
-    this.phoneNumber,
-    this.companyName,
-    this.country,
-    this.selectState,
-    this.location,
-    this.about,
-    this.latitude,
-    this.longitude,
-    this.isInsurance,
-    this.userId,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory PurpleProfile.fromJson(Map<String, dynamic> json) => PurpleProfile(
-    id: json["id"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    birthYear: json["birth_year"],
-    phoneNumber: json["phone_number"],
-    companyName: json["company_name"],
-    country: json["country"],
-    selectState: json["select_state"],
-    location: json["location"],
-    about: json["about"],
-    latitude: json["latitude"],
-    longitude: json["longitude"],
-    isInsurance: json["is_insurance"],
-    userId: json["user_id"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "first_name": firstName,
-    "last_name": lastName,
-    "birth_year": birthYear,
-    "phone_number": phoneNumber,
-    "company_name": companyName,
-    "country": country,
-    "select_state": selectState,
-    "location": location,
-    "about": about,
-    "latitude": latitude,
-    "longitude": longitude,
-    "is_insurance": isInsurance,
-    "user_id": userId,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
   };
 }

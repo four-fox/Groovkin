@@ -238,7 +238,7 @@ class UpcomingEvents extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              API().sp.read('role') == "eventOrganizer"? Padding(
+             /* API().sp.read('role') == "eventOrganizer"? Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
@@ -335,7 +335,7 @@ class UpcomingEvents extends StatelessWidget {
               ):SizedBox.shrink(),
               SizedBox(
                 height: 10,
-              ),
+              ),*/
               sp.read("role") == "eventOrganizer"?  GestureDetector(
                 onTap: (){
                   Get.toNamed(Routes.myEventsScreen,

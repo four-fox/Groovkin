@@ -13,20 +13,44 @@ import 'package:groovkin/Components/showCustomMap.dart';
 import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:intl/intl.dart';
 
 
-class UpcomingScreen extends StatelessWidget {
+class UpcomingScreen extends StatefulWidget {
   UpcomingScreen({Key? key}) : super(key: key);
 
+  @override
+  State<UpcomingScreen> createState() => _UpcomingScreenState();
+}
+
+class _UpcomingScreenState extends State<UpcomingScreen> {
   int reportedEventPreview =Get.arguments['reportedEventView']?? 1;
+
   int flowBtn = Get.arguments['notInterestedBtn'];
+
   String appBarTitle = Get.arguments['appBarTitle'];
+
   RxBool organizerGuestVal = false.obs;
+
   int eventId = Get.arguments['eventId']??1;
 
   EventController _controller = Get.find();
+
+  late AuthController _authController;
+
+
+  @override
+  void initState() {
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -748,31 +772,44 @@ class UpcomingScreen extends StatelessWidget {
                 ),
                 sp.read('role')=="eventManager"?
                 SizedBox.shrink():
-                ((controller.eventDetail!.data!.profilePicture!.isEmpty) && (controller.venueImageList.isEmpty))?SizedBox.shrink():   aboutEventCreator(
-                      // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
+                ((controller.eventDetail!.data!.profilePicture!.isEmpty) && (controller.venueImageList.isEmpty))?SizedBox.shrink():
+                    Obx(()=>_authController.followingLoader.value == false?SizedBox.shrink(): aboutEventCreator(
+                        text: controller.eventDetail!.data!.venue!.user!.profile!.about.toString(),
                         horizontalPadding: 12,theme: theme,context: context,
-                        image:controller.eventDetail!.data!.profilePicture!.isNotEmpty?
-                        controller.eventDetail!.data!.profilePicture![0].thumbnail:controller.venueImageList[0],
-                        organizerName: controller.eventDetail!.data!.venue!.venueName.toString(),
+                        image: controller.eventDetail!.data!.venue!.user!.profilePicture ==null?
+                        groupPlaceholder:
+                        controller.eventDetail!.data!.venue!.user!.profilePicture!.mediaPath,
+                        organizerName: controller.eventDetail!.data!.venue!.user!.name.toString(),
                         icons: Icons.add,
                         followBg: DynamicColor.grayClr,
                         textClr: theme.primaryColor,
+                        authController: _authController,
+                        followText: controller.eventDetail!.data!.venue!.user!.following == null?"Follow":"Unfollow",
                         onTap: (){
+                          if(controller.eventDetail!.data!.venue!.user!.following == null){
+                            _authController.followUser(userData: controller.eventDetail!.data!.venue!.user,fromAllUser: false);
+                          }else{
+                            _authController.unfollow(userData: controller.eventDetail!.data!.venue!.user,fromAllUser: false);
+                          }
+                          controller.update();
                           // followBgClr.value = !followBgClr.value;
                         }
-                    ),
+                    ),),
                 sp.read('role')=="eventOrganizer"?SizedBox.shrink():
                     ourGuestWidget(
                         horizontalPadding: 12,
-                        networkImg: controller.eventDetail!.data!.profilePicture!.isNotEmpty?
-                        controller.eventDetail!.data!.profilePicture![0].thumbnail:
-                        controller.venueImageList[0],
+                        networkImg: controller.eventDetail!.data!.user!.profilePicture == null?
+                            groupPlaceholder:controller.eventDetail!.data!.user!.profilePicture!.mediaPath!,
                         venueOwner: controller.eventDetail!.data!.user!.name.toString(),
                         theme: theme,context: context,rowPadding: 0.0,avatarPadding: 6,rowVerticalPadding: 0.0,
                         followBgClr: DynamicColor.avatarBgClr,
                         textClr: theme.scaffoldBackgroundColor,
+                        followText: controller.eventDetail!.data!.user!.following == null?"Follow":"Unfollow",
+                        followOnTap:(){
+
+                        },
                         onTap: (){
-                          // followBgClr.value = !followBgClr.value;
+
                         }
                 ),
                 API().sp.read("role") == "eventOrganizer"? Row(
@@ -890,5 +927,4 @@ class UpcomingScreen extends StatelessWidget {
       ],
     );
   }
-
 }

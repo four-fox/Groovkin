@@ -12,22 +12,42 @@ import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userBottomNav.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-class UserEventDetailsScreen extends StatelessWidget {
+class UserEventDetailsScreen extends StatefulWidget {
   UserEventDetailsScreen({Key? key}) : super(key: key);
 
+  @override
+  State<UserEventDetailsScreen> createState() => _UserEventDetailsScreenState();
+}
+
+class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
   bool notifyBtnShow = Get.arguments['notify'];
+
   bool notifyBackBtn = Get.arguments['notifyBackBtn']??false;
 
   String? appBarTitle = Get.arguments['appBarTitle'];
 
   RxBool followBgClr = false.obs;
+
   String statusVal = Get.arguments['statusText'];
 
   EventController _controller = Get.find();
+
+  late AuthController _authController;
+
+  @override
+  void initState() {
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -508,29 +528,47 @@ class UserEventDetailsScreen extends StatelessWidget {
           ),
           sp.read('role')=="eventManager"?
           SizedBox.shrink(): Obx(() =>
-              aboutEventCreator(
+          _authController.followingLoader.value==false?SizedBox.shrink():  aboutEventCreator(
                 // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
                   horizontalPadding: 12,theme: theme,context: context,
-                  image: controller.eventDetail!.data!.profilePicture![0].thumbnail??controller.eventDetail!.data!.profilePicture![0].mediaPath.toString(),
+                  image: controller.eventDetail!.data!.venue!.user!.profilePicture ==null?
+                  groupPlaceholder:
+                  controller.eventDetail!.data!.venue!.user!.profilePicture!.mediaPath,
                   organizerName: controller.eventDetail!.data!.venue!.venueName.toString(),
-                  icons: followBgClr.value==true?Icons.check:Icons.add,
-                  followBg: followBgClr.value ==false?DynamicColor.avatarBgClr:DynamicColor.grayClr,
-                  textClr: followBgClr.value==true?theme.scaffoldBackgroundColor: theme.primaryColor,
+                  icons: controller.eventDetail!.data!.user!.following == null?Icons.check:Icons.add,
+                  followBg: controller.eventDetail!.data!.user!.following == null?DynamicColor.avatarBgClr:DynamicColor.grayClr,
+                  textClr: controller.eventDetail!.data!.user!.following != null?theme.scaffoldBackgroundColor: theme.primaryColor,
+                  followText: controller.eventDetail!.data!.user!.following == null?"Follow":"Unfollow",
                   onTap: (){
-                    followBgClr.value = !followBgClr.value;
+                    if(controller.eventDetail!.data!.user!.following == null){
+                      _authController.followUser(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                    }else{
+                      _authController.unfollow(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                    }
                   }
               ),),
           sp.read('role')=="eventOrganizer"?SizedBox.shrink(): Obx(() =>
+          _authController.followingLoader.value == false?SizedBox.shrink():
               ourGuestWidget(
                   horizontalPadding: 12,
-                  networkImg: controller.eventDetail!.data!.profilePicture![0].thumbnail??controller.eventDetail!.data!.profilePicture![0].mediaPath.toString(),
+                  networkImg: controller.eventDetail!.data!.user!.profilePicture ==null?
+                  groupPlaceholder:
+                  controller.eventDetail!.data!.user!.profilePicture!.mediaPath,
                   venueOwner: controller.eventDetail!.data!.user!.name.toString(),
                   theme: theme,context: context,rowPadding: 0.0,avatarPadding: 6,rowVerticalPadding: 0.0,
-                  followBgClr: followBgClr.value!= true ? DynamicColor.grayClr:DynamicColor.avatarBgClr,
-                  textClr: followBgClr.value==true ? theme.primaryColor:theme.scaffoldBackgroundColor,
-                  onTap: (){
-                    followBgClr.value = !followBgClr.value;
+                  followBgClr: controller.eventDetail!.data!.user!.following != null ? DynamicColor.grayClr:DynamicColor.avatarBgClr,
+                  textClr: controller.eventDetail!.data!.user!.following == null ? theme.primaryColor:theme.scaffoldBackgroundColor,
+                  followText: controller.eventDetail!.data!.user!.following ==null?"Follow":"Unfollow",
+                  followOnTap: (){
+                    if(controller.eventDetail!.data!.user!.following == null){
+                      _authController.followUser(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                    }else{
+                      _authController.unfollow(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                    }
                   }
+                  // onTap: (){
+                  //   followBgClr.value = !followBgClr.value;
+                  // }
               ),
           ),
 
@@ -567,7 +605,7 @@ class UserEventDetailsScreen extends StatelessWidget {
           SizedBox(
             height:notifyBtnShow==false?0: 10,
           ),
-          API().sp.read("role") != "User"?SizedBox.shrink():
+          API().sp.read("role") == "User"?SizedBox.shrink():
           controller.eventDetail!.data!.eventGoingOrInterested!.value == 1?
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -662,5 +700,4 @@ class UserEventDetailsScreen extends StatelessWidget {
     );
   }
 
-  List<String> list = ["assets/venue1.png","assets/venue2.png","assets/venue3.png","assets/venue1.png","assets/venue2.png","assets/venue3.png",];
 }

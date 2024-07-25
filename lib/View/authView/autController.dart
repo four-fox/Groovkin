@@ -93,7 +93,7 @@ class AuthController extends GetxController{
       "last_name": lastNameController.text,
       "email": emailController.text,
       "display_name": displayNameController.text,
-     if(API().sp.read("role") == "User") "birth_year": dobController.text,
+     /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
       "phone_number": phoneNumController.text,
       "password": passwordController.text,
      if(referralCodeController.text.isNotEmpty) "referral_code": referralCodeController.text,
@@ -360,7 +360,7 @@ class AuthController extends GetxController{
       "birth_year": dobController.text,
       "about": aboutController.text,
       if((API().sp.read("role") == "eventManager") && (companyNameController.text.isNotEmpty)) "company_name": companyNameController.text,
-      if(API().sp.read("role") == "User") "birth_year": dobController.text,
+      /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
       if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty) "select_state": stateController.text,
       if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty) "country": countryController.text,
       // if(API().sp.read("role") == "eventOrganizer") "company_name": "asdf",
@@ -712,26 +712,47 @@ class AuthController extends GetxController{
   }
 
   ///follow user
-  followUser({User? userData}) async{
+  RxBool followingLoader = true.obs;
+  followUser({User? userData, bool fromAllUser = true}) async{
+    followingLoader(false);
     var formData = form.FormData.fromMap({
       "follower_id": userData!.id,
       "type": userData.role.toString(),
     });
     var response = await API().postApi(formData, "follow");
     if(response.statusCode == 200){
-      allUnFollower!.data!.data!.remove(userData);
+      if(fromAllUser == true){
+        allUnFollower!.data!.data!.remove(userData);
+      }else{
+        userData.following = Following(
+          id: -12,
+          userId: -2,
+          followerId: -12,
+          type: "",
+          status: "",
+          createdAt: "",
+          updatedAt: "",
+        );
+      }
+      followingLoader(true);
       update();
     }
   }
 
   /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> unfollow
-  unfollow({User? userData}) async{
+  unfollow({User? userData, bool fromAllUser = true}) async{
+    followingLoader(false);
     var formData = form.FormData.fromMap({
       "follower_id": userData!.id
     });
     var response = await API().postApi(formData, "unfollow");
     if(response.statusCode == 200){
-      allUnFollower!.data!.data!.remove(userData);
+      if(fromAllUser == true){
+        allUnFollower!.data!.data!.remove(userData);
+      }else{
+        userData.following = null;
+      }
+      followingLoader(true);
       update();
     }
   }

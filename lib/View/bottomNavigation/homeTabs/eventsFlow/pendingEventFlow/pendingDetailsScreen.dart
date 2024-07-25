@@ -469,7 +469,7 @@ class PendingEventDetails extends StatelessWidget {
                   ),),
                   sp.read('role')=="eventOrganizer"?SizedBox.shrink(): Obx(() =>
                       ourGuestWidget(
-                        networkImg: controller.eventDetail!.data!.profilePicture![0].thumbnail != null? controller.eventDetail!.data!.profilePicture![0].thumbnail:controller.eventDetail!.data!.profilePicture![0].mediaPath.toString(),
+                        networkImg: controller.eventDetail!.data!.user!.profilePicture ==null?groupPlaceholder:controller.eventDetail!.data!.user!.profilePicture!.mediaPath.toString(),
                           venueOwner: controller.eventDetail!.data!.user!.name.toString(),
                 theme: theme,context: context,horizontalPadding: 0.0,rowPadding: 0.0,avatarPadding: 6,rowVerticalPadding: 0.0,
                           followBgClr: organizerGuestVal.value != true ? DynamicColor.grayClr:DynamicColor.avatarBgClr,

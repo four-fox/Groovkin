@@ -105,8 +105,9 @@ eventsTitles({text}) {
   );
 }
 
-aboutEventCreator({String? image, theme,context,title,text,double? horizontalPadding,organizerName,followBg,GestureTapCallback? onTap,
-textClr,GestureTapCallback? rowOnTap,String roleType = "Event Organizer", IconData? icons
+aboutEventCreator({String? image,String? followText, theme,context,title,text,double? horizontalPadding,organizerName,followBg,GestureTapCallback? onTap,
+textClr,GestureTapCallback? rowOnTap,String roleType = "Event Organizer", IconData? icons,
+authController
 }) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal:horizontalPadding?? 10.0),
@@ -194,28 +195,22 @@ textClr,GestureTapCallback? rowOnTap,String roleType = "Event Organizer", IconDa
                   child: Align(
                     alignment: Alignment.bottomRight,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(10),
-                          ),
-                          color:followBg
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(icons??Icons.add,
-                              size: 25,
-                              color:textClr
-                          ),
-                          Text("Follow",
+                        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(10),
+                            ),
+                            color:followBg
+                        ),
+                        child: Center(
+                          child: Text(followText??"Follow",
                             style: poppinsRegularStyle(
                               fontSize: 14,
                               context: context,
                               color:textClr,
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
                     ),
                   ),
                 ),
@@ -229,7 +224,7 @@ textClr,GestureTapCallback? rowOnTap,String roleType = "Event Organizer", IconDa
 }
 
 
-ourGuestWidget({String? networkImg,double? followPadding = 0,theme,context,img,textTitle,venueOwner,GestureTapCallback? onTap,Color? bgClr,double? horizontalPadding,bool iconShow = false,double? verticalPadding,
+ourGuestWidget({String? networkImg,String? followText,double? followPadding = 0,theme,context,img,textTitle,venueOwner,GestureTapCallback? onTap,Color? bgClr,double? horizontalPadding,bool iconShow = false,double? verticalPadding,
  double? rowPadding,double?rowVerticalPadding,double? avatarPadding,Color? textClr,Color?followBgClr,IconData? icon,
   GestureTapCallback?followOnTap
 }){
@@ -305,22 +300,19 @@ ourGuestWidget({String? networkImg,double? followPadding = 0,theme,context,img,t
                       ),
                       color:followBgClr?? DynamicColor.avatarBgClr
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      iconShow==false? Icon(icon??Icons.add,
-                        size: 25,
-                        color:textClr?? theme.primaryColor,
-                      ):SizedBox.shrink(),
-                      Text("Follow",
+
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(followText??"Follow",
                         style: poppinsRegularStyle(
                           fontSize: 14,
                           context: context,
                           color:textClr?? theme.primaryColor,
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  )
                 ),
               ),
             ),

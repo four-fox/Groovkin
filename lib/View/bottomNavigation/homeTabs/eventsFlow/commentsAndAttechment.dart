@@ -189,7 +189,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
           borderClr: Colors.transparent,
           onTap: (){
             if(commentsForm.currentState!.validate()){
-              if(managerController.mediaClass.isNotEmpty || ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false))){
+              // if(managerController.mediaClass.isNotEmpty || ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false))){
                 if(_controller.eventDetail !=null && _controller.eventDetail!.data!.location != null){
                   Get.toNamed(Routes.eventPreview,
                   arguments: {
@@ -223,6 +223,10 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                             // canPopOnNextButtonTaped: true,
                             latLng: managerController.latLng,
                             initAddress: managerController.address,
+                              nextPage:(){
+                                Get.toNamed(Routes.listOfVenuesScreen);
+                                managerController.update();
+                              },
                             onNext: (GeocodingResult? result) {
                               if (result != null) {
                                 managerController.lat = result
@@ -301,9 +305,9 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                     ),
                   );
                 }
-              }else{
-                bottomToast(text: "Please choose image");
-              }
+              // }else{
+              //   bottomToast(text: "Please choose image");
+              // }
             }
             // Get.toNamed(Routes.confirmationEventScreen);
           },

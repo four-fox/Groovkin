@@ -264,8 +264,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                   SizedBox(
                     height: 15,
                   ),
-
-                  sp.read("role")=="User"? Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: TextField(
                       keyboardType: TextInputType.none,
@@ -311,7 +310,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                             onTap: () async {
 
                               Get.bottomSheet(Container(
-                                color: theme.primaryColor,
+                                color: theme.scaffoldBackgroundColor,
                                 height: kToolbarHeight*3,
                                 child: ListView.builder(
                                     itemCount: dobYear.length,
@@ -325,7 +324,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                           children: [
                                             Text(dobYear[index].toString()),
                                             Divider(
-                                              color: theme.scaffoldBackgroundColor,
+                                              color: theme.primaryColor,
                                             )
                                           ],
                                         ),
@@ -363,10 +362,10 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           )
                       ),
                     ),
-                  ):SizedBox.shrink(),
+                  ),
 
                   SizedBox(
-                    height:API().sp.read("role") != "eventOrganizer"? 15:0,
+                    height: 15,
                   ),
                   sp.read("role")=="eventOrganizer"? Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
