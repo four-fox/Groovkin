@@ -912,7 +912,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          eventData.venue!.venueName.toString(),
+                                          eventData.eventTitle.toString(),
                                           style: poppinsRegularStyle(
                                               fontSize: 12,
                                               context: context,

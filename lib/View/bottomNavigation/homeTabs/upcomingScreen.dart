@@ -162,7 +162,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        _controller.eventDetail!.data!.venue ==null?SizedBox.shrink(): Text(_controller.eventDetail!.data!.venue!.location.toString(),
+                                        _controller.eventDetail!.data!.venue ==null?SizedBox.shrink():
+                                        Text(_controller.eventDetail!.data!.venue!.location.toString(),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: poppinsRegularStyle(fontSize: 12,context: context,color: theme.primaryColor,
@@ -773,7 +774,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 sp.read('role')=="eventManager"?
                 SizedBox.shrink():
                 ((controller.eventDetail!.data!.profilePicture!.isEmpty) && (controller.venueImageList.isEmpty))?SizedBox.shrink():
-                    Obx(()=>_authController.followingLoader.value == false?SizedBox.shrink(): aboutEventCreator(
+                    Obx(()=>_authController.followingLoader.value == false?SizedBox.shrink():controller.eventDetail!.data!.venue ==null?SizedBox.shrink():
+                    aboutEventCreator(
                         text: controller.eventDetail!.data!.venue!.user!.profile!.about.toString(),
                         horizontalPadding: 12,theme: theme,context: context,
                         image: controller.eventDetail!.data!.venue!.user!.profilePicture ==null?
@@ -796,22 +798,29 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         }
                     ),),
                 sp.read('role')=="eventOrganizer"?SizedBox.shrink():
-                    ourGuestWidget(
-                        horizontalPadding: 12,
-                        networkImg: controller.eventDetail!.data!.user!.profilePicture == null?
-                            groupPlaceholder:controller.eventDetail!.data!.user!.profilePicture!.mediaPath!,
-                        venueOwner: controller.eventDetail!.data!.user!.name.toString(),
-                        theme: theme,context: context,rowPadding: 0.0,avatarPadding: 6,rowVerticalPadding: 0.0,
-                        followBgClr: DynamicColor.avatarBgClr,
-                        textClr: theme.scaffoldBackgroundColor,
-                        followText: controller.eventDetail!.data!.user!.following == null?"Follow":"Unfollow",
-                        followOnTap:(){
+                   Obx(()=>_authController.followingLoader.value==false?SizedBox.shrink():
+                       ourGuestWidget(
+                           horizontalPadding: 12,
+                           networkImg: controller.eventDetail!.data!.user!.profilePicture == null?
+                           groupPlaceholder:controller.eventDetail!.data!.user!.profilePicture!.mediaPath!,
+                           venueOwner: controller.eventDetail!.data!.user!.name.toString(),
+                           theme: theme,context: context,rowPadding: 0.0,avatarPadding: 6,rowVerticalPadding: 0.0,
+                           followBgClr:controller.eventDetail!.data!.user!.following != null?theme.primaryColor: DynamicColor.avatarBgClr,
+                           textClr:controller.eventDetail!.data!.user!.following == null?theme.primaryColor: theme.scaffoldBackgroundColor,
+                           followText: controller.eventDetail!.data!.user!.following == null?"Follow":"Unfollow",
+                           followOnTap:(){
+                             if(controller.eventDetail!.data!.user!.following == null){
+                               _authController.followUser(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                             }else{
+                               _authController.unfollow(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                             }
+                             controller.update();
+                           },
+                           onTap: (){
 
-                        },
-                        onTap: (){
-
-                        }
-                ),
+                           }
+                       ),
+                   ),
                 API().sp.read("role") == "eventOrganizer"? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -836,7 +845,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
         );
       }
     ),
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: API().sp.read("role") != "eventOrganizer"?
+      SizedBox.shrink():
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0,vertical: 3),
         child: CustomButton(
           borderClr: Colors.transparent,

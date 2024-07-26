@@ -221,16 +221,16 @@ child: ListView.builder(
               lat: double.parse(((_controller.eventDetail !=null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.latitude!: _managerController.lat),
               lng: double.parse(((_controller.eventDetail !=null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.longitude!: _managerController.lng),
             ),
-         Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
-             avatarPadding: 8,
-             rowVerticalPadding: 0.0,
-             icon: eventVal.value?Icons.check:Icons.add,
-             textClr: eventVal.value?theme.scaffoldBackgroundColor:theme.primaryColor,
-             followBgClr: eventVal.value?DynamicColor.grayClr:DynamicColor.avatarBgClr,
-             onTap: (){
-               eventVal.value = !eventVal.value;
-             }
-         ),),
+         // Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
+         //     avatarPadding: 8,
+         //     rowVerticalPadding: 0.0,
+         //     icon: eventVal.value?Icons.check:Icons.add,
+         //     textClr: eventVal.value?theme.scaffoldBackgroundColor:theme.primaryColor,
+         //     followBgClr: eventVal.value?DynamicColor.grayClr:DynamicColor.avatarBgClr,
+         //     onTap: (){
+         //       eventVal.value = !eventVal.value;
+         //     }
+         // ),),
            customContainer(context, theme),
            customContainer(context, theme,title: "Featuring",text: _controller.featuringController.text),
            customContainer(context, theme,title: "About",text: _controller.aboutController.text),

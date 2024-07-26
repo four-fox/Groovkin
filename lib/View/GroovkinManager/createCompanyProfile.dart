@@ -489,6 +489,7 @@ class _CreateCompanyProfileScreenState extends State<CreateCompanyProfileScreen>
                             builder: (context) {
                               return
                                 MapLocationPicker(
+                                    backBtnn: true,
                                   // hideLocation: true,
                                   // lat: double.parse(eventData.latitude.toString()),
                                   // long: double.parse(eventData.longitude.toString()),

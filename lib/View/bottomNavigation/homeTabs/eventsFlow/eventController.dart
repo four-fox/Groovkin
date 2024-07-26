@@ -393,7 +393,6 @@ class EventController extends GetxController{
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
   editEventFunction() async{
-
     AuthController _authController = Get.find();
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
@@ -441,7 +440,7 @@ class EventController extends GetxController{
       if(mediaList.isNotEmpty)"image[]": mediaList,
       if(imageList.isNotEmpty)"banner_image[]": imageList,
       "service_id[]": service,
-      // "venue_id": eventDetail!.data!.venueId
+      "venue_id": eventDetail!.data!.venueId
     });
 
     /// todo hardware params
@@ -670,7 +669,7 @@ class EventController extends GetxController{
   eventDetails({eventId}) async{
     eventDetailsLoader(false);
     duplicateValue(false);
-    duplicateValue(false);
+    draftValue(false);
     var response = await API().getApi(url: "event-details/$eventId");
     if(response.statusCode == 200){
       eventDetail = UserEventDetailsModel.fromJson(response.data);

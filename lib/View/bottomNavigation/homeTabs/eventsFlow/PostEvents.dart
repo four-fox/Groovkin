@@ -121,7 +121,7 @@ class PendingScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(controller.allEvents!.data!.data![index].venue!.venueName!,
+                                Text(controller.allEvents!.data!.data![index].eventTitle!,
                                   style: poppinsRegularStyle(fontSize: 12,context: context,color: theme.primaryColor,
                                       fontWeight: FontWeight.w600),
                                 ),

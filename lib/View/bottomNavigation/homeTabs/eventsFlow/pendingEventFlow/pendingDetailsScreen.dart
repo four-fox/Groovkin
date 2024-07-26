@@ -12,21 +12,44 @@ import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 import 'package:intl/intl.dart';
 
-class PendingEventDetails extends StatelessWidget {
+class PendingEventDetails extends StatefulWidget {
   PendingEventDetails({Key? key}) : super(key: key);
 
+  @override
+  State<PendingEventDetails> createState() => _PendingEventDetailsState();
+}
+
+class _PendingEventDetailsState extends State<PendingEventDetails> {
   int flowBtn = Get.arguments['notInterestedBtn'];
+
   String titleText = Get.arguments['title'];
+
   int eventId = Get.arguments['eventId'];
+
   RxBool organizerFollowVal = false.obs;
+
   RxBool organizerGuestVal = false.obs;
 
   ManagerController _controller = Get.find();
+
   EventController _eventController = Get.find();
+
+  late AuthController _authController;
+
+  @override
+  void initState() {
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +138,7 @@ class PendingEventDetails extends StatelessWidget {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(controller.eventDetail!.data!.venue!.venueName!,
+                                        Text(controller.eventDetail!.data!.eventTitle!,
                                           style: poppinsRegularStyle(fontSize: 12,context: context,color: theme.primaryColor,
                                               fontWeight: FontWeight.w600),
                                         ),
@@ -454,28 +477,39 @@ class PendingEventDetails extends StatelessWidget {
                   customWidget(context,theme,title: "Featuring",value: controller.eventDetail!.data!.featuring.toString()),
                   sp.read('role')=="eventManager"?
                   SizedBox.shrink(): Obx(() =>
-                      aboutEventCreator(
+                  _authController.followingLoader.value == false?SizedBox.shrink(): aboutEventCreator(
                           // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
                           horizontalPadding: 0,theme: theme,context: context,
-                      image: controller.eventDetail!.data!.profilePicture![0].thumbnail != null? controller.eventDetail!.data!.profilePicture![0].thumbnail:controller.eventDetail!.data!.profilePicture![0].mediaPath.toString(),
+                      image: controller.eventDetail!.data!.venue!.user!.profilePicture != null?
+                      controller.eventDetail!.data!.venue!.user!.profilePicture!.mediaPath.toString():groupPlaceholder,
                       organizerName: controller.eventDetail!.data!.venue!.venueName.toString(),
-                      icons: organizerFollowVal.value==true?Icons.check:Icons.add,
-                      followBg: organizerFollowVal.value ==false?DynamicColor.avatarBgClr:DynamicColor.grayClr,
-                      textClr: organizerFollowVal.value==true?theme.scaffoldBackgroundColor:theme.primaryColor,
+                      icons: controller.eventDetail!.data!.venue!.user!.following==null?Icons.check:Icons.add,
+                      followBg: controller.eventDetail!.data!.venue!.user!.following!=null?DynamicColor.avatarBgClr:DynamicColor.grayClr,
+                      textClr: controller.eventDetail!.data!.venue!.user!.following==null?theme.scaffoldBackgroundColor:theme.primaryColor,
                           text: controller.eventDetail!.data!.venue!.user!.profile!.about.toString(),
-                      onTap: (){
-                        organizerFollowVal.value = !organizerFollowVal.value;
-                      }
+                         followText: controller.eventDetail!.data!.venue!.user!.following==null?"Follow":"Unfollow",
+                          onTap: (){
+                            if(controller.eventDetail!.data!.venue!.user!.following == null){
+                              _authController.followUser(userData: controller.eventDetail!.data!.venue!.user,fromAllUser: false);
+                            }else{
+                              _authController.unfollow(userData: controller.eventDetail!.data!.venue!.user,fromAllUser: false);
+                            }
+                          }
                   ),),
                   sp.read('role')=="eventOrganizer"?SizedBox.shrink(): Obx(() =>
-                      ourGuestWidget(
+                  _authController.followingLoader.value == false?SizedBox.shrink(): ourGuestWidget(
                         networkImg: controller.eventDetail!.data!.user!.profilePicture ==null?groupPlaceholder:controller.eventDetail!.data!.user!.profilePicture!.mediaPath.toString(),
                           venueOwner: controller.eventDetail!.data!.user!.name.toString(),
                 theme: theme,context: context,horizontalPadding: 0.0,rowPadding: 0.0,avatarPadding: 6,rowVerticalPadding: 0.0,
-                          followBgClr: organizerGuestVal.value != true ? DynamicColor.grayClr:DynamicColor.avatarBgClr,
-                          textClr: organizerGuestVal.value==true ? theme.primaryColor:theme.scaffoldBackgroundColor,
+                          followBgClr: controller.eventDetail!.data!.user!.following != null ? DynamicColor.grayClr:DynamicColor.avatarBgClr,
+                          textClr: controller.eventDetail!.data!.user!.following == null ? theme.primaryColor:theme.scaffoldBackgroundColor,
+                      followText: controller.eventDetail!.data!.user!.following==null?"Follow":"Unfollow",
                           onTap: (){
-                            organizerGuestVal.value = !organizerGuestVal.value;
+                            if(controller.eventDetail!.data!.user!.following == null){
+                              _authController.followUser(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                            }else{
+                              _authController.unfollow(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                            }
                           }
                       ),
                   ),
@@ -878,9 +912,7 @@ class PendingEventDetails extends StatelessWidget {
     );
   }
 
-
   List list = [false.obs,false.obs,false.obs,];
-
 
   Widget customWidget(context,theme, {title, value}){
     return Column(

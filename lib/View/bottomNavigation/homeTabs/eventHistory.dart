@@ -119,12 +119,12 @@ class PostEvents extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              singleEvent.venue!.venueName!,
+                                              singleEvent.eventTitle!,
                                               style: poppinsRegularStyle(
                                                   fontSize: 12,
                                                   context: context,
                                                   color: theme
-                                                      .colorScheme.background,
+                                                      .primaryColor,
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             Text(

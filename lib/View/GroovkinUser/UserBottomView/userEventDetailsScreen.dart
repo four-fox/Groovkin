@@ -100,7 +100,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Align(
+                    controller.eventDetail!.data!.status == "completed"?SizedBox.shrink(): Align(
                       alignment: Alignment.bottomRight,
                       child:
                           CustomButton(
@@ -535,15 +535,15 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                   groupPlaceholder:
                   controller.eventDetail!.data!.venue!.user!.profilePicture!.mediaPath,
                   organizerName: controller.eventDetail!.data!.venue!.venueName.toString(),
-                  icons: controller.eventDetail!.data!.user!.following == null?Icons.check:Icons.add,
-                  followBg: controller.eventDetail!.data!.user!.following == null?DynamicColor.avatarBgClr:DynamicColor.grayClr,
-                  textClr: controller.eventDetail!.data!.user!.following != null?theme.scaffoldBackgroundColor: theme.primaryColor,
-                  followText: controller.eventDetail!.data!.user!.following == null?"Follow":"Unfollow",
+                  icons: controller.eventDetail!.data!.venue!.user!.following == null?Icons.check:Icons.add,
+                  followBg: controller.eventDetail!.data!.venue!.user!.following == null?DynamicColor.avatarBgClr:DynamicColor.grayClr,
+                  textClr: controller.eventDetail!.data!.venue!.user!.following != null?theme.scaffoldBackgroundColor: theme.primaryColor,
+                  followText: controller.eventDetail!.data!.venue!.user!.following == null?"Follow":"Unfollow",
                   onTap: (){
-                    if(controller.eventDetail!.data!.user!.following == null){
-                      _authController.followUser(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                    if(controller.eventDetail!.data!.venue!.user!.following == null){
+                      _authController.followUser(userData: controller.eventDetail!.data!.venue!.user,fromAllUser: false);
                     }else{
-                      _authController.unfollow(userData: controller.eventDetail!.data!.user,fromAllUser: false);
+                      _authController.unfollow(userData: controller.eventDetail!.data!.venue!.user,fromAllUser: false);
                     }
                   }
               ),),
@@ -605,9 +605,9 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
           SizedBox(
             height:notifyBtnShow==false?0: 10,
           ),
-          API().sp.read("role") == "User"?SizedBox.shrink():
+          API().sp.read("role") != "User"?SizedBox.shrink():
           controller.eventDetail!.data!.eventGoingOrInterested!.value == 1?
-          Padding(
+          controller.eventDetail!.data!.status == "completed"?SizedBox.shrink(): Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
               borderClr: Colors.transparent,
