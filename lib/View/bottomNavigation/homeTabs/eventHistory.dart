@@ -150,14 +150,6 @@ class PostEvents extends StatelessWidget {
                                   child: CustomButtonWithIcon(
                                     height: 35,
                                     bgColor: DynamicColor.avatarBgClr,
-                                    color2: list[index] != "false"
-                                        ? DynamicColor.avatarBgClr
-                                            .withOpacity(0.8)
-                                        : Color(0xffd8a735),
-                                    color1: list[index] != "false"
-                                        ? DynamicColor.avatarBgClr
-                                            .withOpacity(0.8)
-                                        : Color(0xffb77712).withOpacity(0.7),
                                     iconValue: false,
                                     style: poppinsRegularStyle(
                                         fontSize: 13,
@@ -170,7 +162,7 @@ class PostEvents extends StatelessWidget {
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "${singleEvent.status.toString().capitalize} Event"
-                                          });
+                                          })!.then((value) => _controller.completedEvent(),);
                                       // Get.toNamed(Routes.pendingEventDetails,
                                       //     arguments: {
                                       //       "eventId": singleEvent.id,
@@ -218,14 +210,6 @@ class PostEvents extends StatelessWidget {
     });
   }
 
-  List list = [
-    'false',
-    "true",
-    'false',
-    'true',
-    'true',
-    'false',
-  ];
 
   Widget reviewWidget({theme, context}) {
     return Padding(

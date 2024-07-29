@@ -214,12 +214,10 @@ class DisclaimerScreen extends StatelessWidget {
                   if(_controller.eventDetail != null && _controller.duplicateValue.value == false && _controller.draftValue.value ==false){
                     _controller.editEventFunction();
                   }else{
-                    if(_controller.duplicateValue.value == false || _controller.draftValue.value ==true){
-                      _controller.editEventFunction();
-                    }else{
-                      _controller.postEventFunction(context,theme, location: _controller.duplicateValue.value == false?null:_controller.eventDetail);
-                    }
-
+                    // if(_controller.duplicateValue.value == false || _controller.draftValue.value ==true){
+                    //   _controller.editEventFunction();
+                    // }else{
+                      _controller.postEventFunction(context,theme, /*location: _controller.duplicateValue.value == false?null:_controller.eventDetail*/);
                   }
                 }else{
                   bottomToast(text: "Please accept terms and condition");

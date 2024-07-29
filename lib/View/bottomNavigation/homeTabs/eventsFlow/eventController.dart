@@ -440,7 +440,7 @@ class EventController extends GetxController{
       if(mediaList.isNotEmpty)"image[]": mediaList,
       if(imageList.isNotEmpty)"banner_image[]": imageList,
       "service_id[]": service,
-      "venue_id": eventDetail!.data!.venueId
+      "venue_id": eventDetail!.data!.venue == null?managerController.venueDetails!.data!.id: eventDetail!.data!.venueId
     });
 
     /// todo hardware params
@@ -570,6 +570,8 @@ class EventController extends GetxController{
   RxBool draftCondition = false.obs;
   clearFields() async{
     draftCondition(true);
+    duplicateValue(true);
+    draftValue(true);
     _authController.imageBytes = null;
     eventTitleController.clear();
     featuringController.clear();
@@ -870,10 +872,18 @@ class EventController extends GetxController{
     if(response.statusCode == 200){
       bottomToast(text: response.data["message"].toString());
       if(back == true){
-        int events = allEvents!.data!.data!.indexWhere((element) => element.id == eventId);
-        allEvents!.data!.data!.remove(allEvents!.data!.data![events]);
-        Get.back();
+        if(allEvents != null){
+          int events = allEvents!.data!.data!.indexWhere((element) => element.id == eventId);
+          allEvents!.data!.data!.remove(allEvents!.data!.data![events]);
+          Get.back();
+        }
+      }else{
+        if(managerController.managerPendingEvents != null){
+          int index = managerController.managerPendingEvents!.data!.data!.indexWhere((test)=> test.id == eventId);
+          managerController.managerPendingEvents!.data!.data!.remove(managerController.managerPendingEvents!.data!.data![index]);
+        }
       }
+      cancellationController.clear();
       update();
       Get.back();
     }

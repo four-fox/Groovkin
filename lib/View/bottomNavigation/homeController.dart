@@ -50,7 +50,7 @@ class HomeController extends GetxController{
   bool newsFeedWait = false;
   getRecommended({fullUrl,String url = 'recommended-for-you-events'}) async{
     getRecommendedLoader(false);
-    var response = await API().getApi(url: url,fullUrl: fullUrl);
+    var response = await API().getApi(url: url, fullUrl: fullUrl);
     if(response.statusCode == 200){
       if(fullUrl == null){
         recommendedEventData = RecommendedEventsModel.fromJson(response.data);

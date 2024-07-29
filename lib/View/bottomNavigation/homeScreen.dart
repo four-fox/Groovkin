@@ -960,7 +960,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                 arguments: {
                                                   "eventId": eventData.id,
                                                   "doubleBack": false,
-                                                });
+                                                })!.then((value) => controller.getAllPendingEvents(),);
                                           });
                                     },
                                     borderClr: Colors.transparent,
@@ -977,7 +977,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                           barrierDismissible: true,
                                           builder: (BuildContext context) {
                                             return AlertWidget(
-                                              height: Get.height / 2,
+                                              height: Get.height / 2.5,
                                               container: SizedBox(
                                                 width: Get.width,
                                                 child: Padding(
@@ -986,6 +986,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                       horizontal: 4),
                                                   child: SingleChildScrollView(
                                                     child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .start,
@@ -1141,7 +1142,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                             .id,
                                         "notInterestedBtn": 1,
                                         "title": "About Event"
-                                      });
+                                      })!.then((value) => _controller.getAllPendingEvents(),);
                                 },
                                 borderClr: Colors.transparent,
                                 text: "View Detail",
@@ -1157,15 +1158,4 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                   });
     });
   }
-
-  List list = [
-    "assets/eventPreview.png",
-    "assets/venueImg.png",
-    "assets/eventPreview.png",
-    "assets/venueImg.png",
-    "assets/eventPreview.png",
-    "assets/venueImg.png",
-    "assets/eventPreview.png",
-    "assets/venueImg.png",
-  ];
 }

@@ -190,12 +190,10 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
           onTap: (){
             if(commentsForm.currentState!.validate()){
               // if(managerController.mediaClass.isNotEmpty || ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false))){
-                if(_controller.eventDetail !=null && _controller.eventDetail!.data!.location != null){
+                if(_controller.eventDetail !=null && _controller.eventDetail!.data!.location != null && _controller.draftCondition.value != false){
                   Get.toNamed(Routes.eventPreview,
                   arguments: {
-                    "viewDetails": 1
-                  }
-                  );
+                    "viewDetails": 1});
                 }else{
                   Navigator.push(
                     context,

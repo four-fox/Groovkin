@@ -75,9 +75,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
               padding: const EdgeInsets.only(right: 7.0),
               child: GestureDetector(
                   onTap: (){
-                    _controller.assignValueForUpdate();
+                    if((API().sp.read("role")=="eventOrganizer")&&(appBarTitle == "Pending")) {
+                      _controller.assignValueForUpdate();
+                    }
                   },
-                  child: appBarTitle == "Pending" ? Icon(Icons.edit_calendar):SizedBox.shrink()),
+                  child: ((API().sp.read("role")=="eventOrganizer")&&(appBarTitle == "Pending")) ? Icon(Icons.edit_calendar):SizedBox.shrink()),
             )],
             imagee: false,
           ),
@@ -564,7 +566,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                 }),
                           ),
                         ),
-                        controller.eventDetail!.data!.services!.isEmpty?SizedBox.shrink():  Align(
+                        controller.eventDetail!.data!.musicGenre!.isEmpty?SizedBox.shrink():  Align(
                           alignment: Alignment.topLeft,
                           child: Text("Music Genre",
                             style: poppinsRegularStyle(
@@ -576,15 +578,15 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             ),
                           ),
                         ),
-                        controller.eventDetail!.data!.services!.isEmpty?SizedBox.shrink(): SizedBox(
+                        controller.eventDetail!.data!.musicGenre!.isEmpty?SizedBox.shrink(): SizedBox(
                           height: kToolbarHeight,
                           child: Align(
                             alignment: Alignment.topLeft,
                             child: ListView.builder(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: controller.eventDetail!.data!.services!.length,
+                                physics: AlwaysScrollableScrollPhysics(),
+                                itemCount: controller.eventDetail!.data!.musicGenre!.length,
                                 itemBuilder: (BuildContext context,indx){
                                   return Padding(
                                     padding: EdgeInsets.symmetric(horizontal: 6),
@@ -593,7 +595,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      label: Text(controller.eventDetail!.data!.services![indx].eventItem!.name.toString(),
+                                      label: Text(controller.eventDetail!.data!.musicGenre![indx].musicGenreItems!.name.toString(),
                                         style: poppinsRegularStyle(
                                             fontSize: 14,
                                             context: context,
@@ -856,7 +858,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
               _controller.duplicateValue.value = true;
               _controller.draftValue.value = false;
             }else{
-              _controller.draftValue.value = true;
+              _controller.draftValue.value = false;
               _controller.duplicateValue.value = false;
             }
             _controller.assignValueForUpdate();

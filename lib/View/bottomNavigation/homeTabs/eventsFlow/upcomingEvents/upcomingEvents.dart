@@ -104,6 +104,7 @@ class UpcomingEvents extends StatelessWidget {
                                             location: singleEventDat.location,
                                             subtitle: singleEventDat.venue!.venueName.toString(),
                                             onTap: (){
+                                              recommendedVal.value = false;
                                               Get.toNamed(Routes.upcomingScreen,
                                                   arguments: {
                                                 "eventId": singleEventDat.id,
@@ -203,6 +204,7 @@ class UpcomingEvents extends StatelessWidget {
                                             location: singleEvent.location,
                                             subtitle: singleEvent.venue!.venueName.toString(),
                                             onTap: (){
+                                              ongoingVal.value = false;
                                               Get.toNamed(Routes.upcomingScreen,
                                                   arguments: {
                                                     "eventId": singleEvent.id,

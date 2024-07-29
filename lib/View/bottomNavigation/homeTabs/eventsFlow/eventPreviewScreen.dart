@@ -47,7 +47,7 @@ class EventPreview extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-SizedBox(
+            _managerController.mediaClass.isNotEmpty && _controller.draftCondition.value ==false?SizedBox(
   height: kToolbarHeight*3,
 child: ListView.builder(
     scrollDirection: Axis.horizontal,
@@ -56,6 +56,7 @@ child: ListView.builder(
     _managerController.mediaClass.length: _controller.imageListtt.length,
     itemBuilder:
         (BuildContext context, index) {
+      print(_controller.draftCondition.value);
           return assetImage(
             eventController: _controller,
             closedIcon: false,
@@ -63,79 +64,8 @@ child: ListView.builder(
             mediaItem: _managerController.mediaClass.isNotEmpty?
             _managerController.mediaClass[index]:_controller.imageListtt[index],
           );
-      /*return Stack(
-        alignment: Alignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-                right: 10),
-            child: *//*Stack(
-                                            children: [*//*
-            _managerController.mediaClass[index]
-                .thumbnail !=
-                null
-                ? Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius
-                      .circular(
-                      10),
-                  image: DecorationImage(
-                      fit: BoxFit
-                          .fill,
-                      image: _managerController.mediaClass[index].id ==
-                          null
-                          ? FileImage(File(_managerController
-                          .mediaClass[
-                      index]
-                          .thumbnail
-                          .toString()))
-                          : NetworkImage(_managerController.mediaClass[index].thumbnail.toString())
-                      as ImageProvider)),
-            )
-                : Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius
-                      .circular(
-                      10),
-                  image: DecorationImage(
-                      fit: BoxFit
-                          .fill,
-                      image: _managerController.mediaClass[index].id ==
-                          null
-                          ? FileImage(File(_managerController
-                          .mediaClass[
-                      index]
-                          .filename
-                          .toString()))
-                          : NetworkImage(_managerController.mediaClass[index].filename.toString())
-                      as ImageProvider)),
-            ),
-          ),
-          _managerController.mediaClass[index].thumbnail ==null?SizedBox.shrink(): GestureDetector(
-            onTap: (){
-              Get.toNamed(Routes.videoPlayerClass, arguments: {
-                'url': _managerController.mediaClass[index].filename,
-                'type': "file"*//*controller.mediaClass[index].fileType*//*,
-              });
-            },
-            child: CircleAvatar(
-              backgroundColor: DynamicColor.blackClr,
-              radius: 15,
-              child: Icon(Icons.play_arrow,
-                color: DynamicColor.whiteClr,
-              ),
-            ),
-          ),
-        ],
-      );*/
     }),
-),
+):SizedBox.shrink(),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
               child: Text(((_controller.eventDetail != null) && (_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName.toString(),

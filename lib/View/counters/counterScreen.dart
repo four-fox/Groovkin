@@ -10,6 +10,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/counters/bottomTextFields.dart';
 import 'package:groovkin/View/counters/messagesListWidget.dart';
 
@@ -28,6 +29,7 @@ class _CounterScreenState extends State<CounterScreen> {
   int? eventId = Get.arguments['eventId'];
 
   final ManagerController _controller = Get.find();
+  final EventController _eventController = Get.find();
 
   @override
   void initState() {
@@ -53,7 +55,7 @@ class _CounterScreenState extends State<CounterScreen> {
           ),
           Positioned(
               bottom: 0,
-              child: Obx(() => textFieldShow.value==false?Padding(
+              child: Obx(() => ((textFieldShow.value==false) &&(_eventController.eventDetail!.data!.status != "completed"))?Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: CustomButton(
               widths: Get.width,
@@ -65,7 +67,7 @@ class _CounterScreenState extends State<CounterScreen> {
               },
             ),
           ):
-          BottomTextFields(userId: userId,eventId: eventId,),)
+              _eventController.eventDetail!.data!.status == "completed"?SizedBox.shrink():  BottomTextFields(userId: userId,eventId: eventId,),)
           ),
         ],
       ),

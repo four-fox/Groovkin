@@ -151,7 +151,7 @@ class PendingScreen extends StatelessWidget {
                                 "title": "About Event",
                                 "eventId": eventData.id
                               }
-                          );
+                          )!.then((value) => _eventController.getAllSendingRequest(),);
                         },
                         text: "View Detail",
                       ),

@@ -71,17 +71,17 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
           Stack(
             alignment: Alignment.bottomRight,
             children: [
-              SizedBox(
+              controller.eventDetail!.data!.profilePicture!.isEmpty?SizedBox.shrink(): SizedBox(
                 height: kToolbarHeight*3,
                 width: Get.width,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: controller.eventDetail!.data ==null?5: controller.eventDetail!.data!.profilePicture!.length,
+                  itemCount: controller.eventDetail!.data!.profilePicture!.length,
                   itemBuilder: (BuildContext context,index){
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Container(
+                    child:  Container(
                       width:controller.eventDetail!.data!.profilePicture!.length == 1?Get.width: Get.width/1.5,
                       decoration: BoxDecoration(
                         border: Border.all(color: theme.primaryColor,),
@@ -616,7 +616,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
               onTap: (){
                 controller.userCancelEvents(eventId: controller.eventDetail!.data!.id);
               },
-              text:"Cancelled",
+              text: "Cancel",
               // appBarTitle == "Past Event"?
               // "Complete": appBarTitle=="Cancelled Event"?"Cancelled": "Check in",
               textClr: theme.primaryColor,

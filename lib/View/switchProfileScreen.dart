@@ -19,15 +19,11 @@ class SwitchProfileScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
             children: [
-
               SizedBox(
                 height: 35,
               ),
-
               Align(
                 alignment: Alignment.centerLeft,
                 child: ImageIcon(AssetImage("assets/backArrow.png"),

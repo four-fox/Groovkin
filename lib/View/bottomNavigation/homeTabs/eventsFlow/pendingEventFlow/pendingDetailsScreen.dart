@@ -504,7 +504,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                           followBgClr: controller.eventDetail!.data!.user!.following != null ? DynamicColor.grayClr:DynamicColor.avatarBgClr,
                           textClr: controller.eventDetail!.data!.user!.following == null ? theme.primaryColor:theme.scaffoldBackgroundColor,
                       followText: controller.eventDetail!.data!.user!.following==null?"Follow":"Unfollow",
-                          onTap: (){
+                      followOnTap: (){
                             if(controller.eventDetail!.data!.user!.following == null){
                               _authController.followUser(userData: controller.eventDetail!.data!.user,fromAllUser: false);
                             }else{

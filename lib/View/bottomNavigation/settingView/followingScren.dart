@@ -90,7 +90,7 @@ class FollowingScreen extends StatelessWidget {
                   tabs: [
                     Tab(child: Obx(
                       ()=> Container(
-                        height: 35,
+                        // height: 35,
                         // padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
                         decoration: BoxDecoration(
                           color:selectedVal.value==0? DynamicColor.yellowClr:DynamicColor.darkGrayClr,
@@ -110,7 +110,7 @@ class FollowingScreen extends StatelessWidget {
                     ),),
                     Tab(child:     Obx(
                           ()=> Container(
-                            height: 35,
+                            // height: 35,
                         // padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
                         decoration: BoxDecoration(
                           color:selectedVal.value==1? DynamicColor.yellowClr:DynamicColor.darkGrayClr,
@@ -130,14 +130,14 @@ class FollowingScreen extends StatelessWidget {
                     ),),
                     Tab(child: Obx(
                           ()=> Container(
-                            height: 35,
+                            // height: 35,
                         padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
                         decoration: BoxDecoration(
                           color: selectedVal.value==2? DynamicColor.yellowClr:DynamicColor.darkGrayClr,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
-                          child: Text("Event Manager",
+                          child: Text("Venue Manager",
                             style: poppinsRegularStyle(
                                 fontSize: 12,
                                 context: context,

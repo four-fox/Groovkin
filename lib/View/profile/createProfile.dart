@@ -155,16 +155,16 @@ class CreateProfile extends StatelessWidget {
                     SizedBox(
                       height:/*sp.read('role') !="User"?*/ 15/*:0*/,
                     ),
-                    /*sp.read('role') !="User"?*/ CustomTextFields(
-                      labelText: "Referral code",
-                      keyBoardType: true,
-                      controller: controller.referralCodeController,
-                      ignoredValidation: true,
-                    ),
-
-                    SizedBox(
-                      height: 15,
-                    ),
+                    //  CustomTextFields(
+                    //   labelText: "Referral code",
+                    //   keyBoardType: true,
+                    //   controller: controller.referralCodeController,
+                    //   ignoredValidation: true,
+                    // ),
+                    //
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
                     TextField(
                       keyboardType: TextInputType.none,
                       style:poppinsRegularStyle(
