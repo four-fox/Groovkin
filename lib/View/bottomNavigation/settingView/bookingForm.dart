@@ -12,7 +12,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class BookingFormScreen extends StatelessWidget {
-  const BookingFormScreen({Key? key}) : super(key: key);
+  const BookingFormScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,6 @@
 
 // ignore_for_file: prefer_collection_literals
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -11,7 +10,6 @@ import 'package:groovkin/Components/dropDown.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/showCustomMap.dart';
 import 'package:groovkin/Components/textStyle.dart';
-import 'package:map_location_picker/map_location_picker.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
 import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';

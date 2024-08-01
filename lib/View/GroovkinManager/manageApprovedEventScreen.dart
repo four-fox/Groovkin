@@ -10,7 +10,6 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/showCustomMap.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/pastEventUI/aboutEventScreen.dart';
 
 class ManagerApprovedEventScreen extends StatelessWidget {
   const ManagerApprovedEventScreen({Key? key}) : super(key: key);

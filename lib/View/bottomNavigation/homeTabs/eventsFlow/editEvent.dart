@@ -3,7 +3,6 @@
 
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_bdaya/flutter_datetime_picker_bdaya.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -359,7 +358,6 @@ class EditEventScreen extends StatelessWidget {
                           "selected time--------->${DateTimeField.convert(time).toString()}");
                       if(time != null){
                         print('time>>>>>>>>>> $time');
-                        var format = DateFormat("HH:mm ss");
                         controller.endTimeController.text = DateFormat.jm().format(DateFormat("hh:mm:ss").parse(DateTimeField.convert(time).toString().replaceRange(0, 11, "")));
                         controller.postEndTime = DateFormat("HH:mm").parse(controller.endTimeController.text).toString().replaceRange(0, 11, "").split(".")[0];
                         print(controller.postEndTime);

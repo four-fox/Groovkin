@@ -71,7 +71,6 @@ class AmenitiesItem {
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
-    "name": name,
     "type": type,
     "created_at": createdAt,
     "updated_at": updatedAt,

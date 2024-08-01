@@ -19,7 +19,7 @@ import 'package:intl/intl.dart';
 
 
 class UpcomingScreen extends StatefulWidget {
-  UpcomingScreen({Key? key}) : super(key: key);
+  UpcomingScreen({super.key});
 
   @override
   State<UpcomingScreen> createState() => _UpcomingScreenState();

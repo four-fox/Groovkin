@@ -3,9 +3,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter_chip_tags/flutter_chip_tags.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';

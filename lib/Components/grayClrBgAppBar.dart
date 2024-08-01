@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 
 customAppBar({theme,text,TextStyle? style,GestureTapCallback? onTap,List<Widget>? actions,bool imagee = false,backArrow = true,

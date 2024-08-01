@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +14,6 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Components/userCustomWidget.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
-import 'package:map_location_picker/map_location_picker.dart';
 
 class AboutEventScreen extends StatelessWidget {
   AboutEventScreen({super.key});

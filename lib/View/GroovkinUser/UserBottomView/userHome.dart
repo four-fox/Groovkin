@@ -8,13 +8,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/customEventWidget.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
-import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';

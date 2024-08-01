@@ -3,19 +3,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
-import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
-import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/counters/bottomTextFields.dart';
 import 'package:groovkin/View/counters/messagesListWidget.dart';
 
 class CounterScreen extends StatefulWidget {
-  CounterScreen({Key? key}) : super(key: key);
+  CounterScreen({super.key});
 
   @override
   State<CounterScreen> createState() => _CounterScreenState();

@@ -14,7 +14,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
 class VenueScreen extends StatelessWidget {
-  const VenueScreen({Key? key}) : super(key: key);
+  const VenueScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class VenueScreen extends StatelessWidget {
 
 
 class DiscoverView extends StatelessWidget {
-  DiscoverView({Key? key}) : super(key: key);
+  DiscoverView({super.key});
   Prediction? initialValue;
   String address = "null";
   String autocompletePlace = "null";
@@ -135,7 +135,7 @@ class DiscoverView extends StatelessWidget {
                 //   apiKey: "AIzaSyCPDZxZYp3Su6ReZTh4lHRoie6HAM2P0sU",
                 //   popOnNextButtonTaped: true,
                 //   currentLatLng: const LatLng(29.146727, 76.464895),
-                //     stackWidget:StackWidgets(context,theme),
+                //     stackWidget:stackWidgets(context,theme),
                 //   btnOnTap: (){
                 //     // Get.toNamed(Routes.hardwareProvidedScreen);
                 //   },
@@ -225,7 +225,7 @@ class DiscoverView extends StatelessWidget {
     Discover(img: "assets/profileImg.png",title: "Charles A. Gaetano Stadium",subtitle: "Event Place",distance: "1.5 miles"),
   ];
 
-  Widget StackWidgets(context,theme){
+  Widget stackWidgets(context,theme){
     return Column(
       children: [
         SizedBox(

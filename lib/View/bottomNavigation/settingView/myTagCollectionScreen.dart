@@ -13,7 +13,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class MyTagCollection extends StatelessWidget {
-  const MyTagCollection({Key? key}) : super(key: key);
+  const MyTagCollection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +132,7 @@ class MyTagCollection extends StatelessWidget {
 
 
 class MyCollectionDetailsScreen extends StatelessWidget {
-  const MyCollectionDetailsScreen({Key? key}) : super(key: key);
+  const MyCollectionDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -513,7 +513,7 @@ class MyCollectionDetailsScreen extends StatelessWidget {
 
 
 class CreateNewTag extends StatelessWidget {
-  const CreateNewTag({Key? key}) : super(key: key);
+  const CreateNewTag({super.key});
 
   @override
   Widget build(BuildContext context) {

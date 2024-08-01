@@ -2,19 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/customEventWidget.dart';
-import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/View/GroovkinManager/venueDetailsManagerFlow.dart';
-import 'package:groovkin/View/bottomNavigation/homeScreen.dart';
 import 'package:groovkin/View/bottomNavigation/myGroovkinScreen.dart';
 
 class EventOrganizerScreen extends StatelessWidget {
-  EventOrganizerScreen({Key? key}) : super(key: key);
+  EventOrganizerScreen({super.key});
 
   int eventOrganizerVal = Get.arguments['eventOrganizerValue'];
   String profileImg = Get.arguments['profileImg'];
@@ -501,7 +497,7 @@ class EventOrganizerScreen extends StatelessWidget {
 }
 
 class OrganizedEventView extends StatelessWidget {
-  OrganizedEventView({Key? key,this.attendPeople}) : super(key: key);
+  OrganizedEventView({super.key,this.attendPeople});
 
   String? attendPeople;
 
@@ -523,7 +519,7 @@ class OrganizedEventView extends StatelessWidget {
 
 
 class PropertyEventView extends StatelessWidget {
-  const PropertyEventView({Key? key}) : super(key: key);
+  const PropertyEventView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -589,7 +585,7 @@ class PropertyEventView extends StatelessWidget {
 
 
 class AboutEventView extends StatelessWidget {
-  const AboutEventView({Key? key}) : super(key: key);
+  const AboutEventView({super.key});
 
   @override
   Widget build(BuildContext context) {

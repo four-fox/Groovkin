@@ -8,7 +8,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 
 class CustomButton extends StatelessWidget {
-  CustomButton({Key? key,this.onTap,this.text,this.color1,this.color2,this.style,
+  CustomButton({super.key,this.onTap,this.text,this.color1,this.color2,this.style,
   this.textClr,
     this.heights,
     this.widths,
@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
     this.fontSized,
     this.bgImage,
     this.borderRadius=8,
-  }) : super(key: key);
+  });
 
   final GestureTapCallback? onTap;
   String? text;
@@ -71,7 +71,7 @@ class CustomButton extends StatelessWidget {
 }
 
 class CustomButtonWithIcon extends StatelessWidget {
-  CustomButtonWithIcon({Key? key,this.onTap,this.text,this.color1,this.color2,this.style,
+  CustomButtonWithIcon({super.key,this.onTap,this.text,this.color1,this.color2,this.style,
   this.textClr,
     this.iconss,
     this.iconValue = false,
@@ -85,7 +85,7 @@ class CustomButtonWithIcon extends StatelessWidget {
     this.iconSize,
     this.bgColor,
     this.gradientClr = false,
-  }) : super(key: key);
+  });
 
   final GestureTapCallback? onTap;
   String? text;

@@ -1,6 +1,5 @@
 
 import 'package:get/get.dart';
-import 'package:dio/dio.dart' as form;
 
 class CreateProfileController extends GetxController{
 

@@ -14,7 +14,6 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
-import 'package:groovkin/Components/Network/Url.dart';
 import 'package:intl/intl.dart';
 
 class PendingEventDetails extends StatefulWidget {

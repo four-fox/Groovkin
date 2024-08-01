@@ -9,7 +9,6 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginWithScreen extends StatelessWidget {
   const LoginWithScreen({Key? key}) : super(key: key);

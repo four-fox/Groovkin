@@ -7,12 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
-import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 
 class FollowingScreen extends StatelessWidget {
-  FollowingScreen({Key? key}) : super(key: key);
+  FollowingScreen({super.key});
 
   RxInt selectedVal = 0.obs;
 
@@ -202,7 +201,7 @@ class FollowingScreen extends StatelessWidget {
 
 
 class AllUsers extends StatelessWidget {
-  AllUsers({Key? key,this.userValue,this.heights,this.type}) : super(key: key);
+  AllUsers({super.key,this.userValue,this.heights,this.type});
 
   String? userValue;
   double? heights;

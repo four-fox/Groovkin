@@ -7,7 +7,6 @@
 
 import 'dart:convert';
 
-import 'package:groovkin/View/GroovkinManager/managerPendingEventModel.dart';
 import '../../../../Components/Network/API.dart';
 import '../../../../Components/Network/Url.dart';
 import '../../../../links.dart';

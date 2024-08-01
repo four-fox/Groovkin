@@ -2,13 +2,11 @@
 // ignore_for_file: iterable_contains_unrelated_type
 
 import 'dart:io';
-import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/mediaModel.dart';
@@ -27,7 +25,6 @@ import 'package:dio/dio.dart' as form;
 import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';

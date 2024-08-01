@@ -2,7 +2,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 

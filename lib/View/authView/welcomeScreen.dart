@@ -10,10 +10,9 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/View/authView/autController.dart';
 
 class WelComeScreen extends StatelessWidget {
-  const WelComeScreen({Key? key}) : super(key: key);
+  const WelComeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

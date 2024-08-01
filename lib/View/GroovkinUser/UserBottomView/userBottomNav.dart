@@ -14,9 +14,6 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/UserMyEvents.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/groupScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
-import 'package:groovkin/View/bottomNavigation/AnalyticFlowBottomBar/AnalyticPortal.dart';
-import 'package:groovkin/View/bottomNavigation/homeScreen.dart';
-import 'package:groovkin/View/bottomNavigation/myGroovkinScreen.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
 
 RxInt selectUserIndexxx = 0.obs;

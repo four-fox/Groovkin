@@ -2,11 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:groovkin/Components/Network/Url.dart';
-import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
@@ -16,11 +12,9 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:map_location_picker/map_location_picker.dart';
-import 'package:popup_banner/popup_banner.dart';
 
 class VenueDetailsManagerScreen extends StatelessWidget {
-  VenueDetailsManagerScreen({Key? key, this.serviceCondition = false})
-      : super(key: key);
+  VenueDetailsManagerScreen({super.key, this.serviceCondition = false});
 
   bool serviceCondition = false;
 
@@ -662,7 +656,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
 /// those event details which done
 
 class ViewOtherEventsDetails extends StatelessWidget {
-  ViewOtherEventsDetails({Key? key}) : super(key: key);
+  ViewOtherEventsDetails({super.key});
 
   ManagerController _controller = Get.find();
   int venueId = Get.arguments['venueId'];

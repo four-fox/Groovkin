@@ -5,9 +5,7 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
-import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
-import 'package:groovkin/View/authView/forgotPassword/otpScreen.dart';
 
 class SendEmailScreen extends StatelessWidget {
   SendEmailScreen({Key? key}) : super(key: key);

@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
-import 'package:groovkin/Routes/app_pages.dart';
 import 'package:popup_banner/popup_banner.dart';
 
 SwitchWiget({theme,context,text,switchVal,onChanged,img,showCheckBox = true,bgClr = false,GestureTapCallback? onTap}){

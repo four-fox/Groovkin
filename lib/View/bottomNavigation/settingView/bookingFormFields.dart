@@ -15,7 +15,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:intl/intl.dart';
 
 class BookingFormFields extends StatelessWidget {
-  BookingFormFields({Key? key}) : super(key: key);
+  BookingFormFields({super.key});
   final format = DateFormat("HH:mm");
   
   @override

@@ -3,12 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/cancelEventWidget.dart';
 import 'package:groovkin/Components/colors.dart';
-import 'package:groovkin/Components/customEventWidget.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
@@ -123,8 +121,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Text(
                         API().sp.read("role") == "eventOrganizer"
-                            ? "Welcome To Event Organizer"
-                            : "Welcome To Venue Manager",
+                            ? "Welcome Event Organizer"
+                            : "Welcome Venue Manager",
                         style: poppinsMediumStyle(
                           fontSize: 16,
                           context: context,

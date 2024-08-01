@@ -12,7 +12,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class VenueDetailsScreen extends StatelessWidget {
-  const VenueDetailsScreen({Key? key}) : super(key: key);
+  const VenueDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

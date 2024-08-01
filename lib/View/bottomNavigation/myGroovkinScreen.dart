@@ -9,7 +9,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class MyGroovkinScreen extends StatelessWidget {
-  MyGroovkinScreen({Key? key,this.appBar}) : super(key: key);
+  MyGroovkinScreen({super.key,this.appBar});
 
   bool? appBar = false;
 

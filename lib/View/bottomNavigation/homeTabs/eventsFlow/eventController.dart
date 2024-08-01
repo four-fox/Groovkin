@@ -1,13 +1,9 @@
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/CustomMultipart.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
@@ -205,7 +201,7 @@ class EventController extends GetxController{
   String? postTime;
   String? postEndTime;
   postEventFunction(context,theme,{location,bool draft = false}) async {
-    AuthController _authController = Get.find();
+    AuthController authController = Get.find();
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
       if(element.thumbnail != null){
@@ -227,8 +223,8 @@ class EventController extends GetxController{
 
     ///bannerImage
     List imageList = [];
-    if(_authController.imageBytes != null){
-      var a = multiPartingImage(_authController.imageBytes);
+    if(authController.imageBytes != null){
+      var a = multiPartingImage(authController.imageBytes);
       imageList.add(a);
     }
     print(location);
@@ -256,9 +252,9 @@ class EventController extends GetxController{
     });
 
     /// todo service params
-    for(var i = 0; i <= _authController.serviceList.length; i++){
-      if(i != _authController.serviceList.length){
-        formData.fields.add(MapEntry('service_id[$i]', _authController.serviceList[i].id.toString()));
+    for(var i = 0; i <= authController.serviceList.length; i++){
+      if(i != authController.serviceList.length){
+        formData.fields.add(MapEntry('service_id[$i]', authController.serviceList[i].id.toString()));
       }
     }
     /// todo service params
@@ -266,16 +262,16 @@ class EventController extends GetxController{
     /// todo hardware params
     int? indexVal = -1;
     int? iiid = -1;
-    print(_authController.eventItemsList.length);
-    for(var a = 0; a <= _authController.eventItemsList.length; a++){
-      if(a != _authController.eventItemsList.length){
-        if(iiid != _authController.eventItemsList[a].eventId){
+    print(authController.eventItemsList.length);
+    for(var a = 0; a <= authController.eventItemsList.length; a++){
+      if(a != authController.eventItemsList.length){
+        if(iiid != authController.eventItemsList[a].eventId){
           indexVal = indexVal! + 1;
-          formData.fields.add(MapEntry('hardware_provides[$indexVal][hardware_provide_id]', _authController.eventItemsList[a].eventId.toString()));
+          formData.fields.add(MapEntry('hardware_provides[$indexVal][hardware_provide_id]', authController.eventItemsList[a].eventId.toString()));
         }
-        if(_authController.eventItemsList[a].selectedItem!.value == true){
-          iiid = _authController.eventItemsList[a].eventId;
-          formData.fields.add(MapEntry('hardware_provides[$indexVal][hardware_item_ids][]', _authController.eventItemsList[a].id.toString()));
+        if(authController.eventItemsList[a].selectedItem!.value == true){
+          iiid = authController.eventItemsList[a].eventId;
+          formData.fields.add(MapEntry('hardware_provides[$indexVal][hardware_item_ids][]', authController.eventItemsList[a].id.toString()));
         }
       }
     }
@@ -284,16 +280,16 @@ class EventController extends GetxController{
     /// todo life Style params
     int? indexVaal = -1;
     int? iiad = -1;
-    print(_authController.itemsList.length);
-    for(var a = 0; a <= _authController.itemsList.length; a++){
-      if(a != _authController.itemsList.length){
-        if(iiad != _authController.itemsList[a].categoryId){
+    print(authController.itemsList.length);
+    for(var a = 0; a <= authController.itemsList.length; a++){
+      if(a != authController.itemsList.length){
+        if(iiad != authController.itemsList[a].categoryId){
           indexVaal = indexVaal! + 1;
-          formData.fields.add(MapEntry('music_genre[$indexVaal][music_genre_id]', _authController.itemsList[a].categoryId.toString()));
+          formData.fields.add(MapEntry('music_genre[$indexVaal][music_genre_id]', authController.itemsList[a].categoryId.toString()));
         }
-        if(_authController.itemsList[a].selectedItem!.value == true){
-          iiad = _authController.itemsList[a].categoryId;
-          formData.fields.add(MapEntry('music_genre[$indexVaal][music_genre_item_ids][]', _authController.itemsList[a].id.toString()));
+        if(authController.itemsList[a].selectedItem!.value == true){
+          iiad = authController.itemsList[a].categoryId;
+          formData.fields.add(MapEntry('music_genre[$indexVaal][music_genre_item_ids][]', authController.itemsList[a].id.toString()));
         }
       }
     }
@@ -393,7 +389,7 @@ class EventController extends GetxController{
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
   editEventFunction() async{
-    AuthController _authController = Get.find();
+    AuthController authController = Get.find();
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
       if(element.thumbnail != null){
@@ -415,12 +411,12 @@ class EventController extends GetxController{
 
     ///bannerImage
     List imageList = [];
-    if(_authController.imageBytes != null){
-      var a = multiPartingImage(_authController.imageBytes);
+    if(authController.imageBytes != null){
+      var a = multiPartingImage(authController.imageBytes);
       imageList.add(a);
     }
     List service = [];
-    for (var actions in _authController.serviceList) {
+    for (var actions in authController.serviceList) {
       service.add(actions.id);
     }
     var formData = form.FormData.fromMap({
@@ -447,17 +443,17 @@ class EventController extends GetxController{
     int? indexVal = -1;
     int? iiid = -1;
     int indexValue = -1;
-    for(var a = 0; a <= _authController.eventItemsList.length; a++){
-      if(a != _authController.eventItemsList.length){
-        if(iiid != _authController.eventItemsList[a].eventId){
+    for(var a = 0; a <= authController.eventItemsList.length; a++){
+      if(a != authController.eventItemsList.length){
+        if(iiid != authController.eventItemsList[a].eventId){
           indexVal = indexVal! + 1;
           indexValue = -1;
-          formData.fields.add(MapEntry('hardware_provides[$indexVal]', _authController.eventItemsList[a].eventId.toString()));
+          formData.fields.add(MapEntry('hardware_provides[$indexVal]', authController.eventItemsList[a].eventId.toString()));
         }
-        if(_authController.eventItemsList[a].selectedItem!.value == true){
+        if(authController.eventItemsList[a].selectedItem!.value == true){
           indexValue = indexValue+1;
-          iiid = _authController.eventItemsList[a].eventId;
-          formData.fields.add(MapEntry('hardware_item_ids[$indexVal][$indexValue]', _authController.eventItemsList[a].id.toString()));
+          iiid = authController.eventItemsList[a].eventId;
+          formData.fields.add(MapEntry('hardware_item_ids[$indexVal][$indexValue]', authController.eventItemsList[a].id.toString()));
         }
       }
     }
@@ -467,18 +463,18 @@ class EventController extends GetxController{
     int? indexVaal = -1;
     int? iiad = -1;
     int genreIndex = -1;
-    print(_authController.itemsList.length);
-    for(var a = 0; a <= _authController.itemsList.length; a++){
-      if(a != _authController.itemsList.length){
-        if(iiad != _authController.itemsList[a].categoryId){
+    print(authController.itemsList.length);
+    for(var a = 0; a <= authController.itemsList.length; a++){
+      if(a != authController.itemsList.length){
+        if(iiad != authController.itemsList[a].categoryId){
           indexVaal = indexVaal! + 1;
           genreIndex = -1;
-          formData.fields.add(MapEntry('music_genre[$indexVaal]', _authController.itemsList[a].categoryId.toString()));
+          formData.fields.add(MapEntry('music_genre[$indexVaal]', authController.itemsList[a].categoryId.toString()));
         }
-        if(_authController.itemsList[a].selectedItem!.value == true){
-          iiad = _authController.itemsList[a].categoryId;
+        if(authController.itemsList[a].selectedItem!.value == true){
+          iiad = authController.itemsList[a].categoryId;
           genreIndex = genreIndex+1;
-          formData.fields.add(MapEntry('music_genre_item_ids[$indexVaal][$genreIndex]', _authController.itemsList[a].id.toString()));
+          formData.fields.add(MapEntry('music_genre_item_ids[$indexVaal][$genreIndex]', authController.itemsList[a].id.toString()));
         }
       }
     }
