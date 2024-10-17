@@ -100,7 +100,7 @@ class BottomBarDoubleBulletIconState extends State<BottomBarDoubleBulletIcon>
     if (widget.item.iconBuilder != null) {
       return Padding(
           padding: const EdgeInsets.all(10),
-          child: widget.item.iconBuilder!.call(color));
+          child: widget.item.iconBuilder);
     } else {
       return Icon(widget.item.iconData!,
           size: widget.item.iconSize, color: color);
