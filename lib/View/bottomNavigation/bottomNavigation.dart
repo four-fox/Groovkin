@@ -74,71 +74,67 @@ class BottomNavigationView extends StatelessWidget {
             color: DynamicColor.yellowClr,
             items: [
               BottomBarItem(
-                labelTextStyle: poppinsMediumStyle(
-          fontSize: 12,
-              context: context,
-              color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(
-                    AssetImage("assets/homeScreen.png"),
-                    color: selectIndexxx.value == 0
-                        ? DynamicColor.yellowClr
-                        : DynamicColor.grayClr,
+                  labelTextStyle: poppinsMediumStyle(
+                      fontSize: 12,
+                      context: context,
+                      color: theme.scaffoldBackgroundColor),
+                  iconBuilder: Padding(
+                    padding: const EdgeInsets.only(bottom: 6.0),
+                    child: ImageIcon(
+                      AssetImage("assets/homeScreen.png"),
+                      color: selectIndexxx.value == 0
+                          ? DynamicColor.yellowClr
+                          : DynamicColor.grayClr,
+                    ),
                   ),
-                ),
-                label: "Home"
-              ),
+                  label: "Home"),
               BottomBarItem(
                   labelTextStyle: poppinsMediumStyle(
                       fontSize: 12,
                       context: context,
                       color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(
-                    AssetImage("assets/groovkin.png"),
-                    color: selectIndexxx.value == 1
-                        ? DynamicColor.yellowClr
-                        : DynamicColor.grayClr,
+                  iconBuilder: Padding(
+                    padding: const EdgeInsets.only(bottom: 6.0),
+                    child: ImageIcon(
+                      AssetImage("assets/groovkin.png"),
+                      color: selectIndexxx.value == 1
+                          ? DynamicColor.yellowClr
+                          : DynamicColor.grayClr,
+                    ),
                   ),
-                ),
-                  label: "My Groovkin"
-              ),
+                  label: "My Groovkin"),
               BottomBarItem(
                   labelTextStyle: poppinsMediumStyle(
                       fontSize: 12,
                       context: context,
                       color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(
-                    AssetImage(sp.read("role") == "eventManager"
-                        ? "assets/request.png"
-                        : "assets/locationIcon.png"),
-                    color: selectIndexxx.value == 2
-                        ? DynamicColor.yellowClr
-                        : DynamicColor.grayClr,
+                  iconBuilder: Padding(
+                    padding: const EdgeInsets.only(bottom: 6.0),
+                    child: ImageIcon(
+                      AssetImage(sp.read("role") == "eventManager"
+                          ? "assets/request.png"
+                          : "assets/locationIcon.png"),
+                      color: selectIndexxx.value == 2
+                          ? DynamicColor.yellowClr
+                          : DynamicColor.grayClr,
+                    ),
                   ),
-                ),
-                  label: "Analytics"
-              ),
+                  label: "Analytics"),
               BottomBarItem(
                   labelTextStyle: poppinsMediumStyle(
                       fontSize: 12,
                       context: context,
                       color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(
-                    AssetImage("assets/settingIcon.png"),
-                    color: selectIndexxx.value == 3
-                        ? DynamicColor.yellowClr
-                        : DynamicColor.grayClr,
+                  iconBuilder: Padding(
+                    padding: const EdgeInsets.only(bottom: 6.0),
+                    child: ImageIcon(
+                      AssetImage("assets/settingIcon.png"),
+                      color: selectIndexxx.value == 3
+                          ? DynamicColor.yellowClr
+                          : DynamicColor.grayClr,
+                    ),
                   ),
-                ),
-                  label: "Setting"
-              ),
+                  label: "Setting"),
             ],
             selectedIndex: selectIndexxx.value,
             onSelect: (index) {

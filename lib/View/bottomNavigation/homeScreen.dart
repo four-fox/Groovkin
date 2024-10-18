@@ -225,7 +225,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Text(
                                 /*sp.read("role") == "eventManager"
                                     ? "Upcoming"
-                                    :*/ "Scheduled",
+                                    :*/
+                                "Scheduled",
                                 style: poppinsMediumStyle(
                                     fontSize: 14,
                                     context: context,
@@ -273,7 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Text(
                                 /*sp.read("role") == "eventManager"
                                     ? "Pending"
-                                    :*/ "Requests",
+                                    :*/
+                                "Requests",
                                 style: poppinsMediumStyle(
                                     fontSize: 14,
                                     context: context,
@@ -955,10 +957,14 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                           onTap: () {
                                             Get.back();
                                             Get.toNamed(Routes.cancelReason,
-                                                arguments: {
+                                                    arguments: {
                                                   "eventId": eventData.id,
                                                   "doubleBack": false,
-                                                })!.then((value) => controller.getAllPendingEvents(),);
+                                                })!
+                                                .then(
+                                              (value) => controller
+                                                  .getAllPendingEvents(),
+                                            );
                                           });
                                     },
                                     borderClr: Colors.transparent,
@@ -984,7 +990,8 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                       horizontal: 4),
                                                   child: SingleChildScrollView(
                                                     child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .start,
@@ -1132,15 +1139,20 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 backgroundClr: false,
                                 onTap: () {
                                   Get.toNamed(Routes.pendingEventDetails,
-                                      arguments: {
+                                          arguments: {
                                         "eventId": controller
                                             .managerPendingEvents!
                                             .data!
                                             .data![index]
                                             .id,
                                         "notInterestedBtn": 1,
-                                        "title": "About Event"
-                                      })!.then((value) => _controller.getAllPendingEvents(),);
+                                        "title": "About Event",
+                                        "type": "event",
+                                      })!
+                                      .then(
+                                    (value) =>
+                                        _controller.getAllPendingEvents(),
+                                  );
                                 },
                                 borderClr: Colors.transparent,
                                 text: "View Detail",

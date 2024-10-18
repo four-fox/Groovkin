@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'package:flutter/material.dart';
@@ -23,7 +20,7 @@ class ServiceScreen extends StatefulWidget {
 class _ServiceScreenState extends State<ServiceScreen> {
   AuthController _controller = Get.find();
 
-  int moreServiceAdd = Get.arguments['addMoreService']??1;
+  int moreServiceAdd = Get.arguments['addMoreService'] ?? 1;
 
   late EventController _eventController;
 
@@ -44,18 +41,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
     var theme = Theme.of(context);
     print(moreServiceAdd);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Service",
-          actions: [
-            ((_eventController.eventDetail == null) && (_eventController.draftCondition.value == true))?
-            GestureDetector(
-              onTap: (){
-                _eventController.postEventFunction(context,theme,draft: true);
-              },
-              child: Padding(
-                padding: EdgeInsets.only(right: 8.0),
-                child: Icon(Icons.drafts),),
-            ):SizedBox.shrink()]
-        /*imagee:moreServiceAdd==2?false:true*/),
+      appBar: customAppBar(theme: theme, text: "Service", actions: [
+        ((_eventController.eventDetail == null) &&
+                (_eventController.draftCondition.value == true))
+            ? GestureDetector(
+                onTap: () {
+                  _eventController.postEventFunction(context, theme,
+                      draft: true);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.drafts),
+                ),
+              )
+            : SizedBox.shrink()
+      ] /*imagee:moreServiceAdd==2?false:true*/),
       // appBar: AppBar(
       //   backgroundColor: theme.scaffoldBackgroundColor,
       //   centerTitle: true,
@@ -67,100 +67,129 @@ class _ServiceScreenState extends State<ServiceScreen> {
       //   ),
       //   ),
       // ),
-      body: GetBuilder<AuthController>(
-        initState: (v){
-          _controller.getAllService(type: "services");
-          // if(_eventController.eventDetail == null){
-          //   _controller.getAllService(type: "services");
-          // }else{
-          //   _eventController.checkServices();
-          // }
-        },
-        builder: (controller) {
-          return controller.getAllServiceLoader.value==false?
-          SizedBox.shrink():
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('The services you can provide!',
-                  style: poppinsMediumStyle(
-                    fontSize: 16,
-                    context: context,
-                    color: theme.primaryColor,
-                  ),
-                  ),
-                  Text('Please select from given option.',
-                  style: poppinsMediumStyle(
-                    fontSize: 12  ,
-                    context: context,
-                    color: DynamicColor.lightRedClr,
-                  ),
-                  ),
-                  SizedBox(
-  height: 15,
-),
-                  SizedBox(
-                    height: Get.height/1.5,
-                    child: ListView.builder(
-                        itemCount: controller.serviceListing.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context,index){
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child:
-                        GestureDetector(
-                          onTap: (){
-                            controller.serviceAddFtn(items: controller.serviceListing[index]);
-                            // controller.surveyData!.data![index].showItems!.value = !controller.surveyData!.data![index].showItems!.value;
-                            // controller.update();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 6,horizontal: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: controller.serviceListing[index].showItems!.value==false? DecorationImage(
-                                    image: AssetImage("assets/buttonBg.png"),fit: BoxFit.fill
-                                ):null,
-                              color: controller.serviceListing[index].showItems!.value==false? Colors.transparent:DynamicColor.lightBlackClr
-                            ),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 17,
-                                  backgroundColor: controller.serviceListing[index].showItems!.value==false? theme.primaryColor:DynamicColor.grayClr,
-                                  child: Image(
-                                    image: AssetImage(list[index].img.toString()),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(controller.serviceListing[index].name.toString(),
-                                  style: poppinsMediumStyle(
-                                    fontSize: 16,
-                                    context: context,
-                                    color: theme.primaryColor,
-                                  ),
-                                ),
-                                Spacer(),
-                                controller.serviceListing[index].showItems!.value==true? Icon(Icons.check,
-                                  color: theme.primaryColor,
-                                ):SizedBox.shrink(),
-                                // Spacer(),
-                                // Checkbox(
-                                //     activeColor: DynamicColor.lightRedClr,
-                                //     value:djValue , onChanged:onChanged)
-                              ],
-                            ),
-                          ),
-                        )
-                      );
-                    }),
-                  ),
+      body: GetBuilder<AuthController>(initState: (v) {
+        _controller.getAllService(type: "services");
+        // if(_eventController.eventDetail == null){
+        //   _controller.getAllService(type: "services");
+        // }else{
+        //   _eventController.checkServices();
+        // }
+      }, builder: (controller) {
+        return controller.getAllServiceLoader.value == false
+            ? SizedBox.shrink()
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'The services you can provide!',
+                        style: poppinsMediumStyle(
+                          fontSize: 16,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                      Text(
+                        'Please select from given option.',
+                        style: poppinsMediumStyle(
+                          fontSize: 12,
+                          context: context,
+                          color: DynamicColor.lightRedClr,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
+                        height: Get.height / 1.5,
+                        child: ListView.builder(
+                            itemCount: controller.serviceListing.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, index) {
+                              return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      controller.serviceAddFtn(
+                                          items:
+                                              controller.serviceListing[index]);
+                                      // controller.surveyData!.data![index].showItems!.value = !controller.surveyData!.data![index].showItems!.value;
+                                      // controller.update();
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 6, horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: controller
+                                                      .serviceListing[index]
+                                                      .showItems!
+                                                      .value ==
+                                                  false
+                                              ? DecorationImage(
+                                                  image: AssetImage(
+                                                      "assets/buttonBg.png"),
+                                                  fit: BoxFit.fill)
+                                              : null,
+                                          color: controller
+                                                      .serviceListing[index]
+                                                      .showItems!
+                                                      .value ==
+                                                  false
+                                              ? Colors.transparent
+                                              : DynamicColor.lightBlackClr),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 17,
+                                            backgroundColor: controller
+                                                        .serviceListing[index]
+                                                        .showItems!
+                                                        .value ==
+                                                    false
+                                                ? theme.primaryColor
+                                                : DynamicColor.grayClr,
+                                            child: Image(
+                                              image: AssetImage(
+                                                  list[index].img.toString()),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            controller
+                                                .serviceListing[index].name
+                                                .toString(),
+                                            style: poppinsMediumStyle(
+                                              fontSize: 16,
+                                              context: context,
+                                              color: theme.primaryColor,
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          controller.serviceListing[index]
+                                                      .showItems!.value ==
+                                                  true
+                                              ? Icon(
+                                                  Icons.check,
+                                                  color: theme.primaryColor,
+                                                )
+                                              : SizedBox.shrink(),
+                                          // Spacer(),
+                                          // Checkbox(
+                                          //     activeColor: DynamicColor.lightRedClr,
+                                          //     value:djValue , onChanged:onChanged)
+                                        ],
+                                      ),
+                                    ),
+                                  ));
+                            }),
+                      ),
 //                   serviceWidget(context: context,theme: theme,
 //                       onChanged: (v){
 //                       controller.djing.value = v!;
@@ -211,44 +240,39 @@ class _ServiceScreenState extends State<ServiceScreen> {
 //                         image: "assets/avEquipment.png",
 //                       djValue: controller.avEquipment.value
 //                     ),
-                ],
-              ),
-            ),
-          );
-        }
-      ),
+                    ],
+                  ),
+                ),
+              );
+      }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: () async{
-                if(moreServiceAdd == 2){
-                  Get.toNamed(Routes.quickSurveyScreen,
-                  arguments: {
-                    "addMoreService": moreServiceAdd
-                  }
-                  );
-                }else if(moreServiceAdd == 3){
-                  if(_controller.serviceList.isNotEmpty){
-                    // if(_eventController.eventDetail != null) {
-                    //   await _controller.getAllService(type: "hardware_provided");
-                    // }
-                    Get.toNamed(Routes.hardwareScreen, arguments: {"createEvent": true});
-                  }else{
-                    bottomToast(text: "Please add service");
-                  }
-                  // Get.toNamed(Routes.hardwareProvidedScreen);
-                }else{
-                  if(_controller.serviceList.isNotEmpty){
-                    Get.toNamed(Routes.insuranceScreen,
-                        arguments: {
-                          "insuranceNavigation": 1,
-                        }
-                    );
-                  }else{
-                    bottomToast(text: "Please add service");
-                  }
-                }
+          onTap: () async {
+            if (moreServiceAdd == 2) {
+              Get.toNamed(Routes.quickSurveyScreen,
+                  arguments: {"addMoreService": moreServiceAdd});
+            } else if (moreServiceAdd == 3) {
+              if (_controller.serviceList.isNotEmpty) {
+                // if(_eventController.eventDetail != null) {
+                //   await _controller.getAllService(type: "hardware_provided");
+                // }
+                Get.toNamed(Routes.hardwareScreen,
+                    arguments: {"createEvent": true});
+              } else {
+                bottomToast(text: "Please add service");
+              }
+              // Get.toNamed(Routes.hardwareProvidedScreen);
+            } else {
+              if (_controller.serviceList.isNotEmpty) {
+                Get.toNamed(Routes.insuranceScreen, arguments: {
+                  "insuranceNavigation": 1,
+                });
+              } else {
+                bottomToast(text: "Please add service");
+              }
+            }
           },
           text: "Next",
         ),
@@ -256,30 +280,36 @@ class _ServiceScreenState extends State<ServiceScreen> {
     );
   }
 
-  Widget serviceWidget({theme,image,context,onChanged,djValue,text,GestureTapCallback? onTap}){
+  Widget serviceWidget(
+      {theme,
+      image,
+      context,
+      onChanged,
+      djValue,
+      text,
+      GestureTapCallback? onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 6,horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
-                image: AssetImage("assets/buttonBg.png"),fit: BoxFit.fill
-            )
-        ),
+                image: AssetImage("assets/buttonBg.png"), fit: BoxFit.fill)),
         child: Row(
           children: [
             CircleAvatar(
               radius: 17,
               backgroundColor: theme.primaryColor,
               child: Image(
-                image: AssetImage(image??"assets/djing.png"),
+                image: AssetImage(image ?? "assets/djing.png"),
               ),
             ),
             SizedBox(
               width: 5,
             ),
-            Text(text??"DJing",
+            Text(
+              text ?? "DJing",
               style: poppinsMediumStyle(
                 fontSize: 16,
                 context: context,
@@ -287,7 +317,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               ),
             ),
             Spacer(),
-            Icon(Icons.check,
+            Icon(
+              Icons.check,
               color: theme.primaryColor,
             ),
             // Spacer(),
@@ -301,16 +332,29 @@ class _ServiceScreenState extends State<ServiceScreen> {
   }
 
   List<ServiceList> list = [
-    ServiceList(text: 'DJing',img: "assets/djing.png",clickCondition: false.obs),
-    ServiceList(text: 'Lighting',img: "assets/lighting.png",clickCondition: false.obs),
-    ServiceList(text: 'Photobooth',img: "assets/lighting.png",clickCondition: false.obs),
-    ServiceList(text: 'Master of Ceremony',img: "assets/master.png",clickCondition: false.obs),
-    ServiceList(text: 'AV Equipment',img: "assets/avEquipment.png",clickCondition: false.obs),
+    ServiceList(
+        text: 'DJing', img: "assets/djing.png", clickCondition: false.obs),
+    ServiceList(
+        text: 'Lighting',
+        img: "assets/lighting.png",
+        clickCondition: false.obs),
+    ServiceList(
+        text: 'Photobooth',
+        img: "assets/lighting.png",
+        clickCondition: false.obs),
+    ServiceList(
+        text: 'Master of Ceremony',
+        img: "assets/master.png",
+        clickCondition: false.obs),
+    ServiceList(
+        text: 'AV Equipment',
+        img: "assets/avEquipment.png",
+        clickCondition: false.obs),
   ];
 }
 
-class ServiceList{
-  String? img,text;
+class ServiceList {
+  String? img, text;
   RxBool? clickCondition = false.obs;
-  ServiceList({this.text,this.img,this.clickCondition});
+  ServiceList({this.text, this.img, this.clickCondition});
 }

@@ -60,7 +60,7 @@ packages:
   bottom_bar_matu:
     dependency: "direct main"
     description:
-      path: "plugin/bottom_bar_matu-master"
+      path: "../groovkinnew/plugin/bottom_bar_matu-master"
       relative: true
     source: path
     version: "1.3.0"
@@ -99,7 +99,7 @@ packages:
   country_state_city_pro:
     dependency: "direct main"
     description:
-      path: "plugin/Country-State-City-Picker-Pro-master"
+      path: "../groovkinnew/plugin/Country-State-City-Picker-Pro-master"
       relative: true
     source: path
     version: "0.0.6"
@@ -830,7 +830,7 @@ packages:
   intl_phone_number_input:
     dependency: "direct main"
     description:
-      path: "plugin/intl_phone_number_input-develop"
+      path: "../groovkinnew/plugin/intl_phone_number_input-develop"
       relative: true
     source: path
     version: "0.7.3+1"
@@ -941,7 +941,7 @@ packages:
   map_location_picker:
     dependency: "direct main"
     description:
-      path: "plugin/map_location_picker-master"
+      path: "../groovkinnew/plugin/map_location_picker-master"
       relative: true
     source: path
     version: "1.0.1"
@@ -996,7 +996,7 @@ packages:
   otp_text_field:
     dependency: "direct main"
     description:
-      path: "plugin/OTPTextField-dev"
+      path: "../groovkinnew/plugin/OTPTextField-dev"
       relative: true
     source: path
     version: "1.1.3"

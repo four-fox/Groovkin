@@ -675,6 +675,7 @@ class EventController extends GetxController{
       for (var element in eventDetail!.data!.profilePicture!) {
        venueImageList.add(element.mediaPath!);
       }
+
       eventDetailsLoader(true);
       update();
     }

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:dio/dio.dart' as form;
+
+import '../model/switch_model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -13,53 +16,60 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 3),(){
+    Future.delayed(Duration(seconds: 3), () async {
       print(API().sp.read("token"));
-      if(API().sp.read("intro") == true){
-        if(API().sp.read("token") != null){
-          if(API().sp.read("role") == "User"){
-            if(API().sp.read("isUserCreated") == 0){
-              Get.offAllNamed(Routes.surveyLifeStyleScreen,
-                  arguments: {
-                    "update": false,
-                  }
-              );
-            }else{
+      if (API().sp.read("intro") == true) {
+        if (API().sp.read("token") != null) {
+          final String token = API().sp.read("token");
+          String userTypeInital = await API().sp.read('role');
+          String selectedRole = userTypeInital == "eventOrganizer"
+              ? "event_owner"
+              : userTypeInital == "eventManager"
+                  ? "venue_manager"
+                  : "user";
+          var formData = form.FormData.fromMap({"role": selectedRole});
+          final response = await API().postApi(formData, "switch-profile");
+          if (response.statusCode == 200) {
+            final data = SwitchProfile.fromJson(response.data);
+            String userTypeInital = data.data!.activeRole == "user"
+                ? "User"
+                : data.data!.activeRole == "event_owner"
+                    ? "eventOrganizer"
+                    : "eventManager";
+            API().sp.write('role', userTypeInital);
+          }
+
+          if (API().sp.read("role") == "User") {
+            if (API().sp.read("isUserCreated") == 0) {
+              Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
+                "update": false,
+              });
+            } else {
               Get.offAllNamed(Routes.userBottomNavigationNav);
             }
-          }else{
-            if(API().sp.read("role")=="eventOrganizer"){
-              if(API().sp.read("isEventCreated") == 0){
+          } else {
+            if (API().sp.read("role") == "eventOrganizer") {
+              if (API().sp.read("isEventCreated") == 0) {
                 Get.offAllNamed(Routes.serviceScreen,
-                    arguments: {
-                      "addMoreService": 1
-                    }
-                );
-              }else{
+                    arguments: {"addMoreService": 1});
+              } else {
                 Get.offAllNamed(Routes.bottomNavigationView,
-                    arguments: {
-                      "indexValue": 0
-                    }
-                );
+                    arguments: {"indexValue": 0});
               }
-            }else{
+            } else {
               Get.offAllNamed(Routes.bottomNavigationView,
-                  arguments: {
-                    "indexValue": 0
-                  }
-              );
+                  arguments: {"indexValue": 0});
             }
           }
-        }else{
+        } else {
           Get.offAllNamed(Routes.loginScreen);
           // Get.offAllNamed(Routes.loginSelection);
         }
-      }else{
+      } else {
         Get.offAllNamed(Routes.introPages);
       }
     });
@@ -68,15 +78,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Center(
-          child: Image(
-            image: AssetImage("assets/logo.png"),
-          ),
+        body: SizedBox(
+      width: double.infinity,
+      height: double.infinity,
+      child: Center(
+        child: Image(
+          image: AssetImage("assets/logo.png"),
         ),
-      )
-    );
+      ),
+    ));
   }
 }
