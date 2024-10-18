@@ -148,19 +148,17 @@ class AppPages {
       page: () => WelComeScreen(),
     ),
     GetPage(
-      name: _Path.serviceScreen,
-      page: () => ServiceScreen(),
-      bindings: [AuthBinding(),EventBinding()]
-    ),
+        name: _Path.serviceScreen,
+        page: () => ServiceScreen(),
+        bindings: [AuthBinding(), EventBinding()]),
     GetPage(
       name: _Path.subscriptionScreen,
       page: () => SubscriptionScreen(),
     ),
     GetPage(
-      name: _Path.paymentMethodScreen,
-      page: () => PaymentMethodScreen(),
-      binding: AuthBinding()
-    ),
+        name: _Path.paymentMethodScreen,
+        page: () => PaymentMethodScreen(),
+        binding: AuthBinding()),
     GetPage(
       name: _Path.addCardDetails,
       page: () => AddCardDetails(),
@@ -178,15 +176,13 @@ class AppPages {
       page: () => InsuranceScreen(),
     ),
     GetPage(
-      name: _Path.hardwareScreen,
-      page: () => HardwareScreen(),
-      binding: AuthBinding()
-    ),
+        name: _Path.hardwareScreen,
+        page: () => HardwareScreen(),
+        binding: AuthBinding()),
     GetPage(
-      name: _Path.quickSurveyScreen,
-      page: () => QuickSurveyScreen(),
-        binding: AuthBinding()
-    ),
+        name: _Path.quickSurveyScreen,
+        page: () => QuickSurveyScreen(),
+        binding: AuthBinding()),
     // GetPage(
     //   name: _Path.homeScreen,
     //   page: () => HomeScreen(),
@@ -257,7 +253,7 @@ class AppPages {
     GetPage(
       name: _Path.myEventsScreen,
       page: () => MyEventsScreen(),
-      bindings: [EventBinding(),AuthBinding()],
+      bindings: [EventBinding(), AuthBinding()],
     ),
     // GetPage(
     //   name: _Path.myGroovkinScreen,
@@ -266,7 +262,11 @@ class AppPages {
     GetPage(
       name: _Path.bottomNavigationView,
       page: () => BottomNavigationView(),
-      bindings: [HomeBinding(),ManagerBinding(),EventBinding(),],
+      bindings: [
+        HomeBinding(),
+        ManagerBinding(),
+        EventBinding(),
+      ],
     ),
     GetPage(
       name: _Path.addMoreHardwareScreen,
@@ -283,7 +283,7 @@ class AppPages {
     GetPage(
       name: _Path.profileScreen,
       page: () => editProfileScreen(),
-      bindings: [CreateProfileBinding(),AuthBinding()],
+      bindings: [CreateProfileBinding(), AuthBinding()],
     ),
     GetPage(
       name: _Path.viewProfileScreen,
@@ -360,7 +360,7 @@ class AppPages {
     GetPage(
       name: _Path.surveyLifeStyleScreen,
       page: () => SurveyLifeStyleScreen(),
-      bindings: [EventBinding(),AuthBinding()],
+      bindings: [EventBinding(), AuthBinding()],
     ),
     GetPage(
       name: _Path.userBottomNavigationNav,
@@ -531,6 +531,3 @@ class AppPages {
     ),
   ];
 }
-
-
-

@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -19,8 +16,6 @@ class WelComeScreen extends StatefulWidget {
 }
 
 class _WelComeScreenState extends State<WelComeScreen> {
-
-
   String? intialRole;
 
   @override
@@ -33,14 +28,15 @@ class _WelComeScreenState extends State<WelComeScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    print(intialRole);
+
     return PopScope(
       canPop: true, // Allow the screen to be popped normally
       onPopInvokedWithResult: (didPop, result) async {
-        if (intialRole != null) {
+        if (didPop == true && intialRole != null) {
           await API().sp.write("role", intialRole);
           Get.back(); // Only pop if role is written
         } else if (!didPop) {
@@ -49,18 +45,18 @@ class _WelComeScreenState extends State<WelComeScreen> {
         }
       },
       child: Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: theme.scaffoldBackgroundColor,
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   title: Text("Welcome Message",
-      //   style: poppinsMediumStyle(
-      //     fontSize: 16,
-      //     color: theme.primaryColor,
-      //     context: context,
-      //   ),
-      //   ),
-      // ),
+        // appBar: AppBar(
+        //   backgroundColor: theme.scaffoldBackgroundColor,
+        //   elevation: 0,
+        //   centerTitle: true,
+        //   title: Text("Welcome Message",
+        //   style: poppinsMediumStyle(
+        //     fontSize: 16,
+        //     color: theme.primaryColor,
+        //     context: context,
+        //   ),
+        //   ),
+        // ),
         body: Column(
           children: [
             SizedBox(
@@ -74,19 +70,21 @@ class _WelComeScreenState extends State<WelComeScreen> {
             SizedBox(
               height: 20,
             ),
-            Text('Welcome to Groovkin!',
-            style: poppinsMediumStyle(
-              fontSize: 18,
-              context: context,
-              color: theme.primaryColor,
-            ),
+            Text(
+              'Welcome to Groovkin!',
+              style: poppinsMediumStyle(
+                fontSize: 18,
+                context: context,
+                color: theme.primaryColor,
+              ),
             ),
             SizedBox(
               height: 15,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: Text('Welcome to Groovkin!  We welcome you to our platform and encourage you to organize new and exciting events in your local area using our service.  Please complete the registration process to tell us about the services you can provide.',
+              child: Text(
+                'Welcome to Groovkin!  We welcome you to our platform and encourage you to organize new and exciting events in your local area using our service.  Please complete the registration process to tell us about the services you can provide.',
                 style: poppinsRegularStyle(
                   fontSize: 14,
                   context: context,
@@ -104,25 +102,25 @@ class _WelComeScreenState extends State<WelComeScreen> {
           ],
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
-      borderClr: Colors.transparent,
-            onTap: (){
-        if(API().sp.read("role")=="User"){
-      Get.offAllNamed(Routes.userQuickSurveyScreen);
-        }else if(API().sp.read("role")=="eventOrganizer"){
-      Get.offAllNamed(Routes.subscriptionScreen);
-        }else{
-      Get.offAllNamed(Routes.createCompanyProfileScreen,
-          arguments: {
-            "updationCondition": false,
-            "skipBtnHide": false,
-          }
-      );
-        }
+            borderClr: Colors.transparent,
+            onTap: () {
+              if (API().sp.read("role") == "User") {
+                Get.offAllNamed(Routes.userQuickSurveyScreen);
+              } else if (API().sp.read("role") == "eventOrganizer") {
+                Get.offAllNamed(Routes.subscriptionScreen);
+              } else {
+                Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
+                  "updationCondition": false,
+                  "skipBtnHide": false,
+                });
+              }
               // Get.toNamed(Routes.loginWithScreen);
             },
-            text:sp.read("role") == "eventManager"? "Service Availability Survey":"Let's Get Started",
+            text: sp.read("role") == "eventManager"
+                ? "Service Availability Survey"
+                : "Let's Get Started",
           ),
         ),
       ),

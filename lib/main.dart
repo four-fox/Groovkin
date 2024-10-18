@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 
 import 'notification.dart';
 
-void main() async{
+void main() async {
   await GetStorage.init();
   // await Firebase.initializeApp(
   //   name: "Groovkin",
@@ -70,10 +69,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     // initStateNotification();
   }
@@ -83,13 +80,13 @@ class _MyAppState extends State<MyApp> {
         onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
         onDidReceiveNotificationResponse: onSelectNotification);
 
-    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
       print('after kill app get notification 1');
       print(message);
       if (message != null) {
-        Future.delayed(Duration(seconds: 9),(){
-
-        });
+        Future.delayed(Duration(seconds: 9), () {});
       }
     });
 
@@ -113,8 +110,6 @@ class _MyAppState extends State<MyApp> {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       print('after kill app get notification 3');
-      if(message != null){
-      }
       // noti(
       //   notification,
       //   message.data,
@@ -127,42 +122,36 @@ class _MyAppState extends State<MyApp> {
       //     message.data,
       //   );
       // }
-    });}
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Groovkin',
       theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Color(0xff040305),
-        // backgroundColor: Color(0xff040305),
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: TextTheme(
-          labelLarge: TextStyle(
-            color: Colors.white,
-            fontFamily: 'poppinsMedium'
-          ),
-        )
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-          primaryColor: Color(0xffFFFFFF),
-        // backgroundColor: Color(0xffFFFFFF),
-        scaffoldBackgroundColor: Colors.black,
+          brightness: Brightness.light,
+          primaryColor: Color(0xff040305),
+          // backgroundColor: Color(0xff040305),
+          scaffoldBackgroundColor: Colors.white,
           textTheme: TextTheme(
-            labelLarge: TextStyle(
-                color: Colors.white,
-                fontFamily: 'poppinsMedium'
-            ),
-          )
-      ),
+            labelLarge:
+                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+          )),
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Color(0xffFFFFFF),
+          // backgroundColor: Color(0xffFFFFFF),
+          scaffoldBackgroundColor: Colors.black,
+          textTheme: TextTheme(
+            labelLarge:
+                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+          )),
       navigatorObservers: [BotToastNavigatorObserver()],
       builder: (context, child) {
         child = ScrollConfiguration(
           behavior: MyBehavior(),
-          child:
-          EasyLoading.init(builder: BotToastInit())(context, child),
+          child: EasyLoading.init(builder: BotToastInit())(context, child),
         );
         // child = SafeArea(top: false, child: child);
         return child;
@@ -173,7 +162,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
 
 class MyBehavior extends ScrollBehavior {
   @override

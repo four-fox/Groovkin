@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
@@ -11,6 +12,7 @@ import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
 class VenueDetailsManagerScreen extends StatelessWidget {
@@ -655,13 +657,32 @@ class VenueDetailsManagerScreen extends StatelessWidget {
 
 /// those event details which done
 
-class ViewOtherEventsDetails extends StatelessWidget {
+class ViewOtherEventsDetails extends StatefulWidget {
   ViewOtherEventsDetails({super.key});
 
+  @override
+  State<ViewOtherEventsDetails> createState() => _ViewOtherEventsDetailsState();
+}
+
+class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
   ManagerController _controller = Get.find();
+
   int venueId = Get.arguments['venueId'];
+
   bool btnShow = Get.arguments['buttonShow'] ?? false;
+
   bool editButton = Get.arguments['editBtn'] ?? false;
+
+  late AuthController _authController;
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -673,7 +694,7 @@ class ViewOtherEventsDetails extends StatelessWidget {
           () => _controller.getVenueDetailsLoader.value == false
               ? SizedBox.shrink()
               : Container(
-                  height: kToolbarHeight * 2.3,
+                  height: kToolbarHeight * 2.3 + 30,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage("assets/grayClor.png"),
@@ -684,14 +705,51 @@ class ViewOtherEventsDetails extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: ImageIcon(
-                            AssetImage("assets/backArrow.png"),
-                            color: theme.primaryColor,
-                          ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: ImageIcon(
+                                AssetImage("assets/backArrow.png"),
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                            API().sp.read("role") == "eventOrganizer"
+                                ? IconButton(
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return Container(
+                                              padding: EdgeInsets.all(12.0),
+                                              margin: EdgeInsets.all(10.0),
+                                              child: CustomButton(
+                                                borderClr: Colors.transparent,
+                                                heights: 35,
+                                                fontSized: 13,
+                                                onTap: () async {
+                                                  Get.back();
+                                                  await _authController
+                                                      .reportAccount(
+                                                          "venue", venueId);
+                                                },
+                                                text: "Report",
+                                              ),
+                                            );
+                                          });
+                                    },
+                                    icon: Icon(
+                                      Icons.more_vert,
+                                      color: theme.primaryColor,
+                                    ))
+                                : SizedBox()
+                          ],
                         ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 10.0),

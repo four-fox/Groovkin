@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -26,14 +24,16 @@ class SwitchProfileScreen extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: ImageIcon(AssetImage("assets/backArrow.png"),
+                child: ImageIcon(
+                  AssetImage("assets/backArrow.png"),
                   color: theme.primaryColor,
                 ),
               ),
               SizedBox(
                 height: 25,
               ),
-              Text("Welcome to User Profile",
+              Text(
+                "Welcome to User Profile",
                 style: poppinsMediumStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
@@ -41,12 +41,11 @@ class SwitchProfileScreen extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-
               SizedBox(
                 height: 10,
               ),
-
-              Text("Lorem Ipsum is simply dummy text of\nthe printing and typesetting industry. ",
+              Text(
+                "Lorem Ipsum is simply dummy text of\nthe printing and typesetting industry. ",
                 textAlign: TextAlign.center,
                 style: poppinsRegularStyle(
                   fontSize: 14,
@@ -54,56 +53,49 @@ class SwitchProfileScreen extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-
               SizedBox(
                 height: 40,
               ),
-
               SizedBox(
-                width: Get.width/1.3,
-                  height: Get.height/2.9,
+                  width: Get.width / 1.3,
+                  height: Get.height / 2.9,
                   child: Image(image: AssetImage("assets/switchImg.png"))),
-
               SizedBox(
                 height: 40,
               ),
-
-              Text("Complete your Profile",
+              Text(
+                "Complete your Profile",
                 textAlign: TextAlign.center,
                 style: poppinsMediumStyle(
                   fontSize: 17,
-                    fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w600,
                   context: context,
                   color: theme.primaryColor,
                 ),
               ),
-
-              Text("Lorem Ipsum is simply dummy text of\nthe printing and typesetting industry. ",
+              Text(
+                "Lorem Ipsum is simply dummy text of\nthe printing and typesetting industry. ",
                 textAlign: TextAlign.center,
                 style: poppinsRegularStyle(
-                    fontSize: 14,
-                    context: context,
-                    color: theme.primaryColor,
+                  fontSize: 14,
+                  context: context,
+                  color: theme.primaryColor,
                 ),
               ),
-
               Spacer(),
-
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
                   borderClr: Colors.transparent,
-                  onTap: (){
+                  onTap: () {
                     Get.offAllNamed(Routes.userQuickSurveyScreen);
                   },
                   text: "Start",
                 ),
               ),
-
               SizedBox(
                 height: 30,
               ),
-
             ],
           ),
         ),

@@ -707,13 +707,12 @@ class AuthController extends GetxController {
   switchProfile() async {
     String userType = checkUserRole(changeRole!);
     print(userType);
-
     var formData = form.FormData.fromMap({"role": userType});
     final response = await API().postApi(formData, "switch-profile");
     if (response.statusCode == 200) {
       final data = SwitchProfile.fromJson(response.data);
       String userTypeInital = await API().sp.read("role");
-
+      print(userTypeInital);
       if (userType == "event_owner") {
         if (data.data!.isEventCreated == 0) {
           API().sp.write('role', 'eventOrganizer');
