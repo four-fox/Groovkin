@@ -21,7 +21,7 @@ class EventOrganizerScreen extends StatelessWidget {
   RxBool cancelledVal = false.obs;
   RxBool propertyVal = false.obs;
   RxBool onGoingVal = false.obs;
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);

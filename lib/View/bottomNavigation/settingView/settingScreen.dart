@@ -11,7 +11,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:intl/intl.dart';
 
 class SettingScreen extends StatefulWidget {
-  SettingScreen({Key? key}) : super(key: key);
+  SettingScreen({super.key});
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -26,7 +26,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (Get.isRegistered<AuthController>()) {
       _authController = Get.find<AuthController>();
@@ -120,7 +119,17 @@ class _SettingScreenState extends State<SettingScreen> {
                             context: context,
                             onTap: () {
                               // Get.toNamed(Routes.profileScreen);
-                              Get.toNamed(Routes.viewProfileScreen);
+                              sp.read("role") == "eventOrganizer"
+                                  ? Get.toNamed(Routes.viewProfileScreen,
+                                      arguments: {
+                                          "venueDetails": null,
+                                          "venueId": null,
+                                        })
+                                  : Get.toNamed(Routes.viewProfileScreen,
+                                      arguments: {
+                                          "eventDetails": null,
+                                          "eventId": null,
+                                        });
                             }),
                         // sp.read("role") =="eventOrganizer"? customWidget(context: context,
                         //  img: "assets/venueLocation.png",

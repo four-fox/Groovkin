@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'dart:ui';
 
@@ -14,7 +13,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/allev
 import 'package:intl/intl.dart';
 
 class MyEventsScreen extends StatefulWidget {
-  MyEventsScreen({Key? key}) : super(key: key);
+  MyEventsScreen({super.key});
 
   @override
   State<MyEventsScreen> createState() => _MyEventsScreenState();
@@ -26,7 +25,6 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
   RxBool showFilter = false.obs;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     tabValue.value = 0;
   }
@@ -40,16 +38,17 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight*2.5),
+          preferredSize: Size.fromHeight(kToolbarHeight * 2.5),
           child: Column(
             children: [
-             SizedBox(
-               height: 35,
-             ),
+              SizedBox(
+                height: 35,
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.0),
                 child: Center(
-                  child: Text("My Events",
+                  child: Text(
+                    "My Events",
                     style: poppinsMediumStyle(
                       fontSize: 17,
                       color: theme.primaryColor,
@@ -61,48 +60,47 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 height: 10,
               ),
               TabBar(
-                unselectedLabelStyle: poppinsMediumStyle(
-                    fontSize: 14,
-                    context: context
-                ),
+                unselectedLabelStyle:
+                    poppinsMediumStyle(fontSize: 14, context: context),
                 labelStyle: poppinsMediumStyle(
                     fontSize: 14,
                     context: context,
-                  color: DynamicColor.grayClr.withOpacity(0.5)
-                ),
+                    color: DynamicColor.grayClr.withOpacity(0.5)),
                 labelPadding: EdgeInsets.all(6),
                 indicatorPadding: EdgeInsets.all(10),
                 indicatorColor: Colors.transparent,
-                indicator: BoxDecoration(
-                  color: Colors.white
-                ),
-                onTap: (v){
+                indicator: BoxDecoration(color: Colors.white),
+                onTap: (v) {
                   tabValue.value = v;
                 },
                 padding: EdgeInsets.symmetric(horizontal: 12.0),
                 tabs: [
-                  Tab(child:Obx(
-                    ()=> CustomButton(
-                      borderClr: Colors.transparent,
-                      backgroundClr:tabValue.value==0?true: false,
-                      color2: DynamicColor.lightBlackClr,
-                      color1: DynamicColor.lightBlackClr,
-                      text: "History",
+                  Tab(
+                    child: Obx(
+                      () => CustomButton(
+                        borderClr: Colors.transparent,
+                        backgroundClr: tabValue.value == 0 ? true : false,
+                        color2: DynamicColor.lightBlackClr,
+                        color1: DynamicColor.lightBlackClr,
+                        text: "History",
+                      ),
                     ),
-                  ),),
-                  Tab(child:Obx(
-                    ()=> CustomButton(
-                      borderClr: Colors.transparent,
-                      color2: DynamicColor.lightBlackClr,
-                      color1: DynamicColor.lightBlackClr,
-                      backgroundClr:tabValue.value==1?true: false,
-                      text: "Upcoming",
+                  ),
+                  Tab(
+                    child: Obx(
+                      () => CustomButton(
+                        borderClr: Colors.transparent,
+                        color2: DynamicColor.lightBlackClr,
+                        color1: DynamicColor.lightBlackClr,
+                        backgroundClr: tabValue.value == 1 ? true : false,
+                        text: "Upcoming",
+                      ),
                     ),
-                  ),),
+                  ),
                 ],
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   showFilter.value = !showFilter.value;
                   // Get.toNamed(Routes.searchFilterScreen);
                 },
@@ -110,7 +108,8 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   alignment: Alignment.centerRight,
                   child: Padding(
                     padding: EdgeInsets.only(right: 10.0),
-                    child: ImageIcon(AssetImage("assets/filterIcons.png"),
+                    child: ImageIcon(
+                      AssetImage("assets/filterIcons.png"),
                       color: theme.primaryColor,
                     ),
                   ),
@@ -134,29 +133,27 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   UpcomingEvent(),
                 ],
               ),
-
-
-              Obx(()=> Visibility(
+              Obx(
+                () => Visibility(
                   visible: showFilter.value,
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       selectedFilter.value = 0;
                     },
                     child: Container(
-                      height:tabValue.value==0?220: 150,
-                      width: Get.width/2,
+                      height: tabValue.value == 0 ? 220 : 150,
+                      width: Get.width / 2,
                       padding: EdgeInsets.symmetric(horizontal: 6),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: DynamicColor.whiteClr
-                      ),
+                          borderRadius: BorderRadius.circular(10),
+                          color: DynamicColor.whiteClr),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Obx(
-                          ()=> GestureDetector(
-                              onTap: (){
+                            () => GestureDetector(
+                              onTap: () {
                                 selectedFilter.value = 0;
                                 showFilter.value = false;
                               },
@@ -165,25 +162,26 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                 height: 35,
                                 padding: EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color:selectedFilter.value !=0?Colors.transparent: DynamicColor.yellowClr
-                                ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: selectedFilter.value != 0
+                                        ? Colors.transparent
+                                        : DynamicColor.yellowClr),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Recent",
+                                  child: Text(
+                                    "Recent",
                                     style: poppinsMediumStyle(
-                                      fontSize: 14,
-                                      color: theme.scaffoldBackgroundColor,
-                                      context: context
-                                    ),
+                                        fontSize: 14,
+                                        color: theme.scaffoldBackgroundColor,
+                                        context: context),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                           Obx(
-                                ()=> GestureDetector(
-                              onTap: (){
+                            () => GestureDetector(
+                              onTap: () {
                                 selectedFilter.value = 1;
                                 showFilter.value = false;
                               },
@@ -193,24 +191,25 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                 padding: EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color:selectedFilter.value !=1?Colors.transparent: DynamicColor.yellowClr
-                                ),
+                                    color: selectedFilter.value != 1
+                                        ? Colors.transparent
+                                        : DynamicColor.yellowClr),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Past Week",
+                                  child: Text(
+                                    "Past Week",
                                     style: poppinsMediumStyle(
                                         fontSize: 14,
                                         color: theme.scaffoldBackgroundColor,
-                                        context: context
-                                    ),
+                                        context: context),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                           Obx(
-                                ()=>  GestureDetector(
-                              onTap: (){
+                            () => GestureDetector(
+                              onTap: () {
                                 selectedFilter.value = 2;
                                 showFilter.value = false;
                               },
@@ -220,75 +219,86 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                 padding: EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color:selectedFilter.value !=2?Colors.transparent: DynamicColor.yellowClr
-                                ),
+                                    color: selectedFilter.value != 2
+                                        ? Colors.transparent
+                                        : DynamicColor.yellowClr),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Text("Older then 1 month",
+                                  child: Text(
+                                    "Older then 1 month",
                                     style: poppinsMediumStyle(
                                         fontSize: 14,
                                         color: theme.scaffoldBackgroundColor,
-                                        context: context
-                                    ),
+                                        context: context),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          tabValue.value!=0?SizedBox.shrink(): Obx(
-                                ()=> GestureDetector(
-                              onTap: (){
-                                selectedFilter.value = 3;
-                                showFilter.value = false;
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color:selectedFilter.value !=3?Colors.transparent: DynamicColor.yellowClr
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Finished",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context
+                          tabValue.value != 0
+                              ? SizedBox.shrink()
+                              : Obx(
+                                  () => GestureDetector(
+                                    onTap: () {
+                                      selectedFilter.value = 3;
+                                      showFilter.value = false;
+                                    },
+                                    child: Container(
+                                      width: Get.width,
+                                      height: 35,
+                                      padding: EdgeInsets.only(left: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: selectedFilter.value != 3
+                                              ? Colors.transparent
+                                              : DynamicColor.yellowClr),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Finished",
+                                          style: poppinsMediumStyle(
+                                              fontSize: 14,
+                                              color:
+                                                  theme.scaffoldBackgroundColor,
+                                              context: context),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          tabValue.value!=0?SizedBox.shrink():Obx(
-                                ()=>  GestureDetector(
-                              onTap: (){
-                                selectedFilter.value = 4;
-                                showFilter.value = false;
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color:selectedFilter.value !=4?Colors.transparent: DynamicColor.yellowClr
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Cancel",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context
+                          tabValue.value != 0
+                              ? SizedBox.shrink()
+                              : Obx(
+                                  () => GestureDetector(
+                                    onTap: () {
+                                      selectedFilter.value = 4;
+                                      showFilter.value = false;
+                                    },
+                                    child: Container(
+                                      width: Get.width,
+                                      height: 35,
+                                      padding: EdgeInsets.only(left: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: selectedFilter.value != 4
+                                              ? Colors.transparent
+                                              : DynamicColor.yellowClr),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Cancel",
+                                          style: poppinsMediumStyle(
+                                              fontSize: 14,
+                                              color:
+                                                  theme.scaffoldBackgroundColor,
+                                              context: context),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -306,7 +316,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
 ///>>>>>>>>>>>>history tab
 
 class HistoryTab extends StatelessWidget {
-  HistoryTab({Key? key}) : super(key: key);
+  HistoryTab({super.key});
 
   RxBool recommendedVal = false.obs;
   RxBool cancelledVal = false.obs;
@@ -315,219 +325,279 @@ class HistoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return GetBuilder<HomeController>(
-      builder: (controller) {
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Past Events",
-                            style: poppinsMediumStyle(
-                                fontSize: 14,
-                                context: context,
-                                color: theme.primaryColor,
-                            ),
+    return GetBuilder<HomeController>(builder: (controller) {
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: DynamicColor.darkGrayClr),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Past Events",
+                          style: poppinsMediumStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.primaryColor,
                           ),
-                          GestureDetector(
-                            onTap: (){
-                              if(recommendedVal.value==false){
-                                controller.userPastEventHistory();
-                                recommendedVal.value = true;
-                              }else{
-                                recommendedVal.value = false;
-                                controller.update();
-                              }
-                            },
-                              child: Icon(recommendedVal.value ==false?Icons.keyboard_arrow_down:Icons.keyboard_arrow_up_outlined,
-                                size: 35,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                        ],
-                      ),
-                      controller.getUserHistoryLoader.value==false?SizedBox.shrink():
-                          Visibility(
-                            visible: recommendedVal.value,
-                            child:
-                            controller.userPastHistory == null || controller.userPastHistory!.data!.data!.isEmpty?
-                            noData(theme: theme,context: context):
-                            Column(
-                              children: [
-                                ListView.builder(
-                                    itemCount: controller.userPastHistory!.data!.data!.length>4?4:controller.userPastHistory!.data!.data!.length,
-                                    shrinkWrap: true,
-                                    padding: EdgeInsets.zero,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (BuildContext context,index){
-                                      EventData singleEventData = controller.userPastHistory!.data!.data![index];
-                                      return userCustomEvent(
-                                            dayy: DateFormat.MMM().format(singleEventData.startDateTime!),
-                                            datee: "${singleEventData.startDateTime!.day}\n",
-                                            networkImg: singleEventData.bannerImage == null?false:true,
-                                            img:singleEventData.bannerImage == null?null: singleEventData.bannerImage!.mediaPath.toString(),
-                                            title: singleEventData.eventTitle.toString(),
-                                            location: singleEventData.location,
-                                            subtitle: singleEventData.venue!.venueName.toString(),
-                                            onTap: (){
-                                              Get.toNamed(Routes.userEventDetailsScreen,
-                                                  arguments: {
-                                                    "notify": true,
-                                                    "notifyBackBtn": true,
-                                                    'appBarTitle': "Event Preview",
-                                                    "statusText": singleEventData.id.toString()
-                                                  }
-                                              );
-                                            },
-                                            context: context,
-                                            theme: theme
-                                        );
-                                    }),
-                                CustomButton(
-                                  onTap: (){
-                                    Get.toNamed(Routes.viewAllRecommendedScreen
-                                        ,arguments: {
-                                          "urlText": "past-events",
-                                          "appBarText": "All Past Event"
-                                        }
-                                    );
-                                  },
-                                  borderClr: Colors.transparent,
-                                  text: "View All ",
-                                ),
-                              ],
-                            ),
-                          ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Cancelled Events",
-                            style: poppinsMediumStyle(
-                                fontSize: 14,
-                                context: context,
-                                color: theme.primaryColor,
-                            ),
-                          ),
-                          GestureDetector(
-                                  onTap: (){
-                                    if(cancelledVal.value==false){
-                                      controller.cancelEventUserHistory();
-                                      cancelledVal.value = true;
-                                    }else{
-                                      cancelledVal.value = false;
-                                      controller.update();
-                                    }
-                                  },
-                              child: Icon(cancelledVal.value ==false?Icons.keyboard_arrow_down:Icons.keyboard_arrow_up_outlined,
-                                size: 35,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                        ],
-                      ),
-                      controller.cancelEventUserHistoryLoader.value==false?SizedBox.shrink():
-                      Visibility(
-                        visible: cancelledVal.value,
-                        child:
-                        controller.recommendedEventData == null || controller.recommendedEventData!.data!.data!.isEmpty?
-                        noData(theme: theme,context: context):
-                        Column(
-                          children: [
-                            ListView.builder(
-                                itemCount: controller.recommendedEventData!.data!.data!.length>4?4:controller.recommendedEventData!.data!.data!.length,
-                                shrinkWrap: true,
-                                padding: EdgeInsets.zero,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context,index){
-                                  EventData singleEventData = controller.recommendedEventData!.data!.data![index];
-                                  return userCustomEvent(
-                                      dayy: DateFormat.MMM().format(singleEventData.startDateTime!),
-                                      datee: "${singleEventData.startDateTime!.day}\n",
-                                      networkImg: singleEventData.bannerImage == null?false:true,
-                                      img:singleEventData.bannerImage == null?null: singleEventData.bannerImage!.mediaPath.toString(),
-                                      title: singleEventData.eventTitle.toString(),
-                                      location: singleEventData.location,
-                                      subtitle: singleEventData.venue!.venueName.toString(),
-                                      onTap: (){
-                                        Get.toNamed(Routes.userEventDetailsScreen,
-                                            arguments: {
-                                              "notify": true,
-                                              "notifyBackBtn": true,
-                                              'appBarTitle': "Event Preview",
-                                              "statusText": singleEventData.id.toString()
-                                            }
-                                        );
-                                      },
-                                      context: context,
-                                      theme: theme
-                                  );
-                                }),
-                            CustomButton(
-                              onTap: (){
-                                Get.toNamed(Routes.viewAllRecommendedScreen
-                                    ,arguments: {
-                                      "urlText": "past-events",
-                                      "appBarText": "All Past Event"
-                                    }
-                                );
-                              },
-                              borderClr: Colors.transparent,
-                              text: "View All ",
-                            ),
-                          ],
                         ),
-                      ),
-
-                    ],
-                  ),
+                        GestureDetector(
+                          onTap: () {
+                            if (recommendedVal.value == false) {
+                              controller.userPastEventHistory();
+                              recommendedVal.value = true;
+                            } else {
+                              recommendedVal.value = false;
+                              controller.update();
+                            }
+                          },
+                          child: Icon(
+                            recommendedVal.value == false
+                                ? Icons.keyboard_arrow_down
+                                : Icons.keyboard_arrow_up_outlined,
+                            size: 35,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    controller.getUserHistoryLoader.value == false
+                        ? SizedBox.shrink()
+                        : Visibility(
+                            visible: recommendedVal.value,
+                            child: controller.userPastHistory == null ||
+                                    controller
+                                        .userPastHistory!.data!.data!.isEmpty
+                                ? noData(theme: theme, context: context)
+                                : Column(
+                                    children: [
+                                      ListView.builder(
+                                          itemCount: controller.userPastHistory!
+                                                      .data!.data!.length >
+                                                  4
+                                              ? 4
+                                              : controller.userPastHistory!
+                                                  .data!.data!.length,
+                                          shrinkWrap: true,
+                                          padding: EdgeInsets.zero,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder:
+                                              (BuildContext context, index) {
+                                            EventData singleEventData =
+                                                controller.userPastHistory!
+                                                    .data!.data![index];
+                                            return userCustomEvent(
+                                                dayy: DateFormat.MMM().format(
+                                                    singleEventData
+                                                        .startDateTime!),
+                                                datee:
+                                                    "${singleEventData.startDateTime!.day}\n",
+                                                networkImg: singleEventData
+                                                            .bannerImage ==
+                                                        null
+                                                    ? false
+                                                    : true,
+                                                img: singleEventData
+                                                    .bannerImage?.mediaPath
+                                                    .toString(),
+                                                title: singleEventData
+                                                    .eventTitle
+                                                    .toString(),
+                                                location:
+                                                    singleEventData.location,
+                                                subtitle: singleEventData
+                                                    .venue!.venueName
+                                                    .toString(),
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                      Routes
+                                                          .userEventDetailsScreen,
+                                                      arguments: {
+                                                        "notify": true,
+                                                        "notifyBackBtn": true,
+                                                        'appBarTitle':
+                                                            "Event Preview",
+                                                        "statusText":
+                                                            singleEventData.id
+                                                                .toString()
+                                                      });
+                                                },
+                                                context: context,
+                                                theme: theme);
+                                          }),
+                                      CustomButton(
+                                        onTap: () {
+                                          Get.toNamed(
+                                              Routes.viewAllRecommendedScreen,
+                                              arguments: {
+                                                "urlText": "past-events",
+                                                "appBarText": "All Past Event"
+                                              });
+                                        },
+                                        borderClr: Colors.transparent,
+                                        text: "View All ",
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: kToolbarHeight,
-              )
-            ],
-          ),
-        );
-      }
-    );
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: DynamicColor.darkGrayClr),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Cancelled Events",
+                          style: poppinsMediumStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (cancelledVal.value == false) {
+                              controller.cancelEventUserHistory();
+                              cancelledVal.value = true;
+                            } else {
+                              cancelledVal.value = false;
+                              controller.update();
+                            }
+                          },
+                          child: Icon(
+                            cancelledVal.value == false
+                                ? Icons.keyboard_arrow_down
+                                : Icons.keyboard_arrow_up_outlined,
+                            size: 35,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    controller.cancelEventUserHistoryLoader.value == false
+                        ? SizedBox.shrink()
+                        : Visibility(
+                            visible: cancelledVal.value,
+                            child: controller.recommendedEventData == null ||
+                                    controller.recommendedEventData!.data!.data!
+                                        .isEmpty
+                                ? noData(theme: theme, context: context)
+                                : Column(
+                                    children: [
+                                      ListView.builder(
+                                          itemCount: controller
+                                                      .recommendedEventData!
+                                                      .data!
+                                                      .data!
+                                                      .length >
+                                                  4
+                                              ? 4
+                                              : controller.recommendedEventData!
+                                                  .data!.data!.length,
+                                          shrinkWrap: true,
+                                          padding: EdgeInsets.zero,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder:
+                                              (BuildContext context, index) {
+                                            EventData singleEventData =
+                                                controller.recommendedEventData!
+                                                    .data!.data![index];
+                                            return userCustomEvent(
+                                                dayy: DateFormat.MMM().format(
+                                                    singleEventData
+                                                        .startDateTime!),
+                                                datee:
+                                                    "${singleEventData.startDateTime!.day}\n",
+                                                networkImg: singleEventData
+                                                            .bannerImage ==
+                                                        null
+                                                    ? false
+                                                    : true,
+                                                img: singleEventData
+                                                    .bannerImage?.mediaPath
+                                                    .toString(),
+                                                title: singleEventData
+                                                    .eventTitle
+                                                    .toString(),
+                                                location:
+                                                    singleEventData.location,
+                                                subtitle: singleEventData
+                                                    .venue!.venueName
+                                                    .toString(),
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                      Routes
+                                                          .userEventDetailsScreen,
+                                                      arguments: {
+                                                        "notify": true,
+                                                        "notifyBackBtn": true,
+                                                        'appBarTitle':
+                                                            "Event Preview",
+                                                        "statusText":
+                                                            singleEventData.id
+                                                                .toString()
+                                                      });
+                                                },
+                                                context: context,
+                                                theme: theme);
+                                          }),
+                                      CustomButton(
+                                        onTap: () {
+                                          Get.toNamed(
+                                              Routes.viewAllRecommendedScreen,
+                                              arguments: {
+                                                "urlText": "past-events",
+                                                "appBarText": "All Past Event"
+                                              });
+                                        },
+                                        borderClr: Colors.transparent,
+                                        text: "View All ",
+                                      ),
+                                    ],
+                                  ),
+                          ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: kToolbarHeight,
+            )
+          ],
+        ),
+      );
+    });
   }
 }
 
-
-
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> upComing
 class UpcomingEvent extends StatelessWidget {
-  UpcomingEvent({Key? key}) : super(key: key);
+  UpcomingEvent({super.key});
 
-  RxBool recommendedVal= true.obs;
+  RxBool recommendedVal = true.obs;
 
   HomeController _controller = Get.find();
 
@@ -544,7 +614,8 @@ class UpcomingEvent extends StatelessWidget {
               Future.delayed(Duration(seconds: 2), () {
                 _controller.newsFeedWait = false;
               });
-              _controller.getRecommended(fullUrl: _controller.recommendedEventData!.data!.nextPageUrl);
+              _controller.getRecommended(
+                  fullUrl: _controller.recommendedEventData!.data!.nextPageUrl);
               return true;
             }
           }
@@ -552,53 +623,59 @@ class UpcomingEvent extends StatelessWidget {
         }
         return false;
       },
-      child: GetBuilder<HomeController>(
-          initState: (v){
-            _controller.getRecommended(url: "user-upcoming-events");
-          },
-          builder: (controller) {
-            return controller.getRecommendedLoader.value== false?SizedBox.shrink():
-            controller.recommendedEventData!.data!.data!.isEmpty?noData(context: context,theme: theme):
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: DynamicColor.darkGrayClr
-                ),
-                child: ListView.builder(
-                    itemCount: controller.recommendedEventData!.data!.data!.length,
-                    shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context,index){
-                      EventData singleEventData = controller.recommendedEventData!.data!.data![index];
-                      return userCustomEvent(
-                          dayy: DateFormat.MMM().format(singleEventData.startDateTime!),
-                          datee: "${singleEventData.startDateTime!.day}\n",
-                          networkImg: singleEventData.bannerImage == null?false:true,
-                          img:singleEventData.bannerImage == null?null: singleEventData.bannerImage!.mediaPath.toString(),
-                          title: singleEventData.eventTitle.toString(),
-                          location: singleEventData.location,
-                          subtitle: singleEventData.venue!.venueName.toString(),
-                          onTap: (){
-                            Get.toNamed(Routes.userEventDetailsScreen,
-                                arguments: {
-                                  "notify": true,
-                                  "notifyBackBtn": true,
-                                  'appBarTitle': "Event Preview",
-                                  "statusText": singleEventData.id.toString()
-                                }
-                            );
-                          },
-                          context: context,
-                          theme: theme
-                      );
-                    }),
-              ),
-            );
-          }
-      ),
+      child: GetBuilder<HomeController>(initState: (v) {
+        _controller.getRecommended(url: "user-upcoming-events");
+      }, builder: (controller) {
+        return controller.getRecommendedLoader.value == false
+            ? SizedBox.shrink()
+            : controller.recommendedEventData!.data!.data!.isEmpty
+                ? noData(context: context, theme: theme)
+                : Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: DynamicColor.darkGrayClr),
+                      child: ListView.builder(
+                          itemCount: controller
+                              .recommendedEventData!.data!.data!.length,
+                          shrinkWrap: true,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, index) {
+                            EventData singleEventData = controller
+                                .recommendedEventData!.data!.data![index];
+                            return userCustomEvent(
+                                dayy: DateFormat.MMM()
+                                    .format(singleEventData.startDateTime!),
+                                datee:
+                                    "${singleEventData.startDateTime!.day}\n",
+                                networkImg: singleEventData.bannerImage == null
+                                    ? false
+                                    : true,
+                                img: singleEventData.bannerImage?.mediaPath
+                                    .toString(),
+                                title: singleEventData.eventTitle.toString(),
+                                location: singleEventData.location,
+                                subtitle:
+                                    singleEventData.venue!.venueName.toString(),
+                                onTap: () {
+                                  Get.toNamed(Routes.userEventDetailsScreen,
+                                      arguments: {
+                                        "notify": true,
+                                        "notifyBackBtn": true,
+                                        'appBarTitle': "Event Preview",
+                                        "statusText":
+                                            singleEventData.id.toString()
+                                      });
+                                },
+                                context: context,
+                                theme: theme);
+                          }),
+                    ),
+                  );
+      }),
     );
   }
 }

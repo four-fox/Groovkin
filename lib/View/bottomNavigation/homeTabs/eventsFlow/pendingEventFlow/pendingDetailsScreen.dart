@@ -17,7 +17,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import 'package:intl/intl.dart';
 
 class PendingEventDetails extends StatefulWidget {
-  PendingEventDetails({Key? key}) : super(key: key);
+  PendingEventDetails({super.key});
 
   @override
   State<PendingEventDetails> createState() => _PendingEventDetailsState();
@@ -630,6 +630,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                           title: "Featuring",
                           value: controller.eventDetail!.data!.featuring
                               .toString()),
+
                       sp.read('role') == "eventManager"
                           ? SizedBox.shrink()
                           : Obx(
@@ -637,6 +638,15 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       false
                                   ? SizedBox.shrink()
                                   : aboutEventCreator(
+                                      rowOnTap: () {
+                                        Get.toNamed(Routes.viewProfileScreen,
+                                            arguments: {
+                                              "venueDetails":
+                                                  controller.eventDetail!.data!,
+                                              "venueId": controller.eventDetail!
+                                                  .data!.venue!.userId,
+                                            });
+                                      },
                                       // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
                                       horizontalPadding: 0,
                                       theme: theme,
@@ -678,6 +688,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                         }
                                       }),
                             ),
+
                       sp.read('role') == "eventOrganizer"
                           ? SizedBox.shrink()
                           : Obx(
@@ -685,6 +696,14 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       false
                                   ? SizedBox.shrink()
                                   : ourGuestWidget(
+                                      onTap: () {
+                                        Get.toNamed(Routes.viewProfileScreen,
+                                            arguments: {
+                                              "eventDetails":
+                                                  controller.eventDetail!.data!,
+                                              "eventId": controller
+                                                  .eventDetail!.data!.userId                                            });
+                                      },
                                       networkImg: controller.eventDetail!.data!
                                                   .user!.profilePicture ==
                                               null

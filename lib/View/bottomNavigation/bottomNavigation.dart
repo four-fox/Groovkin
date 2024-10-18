@@ -22,8 +22,8 @@ set selectIndex(index) => selectIndexxx.value = index;
 
 class BottomNavigationView extends StatelessWidget {
   BottomNavigationView({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

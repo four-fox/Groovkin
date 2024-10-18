@@ -420,10 +420,10 @@ class AuthController extends GetxController {
     if (response.statusCode == 200) {
       clearLists();
       surveyData = SurveyModel.fromJson(response.data);
-      final EventController _eventController = Get.find();
-      if (_eventController.eventDetail != null) {
+      final EventController eventController = Get.find();
+      if (eventController.eventDetail != null) {
         List musicGenreId = [];
-        for (var action in _eventController.eventDetail!.data!.musicGenre!) {
+        for (var action in eventController.eventDetail!.data!.musicGenre!) {
           musicGenreId.add(action.itemId);
         }
         for (var element in surveyData!.data!) {
@@ -529,10 +529,10 @@ class AuthController extends GetxController {
         for (var element in surveyData!.data!) {
           serviceListing.add(element);
         }
-        final EventController _eventController = Get.find();
-        if (_eventController.eventDetail != null) {
+        final EventController eventController = Get.find();
+        if (eventController.eventDetail != null) {
           List serviceLista = [];
-          for (var action in _eventController.eventDetail!.data!.services!) {
+          for (var action in eventController.eventDetail!.data!.services!) {
             serviceLista.add(action.eventItemId);
           }
           for (var service in serviceListing) {
@@ -550,10 +550,10 @@ class AuthController extends GetxController {
         for (var element in surveyData!.data!) {
           hardwareListing.add(element);
         }
-        final EventController _eventController = Get.find();
-        if (_eventController.eventDetail != null) {
+        final EventController eventController = Get.find();
+        if (eventController.eventDetail != null) {
           List<String> temp = [];
-          _eventController.eventDetail!.data!.hardwareProvide
+          eventController.eventDetail!.data!.hardwareProvide
               ?.forEach((element) {
             temp.add(element.hardwareItems!.id.toString());
           });
@@ -579,10 +579,10 @@ class AuthController extends GetxController {
         for (var element in surveyData!.data!) {
           lifeStyleListing.add(element);
         }
-        final EventController _eventController = Get.find();
-        if (_eventController.eventDetail != null) {
+        final EventController eventController = Get.find();
+        if (eventController.eventDetail != null) {
           List musicGenreId = [];
-          for (var action in _eventController.eventDetail!.data!.musicGenre!) {
+          for (var action in eventController.eventDetail!.data!.musicGenre!) {
             musicGenreId.add(action.itemId);
           }
           for (var element in surveyData!.data!) {
@@ -765,16 +765,20 @@ class AuthController extends GetxController {
   // Todo Report
 
   reportAccount(String type, int sourceId) async {
-    var formData = form.FormData.fromMap({
-      "type": type,
-      "source_id": sourceId,
-    });
-    final response = await API().postApi(formData, "report");
-    if (response.statusCode == 200) {
-      BotToast.showText(
-        text: "Report has been Send",
-        contentColor: Colors.black,
-      );
+    try {
+      var formData = form.FormData.fromMap({
+        "type": type,
+        "source_id": sourceId,
+      });
+      final response = await API().postApi(formData, "report");
+      if (response.statusCode == 200) {
+        BotToast.showText(
+          text: "Report has been Send",
+          contentColor: Colors.black,
+        );
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -17,17 +14,14 @@ class GroovkinInviteScreen extends StatefulWidget {
 }
 
 class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
-
   final _authController = Get.find<AuthController>();
 
-
-@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _authController.invitationList.add(UserClass(emailController: TextEditingController(),selectedVal: false.obs));
-    setState(() { });
-  }
+// @override
+//   void initState() {
+//     super.initState();
+//     _authController.invitationList.add(UserClass(emailController: TextEditingController(),selectedVal: false.obs));
+//     setState(() { });
+//   }
 
   final invitationForm = GlobalKey<FormState>();
 
@@ -35,13 +29,12 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Groovkin Invites"),
-      body: GetBuilder<AuthController>(
-        builder: (controller) {
-          return Form(
-            key: invitationForm,
-            child: Center(
-              child: Padding(
+      appBar: customAppBar(theme: theme, text: "Groovkin Invites"),
+      body: GetBuilder<AuthController>(builder: (controller) {
+        return Form(
+          key: invitationForm,
+          child: Center(
+            child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.0),
                 child: SingleChildScrollView(
                   child: Column(
@@ -50,33 +43,43 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                       SizedBox(
                         height: 10,
                       ),
-                     ListView.builder(
-                       itemCount: _authController.invitationList.length,
-                         shrinkWrap: true,
-                         physics: NeverScrollableScrollPhysics(),
-                         itemBuilder: (BuildContext context,index){
-                       return Padding(
-                         padding: const EdgeInsets.only(top: 10.0),
-                         child: CustomTextFields(
-                           validationError: "email",
-                           isEmail: true,
-                           controller: controller.invitationList[index].emailController,
-                           suffixWidget: GestureDetector(
-                             onTap: (){
-                               if(_authController.invitationList[index].selectedVal!.value == true){
-                                 _authController.invitationList.remove(_authController.invitationList[index]);
-                                 controller.update();
-                               }
-                             },
-                             child: Icon(Icons.delete_forever,
-                               color: DynamicColor.grayClr,
-                             ),
-                           ),
-                           iconShow: _authController.invitationList[index].selectedVal!.value ==false?false: true,
-                           labelText: "email",
-                         ),
-                       );
-                     }),
+                      ListView.builder(
+                          itemCount: _authController.invitationList.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: CustomTextFields(
+                                validationError: "email",
+                                isEmail: true,
+                                controller: controller
+                                    .invitationList[index].emailController,
+                                suffixWidget: GestureDetector(
+                                  onTap: () {
+                                    if (_authController.invitationList[index]
+                                            .selectedVal!.value ==
+                                        true) {
+                                      _authController.invitationList.remove(
+                                          _authController
+                                              .invitationList[index]);
+                                      controller.update();
+                                    }
+                                  },
+                                  child: Icon(
+                                    Icons.delete_forever,
+                                    color: DynamicColor.grayClr,
+                                  ),
+                                ),
+                                iconShow: _authController.invitationList[index]
+                                            .selectedVal!.value ==
+                                        false
+                                    ? false
+                                    : true,
+                                labelText: "email",
+                              ),
+                            );
+                          }),
                       SizedBox(
                         height: 25,
                       ),
@@ -89,13 +92,14 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                               borderClr: Colors.transparent,
                               color1: DynamicColor.blackClr,
                               color2: DynamicColor.blackClr,
-                              widths: Get.width/2.3,
-                              onTap: (){
-                                if(invitationForm.currentState!.validate()){
+                              widths: Get.width / 2.3,
+                              onTap: () {
+                                if (invitationForm.currentState!.validate()) {
                                   controller.sendEmail(context);
                                 }
                               },
-                              text:/*sp.read("role") == "eventOrganizer"? "Groovkin Venue Manager":*/"Send",
+                              text: /*sp.read("role") == "eventOrganizer"? "Groovkin Venue Manager":*/
+                                  "Send",
                             ),
                             CustomButton(
                               borderClr: Colors.transparent,
@@ -103,10 +107,11 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                               color1: DynamicColor.lightWhite,
                               color2: DynamicColor.lightWhite,
                               textClr: theme.scaffoldBackgroundColor,
-
-                              widths: Get.width/2.3,
-                              onTap: (){
-                                _authController.invitationList.add(UserClass(emailController: TextEditingController(),selectedVal: true.obs));
+                              widths: Get.width / 2.3,
+                              onTap: () {
+                                _authController.invitationList.add(UserClass(
+                                    emailController: TextEditingController(),
+                                    selectedVal: true.obs));
                                 controller.update();
                                 // if(sp.read("role") !="User"){
                                 //   Get.toNamed(Routes.groovkinManagerScreen);
@@ -115,7 +120,7 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                                 //   // Get.back();
                                 // }
                               },
-                              text:"Add",
+                              text: "Add",
                             ),
                           ],
                         ),
@@ -215,11 +220,10 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                 //         ),
                 //       );
                 //     }),
-              ),
-            ),
-          );
-        }
-      ),
+                ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -228,5 +232,5 @@ class UserClass {
   String? name;
   RxBool? selectedVal = false.obs;
   TextEditingController emailController = TextEditingController();
-  UserClass({this.name,this.selectedVal,required this.emailController});
+  UserClass({this.name, this.selectedVal, required this.emailController});
 }

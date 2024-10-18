@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/RecommendedForUserModel.dart';
@@ -8,12 +7,11 @@ import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/userPastEv
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userOngoingEventsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistoryModel.dart';
 
-class HomeController extends GetxController{
-
-///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> home functionality
-  RxBool showFilter=false.obs;
+class HomeController extends GetxController {
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> home functionality
+  RxBool showFilter = false.obs;
   RxInt selectedFilter = 0.obs;
-  RxInt? showIndexValue =0.obs;
+  RxInt? showIndexValue = 0.obs;
   RxString? eventStatus = "Completed".obs;
 
   ///history have selection of cancel & complete
@@ -32,31 +30,32 @@ class HomeController extends GetxController{
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> git completed events
   RxBool completedEventLoader = true.obs;
   EventHistoryModel? eventHistory;
-  completedEvent() async{
+  completedEvent() async {
     completedEventLoader(false);
     var response = await API().getApi(url: "history-events");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       eventHistory = EventHistoryModel.fromJson(response.data);
       completedEventLoader(true);
       update();
     }
   }
 
-
   ///>>>>>>>>>>>>>>>>>>>> todo user Home functionality
   ///>>>>>>>>>>>>>>>>>>>> get recommended api for you
   RecommendedEventsModel? recommendedEventData;
   RxBool getRecommendedLoader = true.obs;
   bool newsFeedWait = false;
-  getRecommended({fullUrl,String url = 'recommended-for-you-events'}) async{
+  getRecommended({fullUrl, String url = 'recommended-for-you-events'}) async {
     getRecommendedLoader(false);
     var response = await API().getApi(url: url, fullUrl: fullUrl);
-    if(response.statusCode == 200){
-      if(fullUrl == null){
+    if (response.statusCode == 200) {
+      if (fullUrl == null) {
         recommendedEventData = RecommendedEventsModel.fromJson(response.data);
-      }else{
-        recommendedEventData!.data!.data!.addAll(RecommendedEventsModel.fromJson(response.data).data!.data!);
-        recommendedEventData!.data!.nextPageUrl = RecommendedEventsModel.fromJson(response.data).data!.nextPageUrl;
+      } else {
+        recommendedEventData!.data!.data!
+            .addAll(RecommendedEventsModel.fromJson(response.data).data!.data!);
+        recommendedEventData!.data!.nextPageUrl =
+            RecommendedEventsModel.fromJson(response.data).data!.nextPageUrl;
         newsFeedWait = false;
       }
       getRecommendedLoader(true);
@@ -67,10 +66,10 @@ class HomeController extends GetxController{
   /// >>>>>>>>>>>>>>>>>>>>> get event near by me
   NearByEventsModel? eventNearByMe;
   RxBool getEventNearByMeLoader = true.obs;
-  getEventNearByMe() async{
+  getEventNearByMe() async {
     getEventNearByMeLoader(false);
     var response = await API().getApi(url: "near-by-events");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       eventNearByMe = NearByEventsModel.fromJson(response.data);
       getEventNearByMeLoader(true);
       update();
@@ -80,10 +79,10 @@ class HomeController extends GetxController{
   ///>>>>>>>>>>>>>>>>>>> get top rated events
   TopRatedEventModel? topRatingData;
   RxBool getTopRatedEventLoader = true.obs;
-  getTopRatedEvent() async{
+  getTopRatedEvent() async {
     getTopRatedEventLoader(false);
     var response = await API().getApi(url: "top-rated-events");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       topRatingData = TopRatedEventModel.fromJson(response.data);
       getTopRatedEventLoader(true);
       update();
@@ -92,13 +91,13 @@ class HomeController extends GetxController{
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo get user history functionality
   RxBool getUserHistoryLoader = true.obs;
-  UserPastEventHistoryModel?userPastHistory;
-  userPastEventHistory({fullUrl}) async{
+  UserPastEventHistoryModel? userPastHistory;
+  userPastEventHistory({fullUrl}) async {
     getUserHistoryLoader(false);
     recommendedEventData = null;
-    var response = await API().getApi(url: "past-events",fullUrl: fullUrl);
-    if(response.statusCode == 200){
-      if(fullUrl == null){
+    var response = await API().getApi(url: "past-events", fullUrl: fullUrl);
+    if (response.statusCode == 200) {
+      if (fullUrl == null) {
         userPastHistory = UserPastEventHistoryModel.fromJson(response.data);
       }
 
@@ -109,10 +108,12 @@ class HomeController extends GetxController{
 
   /// cancelled events in user history
   RxBool cancelEventUserHistoryLoader = true.obs;
-  cancelEventUserHistory() async{
+  cancelEventUserHistory() async {
     cancelEventUserHistoryLoader(false);
-    var response = await API().getApi(url: "cancelled-events",);
-    if(response.statusCode == 200){
+    var response = await API().getApi(
+      url: "cancelled-events",
+    );
+    if (response.statusCode == 200) {
       recommendedEventData = RecommendedEventsModel.fromJson(response.data);
       cancelEventUserHistoryLoader(true);
       update();
@@ -122,25 +123,25 @@ class HomeController extends GetxController{
   ///get all ongoing event user side
   UserOngoingEventModel? userOngoing;
   RxBool userOngoingLoader = true.obs;
-  getOngoingEventUser() async{
+  getOngoingEventUser() async {
     userOngoingLoader(false);
     var response = await API().getApi(url: "user-interested-on-going-list");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       userOngoing = UserOngoingEventModel.fromJson(response.data);
       userOngoingLoader(true);
       update();
     }
-
   }
 
   /// get my all event
-  getMyAllEvent({fullUrl, title}) async{
+  getMyAllEvent({fullUrl, title}) async {
     getRecommendedLoader(false);
     recommendedEventData = null;
     print(title);
-    var response = title== "drafts"? await API().getApi(url: "save-draft-list",fullUrl: fullUrl)
-    :await API().getApi(url: "my-events",fullUrl: fullUrl);
-    if(response.statusCode == 200){
+    var response = title == "drafts"
+        ? await API().getApi(url: "save-draft-list", fullUrl: fullUrl)
+        : await API().getApi(url: "my-events", fullUrl: fullUrl);
+    if (response.statusCode == 200) {
       recommendedEventData = RecommendedEventsModel.fromJson(response.data);
       getRecommendedLoader(true);
       update();
@@ -148,9 +149,7 @@ class HomeController extends GetxController{
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo user Home functionality
-
 }
-
 
 class HomeBinding implements Bindings {
   @override

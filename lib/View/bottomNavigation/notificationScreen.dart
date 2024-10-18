@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -15,26 +12,22 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Notification"),
-      body: ListView.builder(itemBuilder: (BuildContext context,index){
-        return Padding(
-          padding: EdgeInsets.symmetric(vertical: 6.0),
-          child: notificationWidget(
-            theme: theme,context: context
-          ),
-        );
-      })
-    );
+        appBar: customAppBar(theme: theme, text: "Notification"),
+        body: ListView.builder(itemBuilder: (BuildContext context, index) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 6.0),
+            child: notificationWidget(theme: theme, context: context),
+          );
+        }));
   }
 
-  Widget notificationWidget({bool profileImg = true,context,theme,text,subtitle,time}){
+  Widget notificationWidget(
+      {bool profileImg = true, context, theme, text, subtitle, time}) {
     return Container(
       decoration: BoxDecoration(
         // borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
-            image: AssetImage("assets/grayClor.png"),
-            fit: BoxFit.fill
-        ),
+            image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
       ),
       child: ListTile(
         leading: CircleAvatar(
@@ -44,26 +37,26 @@ class NotificationScreen extends StatelessWidget {
           //   image: NetworkImage(groupPlaceholder),
           // ),
         ),
-        title: Text(text??'Michael Logan',
-        style: poppinsMediumStyle(
-          fontSize: 14,
-          context: context,
-          color: theme.primaryColor,
+        title: Text(
+          text ?? 'Michael Logan',
+          style: poppinsMediumStyle(
+            fontSize: 14,
+            context: context,
+            color: theme.primaryColor,
+          ),
         ),
-        ),
-        subtitle: Text(subtitle??'Title here This Event hold by Venue',
+        subtitle: Text(
+          subtitle ?? 'Title here This Event hold by Venue',
           style: poppinsRegularStyle(
             fontSize: 14,
             context: context,
             color: DynamicColor.grayClr.withOpacity(0.8),
           ),
         ),
-        trailing: Text(time??"1:00 PM",
-        style: poppinsRegularStyle(
-          fontSize: 12,
-          context: context,
-          color: DynamicColor.lightRedClr
-        ),
+        trailing: Text(
+          time ?? "1:00 PM",
+          style: poppinsRegularStyle(
+              fontSize: 12, context: context, color: DynamicColor.lightRedClr),
         ),
       ),
     );
