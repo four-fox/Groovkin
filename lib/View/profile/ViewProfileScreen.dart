@@ -46,7 +46,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
     }
     setState(() {});
   }
-
+  
   @override
   Widget build(BuildContext context) {
     print(eventDetails);
@@ -222,7 +222,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                 : eventDetails != null &&
                                         eventDetails?.user != null
                                     ? "Member since ${DateFormat.MMMd().format(DateTime.parse(eventDetails!.user!.createdAt!))}"
-                                    : "Member since ${DateFormat.MMMd().format(_controller.userData!.data!.profile!.createdAt!)}",
+                                    : _controller.userData!.data!.profile!=null? "Member since ${DateFormat.MMMd().format(_controller.userData!.data!.profile!.createdAt!)}":"",
                             style: poppinsRegularStyle(
                               fontSize: 10,
                               color: DynamicColor.grayClr.withOpacity(0.8),

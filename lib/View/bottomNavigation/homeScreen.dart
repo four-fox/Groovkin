@@ -21,7 +21,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvent
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -503,7 +503,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class ManagerUpcomingEventsView extends StatelessWidget {
-  ManagerUpcomingEventsView({Key? key}) : super(key: key);
+  ManagerUpcomingEventsView({super.key});
 
   RxBool recommendedVal = false.obs;
   RxBool ongoingVal = false.obs;
@@ -811,7 +811,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
 }
 
 class ManagerPendingView extends StatefulWidget {
-  ManagerPendingView({Key? key}) : super(key: key);
+  ManagerPendingView({super.key});
 
   @override
   State<ManagerPendingView> createState() => _ManagerPendingViewState();
@@ -822,7 +822,6 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (Get.isRegistered<ManagerController>()) {
       _controller = Get.find<ManagerController>();

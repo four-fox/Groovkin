@@ -96,13 +96,14 @@ class _SettingScreenState extends State<SettingScreen> {
                             color: theme.primaryColor,
                           ),
                         ),
-                        Text(
-                          'Member since ${DateFormat.MMMd().format(controller.userData!.data!.profile!.createdAt!)}',
-                          style: poppinsMediumStyle(
-                              context: context,
-                              fontSize: 10,
-                              color: DynamicColor.grayClr.withOpacity(0.9)),
-                        ),
+                        if (controller.userData!.data!.profile != null)
+                          Text(
+                            'Member since ${DateFormat.MMMd().format(controller.userData!.data!.profile!.createdAt!)}',
+                            style: poppinsMediumStyle(
+                                context: context,
+                                fontSize: 10,
+                                color: DynamicColor.grayClr.withOpacity(0.9)),
+                          ),
                       ],
                     ),
                   ),
@@ -196,6 +197,9 @@ class _SettingScreenState extends State<SettingScreen> {
                             text: "Change Role",
                             onTap: () {
                               showModalBottomSheet(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(12.0)),
                                   context: context,
                                   builder: (context) {
                                     return Column(
@@ -204,6 +208,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                         API().sp.read("role") == "User"
                                             ? SizedBox()
                                             : ListTile(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0)),
                                                 onTap: () {
                                                   Navigator.pop(context);
                                                   controller.changeRoles(
@@ -215,6 +223,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                                 "eventOrganizer"
                                             ? SizedBox()
                                             : ListTile(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0)),
                                                 onTap: () {
                                                   Navigator.pop(context);
                                                   controller.changeRoles(
@@ -225,6 +237,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                         API().sp.read("role") == "eventManager"
                                             ? SizedBox()
                                             : ListTile(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0)),
                                                 onTap: () {
                                                   Navigator.pop(context);
                                                   controller.changeRoles(
@@ -301,10 +317,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 text: 'Are you sure you want to logout?',
                                 cancelAlert: 'No',
                                 btnSuccess: 'Yes',
-                                onTap: () {
-                                  API().sp.erase();
-                                  API().sp.write("intro", true);
-                                  Get.offAllNamed(Routes.loginScreen);
+                                onTap: () async {
+                                  await controller.logout();
                                 });
                           },
                           child: Container(

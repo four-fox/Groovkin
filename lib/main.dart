@@ -1,68 +1,36 @@
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/firebase/notification_services.dart';
+import 'package:groovkin/firebase_options.dart';
 
-import 'notification.dart';
-
-void main() async {
-  await GetStorage.init();
-  // await Firebase.initializeApp(
-  //   name: "Groovkin",
-  //   options: ConfigFirebaseConfig.platformOptions,
-  // );
-  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  // if (!kIsWeb) {
-  //   channel = const AndroidNotificationChannel(
-  //       'high_importance_channel', // id
-  //       'High Importance Notifications', // title
-  //       description:
-  //       'This channel is used for important notifications.', // description
-  //       importance: Importance.max,
-  //       enableVibration: true);
-  //
-  //   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  //   /// Create an Android Notification Channel.
-  //   ///
-  //   /// We use this channel in the `AndroidManifest.xml` file to override the
-  //   /// default FCM channel to enable heads up notifications.
-  //   await flutterLocalNotificationsPlugin
-  //       .resolvePlatformSpecificImplementation<
-  //       AndroidFlutterLocalNotificationsPlugin>()
-  //       ?.createNotificationChannel(channel);
-  //
-  //   //d/ Update the iOS foreground notification presentation options to allow
-  //   /// heads up notifications.
-  //   await FirebaseMessaging.instance
-  //       .setForegroundNotificationPresentationOptions(
-  //     alert: true,
-  //     badge: true,
-  //     sound: true,
-  //   );
-  //   await FirebaseMessaging.instance.requestPermission(
-  //     alert: true,
-  //     announcement: false,
-  //     badge: true,
-  //     carPlay: false,
-  //     criticalAlert: false,
-  //     provisional: false,
-  //     sound: true,
-  //   );
-  // }
-  // if (Platform.isMacOS) {
-  //   // Disable Metal rendering on macOS
-  //   debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-  // }
-  runApp(const MyApp());
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
+  // Todo Received BackGround Message
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  await GetStorage.init();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -71,62 +39,22 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-
 class _MyAppState extends State<MyApp> {
+  NotificationService notificationService = NotificationService();
+
   @override
   void initState() {
     super.initState();
+ //Todo Firebase Notification Start
+
+    notificationService.requestNotificationPermission();
+    notificationService.setUpInteractMessage(context);
+    notificationService.firebaseInit(context);
+
+    //Todo Firebase Notification End
+
+  
     // initStateNotification();
-  }
-
-  initStateNotification() {
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
-        onDidReceiveNotificationResponse: onSelectNotification);
-
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage? message) {
-      print('after kill app get notification 1');
-      print(message);
-      if (message != null) {
-        Future.delayed(Duration(seconds: 9), () {});
-      }
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      print(message);
-      print('after kill app get notification 2');
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      AppleNotification? ios = message.notification?.apple;
-      if (Platform.isAndroid) {
-        String action = message.data.toString();
-        print(action);
-        noti(
-          notification,
-          message.data,
-        );
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      print('after kill app get notification 3');
-      // noti(
-      //   notification,
-      //   message.data,
-      // );
-      // if (notification != null && android != null && !kIsWeb) {
-      //   String action = message.data.toString();
-      //  print(action);
-      //   noti(
-      //     notification,
-      //     message.data,
-      //   );
-      // }
-    });
   }
 
   @override
@@ -167,7 +95,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
 class MyBehavior extends ScrollBehavior {
   @override
   Widget buildOverscrollIndicator(
@@ -175,6 +102,3 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
-
-
-

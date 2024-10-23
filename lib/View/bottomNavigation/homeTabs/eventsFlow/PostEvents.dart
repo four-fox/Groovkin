@@ -12,7 +12,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import '../organizerHomeModel/alleventsModel.dart';
 
 class PendingScreen extends StatelessWidget {
-  PendingScreen({Key? key}) : super(key: key);
+  PendingScreen({super.key});
 
   EventController _eventController = Get.find<EventController>();
 

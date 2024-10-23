@@ -702,7 +702,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                               "eventDetails":
                                                   controller.eventDetail!.data!,
                                               "eventId": controller
-                                                  .eventDetail!.data!.userId                                            });
+                                                  .eventDetail!.data!.userId
+                                            });
                                       },
                                       networkImg: controller.eventDetail!.data!
                                                   .user!.profilePicture ==

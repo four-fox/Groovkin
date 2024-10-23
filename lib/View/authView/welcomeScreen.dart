@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -16,48 +17,30 @@ class WelComeScreen extends StatefulWidget {
 }
 
 class _WelComeScreenState extends State<WelComeScreen> {
-  String? intialRole;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if (Get.arguments["userType"] != null) {
-      intialRole = Get.arguments["userType"];
-      setState(() {});
-    }
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    print(intialRole);
-
-    return PopScope(
-      canPop: true, // Allow the screen to be popped normally
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop == true && intialRole != null) {
-          await API().sp.write("role", intialRole);
-          Get.back(); // Only pop if role is written
-        } else if (!didPop) {
-          // Pop the screen if `didPop` is false, otherwise do nothing
-          Get.back();
-        }
-      },
-      child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: theme.scaffoldBackgroundColor,
-        //   elevation: 0,
-        //   centerTitle: true,
-        //   title: Text("Welcome Message",
-        //   style: poppinsMediumStyle(
-        //     fontSize: 16,
-        //     color: theme.primaryColor,
-        //     context: context,
-        //   ),
-        //   ),
-        // ),
-        body: Column(
+    // print(intialRole);
+    return Scaffold(
+      // appBar: AppBar(
+      //   backgroundColor: theme.scaffoldBackgroundColor,
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   title: Text("Welcome Message",
+      //   style: poppinsMediumStyle(
+      //     fontSize: 16,
+      //     color: theme.primaryColor,
+      //     context: context,
+      //   ),
+      //   ),
+      // ),
+      body: DoubleBackToCloseApp(
+        snackBar: SnackBar(
+            content: Text(
+          "Please complete the profile screen",
+        )),
+        child: Column(
           children: [
             SizedBox(
               height: 200,
@@ -101,29 +84,37 @@ class _WelComeScreenState extends State<WelComeScreen> {
                 child: Image(image: AssetImage("assets/handshake.png")))
           ],
         ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () {
-              if (API().sp.read("role") == "User") {
-                Get.offAllNamed(Routes.userQuickSurveyScreen);
-              } else if (API().sp.read("role") == "eventOrganizer") {
-                Get.offAllNamed(Routes.subscriptionScreen);
-              } else {
-                Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
-                  "updationCondition": false,
-                  "skipBtnHide": false,
-                });
-              }
-              // Get.toNamed(Routes.loginWithScreen);
-            },
-            text: sp.read("role") == "eventManager"
-                ? "Service Availability Survey"
-                : "Let's Get Started",
-          ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        child: CustomButton(
+          borderClr: Colors.transparent,
+          onTap: () {
+            if (API().sp.read("role") == "User") {
+              Get.offAllNamed(Routes.userQuickSurveyScreen);
+            } else if (API().sp.read("role") == "eventOrganizer") {
+              Get.offAllNamed(Routes.subscriptionScreen);
+            } else {
+              Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
+                "updationCondition": false,
+                "skipBtnHide": false,
+              });
+            }
+            // Get.toNamed(Routes.loginWithScreen);
+          },
+          text: sp.read("role") == "eventManager"
+              ? "Service Availability Survey"
+              : "Let's Get Started",
         ),
       ),
     );
   }
 }
+
+//  if (didPop == true && intialRole != null) {
+//           await API().sp.write("role", intialRole);
+//           Get.back(); // Only pop if role is written
+//         } else if (!didPop) {
+//           // Pop the screen if `didPop` is false, otherwise do nothing
+//           Get.back();
+//         }

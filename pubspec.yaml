@@ -54,7 +54,6 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   double_back_to_close_app: ^2.1.0
   flutter_local_notifications: ^17.2.1+2
-  firebase_messaging: ^15.0.3
   firebase_core: ^3.2.0
   map_location_picker:
     path: ../groovkinnew/plugin/map_location_picker-master
@@ -84,6 +83,9 @@ dependencies:
   image_cropper_platform_interface: ^6.1.0
   form_builder_extra_fields: ^10.2.0
   better_player_plus: ^1.0.7
+    # Firebase Notification package
+  firebase_messaging: ^15.0.3
+  app_settings: ^5.1.1
 #    git:
 #      url: https://github.com/tintran-dev/betterplayer.git
   otp_text_field:

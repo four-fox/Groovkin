@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_new
 
+import 'dart:io';
+
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_item.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
@@ -60,86 +62,89 @@ class BottomNavigationView extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Obx(
-        () => Container(
-          height: kToolbarHeight,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(12),
-                topLeft: Radius.circular(12),
-              ),
-              image: DecorationImage(
-                  image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
-          child: BottomBarBubble(
-            backgroundColor: Colors.transparent,
-            color: DynamicColor.yellowClr,
-            items: [
-              BottomBarItem(
-                  labelTextStyle: poppinsMediumStyle(
-                      fontSize: 12,
-                      context: context,
-                      color: theme.scaffoldBackgroundColor),
-                  iconBuilder: Padding(
-                    padding: const EdgeInsets.only(bottom: 6.0),
-                    child: ImageIcon(
-                      AssetImage("assets/homeScreen.png"),
-                      color: selectIndexxx.value == 0
-                          ? DynamicColor.yellowClr
-                          : DynamicColor.grayClr,
+        () => Padding(
+          padding: Platform.isIOS? EdgeInsets.only(bottom: 10):EdgeInsets.zero,
+          child: Container(
+            height: kToolbarHeight,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12),
+                  topLeft: Radius.circular(12),
+                ),
+                image: DecorationImage(
+                    image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
+            child: BottomBarBubble(
+              backgroundColor: Colors.transparent,
+              color: DynamicColor.yellowClr,
+              items: [
+                BottomBarItem(
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage("assets/homeScreen.png"),
+                        color: selectIndexxx.value == 0
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
                     ),
-                  ),
-                  label: "Home"),
-              BottomBarItem(
-                  labelTextStyle: poppinsMediumStyle(
-                      fontSize: 12,
-                      context: context,
-                      color: theme.scaffoldBackgroundColor),
-                  iconBuilder: Padding(
-                    padding: const EdgeInsets.only(bottom: 6.0),
-                    child: ImageIcon(
-                      AssetImage("assets/groovkin.png"),
-                      color: selectIndexxx.value == 1
-                          ? DynamicColor.yellowClr
-                          : DynamicColor.grayClr,
+                    label: "Home"),
+                BottomBarItem(
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage("assets/groovkin.png"),
+                        color: selectIndexxx.value == 1
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
                     ),
-                  ),
-                  label: "My Groovkin"),
-              BottomBarItem(
-                  labelTextStyle: poppinsMediumStyle(
-                      fontSize: 12,
-                      context: context,
-                      color: theme.scaffoldBackgroundColor),
-                  iconBuilder: Padding(
-                    padding: const EdgeInsets.only(bottom: 6.0),
-                    child: ImageIcon(
-                      AssetImage(sp.read("role") == "eventManager"
-                          ? "assets/request.png"
-                          : "assets/locationIcon.png"),
-                      color: selectIndexxx.value == 2
-                          ? DynamicColor.yellowClr
-                          : DynamicColor.grayClr,
+                    label: "My Groovkin"),
+                BottomBarItem(
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage(sp.read("role") == "eventManager"
+                            ? "assets/request.png"
+                            : "assets/locationIcon.png"),
+                        color: selectIndexxx.value == 2
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
                     ),
-                  ),
-                  label: "Analytics"),
-              BottomBarItem(
-                  labelTextStyle: poppinsMediumStyle(
-                      fontSize: 12,
-                      context: context,
-                      color: theme.scaffoldBackgroundColor),
-                  iconBuilder: Padding(
-                    padding: const EdgeInsets.only(bottom: 6.0),
-                    child: ImageIcon(
-                      AssetImage("assets/settingIcon.png"),
-                      color: selectIndexxx.value == 3
-                          ? DynamicColor.yellowClr
-                          : DynamicColor.grayClr,
+                    label: "Analytics"),
+                BottomBarItem(
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage("assets/settingIcon.png"),
+                        color: selectIndexxx.value == 3
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
                     ),
-                  ),
-                  label: "Setting"),
-            ],
-            selectedIndex: selectIndexxx.value,
-            onSelect: (index) {
-              selectIndexxx.value = index;
-            },
+                    label: "Setting"),
+              ],
+              selectedIndex: selectIndexxx.value,
+              onSelect: (index) {
+                selectIndexxx.value = index;
+              },
+            ),
           ),
         ),
       ),

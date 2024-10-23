@@ -1,4 +1,3 @@
-
 // ignore_for_file: iterable_contains_unrelated_type
 
 import 'dart:io';
@@ -14,7 +13,8 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/addVenueItems/addVenueMedel.dart';
 import 'package:groovkin/View/GroovkinManager/managerPendingEventModel.dart';
-import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart' as venueDtail;
+import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart'
+    as venueDtail;
 import 'package:groovkin/View/GroovkinManager/venueListManagerModel.dart';
 import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/counters/messagesModel.dart';
@@ -29,26 +29,22 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 
-class ManagerController extends GetxController{
-
+class ManagerController extends GetxController {
   ///Upload Profile Pic
   String? imageBytes;
   XFile? files;
   final ImagePicker _picker = ImagePicker();
   File? profileImage;
-  cameraImage(context,source) async{
+  cameraImage(context, source) async {
     try {
       files = await _picker.pickImage(
-          source: source,
-          imageQuality: 50,
-          maxHeight: 1920,
-          maxWidth: 1080);
-      CroppedFile? file = await ImageCropper().cropImage(
-          sourcePath: files!.path);
+          source: source, imageQuality: 50, maxHeight: 1920, maxWidth: 1080);
+      CroppedFile? file =
+          await ImageCropper().cropImage(sourcePath: files!.path);
       if (files != null) {
-        if(file != null){
+        if (file != null) {
           imageBytes = file.path;
-        }else{
+        } else {
           imageBytes = files!.path;
         }
       }
@@ -64,10 +60,15 @@ class ManagerController extends GetxController{
 
   Future<void> pickFileee() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      type: FileType.custom,
-      allowedExtensions: ["mp4","mov","png","jpg","jpeg",]
-    );
+        allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: [
+          "mp4",
+          "mov",
+          "png",
+          "jpg",
+          "jpeg",
+        ]);
 
     if (result == null) {
       // User canceled the picker
@@ -108,26 +109,26 @@ class ManagerController extends GetxController{
           filename: 'Video.${file.path!.split('.').last}',
           contentType: MediaType('video', file.path!.split('.').last),
         ));
-      }else if(extension == 'jpg' || extension == 'png'|| extension == 'jpeg'){
+      } else if (extension == 'jpg' ||
+          extension == 'png' ||
+          extension == 'jpeg') {
+        if (updateAmenities.value == true) {
+          profilePictures.add(venueDtail.ProfilePicture(
+            mediaPath: file.path,
+          ));
+        }
 
+        mediaClass.add(MediaClass(
+          filename: file.path,
+          fileType: extension,
+        ));
 
-
-      if (updateAmenities.value == true) {
-        profilePictures.add(venueDtail.ProfilePicture(
-          mediaPath: file.path,
+        multiPartImg.add(form.MultipartFile.fromFileSync(
+          file.path!,
+          filename: 'Image.${file.path!.split('.').last}',
+          contentType: MediaType('image', file.path!.split('.').last),
         ));
       }
-
-      mediaClass.add(MediaClass(
-        filename: file.path,
-        fileType: extension,
-      ));
-
-      multiPartImg.add(form.MultipartFile.fromFileSync(
-        file.path!,
-        filename: 'Image.${file.path!.split('.').last}',
-        contentType: MediaType('image', file.path!.split('.').last),
-      ));}
     }
 
     update();
@@ -143,9 +144,7 @@ class ManagerController extends GetxController{
     );
   }
 
-
   Future<void> pickFile() async {
-
     final List<XFile> result = await _picker.pickMultipleMedia();
     if (result.isNotEmpty) {
       // mediaClass.clear();
@@ -157,11 +156,12 @@ class ManagerController extends GetxController{
             thumbnailPath: (await getTemporaryDirectory()).path,
             imageFormat: ImageFormat.PNG,
             maxHeight:
-            64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
+                64, // specify the height of the thumbnail, let the width auto-scaled to keep the source aspect ratio
             quality: 75,
           );
-          if(updateAmenities.value == true){
-            profilePictures.add(venueDtail.ProfilePicture(mediaPath: result[i].path,thumbnail: fileName));
+          if (updateAmenities.value == true) {
+            profilePictures.add(venueDtail.ProfilePicture(
+                mediaPath: result[i].path, thumbnail: fileName));
           }
           mediaClass.add(MediaClass(
               filename: result[i].path,
@@ -170,13 +170,12 @@ class ManagerController extends GetxController{
           multiPartImg.add(form.MultipartFile.fromFileSync(
             result[i].path,
             filename: "Video.${result[i].path.split('.').last}",
-            contentType:
-            MediaType("video", result[i].path.split('.').last),
+            contentType: MediaType("video", result[i].path.split('.').last),
           ));
-        }
-        else {
-          if(updateAmenities.value == true){
-            profilePictures.add(venueDtail.ProfilePicture(mediaPath: result[i].path));
+        } else {
+          if (updateAmenities.value == true) {
+            profilePictures
+                .add(venueDtail.ProfilePicture(mediaPath: result[i].path));
           }
           mediaClass.add(MediaClass(
             filename: result[i].path,
@@ -185,14 +184,14 @@ class ManagerController extends GetxController{
           multiPartImg.add(form.MultipartFile.fromFileSync(
             result[i].path,
             filename: "Image.${result[i].path.split('.').last}",
-            contentType:
-            MediaType("image", result[i].path.split('.').last),
+            contentType: MediaType("image", result[i].path.split('.').last),
           ));
         }
       }
     } else {
       // User canceled the picker
     }
+
     ///add Id's of uploaded image >>>>>>>>>>>>>>>>>>>
     // if((memories !=null)&&(memories!.media!.isNotEmpty)){
     //   mediaDeleteList.add(memories!.media![0].fileId);
@@ -227,19 +226,19 @@ class ManagerController extends GetxController{
   List<AmenitiesItem> amenitiesList = [];
   List<AmenitiesItem> licensesPermitList = [];
   List<AmenitiesItem> houseEventPermitList = [];
-  getAmenities({type}) async{
+  getAmenities({type}) async {
     getAmenitiesLoader(false);
     var response = await API().getApi(url: 'show-venue-items?type=$type');
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       amenities = AddVenueModel.fromJson(response.data);
-      if(type == "amenities"){
+      if (type == "amenities") {
         amenitiesList.clear();
-        if(updateAmenities.value == false){
+        if (updateAmenities.value == false) {
           amenitiesList.addAll(amenities!.data!);
-        }else{
+        } else {
           for (var element in amenities!.data!) {
             for (var elementt in venueDetails!.data!.amenities!) {
-              if(element.id == elementt.venueItemId){
+              if (element.id == elementt.venueItemId) {
                 element.selected!.value = true;
                 selectedAmenities.add(element);
               }
@@ -247,16 +246,16 @@ class ManagerController extends GetxController{
           }
           amenitiesList.addAll(amenities!.data!);
         }
-      }else if(type == "licenses_and_permit"){
+      } else if (type == "licenses_and_permit") {
         licensesPermitList.clear();
-        if(updateAmenities.value == false){
+        if (updateAmenities.value == false) {
           licensesPermitList.addAll(amenities!.data!);
-        }else{
+        } else {
           for (var element in amenities!.data!) {
             for (var elementt in venueDetails!.data!.licensesAndPermit!) {
               print(element.id);
               print(elementt.venueItem!.id);
-              if(element.id == elementt.venueItem!.id){
+              if (element.id == elementt.venueItem!.id) {
                 element.selected!.value = true;
                 selectedLicensesPermit.add(element);
               }
@@ -264,15 +263,14 @@ class ManagerController extends GetxController{
           }
           licensesPermitList.addAll(amenities!.data!);
         }
-
-      }else{
+      } else {
         houseEventPermitList.clear();
-        if(updateAmenities.value == false){
+        if (updateAmenities.value == false) {
           houseEventPermitList.addAll(amenities!.data!);
-        }else{
+        } else {
           for (var element in amenities!.data!) {
             for (var elementt in venueDetails!.data!.houseEventCapabilities!) {
-              if(element.id == elementt.venueItemId){
+              if (element.id == elementt.venueItemId) {
                 element.selected!.value = true;
                 selectedHouseEventPermit.add(element);
               }
@@ -280,19 +278,17 @@ class ManagerController extends GetxController{
           }
           houseEventPermitList.addAll(amenities!.data!);
         }
-
       }
       getAmenitiesLoader(true);
       update();
     }
   }
 
-
   ///create venue function
   List<AmenitiesItem> selectedAmenities = [];
   List<AmenitiesItem> selectedLicensesPermit = [];
   List<AmenitiesItem> selectedHouseEventPermit = [];
-  createVenue(context,theme) async{
+  createVenue(context, theme) async {
     List amenities = [];
     List permitList = [];
     List houseEvent = [];
@@ -300,7 +296,7 @@ class ManagerController extends GetxController{
       amenities.add(element.id);
     }
     for (var element in selectedLicensesPermit) {
-        permitList.add(element.id);
+      permitList.add(element.id);
     }
     for (var element in selectedHouseEventPermit) {
       houseEvent.add(element.id);
@@ -327,23 +323,24 @@ class ManagerController extends GetxController{
     });
     print(formData);
     var response = await API().postApi(formData, "add-venue", multiPart: true);
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       showDialog(
           barrierColor: Colors.transparent,
           context: context,
           barrierDismissible: true,
           builder: (BuildContext context) {
             return AlertWidget(
-              height: kToolbarHeight*5,
+              height: kToolbarHeight * 5,
               container: SizedBox(
                 width: Get.width,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 4),
+                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Congratulation!',
+                      Text(
+                        'Congratulation!',
                         textAlign: TextAlign.center,
                         style: poppinsRegularStyle(
                           fontSize: 22,
@@ -351,9 +348,12 @@ class ManagerController extends GetxController{
                           context: context,
                           color: theme.primaryColor,
                         ),
-                      ),Padding(
+                      ),
+                      Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text("Your profile has been created",overflow: TextOverflow.ellipsis,
+                        child: Text(
+                          "Your profile has been created",
+                          overflow: TextOverflow.ellipsis,
                           maxLines: 5,
                           style: poppinsRegularStyle(
                             fontSize: 13,
@@ -364,29 +364,27 @@ class ManagerController extends GetxController{
                       ),
                       SizedBox(
                           height: 120,
-                          child: Image(image: AssetImage("assets/handshake.png"))),
+                          child:
+                              Image(image: AssetImage("assets/handshake.png"))),
                     ],
                   ),
                 ),
               ),
             );
           });
-      Future.delayed(Duration(seconds: 2),(){
+      Future.delayed(Duration(seconds: 2), () {
         Get.back();
         selectIndexxx.value = 0;
         Get.offAllNamed(Routes.bottomNavigationView,
-            arguments: {
-              "indexValue": 1
-            }
-        );
+            arguments: {"indexValue": 1});
       });
     }
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  edit venue
 
-  editVenue() async{
-    if(removeImgList.isNotEmpty){
+  editVenue() async {
+    if (removeImgList.isNotEmpty) {
       await removeImg();
     }
     List amenities = [];
@@ -418,29 +416,29 @@ class ManagerController extends GetxController{
       "amenities[]": amenities,
       "licenses_and_permit_items[]": permitList,
       "house_event_items[]": houseEvent,
-     if(multiPartImg.isNotEmpty) "image[]": multiPartImg,
+      if (multiPartImg.isNotEmpty) "image[]": multiPartImg,
       "city": cityController.text
     });
     print(formData);
-    var response = await API().postApi(formData, "edit-venue/${venueDetails!.data!.id}");
-    if(response.statusCode == 200){
+    var response =
+        await API().postApi(formData, "edit-venue/${venueDetails!.data!.id}");
+    if (response.statusCode == 200) {
       bottomToast(text: response.data['message']);
-      Get.offAllNamed(Routes.bottomNavigationView, arguments: {"indexValue": 1});
+      Get.offAllNamed(Routes.bottomNavigationView,
+          arguments: {"indexValue": 1});
       clearFields();
     }
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  remove image
   List removeImgList = [];
-  removeImg() async{
+  removeImg() async {
     var formData = form.FormData.fromMap({
       "venue_id": venueDetails!.data!.id,
       "media_id[]": removeImgList,
     });
     var response = await API().postApi(formData, "remove-venue-images");
-    if(response.statusCode == 200){
-
-    }
+    if (response.statusCode == 200) {}
   }
 
   ///get all venues
@@ -448,14 +446,14 @@ class ManagerController extends GetxController{
   AllVenueModel? allVenueData;
   bool venueWaiting = false;
 
-  getAllVenues({nextUrl}) async{
+  getAllVenues({nextUrl}) async {
     getAllVenuesLoader(false);
     var response = await API().getApi(url: "show-venues");
-    if(response.statusCode == 200){
-      if(nextUrl == null){
+    if (response.statusCode == 200) {
+      if (nextUrl == null) {
         venueWaiting = false;
         allVenueData = AllVenueModel.fromJson(response.data);
-      }else{
+      } else {
         allVenueData!.data!.data!
             .addAll(AllVenueModel.fromJson(response.data).data!.data!);
         allVenueData!.data!.nextPageUrl =
@@ -471,14 +469,14 @@ class ManagerController extends GetxController{
   RxBool getVenueDetailsLoader = true.obs;
   venueDtail.VenueDetailsModel? venueDetails;
   List<String> imageList = [];
-  getVenueDetails({id}) async{
+  getVenueDetails({id}) async {
     getVenueDetailsLoader(false);
-  imageList.clear();
+    imageList.clear();
     var response = await API().getApi(url: "venue-details/$id");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       venueDetails = venueDtail.VenueDetailsModel.fromJson(response.data);
       for (var element in venueDetails!.data!.profilePicture!) {
-       imageList.add(element.mediaPath!);
+        imageList.add(element.mediaPath!);
       }
       getVenueDetailsLoader(true);
       update();
@@ -487,7 +485,7 @@ class ManagerController extends GetxController{
 
   RxBool updateAmenities = false.obs;
   List<venueDtail.ProfilePicture> profilePictures = [];
-  editVenueDataBind() async{
+  editVenueDataBind() async {
     updateAmenities(true);
     profilePictures.clear();
     venueNameController.text = venueDetails!.data!.venueName!;
@@ -502,23 +500,22 @@ class ManagerController extends GetxController{
     addressController.text = venueDetails!.data!.location!;
     termsConditionAgree.value = true;
     phoneNumController.text = venueDetails!.data!.phoneNumber!;
-    maxOccupancyController.text = venueDetails!.data!.venueProperty!.maxOccupancy!;
+    maxOccupancyController.text =
+        venueDetails!.data!.venueProperty!.maxOccupancy!;
     maxSeatingController.text = venueDetails!.data!.venueProperty!.maxSeating!;
     maxHourController.text = venueDetails!.data!.venueProperty!.maxHour!;
-    openingHoursController.text = venueDetails!.data!.venueProperty!.openingHours!;
-    closedHoursController.text = venueDetails!.data!.venueProperty!.closingHours!;
+    openingHoursController.text =
+        venueDetails!.data!.venueProperty!.openingHours!;
+    closedHoursController.text =
+        venueDetails!.data!.venueProperty!.closingHours!;
     removeImgList.clear();
     profilePictures.addAll(venueDetails!.data!.profilePicture!);
     Get.toNamed(Routes.createCompanyProfileScreen,
-      arguments: {
-      "updationCondition": true,
-        "skipBtnHide": true
-      }
-    );
+        arguments: {"updationCondition": true, "skipBtnHide": true});
   }
 
   ///clear text fields
-  clearFields() async{
+  clearFields() async {
     updateAmenities.value = false;
     venueNameController.clear();
     streetAddressController.clear();
@@ -540,15 +537,19 @@ class ManagerController extends GetxController{
     update();
   }
 
-
   ///>>>>>>>>>>>>>>>>>>> event manager get all pending events
   RxBool getAllPendingEventsLoader = true.obs;
   ManagerPendingEventsModel? managerPendingEvents;
   getAllPendingEvents() async {
     getAllPendingEventsLoader(false);
     var response = await API().getApi(url: "show-venue-requested-events");
-    if(response.statusCode == 200){
+    final token = await API().sp.read("token");
+    final userId = await API().sp.read("userId");
+    print(token);
+    if (response.statusCode == 200) {
       managerPendingEvents = ManagerPendingEventsModel.fromJson(response.data);
+      print(userId);
+
       getAllPendingEventsLoader(true);
       update();
     }
@@ -556,13 +557,13 @@ class ManagerController extends GetxController{
 
   ///>>>>>>>>>>>>>>>>>>>> venue manager decline or accept event function
   RxBool checkBoxValue = false.obs;
-  eventAcceptDeclineFtn({status,EventData? event}) async{
+  eventAcceptDeclineFtn({status, EventData? event}) async {
     var formData = form.FormData.fromMap({
       "event_id": event!.id,
       "status": status,
     });
     var response = await API().postApi(formData, "accept-event-request");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       managerPendingEvents!.data!.data!.remove(event);
       checkBoxValue.value = false;
       bottomToast(text: response.data['message']);
@@ -571,25 +572,27 @@ class ManagerController extends GetxController{
     }
   }
 
-///>>>>>>>>>>>>>>>>>>> event manager get all pending events
+  ///>>>>>>>>>>>>>>>>>>> event manager get all pending events
 
-///todo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> counter working
+  ///todo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> counter working
 
   RxBool getAllMessagesLoader = true.obs;
   ChatModel? chatData;
   bool chatWaiting = false;
-  getAllMessages({userId,sourceId,fullUrl}) async{
+  getAllMessages({userId, sourceId, fullUrl}) async {
     var formData = form.FormData.fromMap({
       "user_id": userId,
       "source_id": sourceId,
     });
-    var response = await API().postApi(formData,'chats',fullUrl: fullUrl);
-    if(response.statusCode == 200){
-      if(fullUrl == null){
+    var response = await API().postApi(formData, 'chats', fullUrl: fullUrl);
+    if (response.statusCode == 200) {
+      if (fullUrl == null) {
         chatData = ChatModel.fromJson(response.data);
-      }else{
-        chatData!.data!.data!.addAll(ChatModel.fromJson(response.data).data!.data!);
-        chatData!.data!.nextPageUrl = ChatModel.fromJson(response.data).data!.nextPageUrl;
+      } else {
+        chatData!.data!.data!
+            .addAll(ChatModel.fromJson(response.data).data!.data!);
+        chatData!.data!.nextPageUrl =
+            ChatModel.fromJson(response.data).data!.nextPageUrl;
       }
       update();
     }
@@ -597,15 +600,15 @@ class ManagerController extends GetxController{
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> send message text
   final messageController = TextEditingController();
-  sendMessage({receiverId,eventId}) async{
+  sendMessage({receiverId, eventId}) async {
     var formData = form.FormData.fromMap({
       "receiver_id": receiverId,
-     if(messageController.text.isNotEmpty) "msg": messageController.text,
+      if (messageController.text.isNotEmpty) "msg": messageController.text,
       "source_id": eventId,
-     if(multiPartImg.isNotEmpty) "media[]": multiPartImg
+      if (multiPartImg.isNotEmpty) "media[]": multiPartImg
     });
     var response = await API().postApi(formData, "send-message");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       MessageItem d = MessageItem.fromJson(response.data['data']);
       chatData!.data!.data!.insert(0, d);
       messageController.clear();
@@ -617,17 +620,13 @@ class ManagerController extends GetxController{
     }
   }
 
-///todo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> counter working
-
-
-
+  ///todo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> counter working
 }
 
-class ManagerBinding implements Bindings{
+class ManagerBinding implements Bindings {
   @override
   void dependencies() {
     // TODO: implement dependencies
     Get.lazyPut<ManagerController>(() => ManagerController());
   }
-
 }

@@ -9,10 +9,26 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 import 'package:intl/intl.dart';
 
-class ViewAllRecommendedScreen extends StatelessWidget {
+class ViewAllRecommendedScreen extends StatefulWidget {
   ViewAllRecommendedScreen({Key? key}) : super(key: key);
 
-  HomeController _controller = Get.find();
+  @override
+  State<ViewAllRecommendedScreen> createState() =>
+      _ViewAllRecommendedScreenState();
+}
+
+class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
+  late HomeController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      _controller = Get.find<HomeController>();
+    }else{
+      _controller = Get.put(HomeController());
+    }
+  }
 
   String urlText = Get.arguments['urlText'];
 

@@ -15,15 +15,16 @@ String dummyProfile =
     "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg";
 
 class API {
-
   ///SingleTon
   static final API _singleton = API._internal();
   var sp = GetStorage();
   factory API() {
     return _singleton;
   }
-  Dio dio = Dio(BaseOptions(connectTimeout: Duration(seconds: 18),
-    receiveTimeout: Duration(seconds: 18),));
+  Dio dio = Dio(BaseOptions(
+    connectTimeout: Duration(seconds: 180),
+    receiveTimeout: Duration(seconds: 180),
+  ));
 
   API._internal();
   Dio addInterceptors() {
@@ -36,22 +37,27 @@ class API {
 
   ///Get
   Future<dynamic> getApi(
-      {url, fullUrl, Map<String, dynamic>? queryParameters,bool isLoader = true}) async {
+      {url,
+      fullUrl,
+      Map<String, dynamic>? queryParameters,
+      bool isLoader = true}) async {
+    print(sp.read('token'));
     dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
     dio.options.headers['Accept'] = "application/json";
 
     if (url != "") {
       try {
         print(url);
-        if(isLoader == true){
+        if (isLoader == true) {
           showLoading();
         }
-        final response = await dio.get(fullUrl ?? Url().baseUrl + url,
-            queryParameters: queryParameters,
+        final response = await dio.get(
+          fullUrl ?? Url().baseUrl + url,
+          queryParameters: queryParameters,
         );
         BotToast.closeAllLoading();
         return response;
-      } on DioError catch (e) {
+      } on DioException catch (e) {
         BotToast.closeAllLoading();
         return returnResponse(e.response!);
       }
@@ -70,6 +76,7 @@ class API {
     /*required RoundedLoadingButtonController postButton*/
   }) async {
     print(Url().baseUrl + url);
+    print(sp.read('token'));
     try {
       if (auth == true) {
         dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
@@ -92,11 +99,10 @@ class API {
                     Headers.acceptHeader: "application/json",
                   },
                 ),
-          onSendProgress: (int progress, int total) {
-      });
+          onSendProgress: (int progress, int total) {});
       BotToast.closeAllLoading();
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       BotToast.closeAllLoading();
       return returnResponse(e.response);
     }

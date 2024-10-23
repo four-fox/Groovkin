@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
+import 'package:groovkin/firebase/notification_services.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -87,11 +88,14 @@ class AuthController extends GetxController {
 
   /// user register
   sigUp(context) async {
+    NotificationService notificationService = NotificationService();
+    final String token = await notificationService.getDeviceToken();
     List imageList = [];
     if (imageBytes != null) {
       var a = multiPartingImage(imageBytes);
       imageList.add(a);
     }
+
     // var theme = Theme.of(context);
     var formData = form.FormData.fromMap({
       "first_name": firstNameController.text,
@@ -117,7 +121,7 @@ class AuthController extends GetxController {
               ? "venue_manager"
               : "event_owner",
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token": "jkhkjhkjhkjhasd",
+      "device_token": token,
       "about": aboutController.text,
     });
     var response = await API().postApi(formData, "register",
@@ -152,9 +156,12 @@ class AuthController extends GetxController {
   RxBool loginShowPassword = true.obs;
 
   login() async {
+    NotificationService notificationService = NotificationService();
+    final String token = await notificationService.getDeviceToken();
     var formData = {
       "email": loginEmailController.text,
       "password": loginPasswordController.text,
+      "device_token": token
     };
     var response = await API().postApi(formData, "login");
     if (response.statusCode == 200) {
@@ -169,7 +176,6 @@ class AuthController extends GetxController {
       } else {
         API().sp.write('role', 'eventOrganizer');
       }
-
       if (sp.read("role") == "User") {
         API().sp.write("isUserCreated",
             response.data['data']['user_details']['is_user_created']);
@@ -406,6 +412,16 @@ class AuthController extends GetxController {
       "lastName": lastNameController.text,
       "UserName": displayNameController.text,
     });
+  }
+
+  // Todo Logout
+  Future<void> logout() async {
+    final repsposne = await API().postApi({}, "logout");
+    if (repsposne.statusCode == 200) {
+      API().sp.erase();
+      API().sp.write("intro", true);
+      Get.offAllNamed(Routes.loginScreen);
+    }
   }
 
   /// toDo create profile functionality
@@ -711,40 +727,46 @@ class AuthController extends GetxController {
     final response = await API().postApi(formData, "switch-profile");
     if (response.statusCode == 200) {
       final data = SwitchProfile.fromJson(response.data);
+      API().sp.write("token", data.data!.token);
+      API().sp.write("userId", data.data!.profile!.userId);
       String userTypeInital = await API().sp.read("role");
+
       print(userTypeInital);
       if (userType == "event_owner") {
         if (data.data!.isEventCreated == 0) {
           API().sp.write('role', 'eventOrganizer');
-          Get.toNamed(Routes.welComeScreen, arguments: {
+          Get.offAllNamed(Routes.welComeScreen, arguments: {
             "userType": userTypeInital,
           });
         } else {
           API().sp.write('role', 'eventOrganizer');
           selectIndexxx.value = 0;
-          Get.toNamed(Routes.bottomNavigationView);
+          Get.offAllNamed(Routes.bottomNavigationView);
         }
       } else if (userType == "venue_manager") {
-        if (data.data!.isManagerCreated == 0) {
-          API().sp.write("role", 'eventManager');
-          Get.toNamed(Routes.welComeScreen, arguments: {
-            "userType": userTypeInital,
-          });
-        } else {
-          API().sp.write("role", 'eventManager');
-          selectIndexxx.value = 0;
-          Get.toNamed(Routes.bottomNavigationView);
-        }
+        // if (data.data!.isManagerCreated == 0) {
+        //   API().sp.write("role", 'eventManager');
+        //   Get.offAllNamed(Routes.welComeScreen, arguments: {
+        //     "userType": userTypeInital,
+        //   });
+        // } else {
+        //   API().sp.write("role", 'eventManager');
+        //   selectIndexxx.value = 0;
+        //   Get.offAllNamed(Routes.bottomNavigationView);
+        // }
+        API().sp.write("role", 'eventManager');
+        selectIndexxx.value = 0;
+        Get.offAllNamed(Routes.bottomNavigationView);
       } else {
         if (data.data!.isUserCreated == 0) {
           API().sp.write("role", 'User');
-          Get.toNamed(Routes.welComeScreen, arguments: {
+          Get.offAllNamed(Routes.welComeScreen, arguments: {
             "userType": userTypeInital,
           });
         } else {
           API().sp.write("role", 'User');
           selectUserIndexxx.value = 0;
-          Get.toNamed(Routes.userBottomNavigationNav);
+          Get.offAllNamed(Routes.userBottomNavigationNav);
         }
       }
     }
@@ -811,8 +833,10 @@ class AuthController extends GetxController {
       Get.offNamed(Routes.sendInvitationScreen);
       sendingEmailLoader(true);
       update();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Mail Send Successfully")));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Mail Send Successfully")));
+      }
     } on MailerException catch (e) {
       sendingEmailLoader(true);
       print('Message not sent.');
@@ -830,6 +854,7 @@ class AuthController extends GetxController {
   getAllUnfollowing({nextUrl}) async {
     getAllUnfollowingLoader(false);
     var response = await API().getApi(url: "nonfollowed", fullUrl: nextUrl);
+
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         allUnFollower = AllUnFollowUserModel.fromJson(response.data);

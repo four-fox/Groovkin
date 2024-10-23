@@ -20,7 +20,7 @@ import 'package:intl/intl.dart';
 import '../../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 
 class UserHomeScreen extends StatefulWidget {
-  UserHomeScreen({Key? key}) : super(key: key);
+  UserHomeScreen({super.key});
 
   @override
   State<UserHomeScreen> createState() => _UserHomeScreenState();
@@ -813,7 +813,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 }
 
 class ViewAllEventListScreen extends StatefulWidget {
-  ViewAllEventListScreen({Key? key}) : super(key: key);
+  ViewAllEventListScreen({super.key});
 
   @override
   State<ViewAllEventListScreen> createState() => _ViewAllEventListScreenState();

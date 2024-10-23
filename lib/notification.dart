@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'config.dart';
@@ -37,16 +36,14 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage? message) async {
   await Firebase.initializeApp(
     options: ConfigFirebaseConfig.platformOptions,
   );
-  if(message != null){
-    noti(message.notification,message.data);
+  if (message != null) {
+    noti(message.notification, message.data);
   }
   // onTapBackground(message);
 }
 
 Future<dynamic> onTapBackground(payload) async {
-  if (payload != null) {
-
-  }
+  if (payload != null) {}
 }
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
@@ -54,7 +51,6 @@ late AndroidNotificationChannel channel;
 
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
 
 void notificationTapBackground(
     NotificationResponse notificationResponse) async {
@@ -72,33 +68,29 @@ void notificationTapBackground(
   // handle action
 }
 
-
 noti(notification, data) {
-    print('vaa');
-    flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            priority: Priority.max,
-            channelDescription: channel.description,
-            playSound: true,
-            enableVibration: true,
-            icon: 'ic_launcher',
-          ),
+  print('vaa');
+  flutterLocalNotificationsPlugin.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          priority: Priority.max,
+          channelDescription: channel.description,
+          playSound: true,
+          enableVibration: true,
+          icon: 'ic_launcher',
         ),
-        payload: json.encode(data)
+      ),
+      payload: json.encode(data)
       // payload: action
-    );
-
+      );
 }
 
 Future<dynamic> onSelectNotification(NotificationResponse payload) async {
   var de = json.decode(payload.payload!);
-   print(de['type']);
+  print(de['type']);
 }
-
-

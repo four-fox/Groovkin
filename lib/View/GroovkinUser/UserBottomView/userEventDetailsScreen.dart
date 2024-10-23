@@ -15,7 +15,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import 'package:intl/intl.dart';
 
 class UserEventDetailsScreen extends StatefulWidget {
-  UserEventDetailsScreen({Key? key}) : super(key: key);
+  UserEventDetailsScreen({super.key});
 
   @override
   State<UserEventDetailsScreen> createState() => _UserEventDetailsScreenState();
@@ -309,7 +309,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                 child: ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    // physics: NeverScrollableScrollPhysics(),
                                     itemCount: controller
                                         .eventDetail!.data!.services!.length,
                                     itemBuilder: (BuildContext context, indx) {
@@ -437,7 +437,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                 child: ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    // physics: NeverScrollableScrollPhysics(),
                                     itemCount: controller
                                         .eventDetail!.data!.services!.length,
                                     itemBuilder: (BuildContext context, indx) {
@@ -667,12 +667,13 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                             () => _authController.followingLoader.value == false
                                 ? SizedBox.shrink()
                                 : aboutEventCreator(
-                                  
                                     rowOnTap: () {
                                       Get.toNamed(Routes.viewProfileScreen,
                                           arguments: {
-                                            "venueDetails":  controller.eventDetail!.data!,
-                                            "venueId":  controller.eventDetail!.data!.venue!.userId,
+                                            "venueDetails":
+                                                controller.eventDetail!.data!,
+                                            "venueId": controller.eventDetail!
+                                                .data!.venue!.userId,
                                           });
                                     },
                                     // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
@@ -727,8 +728,10 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                     onTap: () {
                                       Get.toNamed(Routes.viewProfileScreen,
                                           arguments: {
-                                            "eventDetails": controller.eventDetail!.data!,
-                                            "eventId": controller.eventDetail!.data!.id,
+                                            "eventDetails":
+                                                controller.eventDetail!.data!,
+                                            "eventId": controller
+                                                .eventDetail!.data!.id,
                                           });
                                     },
                                     horizontalPadding: 12,

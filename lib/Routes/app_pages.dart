@@ -373,10 +373,13 @@ class AppPages {
       binding: UserHomeBinding(),
     ),
     GetPage(
-      name: _Path.userEventDetailsScreen,
-      page: () => UserEventDetailsScreen(),
-      binding: UserHomeBinding(),
-    ),
+        name: _Path.userEventDetailsScreen,
+        page: () => UserEventDetailsScreen(),
+        bindings: [
+          UserHomeBinding(),
+          EventBinding(),
+          AuthBinding(),
+        ]),
     GetPage(
       name: _Path.venueMoreImageScreen,
       page: () => VenueMoreImageScreen(),
