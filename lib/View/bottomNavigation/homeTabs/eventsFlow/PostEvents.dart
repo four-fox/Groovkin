@@ -86,31 +86,37 @@ class PendingScreen extends StatelessWidget {
                                         color: theme.primaryColor,
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 6, horizontal: 8),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10)),
-                                          color: DynamicColor.lightBlackClr
-                                          // image: DecorationImage(
-                                          //     image: AssetImage("assets/topbtnGradent.png"),
-                                          //     fit: BoxFit.fill
-                                          // )
-                                          ),
-                                      child: Center(
-                                        child: Text(
-                                          eventData.user!.deleteAt == null
-                                              ? "Pending"
-                                              : "Delete Account",
-                                          style: poppinsRegularStyle(
-                                            fontSize: 11,
-                                            context: context,
-                                            color: theme.primaryColor,
+                                    Row(
+                                      children: [
+                                        if (eventData.user!.deleteAt != null)
+                                          Utils.accountDelete(context),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 6, horizontal: 8),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  topRight:
+                                                      Radius.circular(10)),
+                                              color: DynamicColor.lightBlackClr
+                                              // image: DecorationImage(
+                                              //     image: AssetImage("assets/topbtnGradent.png"),
+                                              //     fit: BoxFit.fill
+                                              // )
+                                              ),
+                                          child: Center(
+                                            child: Text(
+                                              "Pending",
+                                              style: poppinsRegularStyle(
+                                                fontSize: 11,
+                                                context: context,
+                                                color: theme.primaryColor,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     )
                                   ],
                                 ),

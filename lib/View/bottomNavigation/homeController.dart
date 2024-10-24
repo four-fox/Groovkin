@@ -46,7 +46,8 @@ class HomeController extends GetxController {
   RxBool getRecommendedLoader = true.obs;
   bool newsFeedWait = false;
  
-  getRecommended({fullUrl, String url = 'recommended-for-you-events'}) async {
+  getRecommended({fullUrl, String 
+  url = 'recommended-for-you-events'}) async {
     getRecommendedLoader(false);
     var response = await API().getApi(url: url, fullUrl: fullUrl);
     if (response.statusCode == 200) {

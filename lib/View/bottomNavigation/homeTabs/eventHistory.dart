@@ -61,42 +61,51 @@ class PostEvents extends StatelessWidget {
                                         color: theme.primaryColor,
                                       ),
                                     ),
-                                    Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(10),
-                                              topRight: Radius.circular(10)),
-                                          image: controller
-                                                      .selectedFilter.value !=
-                                                  4
-                                              ? DecorationImage(
-                                                  image: AssetImage(
-                                                      "assets/topbtnGradent.png"),
-                                                  fit: BoxFit.fill)
-                                              : null,
-                                          color:
-                                              controller.selectedFilter.value ==
+                                    Row(
+                                      children: [
+                                        if (singleEvent.user!.deleteAt != null)
+                                          Utils.accountDelete(context),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                  topRight:
+                                                      Radius.circular(10)),
+                                              image: controller.selectedFilter
+                                                          .value !=
+                                                      4
+                                                  ? DecorationImage(
+                                                      image: AssetImage(
+                                                          "assets/topbtnGradent.png"),
+                                                      fit: BoxFit.fill)
+                                                  : null,
+                                              color: controller.selectedFilter
+                                                          .value ==
                                                       4
                                                   ? DynamicColor.redClr
                                                   : Colors.transparent),
-                                      child: Center(
-                                        child: Text(
-                                          singleEvent.user!.deleteAt == null
-                                              ? singleEvent.status ??
-                                                  "Completed"
-                                              : "Deleted Account",
-                                          style: poppinsRegularStyle(
-                                            fontSize: 11,
-                                            context: context,
-                                            color: controller
-                                                        .selectedFilter.value ==
-                                                    4
-                                                ? theme.primaryColor
-                                                : theme.scaffoldBackgroundColor,
+                                          child: Center(
+                                            child: Text(
+                                              "Completed",
+                                              style: poppinsRegularStyle(
+                                                fontSize: 11,
+                                                context: context,
+                                                color: controller.selectedFilter
+                                                            .value ==
+                                                        4
+                                                    ? theme.primaryColor
+                                                    : theme
+                                                        .scaffoldBackgroundColor,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     )
                                   ],
                                 ),

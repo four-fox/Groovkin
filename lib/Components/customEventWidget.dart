@@ -27,9 +27,15 @@ userCustomEvent(
         : onTap,
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
-      color: isDelete ? DynamicColor.disabledColor : Colors.transparent,
+      // color: isDelete ? DynamicColor.disabledColor : Colors.transparent,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (isDelete)
+           Utils.accountDelete(context),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -106,23 +112,3 @@ userCustomEvent(
     ),
   );
 }
-  //  Container(
-  //                       padding: ,
-  //                       decoration: BoxDecoration(
-  //                           border: Border.all(
-  //                             color: Colors.red,
-  //                           ),
-  //                           borderRadius: BorderRadius.circular(8)),
-  //                       child: Center(
-  //                         child: Text(
-  //                           "Deleted",
-  //                           style: Theme.of(context)
-  //                               .textTheme
-  //                               .bodyMedium!
-  //                               .copyWith(
-  //                                 color: Colors.red,
-  //                                 fontWeight: FontWeight.w700,
-  //                               ),
-  //                         ),
-  //                       ),
-  //                     ),

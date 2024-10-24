@@ -84,34 +84,44 @@ class MyEventsScreen extends StatelessWidget {
                                             color: theme.primaryColor,
                                           ),
                                         ),
-                                        Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(10),
-                                                topRight: Radius.circular(10)),
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    "assets/topbtnGradent.png"),
-                                                fit: BoxFit.fill),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              singleEventData.user!.deleteAt ==
-                                                      null
-                                                  ? pageCondition == "drafts"
+                                        Row(
+                                          children: [
+                                            if (singleEventData
+                                                    .user!.deleteAt !=
+                                                null)
+                                             Utils.accountDelete(context),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10)),
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                        "assets/topbtnGradent.png"),
+                                                    fit: BoxFit.fill),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  pageCondition == "drafts"
                                                       ? "Drafts"
                                                       : singleEventData.status
-                                                          .toString()
-                                                  : "Deleted Account",
-                                              style: poppinsRegularStyle(
-                                                fontSize: 11,
-                                                context: context,
-                                                color: theme
-                                                    .scaffoldBackgroundColor,
+                                                          .toString(),
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 11,
+                                                    context: context,
+                                                    color: theme
+                                                        .scaffoldBackgroundColor,
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         )
                                       ],
                                     ),

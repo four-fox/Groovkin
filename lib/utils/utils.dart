@@ -44,11 +44,32 @@ class Utils {
   }
 
   // show Bot Toast
-  static showToast()async{
-     BotToast.showText(
-              text: "This Account Is Delete",
-              textStyle: poppinsMediumStyle(fontSize: 16, color: Colors.black),
-              contentColor: Colors.white,
-            );
+  static showToast() async {
+    BotToast.showText(
+      text: "This Account Is Delete",
+      textStyle: poppinsMediumStyle(fontSize: 16, color: Colors.black),
+      contentColor: Colors.white,
+    );
+  }
+
+  static accountDelete(BuildContext context) async {
+    return Container(
+      width: 100,
+      padding: EdgeInsets.all(2.0),
+      decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.red,
+          ),
+          borderRadius: BorderRadius.circular(4)),
+      child: Center(
+        child: Text(
+          " Account Deleted",
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Colors.red,
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+      ),
+    );
   }
 }
