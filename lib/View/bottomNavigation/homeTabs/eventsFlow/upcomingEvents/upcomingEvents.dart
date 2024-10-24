@@ -96,6 +96,7 @@ class UpcomingEvents extends StatelessWidget {
                                       EventData singleEventDat = controller.upcomingEventData!.data!.data![index];
                                       return
                                         userCustomEvent(
+                                          isDelete: singleEventDat.user!.deleteAt==null? false:true,
                                             dayy: DateFormat.MMM().format(singleEventDat.startDateTime!),
                                             datee: "${singleEventDat.startDateTime!.day}\n",
                                             networkImg: singleEventDat.bannerImage == null?false:true,
@@ -196,6 +197,7 @@ class UpcomingEvents extends StatelessWidget {
                                       EventData singleEvent = controller.ongoingEvents!.data!.data![index];
                                       return
                                         userCustomEvent(
+                                          isDelete: singleEvent.user!.deleteAt==null?false:true,
                                             dayy: DateFormat.MMM().format(singleEvent.startDateTime!),
                                             datee: "${singleEvent.startDateTime!.day}\n",
                                             networkImg: singleEvent.bannerImage == null?false:true,

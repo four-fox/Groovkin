@@ -1107,6 +1107,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               null
                                           ? SizedBox.shrink()
                                           : aboutEventCreator(
+                                              isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
+                                                  ? false
+                                                  : true,
                                               text: controller
                                                   .eventDetail!
                                                   .data!
@@ -1144,15 +1147,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               followBg: DynamicColor.grayClr,
                                               textClr: theme.primaryColor,
                                               authController: _authController,
-                                              followText: controller
-                                                          .eventDetail!
-                                                          .data!
-                                                          .venue!
-                                                          .user!
-                                                          .following ==
-                                                      null
-                                                  ? "Follow"
-                                                  : "Unfollow",
+                                              followText:
+                                                  controller.eventDetail!.data!.venue!.user!.following == null
+                                                      ? "Follow"
+                                                      : "Unfollow",
                                               onTap: () {
                                                 if (controller
                                                         .eventDetail!
@@ -1188,6 +1186,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       false
                                   ? SizedBox.shrink()
                                   : ourGuestWidget(
+                                      isDelete: controller.eventDetail!.data!.user!.isDelete == null
+                                          ? false
+                                          : true,
                                       horizontalPadding: 12,
                                       networkImg: controller.eventDetail!.data!
                                                   .user!.profilePicture ==
@@ -1203,18 +1204,16 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       rowPadding: 0.0,
                                       avatarPadding: 6,
                                       rowVerticalPadding: 0.0,
-                                      followBgClr: controller.eventDetail!.data!
-                                                  .user!.following !=
-                                              null
-                                          ? theme.primaryColor
-                                          : DynamicColor.avatarBgClr,
+                                      followBgClr:
+                                          controller.eventDetail!.data!.user!.following != null
+                                              ? theme.primaryColor
+                                              : DynamicColor.avatarBgClr,
                                       textClr: controller.eventDetail!.data!.user!.following == null
                                           ? theme.primaryColor
                                           : theme.scaffoldBackgroundColor,
-                                      followText:
-                                          controller.eventDetail!.data!.user!.following == null
-                                              ? "Follow"
-                                              : "Unfollow",
+                                      followText: controller.eventDetail!.data!.user!.following == null
+                                          ? "Follow"
+                                          : "Unfollow",
                                       followOnTap: () {
                                         if (controller.eventDetail!.data!.user!
                                                 .following ==

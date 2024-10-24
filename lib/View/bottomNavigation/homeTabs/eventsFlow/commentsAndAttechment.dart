@@ -11,6 +11,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/utils/utils.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
 import '../../../../Components/Network/Url.dart';
@@ -527,27 +528,43 @@ class ListOfVenuesScreen extends StatelessWidget {
                         physics: AlwaysScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, index) {
                           return GestureDetector(
-                            onTap: () {
-                              controller.venuesDetails =
-                                  controller.allVenueList!.data!.data![index];
-                              Get.toNamed(Routes.viewOtherEventsDetails,
-                                  arguments: {
-                                    "venueId": controller
-                                        .allVenueList!.data!.data![index].id,
-                                    "buttonShow": true,
-                                    "editBtn": false
-                                  });
-                              // Get.toNamed(Routes.venueInfoScreen);
-                            },
+                            onTap: controller.allVenueList!.data!.data![index]
+                                        .user!.deleteAt ==
+                                    null
+                                ? () {
+                                    controller.venuesDetails = controller
+                                        .allVenueList!.data!.data![index];
+                                    Get.toNamed(Routes.viewOtherEventsDetails,
+                                        arguments: {
+                                          "venueId": controller.allVenueList!
+                                              .data!.data![index].id,
+                                          "buttonShow": true,
+                                          "editBtn": false
+                                        });
+                                    // Get.toNamed(Routes.venueInfoScreen);
+                                  }
+                                : () {
+                                    Utils.showToast();
+                                  },
                             child: Padding(
                               padding: EdgeInsets.only(top: 6.0),
                               child: Container(
                                 padding: EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/grayClor.png"),
-                                      fit: BoxFit.fill),
+                                  color: controller.allVenueList!.data!
+                                              .data![index].user!.deleteAt ==
+                                          null
+                                      ? Colors.transparent
+                                      : DynamicColor.disabledColor,
+                                  image: controller.allVenueList!.data!
+                                              .data![index].user!.deleteAt ==
+                                          null
+                                      ? DecorationImage(
+                                          image:
+                                              AssetImage("assets/grayClor.png"),
+                                          fit: BoxFit.fill)
+                                      : null,
                                 ),
                                 child: Row(
                                   children: [

@@ -667,6 +667,9 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                             () => _authController.followingLoader.value == false
                                 ? SizedBox.shrink()
                                 : aboutEventCreator(
+                                    isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
+                                        ? false
+                                        : true,
                                     rowOnTap: () {
                                       Get.toNamed(Routes.viewProfileScreen,
                                           arguments: {
@@ -680,9 +683,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                     horizontalPadding: 12,
                                     theme: theme,
                                     context: context,
-                                    image: controller.eventDetail!.data!.venue!
-                                                .user!.profilePicture ==
-                                            null
+                                    image: controller.eventDetail!.data!.venue!.user!.profilePicture == null
                                         ? groupPlaceholder
                                         : controller.eventDetail!.data!.venue!
                                             .user!.profilePicture!.mediaPath,
@@ -725,6 +726,10 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                             () => _authController.followingLoader.value == false
                                 ? SizedBox.shrink()
                                 : ourGuestWidget(
+                                    isDelete:
+                                        controller.eventDetail!.data!.user!.isDelete == null
+                                            ? false
+                                            : true,
                                     onTap: () {
                                       Get.toNamed(Routes.viewProfileScreen,
                                           arguments: {
@@ -759,11 +764,10 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                             null
                                         ? theme.primaryColor
                                         : theme.scaffoldBackgroundColor,
-                                    followText: controller.eventDetail!.data!
-                                                .user!.following ==
-                                            null
-                                        ? "Follow"
-                                        : "Unfollow",
+                                    followText:
+                                        controller.eventDetail!.data!.user!.following == null
+                                            ? "Follow"
+                                            : "Unfollow",
                                     followOnTap: () {
                                       if (controller.eventDetail!.data!.user!
                                               .following ==

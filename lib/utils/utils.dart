@@ -1,5 +1,7 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:groovkin/Components/textStyle.dart';
 
 class Utils {
   // Todo show Dialog
@@ -39,5 +41,14 @@ class Utils {
         ],
       ),
     );
+  }
+
+  // show Bot Toast
+  static showToast()async{
+     BotToast.showText(
+              text: "This Account Is Delete",
+              textStyle: poppinsMediumStyle(fontSize: 16, color: Colors.black),
+              contentColor: Colors.white,
+            );
   }
 }

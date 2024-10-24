@@ -82,6 +82,10 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
                               EventData singleEventData = controller
                                   .recommendedEventData!.data!.data![index];
                               return userCustomEvent(
+                                        isDelete:
+                                      singleEventData.user?.deleteAt == null
+                                          ? false
+                                          : true,
                                   dayy: DateFormat.MMM()
                                       .format(singleEventData.startDateTime!),
                                   datee:

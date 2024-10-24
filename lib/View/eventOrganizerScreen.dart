@@ -382,6 +382,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                           itemBuilder:
                                               (BuildContext context, index) {
                                             return userCustomEvent(
+                                                  isDelete: null,
                                                 onTap: () {
                                                   Get.toNamed(
                                                       Routes
@@ -454,6 +455,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                           itemBuilder:
                                               (BuildContext context, index) {
                                             return userCustomEvent(
+                                                  isDelete: null,
                                                 onTap: () {
                                                   Get.toNamed(
                                                       Routes
@@ -526,6 +528,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                           itemBuilder:
                                               (BuildContext context, index) {
                                             return userCustomEvent(
+                                              isDelete: null,
                                                 onTap: () {
                                                   Get.toNamed(
                                                       Routes

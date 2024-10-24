@@ -321,6 +321,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                       .data!
                                                       .data![index];
                                               return userCustomEvent(
+                                                        isDelete:
+                                      singleEventData.user?.deleteAt == null
+                                          ? false
+                                          : true,
                                                   dayy: DateFormat
                                                           .MMM()
                                                       .format(singleEventData
@@ -456,6 +460,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data!
                                                   .data![index];
                                               return userCustomEvent(
+                                                        isDelete:
+                                      singleEvent.user?.deleteAt == null
+                                          ? false
+                                          : true,
                                                   dayy: DateFormat
                                                           .MMM()
                                                       .format(singleEvent
@@ -590,6 +598,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data!
                                                   .data![index];
                                               return userCustomEvent(
+                                                        isDelete:
+                                      singleEvent.user?.deleteAt == null
+                                          ? false
+                                          : true,
                                                   dayy: DateFormat
                                                           .MMM()
                                                       .format(singleEvent
@@ -727,6 +739,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data!
                                                   .data![index];
                                               return userCustomEvent(
+                                                        isDelete:
+                                      singleEvent.user?.deleteAt == null
+                                          ? false
+                                          : true,
                                                   dayy: DateFormat
                                                           .MMM()
                                                       .format(singleEvent
@@ -942,7 +958,7 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                      
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.darkGrayClr),
@@ -954,6 +970,10 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                               EventData singleEventDat =
                                   controller.allEvents!.data!.data![index];
                               return userCustomEvent(
+                                  isDelete:
+                                      singleEventDat.user?.deleteAt == null
+                                          ? false
+                                          : true,
                                   dayy: DateFormat.MMM()
                                       .format(singleEventDat.startDateTime!),
                                   datee:

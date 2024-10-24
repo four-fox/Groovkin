@@ -694,7 +694,7 @@ class EventController extends GetxController {
       update();
     }
   }
-  
+
   ///>>>>>>>>>>>> get all event sending requests
   RxBool getAllSendingRequestLoader = true.obs;
   bool requestEventWaiting = false;
@@ -741,7 +741,7 @@ class EventController extends GetxController {
       update();
     }
   }
-  
+
   List imageListtt = [];
   assignValueForUpdate() async {
     eventTitleController.text = eventDetail!.data!.eventTitle.toString();

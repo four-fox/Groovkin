@@ -17,6 +17,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/PostEvents.da
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
+import 'package:groovkin/utils/utils.dart';
 
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 
@@ -881,7 +882,9 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                           fit: BoxFit.fill)),
                                   child: Center(
                                     child: Text(
-                                      "New Request",
+                                      eventData.user!.deleteAt == null
+                                          ? "New Request"
+                                          : "Deleted Account",
                                       style: poppinsRegularStyle(
                                         fontSize: 11,
                                         context: context,
@@ -941,130 +944,97 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 children: [
                                   CustomButton(
                                     heights: 35,
-                                    color2:
-                                        DynamicColor.redClr.withOpacity(0.8),
-                                    color1:
-                                        DynamicColor.redClr.withOpacity(0.8),
+                                    color2: eventData.user!.deleteAt == null
+                                        ? DynamicColor.redClr.withOpacity(0.8)
+                                        : DynamicColor.disabledColor,
+                                    color1: eventData.user!.deleteAt == null
+                                        ? DynamicColor.redClr.withOpacity(0.8)
+                                        : DynamicColor.disabledColor,
                                     widths: Get.width / 2.4,
                                     backgroundClr: false,
                                     fontSized: 12,
                                     text: "Not interested/decline",
-                                    onTap: () {
-                                      cancelEventWidget(
-                                          context: context,
-                                          theme: theme,
-                                          onTap: () {
-                                            Get.back();
-                                            Get.toNamed(Routes.cancelReason,
-                                                    arguments: {
-                                                  "eventId": eventData.id,
-                                                  "doubleBack": false,
-                                                })!
-                                                .then(
-                                              (value) => controller
-                                                  .getAllPendingEvents(),
-                                            );
-                                          });
-                                    },
+                                    onTap: eventData.user!.deleteAt == null
+                                        ? () {
+                                            cancelEventWidget(
+                                                context: context,
+                                                theme: theme,
+                                                onTap: () {
+                                                  Get.back();
+                                                  Get.toNamed(
+                                                          Routes.cancelReason,
+                                                          arguments: {
+                                                        "eventId": eventData.id,
+                                                        "doubleBack": false,
+                                                      })!
+                                                      .then(
+                                                    (value) => controller
+                                                        .getAllPendingEvents(),
+                                                  );
+                                                });
+                                          }
+                                        : null,
                                     borderClr: Colors.transparent,
                                   ),
                                   CustomButton(
                                     heights: 35,
                                     text: "Accept",
                                     fontSized: 12,
-                                    onTap: () {
-                                      controller.checkBoxValue.value = false;
-                                      showDialog(
-                                          barrierColor: Colors.transparent,
-                                          context: context,
-                                          barrierDismissible: true,
-                                          builder: (BuildContext context) {
-                                            return AlertWidget(
-                                              height: Get.height / 2.5,
-                                              container: SizedBox(
-                                                width: Get.width,
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 12.0,
-                                                      horizontal: 4),
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          "Disclaimer",
-                                                          style:
-                                                              poppinsMediumStyle(
-                                                            fontSize: 20,
-                                                            context: context,
-                                                            color: theme
-                                                                .primaryColor,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 15,
-                                                        ),
-                                                        Text(
-                                                          "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
-                                                          maxLines: 8,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style:
-                                                              poppinsMediumStyle(
-                                                            fontSize: 13,
-                                                            context: context,
-                                                            color: theme
-                                                                .primaryColor,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 15,
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Obx(
-                                                              () => Theme(
-                                                                data: Theme.of(
-                                                                        context)
-                                                                    .copyWith(
-                                                                  unselectedWidgetColor:
-                                                                      Colors
-                                                                          .white,
-                                                                ),
-                                                                child: SizedBox(
-                                                                  width: 30,
-                                                                  child: Checkbox(
-                                                                      activeColor: DynamicColor.yellowClr,
-                                                                      value: controller.checkBoxValue.value,
-                                                                      onChanged: (v) {
-                                                                        controller
-                                                                            .checkBoxValue
-                                                                            .value = v!;
-                                                                        controller
-                                                                            .update();
-                                                                      }),
+                                    onTap: eventData.user!.deleteAt == null
+                                        ? () {
+                                            controller.checkBoxValue.value =
+                                                false;
+                                            showDialog(
+                                                barrierColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                barrierDismissible: true,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertWidget(
+                                                    height: Get.height / 2.5,
+                                                    container: SizedBox(
+                                                      width: Get.width,
+                                                      child: Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 12.0,
+                                                                horizontal: 4),
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                "Disclaimer",
+                                                                style:
+                                                                    poppinsMediumStyle(
+                                                                  fontSize: 20,
+                                                                  context:
+                                                                      context,
+                                                                  color: theme
+                                                                      .primaryColor,
                                                                 ),
                                                               ),
-                                                            ),
-                                                            Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left:
-                                                                          2.0),
-                                                              child: Text(
-                                                                'i have read and agree to the terms and\nconditions',
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              Text(
+                                                                "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
+                                                                maxLines: 8,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                 style:
-                                                                    poppinsRegularStyle(
+                                                                    poppinsMediumStyle(
                                                                   fontSize: 13,
                                                                   context:
                                                                       context,
@@ -1072,55 +1042,107 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                       .primaryColor,
                                                                 ),
                                                               ),
-                                                            )
-                                                          ],
+                                                              SizedBox(
+                                                                height: 15,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Obx(
+                                                                    () => Theme(
+                                                                      data: Theme.of(
+                                                                              context)
+                                                                          .copyWith(
+                                                                        unselectedWidgetColor:
+                                                                            Colors.white,
+                                                                      ),
+                                                                      child:
+                                                                          SizedBox(
+                                                                        width:
+                                                                            30,
+                                                                        child: Checkbox(
+                                                                            activeColor: DynamicColor.yellowClr,
+                                                                            value: controller.checkBoxValue.value,
+                                                                            onChanged: (v) {
+                                                                              controller.checkBoxValue.value = v!;
+                                                                              controller.update();
+                                                                            }),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsets
+                                                                        .only(
+                                                                            left:
+                                                                                2.0),
+                                                                    child: Text(
+                                                                      'i have read and agree to the terms and\nconditions',
+                                                                      style:
+                                                                          poppinsRegularStyle(
+                                                                        fontSize:
+                                                                            13,
+                                                                        context:
+                                                                            context,
+                                                                        color: theme
+                                                                            .primaryColor,
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              CustomButton(
+                                                                heights: 35,
+                                                                text: "Accept",
+                                                                fontSized: 12,
+                                                                onTap: () {
+                                                                  if (controller
+                                                                      .checkBoxValue
+                                                                      .value) {
+                                                                    controller.eventAcceptDeclineFtn(
+                                                                        event: controller
+                                                                            .managerPendingEvents!
+                                                                            .data!
+                                                                            .data![index],
+                                                                        status: "accepted");
+                                                                  } else {
+                                                                    bottomToast(
+                                                                        text:
+                                                                            "Please agree with the disclaimer to accept the event request");
+                                                                  }
+                                                                },
+                                                                color2: DynamicColor
+                                                                    .greenClr
+                                                                    .withOpacity(
+                                                                        0.8),
+                                                                color1: DynamicColor
+                                                                    .greenClr
+                                                                    .withOpacity(
+                                                                        0.8),
+                                                                widths:
+                                                                    Get.width /
+                                                                        1.4,
+                                                                backgroundClr:
+                                                                    false,
+                                                                borderClr: Colors
+                                                                    .transparent,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                        CustomButton(
-                                                          heights: 35,
-                                                          text: "Accept",
-                                                          fontSized: 12,
-                                                          onTap: () {
-                                                            if (controller
-                                                                .checkBoxValue
-                                                                .value) {
-                                                              controller.eventAcceptDeclineFtn(
-                                                                  event: controller
-                                                                          .managerPendingEvents!
-                                                                          .data!
-                                                                          .data![
-                                                                      index],
-                                                                  status:
-                                                                      "accepted");
-                                                            } else {
-                                                              bottomToast(
-                                                                  text:
-                                                                      "Please agree with the disclaimer to accept the event request");
-                                                            }
-                                                          },
-                                                          color2: DynamicColor
-                                                              .greenClr
-                                                              .withOpacity(0.8),
-                                                          color1: DynamicColor
-                                                              .greenClr
-                                                              .withOpacity(0.8),
-                                                          widths:
-                                                              Get.width / 1.4,
-                                                          backgroundClr: false,
-                                                          borderClr: Colors
-                                                              .transparent,
-                                                        ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          });
-                                    },
-                                    color2:
-                                        DynamicColor.greenClr.withOpacity(0.8),
-                                    color1:
-                                        DynamicColor.greenClr.withOpacity(0.8),
+                                                  );
+                                                });
+                                          }
+                                        : null,
+                                    color2: eventData.user!.deleteAt == null
+                                        ? DynamicColor.greenClr.withOpacity(0.8)
+                                        : DynamicColor.disabledColor,
+                                    color1: eventData.user!.deleteAt == null
+                                        ? DynamicColor.greenClr.withOpacity(0.8)
+                                        : DynamicColor.disabledColor,
                                     widths: Get.width / 2.4,
                                     backgroundClr: false,
                                     borderClr: Colors.transparent,
@@ -1136,23 +1158,27 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 color2: DynamicColor.secondaryClr,
                                 color1: DynamicColor.secondaryClr,
                                 backgroundClr: false,
-                                onTap: () {
-                                  Get.toNamed(Routes.pendingEventDetails,
-                                          arguments: {
-                                        "eventId": controller
-                                            .managerPendingEvents!
-                                            .data!
-                                            .data![index]
-                                            .id,
-                                        "notInterestedBtn": 1,
-                                        "title": "About Event",
-                                        "type": "event",
-                                      })!
-                                      .then(
-                                    (value) =>
-                                        _controller.getAllPendingEvents(),
-                                  );
-                                },
+                                onTap: eventData.user!.deleteAt == null
+                                    ? () {
+                                        Get.toNamed(Routes.pendingEventDetails,
+                                                arguments: {
+                                              "eventId": controller
+                                                  .managerPendingEvents!
+                                                  .data!
+                                                  .data![index]
+                                                  .id,
+                                              "notInterestedBtn": 1,
+                                              "title": "About Event",
+                                              "type": "event",
+                                            })!
+                                            .then(
+                                          (value) =>
+                                              _controller.getAllPendingEvents(),
+                                        );
+                                      }
+                                    : () {
+                                        Utils.showToast();
+                                      },
                                 borderClr: Colors.transparent,
                                 text: "View Detail",
                               ),

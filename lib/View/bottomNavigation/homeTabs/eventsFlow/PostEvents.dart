@@ -8,6 +8,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/utils/utils.dart';
 
 import '../organizerHomeModel/alleventsModel.dart';
 
@@ -100,7 +101,9 @@ class PendingScreen extends StatelessWidget {
                                           ),
                                       child: Center(
                                         child: Text(
-                                          "Pending",
+                                          eventData.user!.deleteAt == null
+                                              ? "Pending"
+                                              : "Delete Account",
                                           style: poppinsRegularStyle(
                                             fontSize: 11,
                                             context: context,
@@ -167,19 +170,24 @@ class PendingScreen extends StatelessWidget {
                                     borderClr: Colors.transparent,
                                     heights: 35,
                                     fontSized: 13,
-                                    onTap: () {
-                                      Get.toNamed(Routes.pendingEventDetails,
-                                              arguments: {
-                                            "notInterestedBtn": 1,
-                                            "title": "About Event",
-                                            "eventId": eventData.id,
-                                            "type": "event",
-                                          })!
-                                          .then(
-                                        (value) => _eventController
-                                            .getAllSendingRequest(),
-                                      );
-                                    },
+                                    onTap: eventData.user!.deleteAt == null
+                                        ? () {
+                                            Get.toNamed(
+                                                    Routes.pendingEventDetails,
+                                                    arguments: {
+                                                  "notInterestedBtn": 1,
+                                                  "title": "About Event",
+                                                  "eventId": eventData.id,
+                                                  "type": "event",
+                                                })!
+                                                .then(
+                                              (value) => _eventController
+                                                  .getAllSendingRequest(),
+                                            );
+                                          }
+                                        : () {
+                                            Utils.showToast();
+                                          },
                                     text: "View Detail",
                                   ),
                                 ),
@@ -207,8 +215,12 @@ class PendingScreen extends StatelessWidget {
                                                 });
                                           });
                                     },
-                                    color2: DynamicColor.redClr,
-                                    color1: DynamicColor.redClr,
+                                    color2: eventData.user!.deleteAt == null
+                                        ? DynamicColor.redClr
+                                        : DynamicColor.disabledColor,
+                                    color1: eventData.user!.deleteAt == null
+                                        ? DynamicColor.redClr
+                                        : DynamicColor.disabledColor,
                                     text: "Cancel",
                                   ),
                                 ),

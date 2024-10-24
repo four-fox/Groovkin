@@ -11,6 +11,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+import 'package:groovkin/utils/utils.dart';
 
 class PostEvents extends StatelessWidget {
   final HomeController _controller = Get.find();
@@ -81,7 +82,10 @@ class PostEvents extends StatelessWidget {
                                                   : Colors.transparent),
                                       child: Center(
                                         child: Text(
-                                          singleEvent.status??"Completed",
+                                          singleEvent.user!.deleteAt == null
+                                              ? singleEvent.status ??
+                                                  "Completed"
+                                              : "Deleted Account",
                                           style: poppinsRegularStyle(
                                             fontSize: 11,
                                             context: context,
@@ -123,8 +127,7 @@ class PostEvents extends StatelessWidget {
                                               style: poppinsRegularStyle(
                                                   fontSize: 12,
                                                   context: context,
-                                                  color: theme
-                                                      .primaryColor,
+                                                  color: theme.primaryColor,
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             Text(
@@ -152,33 +155,43 @@ class PostEvents extends StatelessWidget {
                                     bgColor: DynamicColor.avatarBgClr,
                                     iconValue: false,
                                     style: poppinsRegularStyle(
-                                        fontSize: 13,
-                                        context: context,
-                                        color: theme.primaryColor,),
-                                    onTap: () {
-                                      Get.toNamed(Routes.upcomingScreen,
-                                          arguments: {
-                                            "eventId": singleEvent.id,
-                                            "reportedEventView": 1,
-                                            "notInterestedBtn": 1,
-                                            "appBarTitle": "${singleEvent.status.toString().capitalize} Event"
-                                          })!.then((value) => _controller.completedEvent(),);
-                                      // Get.toNamed(Routes.pendingEventDetails,
-                                      //     arguments: {
-                                      //       "eventId": singleEvent.id,
-                                      //       "notInterestedBtn": 0,
-                                      //       "title": "Event Completed"
-                                      //     }
-                                      // );
+                                      fontSize: 13,
+                                      context: context,
+                                      color: theme.primaryColor,
+                                    ),
+                                    onTap: singleEvent.user!.deleteAt == null
+                                        ? () {
+                                            Get.toNamed(Routes.upcomingScreen,
+                                                    arguments: {
+                                                  "eventId": singleEvent.id,
+                                                  "reportedEventView": 1,
+                                                  "notInterestedBtn": 1,
+                                                  "appBarTitle":
+                                                      "${singleEvent.status.toString().capitalize} Event"
+                                                })!
+                                                .then(
+                                              (value) =>
+                                                  _controller.completedEvent(),
+                                            );
+                                            // Get.toNamed(Routes.pendingEventDetails,
+                                            //     arguments: {
+                                            //       "eventId": singleEvent.id,
+                                            //       "notInterestedBtn": 0,
+                                            //       "title": "Event Completed"
+                                            //     }
+                                            // );
 
-                                      ///asdasd
-                                      //    Get.toNamed(Routes.aboutEventScreen,
-                                      //    arguments: {
-                                      //      "imageShow": true,
-                                      //      "upcomingOrganizer": controller.eventStatus!.value,
-                                      //    }
-                                      //    );
-                                    },
+                                            ///asdasd
+                                            //    Get.toNamed(Routes.aboutEventScreen,
+                                            //    arguments: {
+                                            //      "imageShow": true,
+                                            //      "upcomingOrganizer": controller.eventStatus!.value,
+                                            //    }
+                                            //    );
+                                          }
+                                        : () {
+                                            Utils.showToast();
+                                          },
                                     text: "View Details",
                                   ),
                                 ),
@@ -193,10 +206,10 @@ class PostEvents extends StatelessWidget {
                                           color2: DynamicColor.redClr,
                                           color1: DynamicColor.redClr,
                                           style: poppinsRegularStyle(
-                                              fontSize: 13,
-                                              context: context,
-                                              color:
-                                                  theme.primaryColor,),
+                                            fontSize: 13,
+                                            context: context,
+                                            color: theme.primaryColor,
+                                          ),
                                           text: "Cancellation Reason",
                                         ),
                                       )
@@ -209,7 +222,6 @@ class PostEvents extends StatelessWidget {
             );
     });
   }
-
 
   Widget reviewWidget({theme, context}) {
     return Padding(
@@ -278,7 +290,8 @@ class PostEvents extends StatelessWidget {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
                                 border: Border.all(
-                                    color: theme.primaryColor,)),
+                                  color: theme.primaryColor,
+                                )),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: 12.0, horizontal: 5),
@@ -292,8 +305,10 @@ class PostEvents extends StatelessWidget {
                                     child: CircleAvatar(
                                       radius: 15,
                                       backgroundColor: DynamicColor.greenClr,
-                                      child: Icon(Icons.check,
-                                          color: theme.primaryColor,),
+                                      child: Icon(
+                                        Icons.check,
+                                        color: theme.primaryColor,
+                                      ),
                                     ),
                                   ),
                                   Padding(
@@ -302,10 +317,11 @@ class PostEvents extends StatelessWidget {
                                     child: Text(
                                       "Thank you For Review",
                                       style: poppinsMediumStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                          context: context,
-                                          color: theme.primaryColor,),
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600,
+                                        context: context,
+                                        color: theme.primaryColor,
+                                      ),
                                     ),
                                   ),
                                   SizedBox(

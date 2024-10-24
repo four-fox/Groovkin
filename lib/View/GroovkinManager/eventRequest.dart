@@ -82,6 +82,7 @@ class EventRequests extends StatelessWidget {
                             height: 4,
                           ),
                           eventDateTime(
+
                               context: context,
                               iconBgClr: DynamicColor.darkGrayClr,
                               theme: theme,
@@ -97,6 +98,7 @@ class EventRequests extends StatelessWidget {
                             color: DynamicColor.avatarBgClr,
                           ),
                           ourGuestWidget(
+                            isDelete: null,
                               context: context,
                               theme: theme,
                               bgClr: Colors.transparent,

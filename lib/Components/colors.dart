@@ -1,6 +1,3 @@
-
-
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -32,36 +29,38 @@ class DynamicColor {
   static Color secondaryClr = Color(0xffd39e2e);
   static Color dropDownClr = Color(0xffbb7b17);
   static Color finishedTextClr = Color(0xff770113);
+  static Color disabledColor = Colors.grey.withOpacity(0.5);
 }
-
 
 getformattedTime(TimeOfDay time) {
   return '${time.hour}:${time.minute} ${time.period.toString().split('.')[1]}';
 }
 
-  bottomToast({String? text,Color? bgClr,Color? textClr,}){
-    return BotToast.showText(
-        contentColor: bgClr??Colors.white,
-        textStyle: poppinsMediumStyle(
-          fontSize: 16,
-          color: textClr??Colors.black
-        ),
-        text: text?? "Please select survey");
-  }
+bottomToast({
+  String? text,
+  Color? bgClr,
+  Color? textClr,
+}) {
+  return BotToast.showText(
+      contentColor: bgClr ?? Colors.white,
+      textStyle:
+          poppinsMediumStyle(fontSize: 16, color: textClr ?? Colors.black),
+      text: text ?? "Please select survey");
+}
 
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> no Data
-  noData({context,theme}) {
-    return Center(
-      child: Text("No Data",
-        style: poppinsMediumStyle(
-            fontSize: 16,
-            context: context,
-            color: theme.primaryColor,
-        ),
+///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> no Data
+noData({context, theme}) {
+  return Center(
+    child: Text(
+      "No Data",
+      style: poppinsMediumStyle(
+        fontSize: 16,
+        context: context,
+        color: theme.primaryColor,
       ),
-    );
-  }
+    ),
+  );
+}
 
 extension DateOnlyCompare on DateTime {
   bool isSameDate(DateTime other) {
@@ -75,8 +74,8 @@ getTimeMethod(String dateTime) {
   String? today;
   String? times;
   DateTime a = DateTime.parse(dateTime);
-  var d = DateTime.utc(a.year,a.month,a.day,a.hour,a.minute,a.second);
-  var date = DateTime.utc(b.year,b.month,b.day,b.hour,b.minute,b.second);
+  var d = DateTime.utc(a.year, a.month, a.day, a.hour, a.minute, a.second);
+  var date = DateTime.utc(b.year, b.month, b.day, b.hour, b.minute, b.second);
 
   final DateFormat formatter = DateFormat('yy/MM/dd');
   final DateFormat timeFormatter = DateFormat('hh:mm aa');
@@ -136,8 +135,10 @@ getTimeMethod(String dateTime) {
     print(d);
     print(date);
 
-    var start = DateTime.utc(d.year,d.month,d.day,d.hour,d.minute,d.second);
-    var end = DateTime.utc(date.year,date.month,date.day,date.hour,date.minute,date.second);
+    var start =
+        DateTime.utc(d.year, d.month, d.day, d.hour, d.minute, d.second);
+    var end = DateTime.utc(
+        date.year, date.month, date.day, date.hour, date.minute, date.second);
     var min = end.difference(start).inMinutes;
     times = timeFormatter.format(DateTime.parse(dateTime).toUtc());
     today = times;

@@ -396,21 +396,28 @@ class HistoryTab extends StatelessWidget {
                                                 controller.userPastHistory!
                                                     .data!.data![index];
                                             return userCustomEvent(
-                                                dayy: DateFormat.MMM().format(
-                                                    singleEventData
-                                                        .startDateTime!),
-                                                datee:
-                                                    "${singleEventData.startDateTime!.day}\n",
-                                                networkImg: singleEventData
-                                                            .bannerImage ==
+                                                isDelete: singleEventData
+                                                            .user?.deleteAt ==
                                                         null
                                                     ? false
                                                     : true,
-                                                img: singleEventData
-                                                    .bannerImage?.mediaPath
-                                                    .toString(),
-                                                title: singleEventData
-                                                    .eventTitle
+                                                dayy:
+                                                    DateFormat
+                                                            .MMM()
+                                                        .format(
+                                                            singleEventData
+                                                                .startDateTime!),
+                                                datee:
+                                                    "${singleEventData.startDateTime!.day}\n",
+                                                networkImg:
+                                                    singleEventData.bannerImage == null
+                                                        ? false
+                                                        : true,
+                                                img:
+                                                    singleEventData
+                                                        .bannerImage?.mediaPath
+                                                        .toString(),
+                                                title: singleEventData.eventTitle
                                                     .toString(),
                                                 location:
                                                     singleEventData.location,
@@ -526,21 +533,28 @@ class HistoryTab extends StatelessWidget {
                                                 controller.recommendedEventData!
                                                     .data!.data![index];
                                             return userCustomEvent(
-                                                dayy: DateFormat.MMM().format(
-                                                    singleEventData
-                                                        .startDateTime!),
-                                                datee:
-                                                    "${singleEventData.startDateTime!.day}\n",
-                                                networkImg: singleEventData
-                                                            .bannerImage ==
+                                                isDelete: singleEventData
+                                                            .user?.deleteAt ==
                                                         null
                                                     ? false
                                                     : true,
-                                                img: singleEventData
-                                                    .bannerImage?.mediaPath
-                                                    .toString(),
-                                                title: singleEventData
-                                                    .eventTitle
+                                                dayy:
+                                                    DateFormat
+                                                            .MMM()
+                                                        .format(
+                                                            singleEventData
+                                                                .startDateTime!),
+                                                datee:
+                                                    "${singleEventData.startDateTime!.day}\n",
+                                                networkImg:
+                                                    singleEventData.bannerImage == null
+                                                        ? false
+                                                        : true,
+                                                img:
+                                                    singleEventData
+                                                        .bannerImage?.mediaPath
+                                                        .toString(),
+                                                title: singleEventData.eventTitle
                                                     .toString(),
                                                 location:
                                                     singleEventData.location,
@@ -594,12 +608,28 @@ class HistoryTab extends StatelessWidget {
 }
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> upComing
-class UpcomingEvent extends StatelessWidget {
+class UpcomingEvent extends StatefulWidget {
   UpcomingEvent({super.key});
 
+  @override
+  State<UpcomingEvent> createState() => _UpcomingEventState();
+}
+
+class _UpcomingEventState extends State<UpcomingEvent> {
+  late HomeController _controller;
   RxBool recommendedVal = true.obs;
 
-  HomeController _controller = Get.find();
+  // HomeController _controller = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      _controller = Get.find<HomeController>();
+    } else {
+      _controller = Get.put(HomeController());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -647,6 +677,9 @@ class UpcomingEvent extends StatelessWidget {
                             EventData singleEventData = controller
                                 .recommendedEventData!.data!.data![index];
                             return userCustomEvent(
+                                isDelete: singleEventData.user?.deleteAt == null
+                                    ? false
+                                    : true,
                                 dayy: DateFormat.MMM()
                                     .format(singleEventData.startDateTime!),
                                 datee:

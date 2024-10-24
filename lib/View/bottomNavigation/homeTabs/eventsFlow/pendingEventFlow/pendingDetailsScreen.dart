@@ -638,6 +638,10 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       false
                                   ? SizedBox.shrink()
                                   : aboutEventCreator(
+                                      isDelete:
+                                          controller.eventDetail!.data!.venue!.user!.isDelete == null
+                                              ? false
+                                              : true,
                                       rowOnTap: () {
                                         Get.toNamed(Routes.viewProfileScreen,
                                             arguments: {
@@ -662,15 +666,14 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       icons: controller.eventDetail!.data!.venue!.user!.following == null
                                           ? Icons.check
                                           : Icons.add,
-                                      followBg: controller.eventDetail!.data!.venue!.user!.following != null
-                                          ? DynamicColor.avatarBgClr
-                                          : DynamicColor.grayClr,
+                                      followBg:
+                                          controller.eventDetail!.data!.venue!.user!.following != null
+                                              ? DynamicColor.avatarBgClr
+                                              : DynamicColor.grayClr,
                                       textClr: controller.eventDetail!.data!.venue!.user!.following == null
                                           ? theme.scaffoldBackgroundColor
                                           : theme.primaryColor,
-                                      text: controller.eventDetail!.data!.venue!
-                                          .user!.profile!.about
-                                          .toString(),
+                                      text: controller.eventDetail!.data!.venue!.user!.profile!.about.toString(),
                                       followText: controller.eventDetail!.data!.venue!.user!.following == null ? "Follow" : "Unfollow",
                                       onTap: () {
                                         if (controller.eventDetail!.data!.venue!
@@ -696,6 +699,10 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       false
                                   ? SizedBox.shrink()
                                   : ourGuestWidget(
+                                      isDelete:
+                                          controller.eventDetail!.data!.user!.isDelete == null
+                                              ? false
+                                              : true,
                                       onTap: () {
                                         Get.toNamed(Routes.viewProfileScreen,
                                             arguments: {
@@ -705,13 +712,16 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                   .eventDetail!.data!.userId
                                             });
                                       },
-                                      networkImg: controller.eventDetail!.data!
-                                                  .user!.profilePicture ==
-                                              null
-                                          ? groupPlaceholder
-                                          : controller.eventDetail!.data!.user!
-                                              .profilePicture!.mediaPath
-                                              .toString(),
+                                      networkImg:
+                                          controller.eventDetail!.data!.user!.profilePicture == null
+                                              ? groupPlaceholder
+                                              : controller
+                                                  .eventDetail!
+                                                  .data!
+                                                  .user!
+                                                  .profilePicture!
+                                                  .mediaPath
+                                                  .toString(),
                                       venueOwner: controller
                                           .eventDetail!.data!.user!.name
                                           .toString(),
@@ -721,17 +731,17 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       rowPadding: 0.0,
                                       avatarPadding: 6,
                                       rowVerticalPadding: 0.0,
-                                      followBgClr: controller.eventDetail!.data!
-                                                  .user!.following !=
-                                              null
-                                          ? DynamicColor.grayClr
-                                          : DynamicColor.avatarBgClr,
+                                      followBgClr:
+                                          controller.eventDetail!.data!.user!.following != null
+                                              ? DynamicColor.grayClr
+                                              : DynamicColor.avatarBgClr,
                                       textClr: controller.eventDetail!.data!.user!.following == null
                                           ? theme.primaryColor
                                           : theme.scaffoldBackgroundColor,
-                                      followText: controller.eventDetail!.data!.user!.following == null
-                                          ? "Follow"
-                                          : "Unfollow",
+                                      followText:
+                                          controller.eventDetail!.data!.user!.following == null
+                                              ? "Follow"
+                                              : "Unfollow",
                                       followOnTap: () {
                                         if (controller.eventDetail!.data!.user!
                                                 .following ==
