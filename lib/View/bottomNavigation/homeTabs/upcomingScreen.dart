@@ -15,6 +15,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class UpcomingScreen extends StatefulWidget {
@@ -123,43 +124,61 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       color: theme.primaryColor,
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 18),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10),
-                                        ),
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/topbtnGradent.png"),
-                                          fit: BoxFit.fill,
-                                        )),
-                                    child: Center(
-                                      child: Text(
-                                        appBarTitle,
-                                        style: poppinsRegularStyle(
-                                          fontSize: 11,
-                                          context: context,
-                                          color: theme.scaffoldBackgroundColor,
+                                  Row(
+                                    children: [
+                                      if (_controller.eventDetail!.data!.user!
+                                              .isDelete !=
+                                          null)
+                                        Utils.accountDelete(context),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 6, horizontal: 18),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                            ),
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/topbtnGradent.png"),
+                                              fit: BoxFit.fill,
+                                            )),
+                                        child: Center(
+                                          child: Text(
+                                            appBarTitle,
+                                            style: poppinsRegularStyle(
+                                              fontSize: 11,
+                                              context: context,
+                                              color:
+                                                  theme.scaffoldBackgroundColor,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   )
                                 ],
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(Routes.eventOrganizerScreen,
-                                      arguments: {
-                                        "eventOrganizerValue": 3,
-                                        'profileImg':
-                                            "assets/eventOrganizer.png",
-                                        "manager": sp.read("role"),
-                                        "propertyView": true
-                                      });
-                                },
+                                onTap: _controller.eventDetail!.data!.user!
+                                            .isDelete !=
+                                        null
+                                    ? () {
+                                        Utils.showToast();
+                                      }
+                                    : () {
+                                        Get.toNamed(Routes.eventOrganizerScreen,
+                                            arguments: {
+                                              "eventOrganizerValue": 3,
+                                              'profileImg':
+                                                  "assets/eventOrganizer.png",
+                                              "manager": sp.read("role"),
+                                              "propertyView": true
+                                            });
+                                      },
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 8.0,

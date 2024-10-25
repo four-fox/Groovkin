@@ -14,6 +14,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class PendingEventDetails extends StatefulWidget {
@@ -126,27 +127,36 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       color: theme.primaryColor,
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 13),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10)),
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "assets/topbtnGradent.png"),
-                                            fit: BoxFit.fill)),
-                                    child: Center(
-                                      child: Text(
-                                        "Pending",
-                                        style: poppinsRegularStyle(
-                                          fontSize: 11,
-                                          context: context,
-                                          color: theme.scaffoldBackgroundColor,
+                                  Row(
+                                    children: [
+                                      if (controller.eventDetail!.data!.user!
+                                              .isDelete !=
+                                          null)
+                                        Utils.accountDelete(context),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 6, horizontal: 13),
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(10),
+                                                topRight: Radius.circular(10)),
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "assets/topbtnGradent.png"),
+                                                fit: BoxFit.fill)),
+                                        child: Center(
+                                          child: Text(
+                                            "Pending",
+                                            style: poppinsRegularStyle(
+                                              fontSize: 11,
+                                              context: context,
+                                              color:
+                                                  theme.scaffoldBackgroundColor,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   )
                                 ],
                               ),

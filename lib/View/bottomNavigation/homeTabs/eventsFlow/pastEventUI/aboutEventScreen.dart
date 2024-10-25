@@ -204,7 +204,7 @@ class AboutEventScreen extends StatelessWidget {
                     ? SizedBox.shrink()
                     : Obx(
                         () => ourGuestWidget(
-                          isDelete: null,
+                          isDelete: false,
                           theme: theme,
                           context: context,
                           horizontalPadding: 0.0,

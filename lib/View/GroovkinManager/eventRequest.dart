@@ -98,7 +98,7 @@ class EventRequests extends StatelessWidget {
                             color: DynamicColor.avatarBgClr,
                           ),
                           ourGuestWidget(
-                            isDelete: null,
+                            isDelete: false,
                               context: context,
                               theme: theme,
                               bgClr: Colors.transparent,

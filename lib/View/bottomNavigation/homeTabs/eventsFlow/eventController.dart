@@ -670,7 +670,7 @@ class EventController extends GetxController {
       getAllEventsLoader(true);
       update();
     }
-  }
+  } 
 
   ///searching events
   final searchingController = TextEditingController();

@@ -870,28 +870,33 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                     color: theme.primaryColor,
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(10),
-                                          topRight: Radius.circular(10)),
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/topbtnGradent.png"),
-                                          fit: BoxFit.fill)),
-                                  child: Center(
-                                    child: Text(
-                                      eventData.user!.deleteAt == null
-                                          ? "New Request"
-                                          : "Deleted Account",
-                                      style: poppinsRegularStyle(
-                                        fontSize: 11,
-                                        context: context,
-                                        color: theme.scaffoldBackgroundColor,
+                                Row(
+                                  children: [
+                                    if (eventData.user!.deleteAt != null)
+                                      Utils.accountDelete(context),
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(10),
+                                              topRight: Radius.circular(10)),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/topbtnGradent.png"),
+                                              fit: BoxFit.fill)),
+                                      child: Center(
+                                        child: Text(
+                                          "New Request",
+                                          style: poppinsRegularStyle(
+                                            fontSize: 11,
+                                            context: context,
+                                            color:
+                                                theme.scaffoldBackgroundColor,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 )
                               ],
                             ),

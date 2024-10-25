@@ -326,6 +326,7 @@ class HistoryTab extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return GetBuilder<HomeController>(builder: (controller) {
+      print("as");
       return SingleChildScrollView(
         child: Column(
           children: [

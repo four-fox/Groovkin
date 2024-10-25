@@ -52,9 +52,13 @@ class Utils {
     );
   }
 
-  static accountDelete(BuildContext context) async {
+  static  accountDelete(BuildContext context)  {
     return Container(
-      width: 100,
+        constraints: BoxConstraints(
+      maxWidth: 150, // Set max width
+      minWidth: 100, // Set min width
+    ),
+     alignment: Alignment.centerLeft,
       padding: EdgeInsets.all(2.0),
       decoration: BoxDecoration(
           border: Border.all(
@@ -63,7 +67,7 @@ class Utils {
           borderRadius: BorderRadius.circular(4)),
       child: Center(
         child: Text(
-          " Account Deleted",
+          "Account Deleted",
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
                 color: Colors.red,
                 fontWeight: FontWeight.w500,

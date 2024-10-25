@@ -144,7 +144,7 @@ class User {
   String? role;
   Following? follower;
   Following? following;
-  bool? isDelete;
+  String? isDelete;
 
   User({
     this.id,

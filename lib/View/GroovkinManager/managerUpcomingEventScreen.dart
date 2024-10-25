@@ -295,7 +295,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
               ),
               Obx(
                 () => ourGuestWidget(
-                  isDelete: null,
+                  isDelete: false,
                   theme: theme,
                   context: context,
                   horizontalPadding: 0.0,

@@ -32,6 +32,19 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
 
   String urlText = Get.arguments['urlText'];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);

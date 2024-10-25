@@ -321,14 +321,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                       .data!
                                                       .data![index];
                                               return userCustomEvent(
-                                                        isDelete:
-                                      singleEventData.user?.deleteAt == null
-                                          ? false
-                                          : true,
+                                                  isDelete: singleEventData
+                                                              .user?.deleteAt ==
+                                                          null
+                                                      ? false
+                                                      : true,
                                                   dayy: DateFormat
                                                           .MMM()
-                                                      .format(singleEventData
-                                                          .startDateTime!),
+                                                      .format(
+                                                          singleEventData
+                                                              .startDateTime!),
                                                   datee:
                                                       "${singleEventData.startDateTime!.day}\n",
                                                   networkImg: singleEventData
@@ -340,12 +342,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                               .bannerImage ==
                                                           null
                                                       ? null
-                                                      : singleEventData.bannerImage!
+                                                      : singleEventData
+                                                          .bannerImage!
                                                           .mediaPath
                                                           .toString(),
-                                                  title: singleEventData
-                                                      .eventTitle
-                                                      .toString(),
+                                                  title:
+                                                      singleEventData
+                                                          .eventTitle
+                                                          .toString(),
                                                   location:
                                                       singleEventData.location,
                                                   subtitle: singleEventData
@@ -460,14 +464,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data!
                                                   .data![index];
                                               return userCustomEvent(
-                                                        isDelete:
-                                      singleEvent.user?.deleteAt == null
-                                          ? false
-                                          : true,
+                                                  isDelete: singleEvent
+                                                              .user?.deleteAt ==
+                                                          null
+                                                      ? false
+                                                      : true,
                                                   dayy: DateFormat
                                                           .MMM()
-                                                      .format(singleEvent
-                                                          .startDateTime!),
+                                                      .format(
+                                                          singleEvent
+                                                              .startDateTime!),
                                                   datee:
                                                       "${singleEvent.startDateTime!.day}\n",
                                                   networkImg: singleEvent
@@ -475,14 +481,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                           null
                                                       ? false
                                                       : true,
-                                                  img:
-                                                      singleEvent.bannerImage ==
-                                                              null
-                                                          ? null
-                                                          : singleEvent
-                                                              .bannerImage!
-                                                              .mediaPath
-                                                              .toString(),
+                                                  img: singleEvent
+                                                              .bannerImage ==
+                                                          null
+                                                      ? null
+                                                      : singleEvent.bannerImage!
+                                                          .mediaPath
+                                                          .toString(),
                                                   title: singleEvent.eventTitle
                                                       .toString(),
                                                   location:
@@ -598,14 +603,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data!
                                                   .data![index];
                                               return userCustomEvent(
-                                                        isDelete:
-                                      singleEvent.user?.deleteAt == null
-                                          ? false
-                                          : true,
+                                                  isDelete: singleEvent
+                                                              .user?.deleteAt ==
+                                                          null
+                                                      ? false
+                                                      : true,
                                                   dayy: DateFormat
                                                           .MMM()
-                                                      .format(singleEvent
-                                                          .startDateTime!),
+                                                      .format(
+                                                          singleEvent
+                                                              .startDateTime!),
                                                   datee:
                                                       "${singleEvent.startDateTime!.day}\n",
                                                   networkImg: singleEvent
@@ -613,14 +620,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                           null
                                                       ? false
                                                       : true,
-                                                  img:
-                                                      singleEvent.bannerImage ==
-                                                              null
-                                                          ? null
-                                                          : singleEvent
-                                                              .bannerImage!
-                                                              .mediaPath
-                                                              .toString(),
+                                                  img: singleEvent
+                                                              .bannerImage ==
+                                                          null
+                                                      ? null
+                                                      : singleEvent.bannerImage!
+                                                          .mediaPath
+                                                          .toString(),
                                                   title: singleEvent.eventTitle
                                                       .toString(),
                                                   location:
@@ -739,14 +745,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data!
                                                   .data![index];
                                               return userCustomEvent(
-                                                        isDelete:
-                                      singleEvent.user?.deleteAt == null
-                                          ? false
-                                          : true,
+                                                  isDelete: singleEvent
+                                                              .user?.deleteAt ==
+                                                          null
+                                                      ? false
+                                                      : true,
                                                   dayy: DateFormat
                                                           .MMM()
-                                                      .format(singleEvent
-                                                          .startDateTime!),
+                                                      .format(
+                                                          singleEvent
+                                                              .startDateTime!),
                                                   datee:
                                                       "${singleEvent.startDateTime!.day}\n",
                                                   networkImg: singleEvent
@@ -754,14 +762,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                           null
                                                       ? false
                                                       : true,
-                                                  img:
-                                                      singleEvent.bannerImage ==
-                                                              null
-                                                          ? null
-                                                          : singleEvent
-                                                              .bannerImage!
-                                                              .mediaPath
-                                                              .toString(),
+                                                  img: singleEvent
+                                                              .bannerImage ==
+                                                          null
+                                                      ? null
+                                                      : singleEvent.bannerImage!
+                                                          .mediaPath
+                                                          .toString(),
                                                   title: singleEvent.eventTitle
                                                       .toString(),
                                                   location:
@@ -958,7 +965,6 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                       child: Container(
-                      
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.darkGrayClr),

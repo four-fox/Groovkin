@@ -46,7 +46,7 @@ dependencies:
   get_storage: ^2.1.1
 #  bottom_bar_matu: ^1.4.0
   bottom_bar_matu:
-    path: ../groovkinnew/plugin/bottom_bar_matu-master
+    path: ../groovkin/plugin/bottom_bar_matu-master
   date_field: ^5.0.1
   flutter_staggered_grid_view: ^0.7.0
   scrollable_clean_calendar: ^1.5.0
@@ -56,10 +56,10 @@ dependencies:
   flutter_local_notifications: ^17.2.1+2
   firebase_core: ^3.2.0
   map_location_picker:
-    path: ../groovkinnew/plugin/map_location_picker-master
+    path: ../groovkin/plugin/map_location_picker-master
   intl: ^0.19.0
   intl_phone_number_input:
-    path: ../groovkinnew/plugin/intl_phone_number_input-develop
+    path: ../groovkin/plugin/intl_phone_number_input-develop
   flutter_datetime_picker_bdaya: ^3.0.2
   month_year_picker: ^0.4.0+1
   image_picker: ^1.1.2
@@ -89,9 +89,9 @@ dependencies:
 #    git:
 #      url: https://github.com/tintran-dev/betterplayer.git
   otp_text_field:
-    path: ../groovkinnew/plugin/OTPTextField-dev
+    path: ../groovkin/plugin/OTPTextField-dev
   country_state_city_pro:
-    path: ../groovkinnew/plugin/Country-State-City-Picker-Pro-master
+    path: ../groovkin/plugin/Country-State-City-Picker-Pro-master
 
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
