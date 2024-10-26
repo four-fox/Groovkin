@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_collection_literals
 
 import 'dart:async';
@@ -11,6 +8,8 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:map_location_picker/map_location_picker.dart';
+
+
 
 class ShowCustomMap extends StatelessWidget {
   ShowCustomMap({Key? key,
@@ -28,6 +27,7 @@ class ShowCustomMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late GoogleMapController googleMapController;
     final Completer<GoogleMapController> _controllerGoogleMap =
     Completer<GoogleMapController>();
     CameraPosition _kGooglePlex = CameraPosition(
@@ -60,6 +60,7 @@ class ShowCustomMap extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: GoogleMap(
+            
             // zoomGesturesEnabled: false,
             zoomControlsEnabled: false,
             mapType: MapType.normal,
@@ -81,6 +82,7 @@ class ShowCustomMap extends StatelessWidget {
             circles: circle==false?<Circle>{}:circles,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
+              googleMapController =controller;
               _controllerGoogleMap.complete(controller);
             },
           ),
@@ -91,8 +93,9 @@ class ShowCustomMap extends StatelessWidget {
 }
 
 class DisclaimerView extends StatelessWidget {
-  DisclaimerView({Key? key,
-  this.onTap,
+  DisclaimerView({
+    Key? key,
+    this.onTap,
   }) : super(key: key);
 
   RxBool acceptTerms = false.obs;
@@ -103,29 +106,32 @@ class DisclaimerView extends StatelessWidget {
     var theme = Theme.of(context);
     return SizedBox(
       width: Get.width,
-      height: Get.height/1.3,
+      height: Get.height / 1.3,
       child: Column(
         // ignore: prefer_const_literals_to_create_immutables
         children: [
-          Text("Disclaimer",
-          style: poppinsMediumStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.w600,
-            context: context,
+          Text(
+            "Disclaimer",
+            style: poppinsMediumStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.w600,
+              context: context,
               color: theme.primaryColor,
+            ),
           ),
-          ),
-          Text('“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
+          Text(
+            '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
             style: poppinsRegularStyle(
               fontSize: 12,
               context: context,
-                color: theme.primaryColor,
+              color: theme.primaryColor,
             ),
           ),
-          Row(crossAxisAlignment: CrossAxisAlignment.end,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Obx(
-                ()=> Theme(
+                () => Theme(
                   data: Theme.of(context).copyWith(
                     unselectedWidgetColor: theme.primaryColor,
                   ),
@@ -133,21 +139,24 @@ class DisclaimerView extends StatelessWidget {
                     width: 25,
                     child: Checkbox(
                         activeColor: DynamicColor.lightRedClr,
-                        value: acceptTerms.value, onChanged: (v){
-                      acceptTerms.value = !acceptTerms.value;
-                    }),
+                        value: acceptTerms.value,
+                        onChanged: (v) {
+                          acceptTerms.value = !acceptTerms.value;
+                        }),
                   ),
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 4.0),
                 child: SizedBox(
-                  width: Get.width/1.5,
-                  child: Text('i have read and agree to the terms and conditions',
-                  style: poppinsRegularStyle(
-                    fontSize: 12,context: context,
-                    color: theme.primaryColor,
-                  ),
+                  width: Get.width / 1.5,
+                  child: Text(
+                    'i have read and agree to the terms and conditions',
+                    style: poppinsRegularStyle(
+                      fontSize: 12,
+                      context: context,
+                      color: theme.primaryColor,
+                    ),
                   ),
                 ),
               )
@@ -172,8 +181,13 @@ class DisclaimerView extends StatelessWidget {
   }
 }
 
-
-eventStatusWidget({theme,context,text,Color?color,Color?textClr,}){
+eventStatusWidget({
+  theme,
+  context,
+  text,
+  Color? color,
+  Color? textClr,
+}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -187,23 +201,21 @@ eventStatusWidget({theme,context,text,Color?color,Color?textClr,}){
       Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            topRight: Radius.circular(10)
-          ),
-          image:color == null? DecorationImage(
-              image: AssetImage("assets/topbtnGradent.png"),
-              fit: BoxFit.fill
-          ):null,
-          color: color
-        ),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            image: color == null
+                ? DecorationImage(
+                    image: AssetImage("assets/topbtnGradent.png"),
+                    fit: BoxFit.fill)
+                : null,
+            color: color),
         child: Center(
           child: Text(
-            text?? "Event Completed",
+            text ?? "Event Completed",
             style: poppinsRegularStyle(
               fontSize: 11,
               context: context,
-              color:textClr?? theme.scaffoldBackgroundColor,
+              color: textClr ?? theme.scaffoldBackgroundColor,
             ),
           ),
         ),
@@ -212,10 +224,14 @@ eventStatusWidget({theme,context,text,Color?color,Color?textClr,}){
   );
 }
 
-
-eventOrganizer({theme,context,GestureTapCallback? onTap,String? name,String? location,bool iconShow = false,
-  Color? iconClr
-}) {
+eventOrganizer(
+    {theme,
+    context,
+    GestureTapCallback? onTap,
+    String? name,
+    String? location,
+    bool iconShow = false,
+    Color? iconClr}) {
   return GestureDetector(
     onTap: onTap,
     child: Padding(
@@ -239,7 +255,7 @@ eventOrganizer({theme,context,GestureTapCallback? onTap,String? name,String? loc
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name??'Townsquare',
+                  name ?? 'Townsquare',
                   style: poppinsRegularStyle(
                       fontSize: 12,
                       context: context,
@@ -247,15 +263,18 @@ eventOrganizer({theme,context,GestureTapCallback? onTap,String? name,String? loc
                       fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
-                  width: Get.width/1.5,
+                  width: Get.width / 1.5,
                   child: Row(
                     children: [
-                      iconShow==false?SizedBox.shrink(): Icon(Icons.location_on_sharp,
-                      color: iconClr,
-                        size: 18,
-                      ),
+                      iconShow == false
+                          ? SizedBox.shrink()
+                          : Icon(
+                              Icons.location_on_sharp,
+                              color: iconClr,
+                              size: 18,
+                            ),
                       Text(
-                        location?? 'Event Organizer',
+                        location ?? 'Event Organizer',
                         style: poppinsRegularStyle(
                             fontSize: 12,
                             context: context,
@@ -273,5 +292,3 @@ eventOrganizer({theme,context,GestureTapCallback? onTap,String? name,String? loc
     ),
   );
 }
-
-

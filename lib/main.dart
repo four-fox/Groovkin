@@ -49,9 +49,9 @@ class _MyAppState extends State<MyApp> {
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
 
-    //Todo Firebase Notification End
 
-  
+    // Todo Firebase Notification End
+
     // initStateNotification();
   }
 

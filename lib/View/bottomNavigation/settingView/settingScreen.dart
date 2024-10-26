@@ -163,22 +163,24 @@ class _SettingScreenState extends State<SettingScreen> {
                               Get.toNamed(Routes.newPasswordScreen);
                               // Get.toNamed(Routes.sendEmailForOtp);
                             }),
-                        Obx(
-                          () => customWidget(
-                              context: context,
-                              img: "assets/switchIcon.png",
-                              text: "Switch Profile",
-                              toggleCondition: true,
-                              switchCondition: switchProfileValue.value,
-                              onChanged: (v) {
-                                print(API().sp.read("role"));
-                                switchProfileValue.value = v;
-                                if (API().sp.read("role") == "User") {
-                                  API().sp.write('role', 'eventOrganizer');
-                                  Get.offAllNamed(Routes.switchProfileScreen);
-                                }
-                              }),
-                        ),
+                            
+                        // Obx(
+                        //   () => customWidget(
+                        //       context: context,
+                        //       img: "assets/switchIcon.png",
+                        //       text: "Switch Profile",
+                        //       toggleCondition: true,
+                        //       switchCondition: switchProfileValue.value,
+                        //       onChanged: (v) {
+                        //         print(API().sp.read("role"));
+                        //         switchProfileValue.value = v;
+                        //         if (API().sp.read("role") == "User") {
+                        //           API().sp.write('role', 'eventOrganizer');
+                        //           Get.offAllNamed(Routes.switchProfileScreen);
+                        //         }
+                        //       }),
+                        // ),
+
                         Obx(
                           () => customWidget(
                               context: context,
