@@ -10,58 +10,72 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
 
-
-class ShowCustomMap extends StatelessWidget {
-  ShowCustomMap({Key? key,
-  this.horizontalPadding,
-    this.circle=false,
+class ShowCustomMap extends StatefulWidget {
+  ShowCustomMap({
+    super.key,
+    this.horizontalPadding,
+    this.circle = false,
     this.lat = 37.42796133580664,
     this.lng = -122.085749655962,
-  }) : super(key: key);
+  });
 
   double? horizontalPadding;
   bool circle = false;
-  double ? lat = 37.42796133580664;
-  double ? lng = -122.085749655962;
+  double? lat = 37.42796133580664;
+  double? lng = -122.085749655962;
 
+  @override
+  _ShowCustomMapState createState() => _ShowCustomMapState();
+}
+
+class _ShowCustomMapState extends State<ShowCustomMap> {
+  @override
+  void initState() {
+    super.initState();
+    print("As");
+    moveToPosition(LatLng(widget.lat!, widget.lng!));
+  }
+
+  @override
+  void didUpdateWidget(covariant ShowCustomMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    moveToPosition(LatLng(widget.lat!, widget.lng!));
+  }
+
+  Completer<GoogleMapController> controllerGoogleMap = Completer();
+  late GoogleMapController googleMapController;
 
   @override
   Widget build(BuildContext context) {
-    late GoogleMapController googleMapController;
-    final Completer<GoogleMapController> _controllerGoogleMap =
-    Completer<GoogleMapController>();
-    CameraPosition _kGooglePlex = CameraPosition(
-      target: LatLng(lat!, lng!),
+    CameraPosition kGooglePlex = CameraPosition(
+      target: LatLng(widget.lat!, widget.lng!),
       zoom: 14.4746,
     );
+
     Set<Circle> circles = {
-    Circle(
-    circleId: CircleId('myPosition1'),
-    center: LatLng(
-      lat!,
-      lng!,
-    ),
-    radius: 500,
-    fillColor: Colors.red.withOpacity(0.4),
-    strokeWidth: 0,
-    ),}
-    /*Set.from([Circle(
-      circleId: CircleId('1'),
-      center: LatLng(37.42796133580664, -122.085749655962),
-      radius: 4000,
-    )])*/;
-    return  Padding(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding??12.0),
+      if (widget.circle)
+        Circle(
+          circleId: CircleId('myPosition1'),
+          center: LatLng(
+            widget.lat!,
+            widget.lng!,
+          ),
+          radius: 500,
+          fillColor: Colors.red.withOpacity(0.4),
+          strokeWidth: 0,
+        ),
+    };
+
+    return Padding(
+      padding:
+          EdgeInsets.symmetric(horizontal: widget.horizontalPadding ?? 12.0),
       child: Container(
-        height: kToolbarHeight*3.8,
-        width: Get.width,
-        decoration:
-        BoxDecoration(borderRadius: BorderRadius.circular(15)),
+        height: kToolbarHeight * 3.8,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: GoogleMap(
-            
-            // zoomGesturesEnabled: false,
             zoomControlsEnabled: false,
             mapType: MapType.normal,
             markers: Set<Marker>.of(
@@ -70,25 +84,38 @@ class ShowCustomMap extends StatelessWidget {
                   draggable: true,
                   markerId: MarkerId("1"),
                   position: LatLng(
-                    lat!, lng!,
+                    widget.lat!,
+                    widget.lng!,
                   ),
                   icon: BitmapDescriptor.defaultMarker,
-                  onDragEnd: ((newPosition) {
-                  }),
+                  onDragEnd: (newPosition) {
+                    moveToPosition(newPosition);
+                  },
                 )
               ],
             ),
             myLocationButtonEnabled: true,
-            circles: circle==false?<Circle>{}:circles,
-            initialCameraPosition: _kGooglePlex,
+            circles: circles,
+            initialCameraPosition: kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
-              googleMapController =controller;
-              _controllerGoogleMap.complete(controller);
+              controllerGoogleMap.complete(controller);
+              googleMapController = controller;
+              // Move the camera once the map is created
+              moveToPosition(LatLng(widget.lat!, widget.lng!));
             },
           ),
         ),
       ),
     );
+  }
+
+  Future<void> moveToPosition(LatLng position) async {
+    print("New Posiotn");
+    final GoogleMapController controller = await controllerGoogleMap.future;
+    CameraPosition newCameraPosition =
+        CameraPosition(target: position,   zoom: 15.4746,);
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }
 }
 

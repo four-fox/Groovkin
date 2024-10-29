@@ -7,7 +7,8 @@ import 'dart:convert';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 
-ProfileModel profileModelFromJson(String str) => ProfileModel.fromJson(json.decode(str));
+ProfileModel profileModelFromJson(String str) =>
+    ProfileModel.fromJson(json.decode(str));
 
 String profileModelToJson(ProfileModel data) => json.encode(data.toJson());
 
@@ -23,16 +24,16 @@ class ProfileModel {
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-    status: json["status"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    message: json["message"],
-  );
+        status: json["status"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "data": data?.toJson(),
-    "message": message,
-  };
+        "status": status,
+        "data": data?.toJson(),
+        "message": message,
+      };
 }
 
 class Data {
@@ -44,9 +45,9 @@ class Data {
   dynamic otp;
   String? createdAt;
   String? updatedAt;
+  String? activeRole;
   Profile? profile;
-
-  String? profilePicture;
+  ProfilePicture? profilePicture;
 
   Data({
     this.id,
@@ -59,34 +60,39 @@ class Data {
     this.updatedAt,
     this.profile,
     this.profilePicture,
-
+    this.activeRole,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    deviceToken: json["device_token"],
-    emailVerifiedAt: json["email_verified_at"],
-    otp: json["otp"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    profile: json["profile"] == null ? null : Profile.fromJson(json["profile"]),
-    profilePicture: json["profile_picture"] == null ? dummyProfile :Url().imageUrl+ json["profile_picture"]['media_path'],
-  );
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        deviceToken: json["device_token"],
+        emailVerifiedAt: json["email_verified_at"],
+        otp: json["otp"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        activeRole: json["active_role"],
+        profile:
+            json["profile"] == null ? null : Profile.fromJson(json["profile"]),
+        profilePicture: json["profile_picture"] == null
+            ? null
+            : ProfilePicture.fromJson(json['profile_picture']),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "device_token": deviceToken,
-    "email_verified_at": emailVerifiedAt,
-    "otp": otp,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "profile": profile?.toJson(),
-    "profile_picture": profilePicture,
-  };
+        "id": id,
+        "name": name,
+        "email": email,
+        "device_token": deviceToken,
+        "email_verified_at": emailVerifiedAt,
+        "otp": otp,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "profile": profile?.toJson(),
+        "profile_picture": profilePicture,
+        "active_role": activeRole,
+      };
 }
 
 class Profile {
@@ -127,88 +133,94 @@ class Profile {
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-    id: json["id"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    birthYear: json["birth_year"],
-    phoneNumber: json["phone_number"],
-    companyName: json["company_name"],
-    selectState: json["select_state"],
-    location: json["location"],
-    latitude: json["latitude"],
-    country: json["country"],
-    longitude: json["longitude"],
-    isInsurance: json["is_insurance"],
-    userId: json["user_id"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"],
-    about: json["about"],
-  );
+        id: json["id"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        birthYear: json["birth_year"],
+        phoneNumber: json["phone_number"],
+        companyName: json["company_name"],
+        selectState: json["select_state"],
+        location: json["location"],
+        latitude: json["latitude"],
+        country: json["country"],
+        longitude: json["longitude"],
+        isInsurance: json["is_insurance"],
+        userId: json["user_id"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"],
+        about: json["about"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "first_name": firstName,
-    "last_name": lastName,
-    "about": about,
-    "birth_year": birthYear,
-    "phone_number": phoneNumber,
-    "company_name": companyName,
-    "select_state": selectState,
-    "location": location,
-    "latitude": latitude,
-    "country": country,
-    "longitude": longitude,
-    "is_insurance": isInsurance,
-    "user_id": userId,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "first_name": firstName,
+        "last_name": lastName,
+        "about": about,
+        "birth_year": birthYear,
+        "phone_number": phoneNumber,
+        "company_name": companyName,
+        "select_state": selectState,
+        "location": location,
+        "latitude": latitude,
+        "country": country,
+        "longitude": longitude,
+        "is_insurance": isInsurance,
+        "user_id": userId,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt,
+      };
 }
 
 class ProfilePicture {
-  int? id;
-  String? mediaFor;
-  dynamic thumbnail;
-  String? mediaPath;
-  String? mediaType;
-  String? galleryableType;
-  int? galleryableId;
-  String? createdAt;
-  String? updatedAt;
+  final int id;
+  final String mediaFor;
+  final String? thumbnail;
+  final String mediaPath;
+  final String mediaType;
+  final String galleryableType;
+  final int galleryableId;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   ProfilePicture({
-    this.id,
-    this.mediaFor,
+    required this.id,
+    required this.mediaFor,
     this.thumbnail,
-    this.mediaPath,
-    this.mediaType,
-    this.galleryableType,
-    this.galleryableId,
-    this.createdAt,
-    this.updatedAt,
+    required this.mediaPath,
+    required this.mediaType,
+    required this.galleryableType,
+    required this.galleryableId,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
-  factory ProfilePicture.fromJson(Map<String, dynamic> json) => ProfilePicture(
-    id: json["id"],
-    mediaFor: json["media_for"],
-    thumbnail: json["thumbnail"],
-    mediaPath: json["media_path"],
-    mediaType: json["media_type"],
-    galleryableType: json["galleryable_type"],
-    galleryableId: json["galleryable_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+  // Method to parse JSON into ProfilePicture object
+  factory ProfilePicture.fromJson(Map<String, dynamic> json) {
+    return ProfilePicture(
+      id: json['id'],
+      mediaFor: json['media_for'],
+      thumbnail: json['thumbnail'],
+      mediaPath: json['media_path'],
+      mediaType: json['media_type'],
+      galleryableType: json['galleryable_type'],
+      galleryableId: json['galleryable_id'],
+      createdAt: DateTime.parse(json['created_at']),
+      updatedAt: DateTime.parse(json['updated_at']),
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "media_for": mediaFor,
-    "thumbnail": thumbnail,
-    "media_path": mediaPath,
-    "media_type": mediaType,
-    "galleryable_type": galleryableType,
-    "galleryable_id": galleryableId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+  // Method to convert ProfilePicture object into JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'media_for': mediaFor,
+      'thumbnail': thumbnail,
+      'media_path': mediaPath,
+      'media_type': mediaType,
+      'galleryable_type': galleryableType,
+      'galleryable_id': galleryableId,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
+    };
+  }
 }

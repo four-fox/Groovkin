@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
@@ -84,8 +85,11 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: NetworkImage(
-                                controller.userData!.data!.profilePicture!),
+                            backgroundImage: NetworkImage(controller
+                                        .userData!.data?.profilePicture !=
+                                    null
+                                ? "${Url().imageUrl}${controller.userData?.data?.profilePicture?.mediaPath}"
+                                : groupPlaceholder),
                           ),
                         ),
                         Text(
@@ -163,7 +167,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               Get.toNamed(Routes.newPasswordScreen);
                               // Get.toNamed(Routes.sendEmailForOtp);
                             }),
-                            
+
                         // Obx(
                         //   () => customWidget(
                         //       context: context,

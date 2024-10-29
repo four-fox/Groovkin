@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -29,42 +26,52 @@ class _CounterScreenState extends State<CounterScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller.mediaClass.clear();
     _controller.multiPartImg.clear();
-    _controller.getAllMessages(userId: userId,sourceId: eventId);
+    _controller.getAllMessages(userId: userId, sourceId: eventId);
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Counters",),
+      appBar: customAppBar(
+        theme: theme,
+        text: "Counters",
+      ),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           Padding(
-            padding: EdgeInsets.only(
-                bottom: 8),
+            padding: EdgeInsets.only(bottom: 8),
             child: MessageListWidget(),
           ),
           Positioned(
               bottom: 0,
-              child: Obx(() => ((textFieldShow.value==false) &&(_eventController.eventDetail!.data!.status != "completed"))?Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: CustomButton(
-              widths: Get.width,
-              heights: 37,
-              borderClr: Colors.transparent,
-              text: "Counter",
-              onTap: () {
-                textFieldShow.value = !textFieldShow.value;
-              },
-            ),
-          ):
-              _eventController.eventDetail!.data!.status == "completed"?SizedBox.shrink():  BottomTextFields(userId: userId,eventId: eventId,),)
-          ),
+              child: Obx(
+                () => ((textFieldShow.value == false) &&
+                        (_eventController.eventDetail!.data!.status !=
+                            "completed"))
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        child: CustomButton(
+                          widths: Get.width,
+                          heights: 37,
+                          borderClr: Colors.transparent,
+                          text: "Counter",
+                          onTap: () {
+                            textFieldShow.value = !textFieldShow.value;
+                          },
+                        ),
+                      )
+                    : _eventController.eventDetail!.data!.status == "completed"
+                        ? SizedBox.shrink()
+                        : BottomTextFields(
+                            userId: userId,
+                            eventId: eventId,
+                          ),
+              )),
         ],
       ),
     );

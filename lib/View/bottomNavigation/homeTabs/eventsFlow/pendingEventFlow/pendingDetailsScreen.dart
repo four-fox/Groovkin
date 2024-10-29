@@ -133,6 +133,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                               .isDelete !=
                                           null)
                                         Utils.accountDelete(context),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
                                       Container(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 13),
@@ -161,15 +164,21 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                 ],
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(Routes.eventOrganizerScreen,
-                                      arguments: {
-                                        "eventOrganizerValue": 2,
-                                        'profileImg':
-                                            "assets/eventOrganizer.png",
-                                        "manager": "Event Manager"
-                                      });
-                                },
+                                onTap: controller.eventDetail!.data!.user!
+                                            .isDelete ==
+                                        null
+                                    ? () {
+                                        Get.toNamed(Routes.eventOrganizerScreen,
+                                            arguments: {
+                                              "eventOrganizerValue": 2,
+                                              'profileImg':
+                                                  "assets/eventOrganizer.png",
+                                              "manager": "Event Manager"
+                                            });
+                                      }
+                                    : () {
+                                        Utils.showToast();
+                                      },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0,
@@ -240,193 +249,185 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                             backgroundClr: false,
                                             fontSized: 12,
                                             text: "Not interested/decline",
-                                            onTap: () {
-                                              cancelEventWidget(
-                                                  context: context,
-                                                  theme: theme,
-                                                  onTap: () {
-                                                    Get.back();
-                                                  });
-                                            },
+                                            onTap: controller.eventDetail!.data!
+                                                        .user!.isDelete ==
+                                                    null
+                                                ? () {
+                                                    cancelEventWidget(
+                                                        context: context,
+                                                        theme: theme,
+                                                        onTap: () {
+                                                          Get.back();
+                                                        });
+                                                  }
+                                                : () {
+                                                    Utils.showToast();
+                                                  },
                                             borderClr: Colors.transparent,
                                           ),
                                           CustomButton(
                                             heights: 35,
                                             text: "Accept",
                                             fontSized: 12,
-                                            onTap: () {
-                                              showDialog(
-                                                  barrierColor:
-                                                      Colors.transparent,
-                                                  context: context,
-                                                  barrierDismissible: true,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertWidget(
-                                                      height: Get.height,
-                                                      container: SizedBox(
-                                                        width: Get.width,
-                                                        child: Padding(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  vertical:
-                                                                      12.0,
-                                                                  horizontal:
-                                                                      4),
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                  "Disclaimer",
-                                                                  style:
-                                                                      poppinsMediumStyle(
-                                                                    fontSize:
-                                                                        20,
-                                                                    context:
-                                                                        context,
-                                                                    color: theme
-                                                                        .primaryColor,
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                Text(
-                                                                  "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
-                                                                  maxLines: 8,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style:
-                                                                      poppinsMediumStyle(
-                                                                    fontSize:
-                                                                        13,
-                                                                    context:
-                                                                        context,
-                                                                    color: theme
-                                                                        .primaryColor,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
-                                                                  maxLines: 8,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style:
-                                                                      poppinsMediumStyle(
-                                                                    fontSize:
-                                                                        13,
-                                                                    context:
-                                                                        context,
-                                                                    color: theme
-                                                                        .primaryColor,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
-                                                                  maxLines: 8,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style:
-                                                                      poppinsMediumStyle(
-                                                                    fontSize:
-                                                                        13,
-                                                                    context:
-                                                                        context,
-                                                                    color: theme
-                                                                        .primaryColor,
-                                                                  ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 15,
-                                                                ),
-                                                                Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Obx(
-                                                                      () =>
-                                                                          Theme(
-                                                                        data: Theme.of(context)
-                                                                            .copyWith(
-                                                                          unselectedWidgetColor:
-                                                                              Colors.white,
-                                                                        ),
-                                                                        child:
-                                                                            SizedBox(
-                                                                          width:
-                                                                              30,
-                                                                          child: Checkbox(
-                                                                              activeColor: DynamicColor.yellowClr,
-                                                                              value: true,
-                                                                              onChanged: (v) {
-                                                                                // checkBoxValue.value = v!;
-                                                                              }),
-                                                                        ),
+                                            onTap:
+                                                controller.eventDetail!.data!
+                                                            .user!.isDelete ==
+                                                        null
+                                                    ? () {
+                                                        showDialog(
+                                                            barrierColor: Colors
+                                                                .transparent,
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                true,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertWidget(
+                                                                height:
+                                                                    Get.height,
+                                                                container:
+                                                                    SizedBox(
+                                                                  width:
+                                                                      Get.width,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            12.0,
+                                                                        horizontal:
+                                                                            4),
+                                                                    child:
+                                                                        SingleChildScrollView(
+                                                                      child:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Disclaimer",
+                                                                            style:
+                                                                                poppinsMediumStyle(
+                                                                              fontSize: 20,
+                                                                              context: context,
+                                                                              color: theme.primaryColor,
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+                                                                          Text(
+                                                                            "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
+                                                                            maxLines:
+                                                                                8,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style:
+                                                                                poppinsMediumStyle(
+                                                                              fontSize: 13,
+                                                                              context: context,
+                                                                              color: theme.primaryColor,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
+                                                                            maxLines:
+                                                                                8,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style:
+                                                                                poppinsMediumStyle(
+                                                                              fontSize: 13,
+                                                                              context: context,
+                                                                              color: theme.primaryColor,
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
+                                                                            maxLines:
+                                                                                8,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style:
+                                                                                poppinsMediumStyle(
+                                                                              fontSize: 13,
+                                                                              context: context,
+                                                                              color: theme.primaryColor,
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+                                                                          Row(
+                                                                            crossAxisAlignment:
+                                                                                CrossAxisAlignment.center,
+                                                                            children: [
+                                                                              Obx(
+                                                                                () => Theme(
+                                                                                  data: Theme.of(context).copyWith(
+                                                                                    unselectedWidgetColor: Colors.white,
+                                                                                  ),
+                                                                                  child: SizedBox(
+                                                                                    width: 30,
+                                                                                    child: Checkbox(
+                                                                                        activeColor: DynamicColor.yellowClr,
+                                                                                        value: true,
+                                                                                        onChanged: (v) {
+                                                                                          // checkBoxValue.value = v!;
+                                                                                        }),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: EdgeInsets.only(left: 2.0),
+                                                                                child: Text(
+                                                                                  'i have read and agree to the terms and\nconditions',
+                                                                                  style: poppinsRegularStyle(
+                                                                                    fontSize: 13,
+                                                                                    context: context,
+                                                                                    color: theme.primaryColor,
+                                                                                  ),
+                                                                                ),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                          CustomButton(
+                                                                            heights:
+                                                                                35,
+                                                                            text:
+                                                                                "Accept",
+                                                                            fontSized:
+                                                                                12,
+                                                                            onTap:
+                                                                                () {
+                                                                              Get.back();
+                                                                            },
+                                                                            color2:
+                                                                                DynamicColor.greenClr.withOpacity(0.8),
+                                                                            color1:
+                                                                                DynamicColor.greenClr.withOpacity(0.8),
+                                                                            widths:
+                                                                                Get.width / 1.4,
+                                                                            backgroundClr:
+                                                                                false,
+                                                                            borderClr:
+                                                                                Colors.transparent,
+                                                                          ),
+                                                                        ],
                                                                       ),
                                                                     ),
-                                                                    Padding(
-                                                                      padding: EdgeInsets.only(
-                                                                          left:
-                                                                              2.0),
-                                                                      child:
-                                                                          Text(
-                                                                        'i have read and agree to the terms and\nconditions',
-                                                                        style:
-                                                                            poppinsRegularStyle(
-                                                                          fontSize:
-                                                                              13,
-                                                                          context:
-                                                                              context,
-                                                                          color:
-                                                                              theme.primaryColor,
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                  ],
+                                                                  ),
                                                                 ),
-                                                                CustomButton(
-                                                                  heights: 35,
-                                                                  text:
-                                                                      "Accept",
-                                                                  fontSized: 12,
-                                                                  onTap: () {
-                                                                    Get.back();
-                                                                  },
-                                                                  color2: DynamicColor
-                                                                      .greenClr
-                                                                      .withOpacity(
-                                                                          0.8),
-                                                                  color1: DynamicColor
-                                                                      .greenClr
-                                                                      .withOpacity(
-                                                                          0.8),
-                                                                  widths:
-                                                                      Get.width /
-                                                                          1.4,
-                                                                  backgroundClr:
-                                                                      false,
-                                                                  borderClr: Colors
-                                                                      .transparent,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  });
-                                            },
+                                                              );
+                                                            });
+                                                      }
+                                                    : () {
+                                                        Utils.showToast();
+                                                      },
                                             color2: DynamicColor.greenClr
                                                 .withOpacity(0.8),
                                             color1: DynamicColor.greenClr
@@ -450,19 +451,26 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           context: context,
                                           color: theme.primaryColor,
                                         ),
-                                        onTap: () {
-                                          cancelEventWidget(
-                                              context: context,
-                                              theme: theme,
-                                              onTap: () {
-                                                Get.back();
-                                                Get.toNamed(Routes.cancelReason,
-                                                    arguments: {
-                                                      "eventId": eventId,
-                                                      "doubleBack": true,
+                                        onTap: controller.eventDetail!.data!
+                                                    .user!.isDelete ==
+                                                null
+                                            ? () {
+                                                cancelEventWidget(
+                                                    context: context,
+                                                    theme: theme,
+                                                    onTap: () {
+                                                      Get.back();
+                                                      Get.toNamed(
+                                                          Routes.cancelReason,
+                                                          arguments: {
+                                                            "eventId": eventId,
+                                                            "doubleBack": true,
+                                                          });
                                                     });
-                                              });
-                                        },
+                                              }
+                                            : () {
+                                                Utils.showToast();
+                                              },
                                         backgroundClr: false,
                                         borderClr: Colors.transparent,
                                         color2: DynamicColor.redClr,
@@ -483,7 +491,10 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           horizontal: 8.0),
                                       child: CustomButton(
                                         heights: 39,
-                                        onTap: () {
+                                        onTap: controller.eventDetail!.data!
+                                                    .user!.isDelete ==
+                                                null
+                                            ?  () {
                                           int? userId;
                                           if (controller
                                                   .eventDetail!.data!.userId ==
@@ -501,6 +512,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                 "userId": userId,
                                                 "eventId": eventId,
                                               });
+                                        }:(){
+                                          Utils.showToast();
                                         },
                                         style: poppinsMediumStyle(
                                             fontSize: 13,

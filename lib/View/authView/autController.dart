@@ -3,6 +3,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
 import 'package:groovkin/firebase/notification_services.dart';
+import 'package:groovkin/model/notification_model.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -958,12 +959,41 @@ class AuthController extends GetxController {
       update();
     }
   }
+
+  // Todo Get Notificaion
+  RxInt page = 1.obs;
+  RxBool isNotificationLoading = false.obs;
+  bool notificationWait = false;
+  changePage(int pageNumber) {
+    page.value = pageNumber;
+  }
+
+  NotificationModel? notificationModel;
+  Future<dynamic> getAllNotification(
+      {fullUrl, String url = 'notifications'}) async {
+    isNotificationLoading.value = true; // Start loading
+    final response = await API().getApi(url: "notifications");
+    if (response.statusCode == 200) {
+      if (fullUrl == null) {
+        notificationModel = NotificationModel.fromJson(response.data);
+      } else {
+        notificationModel!.data!.datas!
+            .addAll(NotificationModel.fromJson(response.data).data!.datas!);
+        notificationModel!.data!.nextPageUrl =
+            NotificationModel.fromJson(response.data).data!.nextPageUrl;
+        notificationWait = false;
+      }
+    }
+    isNotificationLoading.value = false; // Stop loading
+    update();
+  }
+
+
 }
 
 class AuthBinding implements Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
     Get.lazyPut<AuthController>(() => AuthController());
   }
 }

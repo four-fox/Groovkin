@@ -7,17 +7,17 @@ class SwitchProfile {
 
   SwitchProfile.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -27,11 +27,11 @@ class Data {
   String? name;
   String? email;
   String? deviceToken;
-  Null? referralCode;
-  Null? emailVerifiedAt;
-  Null? otp;
+  Null referralCode;
+  Null emailVerifiedAt;
+  Null otp;
   String? activeRole;
-  Null? deletedAt;
+  Null deletedAt;
   String? createdAt;
   String? updatedAt;
   String? token;
@@ -43,22 +43,22 @@ class Data {
 
   Data(
       {this.id,
-        this.name,
-        this.email,
-        this.deviceToken,
-        this.referralCode,
-        this.emailVerifiedAt,
-        this.otp,
-        this.activeRole,
-        this.deletedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.token,
-        this.isEventCreated,
-        this.isUserCreated,
-        this.isManagerCreated,
-        this.profile,
-        this.roles});
+      this.name,
+      this.email,
+      this.deviceToken,
+      this.referralCode,
+      this.emailVerifiedAt,
+      this.otp,
+      this.activeRole,
+      this.deletedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.token,
+      this.isEventCreated,
+      this.isUserCreated,
+      this.isManagerCreated,
+      this.profile,
+      this.roles});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -77,37 +77,37 @@ class Data {
     isUserCreated = json['is_user_created'];
     isManagerCreated = json['is_manager_created'];
     profile =
-    json['profile'] != null ? new Profile.fromJson(json['profile']) : null;
+        json['profile'] != null ? Profile.fromJson(json['profile']) : null;
     if (json['roles'] != null) {
       roles = <Roles>[];
       json['roles'].forEach((v) {
-        roles!.add(new Roles.fromJson(v));
+        roles!.add(Roles.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['device_token'] = this.deviceToken;
-    data['referral_code'] = this.referralCode;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['otp'] = this.otp;
-    data['active_role'] = this.activeRole;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['token'] = this.token;
-    data['is_event_created'] = this.isEventCreated;
-    data['is_user_created'] = this.isUserCreated;
-    data['is_manager_created'] = this.isManagerCreated;
-    if (this.profile != null) {
-      data['profile'] = this.profile!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['device_token'] = deviceToken;
+    data['referral_code'] = referralCode;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['otp'] = otp;
+    data['active_role'] = activeRole;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['token'] = token;
+    data['is_event_created'] = isEventCreated;
+    data['is_user_created'] = isUserCreated;
+    data['is_manager_created'] = isManagerCreated;
+    if (profile != null) {
+      data['profile'] = profile!.toJson();
     }
-    if (this.roles != null) {
-      data['roles'] = this.roles!.map((v) => v.toJson()).toList();
+    if (roles != null) {
+      data['roles'] = roles!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -133,21 +133,21 @@ class Profile {
 
   Profile(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.birthYear,
-        this.phoneNumber,
-        this.companyName,
-        this.country,
-        this.selectState,
-        this.location,
-        this.about,
-        this.latitude,
-        this.longitude,
-        this.isInsurance,
-        this.userId,
-        this.createdAt,
-        this.updatedAt});
+      this.firstName,
+      this.lastName,
+      this.birthYear,
+      this.phoneNumber,
+      this.companyName,
+      this.country,
+      this.selectState,
+      this.location,
+      this.about,
+      this.latitude,
+      this.longitude,
+      this.isInsurance,
+      this.userId,
+      this.createdAt,
+      this.updatedAt});
 
   Profile.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -169,23 +169,23 @@ class Profile {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['birth_year'] = this.birthYear;
-    data['phone_number'] = this.phoneNumber;
-    data['company_name'] = this.companyName;
-    data['country'] = this.country;
-    data['select_state'] = this.selectState;
-    data['location'] = this.location;
-    data['about'] = this.about;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['is_insurance'] = this.isInsurance;
-    data['user_id'] = this.userId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['birth_year'] = birthYear;
+    data['phone_number'] = phoneNumber;
+    data['company_name'] = companyName;
+    data['country'] = country;
+    data['select_state'] = selectState;
+    data['location'] = location;
+    data['about'] = about;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['is_insurance'] = isInsurance;
+    data['user_id'] = userId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -200,11 +200,11 @@ class Roles {
 
   Roles(
       {this.id,
-        this.name,
-        this.guardName,
-        this.createdAt,
-        this.updatedAt,
-        this.pivot});
+      this.name,
+      this.guardName,
+      this.createdAt,
+      this.updatedAt,
+      this.pivot});
 
   Roles.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -212,18 +212,18 @@ class Roles {
     guardName = json['guard_name'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+    pivot = json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['guard_name'] = this.guardName;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.pivot != null) {
-      data['pivot'] = this.pivot!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['guard_name'] = guardName;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (pivot != null) {
+      data['pivot'] = pivot!.toJson();
     }
     return data;
   }
@@ -243,10 +243,10 @@ class Pivot {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['model_type'] = this.modelType;
-    data['model_id'] = this.modelId;
-    data['role_id'] = this.roleId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['model_type'] = modelType;
+    data['model_id'] = modelId;
+    data['role_id'] = roleId;
     return data;
   }
 }

@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // HomeController _controller = Get.put(HomeController());
   // EventController _eventController = Get.put(EventController());
 
-  late HomeController _controller;
+    late HomeController _controller;
   late EventController _eventController;
   late AuthController _authController;
 
@@ -874,6 +874,9 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                   children: [
                                     if (eventData.user!.deleteAt != null)
                                       Utils.accountDelete(context),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
                                     Container(
                                       padding: EdgeInsets.all(8),
                                       decoration: BoxDecoration(
@@ -978,7 +981,9 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                   );
                                                 });
                                           }
-                                        : null,
+                                        : () {
+                                            Utils.showToast();
+                                          },
                                     borderClr: Colors.transparent,
                                   ),
                                   CustomButton(
@@ -1141,7 +1146,9 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                   );
                                                 });
                                           }
-                                        : null,
+                                        : () {
+                                            Utils.showToast();
+                                          },
                                     color2: eventData.user!.deleteAt == null
                                         ? DynamicColor.greenClr.withOpacity(0.8)
                                         : DynamicColor.disabledColor,

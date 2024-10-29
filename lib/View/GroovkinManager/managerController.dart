@@ -598,6 +598,21 @@ class ManagerController extends GetxController {
     }
   }
 
+// Todo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> counter report
+
+  reportCounter(int chatId, int index) async {
+    var formData = form.FormData.fromMap({
+      "chat_id": chatId,
+    });
+    print(chatId);
+
+    var response = await API().postApi(formData, "flag-message");
+    if (response.statusCode == 200) {
+      chatData!.data!.data!.removeAt(index);
+      update();
+    }
+  }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> send message text
   final messageController = TextEditingController();
   sendMessage({receiverId, eventId}) async {

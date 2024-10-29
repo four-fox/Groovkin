@@ -208,19 +208,24 @@ class PendingScreen extends StatelessWidget {
                                     borderClr: Colors.transparent,
                                     heights: 35,
                                     fontSized: 13,
-                                    onTap: () {
-                                      cancelEventWidget(
-                                          context: context,
-                                          theme: theme,
-                                          onTap: () {
-                                            Get.back();
-                                            Get.toNamed(Routes.cancelReason,
-                                                arguments: {
-                                                  "eventId": eventData.id,
-                                                  "doubleBack": false,
+                                    onTap: eventData.user!.deleteAt == null
+                                        ? () {
+                                            cancelEventWidget(
+                                                context: context,
+                                                theme: theme,
+                                                onTap: () {
+                                                  Get.back();
+                                                  Get.toNamed(
+                                                      Routes.cancelReason,
+                                                      arguments: {
+                                                        "eventId": eventData.id,
+                                                        "doubleBack": false,
+                                                      });
                                                 });
-                                          });
-                                    },
+                                          }
+                                        : () {
+                                            Utils.showToast();
+                                          },
                                     color2: eventData.user!.deleteAt == null
                                         ? DynamicColor.redClr
                                         : DynamicColor.disabledColor,
