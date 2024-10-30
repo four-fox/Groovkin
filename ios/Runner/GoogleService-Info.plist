@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCslWmHhC0Ph4W-8ThneBkIXEx3RtSjp7o</string>
+	<string>AIzaSyDZcMhG4T5k4QuBAMQl2zEZ4ylCZFSTjsQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>594437869544</string>
+	<string>545599432217</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.gologonow.groovkin</string>
 	<key>PROJECT_ID</key>
-	<string>groovkin-46323</string>
+	<string>groovkin-5f843</string>
 	<key>STORAGE_BUCKET</key>
-	<string>groovkin-46323.appspot.com</string>
+	<string>groovkin-5f843.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:594437869544:ios:cc5b3caa51f424e95b5e5d</string>
+	<string>1:545599432217:ios:4a892c81cc691811012c88</string>
 </dict>
 </plist>

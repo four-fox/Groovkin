@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // HomeController _controller = Get.put(HomeController());
   // EventController _eventController = Get.put(EventController());
 
-    late HomeController _controller;
+  late HomeController _controller;
   late EventController _eventController;
   late AuthController _authController;
 

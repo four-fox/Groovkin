@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
@@ -7,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/GroovkinManager/managerController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class NotificationService {
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -156,16 +160,6 @@ class NotificationService {
     });
   }
 
-  // ! when user tap on the notification
-  void handleMessage(BuildContext context, RemoteMessage message) {
-    print(message.data.keys);
-    print(message.data.values);
-    if (message.data["type"] == "chats") {
-      print("done");
-      Get.offAllNamed(Routes.loginScreen);
-    }
-  }
-
   // ! Todo ios notification message
   Future forgroundMessage() async {
     await FirebaseMessaging.instance
@@ -176,5 +170,92 @@ class NotificationService {
     );
   }
 
+  // ! when user tap on the notification
+  void handleMessage(BuildContext context, RemoteMessage message) {
+    var data;
+    if (message.data["type"] == "send_message") {
+      data = jsonDecode(message.data["data"]);
+    } else {
+      data = message.data;
+    }
 
+    EventController controller = Get.find();
+    ManagerController managerController = Get.find();
+    HomeController homeController = Get.find();
+
+    if (message.data["type"] == "send_message") {
+      print(data["source_id"].runtimeType);
+      controller.eventDetails(eventId: data["source_id"]);
+      managerController.getAllMessages(
+          userId: data["sender_id"], sourceId: data["source_id"]);
+      Get.toNamed(Routes.counterScreen, arguments: {
+        "userId": data["sender_id"],
+        "eventId": data["source_id"],
+        "acceptVal": true,
+      });
+    } else if (data["type"] == "event_created") {
+      Get.toNamed(Routes.pendingEventDetails, arguments: {
+        "notInterestedBtn": 1,
+        "title": "About Event",
+        "eventId": int.parse(data["source_id"]),
+        "type": "event",
+      });
+    } else if (data["type"] == "event_complete") {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
+        "eventId": int.parse(data["source_id"]),
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "Completed Event"
+      })!
+          .then(
+        (value) => homeController.completedEvent(),
+      );
+    } else if (data["type"] == "event_accept") {
+      Get.toNamed(Routes.pendingEventDetails, arguments: {
+        "notInterestedBtn": 1,
+        "title": "About Event",
+        "eventId": int.parse(data["source_id"]),
+        "type": "event",
+      });
+    } else if (data["type"] == "event_following") {
+      Get.toNamed(Routes.viewProfileScreen, arguments: {
+        "id": int.parse(data["source_id"]), // Pass only the ID
+        "fromNotification": true, // Add this flag
+      });
+    } else if (data["type"] == "event_rate") {
+      Get.toNamed(Routes.pendingEventDetails, arguments: {
+        "eventId": int.parse(data["source_id"]),
+        "notInterestedBtn": 1,
+        "title": "About Event",
+        "type": "event",
+      })!
+          .then(
+        (value) => managerController.getAllPendingEvents(),
+      );
+    } else if (data["type"] == "event_price_update") {
+      Get.toNamed(Routes.pendingEventDetails, arguments: {
+        "eventId": int.parse(data["source_id"]),
+        "notInterestedBtn": 1,
+        "title": "About Event",
+        "type": "event",
+      })!
+          .then(
+        (value) => managerController.getAllPendingEvents(),
+      );
+    } else if (data["type"] == "event_cancelled") {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
+        "eventId":int.parse(data["source_id"]),
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "Cancelled"
+      });
+    } else if (data["type"] == "event_declined") {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
+        "eventId": int.parse(data["source_id"]),
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "Declined"
+      });
+    }
+  }
 }

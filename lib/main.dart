@@ -1,4 +1,3 @@
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -43,12 +42,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
- //Todo Firebase Notification Start
+    //Todo Firebase Notification Start
 
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
-
 
     // Todo Firebase Notification End
 

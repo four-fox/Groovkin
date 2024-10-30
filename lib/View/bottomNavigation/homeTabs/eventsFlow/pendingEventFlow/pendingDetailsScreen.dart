@@ -494,27 +494,34 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                         onTap: controller.eventDetail!.data!
                                                     .user!.isDelete ==
                                                 null
-                                            ?  () {
-                                          int? userId;
-                                          if (controller
-                                                  .eventDetail!.data!.userId ==
-                                              API().sp.read("userId")) {
-                                            userId = controller.eventDetail!
-                                                .data!.venue!.userId;
-                                          } else {
-                                            userId = controller
-                                                .eventDetail!.data!.userId!;
-                                          }
-                                          Get.toNamed(Routes.counterScreen,
-                                              arguments: {
-                                                "textField": true,
-                                                "acceptVal": true,
-                                                "userId": userId,
-                                                "eventId": eventId,
-                                              });
-                                        }:(){
-                                          Utils.showToast();
-                                        },
+                                            ? () {
+                                                int? userId;
+                                                if (controller.eventDetail!
+                                                        .data!.userId ==
+                                                    API().sp.read("userId")) {
+                                                  userId = controller
+                                                      .eventDetail!
+                                                      .data!
+                                                      .venue!
+                                                      .userId;
+                                                } else {
+                                                  userId = controller
+                                                      .eventDetail!
+                                                      .data!
+                                                      .userId!;
+                                                }
+                                                Get.toNamed(
+                                                    Routes.counterScreen,
+                                                    arguments: {
+                                                      "textField": true,
+                                                      "acceptVal": true,
+                                                      "userId": userId,
+                                                      "eventId": eventId,
+                                                    });
+                                              }
+                                            : () {
+                                                Utils.showToast();
+                                              },
                                         style: poppinsMediumStyle(
                                             fontSize: 13,
                                             context: context,
@@ -653,7 +660,16 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                           title: "Featuring",
                           value: controller.eventDetail!.data!.featuring
                               .toString()),
-
+                      customWidget(context, theme,
+                          title: "Price",
+                          value: controller.eventDetail!.data!.balanceDue
+                              .toString()),
+                      customWidget(context, theme,
+                          title: "Rating",
+                          value: controller.eventDetail!.data!.rate.toString()),
+                      SizedBox(
+                        height: 5,
+                      ),
                       sp.read('role') == "eventManager"
                           ? SizedBox.shrink()
                           : Obx(
@@ -848,7 +864,6 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                 child: ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: NeverScrollableScrollPhysics(),
                                     itemCount: controller
                                         .eventDetail!.data!.services!.length,
                                     itemBuilder: (BuildContext context, indx) {

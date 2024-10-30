@@ -10,7 +10,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class HardwareScreen extends StatelessWidget {
-  HardwareScreen({Key? key}) : super(key: key);
+  HardwareScreen({super.key});
 
   final AuthController _controller = Get.find();
 
@@ -269,7 +269,7 @@ class HardwareScreen extends StatelessWidget {
 }
 
 class AddMoreHardwareScreen extends StatelessWidget {
-  AddMoreHardwareScreen({Key? key}) : super(key: key);
+  AddMoreHardwareScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -391,10 +391,9 @@ class AddMoreHardwareScreen extends StatelessWidget {
         text: "Audio Amplifier and Speakers (Large Room)",
         selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (5’x8’)", selectedValue: false.obs),
+        text: "Video  Projector and Screen (5’x8’)", selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (8’x10’)",
-        selectedValue: false.obs),
+        text: "Video  Projector and Screen (8’x10’)", selectedValue: false.obs),
     HardwareClass(text: "Vinyl Turntables", selectedValue: false.obs),
     HardwareClass(text: "CD Turntables", selectedValue: false.obs),
     HardwareClass(
@@ -411,10 +410,9 @@ class AddMoreHardwareScreen extends StatelessWidget {
         text: "Audio Amplifier and Speakers (Large Room)",
         selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (5’x8’)", selectedValue: false.obs),
+        text: "Video  Projector and Screen (5’x8’)", selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (8’x10’)",
-        selectedValue: false.obs),
+        text: "Video  Projector and Screen (8’x10’)", selectedValue: false.obs),
     HardwareClass(text: "Vinyl Turntables", selectedValue: false.obs),
     HardwareClass(text: "CD Turntables", selectedValue: false.obs),
     HardwareClass(
@@ -431,10 +429,9 @@ class AddMoreHardwareScreen extends StatelessWidget {
         text: "Audio Amplifier and Speakers (Large Room)",
         selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (5’x8’)", selectedValue: false.obs),
+        text: "Video  Projector and Screen (5’x8’)", selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (8’x10’)",
-        selectedValue: false.obs),
+        text: "Video  Projector and Screen (8’x10’)", selectedValue: false.obs),
     HardwareClass(text: "Vinyl Turntables", selectedValue: false.obs),
     HardwareClass(text: "CD Turntables", selectedValue: false.obs),
     HardwareClass(
@@ -451,10 +448,9 @@ class AddMoreHardwareScreen extends StatelessWidget {
         text: "Audio Amplifier and Speakers (Large Room)",
         selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (5’x8’)", selectedValue: false.obs),
+        text: "Video  Projector and Screen (5’x8’)", selectedValue: false.obs),
     HardwareClass(
-        text: "Video \ Projector and Screen (8’x10’)",
-        selectedValue: false.obs),
+        text: "Video  Projector and Screen (8’x10’)", selectedValue: false.obs),
   ];
 }
 

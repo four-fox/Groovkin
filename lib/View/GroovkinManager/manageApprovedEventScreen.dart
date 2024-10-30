@@ -31,6 +31,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
               height: 10,
             ),
             GestureDetector(
+
               onTap: (){
                 Get.toNamed(Routes.eventOrganizerScreen,
                     arguments: {
@@ -40,6 +41,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                     }
                 );
               },
+
               child: Row(
                 children: [
                   Container(

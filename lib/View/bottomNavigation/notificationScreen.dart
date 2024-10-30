@@ -7,7 +7,9 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/notification_model.dart';
@@ -21,6 +23,8 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   late AuthController controller;
+  late HomeController _controller;
+  late ManagerController _managercontroller;
 
   @override
   void initState() {
@@ -29,6 +33,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
       controller = Get.find<AuthController>();
     } else {
       controller = Get.put(AuthController());
+    }
+    if (Get.isRegistered<HomeController>()) {
+      _controller = Get.find<HomeController>();
+    } else {
+      _controller = Get.put(HomeController());
+    }
+    if (Get.isRegistered<ManagerController>()) {
+      _managercontroller = Get.find<ManagerController>();
+    } else {
+      _managercontroller = Get.put(ManagerController());
     }
   }
 
@@ -68,6 +82,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ? SizedBox()
                 : ListView.builder(
                     itemBuilder: (BuildContext context, index) {
+                      print(controller.notificationModel!.data!.datas!.length);
                       final Datas data =
                           controller.notificationModel!.data!.datas![index];
                       return Padding(
@@ -96,6 +111,56 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       "eventId": data.sourceId!,
                                       "type": "event",
                                     });
+                              } else if (data.type == "event_reschedule") {
+                              } else if (data.type == "event_complete") {
+                                Get.toNamed(Routes.upcomingScreen, arguments: {
+                                  "eventId": data.sourceId,
+                                  "reportedEventView": 1,
+                                  "notInterestedBtn": 1,
+                                  "appBarTitle": "Completed Event"
+                                })!
+                                    .then(
+                                  (value) => _controller.completedEvent(),
+                                );
+                              } else if (data.type == "event_rate") {
+                                Get.toNamed(Routes.pendingEventDetails,
+                                        arguments: {
+                                      "eventId": data.sourceId,
+                                      "notInterestedBtn": 1,
+                                      "title": "About Event",
+                                      "type": "event",
+                                    })!
+                                    .then(
+                                  (value) =>
+                                      _managercontroller.getAllPendingEvents(),
+                                );
+                              } else if (data.type == "event_price_update") {
+                                Get.toNamed(Routes.pendingEventDetails,
+                                        arguments: {
+                                      "eventId": data.sourceId,
+                                      "notInterestedBtn": 1,
+                                      "title": "About Event",
+                                      "type": "event",
+                                    })!
+                                    .then(
+                                  (value) =>
+                                      _managercontroller.getAllPendingEvents(),
+                                );
+                              } else if (data.type == "event_cancelled") {
+                                Get.toNamed(Routes.upcomingScreen, arguments: {
+                                  "eventId": data.sourceId,
+                                  "reportedEventView": 1,
+                                  "notInterestedBtn": 1,
+                                  "appBarTitle": "Cancelled"
+                                });
+                              } else if (data.type == "event_acknowledged") {}
+                              else if(data.type=="event_declined"){
+                                Get.toNamed(Routes.upcomingScreen, arguments: {
+                                  "eventId": data.sourceId,
+                                  "reportedEventView": 1,
+                                  "notInterestedBtn": 1,
+                                  "appBarTitle": "Declined"
+                                });
                               }
                             },
                             theme: theme,

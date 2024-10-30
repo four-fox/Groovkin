@@ -159,6 +159,7 @@ class AuthController extends GetxController {
   login() async {
     NotificationService notificationService = NotificationService();
     final String token = await notificationService.getDeviceToken();
+    print("Token $token");
     var formData = {
       "email": loginEmailController.text,
       "password": loginPasswordController.text,
@@ -972,7 +973,7 @@ class AuthController extends GetxController {
   Future<dynamic> getAllNotification(
       {fullUrl, String url = 'notifications'}) async {
     isNotificationLoading.value = true; // Start loading
-    final response = await API().getApi(url: "notifications");
+    final response = await API().getApi(url: "notifications", fullUrl: fullUrl);
     if (response.statusCode == 200) {
       if (fullUrl == null) {
         notificationModel = NotificationModel.fromJson(response.data);
@@ -987,8 +988,6 @@ class AuthController extends GetxController {
     isNotificationLoading.value = false; // Stop loading
     update();
   }
-
-
 }
 
 class AuthBinding implements Bindings {

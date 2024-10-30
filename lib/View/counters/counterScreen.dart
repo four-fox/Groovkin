@@ -17,19 +17,31 @@ class CounterScreen extends StatefulWidget {
 class _CounterScreenState extends State<CounterScreen> {
   RxBool textFieldShow = false.obs;
   bool accept = Get.arguments['acceptVal'];
+  int? receiverId = Get.arguments["receiverId"];
+  int? sourceId = Get.arguments["sourceId"];
 
   int? userId = Get.arguments['userId'];
   int? eventId = Get.arguments['eventId'];
 
   final ManagerController _controller = Get.find();
-  final EventController _eventController = Get.find();
 
   @override
   void initState() {
     super.initState();
     _controller.mediaClass.clear();
     _controller.multiPartImg.clear();
-    _controller.getAllMessages(userId: userId, sourceId: eventId);
+    if (receiverId != null && sourceId != null) {
+      // _controller.getAllMessages(userId: receiverId, sourceId: sourceId);
+    } else {
+      _controller.getAllMessages(userId: userId, sourceId: eventId);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant CounterScreen oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    print("DIDUPDAED");
   }
 
   @override
@@ -49,10 +61,9 @@ class _CounterScreenState extends State<CounterScreen> {
           ),
           Positioned(
               bottom: 0,
-              child: Obx(
-                () => ((textFieldShow.value == false) &&
-                        (_eventController.eventDetail!.data!.status !=
-                            "completed"))
+              child: GetBuilder<EventController>(
+                builder: (controller) => ((textFieldShow.value == false) &&
+                        (controller.eventDetail!.data!.status != "completed"))
                     ? Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.0),
                         child: CustomButton(
@@ -62,10 +73,11 @@ class _CounterScreenState extends State<CounterScreen> {
                           text: "Counter",
                           onTap: () {
                             textFieldShow.value = !textFieldShow.value;
+                            setState(() {});
                           },
                         ),
                       )
-                    : _eventController.eventDetail!.data!.status == "completed"
+                    : controller.eventDetail!.data!.status == "completed"
                         ? SizedBox.shrink()
                         : BottomTextFields(
                             userId: userId,
