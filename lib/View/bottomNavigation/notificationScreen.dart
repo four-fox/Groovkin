@@ -117,7 +117,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   "eventId": data.sourceId,
                                   "reportedEventView": 1,
                                   "notInterestedBtn": 1,
-                                  "appBarTitle": "Completed Event"
+                                  "appBarTitle": "Completed Event",
+                                  "isComingFromNotification":true,
                                 })!
                                     .then(
                                   (value) => _controller.completedEvent(),
@@ -151,7 +152,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   "eventId": data.sourceId,
                                   "reportedEventView": 1,
                                   "notInterestedBtn": 1,
-                                  "appBarTitle": "Cancelled"
+                                  "appBarTitle": "Cancelled",
+                                  "isComingFromNotification":true,
                                 });
                               } else if (data.type == "event_acknowledged") {}
                               else if(data.type=="event_declined"){
@@ -159,7 +161,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   "eventId": data.sourceId,
                                   "reportedEventView": 1,
                                   "notInterestedBtn": 1,
-                                  "appBarTitle": "Declined"
+                                  "appBarTitle": "Declined",
+                                    "isComingFromNotification":true,
                                 });
                               }
                             },

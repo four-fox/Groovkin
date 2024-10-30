@@ -20,7 +20,7 @@ class ViewProfileScreen extends StatefulWidget {
 }
 
 class _ViewProfileScreenState extends State<ViewProfileScreen> {
-  AuthController _controller = Get.find();
+  late AuthController _controller;
   EventDetails? eventDetails;
   EventDetails? venueDetails;
   int? venueId;
@@ -29,6 +29,11 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
   @override
   void initState() {
     super.initState();
+    if(Get.isRegistered<AuthController>()){
+      _controller = Get.find<AuthController>();
+    }else {
+      _controller =Get.put(AuthController());
+    }
     getData();
   }
 

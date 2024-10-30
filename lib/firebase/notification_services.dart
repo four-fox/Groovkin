@@ -5,6 +5,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Routes/app_pages.dart';
@@ -145,8 +146,17 @@ class NotificationService {
     if (message != null) {
       if (context.mounted) {
         print("<Terminated>");
+        // Show EasyLoading spinner
+        EasyLoading.show(status: 'Loading...');
 
-        handleMessage(context, message);
+        Future.delayed(Duration(seconds: 5),(){
+        if(context.mounted){
+           handleMessage(context, message);
+
+          // Hide EasyLoading spinner once handleMessage completes
+          EasyLoading.dismiss();
+        }
+      });
       }
     }
 
@@ -205,7 +215,8 @@ class NotificationService {
         "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-        "appBarTitle": "Completed Event"
+        "appBarTitle": "Completed Event",
+        "isComingFromNotification":true,
       })!
           .then(
         (value) => homeController.completedEvent(),
@@ -247,14 +258,16 @@ class NotificationService {
         "eventId":int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-        "appBarTitle": "Cancelled"
+        "appBarTitle": "Cancelled",
+        "isComingFromNotification":true,
       });
     } else if (data["type"] == "event_declined") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-        "appBarTitle": "Declined"
+        "appBarTitle": "Declined",
+        "isComingFromNotification":true,
       });
     }
   }

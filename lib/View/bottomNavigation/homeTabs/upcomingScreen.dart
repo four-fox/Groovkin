@@ -36,6 +36,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
 
   int eventId = Get.arguments['eventId'] ?? 1;
 
+  bool isComingFromNotifcation= Get.arguments["isComingFromNotification"]??false;
+
   EventController _controller = Get.find();
 
   late AuthController _authController;
@@ -1278,7 +1280,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 ),
               );
       }),
-      bottomNavigationBar: API().sp.read("role") != "eventOrganizer"
+      bottomNavigationBar: isComingFromNotifcation ==true ? null: API().sp.read("role") != "eventOrganizer"
           ? SizedBox.shrink()
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3),
