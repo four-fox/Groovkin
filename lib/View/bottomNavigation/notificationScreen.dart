@@ -118,7 +118,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   "reportedEventView": 1,
                                   "notInterestedBtn": 1,
                                   "appBarTitle": "Completed Event",
-                                  "isComingFromNotification":true,
+                                  "isComingFromNotification": true,
                                 })!
                                     .then(
                                   (value) => _controller.completedEvent(),
@@ -153,16 +153,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   "reportedEventView": 1,
                                   "notInterestedBtn": 1,
                                   "appBarTitle": "Cancelled",
-                                  "isComingFromNotification":true,
+                                  "isComingFromNotification": true,
                                 });
-                              } else if (data.type == "event_acknowledged") {}
-                              else if(data.type=="event_declined"){
+                              } else if (data.type == "event_acknowledged") {
+                              } else if (data.type == "event_declined") {
                                 Get.toNamed(Routes.upcomingScreen, arguments: {
                                   "eventId": data.sourceId,
                                   "reportedEventView": 1,
                                   "notInterestedBtn": 1,
                                   "appBarTitle": "Declined",
-                                    "isComingFromNotification":true,
+                                  "isComingFromNotification": true,
                                 });
                               }
                             },
