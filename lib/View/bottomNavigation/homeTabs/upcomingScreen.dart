@@ -95,6 +95,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       body: GetBuilder<EventController>(initState: (v) {
         _controller.eventDetails(eventId: eventId);
       }, builder: (controller) {
+        print(API().sp.read("role"));
         return controller.eventDetailsLoader.value == false
             ? SizedBox.shrink()
             : Padding(
@@ -249,7 +250,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                 height: 15,
                               ),
                               ((API().sp.read("role") == "eventManager") &&
-                                      (appBarTitle == "On Going"))
+                                      (appBarTitle == "On Going")&& controller
+                                  .eventDetail!
+                                  .data!
+                                  .isEventComplete!
+                                  .value ==
+                                  0)
                                   ? SizedBox.shrink()
                                   : SizedBox(
                                       child: Column(
@@ -276,7 +282,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                                   "role") ==
                                                               "eventManager") &&
                                                           (appBarTitle ==
-                                                              "Past Event")) {
+                                                              "On Going"    // "Past Event"
+                                                          )) {
                                                         controller
                                                             .acknowledgedEvent(
                                                                 eventId: controller
@@ -311,8 +318,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     text: ((API().sp.read(
                                                                     "role") ==
                                                                 "eventManager") &&
-                                                            (appBarTitle ==
-                                                                "Past Event"))
+                                                            (appBarTitle == "On Going"
+                                                                /*"Past Event"*/))
                                                         ? "Acknowledged Event"
                                                         : controller
                                                                     .eventDetail!

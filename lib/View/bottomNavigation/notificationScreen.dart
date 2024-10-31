@@ -71,6 +71,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   return true;
                 }
               }
+
               return false;
             }
             return false;
@@ -112,6 +113,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       "type": "event",
                                     });
                               } else if (data.type == "event_reschedule") {
+
                               } else if (data.type == "event_complete") {
                                 Get.toNamed(Routes.upcomingScreen, arguments: {
                                   "eventId": data.sourceId,
@@ -156,6 +158,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   "isComingFromNotification": true,
                                 });
                               } else if (data.type == "event_acknowledged") {
+                                Get.toNamed(Routes.upcomingScreen,
+                                    arguments: {
+                                      "eventId": data.sourceId,
+                                      "reportedEventView": 1,
+                                      "notInterestedBtn": 1,
+                                      "appBarTitle": "Completed",
+                                      "isComingFromNotification": true,
+                                    });
                               } else if (data.type == "event_declined") {
                                 Get.toNamed(Routes.upcomingScreen, arguments: {
                                   "eventId": data.sourceId,
@@ -173,7 +183,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             imageUrl: data.notificationReceiver!.receiver!
                                 .profilePicture?.mediaPath,
                             time: formatDate(data
-                                .notificationReceiver!.receiver!.createdAt!)),
+                                !.createdAt!)),
                       );
                     },
                     itemCount:
@@ -235,4 +245,5 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
     );
   }
+
 }

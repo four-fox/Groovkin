@@ -175,8 +175,8 @@ class PostEvents extends StatelessWidget {
                                                   "eventId": singleEvent.id,
                                                   "reportedEventView": 1,
                                                   "notInterestedBtn": 1,
-                                                  "appBarTitle":
-                                                      "${singleEvent.status.toString().capitalize} Event"
+                                                  "appBarTitle": "Completed"
+                                                  // "${singleEvent.status.toString().capitalize} Event"
                                                 })!
                                                 .then(
                                               (value) =>

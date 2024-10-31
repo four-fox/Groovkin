@@ -50,7 +50,6 @@ class MessageListWidget extends StatelessWidget {
                       MessageItem messageObject =
                           controller.chatData!.data!.data![index];
                       int currentUserId = API().sp.read("userId");
-
                       // Check if the message is from the receiver
                       bool isFromReceiver =
                           messageObject.senderId != currentUserId;
@@ -61,17 +60,18 @@ class MessageListWidget extends StatelessWidget {
                               ? () {
                                   // Only enable if message is from receiver
                                   customAlertt(
-                                      alignment: Alignment.topLeft,
-                                      title: 'Report this user',
-                                      text:
-                                          'Are you sure you want to report user?',
-                                      cancelAlert: 'No',
-                                      btnSuccess: 'Yes',
-                                      onTap: () {
-                                        Get.back();
-                                        controller.reportCounter(
-                                            messageObject.id!, index);
-                                      });
+                                    alignment: Alignment.topLeft,
+                                    title: 'Report this user',
+                                    text:
+                                        'Are you sure you want to report user?',
+                                    cancelAlert: 'No',
+                                    btnSuccess: 'Yes',
+                                    onTap: () {
+                                      Get.back();
+                                      controller.reportCounter(
+                                          messageObject.id!, index);
+                                    },
+                                  );
                                 }
                               : null, // Disable long press if the message is from the current user
                           child: Material(
@@ -127,7 +127,8 @@ class MessageListWidget extends StatelessWidget {
                           ),
                         ),
                       );
-                    }));
+                    }),
+              );
       }),
     );
   }

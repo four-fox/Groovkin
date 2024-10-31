@@ -201,7 +201,7 @@ class ProfilePicture {
       mediaFor: json['media_for'],
       thumbnail: json['thumbnail'],
       mediaPath: json['media_path'],
-      mediaType: json['media_type'],
+      mediaType:  json['media_type'],
       galleryableType: json['galleryable_type'],
       galleryableId: json['galleryable_id'],
       createdAt: DateTime.parse(json['created_at']),

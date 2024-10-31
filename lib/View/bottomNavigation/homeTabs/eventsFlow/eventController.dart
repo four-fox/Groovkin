@@ -889,9 +889,10 @@ class EventController extends GetxController {
     var response = await API().postApi(formData, "acknowledged-event");
     if (response.statusCode == 200) {
       bottomToast(text: response.data['message']);
-      int a = pastEventData!.data!.data!
-          .indexWhere((element) => element.id == eventId);
-      pastEventData!.data!.data!.remove(pastEventData!.data!.data![a]);
+      Get.back();
+      // int a = pastEventData!.data!.data!
+      //     .indexWhere((element) => element.id == eventId);
+      // pastEventData!.data!.data!.remove(pastEventData!.data!.data![a]);
       update();
       Get.back();
     }

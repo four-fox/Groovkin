@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTabController(
       length: 3,
       // initialIndex: widget.showIndexValue!.value,
+
       child: Container(
         color: theme.scaffoldBackgroundColor,
         child: GetBuilder<HomeController>(initState: (v) {
@@ -209,6 +210,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     indicator: BoxDecoration(color: Colors.transparent),
                     indicatorColor: Colors.transparent,
                     onTap: (v) {
+                      print(API().sp.read(
+                          "role"));
                       controller.showIndexValue!.value = v;
                       controller.update();
                     },

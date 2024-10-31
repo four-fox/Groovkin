@@ -34,8 +34,10 @@ class VenueDetailsManagerScreen extends StatelessWidget {
           ? null
           : customAppBar(theme: theme, text: "Venue Detail", backArrow: true),
       body: GetBuilder<ManagerController>(builder: (controller) {
-        latAssign.value = double.parse(controller.lat);
-        lngAssign.value = double.parse(controller.lng);
+        if(controller.lat != "null" || controller.lng != "null"){
+          latAssign.value = double.parse(controller.lat);
+          lngAssign.value = double.parse(controller.lng);
+        }
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -825,7 +827,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
       body: GetBuilder<ManagerController>(initState: (v) {
         _controller.getVenueDetails(id: venueId);
       }, builder: (controller) {
-        return controller.getVenueDetailsLoader.value == false
+        return ((controller.getVenueDetailsLoader.value == false) || (controller.venueDetails == null))
             ? SizedBox.shrink()
             : SingleChildScrollView(
                 child: Column(

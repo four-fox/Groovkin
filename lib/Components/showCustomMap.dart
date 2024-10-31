@@ -9,7 +9,6 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
-
 class ShowCustomMap extends StatefulWidget {
   ShowCustomMap({
     super.key,
@@ -112,8 +111,10 @@ class _ShowCustomMapState extends State<ShowCustomMap> {
   Future<void> moveToPosition(LatLng position) async {
     print("New Posiotn");
     final GoogleMapController controller = await controllerGoogleMap.future;
-    CameraPosition newCameraPosition =
-        CameraPosition(target: position,   zoom: 15.4746,);
+    CameraPosition newCameraPosition = CameraPosition(
+      target: position,
+      zoom: 15.4746,
+    );
 
     controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
   }

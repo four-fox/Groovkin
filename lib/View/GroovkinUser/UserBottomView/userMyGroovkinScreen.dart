@@ -41,11 +41,11 @@ class UserMyGroovkinScreen extends StatelessWidget {
                   SwitchWiget(text: "Spotify Linked",img: "assets/spotifyIcon.png",theme: theme,
                       context: context,bgClr: true,showCheckBox: false,
                     onTap: (){
-                      Get.toNamed(Routes.groovkinPreferenceDetails,
-                          arguments: {
-                            "appBarTitle": "Spotify Linked",
-                          }
-                      );
+                      // Get.toNamed(Routes.groovkinPreferenceDetails,
+                      //     arguments: {
+                      //       "appBarTitle": "Spotify Linked",
+                      //     }
+                      // );
                     },
                   ),
                   SizedBox(
@@ -55,11 +55,11 @@ class UserMyGroovkinScreen extends StatelessWidget {
                   text: "Lifestyle",
                     showImg: false,
                     onTap: (){
-                      Get.toNamed(Routes.groovkinPreferenceDetails,
-                          arguments: {
-                            "appBarTitle": "Lifestyle",
-                          }
-                      );
+                      // Get.toNamed(Routes.groovkinPreferenceDetails,
+                      //     arguments: {
+                      //       "appBarTitle": "Lifestyle",
+                      //     }
+                      // );
                     },
                     theme: theme,context: context,icon:Icons.arrow_forward_ios,),
                   SizedBox(
@@ -70,11 +70,11 @@ class UserMyGroovkinScreen extends StatelessWidget {
                     showImg: false,
                     theme: theme,context: context,icon:Icons.arrow_forward_ios,
                   onTap: (){
-                      Get.toNamed(Routes.groovkinPreferenceDetails,
-                      arguments: {
-                        "appBarTitle": "Music Genre",
-                      }
-                      );
+                      // Get.toNamed(Routes.groovkinPreferenceDetails,
+                      // arguments: {
+                      //   "appBarTitle": "Music Genre",
+                      // }
+                      // );
                   }
                   ),
                   // Padding(

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
@@ -91,10 +92,9 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                       image: DecorationImage(
                                         image: controller.imageBytes == null
                                             ? NetworkImage(controller
-                                                    .userData!
-                                                    .data
-                                                    ?.profilePicture
-                                                    ?.mediaPath ??
+                                            .userData!
+                                            .data
+                                            ?.profilePicture != null? Url().imageUrl +controller.userData!.data!.profilePicture!.mediaPath :
                                                 groupPlaceholder)
                                             : FileImage(File(
                                                     controller.imageBytes!))

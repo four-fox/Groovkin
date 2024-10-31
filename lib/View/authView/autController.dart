@@ -90,7 +90,10 @@ class AuthController extends GetxController {
   /// user register
   sigUp(context) async {
     NotificationService notificationService = NotificationService();
-    final String token = await notificationService.getDeviceToken();
+    String? token;
+    if(Platform.isAndroid){
+      token = await notificationService.getDeviceToken();
+    }
     List imageList = [];
     if (imageBytes != null) {
       var a = multiPartingImage(imageBytes);
@@ -122,7 +125,7 @@ class AuthController extends GetxController {
               ? "venue_manager"
               : "event_owner",
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token": token,
+      "device_token": Platform.isIOS?"adsfadskljf": token,
       "about": aboutController.text,
     });
     var response = await API().postApi(formData, "register",
@@ -158,12 +161,15 @@ class AuthController extends GetxController {
 
   login() async {
     NotificationService notificationService = NotificationService();
-    final String token = await notificationService.getDeviceToken();
+    String? token;
+    if(Platform.isAndroid){
+      token = await notificationService.getDeviceToken();
+    }
     print("Token $token");
     var formData = {
       "email": loginEmailController.text,
       "password": loginPasswordController.text,
-      "device_token": token
+      "device_token":Platform.isIOS?"sdafj": token
     };
     var response = await API().postApi(formData, "login");
     if (response.statusCode == 200) {
@@ -186,6 +192,7 @@ class AuthController extends GetxController {
             "update": false,
           });
         } else {
+
           selectUserIndexxx.value = 0;
           Get.offAllNamed(Routes.userBottomNavigationNav);
         }
@@ -732,7 +739,6 @@ class AuthController extends GetxController {
       API().sp.write("token", data.data!.token);
       API().sp.write("userId", data.data!.profile!.userId);
       String userTypeInital = await API().sp.read("role");
-
       print(userTypeInital);
       if (userType == "event_owner") {
         if (data.data!.isEventCreated == 0) {
@@ -971,7 +977,7 @@ class AuthController extends GetxController {
 
   NotificationModel? notificationModel;
   Future<dynamic> getAllNotification(
-      {fullUrl, String url = 'notifications'}) async {
+      {fullUrl, String url = 'notifications'})  async {
     isNotificationLoading.value = true; // Start loading
     final response = await API().getApi(url: "notifications", fullUrl: fullUrl);
     if (response.statusCode == 200) {
