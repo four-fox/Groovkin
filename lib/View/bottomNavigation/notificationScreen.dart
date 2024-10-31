@@ -113,7 +113,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       "type": "event",
                                     });
                               } else if (data.type == "event_reschedule") {
-
                               } else if (data.type == "event_complete") {
                                 Get.toNamed(Routes.upcomingScreen, arguments: {
                                   "eventId": data.sourceId,
@@ -158,14 +157,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   "isComingFromNotification": true,
                                 });
                               } else if (data.type == "event_acknowledged") {
-                                Get.toNamed(Routes.upcomingScreen,
-                                    arguments: {
-                                      "eventId": data.sourceId,
-                                      "reportedEventView": 1,
-                                      "notInterestedBtn": 1,
-                                      "appBarTitle": "Completed",
-                                      "isComingFromNotification": true,
-                                    });
+                                Get.toNamed(Routes.upcomingScreen, arguments: {
+                                  "eventId": data.sourceId,
+                                  "reportedEventView": 1,
+                                  "notInterestedBtn": 1,
+                                  "appBarTitle": "Completed",
+                                  "isComingFromNotification": true,
+                                });
                               } else if (data.type == "event_declined") {
                                 Get.toNamed(Routes.upcomingScreen, arguments: {
                                   "eventId": data.sourceId,
@@ -182,8 +180,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             subtitle: data.text,
                             imageUrl: data.notificationReceiver!.receiver!
                                 .profilePicture?.mediaPath,
-                            time: formatDate(data
-                                !.createdAt!)),
+                            time: formatDate(data!.createdAt!)),
                       );
                     },
                     itemCount:
@@ -208,7 +205,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
         decoration: BoxDecoration(
           // borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-              image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+            image: AssetImage("assets/grayClor.png"),
+            fit: BoxFit.fill,
+          ),
         ),
         child: ListTile(
           leading: CircleAvatar(
@@ -245,5 +244,4 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
     );
   }
-
 }
