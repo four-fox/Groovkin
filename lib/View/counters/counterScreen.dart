@@ -61,8 +61,11 @@ class _CounterScreenState extends State<CounterScreen> {
           ),
           Positioned(
               bottom: 0,
-              child: GetBuilder<EventController>(
-                builder: (controller) => ((textFieldShow.value == false) &&
+              child: GetBuilder<EventController>(builder: (controller) {
+                if (controller.eventDetail == null) {
+                  return SizedBox();
+                }
+                return ((textFieldShow.value == false) &&
                         (controller.eventDetail!.data!.status != "completed"))
                     ? Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -82,8 +85,8 @@ class _CounterScreenState extends State<CounterScreen> {
                         : BottomTextFields(
                             userId: userId,
                             eventId: eventId,
-                          ),
-              )),
+                          );
+              })),
         ],
       ),
     );
