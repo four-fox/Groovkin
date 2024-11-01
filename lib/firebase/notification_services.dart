@@ -19,7 +19,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  // ! check the permissions of the notification service
+  // ! Todo check the permissions of the notification service
   void requestNotificationPermission() async {
     final NotificationSettings notificationSettings =
         await firebaseMessaging.requestPermission(
@@ -48,23 +48,25 @@ class NotificationService {
     }
   }
 
-  // ! get devices token
+  // ! Todo get devices token
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
     print(token);
     return token!;
   }
 
-  // ! refresh token
+  // ! Todo refresh token
   void isRefreshToken() {
     firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
     });
   }
 
-  // ! initialize the android and ios settings and icon
+  // ! Todo initialize the android and ios settings and icon
   void initLocalNotifications(
-      BuildContext context, RemoteMessage message) async {
+    BuildContext context,
+    RemoteMessage message,
+  ) async {
     var android = const AndroidInitializationSettings("@mipmap/ic_launcher");
     var ios = const DarwinInitializationSettings();
     final initializations = InitializationSettings(android: android, iOS: ios);
@@ -76,7 +78,7 @@ class NotificationService {
     );
   }
 
-  // ! listen the notification
+  // ! Todo listen the notification
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
       if (kDebugMode) {
@@ -96,8 +98,7 @@ class NotificationService {
     });
   }
 
-  //! showNotification
-
+  //! Todo showNotification
   Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
       message.notification!.android!.channelId.toString(),
@@ -139,7 +140,7 @@ class NotificationService {
     });
   }
 
-  // ! when app is background and terminated
+  // !Todo when app is background and terminated
   Future<void> setUpInteractMessage(BuildContext context) async {
     //! when app is terminated
     RemoteMessage? message =
@@ -149,6 +150,7 @@ class NotificationService {
       if (context.mounted) {
         print("<Terminated>");
         // Show EasyLoading spinner
+        // Todo I Use this for the loading not show in splash screen for 3 seconds
         await Future.delayed(Duration(seconds: 3));
         EasyLoading.show(status: 'Loading...');
 
@@ -171,7 +173,6 @@ class NotificationService {
         handleMessage(context, event);
       }
     });
-
   }
 
   // ! Todo ios notification message
@@ -283,4 +284,5 @@ class NotificationService {
       });
     }
   }
+
 }

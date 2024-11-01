@@ -53,6 +53,7 @@ class MessageListWidget extends StatelessWidget {
                       // Check if the message is from the receiver
                       bool isFromReceiver =
                           messageObject.senderId != currentUserId;
+
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: GestureDetector(
@@ -84,10 +85,9 @@ class MessageListWidget extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      messageObject.user!.id ==
-                                              API().sp.read("userId")
-                                          ? "Message by you"
-                                          : messageObject.user!.name!,
+                                      isFromReceiver
+                                          ? messageObject.user!.name!
+                                          : "Message by you",
                                       style: poppinsRegularStyle(
                                         context: context,
                                         fontSize: 12,
