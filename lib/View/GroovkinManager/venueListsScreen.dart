@@ -23,7 +23,7 @@ class VenueListScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS?true:true,
       child: Scaffold(
         appBar: customAppBar(theme: theme, text: "My Groovkin", backArrow: false),
         body: GetBuilder<ManagerController>(initState: (v) {
