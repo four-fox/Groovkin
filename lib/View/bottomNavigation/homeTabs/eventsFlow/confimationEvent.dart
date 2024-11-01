@@ -1,6 +1,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -67,99 +69,103 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Confirmation",
-          actions: [
-            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
-            GestureDetector(
-              onTap: (){
-                _controller.postEventFunction(context,theme,draft: true);
-              },
-              child: Padding(
-                padding: EdgeInsets.only(right: 8.0),
-                child: Icon(Icons.drafts),),
-            ):SizedBox.shrink()]
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            // customWidget(theme: theme,context: context),
-        SizedBox(
-          height: 10,
-    ),
-    Text(((_controller.eventDetail != null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName!,
-    style: poppinsRegularStyle(
-    fontSize: 14,
-    context: context,
-    color: theme.primaryColor,
-    ),
-    ),
-    Text(((_controller.eventDetail != null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.location!: _controller.venuesDetails!.location!,
-    style: poppinsRegularStyle(
-    fontSize: 14,
-    context: context,
-    color: DynamicColor.grayClr.withOpacity(0.7)
-    ),
-    ),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "Date",value: _controller.eventDateController.text),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "Time",value: _controller.proposedTimeWindowsController.text),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "No. hours",value: hoursDifference!.toStringAsFixed(2)),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "Subtotal",value: "\$ ${subTotal!.toStringAsFixed(2)}"),
-            SizedBox(
-              height: 10,
-            ),
-
-            customWidget(theme: theme,context: context,title: "Tax (5%) ",value: "\$${tax!.toStringAsFixed(2)}"),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "Groovkin Tax(5%)",value: "\$${groovkinTax!.toStringAsFixed(2)}"),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "Stripe Tax(10%)",value: "\$${stripeTax!.toStringAsFixed(2)}"),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "Down Payment Inc. Tax",value: "\$${downPayment!.toStringAsFixed(2)}"),
-            SizedBox(
-              height: 10,
-            ),
-            customWidget(theme: theme,context: context,title: "Balance Due",value: "\$${balanceDue!.toStringAsFixed(2)}"),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(
-              color: DynamicColor.grayClr,
-            ),
-          ],
+    return SafeArea(
+      top: false,
+      bottom: Platform.isIOS?true:false,
+      child: Scaffold(
+        appBar: customAppBar(theme: theme,text: "Confirmation",
+            actions: [
+              ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+              GestureDetector(
+                onTap: (){
+                  _controller.postEventFunction(context,theme,draft: true);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.drafts),),
+              ):SizedBox.shrink()]
         ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              // customWidget(theme: theme,context: context),
+          SizedBox(
+            height: 10,
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: (){
-            Get.toNamed(Routes.disclaimerScreen);
-          },
-          text: "Next",
+      Text(((_controller.eventDetail != null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.venueName! : _controller.venuesDetails!.venueName!,
+      style: poppinsRegularStyle(
+      fontSize: 14,
+      context: context,
+      color: theme.primaryColor,
+      ),
+      ),
+      Text(((_controller.eventDetail != null)&&(_controller.eventDetail!.data!.venue != null))?_controller.eventDetail!.data!.venue!.location!: _controller.venuesDetails!.location!,
+      style: poppinsRegularStyle(
+      fontSize: 14,
+      context: context,
+      color: DynamicColor.grayClr.withOpacity(0.7)
+      ),
+      ),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "Date",value: _controller.eventDateController.text),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "Time",value: _controller.proposedTimeWindowsController.text),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "No. hours",value: hoursDifference!.toStringAsFixed(2)),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "Subtotal",value: "\$ ${subTotal!.toStringAsFixed(2)}"),
+              SizedBox(
+                height: 10,
+              ),
+
+              customWidget(theme: theme,context: context,title: "Tax (5%) ",value: "\$${tax!.toStringAsFixed(2)}"),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "Groovkin Tax(5%)",value: "\$${groovkinTax!.toStringAsFixed(2)}"),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "Stripe Tax(10%)",value: "\$${stripeTax!.toStringAsFixed(2)}"),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "Down Payment Inc. Tax",value: "\$${downPayment!.toStringAsFixed(2)}"),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(theme: theme,context: context,title: "Balance Due",value: "\$${balanceDue!.toStringAsFixed(2)}"),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                color: DynamicColor.grayClr,
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: (){
+              Get.toNamed(Routes.disclaimerScreen);
+            },
+            text: "Next",
+          ),
         ),
       ),
     );

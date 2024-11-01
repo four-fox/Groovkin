@@ -21,6 +21,8 @@ class ViewProfileScreen extends StatefulWidget {
 
 class _ViewProfileScreenState extends State<ViewProfileScreen> {
   late AuthController _controller;
+  final TextEditingController eventReasonController = TextEditingController();
+  final TextEditingController venueReasonController = TextEditingController();
   EventDetails? eventDetails;
   EventDetails? venueDetails;
   int? venueId;
@@ -29,10 +31,10 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
   @override
   void initState() {
     super.initState();
-    if(Get.isRegistered<AuthController>()){
+    if (Get.isRegistered<AuthController>()) {
       _controller = Get.find<AuthController>();
-    }else {
-      _controller =Get.put(AuthController());
+    } else {
+      _controller = Get.put(AuthController());
     }
     getData();
   }
@@ -120,18 +122,65 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                               return Container(
                                                 padding: EdgeInsets.all(12.0),
                                                 margin: EdgeInsets.all(10.0),
-                                                child: CustomButton(
-                                                  borderClr: Colors.transparent,
-                                                  heights: 35,
-                                                  fontSized: 13,
-                                                  onTap: () async {
-                                                    Get.back();
-                                                    await _controller
-                                                        .reportAccount(
-                                                            "event_owner",
-                                                            eventId!);
-                                                  },
-                                                  text: "Report",
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    TextField(
+                                                      controller:
+                                                          eventReasonController,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText: "Reason",
+                                                        border: OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .grey)),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .grey)),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .grey)),
+                                                      ),
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .multiline,
+                                                      maxLines: 5,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    CustomButton(
+                                                      borderClr:
+                                                          Colors.transparent,
+                                                      heights: 35,
+                                                      fontSized: 13,
+                                                      onTap: () async {
+                                                        Get.back();
+                                                        await _controller
+                                                            .reportAccount(
+                                                                type:
+                                                                    "event_owner",
+                                                                sourceId:
+                                                                    eventId!,
+                                                                message:
+                                                                    eventReasonController
+                                                                        .text).then((_){
+                                                          eventReasonController.clear();
+                                                        });
+                                                      },
+                                                      text: "Report",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                  ],
                                                 ),
                                               );
                                             });
@@ -149,19 +198,65 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                               return Container(
                                                 padding: EdgeInsets.all(12.0),
                                                 margin: EdgeInsets.all(10.0),
-                                                child: CustomButton(
-                                                  borderClr: Colors.transparent,
-                                                  heights: 35,
-                                                  fontSized: 13,
-                                                  onTap: () async {
-                                                    Get.back();
-                                                    print(venueId);
-                                                    await _controller
-                                                        .reportAccount(
-                                                            "venue_manager",
-                                                            venueId!);
-                                                  },
-                                                  text: "Report",
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    TextField(
+                                                      controller:
+                                                          venueReasonController,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText: "Reason",
+                                                        border: OutlineInputBorder(
+                                                            borderSide:
+                                                                BorderSide(
+                                                                    color: Colors
+                                                                        .grey)),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .grey)),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: Colors
+                                                                        .grey)),
+                                                      ),
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .multiline,
+                                                      maxLines: 5,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    CustomButton(
+                                                      borderClr:
+                                                          Colors.transparent,
+                                                      heights: 35,
+                                                      fontSized: 13,
+                                                      onTap: () async {
+                                                        Get.back();
+                                                        print(venueId);
+                                                        await _controller.reportAccount(
+                                                            type:
+                                                                "venue_manager",
+                                                            sourceId: venueId!,
+                                                            message:
+                                                                venueReasonController
+                                                                    .text).then((_){
+                                                          venueReasonController.clear();
+                                                        });
+
+                                                      },
+                                                      text: "Report",
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                  ],
                                                 ),
                                               );
                                             });
@@ -185,10 +280,12 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                 backgroundImage: NetworkImage(
                                   venueDetails?.venue!.user!.profilePicture !=
                                           null
-                                      ? "${Url().imageUrl}${venueDetails!.venue!.user!.profilePicture!.mediaPath!}"
+                                      ? venueDetails!.venue!.user!
+                                          .profilePicture!.mediaPath!
                                       : eventDetails?.user?.profilePicture !=
                                               null
-                                          ? "${Url().imageUrl}${eventDetails!.user!.profilePicture!.mediaPath!}"
+                                          ? eventDetails!
+                                              .user!.profilePicture!.mediaPath!
                                           : _controller.userData?.data
                                                       ?.profilePicture !=
                                                   null

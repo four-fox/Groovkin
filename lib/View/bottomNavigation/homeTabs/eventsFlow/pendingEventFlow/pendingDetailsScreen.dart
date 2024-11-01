@@ -26,7 +26,7 @@ class PendingEventDetails extends StatefulWidget {
 
 class _PendingEventDetailsState extends State<PendingEventDetails> {
   int flowBtn = Get.arguments['notInterestedBtn'];
-
+  final TextEditingController eventReasonController = TextEditingController();
   String titleText = Get.arguments['title'];
 
   int eventId = Get.arguments['eventId'];
@@ -69,16 +69,56 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                             return Container(
                               padding: EdgeInsets.all(12.0),
                               margin: EdgeInsets.all(10.0),
-                              child: CustomButton(
-                                borderClr: Colors.transparent,
-                                heights: 35,
-                                fontSized: 13,
-                                onTap: () async {
-                                  Get.back();
-                                  await _authController.reportAccount(
-                                      type, eventId);
-                                },
-                                text: "Report",
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    controller:
+                                    eventReasonController,
+                                    decoration:
+                                    InputDecoration(
+                                      hintText: "Reason",
+                                      border: OutlineInputBorder(
+                                          borderSide:
+                                          BorderSide(
+                                              color: Colors
+                                                  .grey)),
+                                      enabledBorder:
+                                      OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors
+                                                  .grey)),
+                                      focusedBorder:
+                                      OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors
+                                                  .grey)),
+                                    ),
+                                    keyboardType:
+                                    TextInputType
+                                        .multiline,
+                                    maxLines: 5,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  CustomButton(
+                                    borderClr: Colors.transparent,
+                                    heights: 35,
+                                    fontSized: 13,
+                                    onTap: () async {
+                                      Get.back();
+                                      await _authController.reportAccount(
+                                          type: type,sourceId :eventId,message:eventReasonController.text).then((value){
+                                        eventReasonController.clear();
+                                      });
+                                    },
+                                    text: "Report",
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
                             );
                           });

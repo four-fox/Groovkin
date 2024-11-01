@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -47,47 +49,51 @@ class _CounterScreenState extends State<CounterScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(
-        theme: theme,
-        text: "Counters",
-      ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 8),
-            child: MessageListWidget(),
-          ),
-          Positioned(
-              bottom: 0,
-              child: GetBuilder<EventController>(builder: (controller) {
-                if (controller.eventDetail == null) {
-                  return SizedBox();
-                }
-                return ((textFieldShow.value == false) &&
-                        (controller.eventDetail!.data!.status != "completed"))
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                        child: CustomButton(
-                          widths: Get.width,
-                          heights: 37,
-                          borderClr: Colors.transparent,
-                          text: "Counter",
-                          onTap: () {
-                            textFieldShow.value = !textFieldShow.value;
-                            setState(() {});
-                          },
-                        ),
-                      )
-                    : controller.eventDetail!.data!.status == "completed"
-                        ? SizedBox.shrink()
-                        : BottomTextFields(
-                            userId: userId,
-                            eventId: eventId,
-                          );
-              })),
-        ],
+    return SafeArea(
+      top: false,
+      bottom: Platform.isIOS?true:false,
+      child: Scaffold(
+        appBar: customAppBar(
+          theme: theme,
+          text: "Counters",
+        ),
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 8),
+              child: MessageListWidget(),
+            ),
+            Positioned(
+                bottom: 0,
+                child: GetBuilder<EventController>(builder: (controller) {
+                  if (controller.eventDetail == null) {
+                    return SizedBox();
+                  }
+                  return ((textFieldShow.value == false) &&
+                          (controller.eventDetail!.data!.status != "completed"))
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: CustomButton(
+                            widths: Get.width,
+                            heights: 37,
+                            borderClr: Colors.transparent,
+                            text: "Counter",
+                            onTap: () {
+                              textFieldShow.value = !textFieldShow.value;
+                              setState(() {});
+                            },
+                          ),
+                        )
+                      : controller.eventDetail!.data!.status == "completed"
+                          ? SizedBox.shrink()
+                          : BottomTextFields(
+                              userId: userId,
+                              eventId: eventId,
+                            );
+                })),
+          ],
+        ),
       ),
     );
   }

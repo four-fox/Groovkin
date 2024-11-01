@@ -172,8 +172,6 @@ class NotificationService {
       }
     });
 
-    // Check for saved notification data if app is reopened
-    // checkSavedNotificationData(context);
   }
 
   // ! Todo ios notification message

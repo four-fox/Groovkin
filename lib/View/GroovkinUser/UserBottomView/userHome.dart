@@ -993,7 +993,7 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                           .toString(),
                                   title: singleEventDat.eventTitle.toString(),
                                   location: singleEventDat.location,
-                                  subtitle: singleEventDat.venue!.venueName
+                                  subtitle: singleEventDat.venue==null? "": singleEventDat.venue!.venueName
                                       .toString(),
                                   onTap: () {
                                     Get.toNamed(Routes.userEventDetailsScreen,

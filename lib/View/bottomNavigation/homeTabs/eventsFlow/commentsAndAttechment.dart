@@ -52,259 +52,263 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme, text: "", imagee: true, actions: [
-        ((_controller.eventDetail == null) &&
-                (_controller.draftCondition.value == true))
-            ? GestureDetector(
-                onTap: () {
-                  _controller.postEventFunction(context, theme, draft: true);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.drafts),
-                ),
-              )
-            : SizedBox.shrink()
-      ]),
-      body: GetBuilder<ManagerController>(builder: (controller) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
-          child: Form(
-            key: commentsForm,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Comment',
-                        textAlign: TextAlign.center,
-                        style: poppinsMediumStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          context: context,
-                          color: theme.primaryColor,
+    return SafeArea(
+      top: false,
+      bottom: Platform.isIOS?true:false,
+      child: Scaffold(
+        appBar: customAppBar(theme: theme, text: "", imagee: true, actions: [
+          ((_controller.eventDetail == null) &&
+                  (_controller.draftCondition.value == true))
+              ? GestureDetector(
+                  onTap: () {
+                    _controller.postEventFunction(context, theme, draft: true);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.drafts),
+                  ),
+                )
+              : SizedBox.shrink()
+        ]),
+        body: GetBuilder<ManagerController>(builder: (controller) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            child: Form(
+              key: commentsForm,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Comment',
+                          textAlign: TextAlign.center,
+                          style: poppinsMediumStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: DynamicColor.darkGrayClr,
-                      borderRadius: BorderRadius.circular(10),
+                    SizedBox(
+                      height: 5,
                     ),
-                    child: CustomTextFieldsHintText(
-                        maxLine: 5,
-                        validation: "comments",
-                        controller: _controller.commentsController,
-                        hintText: "write her..",
-                        borderClr: DynamicColor.grayClr.withOpacity(0.6)),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                      width: Get.width,
+                    Container(
                       decoration: BoxDecoration(
-                          color: DynamicColor.darkGrayClr,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: DynamicColor.avatarBgClr)),
-                      child: Column(
-                        children: [
-                          ((_controller.imageListtt.isNotEmpty) &&
-                                      (_controller.duplicateValue.value ==
-                                          false)) ||
-                                  controller.mediaClass.isNotEmpty
-                              ? SizedBox(
-                                  height: 180,
-                                  width: Get.width,
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          ((controller.mediaClass.isNotEmpty))
-                                              ? controller.mediaClass.length
-                                              : _controller.imageListtt.length,
-                                      itemBuilder:
-                                          (BuildContext context, index) {
-                                        return assetImage(
-                                          eventController: _controller,
-                                          controller: controller,
-                                          mediaItem: controller
-                                                  .mediaClass.isNotEmpty
-                                              ? controller.mediaClass[index]
-                                              : _controller.imageListtt[index],
-                                        );
-                                      }),
-                                )
-                              : Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                                  child: Icon(
-                                    Icons.attach_file_outlined,
-                                    color: DynamicColor.grayClr,
-                                    size: 35,
+                        color: DynamicColor.darkGrayClr,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: CustomTextFieldsHintText(
+                          maxLine: 5,
+                          validation: "comments",
+                          controller: _controller.commentsController,
+                          hintText: "write her..",
+                          borderClr: DynamicColor.grayClr.withOpacity(0.6)),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        width: Get.width,
+                        decoration: BoxDecoration(
+                            color: DynamicColor.darkGrayClr,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: DynamicColor.avatarBgClr)),
+                        child: Column(
+                          children: [
+                            ((_controller.imageListtt.isNotEmpty) &&
+                                        (_controller.duplicateValue.value ==
+                                            false)) ||
+                                    controller.mediaClass.isNotEmpty
+                                ? SizedBox(
+                                    height: 180,
+                                    width: Get.width,
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            ((controller.mediaClass.isNotEmpty))
+                                                ? controller.mediaClass.length
+                                                : _controller.imageListtt.length,
+                                        itemBuilder:
+                                            (BuildContext context, index) {
+                                          return assetImage(
+                                            eventController: _controller,
+                                            controller: controller,
+                                            mediaItem: controller
+                                                    .mediaClass.isNotEmpty
+                                                ? controller.mediaClass[index]
+                                                : _controller.imageListtt[index],
+                                          );
+                                        }),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                                    child: Icon(
+                                      Icons.attach_file_outlined,
+                                      color: DynamicColor.grayClr,
+                                      size: 35,
+                                    ),
                                   ),
-                                ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                if (Platform.isAndroid) {
-                                  managerController.pickFile();
-                                } else {
-                                  managerController.pickFileee();
-                                }
-                              },
-                              child: Container(
-                                width: 120,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.grayClr.withOpacity(0.2),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Attached file",
-                                    style: poppinsRegularStyle(
-                                      fontSize: 15,
-                                      context: context,
-                                      color: theme.primaryColor,
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (Platform.isAndroid) {
+                                    managerController.pickFile();
+                                  } else {
+                                    managerController.pickFileee();
+                                  }
+                                },
+                                child: Container(
+                                  width: 120,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: DynamicColor.grayClr.withOpacity(0.2),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Attached file",
+                                      style: poppinsRegularStyle(
+                                        fontSize: 15,
+                                        context: context,
+                                        color: theme.primaryColor,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
-                      ))
-                ],
+                            )
+                          ],
+                        ))
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      }),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            if (commentsForm.currentState!.validate()) {
-              // if(managerController.mediaClass.isNotEmpty || ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false))){
-              if (_controller.eventDetail != null &&
-                  _controller.eventDetail!.data!.location != null &&
-                  _controller.draftCondition.value != false) {
-                Get.toNamed(Routes.eventPreview, arguments: {"viewDetails": 1});
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return MapLocationPicker(
-                        onTappp: () {
-                          print(managerController.lat);
-                          print(managerController.lng);
-                          Get.toNamed(Routes.listOfVenuesScreen);
-                        },
-                        // onTapShow: true,
-                        // hideLocation: true,
-                        // lat: double.parse(eventData.latitude.toString()),
-                        // long: double.parse(eventData.longitude.toString()),
-                        minMaxZoomPreference: MinMaxZoomPreference(0, 15),
-                        apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
-                        canPopOnNextButtonTaped: true,
-                        searchHintText: managerController.address != "null"
-                            ? managerController.address
-                            : "Start typing to search",
-                        // canPopOnNextButtonTaped: true,
-                        latLng: managerController.latLng,
-                        initAddress: managerController.address,
-                        nextPage: () {
-                          Get.toNamed(Routes.listOfVenuesScreen);
-                          managerController.update();
-                        },
-                        onNext: (GeocodingResult? result) {
-                          if (result != null) {
-                            managerController.lat =
-                                result.geometry.location.lat.toString();
-                            managerController.lng =
-                                result.geometry.location.lng.toString();
-                            managerController.address =
-                                result.formattedAddress ?? "";
-                            managerController.latLng = LatLng(
-                                result.geometry.location.lat,
-                                result.geometry.location.lng);
-                            managerController.addressController.text =
-                                result.formattedAddress!;
+          );
+        }),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              if (commentsForm.currentState!.validate()) {
+                // if(managerController.mediaClass.isNotEmpty || ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false))){
+                if (_controller.eventDetail != null &&
+                    _controller.eventDetail!.data!.location != null &&
+                    _controller.draftCondition.value != false) {
+                  Get.toNamed(Routes.eventPreview, arguments: {"viewDetails": 1});
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return MapLocationPicker(
+                          onTappp: () {
+                            print(managerController.lat);
+                            print(managerController.lng);
+                            Get.toNamed(Routes.listOfVenuesScreen);
+                          },
+                          // onTapShow: true,
+                          // hideLocation: true,
+                          // lat: double.parse(eventData.latitude.toString()),
+                          // long: double.parse(eventData.longitude.toString()),
+                          minMaxZoomPreference: MinMaxZoomPreference(0, 15),
+                          apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                          canPopOnNextButtonTaped: true,
+                          searchHintText: managerController.address != "null"
+                              ? managerController.address
+                              : "Start typing to search",
+                          // canPopOnNextButtonTaped: true,
+                          latLng: managerController.latLng,
+                          initAddress: managerController.address,
+                          nextPage: () {
                             Get.toNamed(Routes.listOfVenuesScreen);
                             managerController.update();
-                          }
-                        },
-                        onSuggestionSelected: (PlacesDetailsResponse? result) {
-                          if (result != null) {
-                            managerController.lat =
-                                result.result.geometry!.location.lat.toString();
-                            managerController.lng =
-                                result.result.geometry!.location.lng.toString();
-                            managerController.autocompletePlace =
-                                result.result.formattedAddress ?? "";
-                            managerController.address =
-                                result.result.formattedAddress ?? "";
-                            managerController.latLng = LatLng(
-                                result.result.geometry!.location.lat,
-                                result.result.geometry!.location.lng);
-                            managerController.addressController.text =
-                                result.result.formattedAddress!;
+                          },
+                          onNext: (GeocodingResult? result) {
+                            if (result != null) {
+                              managerController.lat =
+                                  result.geometry.location.lat.toString();
+                              managerController.lng =
+                                  result.geometry.location.lng.toString();
+                              managerController.address =
+                                  result.formattedAddress ?? "";
+                              managerController.latLng = LatLng(
+                                  result.geometry.location.lat,
+                                  result.geometry.location.lng);
+                              managerController.addressController.text =
+                                  result.formattedAddress!;
+                              Get.toNamed(Routes.listOfVenuesScreen);
+                              managerController.update();
+                            }
+                          },
+                          onSuggestionSelected: (PlacesDetailsResponse? result) {
+                            if (result != null) {
+                              managerController.lat =
+                                  result.result.geometry!.location.lat.toString();
+                              managerController.lng =
+                                  result.result.geometry!.location.lng.toString();
+                              managerController.autocompletePlace =
+                                  result.result.formattedAddress ?? "";
+                              managerController.address =
+                                  result.result.formattedAddress ?? "";
+                              managerController.latLng = LatLng(
+                                  result.result.geometry!.location.lat,
+                                  result.result.geometry!.location.lng);
+                              managerController.addressController.text =
+                                  result.result.formattedAddress!;
 
-                            Get.toNamed(Routes.listOfVenuesScreen);
-                            managerController.update();
-                          }
-                        },
-                      );
+                              Get.toNamed(Routes.listOfVenuesScreen);
+                              managerController.update();
+                            }
+                          },
+                        );
 
-                      //   MapLocationPicker(
-                      //   apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
-                      //   popOnNextButtonTaped: true,
-                      //   currentLatLng: const LatLng(29.146727, 76.464895),
-                      //   btnOnTap: (){
-                      //     Get.toNamed(Routes.listOfVenuesScreen);
-                      //   },
-                      //   onNext: (GeocodingResult? result) {
-                      //     if (result != null) {
-                      //       managerController.address = result.formattedAddress ?? "";
-                      //       managerController.addressController.text = managerController.address;
-                      //       managerController.lat = result.geometry.location.lat.toString();
-                      //       managerController.lng = result.geometry.location.lng.toString();
-                      //       managerController.update();
-                      //     }
-                      //   },
-                      //   onSuggestionSelected: (PlacesDetailsResponse? result) {
-                      //     if (result != null) {
-                      //       managerController.autocompletePlace =
-                      //           result.result.formattedAddress ?? "";
-                      //       managerController.addressController.text = managerController.autocompletePlace;
-                      //       managerController.lat = result.result.geometry!.location.lat.toString();
-                      //       managerController.lng = result.result.geometry!.location.lng.toString();
-                      //       managerController.update();
-                      //     }
-                      //   },
-                      // );
-                    },
-                  ),
-                );
+                        //   MapLocationPicker(
+                        //   apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                        //   popOnNextButtonTaped: true,
+                        //   currentLatLng: const LatLng(29.146727, 76.464895),
+                        //   btnOnTap: (){
+                        //     Get.toNamed(Routes.listOfVenuesScreen);
+                        //   },
+                        //   onNext: (GeocodingResult? result) {
+                        //     if (result != null) {
+                        //       managerController.address = result.formattedAddress ?? "";
+                        //       managerController.addressController.text = managerController.address;
+                        //       managerController.lat = result.geometry.location.lat.toString();
+                        //       managerController.lng = result.geometry.location.lng.toString();
+                        //       managerController.update();
+                        //     }
+                        //   },
+                        //   onSuggestionSelected: (PlacesDetailsResponse? result) {
+                        //     if (result != null) {
+                        //       managerController.autocompletePlace =
+                        //           result.result.formattedAddress ?? "";
+                        //       managerController.addressController.text = managerController.autocompletePlace;
+                        //       managerController.lat = result.result.geometry!.location.lat.toString();
+                        //       managerController.lng = result.result.geometry!.location.lng.toString();
+                        //       managerController.update();
+                        //     }
+                        //   },
+                        // );
+                      },
+                    ),
+                  );
+                }
+                // }else{
+                //   bottomToast(text: "Please choose image");
+                // }
               }
-              // }else{
-              //   bottomToast(text: "Please choose image");
-              // }
-            }
-            // Get.toNamed(Routes.confirmationEventScreen);
-          },
-          text: "Continue",
+              // Get.toNamed(Routes.confirmationEventScreen);
+            },
+            text: "Continue",
+          ),
         ),
       ),
     );

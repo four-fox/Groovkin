@@ -2,6 +2,8 @@
 
 
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -20,69 +22,41 @@ class MusicChoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Create Event",
-          actions: [
-            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
-            GestureDetector(
-              onTap: (){
-                _controller.postEventFunction(context,theme,draft: true);
-              },
-              child: Padding(
-                padding: EdgeInsets.only(right: 8.0),
-                child: Icon(Icons.drafts),),
-            ):SizedBox.shrink()]
-      ),
-      body: GetBuilder<EventController>(
-          initState: (v){
-            if(_controller.eventDetail != null){
-              _controller.musicChoiceBinding();
-            }else{
-              _controller.getMusicTag(type: "music_choice");
-            }
-          },
-        builder: (controller) {
-          return controller.getMusicTagLoader.value == false?SizedBox.shrink(): Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Music Choice!',
-                      textAlign: TextAlign.center,
-                      style: poppinsRegularStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        context: context,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  ),
-                  Text('Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
-                  textAlign: TextAlign.center,
-                    style: poppinsRegularStyle(
-                    fontSize: 12,
-                    context: context,
-                    color: DynamicColor.lightRedClr,
-                  ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  SearchTextFields(
-                    controller: TextEditingController(),
-                        searchIcon: false,
-                    hintText: "add tags",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("90’s Hip Hop Party",
+    return SafeArea(
+      top: false,
+      bottom: Platform.isIOS?true:false,
+      child: Scaffold(
+        appBar: customAppBar(theme: theme,text: "Create Event",
+            actions: [
+              ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+              GestureDetector(
+                onTap: (){
+                  _controller.postEventFunction(context,theme,draft: true);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.drafts),),
+              ):SizedBox.shrink()]
+        ),
+        body: GetBuilder<EventController>(
+            initState: (v){
+              if(_controller.eventDetail != null){
+                _controller.musicChoiceBinding();
+              }else{
+                _controller.getMusicTag(type: "music_choice");
+              }
+            },
+          builder: (controller) {
+            return controller.getMusicTagLoader.value == false?SizedBox.shrink(): Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('Music Choice!',
+                        textAlign: TextAlign.center,
                         style: poppinsRegularStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
@@ -90,194 +64,226 @@ class MusicChoiceScreen extends StatelessWidget {
                           color: theme.primaryColor,
                         ),
                       ),
-                      CustomButtonWithIcon(
-                        // bgColor: null,
-                        bgColor: DynamicColor.secondaryClr,
-                        width: 90,
-                        height: 30,
-                        borderRadius: 5,
-                        iconValue: false,
-                        iconss: Icons.bookmark,
-                        iconsClr: theme.primaryColor,
-                        text: "Save",
-                        onTap: (){
-                          Get.toNamed(Routes.saveHashTagScreen,
-                            arguments: {
-                              "musicHashTag": true,
-                            }
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  controller.tagListPost.isEmpty?SizedBox.shrink(): SizedBox(
-                  height: kToolbarHeight,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: ListView.builder(
-                        itemCount: controller.tagListPost.length,
-                        shrinkWrap: true,
-                        physics: AlwaysScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context,index){
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Chip(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            backgroundColor: DynamicColor.whiteClr,
-                            label: Text(controller.tagListPost[index].name.toString(),style: poppinsRegularStyle(
-                              fontSize: 12,
-                              context: context,
-                              color: theme.scaffoldBackgroundColor,
-                            ),)),
-                      );
-                    }),
-                  ),
-                ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("My Tags Collection",
+                    ),
+                    Text('Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
+                    textAlign: TextAlign.center,
                       style: poppinsRegularStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        context: context,
-                        color: theme.primaryColor,
-                      ),
+                      fontSize: 12,
+                      context: context,
+                      color: DynamicColor.lightRedClr,
+                    ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    SearchTextFields(
+                      controller: TextEditingController(),
+                          searchIcon: false,
+                      hintText: "add tags",
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("90’s Hip Hop Party",
+                          style: poppinsRegularStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                        CustomButtonWithIcon(
+                          // bgColor: null,
+                          bgColor: DynamicColor.secondaryClr,
+                          width: 90,
+                          height: 30,
+                          borderRadius: 5,
+                          iconValue: false,
+                          iconss: Icons.bookmark,
+                          iconsClr: theme.primaryColor,
+                          text: "Save",
+                          onTap: (){
+                            Get.toNamed(Routes.saveHashTagScreen,
+                              arguments: {
+                                "musicHashTag": true,
+                              }
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    controller.tagListPost.isEmpty?SizedBox.shrink(): SizedBox(
+                    height: kToolbarHeight,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ListView.builder(
+                          itemCount: controller.tagListPost.length,
+                          shrinkWrap: true,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context,index){
+                        return Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Chip(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              backgroundColor: DynamicColor.whiteClr,
+                              label: Text(controller.tagListPost[index].name.toString(),style: poppinsRegularStyle(
+                                fontSize: 12,
+                                context: context,
+                                color: theme.scaffoldBackgroundColor,
+                              ),)),
+                        );
+                      }),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(top: 8),
-                    child: ListView.builder(
-                      itemCount: controller.tagList.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context,index){
-                      return Container(
-                        padding: EdgeInsets.symmetric(vertical: 4),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                controller.tagList[index].showSubCat!.value = !controller.tagList[index].showSubCat!.value;
-                              controller.update();
-                                },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.darkGrayClr,
-                                ),
-                                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(controller.tagList[index].name.toString(),
-                                      style: poppinsRegularStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
-                                    ),
-                                    Icon(controller.tagList[index].showSubCat!.value?Icons.keyboard_arrow_up_outlined:Icons.keyboard_arrow_down_sharp,
-                                      color: DynamicColor.whiteClr,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Visibility(
-                              visible: controller.tagList[index].showSubCat!.value,
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 4),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("My Tags Collection",
+                        style: poppinsRegularStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 8),
+                      child: ListView.builder(
+                        itemCount: controller.tagList.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context,index){
+                        return Container(
+                          padding: EdgeInsets.symmetric(vertical: 4),
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: (){
+                                  controller.tagList[index].showSubCat!.value = !controller.tagList[index].showSubCat!.value;
+                                controller.update();
+                                  },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(10),
                                     color: DynamicColor.darkGrayClr,
                                   ),
-                                  child: ListView.builder(
-                                        itemCount: controller.tagList[index].categoryItems!.length,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemBuilder: (BuildContext context,indexess){
-                                          return Column(
-                                            children: [
-                                              Container(
-                                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  color: DynamicColor.darkGrayClr,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: [
-                                                    Text(controller.tagList[index].categoryItems![indexess].name.toString(),
-                                                      style: poppinsRegularStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w600,
-                                                        context: context,
-                                                        color: theme.primaryColor,
-                                                      ),
-                                                    ),
-                                                    Theme(
-                                                      data: Theme.of(context).copyWith(
-                                                        unselectedWidgetColor: Colors.white,
-                                                      ),
-                                                      child: Checkbox(
-                                                          activeColor: DynamicColor.yellowClr,
-                                                          value: controller.tagList[index].categoryItems![indexess].selected!.value,
-                                                          onChanged: (v){
-                                                        controller.tagAddFtn(items: controller.tagList[index].categoryItems![indexess],
-                                                            value: v);
-                                                      }),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Divider(
-                                                color: DynamicColor.whiteClr,
-                                              ),
-                                            ],
-                                          );
-                                        }),
+                                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(controller.tagList[index].name.toString(),
+                                        style: poppinsRegularStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
+                                      Icon(controller.tagList[index].showSubCat!.value?Icons.keyboard_arrow_up_outlined:Icons.keyboard_arrow_down_sharp,
+                                        color: DynamicColor.whiteClr,
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                              ),
+                              Visibility(
+                                visible: controller.tagList[index].showSubCat!.value,
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 4),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: DynamicColor.darkGrayClr,
+                                    ),
+                                    child: ListView.builder(
+                                          itemCount: controller.tagList[index].categoryItems!.length,
+                                          physics: NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemBuilder: (BuildContext context,indexess){
+                                            return Column(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.symmetric(horizontal: 8),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    color: DynamicColor.darkGrayClr,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(controller.tagList[index].categoryItems![indexess].name.toString(),
+                                                        style: poppinsRegularStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight.w600,
+                                                          context: context,
+                                                          color: theme.primaryColor,
+                                                        ),
+                                                      ),
+                                                      Theme(
+                                                        data: Theme.of(context).copyWith(
+                                                          unselectedWidgetColor: Colors.white,
+                                                        ),
+                                                        child: Checkbox(
+                                                            activeColor: DynamicColor.yellowClr,
+                                                            value: controller.tagList[index].categoryItems![indexess].selected!.value,
+                                                            onChanged: (v){
+                                                          controller.tagAddFtn(items: controller.tagList[index].categoryItems![indexess],
+                                                              value: v);
+                                                        }),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Divider(
+                                                  color: DynamicColor.whiteClr,
+                                                ),
+                                              ],
+                                            );
+                                          }),
+                                  ),
+                                )
                               )
-                            )
-                          ],
-                        ),
-                      );
-                    })
-                  )
-                ],
+                            ],
+                          ),
+                        );
+                      })
+                    )
+                  ],
+                ),
               ),
-            ),
-          );
-        }
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () async{
-            if(_controller.tagListPost.isNotEmpty){
-              if(_controller.eventDetail != null){
-               await _controller.getMusicTag(type: "activity_choice");
+            );
+          }
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () async{
+              if(_controller.tagListPost.isNotEmpty){
+                if(_controller.eventDetail != null){
+                 await _controller.getMusicTag(type: "activity_choice");
+                }
+                Get.toNamed(Routes.activityChoiceScreen);
+              }else{
+                bottomToast(text: "Please add music event");
               }
-              Get.toNamed(Routes.activityChoiceScreen);
-            }else{
-              bottomToast(text: "Please add music event");
-            }
-            // Get.toNamed(Routes.eventPreview,
-            // arguments: {
-            //   "viewDetails": 1
-            // }
-            // );
-          },
-          text: "Continue",
+              // Get.toNamed(Routes.eventPreview,
+              // arguments: {
+              //   "viewDetails": 1
+              // }
+              // );
+            },
+            text: "Continue",
+          ),
         ),
       ),
     );
@@ -295,254 +301,258 @@ class ActivityChoiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Create Event",
-          actions: [
-            ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
-            GestureDetector(
-              onTap: (){
-                _controller.postEventFunction(context,theme,draft: true);
-              },
-              child: Padding(
-                padding: EdgeInsets.only(right: 8.0),
-                child: Icon(Icons.drafts),),
-            ):SizedBox.shrink()]
-      ),
-      body: GetBuilder<EventController>(
-          initState: (v){
-            if(_controller.eventDetail != null){
-              _controller.activityChoice();
-            }else{
-              _controller.getMusicTag(type: "activity_choice");
-            }
-          },
-        builder: (controller) {
-          return controller.getMusicTagLoader.value== false?SizedBox.shrink():
-          Padding( padding: EdgeInsets.symmetric(horizontal: 15.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('Activity Choice!',
-                        textAlign: TextAlign.center,
-                        style: poppinsRegularStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          context: context,
-                          color: theme.primaryColor,
+    return SafeArea(
+      top: false,
+      bottom: Platform.isIOS?true:false,
+      child: Scaffold(
+        appBar: customAppBar(theme: theme,text: "Create Event",
+            actions: [
+              ((_controller.eventDetail == null) && (_controller.draftCondition.value == true))?
+              GestureDetector(
+                onTap: (){
+                  _controller.postEventFunction(context,theme,draft: true);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.drafts),),
+              ):SizedBox.shrink()]
+        ),
+        body: GetBuilder<EventController>(
+            initState: (v){
+              if(_controller.eventDetail != null){
+                _controller.activityChoice();
+              }else{
+                _controller.getMusicTag(type: "activity_choice");
+              }
+            },
+          builder: (controller) {
+            return controller.getMusicTagLoader.value== false?SizedBox.shrink():
+            Padding( padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text('Activity Choice!',
+                          textAlign: TextAlign.center,
+                          style: poppinsRegularStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Text('Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
-                    textAlign: TextAlign.center,
-                    style: poppinsRegularStyle(
-                      fontSize: 12,
-                      context: context,
-                      color: DynamicColor.lightRedClr,
+                    Text('Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
+                      textAlign: TextAlign.center,
+                      style: poppinsRegularStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: DynamicColor.lightRedClr,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  SearchTextFields(
-                    controller: TextEditingController(),
-                    searchIcon: false,
-                    hintText: "add tags",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Foodie Pool Hall",
-                        style: poppinsRegularStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          context: context,
-                          color: theme.primaryColor,
+                    SizedBox(
+                      height: 15,
+                    ),
+                    SearchTextFields(
+                      controller: TextEditingController(),
+                      searchIcon: false,
+                      hintText: "add tags",
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Foodie Pool Hall",
+                          style: poppinsRegularStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
                         ),
-                      ),
-                      CustomButtonWithIcon(
-                        // bgColor: null,
-                        bgColor: DynamicColor.secondaryClr,
-                        width: 90,
-                        height: 30,
-                        onTap: (){
-                          Get.toNamed(Routes.saveHashTagScreen,
-                            arguments: {
-                              "musicHashTag": true,
-                            }
-                          );
-                        },
-                        borderRadius: 5,
-                        iconValue: false,
-                        iconss: Icons.bookmark,
-                        iconsClr: theme.primaryColor,
-                        text: "Save",
-                      ),
-                    ],
-                  ),
-
-                  controller.activityListPost.isEmpty?SizedBox.shrink(): SizedBox(
-                    height: kToolbarHeight,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: ListView.builder(
-                          itemCount: controller.activityListPost.length,
-                          shrinkWrap: true,
-                          physics: AlwaysScrollableScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context,index){
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Chip(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  backgroundColor: DynamicColor.whiteClr,
-                                  label: Text(controller.activityListPost[index].name.toString(),style: poppinsRegularStyle(
-                                    fontSize: 12,
-                                    context: context,
-                                    color: theme.scaffoldBackgroundColor,
-                                  ),)),
+                        CustomButtonWithIcon(
+                          // bgColor: null,
+                          bgColor: DynamicColor.secondaryClr,
+                          width: 90,
+                          height: 30,
+                          onTap: (){
+                            Get.toNamed(Routes.saveHashTagScreen,
+                              arguments: {
+                                "musicHashTag": true,
+                              }
                             );
-                          }),
+                          },
+                          borderRadius: 5,
+                          iconValue: false,
+                          iconss: Icons.bookmark,
+                          iconsClr: theme.primaryColor,
+                          text: "Save",
+                        ),
+                      ],
                     ),
-                  ),
 
-                  Container(
-                      padding: EdgeInsets.only(top: 8),
-                      child: ListView.builder(
-                          itemCount: controller.activityList.length,
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context,index){
-                            return Container(
-                              padding: EdgeInsets.symmetric(vertical: 4),
-                              child: Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: (){
-                                      controller.activityList[index].showSubCat!.value = !controller.activityList[index].showSubCat!.value;
-                                      controller.update();
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: DynamicColor.darkGrayClr,
-                                      ),
-                                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(controller.activityList[index].name.toString(),
-                                            style: poppinsRegularStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                              context: context,
-                                              color: theme.primaryColor,
+                    controller.activityListPost.isEmpty?SizedBox.shrink(): SizedBox(
+                      height: kToolbarHeight,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: ListView.builder(
+                            itemCount: controller.activityListPost.length,
+                            shrinkWrap: true,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (BuildContext context,index){
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Chip(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    backgroundColor: DynamicColor.whiteClr,
+                                    label: Text(controller.activityListPost[index].name.toString(),style: poppinsRegularStyle(
+                                      fontSize: 12,
+                                      context: context,
+                                      color: theme.scaffoldBackgroundColor,
+                                    ),)),
+                              );
+                            }),
+                      ),
+                    ),
+
+                    Container(
+                        padding: EdgeInsets.only(top: 8),
+                        child: ListView.builder(
+                            itemCount: controller.activityList.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context,index){
+                              return Container(
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (){
+                                        controller.activityList[index].showSubCat!.value = !controller.activityList[index].showSubCat!.value;
+                                        controller.update();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: DynamicColor.darkGrayClr,
+                                        ),
+                                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(controller.activityList[index].name.toString(),
+                                              style: poppinsRegularStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                context: context,
+                                                color: theme.primaryColor,
+                                              ),
                                             ),
-                                          ),
-                                          Icon(controller.activityList[index].showSubCat!.value?Icons.keyboard_arrow_up_outlined:Icons.keyboard_arrow_down_sharp,
-                                            color: DynamicColor.whiteClr,
-                                          ),
-                                        ],
+                                            Icon(controller.activityList[index].showSubCat!.value?Icons.keyboard_arrow_up_outlined:Icons.keyboard_arrow_down_sharp,
+                                              color: DynamicColor.whiteClr,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Visibility(
-                                      visible: controller.activityList[index].showSubCat!.value,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(top: 4),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(8),
-                                            color: DynamicColor.darkGrayClr,
+                                    Visibility(
+                                        visible: controller.activityList[index].showSubCat!.value,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 4),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              color: DynamicColor.darkGrayClr,
+                                            ),
+                                            child: ListView.builder(
+                                                itemCount: controller.activityList[index].categoryItems!.length,
+                                                physics: NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemBuilder: (BuildContext context,indexess){
+                                                  return Column(
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets.symmetric(horizontal: 8),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(10),
+                                                          color: DynamicColor.darkGrayClr,
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Text(controller.activityList[index].categoryItems![indexess].name.toString(),
+                                                              style: poppinsRegularStyle(
+                                                                fontSize: 14,
+                                                                fontWeight: FontWeight.w600,
+                                                                context: context,
+                                                                color: theme.primaryColor,
+                                                              ),
+                                                            ),
+                                                            Theme(
+                                                              data: Theme.of(context).copyWith(
+                                                                unselectedWidgetColor: Colors.white,
+                                                              ),
+                                                              child: Checkbox(
+                                                                  activeColor: DynamicColor.yellowClr,
+                                                                  value: controller.activityList[index].categoryItems![indexess].selected!.value, onChanged: (v){
+                                                                controller.activityAddFtn(items: controller.activityList[index].categoryItems![indexess],value: v);
+                                                              }),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Divider(
+                                                        color: DynamicColor.whiteClr,
+                                                      ),
+                                                    ],
+                                                  );
+                                                }),
                                           ),
-                                          child: ListView.builder(
-                                              itemCount: controller.activityList[index].categoryItems!.length,
-                                              physics: NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemBuilder: (BuildContext context,indexess){
-                                                return Column(
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.symmetric(horizontal: 8),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(10),
-                                                        color: DynamicColor.darkGrayClr,
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Text(controller.activityList[index].categoryItems![indexess].name.toString(),
-                                                            style: poppinsRegularStyle(
-                                                              fontSize: 14,
-                                                              fontWeight: FontWeight.w600,
-                                                              context: context,
-                                                              color: theme.primaryColor,
-                                                            ),
-                                                          ),
-                                                          Theme(
-                                                            data: Theme.of(context).copyWith(
-                                                              unselectedWidgetColor: Colors.white,
-                                                            ),
-                                                            child: Checkbox(
-                                                                activeColor: DynamicColor.yellowClr,
-                                                                value: controller.activityList[index].categoryItems![indexess].selected!.value, onChanged: (v){
-                                                              controller.activityAddFtn(items: controller.activityList[index].categoryItems![indexess],value: v);
-                                                            }),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Divider(
-                                                      color: DynamicColor.whiteClr,
-                                                    ),
-                                                  ],
-                                                );
-                                              }),
-                                        ),
-                                      )
-                                  )
-                                ],
-                              ),
-                            );
-                          })
-                  )
-                ],
+                                        )
+                                    )
+                                  ],
+                                ),
+                              );
+                            })
+                    )
+                  ],
+                ),
               ),
-            ),
-          );
-        }
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            if(_controller.activityListPost.isNotEmpty){
-              if(_controller.eventDetail != null){
-                _controller.imageListtt.clear();
-                _controller.removeImageList.clear();
-                for (var ele in _controller.eventDetail!.data!.profilePicture!) {
-                  _controller.imageListtt.add(ele);
+            );
+          }
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              if(_controller.activityListPost.isNotEmpty){
+                if(_controller.eventDetail != null){
+                  _controller.imageListtt.clear();
+                  _controller.removeImageList.clear();
+                  for (var ele in _controller.eventDetail!.data!.profilePicture!) {
+                    _controller.imageListtt.add(ele);
+                  }
+                }else{
+                  _controller.imageListtt.clear();
                 }
+                Get.toNamed(Routes.commentsAndAttachment);
               }else{
-                _controller.imageListtt.clear();
+               bottomToast(text: "Please select activity choice");
               }
-              Get.toNamed(Routes.commentsAndAttachment);
-            }else{
-             bottomToast(text: "Please select activity choice");
-            }
-          },
-          text: "Continue",
+            },
+            text: "Continue",
+          ),
         ),
       ),
     );
