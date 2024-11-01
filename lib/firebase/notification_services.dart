@@ -91,7 +91,6 @@ class NotificationService {
           print("ONGOING");
           initLocalNotifications(context, message);
           showNotification(message);
-          saveNotificationData(message); // Save notification data
         }
       }
     });
@@ -150,17 +149,17 @@ class NotificationService {
       if (context.mounted) {
         print("<Terminated>");
         // Show EasyLoading spinner
-      await  Future.delayed(Duration(seconds: 3));
+        await Future.delayed(Duration(seconds: 3));
         EasyLoading.show(status: 'Loading...');
 
-        Future.delayed(Duration(seconds: 5),(){
-        if(context.mounted){
-           handleMessage(context, message);
+        Future.delayed(Duration(seconds: 5), () {
+          if (context.mounted) {
+            handleMessage(context, message);
 
-          // Hide EasyLoading spinner once handleMessage completes
-          EasyLoading.dismiss();
-        }
-      });
+            // Hide EasyLoading spinner once handleMessage completes
+            EasyLoading.dismiss();
+          }
+        });
       }
     }
 
@@ -170,13 +169,11 @@ class NotificationService {
       if (context.mounted) {
         print("<Background>");
         handleMessage(context, event);
-        clearNotificationData(); // Clear saved notification data
       }
     });
 
     // Check for saved notification data if app is reopened
     // checkSavedNotificationData(context);
-
   }
 
   // ! Todo ios notification message
@@ -212,15 +209,6 @@ class NotificationService {
         "eventId": data["source_id"],
         "acceptVal": true,
       });
-    }else if (data.type == "event_acknowledged") {
-      Get.toNamed(Routes.upcomingScreen,
-          arguments: {
-            "eventId": data.sourceId,
-            "reportedEventView": 1,
-            "notInterestedBtn": 1,
-            "appBarTitle": "Completed",
-            "isComingFromNotification": true,
-          });
     } else if (data["type"] == "event_created") {
       Get.toNamed(Routes.pendingEventDetails, arguments: {
         "notInterestedBtn": 1,
@@ -234,7 +222,7 @@ class NotificationService {
         "reportedEventView": 1,
         "notInterestedBtn": 1,
         "appBarTitle": "Completed Event",
-        "isComingFromNotification":true,
+        "isComingFromNotification": true,
       })!
           .then(
         (value) => homeController.completedEvent(),
@@ -273,11 +261,11 @@ class NotificationService {
       );
     } else if (data["type"] == "event_cancelled") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
-        "eventId":int.parse(data["source_id"]),
+        "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
         "appBarTitle": "Cancelled",
-        "isComingFromNotification":true,
+        "isComingFromNotification": true,
       });
     } else if (data["type"] == "event_declined") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
@@ -285,33 +273,16 @@ class NotificationService {
         "reportedEventView": 1,
         "notInterestedBtn": 1,
         "appBarTitle": "Declined",
-        "isComingFromNotification":true,
+        "isComingFromNotification": true,
+      });
+    } else if (data["type"] == "event_acknowledged") {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
+        "eventId": int.parse(data["source_id"]),
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "Completed",
+        "isComingFromNotification": true,
       });
     }
   }
-
-  // Save notification data in local storage
-  void saveNotificationData(RemoteMessage message) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('last_notification', jsonEncode(message.data));
-  }
-
-// Check and clear saved data on app launch
-  Future<void> checkSavedNotificationData(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? savedData = prefs.getString('last_notification');
-
-    // if (savedData != null) {
-    //   var messageData = jsonDecode(savedData);
-    //   handleMessage(context, RemoteMessage(data: messageData));
-    //   clearNotificationData(); // Clear data after handling
-    // }
-  }
-
-  // ! Clear saved notification data
-  void clearNotificationData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('last_notification');
-  }
-
 }
