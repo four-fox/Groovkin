@@ -175,10 +175,10 @@ class AuthController extends GetxController {
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
-      if (response.data['data']['user_details']['roles'][0]['name'] ==
+      if (response.data['data']['user_details']['active_role']==
           'venue_manager') {
         API().sp.write("role", 'eventManager');
-      } else if (response.data['data']['user_details']['roles'][0]['name'] ==
+      } else if (response.data['data']['user_details']['active_role'] ==
           'user') {
         API().sp.write("role", 'User');
       } else {
