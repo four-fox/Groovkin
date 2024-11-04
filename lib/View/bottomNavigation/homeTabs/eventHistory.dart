@@ -42,6 +42,7 @@ class PostEvents extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 14.0),
                           child: Container(
                             // padding: EdgeInsets.all(6),
+
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
@@ -72,17 +73,17 @@ class PostEvents extends StatelessWidget {
                                           padding: EdgeInsets.all(8),
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(10),
-                                                  topRight:
-                                                      Radius.circular(10)),
+                                                bottomLeft: Radius.circular(10),
+                                                topRight: Radius.circular(10),
+                                              ),
                                               image: controller.selectedFilter
                                                           .value !=
                                                       4
                                                   ? DecorationImage(
                                                       image: AssetImage(
                                                           "assets/topbtnGradent.png"),
-                                                      fit: BoxFit.fill)
+                                                      fit: BoxFit.fill,
+                                                    )
                                                   : null,
                                               color: controller.selectedFilter
                                                           .value ==

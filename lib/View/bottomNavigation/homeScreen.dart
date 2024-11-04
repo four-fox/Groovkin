@@ -210,8 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     indicator: BoxDecoration(color: Colors.transparent),
                     indicatorColor: Colors.transparent,
                     onTap: (v) {
-                      print(API().sp.read(
-                          "role"));
+                      print(API().sp.read("role"));
                       controller.showIndexValue!.value = v;
                       controller.update();
                     },

@@ -27,7 +27,6 @@ void main() async {
 
   await GetStorage.init();
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatefulWidget {

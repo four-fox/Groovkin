@@ -73,30 +73,20 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextField(
-                                    controller:
-                                    eventReasonController,
-                                    decoration:
-                                    InputDecoration(
+                                    controller: eventReasonController,
+                                    decoration: InputDecoration(
                                       hintText: "Reason",
                                       border: OutlineInputBorder(
                                           borderSide:
-                                          BorderSide(
-                                              color: Colors
-                                                  .grey)),
-                                      enabledBorder:
-                                      OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors
-                                                  .grey)),
-                                      focusedBorder:
-                                      OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors
-                                                  .grey)),
+                                              BorderSide(color: Colors.grey)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.grey)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide:
+                                              BorderSide(color: Colors.grey)),
                                     ),
-                                    keyboardType:
-                                    TextInputType
-                                        .multiline,
+                                    keyboardType: TextInputType.multiline,
                                     maxLines: 5,
                                   ),
                                   SizedBox(
@@ -108,8 +98,13 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                     fontSized: 13,
                                     onTap: () async {
                                       Get.back();
-                                      await _authController.reportAccount(
-                                          type: type,sourceId :eventId,message:eventReasonController.text).then((value){
+                                      await _authController
+                                          .reportAccount(
+                                              type: type,
+                                              sourceId: eventId,
+                                              message:
+                                                  eventReasonController.text)
+                                          .then((value) {
                                         eventReasonController.clear();
                                       });
                                     },

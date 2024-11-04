@@ -89,7 +89,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge!
-                              .copyWith(color: Colors.white,fontWeight: FontWeight.bold),
+                              .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
                         ),
                       )
                     : ListView.builder(
@@ -196,8 +198,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               text: data.notificationReceiver!.receiver!.name,
                               subtitle: data.text,
                               imageUrl: data.notificationReceiver!.receiver!
-                                  .profilePicture?.mediaPath,
-                              time: formatDate(data!.createdAt!),
+                                .profilePicture?.mediaPath,
+                              time: formatDate(data.createdAt!),
                             ),
                           );
                         },
