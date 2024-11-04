@@ -110,6 +110,7 @@ class PostEvents extends StatelessWidget {
                                     )
                                   ],
                                 ),
+                                
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0,

@@ -31,8 +31,7 @@ userCustomEvent(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isDelete)
-           Utils.accountDelete(context),
+          if (isDelete) Utils.accountDelete(context),
           SizedBox(
             height: 10,
           ),

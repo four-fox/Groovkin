@@ -46,7 +46,6 @@ class _SettingScreenState extends State<SettingScreen> {
         return controller.getProfileLoader.value == false
             ? SizedBox.shrink()
             : Scaffold(
-
                 appBar: PreferredSize(
                   preferredSize: Size.fromHeight(kToolbarHeight * 2.4),
                   child: Container(

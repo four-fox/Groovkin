@@ -38,21 +38,21 @@ class AuthController extends GetxController {
     intro(
       title: "Event Attendee",
       body:
-      "Groovkin is an innovative event management app designed to enhance your event experience as an attendee. Discover a wide range of events happening around you, from concerts and workshops to conferences and parties.",
+          "Groovkin is an innovative event management app designed to enhance your event experience as an attendee. Discover a wide range of events happening around you, from concerts and workshops to conferences and parties.",
       image: "assets/intro1.png",
       btnText: "Next",
     ),
     intro(
       title: "Event Organizer",
       body:
-      "Groovkin provides event organizers with a comprehensive platform to plan, organize, and execute successful events. As an event organizer, you can leverage the power of Groovkin to streamline your event management process.",
+          "Groovkin provides event organizers with a comprehensive platform to plan, organize, and execute successful events. As an event organizer, you can leverage the power of Groovkin to streamline your event management process.",
       image: "assets/intro3.png",
       btnText: "Next",
     ),
     intro(
       title: "Venue Manager",
       body:
-      "Groovkin offers property owners a seamless way to monetize their venues by connecting them with event organizers in need of suitable spaces. Whether you own a conference hall, a  venue.",
+          "Groovkin offers property owners a seamless way to monetize their venues by connecting them with event organizers in need of suitable spaces. Whether you own a conference hall, a  venue.",
       image: "assets/intro2.png",
       btnText: "Get Started",
     ),
@@ -91,7 +91,7 @@ class AuthController extends GetxController {
   sigUp(context) async {
     NotificationService notificationService = NotificationService();
     String? token;
-    if(Platform.isAndroid){
+    if (Platform.isAndroid) {
       token = await notificationService.getDeviceToken();
     }
     List imageList = [];
@@ -116,16 +116,16 @@ class AuthController extends GetxController {
         "company_name": companyNameController.text,
       "password_confirmation": confirmPasswordController.text,
       /*if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty)*/ "select_state":
-      stateController.text,
+          stateController.text,
       /*if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty)*/ "country":
-      countryController.text,
+          countryController.text,
       "role": API().sp.read("role") == "User"
           ? "user"
           : API().sp.read("role") == "eventManager"
-          ? "venue_manager"
-          : "event_owner",
+              ? "venue_manager"
+              : "event_owner",
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token": Platform.isIOS?"adsfadskljf": token,
+      "device_token": Platform.isIOS ? "adsfadskljf" : token,
       "about": aboutController.text,
     });
     var response = await API().postApi(formData, "register",
@@ -162,20 +162,20 @@ class AuthController extends GetxController {
   login() async {
     NotificationService notificationService = NotificationService();
     String? token;
-    if(Platform.isAndroid){
+    if (Platform.isAndroid) {
       token = await notificationService.getDeviceToken();
     }
     print("Token $token");
     var formData = {
       "email": loginEmailController.text,
       "password": loginPasswordController.text,
-      "device_token":Platform.isIOS?"sdafj": token
+      "device_token": Platform.isIOS ? "sdafj" : token
     };
     var response = await API().postApi(formData, "login");
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
-      if (response.data['data']['user_details']['active_role']==
+      if (response.data['data']['user_details']['active_role'] ==
           'venue_manager') {
         API().sp.write("role", 'eventManager');
       } else if (response.data['data']['user_details']['active_role'] ==
@@ -192,7 +192,6 @@ class AuthController extends GetxController {
             "update": false,
           });
         } else {
-
           selectUserIndexxx.value = 0;
           Get.offAllNamed(Routes.userBottomNavigationNav);
         }
@@ -321,7 +320,7 @@ class AuthController extends GetxController {
       files = await _picker.pickImage(
           source: source, imageQuality: 50, maxHeight: 1920, maxWidth: 1080);
       CroppedFile? file =
-      await ImageCropper().cropImage(sourcePath: files!.path);
+          await ImageCropper().cropImage(sourcePath: files!.path);
       if (files != null) {
         if (file != null) {
           imageBytes = file.path;
@@ -441,7 +440,7 @@ class AuthController extends GetxController {
   getLifeStyle({surveyType}) async {
     getLifeStyleLoader(false);
     var response =
-    await API().getApi(url: "show-category-with-items?type=$surveyType");
+        await API().getApi(url: "show-category-with-items?type=$surveyType");
     if (response.statusCode == 200) {
       clearLists();
       surveyData = SurveyModel.fromJson(response.data);
@@ -545,7 +544,7 @@ class AuthController extends GetxController {
   getAllService({type}) async {
     getAllServiceLoader(false);
     var response =
-    await API().getApi(url: "show-event-with-sub-items?type=$type");
+        await API().getApi(url: "show-event-with-sub-items?type=$type");
     if (response.statusCode == 200) {
       surveyData = SurveyModel.fromJson(response.data);
       if (type == "services") {
@@ -795,13 +794,13 @@ class AuthController extends GetxController {
 
   // Todo Report
 
- Future reportAccount({required String type, required int sourceId, String? message}) async {
+  Future reportAccount(
+      {required String type, required int sourceId, String? message}) async {
     try {
       var formData = form.FormData.fromMap({
         "type": type,
         "source_id": sourceId,
-        if(message!=null)
-        "reason":message,
+        if (message != null) "reason": message,
       });
       final response = await API().postApi(formData, "report");
       if (response.statusCode == 200) {
@@ -947,13 +946,13 @@ class AuthController extends GetxController {
     }
     var response = apiHit == "Followings"
         ? await API().getApi(
-        url: "followings?type=$userType",
-        fullUrl: nextUrl,
-        isLoader: nextUrl != null ? false : true)
+            url: "followings?type=$userType",
+            fullUrl: nextUrl,
+            isLoader: nextUrl != null ? false : true)
         : await API().getApi(
-        url: "followers?type=$userType",
-        fullUrl: nextUrl,
-        isLoader: nextUrl != null ? false : true);
+            url: "followers?type=$userType",
+            fullUrl: nextUrl,
+            isLoader: nextUrl != null ? false : true);
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         allUnFollower = AllUnFollowUserModel.fromJson(response.data);
@@ -974,13 +973,14 @@ class AuthController extends GetxController {
   RxInt page = 1.obs;
   RxBool isNotificationLoading = false.obs;
   bool notificationWait = false;
+
   changePage(int pageNumber) {
     page.value = pageNumber;
   }
 
   NotificationModel? notificationModel;
   Future<dynamic> getAllNotification(
-      {fullUrl, String url = 'notifications'})  async {
+      {fullUrl, String url = 'notifications'}) async {
     isNotificationLoading.value = true; // Start loading
     final response = await API().getApi(url: "notifications", fullUrl: fullUrl);
     if (response.statusCode == 200) {

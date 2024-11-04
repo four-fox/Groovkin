@@ -17,7 +17,7 @@ import 'package:map_location_picker/map_location_picker.dart';
 import '../../Components/colors.dart';
 
 class CreateCompanyProfileScreen extends StatefulWidget {
-  CreateCompanyProfileScreen({Key? key}) : super(key: key);
+  CreateCompanyProfileScreen({super.key});
 
   @override
   State<CreateCompanyProfileScreen> createState() =>
@@ -59,7 +59,7 @@ class _CreateCompanyProfileScreenState
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight * 1.9),
@@ -206,7 +206,8 @@ class _CreateCompanyProfileScreenState
                                               itemCount:
                                                   controller.mediaClass.length,
                                               itemBuilder:
-                                                  (BuildContext context, index) {
+                                                  (BuildContext context,
+                                                      index) {
                                                 return Stack(
                                                   alignment: Alignment.topRight,
                                                   children: [
@@ -218,27 +219,29 @@ class _CreateCompanyProfileScreenState
                                                         width: 100,
                                                         height:
                                                             kToolbarHeight * 2,
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                              color: theme
-                                                                  .primaryColor,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(8),
-                                                            image: DecorationImage(
-                                                                fit: BoxFit.fill,
-                                                                image: controller.mediaClass[index].thumbnail ==
-                                                                        null
-                                                                    ? FileImage(File(controller
-                                                                        .mediaClass[
-                                                                            index]
-                                                                        .filename
-                                                                        .toString()))
-                                                                    : FileImage(File(controller
-                                                                        .mediaClass[index]
-                                                                        .thumbnail
-                                                                        .toString())) as ImageProvider)),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                border:
+                                                                    Border.all(
+                                                                  color: theme
+                                                                      .primaryColor,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                image: DecorationImage(
+                                                                    fit: BoxFit
+                                                                        .fill,
+                                                                    image: controller.mediaClass[index].thumbnail ==
+                                                                            null
+                                                                        ? FileImage(File(controller
+                                                                            .mediaClass[
+                                                                                index]
+                                                                            .filename
+                                                                            .toString()))
+                                                                        : FileImage(File(controller.mediaClass[index].thumbnail.toString()))
+                                                                            as ImageProvider)),
                                                         child: controller
                                                                     .mediaClass[
                                                                         index]
@@ -253,8 +256,7 @@ class _CreateCompanyProfileScreenState
                                                                         "type":
                                                                             "file",
                                                                         "url": controller
-                                                                            .mediaClass[
-                                                                                index]
+                                                                            .mediaClass[index]
                                                                             .filename
                                                                       });
                                                                 },
@@ -286,8 +288,8 @@ class _CreateCompanyProfileScreenState
                                                             Alignment.topRight,
                                                         child: CircleAvatar(
                                                           radius: 15,
-                                                          backgroundColor:
-                                                              theme.primaryColor,
+                                                          backgroundColor: theme
+                                                              .primaryColor,
                                                           child: CircleAvatar(
                                                             radius: 14,
                                                             backgroundColor: theme
@@ -330,7 +332,8 @@ class _CreateCompanyProfileScreenState
                                               itemCount: controller
                                                   .profilePictures.length,
                                               itemBuilder:
-                                                  (BuildContext context, index) {
+                                                  (BuildContext context,
+                                                      index) {
                                                 return Stack(
                                                   alignment: Alignment.topRight,
                                                   children: [
@@ -347,28 +350,14 @@ class _CreateCompanyProfileScreenState
                                                               color: theme
                                                                   .primaryColor,
                                                             ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(8),
-                                                            image:
-                                                                DecorationImage(
-                                                                    fit: BoxFit
-                                                                        .fill,
-                                                                    image: controller.profilePictures[index].mediaFor ==
-                                                                            null
-                                                                        ? controller.profilePictures[index].thumbnail ==
-                                                                                null
-                                                                            ? FileImage(File(controller.profilePictures[index].mediaPath
-                                                                                .toString()))
-                                                                            : FileImage(File(controller.profilePictures[index].thumbnail
-                                                                                .toString()))
-                                                                        : NetworkImage(controller.profilePictures[index].thumbnail !=
-                                                                                null
-                                                                            ? controller
-                                                                                .profilePictures[index]
-                                                                                .thumbnail
-                                                                                .toString()
-                                                                            : controller.profilePictures[index].mediaPath.toString()) as ImageProvider)),
+                                                            borderRadius: BorderRadius.circular(8),
+                                                            image: DecorationImage(
+                                                                fit: BoxFit.fill,
+                                                                image: controller.profilePictures[index].mediaFor == null
+                                                                    ? controller.profilePictures[index].thumbnail == null
+                                                                        ? FileImage(File(controller.profilePictures[index].mediaPath.toString()))
+                                                                        : FileImage(File(controller.profilePictures[index].thumbnail.toString()))
+                                                                    : NetworkImage(controller.profilePictures[index].thumbnail != null ? controller.profilePictures[index].thumbnail.toString() : controller.profilePictures[index].mediaPath.toString()) as ImageProvider)),
                                                         child: controller
                                                                     .profilePictures[
                                                                         index]
@@ -383,8 +372,7 @@ class _CreateCompanyProfileScreenState
                                                                         "type":
                                                                             "filedsaf",
                                                                         "url": controller
-                                                                            .profilePictures[
-                                                                                index]
+                                                                            .profilePictures[index]
                                                                             .mediaPath
                                                                       });
                                                                 },
@@ -408,7 +396,8 @@ class _CreateCompanyProfileScreenState
                                                                 .profilePictures[
                                                                     index]
                                                                 .id);
-                                                        controller.profilePictures
+                                                        controller
+                                                            .profilePictures
                                                             .remove(controller
                                                                     .profilePictures[
                                                                 index]);
@@ -419,8 +408,8 @@ class _CreateCompanyProfileScreenState
                                                             Alignment.topRight,
                                                         child: CircleAvatar(
                                                           radius: 15,
-                                                          backgroundColor:
-                                                              theme.primaryColor,
+                                                          backgroundColor: theme
+                                                              .primaryColor,
                                                           child: CircleAvatar(
                                                             radius: 14,
                                                             backgroundColor: theme
@@ -588,8 +577,11 @@ class _CreateCompanyProfileScreenState
                                 // hideLocation: true,
                                 // lat: double.parse(eventData.latitude.toString()),
                                 // long: double.parse(eventData.longitude.toString()),
-                                minMaxZoomPreference: MinMaxZoomPreference(0, 15),
-                                apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                                minMaxZoomPreference:
+                                    MinMaxZoomPreference(0, 15),
+                                apiKey:
+                                    "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                                // apiKey: "AIzaSyAG0a15cbPw73mCfgD9AEpEFKy_6pV-nFA",
                                 canPopOnNextButtonTaped: true,
                                 searchHintText: controller.address != "null"
                                     ? controller.address
@@ -732,7 +724,8 @@ class _CreateCompanyProfileScreenState
                                               width: Get.width,
                                               child: Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    vertical: 0.0, horizontal: 4),
+                                                    vertical: 0.0,
+                                                    horizontal: 4),
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -746,15 +739,15 @@ class _CreateCompanyProfileScreenState
                                                               horizontal: 10.0),
                                                       child: Text(
                                                         '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         maxLines: 5,
                                                         style:
                                                             poppinsRegularStyle(
                                                           fontSize: 13,
                                                           context: context,
-                                                          color:
-                                                              theme.primaryColor,
+                                                          color: theme
+                                                              .primaryColor,
                                                         ),
                                                       ),
                                                     ),
@@ -778,7 +771,8 @@ class _CreateCompanyProfileScreenState
                                                             onTap: () {
                                                               Get.back();
                                                             },
-                                                            backgroundClr: false,
+                                                            backgroundClr:
+                                                                false,
                                                             textClr: theme
                                                                 .scaffoldBackgroundColor,
                                                             borderClr: Colors
@@ -798,7 +792,8 @@ class _CreateCompanyProfileScreenState
                                                               controller
                                                                   .termsConditionAgree
                                                                   .value = v!;
-                                                              controller.update();
+                                                              controller
+                                                                  .update();
                                                             },
                                                             borderClr: Colors
                                                                 .transparent,
@@ -814,7 +809,8 @@ class _CreateCompanyProfileScreenState
                                           );
                                         });
                                   } else {
-                                    controller.termsConditionAgree.value = false;
+                                    controller.termsConditionAgree.value =
+                                        false;
                                   }
                                   controller.update();
                                 }),

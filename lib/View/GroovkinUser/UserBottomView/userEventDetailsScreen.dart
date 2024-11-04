@@ -30,6 +30,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
 
   String? appBarTitle = Get.arguments['appBarTitle'];
 
+  bool? isCancel = Get.arguments["isCancel"] ?? false;
+
   RxBool followBgClr = false.obs;
 
   String statusVal = Get.arguments['statusText'];
@@ -53,7 +55,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         appBar: customAppBar(text: appBarTitle, theme: theme),
         body: GetBuilder<EventController>(initState: (v) {
@@ -78,13 +80,17 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       scrollDirection: Axis.horizontal,
                                       itemCount: controller.eventDetail!.data!
                                           .profilePicture!.length,
-                                      itemBuilder: (BuildContext context, index) {
+                                      itemBuilder:
+                                          (BuildContext context, index) {
                                         return Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 12.0),
                                           child: Container(
-                                            width: controller.eventDetail!.data!
-                                                        .profilePicture!.length ==
+                                            width: controller
+                                                        .eventDetail!
+                                                        .data!
+                                                        .profilePicture!
+                                                        .length ==
                                                     1
                                                 ? Get.width
                                                 : Get.width / 1.5,
@@ -118,7 +124,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                       : NetworkImage(controller
                                                           .eventDetail!
                                                           .data!
-                                                          .profilePicture![index]
+                                                          .profilePicture![
+                                                              index]
                                                           .mediaPath
                                                           .toString()),
                                                   fit: BoxFit.fill,
@@ -146,7 +153,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                 borderClr: Colors.transparent,
                                                 widths: 80,
                                                 onTap: () {
-                                                  if (sp.read("role") == 'User') {
+                                                  if (sp.read("role") ==
+                                                      'User') {
                                                     if (notifyBackBtn == true) {
                                                       Get.toNamed(
                                                           Routes.notifyScreen);
@@ -273,22 +281,23 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                               controller.eventDetail!.data!.comment.toString()),
                       customWidget(context, theme,
                           title: "Event About",
-                          value: controller.eventDetail!.data!.about.toString()),
+                          value:
+                              controller.eventDetail!.data!.about.toString()),
                       customWidget(context, theme,
                           title: "Event theme",
                           value: controller.eventDetail!.data!.themeOfEvent
                               .toString()),
                       customWidget(context, theme,
                           title: "Featuring",
-                          value:
-                              controller.eventDetail!.data!.featuring.toString()),
+                          value: controller.eventDetail!.data!.featuring
+                              .toString()),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 10),
                         child: Container(
                           width: double.infinity,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: DynamicColor.darkGrayClr),
@@ -317,10 +326,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       // physics: NeverScrollableScrollPhysics(),
                                       itemCount: controller
                                           .eventDetail!.data!.services!.length,
-                                      itemBuilder: (BuildContext context, indx) {
+                                      itemBuilder:
+                                          (BuildContext context, indx) {
                                         return Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(horizontal: 6),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6),
                                           child: Chip(
                                             backgroundColor:
                                                 DynamicColor.lightBlackClr,
@@ -329,8 +339,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                   BorderRadius.circular(8),
                                             ),
                                             label: Text(
-                                              controller.eventDetail!.data!
-                                                  .services![indx].eventItem!.name
+                                              controller
+                                                  .eventDetail!
+                                                  .data!
+                                                  .services![indx]
+                                                  .eventItem!
+                                                  .name
                                                   .toString(),
                                               style: poppinsRegularStyle(
                                                 fontSize: 14,
@@ -369,10 +383,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       physics: AlwaysScrollableScrollPhysics(),
-                                      itemBuilder: (BuildContext context, index) {
+                                      itemBuilder:
+                                          (BuildContext context, index) {
                                         return Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(horizontal: 6),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6),
                                           child: Chip(
                                             backgroundColor:
                                                 DynamicColor.lightBlackClr,
@@ -445,10 +460,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       // physics: NeverScrollableScrollPhysics(),
                                       itemCount: controller
                                           .eventDetail!.data!.services!.length,
-                                      itemBuilder: (BuildContext context, indx) {
+                                      itemBuilder:
+                                          (BuildContext context, indx) {
                                         return Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(horizontal: 6),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6),
                                           child: Chip(
                                             backgroundColor:
                                                 DynamicColor.lightBlackClr,
@@ -457,8 +473,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                   BorderRadius.circular(8),
                                             ),
                                             label: Text(
-                                              controller.eventDetail!.data!
-                                                  .services![indx].eventItem!.name
+                                              controller
+                                                  .eventDetail!
+                                                  .data!
+                                                  .services![indx]
+                                                  .eventItem!
+                                                  .name
                                                   .toString(),
                                               style: poppinsRegularStyle(
                                                 fontSize: 14,
@@ -494,10 +514,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       physics: AlwaysScrollableScrollPhysics(),
-                                      itemBuilder: (BuildContext context, index) {
+                                      itemBuilder:
+                                          (BuildContext context, index) {
                                         return Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(horizontal: 6),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6),
                                           child: Chip(
                                             backgroundColor:
                                                 DynamicColor.lightBlackClr,
@@ -570,10 +591,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       physics: AlwaysScrollableScrollPhysics(),
-                                      itemBuilder: (BuildContext context, index) {
+                                      itemBuilder:
+                                          (BuildContext context, index) {
                                         return Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(horizontal: 6),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6),
                                           child: Chip(
                                             backgroundColor:
                                                 DynamicColor.lightBlackClr,
@@ -585,7 +607,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                               controller
                                                   .eventDetail!
                                                   .data!
-                                                  .eventActivityChoiceTags![index]
+                                                  .eventActivityChoiceTags![
+                                                      index]
                                                   .activityChoiceItems!
                                                   .name
                                                   .toString(),
@@ -655,8 +678,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                         height: 6,
                       ),
                       ShowCustomMap(
-                        lat:
-                            double.parse(controller.eventDetail!.data!.latitude!),
+                        lat: double.parse(
+                            controller.eventDetail!.data!.latitude!),
                         lng: double.parse(
                             controller.eventDetail!.data!.longitude!),
                       ),
@@ -669,7 +692,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       sp.read('role') == "eventManager"
                           ? SizedBox.shrink()
                           : Obx(
-                              () => _authController.followingLoader.value == false
+                              () => _authController.followingLoader.value ==
+                                      false
                                   ? SizedBox.shrink()
                                   : aboutEventCreator(
                                       isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
@@ -704,9 +728,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       textClr: controller.eventDetail!.data!.venue!.user!.following != null
                                           ? theme.scaffoldBackgroundColor
                                           : theme.primaryColor,
-                                      followText: controller.eventDetail!.data!
-                                                  .venue!.user!.following ==
-                                              null
+                                      followText: controller.eventDetail!.data!.venue!.user!.following == null
                                           ? "Follow"
                                           : "Unfollow",
                                       onTap: () {
@@ -714,13 +736,13 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                 .user!.following ==
                                             null) {
                                           _authController.followUser(
-                                              userData: controller
-                                                  .eventDetail!.data!.venue!.user,
+                                              userData: controller.eventDetail!
+                                                  .data!.venue!.user,
                                               fromAllUser: false);
                                         } else {
                                           _authController.unfollow(
-                                              userData: controller
-                                                  .eventDetail!.data!.venue!.user,
+                                              userData: controller.eventDetail!
+                                                  .data!.venue!.user,
                                               fromAllUser: false);
                                         }
                                       }),
@@ -728,13 +750,13 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       sp.read('role') == "eventOrganizer"
                           ? SizedBox.shrink()
                           : Obx(
-                              () => _authController.followingLoader.value == false
+                              () => _authController.followingLoader.value ==
+                                      false
                                   ? SizedBox.shrink()
                                   : ourGuestWidget(
-                                      isDelete:
-                                          controller.eventDetail!.data!.user!.isDelete == null
-                                              ? false
-                                              : true,
+                                      isDelete: controller.eventDetail!.data!.user!.isDelete == null
+                                          ? false
+                                          : true,
                                       onTap: () {
                                         Get.toNamed(Routes.viewProfileScreen,
                                             arguments: {
@@ -759,20 +781,16 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       rowPadding: 0.0,
                                       avatarPadding: 6,
                                       rowVerticalPadding: 0.0,
-                                      followBgClr: controller.eventDetail!.data!
-                                                  .user!.following !=
-                                              null
-                                          ? DynamicColor.grayClr
-                                          : DynamicColor.avatarBgClr,
-                                      textClr: controller.eventDetail!.data!.user!
-                                                  .following ==
-                                              null
+                                      followBgClr:
+                                          controller.eventDetail!.data!.user!.following != null
+                                              ? DynamicColor.grayClr
+                                              : DynamicColor.avatarBgClr,
+                                      textClr: controller.eventDetail!.data!.user!.following == null
                                           ? theme.primaryColor
                                           : theme.scaffoldBackgroundColor,
-                                      followText:
-                                          controller.eventDetail!.data!.user!.following == null
-                                              ? "Follow"
-                                              : "Unfollow",
+                                      followText: controller.eventDetail!.data!.user!.following == null
+                                          ? "Follow"
+                                          : "Unfollow",
                                       followOnTap: () {
                                         if (controller.eventDetail!.data!.user!
                                                 .following ==
@@ -835,31 +853,34 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       ),
                       API().sp.read("role") != "User"
                           ? SizedBox.shrink()
-                          : controller.eventDetail!.data!.eventGoingOrInterested!
-                                      .value ==
+                          : controller.eventDetail!.data!
+                                      .eventGoingOrInterested!.value ==
                                   1
                               ? controller.eventDetail!.data!.status ==
                                       "completed"
                                   ? SizedBox.shrink()
-                                  : Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CustomButton(
-                                        borderClr: Colors.transparent,
-                                        widths: Get.width,
-                                        heights: 45,
-                                        onTap: () {
-                                          controller.userCancelEvents(
-                                              eventId: controller
-                                                  .eventDetail!.data!.id);
-                                        },
-                                        text: "Cancel",
-                                        // appBarTitle == "Past Event"?
-                                        // "Complete": appBarTitle=="Cancelled Event"?"Cancelled": "Check in",
-                                        textClr: theme.primaryColor,
-                                      ),
-                                    )
+                                  : isCancel == true
+                                      ? SizedBox.shrink()
+                                      : Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CustomButton(
+                                            borderClr: Colors.transparent,
+                                            widths: Get.width,
+                                            heights: 45,
+                                            onTap: () {
+                                              controller.userCancelEvents(
+                                                  eventId: controller
+                                                      .eventDetail!.data!.id);
+                                            },
+                                            text: "Cancel",
+                                            // appBarTitle == "Past Event"?
+                                            // "Complete": appBarTitle=="Cancelled Event"?"Cancelled": "Check in",
+                                            textClr: theme.primaryColor,
+                                          ),
+                                        )
                               : Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 12.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -873,8 +894,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         text: "Going",
                                         onTap: () {
                                           controller.userInterested(
-                                            eventId:
-                                                controller.eventDetail!.data!.id,
+                                            eventId: controller
+                                                .eventDetail!.data!.id,
                                             statusValue: "going",
                                           );
                                         },
@@ -883,8 +904,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       CustomButton(
                                         onTap: () {
                                           controller.userInterested(
-                                            eventId:
-                                                controller.eventDetail!.data!.id,
+                                            eventId: controller
+                                                .eventDetail!.data!.id,
                                             statusValue: "interested",
                                           );
                                         },

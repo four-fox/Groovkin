@@ -370,20 +370,23 @@ class Sender {
   String? createdAt;
   String? updatedAt;
   Profile? profile;
+  ProfilePicture? profilePicture;
 
-  Sender(
-      {this.id,
-      this.name,
-      this.email,
-      this.deviceToken,
-      this.referralCode,
-      this.emailVerifiedAt,
-      this.otp,
-      this.activeRole,
-      this.deletedAt,
-      this.createdAt,
-      this.updatedAt,
-      this.profile});
+  Sender({
+    this.id,
+    this.name,
+    this.email,
+    this.deviceToken,
+    this.referralCode,
+    this.emailVerifiedAt,
+    this.otp,
+    this.activeRole,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.profile,
+    this.profilePicture,
+  });
 
   Sender.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -399,6 +402,9 @@ class Sender {
     updatedAt = json['updated_at'];
     profile =
         json['profile'] != null ? Profile.fromJson(json['profile']) : null;
+    profilePicture = json["profile_picture"] != null
+        ? ProfilePicture.fromJson(json['profile_picture'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -416,6 +422,9 @@ class Sender {
     data['updated_at'] = updatedAt;
     if (profile != null) {
       data['profile'] = profile!.toJson();
+    }
+    if (profilePicture != null) {
+      data['profile_picture'] = profilePicture!.toJson();
     }
     return data;
   }

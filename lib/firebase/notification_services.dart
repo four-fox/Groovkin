@@ -217,11 +217,11 @@ class NotificationService {
       });
     } else if (data["type"] == "event_complete") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
-        "eventId": int.parse(data["source_id"]),
+        "eventId": data.sourceId,
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-        "appBarTitle": "Completed Event",
-        "isComingFromNotification": true,
+        "appBarTitle": "Completed"
+        // "${singleEvent.status.toString().capitalize} Event"
       })!
           .then(
         (value) => homeController.completedEvent(),

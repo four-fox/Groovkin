@@ -436,7 +436,8 @@ class HistoryTab extends StatelessWidget {
                                                             "Event Preview",
                                                         "statusText":
                                                             singleEventData.id
-                                                                .toString()
+                                                                .toString(),
+                                                                "isCancel":true,
                                                       });
                                                 },
                                                 context: context,

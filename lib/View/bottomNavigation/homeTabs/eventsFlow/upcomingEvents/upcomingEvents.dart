@@ -39,7 +39,7 @@ class UpcomingEvents extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6,),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -140,6 +140,7 @@ class UpcomingEvents extends StatelessWidget {
                                           context: context,
                                           theme: theme);
                                     }),
+
                                 CustomButton(
                                   onTap: () {
                                     Get.toNamed(Routes.viewAllRecommendedScreen,
@@ -151,6 +152,7 @@ class UpcomingEvents extends StatelessWidget {
                                   borderClr: Colors.transparent,
                                   text: "View All ",
                                 ),
+
                               ],
                             ),
                     ),

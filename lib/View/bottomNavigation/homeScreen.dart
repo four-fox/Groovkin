@@ -108,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
             ),
+
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(kToolbarHeight * 3.5),
               child: Container(
@@ -307,6 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ]),
               ),
             ),
+            
             body: Stack(
               alignment: Alignment.topRight,
               children: [
@@ -505,6 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
 class ManagerUpcomingEventsView extends StatelessWidget {
   ManagerUpcomingEventsView({super.key});
 
@@ -514,6 +517,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+
     List list = [
       'false',
       "true",
@@ -799,6 +803,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
             ),
           );
         });*/
+  
   }
 
   List list = [

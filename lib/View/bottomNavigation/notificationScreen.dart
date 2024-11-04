@@ -68,11 +68,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     controller.notificationWait = false;
                   });
                   controller.getAllNotification(
-                      fullUrl: controller.notificationModel!.data!.nextPageUrl);
+                    fullUrl: controller.notificationModel!.data!.nextPageUrl,
+                  );
                   return true;
                 }
               }
-
               return false;
             }
             return false;
@@ -86,12 +86,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ? Center(
                         child: Text(
                           "No Data Found",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       )
                     : ListView.builder(
@@ -134,12 +133,34 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         "eventId": data.sourceId,
                                         "reportedEventView": 1,
                                         "notInterestedBtn": 1,
-                                        "appBarTitle": "Completed Event",
-                                        "isComingFromNotification": true,
+                                        "appBarTitle": "Completed"
+                                        // "${singleEvent.status.toString().capitalize} Event"
                                       })!
                                       .then(
                                     (value) => _controller.completedEvent(),
                                   );
+                                  // Get.toNamed(Routes.upcomingScreen,
+                                  //         arguments: {
+                                  //       "eventId": data.sourceId,
+                                  //       "reportedEventView": 1,
+                                  //       "notInterestedBtn": 1,
+                                  //       "appBarTitle": "Completed Event"
+                                  //       // "${singleEvent.status.toString().capitalize} Event"
+                                  //     })!
+                                  //     .then(
+                                  //   (value) => _controller.completedEvent(),
+                                  // );
+                                  // Get.toNamed(Routes.upcomingScreen,
+                                  //         arguments: {
+                                  //       "eventId": data.sourceId,
+                                  //       "reportedEventView": 1,
+                                  //       "notInterestedBtn": 1,
+                                  //       "appBarTitle": "Completed Event",
+                                  //       "isComingFromNotification": true,
+                                  //     })!
+                                  //     .then(
+                                  //   (value) => _controller.completedEvent(),
+                                  // );
                                 } else if (data.type == "event_rate") {
                                   Get.toNamed(Routes.pendingEventDetails,
                                           arguments: {
@@ -182,6 +203,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         "appBarTitle": "Completed",
                                         "isComingFromNotification": true,
                                       });
+                                  // Get.toNamed(Routes.upcomingScreen,
+                                  //     arguments: {
+                                  //       "eventId": data.sourceId,
+                                  //       "reportedEventView": 1,
+                                  //       "notInterestedBtn": 1,
+                                  //       "appBarTitle": "On Going"
+                                  //     });
                                 } else if (data.type == "event_declined") {
                                   Get.toNamed(Routes.upcomingScreen,
                                       arguments: {
@@ -195,10 +223,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               },
                               theme: theme,
                               context: context,
-                              text: data.notificationReceiver!.receiver!.name,
+                              text: data.sender!.name,
                               subtitle: data.text,
-                              imageUrl: data.notificationReceiver!.receiver!
-                                .profilePicture?.mediaPath,
+                              imageUrl: data.sender!.profilePicture!.mediaPath,
                               time: formatDate(data.createdAt!),
                             ),
                           );
@@ -210,15 +237,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ));
   }
 
-  Widget notificationWidget(
-      {bool profileImg = true,
-      context,
-      theme,
-      text,
-      subtitle,
-      time,
-      String? imageUrl,
-      onTap}) {
+  Widget notificationWidget({
+    bool profileImg = true,
+    context,
+    theme,
+    text,
+    subtitle,
+    time,
+    String? imageUrl,
+    onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
