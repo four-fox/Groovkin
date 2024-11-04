@@ -217,7 +217,7 @@ class NotificationService {
       });
     } else if (data["type"] == "event_complete") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
-        "eventId": data.sourceId,
+        "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
         "appBarTitle": "Completed"
@@ -275,6 +275,7 @@ class NotificationService {
         "isComingFromNotification": true,
       });
     } else if (data["type"] == "event_acknowledged") {
+      
       Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
