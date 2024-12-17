@@ -220,6 +220,7 @@ class EventController extends GetxController {
   String? endDatePost;
   String? postTime;
   String? postEndTime;
+  
   postEventFunction(context, theme, {location, bool draft = false}) async {
     AuthController authController = Get.find();
     List<form.MultipartFile> mediaList = [];

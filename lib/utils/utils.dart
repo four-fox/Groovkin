@@ -1,7 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   // Todo show Dialog
@@ -52,13 +54,37 @@ class Utils {
     );
   }
 
-  static  accountDelete(BuildContext context)  {
+  // Todo Show FlutterToast
+  static showFlutterToast(String message) async {
+    await Fluttertoast.showToast(msg: message);
+  }
+
+  // Todo Show DateFormat
+  static String dateFormat(String date) {
+    final DateTime dateFormat =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'").parse(date);
+    final DateFormat outputFormatDate = DateFormat("dd-MMM-yy");
+    String formattedDate = outputFormatDate.format(dateFormat);
+
+    return formattedDate;
+  }
+
+  // Todo Show Time
+  static String timeFormat(String date) {
+    final DateTime dateFormat =
+        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'").parseUtc(date);
+    final DateFormat outputFormatTime = DateFormat("hh:mma");
+    String formattedTime = outputFormatTime.format(dateFormat);
+    return formattedTime;
+  }
+
+  static accountDelete(BuildContext context) {
     return Container(
-        constraints: BoxConstraints(
-      maxWidth: 150, // Set max width
-      minWidth: 100, // Set min width
-    ),
-     alignment: Alignment.centerLeft,
+      constraints: BoxConstraints(
+        maxWidth: 150, // Set max width
+        minWidth: 100, // Set min width
+      ),
+      alignment: Alignment.centerLeft,
       padding: EdgeInsets.all(2.0),
       decoration: BoxDecoration(
           border: Border.all(

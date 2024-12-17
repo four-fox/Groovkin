@@ -12,10 +12,10 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
   final FlutterLocalNotificationsPlugin localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
@@ -86,7 +86,11 @@ class NotificationService {
         print(message.notification!.body);
       }
       if (Platform.isIOS) {
-        forgroundMessage();
+        if (context.mounted) {
+          initLocalNotifications(context, message);
+          showNotification(message);
+          forgroundMessage();
+        }
       }
       if (Platform.isAndroid) {
         if (context.mounted) {
@@ -275,7 +279,6 @@ class NotificationService {
         "isComingFromNotification": true,
       });
     } else if (data["type"] == "event_acknowledged") {
-      
       Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,

@@ -61,7 +61,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels ==
                 scrollInfo.metrics.maxScrollExtent) {
-              if (controller.notificationModel!.data!.nextPageUrl != null) {
+              if (controller.notificationModel!.data!.nextPageUrl != null) {  
                 if (controller.notificationWait == false) {
                   controller.notificationWait = true;
                   Future.delayed(Duration(seconds: 2), () {

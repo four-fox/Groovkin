@@ -6,6 +6,10 @@ import 'package:groovkin/View/GroovkinUser/UserBottomView/topRatedEventUserModel
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/userPastEventHistory.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userOngoingEventsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistoryModel.dart';
+import 'package:dio/dio.dart' as form;
+import 'package:groovkin/model/transaction_history_model.dart'
+    as transaction_history_model;
+import 'package:groovkin/utils/utils.dart';
 
 class HomeController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> home functionality
@@ -149,13 +153,53 @@ class HomeController extends GetxController {
     }
   }
 
+  // Todo Get All Cards
+
+  final List<transaction_history_model.Data> transactionData = [];
+
+  getAllCards() async {
+    var response = await API().getApi(url: "cards");
+    if (response.statusCode == 200) {
+      final responseData =
+          transaction_history_model.CardModel.fromJson(response.data);
+      transactionData.clear();
+      for (var data in responseData.data!) {
+        transactionData.add(data);
+        update();
+      }
+    }
+  }
+
+  // Todo Add Cards
+
+  addCard(String cardHolderName, String number, String expiryMonth,
+      String expiryYear, String cvc) async {
+    try {
+      final formData = form.FormData.fromMap({
+        "cardholder_name": cardHolderName,
+        "number": number,
+        "exp_month": expiryMonth,
+        "exp_year": "20$expiryYear",
+        "cvc": cvc,
+      });
+
+      var response = await API().postApi(formData, "add-card");
+      if (response.statusCode == 200) {
+        Utils.showFlutterToast("Your Card Has Been Added!");
+        Get.back();
+      }
+    } catch (e) {
+      print("Exception $e");
+      rethrow;
+    }
+  }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo user Home functionality
 }
 
 class HomeBinding implements Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
     Get.lazyPut<HomeController>(() => HomeController());
   }
 }

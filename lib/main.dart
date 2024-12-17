@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
@@ -27,7 +28,6 @@ void main() async {
 
   await GetStorage.init();
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatefulWidget {
@@ -59,6 +59,11 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       title: 'Groovkin',
       theme: ThemeData(
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: DynamicColor.yellowClr,
+            selectionColor: DynamicColor.yellowClr,
+            selectionHandleColor: DynamicColor.yellowClr,
+          ),
           brightness: Brightness.light,
           primaryColor: Color(0xff040305),
           // backgroundColor: Color(0xff040305),

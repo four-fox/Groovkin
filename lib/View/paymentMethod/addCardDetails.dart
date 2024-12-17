@@ -1,6 +1,6 @@
+import 'dart:developer';
 
-
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
@@ -9,16 +9,17 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 
 class AddCardDetails extends StatefulWidget {
-  const AddCardDetails({Key? key}) : super(key: key);
+  const AddCardDetails({super.key});
 
   @override
   State<AddCardDetails> createState() => _AddCardDetailsState();
 }
 
 class _AddCardDetailsState extends State<AddCardDetails> {
-
+  HomeController _controller = Get.find();
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
@@ -32,6 +33,29 @@ class _AddCardDetailsState extends State<AddCardDetails> {
 
   int paymentMethodFlow = Get.arguments['paymentMethod'];
 
+  saveCard() {
+    final validate = formKey.currentState!.validate();
+    if (!validate) return;
+    if (validate) {
+      if (kDebugMode) {
+        log(cardHolderName);
+        log(cardNumber);
+        log(cvvCode);
+        log(expiryDate.split("/").first);
+        log(expiryDate.split("/").last);
+      }
+
+      _controller.addCard(
+          cardHolderName,
+          cardNumber
+              .toString()
+              .replaceAll(RegExp(r'\s+'), ''), // Remove all whitespace
+          expiryDate.split("/").first,
+          expiryDate.split("/").last,
+          cvvCode);
+    }
+  }
+
   @override
   void initState() {
     print(paymentMethodFlow);
@@ -44,7 +68,6 @@ class _AddCardDetailsState extends State<AddCardDetails> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -52,10 +75,10 @@ class _AddCardDetailsState extends State<AddCardDetails> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: GestureDetector(
-            onTap: (){
-              Get.back();
-            },
-            child: Icon(Icons.arrow_back_ios),
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.arrow_back_ios),
         ),
       ),
       body: Column(
@@ -65,30 +88,29 @@ class _AddCardDetailsState extends State<AddCardDetails> {
           // ),
           CreditCardWidget(
             glassmorphismConfig:
-            useGlassMorphism ? Glassmorphism.defaultConfig() : null,
+                useGlassMorphism ? Glassmorphism.defaultConfig() : null,
             cardNumber: cardNumber,
             expiryDate: expiryDate,
             cardHolderName: cardHolderName,
             cvvCode: cvvCode,
-            bankName: 'Axis Bank',
+
+            // bankName: 'Axis Bank',
             frontCardBorder:
-            !useGlassMorphism ? Border.all(color: Colors.grey) : null,
+                !useGlassMorphism ? Border.all(color: Colors.grey) : null,
             backCardBorder:
-            !useGlassMorphism ? Border.all(color: Colors.grey) : null,
+                !useGlassMorphism ? Border.all(color: Colors.grey) : null,
             showBackView: isCvvFocused,
             obscureCardNumber: true,
             obscureCardCvv: true,
             isHolderNameVisible: true,
-            backgroundImage:
-            useBackgroundImage ? 'assets/card_bg.png' : null,
+            backgroundImage: useBackgroundImage ? 'assets/card_bg.png' : null,
             isSwipeGestureEnabled: true,
-            onCreditCardWidgetChange:
-                (CreditCardBrand creditCardBrand) {},
+            onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
             customCardTypeIcons: <CustomCardTypeIcon>[
               CustomCardTypeIcon(
                 cardType: CardType.mastercard,
                 cardImage: Image.asset(
-                  'assets/mastercard.png',
+                  'assets/masterCard.png',
                   height: 48,
                   width: 48,
                 ),
@@ -100,6 +122,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
               child: Column(
                 children: <Widget>[
                   CreditCardForm(
+                    
                     formKey: formKey,
                     obscureCvv: true,
                     obscureNumber: true,
@@ -108,13 +131,20 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                     isHolderNameVisible: true,
                     isCardNumberVisible: true,
                     isExpiryDateVisible: true,
+                    cardHolderValidator: (cardHolderValue) {
+                      if (cardHolderValue!.isEmpty) {
+                        return "Please input a valid card holder";
+                      }
+                      return null;
+                    },
                     cardHolderName: cardHolderName,
                     expiryDate: expiryDate,
-                    inputConfiguration:  InputConfiguration(
+                    inputConfiguration: InputConfiguration(
                       // themeColor: Colors.blue,
                       // textColor: Colors.white,
                       cardNumberDecoration: InputDecoration(
                         // labelText: 'Number',
+
                         hintText: 'Card Number',
                         hintStyle: TextStyle(color: Colors.white),
                         labelStyle: TextStyle(color: Colors.white),
@@ -142,6 +172,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
+
                         // labelText: 'Expired Date',
                         hintText: 'Expired Date',
                       ),
@@ -153,6 +184,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
+
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
@@ -178,62 +210,63 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         hintText: 'Card Holder',
                       ),
                     ),
-
                     onCreditCardModelChange: onCreditCardModelChange,
                   ),
-                  Row(
-                    children: [
-                      Obx(
-                            ()=> Theme(
-                          data: Theme.of(context).copyWith(
-                            unselectedWidgetColor: Colors.white,
-                          ),
-                          child: Checkbox(
-                              activeColor: DynamicColor.yellowClr,
-
-                              value: defaultPayment.value, onChanged: (v){
-                            defaultPayment.value = v!;
-                          }),
-                        ),
-                      ),
-                      Text('Set as default payment method.',
-                        style: poppinsRegularStyle(fontSize: 13,context: context,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      )
-                    ],
-                  ),
-
+                  // Row(
+                  //   children: [
+                  //     Obx(
+                  //       () => Theme(
+                  //         data: Theme.of(context).copyWith(
+                  //           unselectedWidgetColor: Colors.white,
+                  //         ),
+                  //         child: Checkbox(
+                  //             activeColor: DynamicColor.yellowClr,
+                  //             value: defaultPayment.value,
+                  //             onChanged: (v) {
+                  //               defaultPayment.value = v!;
+                  //             }),
+                  //       ),
+                  //     ),
+                  //     Text(
+                  //       'Set as default payment method.',
+                  //       style: poppinsRegularStyle(
+                  //         fontSize: 13,
+                  //         context: context,
+                  //         color: Theme.of(context).primaryColor,
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
                 ],
               ),
             ),
           ),
-
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
-            if(paymentMethodFlow == 1){
-
+          onTap: () {
+            if (paymentMethodFlow == 1) {
               showDialog(
                   barrierColor: Colors.transparent,
                   context: context,
                   barrierDismissible: true,
                   builder: (BuildContext context) {
                     return AlertWidget(
-                      height: kToolbarHeight*5,
+                      height: kToolbarHeight * 5,
                       container: SizedBox(
                         width: Get.width,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 4),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 4),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text('Payment Success',
+                              Text(
+                                'Payment Success',
                                 style: poppinsMediumStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w600,
@@ -247,21 +280,22 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                                 child: Icon(
                                   Icons.check,
                                   size: 45,
-                                  color: Theme.of(context).colorScheme.background,
+                                  color: Theme.of(context).colorScheme.surface,
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                                child: Text(
-                                  'Your Payment has been\nsuccessfully done ',
-                                  textAlign: TextAlign.center,
-                                  style: poppinsMediumStyle(
-                                    fontSize: 20,
-                                    context: context,
-                                    color: Theme.of(context).colorScheme.background,
-                                  ),
-                                )
-                              ),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                  child: Text(
+                                    'Your Payment has been\nsuccessfully done ',
+                                    textAlign: TextAlign.center,
+                                    style: poppinsMediumStyle(
+                                      fontSize: 20,
+                                      context: context,
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
@@ -271,15 +305,13 @@ class _AddCardDetailsState extends State<AddCardDetails> {
               Future.delayed(Duration(seconds: 2), () {
                 Get.back();
                 Get.toNamed(Routes.serviceScreen,
-                    arguments: {
-                      "addMoreService": 1
-                    }
-                );
+                    arguments: {"addMoreService": 1});
               });
-            }else if(paymentMethodFlow == 2){
-              Get.back();
+            } else if (paymentMethodFlow == 2) {
+              saveCard();
+              // Get.back();
               // Get.toNamed(Routes.viewPaymentMethod);
-            }else{
+            } else {
               Get.toNamed(Routes.paymentConfirmationScreen);
             }
           },

@@ -9,6 +9,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:intl/intl.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -19,6 +20,9 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+
+
+  
   RxBool switchValue = false.obs;
 
   RxBool switchProfileValue = false.obs;
