@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/firebase/notification_services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

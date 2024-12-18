@@ -414,6 +414,7 @@ class AuthController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>> edit profile
+  
   editProfile() async {
     var formData = form.FormData.fromMap({
       "firstName": firstNameController.text,
@@ -477,6 +478,7 @@ class AuthController extends GetxController {
     } else {
       itemsList.remove(items);
     }
+    
     update();
   }
 
@@ -997,6 +999,13 @@ class AuthController extends GetxController {
     isNotificationLoading.value = false; // Stop loading
     update();
   }
+
+
+
+
+
+
+
 }
 
 class AuthBinding implements Bindings {

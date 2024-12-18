@@ -157,7 +157,7 @@ class HomeController extends GetxController {
 
   final List<transaction_history_model.Data> transactionData = [];
 
-  getAllCards() async {
+  Future getAllCards() async {
     var response = await API().getApi(url: "cards");
     if (response.statusCode == 200) {
       final responseData =
@@ -190,6 +190,22 @@ class HomeController extends GetxController {
       }
     } catch (e) {
       print("Exception $e");
+      rethrow;
+    }
+  }
+
+  // Todo Delete Card
+  deleteCard(String cardId) async {
+    try {
+      final formData = form.FormData.fromMap({
+        "card_id": cardId,
+      });
+
+      var response = await API().delete(formData, "delete-card");
+      if (response.statusCode == 200) {
+        Utils.showFlutterToast("Your Card Has Been Deleted!");
+      }
+    } catch (e) {
       rethrow;
     }
   }

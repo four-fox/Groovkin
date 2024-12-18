@@ -42,7 +42,7 @@ abstract class Routes{
   static const myEventsScreen = _Path.myEventsScreen;
   // static const myGroovkinScreen = _Path.myGroovkinScreen;
   static const bottomNavigationView = _Path.bottomNavigationView;
-  static const viewAllTransactionHistory = _Path.viewAllTransactionHistory;
+  static const viewAllCardList = _Path.viewAllCardList;
   static const addMoreHardwareScreen = _Path.addMoreHardwareScreen;
   static const analyticFilterScreen = _Path.analyticFilterScreen;
   // static const settingScreen = _Path.settingScreen;
@@ -151,7 +151,7 @@ abstract class _Path{
   static const myEventsScreen = "/MyEventsScreen";
   // static const myGroovkinScreen = "/MyGroovkinScreen";
   static const bottomNavigationView = "/BottomNavigationView";
-  static const viewAllTransactionHistory = "/ViewAllTransactionHistory";
+  static const viewAllCardList = "/ViewAllCardList";
   static const addMoreHardwareScreen = "/AddMoreHardwareScreen";
   static const analyticFilterScreen = "/AnalyticFilterScreen";
   // static const settingScreen = "/SettingScreen";

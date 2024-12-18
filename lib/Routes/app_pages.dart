@@ -168,8 +168,8 @@ class AppPages {
       page: () => TransactionScreen(),
     ),
     GetPage(
-      name: _Path.viewAllTransactionHistory,
-      page: () => ViewAllTransactionHistory(),
+      name: _Path.viewAllCardList,
+      page: () => ViewAllCardList(),
     ),
     GetPage(
       name: _Path.insuranceScreen,

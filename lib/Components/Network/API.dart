@@ -29,8 +29,13 @@ class API {
   API._internal();
   Dio addInterceptors() {
     return dio
-      ..interceptors.add(InterceptorsWrapper(
-          onError: (dioError, interceptorErrorCallback) async {
+      ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler) {
+        if (response.statusCode == 401) {
+          if (response.data["message"] == "Unauthenticated.") {
+            print("Asa");
+          }
+        }
+      }, onError: (dioError, interceptorErrorCallback) async {
         returnResponse(dioError.response!);
       }));
   }
@@ -100,6 +105,47 @@ class API {
                   },
                 ),
           onSendProgress: (int progress, int total) {});
+      BotToast.closeAllLoading();
+      return response;
+    } on DioException catch (e) {
+      BotToast.closeAllLoading();
+      return returnResponse(e.response);
+    }
+  }
+
+  /// Delete
+  Future<dynamic> delete(
+    formData,
+    url, {
+    fullUrl,
+    auth = true,
+    multiPart = false,
+    showProgress = true,
+    context,
+    /*required RoundedLoadingButtonController postButton*/
+  }) async {
+    try {
+      if (auth == true) {
+        dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
+        // dio.options.headers['Accept'] = "application/json";
+      }
+      if (showProgress) {
+        showLoading();
+      }
+      dynamic response = await dio.delete(fullUrl ?? url + Url().baseUrl,
+          data: formData,
+          options: multiPart == true
+              ? Options(
+                  headers: {
+                    Headers.acceptHeader: "application/json",
+                  },
+                  contentType: 'multipart/form-data',
+                )
+              : Options(
+                  headers: {
+                    Headers.acceptHeader: "application/json",
+                  },
+                ));
       BotToast.closeAllLoading();
       return response;
     } on DioException catch (e) {
