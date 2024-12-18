@@ -132,7 +132,7 @@ class API {
       if (showProgress) {
         showLoading();
       }
-      dynamic response = await dio.delete(fullUrl ?? url + Url().baseUrl,
+      dynamic response = await dio.delete(fullUrl ?? Url().baseUrl + url,
           data: formData,
           options: multiPart == true
               ? Options(

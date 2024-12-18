@@ -195,13 +195,13 @@ class HomeController extends GetxController {
   }
 
   // Todo Delete Card
-  deleteCard(String cardId) async {
+  Future<void> deleteCard(String cardId) async {
     try {
       final formData = form.FormData.fromMap({
         "card_id": cardId,
       });
 
-      var response = await API().delete(formData, "delete-card");
+      var response = await API().postApi(formData, "delete-card");
       if (response.statusCode == 200) {
         Utils.showFlutterToast("Your Card Has Been Deleted!");
       }

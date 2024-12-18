@@ -229,8 +229,9 @@ class ViewAllCardList extends StatefulWidget {
 
 class _ViewAllCardListState extends State<ViewAllCardList> {
   HomeController _controller = Get.find();
-  bool isAllCheck = false;
-  List<bool> cardListCheckBox = [];
+  bool isDeleteCard = false;
+  bool cardListCheckBox = false;
+  int? selectedIndex;
 
   @override
   void initState() {
@@ -238,127 +239,96 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
     _fetchCards();
   }
 
-  void _fetchCards() async {
+  Future _fetchCards() async {
     await _controller.getAllCards();
-    // Ensure transactionData has been populated
-    if (_controller.transactionData.isNotEmpty) {
-      setState(() {
-        cardListCheckBox =
-            List<bool>.filled(_controller.transactionData.length, false);
-      });
-    }
-  }
-
-  /// Function to handle "Select All"
-  void _toggleSelectAll(bool value) {
-    setState(() {
-      isAllCheck = value;
-      cardListCheckBox = List<bool>.filled(cardListCheckBox.length, value);
-
-      // Ensure at least one item remains unselected
-      if (value) {
-        cardListCheckBox[cardListCheckBox.length - 1] = false;
-      }
-    });
-  }
-
-  /// Handle individual checkbox changes
-  void _onItemCheck(int index, bool? value) {
-    setState(() {
-      if (value == true &&
-          cardListCheckBox.where((isChecked) => isChecked).length ==
-              cardListCheckBox.length - 1) {
-        // Prevent the last unchecked item from being checked
-        Utils.showFlutterToast("At least one card must remain unselected.");
-        return;
-      }
-      cardListCheckBox[index] = value ?? false;
-
-      // Update "Select All" status
-      // isAllCheck = cardListCheckBox.where((isChecked) => isChecked).length ==
-      //     cardListCheckBox.length - 1;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(
-        theme: theme,
-        text: "Your Card List ",
-      ),
-      body: GetBuilder<HomeController>(builder: (homecontroller) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            children: [
-              Visibility(
-                visible: cardListCheckBox.isEmpty
-                    ? false
-                    : cardListCheckBox.length != 1
-                        ? true
-                        : false,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text("Select All"),
-                    Checkbox.adaptive(
-                      value: isAllCheck,
-                      onChanged: (value) {
-                        if (value != null) {
-                          _toggleSelectAll(value);
-                        }
-                      },
-                      activeColor: DynamicColor.yellowClr,
-                      checkColor: Colors.white,
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: homecontroller.transactionData.length,
-                    shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, index) {
-                      final transactionData =
-                          homecontroller.transactionData[index];
-                      final Map<String, dynamic> decode =
-                          jsonDecode(transactionData.cardDetails.toString());
-
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                                onTap: () {
-                                  print("sasd");
-                                  // Get.toNamed(Routes.confirmationEventScreen);
-                                },
-                                child: CreditCardWidget(
-                                  isSwipeGestureEnabled: false,
-                                  cardNumber:
-                                      "${transactionData.first4digit!} 0000 0000 ${transactionData.last4digit!}",
-                                  expiryDate:
-                                      "${decode["exp_month"].toString().length == 1 ? ("0${decode["exp_month"]}") : decode["exp_month"].toString()}/${decode["exp_year"].toString().substring(2)}",
-                                  cardHolderName:
-                                      transactionData.cardholderName!,
-                                  cvvCode: "",
-                                  showBackView: false,
-                                  onCreditCardWidgetChange: (p0) {},
-                                  cardType: transactionData.brand == "visa"
-                                      ? CardType.visa
-                                      : null,
-                                  isHolderNameVisible: true,
-                                )),
-                          ),
-                          if (cardListCheckBox.isNotEmpty)
+        appBar: customAppBar(
+          theme: theme,
+          text: "Your Card List ",
+        ),
+        body: GetBuilder<HomeController>(builder: (homecontroller) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              children: [
+                if (_controller.transactionData.isNotEmpty &&
+                    _controller.transactionData.length != 1)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("Delete Card"),
+                      Checkbox(
+                        value: isDeleteCard,
+                        onChanged: (value) {
+                          setState(() {
+                            if (value == true) {
+                              isDeleteCard = true;
+                            } else {
+                              isDeleteCard = false;
+                              selectedIndex = null;
+                            }
+                          });
+                        },
+                        checkColor: Colors.white,
+                        activeColor: DynamicColor.yellowClr,
+                      )
+                    ],
+                  ),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: homecontroller.transactionData.length,
+                      shrinkWrap: true,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, index) {
+                        final transactionData =
+                            homecontroller.transactionData[index];
+                        final Map<String, dynamic> decode =
+                            jsonDecode(transactionData.cardDetails.toString());
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    print("sasd");
+                                    // Get.toNamed(Routes.confirmationEventScreen);
+                                  },
+                                  child: CreditCardWidget(
+                                    isSwipeGestureEnabled: false,
+                                    cardNumber:
+                                        "${transactionData.first4digit!} 0000 0000 ${transactionData.last4digit!}",
+                                    expiryDate:
+                                        "${decode["exp_month"].toString().length == 1 ? ("0${decode["exp_month"]}") : decode["exp_month"].toString()}/${decode["exp_year"].toString().substring(2)}",
+                                    cardHolderName:
+                                        transactionData.cardholderName!,
+                                    cvvCode: "",
+                                    showBackView: false,
+                                    onCreditCardWidgetChange: (p0) {},
+                                    cardType: transactionData.brand == "visa"
+                                        ? CardType.visa
+                                        : null,
+                                    isHolderNameVisible: true,
+                                  )),
+                            ),
                             Visibility(
-                              visible: isAllCheck,
+                              visible: isDeleteCard,
                               child: Checkbox(
-                                value: cardListCheckBox[index],
+                                value: selectedIndex ==
+                                    index, // Only the selected checkbox will be true
                                 onChanged: (bool? value) {
-                                  _onItemCheck(index, value);
+                                  setState(() {
+                                    if (value == true) {
+                                      selectedIndex =
+                                          index; // Set selected checkbox index
+                                    } else {
+                                      selectedIndex =
+                                          null; // Deselect the checkbox
+                                    }
+                                  });
                                 },
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
@@ -366,26 +336,59 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                                 checkColor: Colors.white,
                               ),
                             ),
-                        ],
-                      );
-                    }),
-              ),
-            ],
-          ),
-        );
-      }),
-      bottomNavigationBar: cardListCheckBox.any((isSelected) => isSelected)
-          ? Container(
+                          ],
+                        );
+                      }),
+                ),
+              ],
+            ),
+          );
+        }),
+        bottomNavigationBar:
+            GetBuilder<HomeController>(builder: (homecontroller) {
+          // Show "Delete" button if a card is selected
+          if (selectedIndex != null) {
+            return Container(
               margin: EdgeInsets.all(8.0),
               child: CustomButton(
                 borderClr: Colors.transparent,
                 onTap: () {
-                  // _controller.deleteCard(dataa)
+                  // Get the selected card's ID and perform deletion
+                  final int id =
+                      homecontroller.transactionData[selectedIndex!].id!;
+                  homecontroller.deleteCard(id.toString()).then((value) {
+                    _fetchCards().then((_) {
+                      // Reset state after deletion
+                      setState(() {
+                        selectedIndex = null;
+                        isDeleteCard = false;
+                      });
+                    }); // Refresh the card list after deletion
+                  });
                 },
                 text: "Delete",
               ),
-            )
-          : null,
-    );
+            );
+          }
+          // Show "Replace" button if there's only one card left and none are selected
+          else if (homecontroller.transactionData.length == 1 &&
+              selectedIndex == null) {
+            return Container(
+              margin: EdgeInsets.all(8.0),
+              child: CustomButton(
+                onTap: () {
+                  Get.toNamed(Routes.addCardDetails, arguments: {
+                    "isFromreplaced": true,
+                    "paymentMethod": 2,
+                  });
+                  // Add functionality for "Replace" if required
+                },
+                text: "Replace",
+              ),
+            );
+          }
+          return SizedBox();
+          // Return null if neither condition is met (no button shown)
+        }));
   }
 }

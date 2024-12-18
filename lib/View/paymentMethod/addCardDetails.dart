@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
@@ -32,33 +29,32 @@ class _AddCardDetailsState extends State<AddCardDetails> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   int paymentMethodFlow = Get.arguments['paymentMethod'];
+  bool isFromreplaced = Get.arguments?["isFromreplaced"] ?? false;
+
+  //  ################################################## Replaced ###########################################
 
   saveCard() {
     final validate = formKey.currentState!.validate();
     if (!validate) return;
     if (validate) {
-      if (kDebugMode) {
-        log(cardHolderName);
-        log(cardNumber);
-        log(cvvCode);
-        log(expiryDate.split("/").first);
-        log(expiryDate.split("/").last);
-      }
-
-      _controller.addCard(
-          cardHolderName,
-          cardNumber
-              .toString()
-              .replaceAll(RegExp(r'\s+'), ''), // Remove all whitespace
-          expiryDate.split("/").first,
-          expiryDate.split("/").last,
-          cvvCode);
+      isFromreplaced == true
+          ? Get.back()
+          : _controller.addCard(
+              cardHolderName,
+              cardNumber
+                  .toString()
+                  .replaceAll(RegExp(r'\s+'), ''), // Remove all whitespace
+              expiryDate.split("/").first,
+              expiryDate.split("/").last,
+              cvvCode,
+            );
     }
+
+    
   }
 
   @override
   void initState() {
-    print(paymentMethodFlow);
     border = OutlineInputBorder(
       borderSide: BorderSide(
         color: Colors.grey.withOpacity(0.7),
@@ -122,7 +118,6 @@ class _AddCardDetailsState extends State<AddCardDetails> {
               child: Column(
                 children: <Widget>[
                   CreditCardForm(
-                    
                     formKey: formKey,
                     obscureCvv: true,
                     obscureNumber: true,
@@ -315,7 +310,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
               Get.toNamed(Routes.paymentConfirmationScreen);
             }
           },
-          text: "Add",
+          text: isFromreplaced ? "Replace" : "Add",
         ),
       ),
     );
