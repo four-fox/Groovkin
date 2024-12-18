@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
@@ -76,8 +77,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CreditCardWidget(
-              glassmorphismConfig:
-                  useGlassMorphism ? Glassmorphism.defaultConfig() : null,
+              glassmorphismConfig: Glassmorphism.defaultConfig(),
+              // glassmorphismConfig:
+              //     useGlassMorphism ? Glassmorphism.defaultConfig() : null,
               cardNumber: cardNumber,
               expiryDate: expiryDate,
               cardHolderName: cardHolderName,
@@ -258,26 +260,43 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
               children: [
                 if (_controller.transactionData.isNotEmpty &&
                     _controller.transactionData.length != 1)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text("Delete Card"),
-                      Checkbox(
-                        value: isDeleteCard,
-                        onChanged: (value) {
+                  Material(
+                    color: Colors.transparent,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (isDeleteCard == true) {
                           setState(() {
-                            if (value == true) {
-                              isDeleteCard = true;
-                            } else {
-                              isDeleteCard = false;
-                              selectedIndex = null;
-                            }
+                            isDeleteCard = false;
+                            selectedIndex = null;
                           });
-                        },
-                        checkColor: Colors.white,
-                        activeColor: DynamicColor.yellowClr,
-                      )
-                    ],
+                        } else {
+                          setState(() {
+                            isDeleteCard = true;
+                          });
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text("Delete Card"),
+                          Checkbox(
+                            value: isDeleteCard,
+                            onChanged: (value) {
+                              setState(() {
+                                if (value == true) {
+                                  isDeleteCard = true;
+                                } else {
+                                  isDeleteCard = false;
+                                  selectedIndex = null;
+                                }
+                              });
+                            },
+                            checkColor: Colors.white,
+                            activeColor: DynamicColor.yellowClr,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 Expanded(
                   child: ListView.builder(
@@ -298,6 +317,8 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                                     // Get.toNamed(Routes.confirmationEventScreen);
                                   },
                                   child: CreditCardWidget(
+                                    glassmorphismConfig:
+                                        Glassmorphism.defaultConfig(),
                                     isSwipeGestureEnabled: false,
                                     cardNumber:
                                         "${transactionData.first4digit!} 0000 0000 ${transactionData.last4digit!}",
@@ -315,10 +336,11 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                                   )),
                             ),
                             Visibility(
-                              visible: isDeleteCard,
+                              visible:
+                                  isDeleteCard, // * if delete all is true then show
                               child: Checkbox(
                                 value: selectedIndex ==
-                                    index, // Only the selected checkbox will be true
+                                    index, // * Only the selected checkbox will be true
                                 onChanged: (bool? value) {
                                   setState(() {
                                     if (value == true) {
@@ -348,42 +370,85 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
             GetBuilder<HomeController>(builder: (homecontroller) {
           // Show "Delete" button if a card is selected
           if (selectedIndex != null) {
-            return Container(
-              margin: EdgeInsets.all(8.0),
-              child: CustomButton(
-                borderClr: Colors.transparent,
-                onTap: () {
-                  // Get the selected card's ID and perform deletion
-                  final int id =
-                      homecontroller.transactionData[selectedIndex!].id!;
-                  homecontroller.deleteCard(id.toString()).then((value) {
-                    _fetchCards().then((_) {
-                      // Reset state after deletion
-                      setState(() {
-                        selectedIndex = null;
-                        isDeleteCard = false;
-                      });
-                    }); // Refresh the card list after deletion
-                  });
-                },
-                text: "Delete",
+            return SafeArea(
+              bottom: Platform.isIOS ? true : false,
+              child: Container(
+                margin: EdgeInsets.all(8.0),
+                child: CustomButton(
+                  borderClr: Colors.transparent,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: Colors.black.withOpacity(0.7),
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Confirm Deletion"),
+                          content: Text(
+                            "Are you sure you want to delete this payment method? This action cannot be undone.",
+                          ),
+                          actions: [
+                            CustomButton(
+                              widths: context.width * .25,
+                              heights: 40,
+                              onTap: () {
+                                Get.back();
+                              },
+                              text: "No",
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            CustomButton(
+                              heights: 40,
+                              widths: context.width * .25,
+                              onTap: () {
+                                Get.back();
+
+                                // Get the selected card's ID and perform deletion
+                                final int id = homecontroller
+                                    .transactionData[selectedIndex!].id!;
+                                homecontroller
+                                    .deleteCard(id.toString())
+                                    .then((value) {
+                                  _fetchCards().then((_) {
+                                    // Reset state after deletion
+                                    setState(() {
+                                      selectedIndex = null;
+                                      isDeleteCard = false;
+                                    });
+                                  }); // Refresh the card list after deletion
+                                });
+                              },
+                              text: "Yes",
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  text: "Delete",
+                ),
               ),
             );
           }
           // Show "Replace" button if there's only one card left and none are selected
           else if (homecontroller.transactionData.length == 1 &&
               selectedIndex == null) {
-            return Container(
-              margin: EdgeInsets.all(8.0),
-              child: CustomButton(
-                onTap: () {
-                  Get.toNamed(Routes.addCardDetails, arguments: {
-                    "isFromreplaced": true,
-                    "paymentMethod": 2,
-                  });
-                  // Add functionality for "Replace" if required
-                },
-                text: "Replace",
+            return SafeArea(
+              bottom: Platform.isIOS ? true : false,
+              child: Container(
+                margin: EdgeInsets.all(8.0),
+                child: CustomButton(
+                  onTap: () {
+                    Get.toNamed(Routes.addCardDetails, arguments: {
+                      "isFromreplaced": true,
+                      "paymentMethod": 2,
+                    });
+                    // Add functionality for "Replace" if required
+                  },
+                  text: "Replace",
+                ),
               ),
             );
           }

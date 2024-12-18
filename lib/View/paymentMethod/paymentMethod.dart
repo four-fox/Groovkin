@@ -13,57 +13,66 @@ import 'package:groovkin/View/authView/autController.dart';
 class PaymentMethodScreen extends StatelessWidget {
   PaymentMethodScreen({super.key});
 
-  int paymentMethodVal = Get.arguments['paymentMethod']??1;
+  int paymentMethodVal = Get.arguments['paymentMethod'] ?? 1;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,),
-      body: GetBuilder<AuthController>(
-        builder: (controller) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.0,vertical: 25),
-            child: Column(
-              children: [
-                cardsType(theme: theme,context: context,controller: controller,radioValuee: 0,
-                    onChanged:(v){
-                  controller.radioValue.value = v;
-                  controller.update();
-                    }
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                cardsType(theme: theme,context: context,radioValuee: 1,controller: controller,image: "assets/masterCard.png",
-                    onChanged:(v){
-                      controller.radioValue.value = v;
-                      controller.update();
-                    }
-                ),  SizedBox(
-                  height: 24,
-                ),
-                cardsType(theme: theme,context: context,radioValuee: 2,controller: controller,image: "assets/amex.png",
-                    onChanged:(v){
-                      controller.radioValue.value = v;
-                      controller.update();
-                    }
-                ),
-              ],
-            ),
-          );
-        }
+      appBar: customAppBar(
+        theme: theme,
       ),
+      body: GetBuilder<AuthController>(builder: (controller) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
+          child: Column(
+            children: [
+              cardsType(
+                  theme: theme,
+                  context: context,
+                  controller: controller,
+                  radioValuee: 0,
+                  onChanged: (v) {
+                    controller.radioValue.value = v;
+                    controller.update();
+                  }),
+              SizedBox(
+                height: 24,
+              ),
+              cardsType(
+                  theme: theme,
+                  context: context,
+                  radioValuee: 1,
+                  controller: controller,
+                  image: "assets/masterCard.png",
+                  onChanged: (v) {
+                    controller.radioValue.value = v;
+                    controller.update();
+                  }),
+              SizedBox(
+                height: 24,
+              ),
+              cardsType(
+                  theme: theme,
+                  context: context,
+                  radioValuee: 2,
+                  controller: controller,
+                  image: "assets/amex.png",
+                  onChanged: (v) {
+                    controller.radioValue.value = v;
+                    controller.update();
+                  }),
+            ],
+          ),
+        );
+      }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () {
             Get.toNamed(Routes.addCardDetails,
-            arguments: {
-              'paymentMethod': paymentMethodVal
-            }
-            );
+                arguments: {'paymentMethod': paymentMethodVal});
           },
           text: "Add Card",
         ),
@@ -71,39 +80,40 @@ class PaymentMethodScreen extends StatelessWidget {
     );
   }
 
-  Widget cardsType({theme,context,controller,image,radioValuee, onChanged}){
+  Widget cardsType(
+      {theme, context, controller, image, radioValuee, onChanged}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: DynamicColor.whiteClr.withOpacity(0.4),),
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-            image: AssetImage("assets/grayClor.png"),
-          fit: BoxFit.fill
-        )
-      ),
+          border: Border.all(
+            color: DynamicColor.whiteClr.withOpacity(0.4),
+          ),
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+              image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
       child: Row(
         children: [
-Image(
-  image: AssetImage(image??"assets/visaCard.png"),
-),
+          Image(
+            image: AssetImage(image ?? "assets/visaCard.png"),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 14.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("**** **** **** 4567",
+                Text(
+                  "**** **** **** 4567",
                   style: poppinsRegularStyle(
                       fontSize: 16,
                       color: theme.primaryColor,
-                      context: context
-                  ),),
-                Text("Expires 10/24",
-                style: poppinsRegularStyle(
-                  fontSize: 12,
-                  color: theme.primaryColor,
-                  context: context
+                      context: context),
                 ),
+                Text(
+                  "Expires 10/24",
+                  style: poppinsRegularStyle(
+                      fontSize: 12,
+                      color: theme.primaryColor,
+                      context: context),
                 ),
               ],
             ),
@@ -114,8 +124,11 @@ Image(
               //here change to your color
               unselectedWidgetColor: DynamicColor.yellowClr,
             ),
-            child: Radio(value: radioValuee, groupValue: controller.radioValue.value,activeColor: DynamicColor.yellowClr,
-    onChanged: onChanged,
+            child: Radio(
+              value: radioValuee,
+              groupValue: controller.radioValue.value,
+              activeColor: DynamicColor.yellowClr,
+              onChanged: onChanged,
             ),
           ),
         ],
@@ -123,8 +136,6 @@ Image(
     );
   }
 }
-
-
 
 class ViewPaymentMethod extends StatefulWidget {
   const ViewPaymentMethod({super.key});
@@ -134,7 +145,6 @@ class ViewPaymentMethod extends StatefulWidget {
 }
 
 class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
-
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
@@ -160,30 +170,29 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Payment Methods"),
+      appBar: customAppBar(theme: theme, text: "Payment Methods"),
       body: Column(
         children: [
           CreditCardWidget(
-            glassmorphismConfig:
-            useGlassMorphism ? Glassmorphism.defaultConfig() : null,
+            glassmorphismConfig: Glassmorphism.defaultConfig(),
+            // glassmorphismConfig:
+            // useGlassMorphism ? Glassmorphism.defaultConfig() : null,
             cardNumber: cardNumber,
             expiryDate: expiryDate,
             cardHolderName: cardHolderName,
             cvvCode: cvvCode,
             bankName: 'Axis Bank',
             frontCardBorder:
-            !useGlassMorphism ? Border.all(color: Colors.grey) : null,
+                !useGlassMorphism ? Border.all(color: Colors.grey) : null,
             backCardBorder:
-            !useGlassMorphism ? Border.all(color: Colors.grey) : null,
+                !useGlassMorphism ? Border.all(color: Colors.grey) : null,
             showBackView: isCvvFocused,
             obscureCardNumber: true,
             obscureCardCvv: true,
             isHolderNameVisible: true,
-            backgroundImage:
-            useBackgroundImage ? 'assets/card_bg.png' : null,
+            backgroundImage: useBackgroundImage ? 'assets/card_bg.png' : null,
             isSwipeGestureEnabled: true,
-            onCreditCardWidgetChange:
-                (CreditCardBrand creditCardBrand) {},
+            onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
             customCardTypeIcons: <CustomCardTypeIcon>[
               CustomCardTypeIcon(
                 cardType: CardType.mastercard,
@@ -205,7 +214,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
               children: [
                 CustomButton(
                   borderClr: Colors.transparent,
-                  widths: Get.width/3.5,
+                  widths: Get.width / 3.5,
                   backgroundClr: false,
                   color2: DynamicColor.lightBlackClr,
                   color1: DynamicColor.lightBlackClr,
@@ -213,8 +222,8 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
                 ),
                 CustomButton(
                   borderClr: Colors.transparent,
-                  widths: Get.width/3.0,
-                  onTap: (){
+                  widths: Get.width / 3.0,
+                  onTap: () {
                     Get.back();
                   },
                   text: "Add new card",
@@ -225,7 +234,8 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
           SizedBox(
             height: 20,
           ),
-          Padding(   padding: EdgeInsets.symmetric(horizontal: 18.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -235,32 +245,33 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Today 5 : 30 PM",
-                      style: poppinsRegularStyle(
-                        fontSize: 14,
-                        color: DynamicColor.grayClr.withOpacity(0.8)
+                      Text(
+                        "Today 5 : 30 PM",
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            color: DynamicColor.grayClr.withOpacity(0.8)),
                       ),
-                      ),
-                      Text("John",
-                      style: poppinsMediumStyle(
-                        fontSize: 14,
-                        color: theme.primaryColor,
-                      ),
+                      Text(
+                        "John",
+                        style: poppinsMediumStyle(
+                          fontSize: 14,
+                          color: theme.primaryColor,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Spacer(),
-                Text("21-Aug-2023",
+                Text(
+                  "21-Aug-2023",
                   style: poppinsRegularStyle(
-                      fontSize: 14,
-                      color: DynamicColor.redClr
-                  ),
+                      fontSize: 14, color: DynamicColor.redClr),
                 )
               ],
             ),
           ),
-          Padding(   padding: EdgeInsets.symmetric(horizontal: 18.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18.0),
             child: Divider(
               thickness: 2,
               color: DynamicColor.grayClr.withOpacity(0.7),
@@ -269,7 +280,8 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
           SizedBox(
             height: 10,
           ),
-          Padding(   padding: EdgeInsets.symmetric(horizontal: 18.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -279,32 +291,33 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Today 6 : 00 PM",
-                      style: poppinsRegularStyle(
-                        fontSize: 14,
-                        color: DynamicColor.grayClr.withOpacity(0.8)
+                      Text(
+                        "Today 6 : 00 PM",
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            color: DynamicColor.grayClr.withOpacity(0.8)),
                       ),
-                      ),
-                      Text("John",
-                      style: poppinsMediumStyle(
-                        fontSize: 14,
-                        color: theme.primaryColor,
-                      ),
+                      Text(
+                        "John",
+                        style: poppinsMediumStyle(
+                          fontSize: 14,
+                          color: theme.primaryColor,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Spacer(),
-                Text("21-Aug-2023",
+                Text(
+                  "21-Aug-2023",
                   style: poppinsRegularStyle(
-                      fontSize: 14,
-                      color: DynamicColor.greenClr
-                  ),
+                      fontSize: 14, color: DynamicColor.greenClr),
                 )
               ],
             ),
           ),
-          Padding(   padding: EdgeInsets.symmetric(horizontal: 18.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18.0),
             child: Divider(
               thickness: 2,
               color: DynamicColor.grayClr.withOpacity(0.7),
@@ -315,4 +328,3 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
     );
   }
 }
-

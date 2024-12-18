@@ -210,6 +210,23 @@ class HomeController extends GetxController {
     }
   }
 
+  // Todo Get Transaction History
+
+  RxBool isGetTransactionHistory = false.obs;
+  bool notificationWait = false;
+
+  Future<void> getTransactionHistory({fullUrl, url}) async {
+    isGetTransactionHistory.value = true;
+    final reponse = await API().getApi(fullUrl: fullUrl, url: url);
+    if (reponse.statusCode == 200) {
+      if (fullUrl == null) {
+      } else {}
+    }
+    isGetTransactionHistory.value = true;
+    update();
+  }
+
+  
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo user Home functionality
 }
 

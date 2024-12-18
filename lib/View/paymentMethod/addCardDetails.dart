@@ -49,8 +49,6 @@ class _AddCardDetailsState extends State<AddCardDetails> {
               cvvCode,
             );
     }
-
-    
   }
 
   @override
@@ -83,8 +81,9 @@ class _AddCardDetailsState extends State<AddCardDetails> {
           //   height: 30,
           // ),
           CreditCardWidget(
-            glassmorphismConfig:
-                useGlassMorphism ? Glassmorphism.defaultConfig() : null,
+            // glassmorphismConfig:
+            //     useGlassMorphism ? Glassmorphism.defaultConfig() : null,
+            glassmorphismConfig: Glassmorphism.defaultConfig(),
             cardNumber: cardNumber,
             expiryDate: expiryDate,
             cardHolderName: cardHolderName,
