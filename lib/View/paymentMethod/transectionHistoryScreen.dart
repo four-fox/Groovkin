@@ -313,7 +313,6 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                             Expanded(
                               child: GestureDetector(
                                   onTap: () {
-                                    print("sasd");
                                     // Get.toNamed(Routes.confirmationEventScreen);
                                   },
                                   child: CreditCardWidget(

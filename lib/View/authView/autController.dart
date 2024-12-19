@@ -8,7 +8,6 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart' as form;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/CustomMultipart.dart';
@@ -369,6 +368,7 @@ class AuthController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>toDo create profile functionality
+
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final displayNameController = TextEditingController();
@@ -378,6 +378,7 @@ class AuthController extends GetxController {
   final countryController = TextEditingController();
   final stateController = TextEditingController();
   String? numberAssign = "+1";
+
   createProfile({userId}) async {
     List imageList = [];
     if (imageBytes != null) {
@@ -495,8 +496,6 @@ class AuthController extends GetxController {
       }
     }
     surveyPost(navigation: navigation);
-    print(catTemList);
-    print("catTemList");
   }
 
   surveyPost({navigation}) async {
@@ -521,7 +520,6 @@ class AuthController extends GetxController {
         }
       }
     }
-    print(data.fields);
     var response = await API().postApi(data, "create-quick-survey");
     if (response.statusCode == 200) {
       clearLists();

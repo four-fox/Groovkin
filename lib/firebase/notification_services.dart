@@ -63,6 +63,7 @@ class NotificationService {
   }
 
   // ! Todo initialize the android and ios settings and icon
+
   void initLocalNotifications(
     BuildContext context,
     RemoteMessage message,
@@ -288,4 +289,9 @@ class NotificationService {
       });
     }
   }
+
+
+  
+
+
 }
