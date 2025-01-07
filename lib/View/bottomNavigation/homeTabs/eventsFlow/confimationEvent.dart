@@ -8,6 +8,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:intl/intl.dart';
 
 class ConfirmationEventScreen extends StatefulWidget {
   ConfirmationEventScreen({super.key});
@@ -70,6 +71,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   // AuthController _authController = Get.find();
   @override
   Widget build(BuildContext context) {
+    print("Hours: ${hoursDifference!.toInt()}");
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
@@ -133,11 +135,27 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
               SizedBox(
                 height: 10,
               ),
+              // customWidget(
+              //     theme: theme,
+              //     context: context,
+              //     title: "Time",
+              //     value: _controller.proposedTimeWindowsController.text),
+              // SizedBox(
+              //   height: 10,
+              // ),
               customWidget(
                   theme: theme,
                   context: context,
-                  title: "Time",
+                  title: "Start Time",
                   value: _controller.proposedTimeWindowsController.text),
+              SizedBox(
+                height: 10,
+              ),
+              customWidget(
+                  theme: theme,
+                  context: context,
+                  title: "End Time",
+                  value: _controller.endTimeController.text),
               SizedBox(
                 height: 10,
               ),

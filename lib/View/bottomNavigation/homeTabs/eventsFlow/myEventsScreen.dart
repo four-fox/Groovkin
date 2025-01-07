@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class MyEventsScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         appBar: customAppBar(theme: theme, text: "My Events"),
         body: NotificationListener<ScrollNotification>(
@@ -38,9 +39,10 @@ class MyEventsScreen extends StatelessWidget {
                     _controller.newsFeedWait = false;
                   });
                   _controller.getMyAllEvent(
-                      fullUrl:
-                          _controller.recommendedEventData!.data!.nextPageUrl,
-                      title: pageCondition);
+                    fullUrl:
+                        _controller.recommendedEventData!.data!.nextPageUrl,
+                    title: pageCondition,
+                  );
                   return true;
                 }
               }
@@ -53,16 +55,20 @@ class MyEventsScreen extends StatelessWidget {
           }, builder: (controller) {
             return controller.getRecommendedLoader.value == false
                 ? SizedBox.shrink()
-                : controller.recommendedEventData!.data!.data!.isEmpty
+                : controller.recommendedEventData?.data?.data?.isEmpty ?? true
                     ? noData(context: context, theme: theme)
                     : Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.0),
                         child: ListView.builder(
                             itemCount: controller
-                                .recommendedEventData!.data!.data!.length,
+                                    .recommendedEventData?.data?.data?.length ??
+                                0,
                             shrinkWrap: true,
                             physics: AlwaysScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, index) {
+                              log(controller
+                                  .recommendedEventData!.data!.data!.length
+                                  .toString());
                               EventData singleEventData = controller
                                   .recommendedEventData!.data!.data![index];
                               return Padding(
@@ -76,7 +82,8 @@ class MyEventsScreen extends StatelessWidget {
                                             .withOpacity(0.6)),
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
@@ -94,18 +101,21 @@ class MyEventsScreen extends StatelessWidget {
                                               if (singleEventData
                                                       .user!.deleteAt !=
                                                   null)
-                                               Utils.accountDelete(context),
+                                                Utils.accountDelete(context),
                                               SizedBox(
                                                 width: 10,
                                               ),
                                               Container(
                                                 padding: EdgeInsets.all(8),
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(10),
-                                                      topRight:
-                                                          Radius.circular(10)),
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  10)),
                                                   image: DecorationImage(
                                                       image: AssetImage(
                                                           "assets/topbtnGradent.png"),
@@ -142,14 +152,21 @@ class MyEventsScreen extends StatelessWidget {
                                                   singleEventData.bannerImage ==
                                                           null
                                                       ? singleEventData
-                                                          .profilePicture![0]
-                                                          .mediaPath!
+                                                              .profilePicture!
+                                                              .isNotEmpty
+                                                          ? singleEventData
+                                                              .profilePicture![
+                                                                  0]
+                                                              .mediaPath!
+                                                          : groupPlaceholder
                                                       : singleEventData
-                                                          .bannerImage!.mediaPath
+                                                          .bannerImage!
+                                                          .mediaPath
                                                           .toString()),
                                             ),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 8.0),
+                                              padding:
+                                                  EdgeInsets.only(left: 8.0),
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -159,7 +176,8 @@ class MyEventsScreen extends StatelessWidget {
                                                     style: poppinsRegularStyle(
                                                         fontSize: 12,
                                                         context: context,
-                                                        color: theme.primaryColor,
+                                                        color:
+                                                            theme.primaryColor,
                                                         fontWeight:
                                                             FontWeight.w600),
                                                   ),
@@ -197,7 +215,8 @@ class MyEventsScreen extends StatelessWidget {
                                             context: context,
                                             color: theme.primaryColor,
                                           ),
-                                          onTap: singleEventData.user!.deleteAt ==
+                                          onTap: singleEventData
+                                                      .user!.deleteAt ==
                                                   null
                                               ? () {
                                                   Get.toNamed(
@@ -226,7 +245,8 @@ class MyEventsScreen extends StatelessWidget {
                                       controller.selectedFilter.value == 4
                                           ? Padding(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 12.0, vertical: 3),
+                                                  horizontal: 12.0,
+                                                  vertical: 3),
                                               child: CustomButton(
                                                 heights: 35,
                                                 backgroundClr: false,

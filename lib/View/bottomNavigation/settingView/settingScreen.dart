@@ -20,9 +20,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-
-
-  
   RxBool switchValue = false.obs;
 
   RxBool switchProfileValue = false.obs;
@@ -89,11 +86,11 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           child: CircleAvatar(
                             radius: 30,
-                            backgroundImage: NetworkImage(controller
-                                        .userData!.data?.profilePicture !=
-                                    null
-                                ? "${Url().imageUrl}${controller.userData?.data?.profilePicture?.mediaPath}"
-                                : groupPlaceholder),
+                            backgroundImage: NetworkImage(
+                              controller.userData!.data?.profilePicture != null
+                                  ? "${Url().imageUrl}${controller.userData?.data?.profilePicture?.mediaPath}"
+                                  : groupPlaceholder,
+                            ),
                           ),
                         ),
                         Text(

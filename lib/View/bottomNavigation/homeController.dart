@@ -139,15 +139,23 @@ class HomeController extends GetxController {
   }
 
   /// get my all event
+
   getMyAllEvent({fullUrl, title}) async {
     getRecommendedLoader(false);
-    recommendedEventData = null;
+    // recommendedEventData = null;
     print(title);
     var response = title == "drafts"
         ? await API().getApi(url: "save-draft-list", fullUrl: fullUrl)
         : await API().getApi(url: "my-events", fullUrl: fullUrl);
     if (response.statusCode == 200) {
-      recommendedEventData = RecommendedEventsModel.fromJson(response.data);
+      if (fullUrl == null) {
+        recommendedEventData = RecommendedEventsModel.fromJson(response.data);
+      } else {
+        recommendedEventData!.data!.data!
+            .addAll(RecommendedEventsModel.fromJson(response.data).data!.data!);
+        recommendedEventData!.data!.nextPageUrl =
+            RecommendedEventsModel.fromJson(response.data).data!.nextPageUrl;
+      }
       getRecommendedLoader(true);
       update();
     }
@@ -226,7 +234,6 @@ class HomeController extends GetxController {
     update();
   }
 
-  
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo user Home functionality
 }
 

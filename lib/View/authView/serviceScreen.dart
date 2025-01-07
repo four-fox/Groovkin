@@ -13,7 +13,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class ServiceScreen extends StatefulWidget {
-  ServiceScreen({Key? key}) : super(key: key);
+  ServiceScreen({super.key});
 
   @override
   State<ServiceScreen> createState() => _ServiceScreenState();
@@ -28,7 +28,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     if (Get.isRegistered<EventController>()) {
@@ -44,7 +43,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
     print(moreServiceAdd);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         appBar: customAppBar(theme: theme, text: "Service", actions: [
           ((_eventController.eventDetail == null) &&
@@ -115,12 +114,13 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
                                     child: GestureDetector(
                                       onTap: () {
                                         controller.serviceAddFtn(
-                                            items:
-                                                controller.serviceListing[index]);
+                                            items: controller
+                                                .serviceListing[index]);
                                         // controller.surveyData!.data![index].showItems!.value = !controller.surveyData!.data![index].showItems!.value;
                                         // controller.update();
                                       },
@@ -158,10 +158,17 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                       false
                                                   ? theme.primaryColor
                                                   : DynamicColor.grayClr,
-                                              child: Image(
-                                                image: AssetImage(
-                                                    list[index].img.toString()),
-                                              ),
+                                              // child: (list[index] != null ||
+                                              //         list[index].img == null)
+                                              //     ? SizedBox()
+                                              //     : Image(
+                                              //         image: AssetImage(
+                                              //             list[index]
+                                              //                 .img
+                                              //                 .toString()),
+                                              //       ),
+                                              child: Image.asset(
+                                                  "assets/djing.png"),
                                             ),
                                             SizedBox(
                                               width: 5,
@@ -195,56 +202,56 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                     ));
                               }),
                         ),
-      //                   serviceWidget(context: context,theme: theme,
-      //                       onChanged: (v){
-      //                       controller.djing.value = v!;
-      //                       controller.update();
-      //                   },
-      //                     djValue: controller.djing.value
-      //                   ),
-      // SizedBox(
-      //   height: 15,
-      // ),
-      //                   serviceWidget(context: context,theme: theme,onChanged: (v){
-      //                       controller.lighting.value = v!;
-      //                       controller.update();
-      //                   },text: "Lighting",
-      //                       image: "assets/lighting.png",
-      //                     djValue: controller.lighting.value
-      //                     ),
-      //   SizedBox(
-      //     height: 15,
-      //   ),
-      //                     serviceWidget(context: context,theme: theme,onChanged: (v){
-      //                       controller.photoBooth.value = v!;
-      //                         controller.update();
-      //                     },text: "Photobooth",
-      //
-      //                         image: "assets/lighting.png",
-      //                       djValue: controller.photoBooth.value
-      //                     ),
-      //   SizedBox(
-      //     height: 15,
-      //   ),
-      //                     serviceWidget(context: context,theme: theme,onChanged: (v){
-      //                       controller.masterOf.value = v!;
-      //                         controller.update();
-      //                     },text: "Master of Ceremony",
-      //
-      //                         image: "assets/master.png",
-      //                       djValue: controller.masterOf.value
-      //                     ),
-      //   SizedBox(
-      //     height: 15,
-      //   ),
-      //                     serviceWidget(context: context,theme: theme,onChanged: (v){
-      //                       controller.avEquipment.value = v!;
-      //                         controller.update();
-      //                     },text: "AV Equipment",
-      //
-      //                         image: "assets/avEquipment.png",
-      //                       djValue: controller.avEquipment.value
-      //                     ),
+                        //                   serviceWidget(context: context,theme: theme,
+                        //                       onChanged: (v){
+                        //                       controller.djing.value = v!;
+                        //                       controller.update();
+                        //                   },
+                        //                     djValue: controller.djing.value
+                        //                   ),
+                        // SizedBox(
+                        //   height: 15,
+                        // ),
+                        //                   serviceWidget(context: context,theme: theme,onChanged: (v){
+                        //                       controller.lighting.value = v!;
+                        //                       controller.update();
+                        //                   },text: "Lighting",
+                        //                       image: "assets/lighting.png",
+                        //                     djValue: controller.lighting.value
+                        //                     ),
+                        //   SizedBox(
+                        //     height: 15,
+                        //   ),
+                        //                     serviceWidget(context: context,theme: theme,onChanged: (v){
+                        //                       controller.photoBooth.value = v!;
+                        //                         controller.update();
+                        //                     },text: "Photobooth",
+                        //
+                        //                         image: "assets/lighting.png",
+                        //                       djValue: controller.photoBooth.value
+                        //                     ),
+                        //   SizedBox(
+                        //     height: 15,
+                        //   ),
+                        //                     serviceWidget(context: context,theme: theme,onChanged: (v){
+                        //                       controller.masterOf.value = v!;
+                        //                         controller.update();
+                        //                     },text: "Master of Ceremony",
+                        //
+                        //                         image: "assets/master.png",
+                        //                       djValue: controller.masterOf.value
+                        //                     ),
+                        //   SizedBox(
+                        //     height: 15,
+                        //   ),
+                        //                     serviceWidget(context: context,theme: theme,onChanged: (v){
+                        //                       controller.avEquipment.value = v!;
+                        //                         controller.update();
+                        //                     },text: "AV Equipment",
+                        //
+                        //                         image: "assets/avEquipment.png",
+                        //                       djValue: controller.avEquipment.value
+                        //                     ),
                       ],
                     ),
                   ),
@@ -337,26 +344,26 @@ class _ServiceScreenState extends State<ServiceScreen> {
     );
   }
 
-  List<ServiceList> list = [
-    ServiceList(
-        text: 'DJing', img: "assets/djing.png", clickCondition: false.obs),
-    ServiceList(
-        text: 'Lighting',
-        img: "assets/lighting.png",
-        clickCondition: false.obs),
-    ServiceList(
-        text: 'Photobooth',
-        img: "assets/lighting.png",
-        clickCondition: false.obs),
-    ServiceList(
-        text: 'Master of Ceremony',
-        img: "assets/master.png",
-        clickCondition: false.obs),
-    ServiceList(
-        text: 'AV Equipment',
-        img: "assets/avEquipment.png",
-        clickCondition: false.obs),
-  ];
+//   List<ServiceList> list = [
+//     ServiceList(
+//         text: 'DJing', img: "assets/djing.png", clickCondition: false.obs),
+//     ServiceList(
+//         text: 'Lighting',
+//         img: "assets/lighting.png",
+//         clickCondition: false.obs),
+//     ServiceList(
+//         text: 'Photobooth',
+//         img: "assets/lighting.png",
+//         clickCondition: false.obs),
+//     ServiceList(
+//         text: 'Master of Ceremony',
+//         img: "assets/master.png",
+//         clickCondition: false.obs),
+//     ServiceList(
+//         text: 'AV Equipment',
+//         img: "assets/avEquipment.png",
+//         clickCondition: false.obs),
+//   ];
 }
 
 class ServiceList {

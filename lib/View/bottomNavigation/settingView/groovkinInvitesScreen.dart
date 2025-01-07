@@ -14,11 +14,16 @@ class GroovkinInviteScreen extends StatefulWidget {
 }
 
 class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
-  final _authController = Get.find<AuthController>();
+  late AuthController _authController;
 
   @override
   void initState() {
     super.initState();
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put<AuthController>(AuthController());
+    }
     _authController.invitationList.add(UserClass(
         emailController: TextEditingController(), selectedVal: false.obs));
     setState(() {});

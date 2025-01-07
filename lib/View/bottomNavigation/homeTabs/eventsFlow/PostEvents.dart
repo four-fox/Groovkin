@@ -130,8 +130,12 @@ class PendingScreen extends StatelessWidget {
                                         radius: 28,
                                         backgroundImage: NetworkImage(
                                             eventData.bannerImage == null
-                                                ? eventData.profilePicture![0]
-                                                    .mediaPath!
+                                                ? eventData.profilePicture!
+                                                        .isNotEmpty
+                                                    ? eventData
+                                                        .profilePicture![0]
+                                                        .mediaPath!
+                                                    : groupPlaceholder
                                                 : eventData
                                                     .bannerImage!.mediaPath
                                                     .toString()),

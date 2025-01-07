@@ -91,11 +91,16 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                           color: DynamicColor.lightRedClr),
                                       image: DecorationImage(
                                         image: controller.imageBytes == null
-                                            ? NetworkImage(controller
-                                            .userData!
-                                            .data
-                                            ?.profilePicture != null? Url().imageUrl +controller.userData!.data!.profilePicture!.mediaPath :
-                                                groupPlaceholder)
+                                            ? NetworkImage(controller.userData!
+                                                        .data?.profilePicture !=
+                                                    null
+                                                ? Url().imageUrl +
+                                                    controller
+                                                        .userData!
+                                                        .data!
+                                                        .profilePicture!
+                                                        .mediaPath
+                                                : groupPlaceholder)
                                             : FileImage(File(
                                                     controller.imageBytes!))
                                                 as ImageProvider,
@@ -300,7 +305,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           label: Padding(
                             padding: EdgeInsets.only(left: 15.0),
                             child: Text(
-                              "Date Of Birth",
+                              "Year of Birth",
                               style: poppinsRegularStyle(
                                   context: context,
                                   fontSize: 14,

@@ -4,9 +4,7 @@ import 'dart:io';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 // import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
@@ -20,7 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
 class UpGradeEvents extends StatefulWidget {
-  UpGradeEvents({Key? key}) : super(key: key);
+  UpGradeEvents({super.key});
 
   @override
   State<UpGradeEvents> createState() => _UpGradeEventsState();
@@ -38,7 +36,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
   late AuthController _authController;
 
   final eventForm = GlobalKey<FormState>();
-
+  late EventController _eventController;
   @override
   void initState() {
     if (Get.isRegistered<AuthController>()) {
@@ -46,16 +44,33 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     } else {
       _authController = Get.put(AuthController());
     }
-  }
 
-  EventController _eventController = Get.find();
+    if (Get.isRegistered<EventController>()) {
+      _eventController = Get.find<EventController>();
+    } else {
+      _eventController = Get.put(EventController());
+    }
+    _eventController.proposedTimeWindowsController.text =
+        DateFormat.jm().format(DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      12,
+    ));
+    _eventController.endTimeController.text = DateFormat.jm().format(DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      12,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         appBar: customAppBar(theme: theme, text: "Create Event"),
         body: GetBuilder<EventController>(builder: (controller) {
@@ -86,24 +101,34 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             () => ((_authController.imageLoaders.value ==
                                         false) ||
                                     (_authController.imageBytes == null))
-                                ? CircleAvatar(
-                                    radius: ((controller.eventDetail != null) &&
-                                            (controller.eventDetail!.data!
-                                                    .bannerImage !=
-                                                null))
-                                        ? 50
-                                        : 30,
-                                    backgroundColor: DynamicColor.avatarBgClr,
-                                    backgroundImage: ((controller
-                                                    .duplicateValue.value ==
-                                                false) &&
-                                            (controller.eventDetail != null) &&
-                                            (controller.eventDetail!.data!
-                                                    .bannerImage !=
-                                                null))
-                                        ? NetworkImage(controller.eventDetail!
-                                            .data!.bannerImage!.mediaPath!)
-                                        : null,
+                                ? Container(
+                                    height: context.height * 0.20,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          ((controller.eventDetail != null) &&
+                                                  (controller.eventDetail!.data!
+                                                          .bannerImage !=
+                                                      null))
+                                              ? BorderRadius.circular(12)
+                                              : BorderRadius.circular(12),
+                                      color: DynamicColor.avatarBgClr,
+                                      image:
+                                          ((controller.duplicateValue.value ==
+                                                      false) &&
+                                                  (controller.eventDetail !=
+                                                      null) &&
+                                                  (controller.eventDetail!.data!
+                                                          .bannerImage !=
+                                                      null))
+                                              ? DecorationImage(
+                                                  image: NetworkImage(controller
+                                                      .eventDetail!
+                                                      .data!
+                                                      .bannerImage!
+                                                      .mediaPath!))
+                                              : null,
+                                    ),
                                     child:
                                         ((_authController.imageBytes != null) &&
                                                 ((controller.eventDetail!.data!
@@ -116,10 +141,22 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                                 color: DynamicColor.yellowClr,
                                               ),
                                   )
-                                : CircleAvatar(
-                                    radius: 60,
-                                    backgroundImage: FileImage(
-                                        File(_authController.imageBytes!)),
+                                : Container(
+                                    height: context.height * 0.20,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: DynamicColor.yellowClr,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0)),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      child: Image.file(
+                                        File(_authController.imageBytes!),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
                                   ),
                           )),
                       SizedBox(
@@ -184,7 +221,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
-                              initialEntryMode: DatePickerEntryMode.calendarOnly,
+                              initialEntryMode:
+                                  DatePickerEntryMode.calendarOnly,
                               builder: (context, child) {
                                 return Theme(
                                     data: Theme.of(context).copyWith(
@@ -192,12 +230,10 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                         primary: Colors
                                             .white, // header background color
                                         onPrimary: Colors.black,
-                                        onBackground: Colors.white,
                                         onSecondary: Colors.white,
                                         surface: Colors.black,
                                         onSurface: Colors.white,
                                         secondary: Colors.black,
-                                        background: Colors.black,
                                       ),
                                       textButtonTheme: TextButtonThemeData(
                                         style: TextButton.styleFrom(
@@ -227,11 +263,13 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
-                                  color: DynamicColor.grayClr.withOpacity(0.6))),
+                                  color:
+                                      DynamicColor.grayClr.withOpacity(0.6))),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
-                                  color: DynamicColor.grayClr.withOpacity(0.6))),
+                                  color:
+                                      DynamicColor.grayClr.withOpacity(0.6))),
                           hintText: "Select meeting date",
                           label: Padding(
                             padding: EdgeInsets.only(left: 15.0),
@@ -264,7 +302,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
-                              initialEntryMode: DatePickerEntryMode.calendarOnly,
+                              initialEntryMode:
+                                  DatePickerEntryMode.calendarOnly,
                               builder: (context, child) {
                                 return Theme(
                                     data: Theme.of(context).copyWith(
@@ -272,12 +311,10 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                         primary: Colors
                                             .white, // header background color
                                         onPrimary: Colors.black,
-                                        onBackground: Colors.white,
                                         onSecondary: Colors.white,
                                         surface: Colors.black,
                                         onSurface: Colors.white,
                                         secondary: Colors.black,
-                                        background: Colors.black,
                                       ),
                                       textButtonTheme: TextButtonThemeData(
                                         style: TextButton.styleFrom(
@@ -307,11 +344,13 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
-                                  color: DynamicColor.grayClr.withOpacity(0.6))),
+                                  color:
+                                      DynamicColor.grayClr.withOpacity(0.6))),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
-                                  color: DynamicColor.grayClr.withOpacity(0.6))),
+                                  color:
+                                      DynamicColor.grayClr.withOpacity(0.6))),
                           hintText: "Select meeting date",
                           label: Padding(
                             padding: EdgeInsets.only(left: 15.0),
@@ -370,11 +409,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               return Theme(
                                   data: Theme.of(context).copyWith(
                                     colorScheme: ColorScheme.light(
-                                      primary:
-                                          Colors.black, // header background color
+                                      primary: Colors
+                                          .black, // header background color
                                       onPrimary:
                                           Colors.white, // header text color
-                                      onSurface: Colors.black, // body text color
+                                      onSurface:
+                                          Colors.black, // body text color
                                     ),
                                     textButtonTheme: TextButtonThemeData(
                                       style: TextButton.styleFrom(
@@ -392,19 +432,15 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               "selected time--------->${DateTimeField.convert(time).toString()}");
                           if (time != null) {
                             print('time>>>>>>>>>> $time');
-                            var format = DateFormat("HH:mm ss");
+                            final now = DateTime.now();
+                            final selectedTime = DateTime(now.year, now.month,
+                                now.day, time.hour, time.minute);
+
                             controller.proposedTimeWindowsController.text =
-                                DateFormat.jm().format(DateFormat("hh:mm:ss")
-                                    .parse(DateTimeField.convert(time)
-                                        .toString()
-                                        .replaceRange(0, 11, "")));
-                            controller.postTime = DateFormat("HH:mm")
-                                .parse(
-                                    controller.proposedTimeWindowsController.text)
-                                .toString()
-                                .replaceRange(0, 11, "")
-                                .split(".")[0];
-                            print(controller.postTime);
+                                DateFormat.jm().format(selectedTime);
+
+                            controller.postTime =
+                                DateFormat("HH:mm").format(selectedTime);
                           }
                           return;
                         },
@@ -446,11 +482,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               return Theme(
                                   data: Theme.of(context).copyWith(
                                     colorScheme: ColorScheme.light(
-                                      primary:
-                                          Colors.black, // header background color
+                                      primary: Colors
+                                          .black, // header background color
                                       onPrimary:
                                           Colors.white, // header text color
-                                      onSurface: Colors.black, // body text color
+                                      onSurface:
+                                          Colors.black, // body text color
                                     ),
                                     textButtonTheme: TextButtonThemeData(
                                       style: TextButton.styleFrom(
@@ -468,88 +505,101 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               "selected time--------->${DateTimeField.convert(time).toString()}");
                           if (time != null) {
                             print('time>>>>>>>>>> $time');
-                            var format = DateFormat("HH:mm ss");
-                            controller.endTimeController.text = DateFormat.jm()
-                                .format(DateFormat("hh:mm:ss").parse(
-                                    DateTimeField.convert(time)
-                                        .toString()
-                                        .replaceRange(0, 11, "")));
-                            controller.postEndTime = DateFormat("HH:mm")
-                                .parse(controller.endTimeController.text)
-                                .toString()
-                                .replaceRange(0, 11, "")
-                                .split(".")[0];
+                            DateTime now = DateTime.now();
+                            final selectedTime = DateTime(now.year, now.month,
+                                now.day, time.hour, time.minute);
+
+                            controller.endTimeController.text =
+                                DateFormat.jm().format(selectedTime);
+                            controller.postEndTime =
+                                DateFormat("HH:mm").format(selectedTime);
                             print(controller.postEndTime);
                           }
                           return;
                         },
                       ),
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,
-                                ),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 0,
-                                    groupValue: controller.eventRateHourly.value,
-                                    onChanged: (v) {
-                                      controller.rateType!.value = "hourly";
-                                      controller.eventRateHourly.value = v!;
-                                      controller.update();
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text(
-                                "Hourly Rate",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          controller.rateType!.value = "hourly";
+                          controller.eventRateHourly.value = 0;
+                          controller.update();
+                        },
+                        child: SizedBox(
+                          height: 40,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 23,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    unselectedWidgetColor: theme.primaryColor,
+                                  ),
+                                  child: Radio(
+                                      activeColor: DynamicColor.yellowClr,
+                                      value: 0,
+                                      groupValue:
+                                          controller.eventRateHourly.value,
+                                      onChanged: (v) {
+                                        controller.rateType!.value = "hourly";
+                                        controller.eventRateHourly.value = v!;
+                                        controller.update();
+                                      }),
                                 ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 7.0),
+                                child: Text(
+                                  "Hourly Rate",
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        height: 30,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,
-                                ),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 1,
-                                    groupValue: controller.eventRateHourly.value,
-                                    onChanged: (v) {
-                                      controller.rateType!.value = "flat";
-                                      controller.eventRateHourly.value = v!;
-                                      controller.update();
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text(
-                                "Flat Free",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          controller.rateType!.value = "flat";
+                          controller.eventRateHourly.value = 1;
+                          controller.update();
+                        },
+                        child: SizedBox(
+                          height: 30,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 23,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    unselectedWidgetColor: theme.primaryColor,
+                                  ),
+                                  child: Radio(
+                                      activeColor: DynamicColor.yellowClr,
+                                      value: 1,
+                                      groupValue:
+                                          controller.eventRateHourly.value,
+                                      onChanged: (v) {
+                                        controller.rateType!.value = "flat";
+                                        controller.eventRateHourly.value = v!;
+                                        controller.update();
+                                      }),
                                 ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 7.0),
+                                child: Text(
+                                  "Flat Free",
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -584,191 +634,247 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,
-                                ),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 0,
-                                    groupValue:
-                                        controller.paymentScheduleValue.value,
-                                    onChanged: (v) {
-                                      controller.paymentSchedule!.value = "0";
-                                      controller.paymentScheduleValue.value = v!;
-                                      controller.update();
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text(
-                                "0% Down Payment",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          controller.paymentSchedule!.value = "0";
+                          controller.paymentScheduleValue.value = 0;
+                          controller.update();
+                        },
+                        child: SizedBox(
+                          height: 40,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 23,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    unselectedWidgetColor: theme.primaryColor,
+                                  ),
+                                  child: Radio(
+                                      activeColor: DynamicColor.yellowClr,
+                                      value: 0,
+                                      groupValue:
+                                          controller.paymentScheduleValue.value,
+                                      onChanged: (v) {
+                                        controller.paymentSchedule!.value = "0";
+                                        controller.paymentScheduleValue.value =
+                                            v!;
+                                        controller.update();
+                                      }),
                                 ),
                               ),
-                            ),
-                            Spacer(),
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,
-                                ),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 1,
-                                    groupValue:
-                                        controller.paymentScheduleValue.value,
-                                    onChanged: (v) {
-                                      controller.paymentSchedule!.value = "25";
-                                      controller.paymentScheduleValue.value = v!;
-                                      controller.update();
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text(
-                                "25% Down Payment",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 7.0),
+                                child: Text(
+                                  "0% Down Payment",
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    color: theme.primaryColor,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                              Spacer(),
+                              SizedBox(
+                                width: 23,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    unselectedWidgetColor: theme.primaryColor,
+                                  ),
+                                  child: Radio(
+                                      activeColor: DynamicColor.yellowClr,
+                                      value: 1,
+                                      groupValue:
+                                          controller.paymentScheduleValue.value,
+                                      onChanged: (v) {
+                                        controller.paymentSchedule!.value =
+                                            "25";
+                                        controller.paymentScheduleValue.value =
+                                            v!;
+                                        controller.update();
+                                      }),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  controller.paymentSchedule!.value = "25";
+                                  controller.paymentScheduleValue.value = 1;
+                                  controller.update();
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 7.0),
+                                  child: Text(
+                                    "25% Down Payment",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 12,
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,
-                                ),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 2,
-                                    groupValue:
-                                        controller.paymentScheduleValue.value,
-                                    onChanged: (v) {
-                                      controller.paymentSchedule!.value = "50";
-                                      controller.paymentScheduleValue.value = v!;
-                                      controller.update();
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text(
-                                "50% Down Payment",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ),
-                            Spacer(),
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,
-                                ),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 3,
-                                    groupValue:
-                                        controller.paymentScheduleValue.value,
-                                    onChanged: (v) {
-                                      controller.paymentSchedule!.value = "75";
-                                      controller.paymentScheduleValue.value = v!;
-                                      controller.update();
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text(
-                                "75% Down Payment",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          controller.paymentSchedule!.value = "50";
+                          controller.paymentScheduleValue.value = 2;
+                          controller.update();
+                        },
+                        child: SizedBox(
+                          height: 40,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 23,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    unselectedWidgetColor: theme.primaryColor,
+                                  ),
+                                  child: Radio(
+                                      activeColor: DynamicColor.yellowClr,
+                                      value: 2,
+                                      groupValue:
+                                          controller.paymentScheduleValue.value,
+                                      onChanged: (v) {
+                                        controller.paymentSchedule!.value =
+                                            "50";
+                                        controller.paymentScheduleValue.value =
+                                            v!;
+                                        controller.update();
+                                      }),
                                 ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(left: 7.0),
+                                child: Text(
+                                  "50% Down Payment",
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                              SizedBox(
+                                width: 23,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    unselectedWidgetColor: theme.primaryColor,
+                                  ),
+                                  child: Radio(
+                                      activeColor: DynamicColor.yellowClr,
+                                      value: 3,
+                                      groupValue:
+                                          controller.paymentScheduleValue.value,
+                                      onChanged: (v) {
+                                        controller.paymentSchedule!.value =
+                                            "75";
+                                        controller.paymentScheduleValue.value =
+                                            v!;
+                                        controller.update();
+                                      }),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  controller.paymentSchedule!.value = "75";
+                                  controller.paymentScheduleValue.value = 3;
+                                  controller.update();
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 7.0),
+                                  child: Text(
+                                    "75% Down Payment",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 12,
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 23,
-                              child: Theme(
-                                data: Theme.of(context).copyWith(
-                                  unselectedWidgetColor: theme.primaryColor,
-                                ),
-                                child: Radio(
-                                    activeColor: DynamicColor.yellowClr,
-                                    value: 4,
-                                    groupValue:
-                                        controller.paymentScheduleValue.value,
-                                    onChanged: (v) {
-                                      controller.paymentSchedule!.value = "0";
-                                      controller.paymentScheduleValue.value = v!;
-                                      controller.update();
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 7.0),
-                              child: Text(
-                                "Other Down Payment",
-                                style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 40,
+                      //   child: Row(
+                      //     children: [
+                      //       SizedBox(
+                      //         width: 23,
+                      //         child: Theme(
+                      //           data: Theme.of(context).copyWith(
+                      //             unselectedWidgetColor: theme.primaryColor,
+                      //           ),
+                      //           child: Radio(
+                      //               activeColor: DynamicColor.yellowClr,
+                      //               value: 4,
+                      //               groupValue:
+                      //                   controller.paymentScheduleValue.value,
+                      //               onChanged: (v) {
+                      //                 controller.paymentSchedule!.value = "0";
+                      //                 controller.paymentScheduleValue.value =
+                      //                     v!;
+                      //                 controller.update();
+                      //               }),
+                      //         ),
+                      //       ),
+                      //       Padding(
+                      //         padding: const EdgeInsets.only(left: 7.0),
+                      //         child: Text(
+                      //           "Other Down Payment",
+                      //           style: poppinsRegularStyle(
+                      //             fontSize: 12,
+                      //             color: theme.primaryColor,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 15,
                       ),
-                      controller.paymentScheduleValue.value == 4
-                          ? textFields(
-                              theme: theme,
-                              labelText: "Other Rate",
-                              keyBoardType: true,
-                              error: "Other Rate",
-                              iconShow: true,
-                              suffixWidget: Padding(
-                                padding: EdgeInsets.only(left: 10, top: 8.0),
-                                child: Text(
-                                  "%",
-                                  style: poppinsRegularStyle(
-                                      context: context,
-                                      fontSize: 24,
-                                      color: DynamicColor.grayClr),
-                                ),
-                              ),
-                              controller: controller.otherRateController)
-                          : SizedBox.shrink(),
+                      // controller.paymentScheduleValue.value == 4
+                      //     ? textFields(
+                      //         theme: theme,
+                      //         labelText: "Other Rate",
+                      //         keyBoardType: true,
+                      //         error: "Other Rate",
+                      //         iconShow: true,
+                      //         suffixWidget: Padding(
+                      //           padding: EdgeInsets.only(left: 10, top: 8.0),
+                      //           child: Text(
+                      //             "%",
+                      //             style: poppinsRegularStyle(
+                      //                 context: context,
+                      //                 fontSize: 24,
+                      //                 color: DynamicColor.grayClr),
+                      //           ),
+                      //         ),
+                      //         controller: controller.otherRateController)
+                      //     : SizedBox.shrink(),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // textFields(
+                      //     theme: theme,
+                      //     labelText: "Payment Schedule",
+                      //     keyBoardType: true,
+                      //     error: "Payment Schedule",
+                      //     iconShow: true,
+                      //     suffixWidget: Padding(
+                      //       padding: EdgeInsets.only(left: 10, top: 8.0),
+                      //       child: Text(
+                      //         "%",
+                      //         style: poppinsRegularStyle(
+                      //             context: context,
+                      //             fontSize: 24,
+                      //             color: DynamicColor.grayClr),
+                      //       ),
+                      //     ),
+                      //     controller: controller.otherRateController),
                       SizedBox(
                         height: 20,
                       ),
@@ -844,6 +950,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
       maxLine = 1,
       String? error,
       bool keyBoardType = false,
+      String? hintText,
       TextEditingController? controller}) {
     return CustomTextFields(
       controller: controller,
@@ -854,6 +961,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
       labelText: labelText ?? "Event Title",
       maxLine: maxLine,
       validationError: error,
+      hintText: hintText,
     );
   }
 }
