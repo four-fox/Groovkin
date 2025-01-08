@@ -74,28 +74,25 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     var theme = Theme.of(context);
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: kToolbarHeight),
-        child: GestureDetector(
-          onTap: () {
-            Get.toNamed(Routes.viewAllEventListScreen);
-          },
-          child: Container(
-            height: 35,
-            width: 90,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-                // color: Colors.amberAccent
-                color: DynamicColor.darkGrayClr,
-                borderRadius: BorderRadius.circular(8)),
-            child: Center(
-              child: Text(
-                "View All",
-                style: poppinsMediumStyle(
-                  fontSize: 14,
-                  context: context,
-                  color: theme.primaryColor,
-                ),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          Get.toNamed(Routes.viewAllEventListScreen);
+        },
+        child: Container(
+          height: 35,
+          width: 90,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+              // color: Colors.amberAccent
+              color: DynamicColor.darkGrayClr,
+              borderRadius: BorderRadius.circular(8)),
+          child: Center(
+            child: Text(
+              "View All",
+              style: poppinsMediumStyle(
+                fontSize: 14,
+                context: context,
+                color: theme.primaryColor,
               ),
             ),
           ),
@@ -108,7 +105,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           decoration: BoxDecoration(
             color: theme.scaffoldBackgroundColor,
           ),
-          child: Column(children: [
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             SizedBox(
               height: 38,
             ),
@@ -993,8 +990,10 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                           .toString(),
                                   title: singleEventDat.eventTitle.toString(),
                                   location: singleEventDat.location,
-                                  subtitle: singleEventDat.venue==null? "": singleEventDat.venue!.venueName
-                                      .toString(),
+                                  subtitle: singleEventDat.venue == null
+                                      ? ""
+                                      : singleEventDat.venue!.venueName
+                                          .toString(),
                                   onTap: () {
                                     Get.toNamed(Routes.userEventDetailsScreen,
                                         arguments: {

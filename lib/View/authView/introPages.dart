@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -113,98 +115,102 @@ class IntroPages extends StatelessWidget {
                           API().sp.write("intro", true);
                           Get.offAllNamed(Routes.loginSelection);
                         } /*else{
-        controller.indexValue.value = controller.indexValue.value + 1;
-        controller.index = controller.indexValue.value;
-
-      }*/
+                          controller.indexValue.value = controller.indexValue.value + 1;
+                          controller.index = controller.indexValue.value;
+                          }*/
                       },
                     ),
                   ),
-                  Obx(
-                    () => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: controller.index == 2
-                          ? SizedBox(
-                              height: 21,
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    API().sp.write("intro", true);
-                                    Get.offAllNamed(Routes.loginSelection);
-                                  },
-                                  child: Text(
-                                    'Skip',
-                                    style: poppinsRegularStyle(
-                                        context: context,
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 14),
+                  SafeArea(
+                    top: false,
+                    bottom: Platform.isIOS ? true : false,
+                    child: Obx(
+                      () => Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: controller.index == 2
+                            ? SizedBox(
+                                height: 21,
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      API().sp.write("intro", true);
+                                      Get.offAllNamed(Routes.loginSelection);
+                                    },
+                                    child: Text(
+                                      'Skip',
+                                      style: poppinsRegularStyle(
+                                          context: context,
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 14),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 150,
-                                  child: Obx(
-                                    () => Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 3,
-                                          width: 20,
-                                          decoration: BoxDecoration(
-                                              color: controller.index == 0
-                                                  ? DynamicColor.yellowClr
-                                                  : Colors.white),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 12.0),
-                                          child: Container(
+                                  SizedBox(
+                                    width: 150,
+                                    child: Obx(
+                                      () => Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
                                             height: 3,
                                             width: 20,
                                             decoration: BoxDecoration(
-                                                color: controller.index == 1
+                                                color: controller.index == 0
                                                     ? DynamicColor.yellowClr
                                                     : Colors.white),
                                           ),
-                                        ),
-                                        Container(
-                                          height: 3,
-                                          width: 20,
-                                          decoration: BoxDecoration(
-                                              color: controller.index == 2
-                                                  ? DynamicColor.yellowClr
-                                                  : Colors.white),
-                                        ),
-                                      ],
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12.0),
+                                            child: Container(
+                                              height: 3,
+                                              width: 20,
+                                              decoration: BoxDecoration(
+                                                  color: controller.index == 1
+                                                      ? DynamicColor.yellowClr
+                                                      : Colors.white),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 3,
+                                            width: 20,
+                                            decoration: BoxDecoration(
+                                                color: controller.index == 2
+                                                    ? DynamicColor.yellowClr
+                                                    : Colors.white),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    if (controller.index == 2) {
-                                      API().sp.write("intro", true);
-                                      Get.offAllNamed(Routes.loginSelection);
-                                    } else {
-                                      controller.indexValue.value =
-                                          controller.indexValue.value + 1;
-                                      controller.index =
-                                          controller.indexValue.value;
-                                      _controller.nextPage();
-                                    }
-                                  },
-                                  child: Text(
-                                    'Next',
-                                    style: poppinsRegularStyle(
-                                        context: context,
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 14),
+                                  GestureDetector(
+                                    onTap: () {
+                                      if (controller.index == 2) {
+                                        API().sp.write("intro", true);
+                                        Get.offAllNamed(Routes.loginSelection);
+                                      } else {
+                                        controller.indexValue.value =
+                                            controller.indexValue.value + 1;
+                                        controller.index =
+                                            controller.indexValue.value;
+                                        _controller.nextPage();
+                                      }
+                                    },
+                                    child: Text(
+                                      'Next',
+                                      style: poppinsRegularStyle(
+                                          context: context,
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 14),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                      ),
                     ),
                   )
                 ],

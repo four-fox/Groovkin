@@ -153,7 +153,7 @@ class CreateProfile extends StatelessWidget {
                     ),
                     sp.read('role') == "eventManager"
                         ? CustomTextFields(
-                            labelText: "Company name",
+                            labelText: "Company Name",
                             controller: controller.companyNameController,
                             ignoredValidation: true,
                           )

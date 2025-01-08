@@ -13,7 +13,6 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:map_location_picker/map_location_picker.dart';
-
 import '../../../../Components/Network/Url.dart';
 
 class CommentsAndAttachment extends StatefulWidget {
@@ -115,10 +114,10 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                     Container(
                         width: Get.width,
                         decoration: BoxDecoration(
-                            color: DynamicColor.darkGrayClr,
-                            borderRadius: BorderRadius.circular(10),
-                            border:
-                                Border.all(color: DynamicColor.avatarBgClr)),
+                          color: DynamicColor.darkGrayClr,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: DynamicColor.avatarBgClr),
+                        ),
                         child: Column(
                           children: [
                             // Description for attached files

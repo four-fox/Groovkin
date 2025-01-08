@@ -29,496 +29,496 @@ class VenueDetailsManagerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return SafeArea(
-      top: false,
-      bottom: Platform.isIOS?true:false,
-      child: Scaffold(
-        appBar: serviceCondition == true
-            ? null
-            : customAppBar(theme: theme, text: "Venue Detail", backArrow: true),
-        body: GetBuilder<ManagerController>(builder: (controller) {
-          if(controller.lat != "null" || controller.lng != "null"){
-            latAssign.value = double.parse(controller.lat);
-            lngAssign.value = double.parse(controller.lng);
-          }
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 10,
+    return Scaffold(
+      appBar: serviceCondition == true
+          ? null
+          : customAppBar(theme: theme, text: "Venue Detail", backArrow: true),
+      body: GetBuilder<ManagerController>(builder: (controller) {
+        if (controller.lat != "null" || controller.lng != "null") {
+          latAssign.value = double.parse(controller.lat);
+          lngAssign.value = double.parse(controller.lng);
+        }
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              serviceCondition == true
+                  ? SizedBox.shrink()
+                  : Text(
+                      "Venue Detail",
+                      style: poppinsMediumStyle(
+                          fontSize: 18,
+                          color: theme.primaryColor,
+                          context: context),
+                    ),
+              serviceCondition == true
+                  ? SizedBox.shrink()
+                  : Text(
+                      'You have successfully added.',
+                      style: poppinsRegularStyle(
+                          fontSize: 12,
+                          context: context,
+                          color: DynamicColor.lightRedClr),
+                    ),
+              SizedBox(
+                height: serviceCondition == true ? 0 : 8,
+              ),
+              Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                child: Text(
+                  "Contact Information",
+                  style: poppinsRegularStyle(
+                      fontSize: 16, color: DynamicColor.lightRedClr),
                 ),
-                serviceCondition == true
-                    ? SizedBox.shrink()
-                    : Text(
-                        "Venue Detail",
-                        style: poppinsMediumStyle(
-                            fontSize: 18,
-                            color: theme.primaryColor,
-                            context: context),
-                      ),
-                serviceCondition == true
-                    ? SizedBox.shrink()
-                    : Text(
-                        'You have successfully added.',
-                        style: poppinsRegularStyle(
-                            fontSize: 12,
-                            context: context,
-                            color: DynamicColor.lightRedClr),
-                      ),
-                SizedBox(
-                  height: serviceCondition == true ? 0 : 8,
+              ),
+              venueService(
+                  context: context,
+                  theme: theme,
+                  text: controller.phoneNumController.text,
+                  image: "assets/phoneIcons.png",
+                  iconClr: theme.primaryColor.withOpacity(0.7)),
+              venueService(
+                  context: context,
+                  theme: theme,
+                  text:
+                      "${controller.openingHoursController.text} to ${controller.closedHoursController.text}",
+                  iconClr: theme.primaryColor.withOpacity(0.7),
+                  image: "assets/clrlessClock.png"),
+              venueService(
+                  context: context,
+                  theme: theme,
+                  text: controller.maxSeatingController.text,
+                  image: "assets/groupPeopleIcon.png",
+                  iconClr: theme.primaryColor.withOpacity(0.7)),
+              venueService(
+                  context: context,
+                  theme: theme,
+                  text: controller.addressController.text,
+                  image: "assets/location.png",
+                  iconClr: theme.primaryColor.withOpacity(0.7)),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                child: Text(
+                  "Max Occupancy",
+                  style: poppinsRegularStyle(
+                      fontSize: 16, color: DynamicColor.lightRedClr),
                 ),
-                Container(
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.44),
-                  child: Text(
-                    "Contact Information",
-                    style: poppinsRegularStyle(
-                        fontSize: 16, color: DynamicColor.lightRedClr),
-                  ),
-                ),
-                venueService(
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: venueService(
                     context: context,
                     theme: theme,
-                    text: controller.phoneNumController.text,
-                    image: "assets/phoneIcons.png",
+                    text: controller.maxOccupancyController.text,
+                    image: "assets/groupPeopleIcon.png",
                     iconClr: theme.primaryColor.withOpacity(0.7)),
-                venueService(
-                    context: context,
-                    theme: theme,
-                    text:
-                        "${controller.openingHoursController.text} to ${controller.closedHoursController.text}",
-                    iconClr: theme.primaryColor.withOpacity(0.7),
-                    image: "assets/clrlessClock.png"),
-                venueService(
+              ),
+              Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                child: Text(
+                  "Max Seating",
+                  style: poppinsRegularStyle(
+                      fontSize: 16, color: DynamicColor.lightRedClr),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: venueService(
                     context: context,
                     theme: theme,
                     text: controller.maxSeatingController.text,
                     image: "assets/groupPeopleIcon.png",
                     iconClr: theme.primaryColor.withOpacity(0.7)),
-                venueService(
-                    context: context,
-                    theme: theme,
-                    text: controller.addressController.text,
-                    image: "assets/location.png",
-                    iconClr: theme.primaryColor.withOpacity(0.7)),
-                SizedBox(
-                  height: 10,
+              ),
+              Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                child: Text(
+                  "Amenities",
+                  style: poppinsRegularStyle(
+                      fontSize: 16, color: DynamicColor.lightRedClr),
                 ),
-                Container(
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.44),
-                  child: Text(
-                    "Max Occupancy",
-                    style: poppinsRegularStyle(
-                        fontSize: 16, color: DynamicColor.lightRedClr),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: venueService(
-                      context: context,
-                      theme: theme,
-                      text: controller.maxOccupancyController.text,
-                      image: "assets/groupPeopleIcon.png",
-                      iconClr: theme.primaryColor.withOpacity(0.7)),
-                ),
-                Container(
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.44),
-                  child: Text(
-                    "Max Seating",
-                    style: poppinsRegularStyle(
-                        fontSize: 16, color: DynamicColor.lightRedClr),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: venueService(
-                      context: context,
-                      theme: theme,
-                      text: controller.maxSeatingController.text,
-                      image: "assets/groupPeopleIcon.png",
-                      iconClr: theme.primaryColor.withOpacity(0.7)),
-                ),
-                Container(
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.44),
-                  child: Text(
-                    "Amenities",
-                    style: poppinsRegularStyle(
-                        fontSize: 16, color: DynamicColor.lightRedClr),
-                  ),
-                ),
-                ListView.builder(
-                    itemCount: controller.selectedAmenities.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 12.0, top: 6),
-                        child: Row(
-                          children: [
-                            Image(
-                              image: AssetImage("assets/headingIcons.png"),
+              ),
+              ListView.builder(
+                  itemCount: controller.selectedAmenities.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 12.0, top: 6),
+                      child: Row(
+                        children: [
+                          Image(
+                            image: AssetImage("assets/headingIcons.png"),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 3.0),
+                            child: Text(
+                              controller.selectedAmenities[index].name
+                                  .toString(),
+                              style: poppinsRegularStyle(
+                                  fontSize: 13,
+                                  color: theme.primaryColor,
+                                  context: context),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 3.0),
-                              child: Text(
-                                controller.selectedAmenities[index].name
-                                    .toString(),
-                                style: poppinsRegularStyle(
-                                    fontSize: 13,
-                                    color: theme.primaryColor,
-                                    context: context),
-                              ),
+                          ),
+                          Icon(
+                            Icons.check,
+                            color: DynamicColor.lightRedClr,
+                            size: 17,
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                child: Text(
+                  "Active Licenses\\Permits",
+                  style: poppinsRegularStyle(
+                      fontSize: 16, color: DynamicColor.lightRedClr),
+                ),
+              ),
+              ListView.builder(
+                  itemCount: controller.selectedLicensesPermit.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 12.0, top: 6),
+                      child: Row(
+                        children: [
+                          Image(
+                            image: AssetImage("assets/headingIcons.png"),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 3.0),
+                            child: Text(
+                              controller.selectedLicensesPermit[index].name
+                                  .toString(),
+                              style: poppinsRegularStyle(
+                                  fontSize: 13,
+                                  color: theme.primaryColor,
+                                  context: context),
                             ),
-                            Icon(
-                              Icons.check,
-                              color: DynamicColor.lightRedClr,
-                              size: 17,
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
+                          ),
+                          Icon(
+                            Icons.check,
+                            color: DynamicColor.lightRedClr,
+                            size: 17,
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                child: Text(
+                  "House Event Capabilites",
+                  style: poppinsRegularStyle(
+                      fontSize: 16, color: DynamicColor.lightRedClr),
                 ),
-                Container(
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.44),
-                  child: Text(
-                    "Active Licenses\\Permits",
-                    style: poppinsRegularStyle(
-                        fontSize: 16, color: DynamicColor.lightRedClr),
-                  ),
-                ),
-                ListView.builder(
-                    itemCount: controller.selectedLicensesPermit.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 12.0, top: 6),
-                        child: Row(
-                          children: [
-                            Image(
-                              image: AssetImage("assets/headingIcons.png"),
+              ),
+              ListView.builder(
+                  itemCount: controller.selectedHouseEventPermit.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(left: 12.0, top: 6),
+                      child: Row(
+                        children: [
+                          Image(
+                            image: AssetImage("assets/headingIcons.png"),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 3.0),
+                            child: Text(
+                              controller.selectedHouseEventPermit[index].name
+                                  .toString(),
+                              style: poppinsRegularStyle(
+                                  fontSize: 13,
+                                  color: theme.primaryColor,
+                                  context: context),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 3.0),
-                              child: Text(
-                                controller.selectedLicensesPermit[index].name
-                                    .toString(),
-                                style: poppinsRegularStyle(
-                                    fontSize: 13,
-                                    color: theme.primaryColor,
-                                    context: context),
-                              ),
-                            ),
-                            Icon(
-                              Icons.check,
-                              color: DynamicColor.lightRedClr,
-                              size: 17,
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
+                          ),
+                          Icon(
+                            Icons.check,
+                            color: DynamicColor.lightRedClr,
+                            size: 17,
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                child: Text(
+                  "Venue Pictures",
+                  style: poppinsRegularStyle(
+                      fontSize: 16, color: DynamicColor.lightRedClr),
                 ),
-                Container(
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.44),
-                  child: Text(
-                    "House Event Capabilites",
-                    style: poppinsRegularStyle(
-                        fontSize: 16, color: DynamicColor.lightRedClr),
-                  ),
-                ),
-                ListView.builder(
-                    itemCount: controller.selectedHouseEventPermit.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(left: 12.0, top: 6),
-                        child: Row(
-                          children: [
-                            Image(
-                              image: AssetImage("assets/headingIcons.png"),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 3.0),
-                              child: Text(
-                                controller.selectedHouseEventPermit[index].name
-                                    .toString(),
-                                style: poppinsRegularStyle(
-                                    fontSize: 13,
-                                    color: theme.primaryColor,
-                                    context: context),
-                              ),
-                            ),
-                            Icon(
-                              Icons.check,
-                              color: DynamicColor.lightRedClr,
-                              size: 17,
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: Get.width,
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.44),
-                  child: Text(
-                    "Venue Pictures",
-                    style: poppinsRegularStyle(
-                        fontSize: 16, color: DynamicColor.lightRedClr),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: kToolbarHeight * 2,
-                  width: Get.width,
-                  child: controller.mediaClass.isNotEmpty
-                      ? ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: controller.mediaClass.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return Stack(
-                              alignment: Alignment.topRight,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Container(
-                                    width: 100,
-                                    height: kToolbarHeight * 2,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: theme.primaryColor,
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: controller.mediaClass[index]
-                                                        .thumbnail ==
-                                                    null
-                                                ? FileImage(File(controller
-                                                    .mediaClass[index].filename
-                                                    .toString()))
-                                                : FileImage(File(controller
-                                                        .mediaClass[index]
-                                                        .thumbnail
-                                                        .toString()))
-                                                    as ImageProvider)),
-                                    child: controller
-                                                .mediaClass[index].thumbnail !=
-                                            null
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(Routes.videoPlayerClass,
-                                                  arguments: {
-                                                    "type": "file",
-                                                    "url": controller
-                                                        .mediaClass[index]
-                                                        .filename
-                                                  });
-                                            },
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.play_arrow,
-                                                size: 35,
-                                              ),
-                                            ),
-                                          )
-                                        : SizedBox.shrink(),
-                                  ),
-                                ),
-                              ],
-                            );
-                          })
-                      : SizedBox(
-                          height: kToolbarHeight * 2,
-                          width: Get.width,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: controller
-                                  .venueDetails!.data!.profilePicture!.length,
-                              itemBuilder: (BuildContext context, index) {
-                                return Stack(
-                                  alignment: Alignment.topRight,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Container(
-                                        width: 100,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: theme.primaryColor,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            image: DecorationImage(
-                                                fit: BoxFit.fill,
-                                                image: NetworkImage(controller
-                                                    .venueDetails!
-                                                    .data!
-                                                    .profilePicture![index]
-                                                    .mediaPath
-                                                    .toString()))),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: kToolbarHeight * 2,
+                width: Get.width,
+                child: controller.mediaClass.isNotEmpty
+                    ? ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: controller.mediaClass.length,
+                        itemBuilder: (BuildContext context, index) {
+                          return Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Container(
+                                  width: 100,
+                                  height: kToolbarHeight * 2,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: theme.primaryColor,
                                       ),
-                                    ),
-                                  ],
-                                );
-                              }),
-                        ),
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                //   child: Container(
-                //     width: double.infinity,
-                //     padding: EdgeInsets.symmetric(vertical: 12,horizontal: 12),
-                //     decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.circular(10),
-                //         color: DynamicColor.darkGrayClr
-                //     ),
-                //     child: Row(
-                //       children: [
-                //         Container(
-                //           decoration: BoxDecoration(
-                //             color: DynamicColor.blackClr,
-                //             shape:BoxShape.circle,
-                //             border: Border.all(color: DynamicColor.lightYellowClr),
-                //           ),
-                //           child: Image(
-                //             image: AssetImage("assets/profileImg.png"),
-                //           ),
-                //         ),
-                //         Padding(
-                //           padding: EdgeInsets.only(left: 8.0),
-                //           child: Column(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Text("Micheel Logan",
-                //                 style: poppinsRegularStyle(
-                //                   fontSize: 11,
-                //                   context: context,
-                //                   color: theme.primaryColor,
-                //                 ),
-                //               ),
-                //               Text("Property Owner",
-                //                 style: poppinsRegularStyle(
-                //                   fontSize: 11,
-                //                   context: context,
-                //                   color: theme.primaryColor,
-                //                 ),
-                //               ),
-                //               Text("Be Our Guest Events",
-                //                 style: poppinsRegularStyle(
-                //                   fontSize: 11,
-                //                   context: context,
-                //                   color: DynamicColor.lightRedClr,
-                //                 ),
-                //               ),
-                //               RatingBar.builder(
-                //                 initialRating: 3,
-                //                 minRating: 1,
-                //                 direction: Axis.horizontal,
-                //                 allowHalfRating: true,
-                //                 itemCount: 5,
-                //                 itemSize: 13,
-                //                   unratedcolor: theme.primaryColor,
-                //                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                //                 itemBuilder: (context, _) => Icon(
-                //                   Icons.star,
-                //                   color: Colors.amber,
-                //                 ),
-                //                 onRatingUpdate: (rating) {
-                //                   print(rating);
-                //                 },
-                //               )
-                //             ],
-                //           ),
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: TextField(
-                    readOnly: true,
-                    controller: controller.addressController,
-                    style: poppinsRegularStyle(
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: controller.mediaClass[index]
+                                                      .thumbnail ==
+                                                  null
+                                              ? FileImage(File(controller
+                                                  .mediaClass[index].filename
+                                                  .toString()))
+                                              : FileImage(File(controller
+                                                      .mediaClass[index]
+                                                      .thumbnail
+                                                      .toString()))
+                                                  as ImageProvider)),
+                                  child: controller
+                                              .mediaClass[index].thumbnail !=
+                                          null
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed(Routes.videoPlayerClass,
+                                                arguments: {
+                                                  "type": "file",
+                                                  "url": controller
+                                                      .mediaClass[index]
+                                                      .filename
+                                                });
+                                          },
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              size: 35,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox.shrink(),
+                                ),
+                              ),
+                            ],
+                          );
+                        })
+                    : controller.venueDetails != null
+                        ? SizedBox(
+                            height: kToolbarHeight * 2,
+                            width: Get.width,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemCount: controller
+                                    .venueDetails!.data!.profilePicture!.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Container(
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: theme.primaryColor,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              image: DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: NetworkImage(controller
+                                                      .venueDetails!
+                                                      .data!
+                                                      .profilePicture![index]
+                                                      .mediaPath
+                                                      .toString()))),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          )
+                        : SizedBox(),
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              //   child: Container(
+              //     width: double.infinity,
+              //     padding: EdgeInsets.symmetric(vertical: 12,horizontal: 12),
+              //     decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(10),
+              //         color: DynamicColor.darkGrayClr
+              //     ),
+              //     child: Row(
+              //       children: [
+              //         Container(
+              //           decoration: BoxDecoration(
+              //             color: DynamicColor.blackClr,
+              //             shape:BoxShape.circle,
+              //             border: Border.all(color: DynamicColor.lightYellowClr),
+              //           ),
+              //           child: Image(
+              //             image: AssetImage("assets/profileImg.png"),
+              //           ),
+              //         ),
+              //         Padding(
+              //           padding: EdgeInsets.only(left: 8.0),
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text("Micheel Logan",
+              //                 style: poppinsRegularStyle(
+              //                   fontSize: 11,
+              //                   context: context,
+              //                   color: theme.primaryColor,
+              //                 ),
+              //               ),
+              //               Text("Property Owner",
+              //                 style: poppinsRegularStyle(
+              //                   fontSize: 11,
+              //                   context: context,
+              //                   color: theme.primaryColor,
+              //                 ),
+              //               ),
+              //               Text("Be Our Guest Events",
+              //                 style: poppinsRegularStyle(
+              //                   fontSize: 11,
+              //                   context: context,
+              //                   color: DynamicColor.lightRedClr,
+              //                 ),
+              //               ),
+              //               RatingBar.builder(
+              //                 initialRating: 3,
+              //                 minRating: 1,
+              //                 direction: Axis.horizontal,
+              //                 allowHalfRating: true,
+              //                 itemCount: 5,
+              //                 itemSize: 13,
+              //                   unratedcolor: theme.primaryColor,
+              //                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+              //                 itemBuilder: (context, _) => Icon(
+              //                   Icons.star,
+              //                   color: Colors.amber,
+              //                 ),
+              //                 onRatingUpdate: (rating) {
+              //                   print(rating);
+              //                 },
+              //               )
+              //             ],
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: TextField(
+                  readOnly: true,
+                  controller: controller.addressController,
+                  style: poppinsRegularStyle(
+                    fontSize: 15,
+                    color: theme.primaryColor,
+                    context: context,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: "Location",
+                    labelStyle: poppinsRegularStyle(
                       fontSize: 15,
                       color: theme.primaryColor,
                       context: context,
                     ),
-                    decoration: InputDecoration(
-                      labelText: "Location",
-                      labelStyle: poppinsRegularStyle(
-                        fontSize: 15,
-                        color: theme.primaryColor,
-                        context: context,
-                      ),
-                      suffixIcon: Icon(
-                        Icons.location_searching,
-                        size: 20,
-                        color: theme.primaryColor,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: DynamicColor.grayClr),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: DynamicColor.grayClr),
-                      ),
+                    suffixIcon: Icon(
+                      Icons.location_searching,
+                      size: 20,
+                      color: theme.primaryColor,
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: DynamicColor.grayClr),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: DynamicColor.grayClr),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                controller.lat != "null"
-                    ? Obx(
-                        () => mapUpdate.value == false
-                            ? SizedBox.shrink()
-                            : ShowCustomMap(
-                                horizontalPadding: 12.0,
-                                lat: double.parse(latAssign.value.toString()),
-                                lng: double.parse(lngAssign.value.toString()),
-                              ),
-                      )
-                    : SizedBox.shrink(),
-              ],
-            ),
-          );
-        }),
-        bottomNavigationBar: serviceCondition == true
-            ? SizedBox.shrink()
-            : GetBuilder<ManagerController>(builder: (controller) {
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              controller.lat != "null"
+                  ? Obx(
+                      () => mapUpdate.value == false
+                          ? SizedBox.shrink()
+                          : ShowCustomMap(
+                              horizontalPadding: 12.0,
+                              lat: double.parse(latAssign.value.toString()),
+                              lng: double.parse(lngAssign.value.toString()),
+                            ),
+                    )
+                  : SizedBox.shrink(),
+            ],
+          ),
+        );
+      }),
+      bottomNavigationBar: serviceCondition == true
+          ? SizedBox.shrink()
+          : SafeArea(
+              child: GetBuilder<ManagerController>(builder: (controller) {
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: Row(
@@ -557,10 +557,12 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                   onNext: (GeocodingResult? result) {
                                     if (result != null) {
                                       mapUpdate(false);
-                                      controller.lat =
-                                          result.geometry.location.lat.toString();
-                                      controller.lng =
-                                          result.geometry.location.lng.toString();
+                                      controller.lat = result
+                                          .geometry.location.lat
+                                          .toString();
+                                      controller.lng = result
+                                          .geometry.location.lng
+                                          .toString();
                                       controller.address =
                                           result.formattedAddress ?? "";
                                       _controller.latLng = LatLng(
@@ -656,7 +658,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                   ),
                 );
               }),
-      ),
+            ),
     );
   }
 }
@@ -693,479 +695,484 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return SafeArea(
-      top: false,
-      bottom: Platform.isIOS?true:false,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight * 3.0),
-          child: Obx(
-            () => _controller.getVenueDetailsLoader.value == false
-                ? SizedBox.shrink()
-                : Container(
-                    height: kToolbarHeight * 2.3 + 30,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/grayClor.png"),
-                            fit: BoxFit.fill)),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight * 3.0),
+        child: Obx(
+          () => _controller.getVenueDetailsLoader.value == false
+              ? SizedBox.shrink()
+              : Container(
+                  height: kToolbarHeight * 2.3 + 30,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/grayClor.png"),
+                          fit: BoxFit.fill)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: ImageIcon(
+                                AssetImage("assets/backArrow.png"),
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                            API().sp.read("role") == "eventOrganizer"
+                                ? IconButton(
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return Container(
+                                              padding: EdgeInsets.all(12.0),
+                                              margin: EdgeInsets.all(10.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  TextField(
+                                                    controller:
+                                                        venueReasonController,
+                                                    decoration: InputDecoration(
+                                                      hintText: "Reason",
+                                                      border: OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .grey)),
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .grey)),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: Colors
+                                                                      .grey)),
+                                                    ),
+                                                    keyboardType:
+                                                        TextInputType.multiline,
+                                                    maxLines: 5,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  CustomButton(
+                                                    borderClr:
+                                                        Colors.transparent,
+                                                    heights: 35,
+                                                    fontSized: 13,
+                                                    onTap: () async {
+                                                      Get.back();
+                                                      await _authController
+                                                          .reportAccount(
+                                                              type: "venue",
+                                                              sourceId: venueId,
+                                                              message:
+                                                                  venueReasonController
+                                                                      .text)
+                                                          .then((value) {
+                                                        venueReasonController
+                                                            .clear();
+                                                      });
+                                                    },
+                                                    text: "Report",
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          });
+                                    },
+                                    icon: Icon(
+                                      Icons.more_vert,
+                                      color: theme.primaryColor,
+                                    ))
+                                : SizedBox()
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10.0),
+                          child: Row(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: ImageIcon(
-                                  AssetImage("assets/backArrow.png"),
-                                  color: theme.primaryColor,
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: DynamicColor.lightRedClr),
+                                    image: DecorationImage(
+                                        image: NetworkImage(_controller
+                                                    .venueDetails!
+                                                    .data!
+                                                    .user!
+                                                    .profilePicture ==
+                                                null
+                                            ? groupPlaceholder
+                                            : _controller.venueDetails!.data!
+                                                .user!.profilePicture!.mediaPath
+                                                .toString()),
+                                        fit: BoxFit.fill)),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _controller.venueDetails!.data!.user!.name
+                                          .toString(),
+                                      style: poppinsRegularStyle(
+                                        fontSize: 16,
+                                        context: context,
+                                        color: theme.primaryColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Event Place",
+                                      style: poppinsRegularStyle(
+                                        fontSize: 16,
+                                        context: context,
+                                        color: theme.primaryColor,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              API().sp.read("role") == "eventOrganizer"
-                                  ? IconButton(
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                            context: context,
-                                            builder: (context) {
-                                              return Container(
-                                                padding: EdgeInsets.all(12.0),
-                                                margin: EdgeInsets.all(10.0),
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    TextField(
-                                                      controller:
-                                                      venueReasonController,
-                                                      decoration:
-                                                      InputDecoration(
-                                                        hintText: "Reason",
-                                                        border: OutlineInputBorder(
-                                                            borderSide:
-                                                            BorderSide(
-                                                                color: Colors
-                                                                    .grey)),
-                                                        enabledBorder:
-                                                        OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: Colors
-                                                                    .grey)),
-                                                        focusedBorder:
-                                                        OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                color: Colors
-                                                                    .grey)),
-                                                      ),
-                                                      keyboardType:
-                                                      TextInputType
-                                                          .multiline,
-                                                      maxLines: 5,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    CustomButton(
-                                                      borderClr: Colors.transparent,
-                                                      heights: 35,
-                                                      fontSized: 13,
-                                                      onTap: () async {
-                                                        Get.back();
-                                                        await _authController
-                                                            .reportAccount(
-                                                            type: "venue",sourceId: venueId,message: venueReasonController.text).then((value){
-                                                          venueReasonController.clear();
-                                                        });
-                                                      },
-                                                      text: "Report",
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            });
+                              Spacer(),
+                              editButton == false
+                                  ? SizedBox.shrink()
+                                  : GestureDetector(
+                                      onTap: () {
+                                        _controller.editVenueDataBind();
                                       },
-                                      icon: Icon(
-                                        Icons.more_vert,
+                                      child: Icon(
+                                        Icons.edit_calendar_rounded,
+                                        size: 30,
                                         color: theme.primaryColor,
-                                      ))
-                                  : SizedBox()
+                                      ),
+                                    )
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                          color: DynamicColor.lightRedClr),
-                                      image: DecorationImage(
-                                          image: NetworkImage(_controller
-                                                      .venueDetails!
-                                                      .data!
-                                                      .user!
-                                                      .profilePicture ==
-                                                  null
-                                              ? groupPlaceholder
-                                              : _controller.venueDetails!.data!
-                                                  .user!.profilePicture!.mediaPath
-                                                  .toString()),
-                                          fit: BoxFit.fill)),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        _controller.venueDetails!.data!.user!.name
-                                            .toString(),
-                                        style: poppinsRegularStyle(
-                                          fontSize: 16,
-                                          context: context,
-                                          color: theme.primaryColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        "Event Place",
-                                        style: poppinsRegularStyle(
-                                          fontSize: 16,
-                                          context: context,
-                                          color: theme.primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Spacer(),
-                                editButton == false
-                                    ? SizedBox.shrink()
-                                    : GestureDetector(
-                                        onTap: () {
-                                          _controller.editVenueDataBind();
-                                        },
-                                        child: Icon(
-                                          Icons.edit_calendar_rounded,
-                                          size: 30,
-                                          color: theme.primaryColor,
-                                        ),
-                                      )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-          ),
+                ),
         ),
-        body: GetBuilder<ManagerController>(initState: (v) {
-          _controller.getVenueDetails(id: venueId);
-        }, builder: (controller) {
-          return ((controller.getVenueDetailsLoader.value == false) || (controller.venueDetails == null))
-              ? SizedBox.shrink()
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      eventsTitles(text: "Contact Information"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      eventDateTime(
-                          theme: theme,
-                          context: context,
-                          iconBgClr: DynamicColor.lightBlackClr,
-                          iconClr: DynamicColor.grayClr,
-                          text:
-                              "${controller.venueDetails!.data!.venueProperty!.openingHours} to ${controller.venueDetails!.data!.venueProperty!.closingHours}"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      eventDateTime(
+      ),
+      body: GetBuilder<ManagerController>(initState: (v) {
+        _controller.getVenueDetails(id: venueId);
+      }, builder: (controller) {
+        return ((controller.getVenueDetailsLoader.value == false) ||
+                (controller.venueDetails == null))
+            ? SizedBox.shrink()
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    eventsTitles(text: "Contact Information"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    eventDateTime(
                         theme: theme,
                         context: context,
                         iconBgClr: DynamicColor.lightBlackClr,
                         iconClr: DynamicColor.grayClr,
-                        img: "assets/groupPeopleIcon.png",
-                        text: controller
-                            .venueDetails!.data!.venueProperty!.maxSeating,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      eventDateTime(
-                        theme: theme,
-                        context: context,
-                        iconBgClr: DynamicColor.lightBlackClr,
-                        iconClr: DynamicColor.grayClr,
-                        icon: true,
-                        text: controller.venueDetails!.data!.location.toString(),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      eventsTitles(text: "Image"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: kToolbarHeight * 2,
-                        width: Get.width,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: ListView.builder(
-                              itemCount: controller
-                                  .venueDetails!.data!.profilePicture!.length,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Container(
-                                    width: 130,
-                                    height: kToolbarHeight * 2,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: theme.primaryColor,
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: controller
-                                                        .venueDetails!
-                                                        .data!
-                                                        .profilePicture![index]
-                                                        .thumbnail !=
-                                                    null
-                                                ? NetworkImage(controller
-                                                    .venueDetails!
-                                                    .data!
-                                                    .profilePicture![index]
-                                                    .thumbnail
-                                                    .toString())
-                                                : NetworkImage(controller
-                                                    .venueDetails!
-                                                    .data!
-                                                    .profilePicture![index]
-                                                    .mediaPath
-                                                    .toString()))),
-                                    child: controller
-                                                .venueDetails!
-                                                .data!
-                                                .profilePicture![index]
-                                                .thumbnail !=
-                                            null
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(Routes.videoPlayerClass,
-                                                  arguments: {
-                                                    "type": "filedsaf",
-                                                    "url": controller
-                                                        .venueDetails!
-                                                        .data!
-                                                        .profilePicture![index]
-                                                        .mediaPath
-                                                        .toString()
-                                                  });
-                                            },
-                                            child: Center(
-                                              child: Icon(
-                                                Icons.play_arrow,
-                                                size: 35,
-                                                color: theme.primaryColor,
-                                              ),
-                                            ),
-                                          )
-                                        : SizedBox.shrink(),
-                                  ),
-                                );
-                              }),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      eventsTitles(text: "Max Occupancy"),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      eventDateTime(
-                        theme: theme,
-                        context: context,
-                        iconBgClr: DynamicColor.lightBlackClr,
-                        iconClr: DynamicColor.grayClr,
-                        img: "assets/groupPeopleIcon.png",
-                        text: controller
-                            .venueDetails!.data!.venueProperty!.maxOccupancy,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      eventsTitles(text: "Max Seating"),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      eventDateTime(
-                        theme: theme,
-                        context: context,
-                        iconBgClr: DynamicColor.lightBlackClr,
-                        iconClr: DynamicColor.grayClr,
-                        img: "assets/groupPeopleIcon.png",
-                        text: controller
-                            .venueDetails!.data!.venueProperty!.maxSeating,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      eventsTitles(text: "Amenities"),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                        child: ListView.builder(
-                            itemCount:
-                                controller.venueDetails!.data!.amenities!.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, index) {
-                              return Row(
-                                children: [
-                                  Image(
-                                    image: AssetImage("assets/headingIcons.png"),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      controller.venueDetails!.data!
-                                          .amenities![index].venueItem!.name
-                                          .toString(),
-                                      style: poppinsRegularStyle(
-                                        fontSize: 12,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              );
-                            }),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      eventsTitles(text: "House Event Capabilities"),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                        child: ListView.builder(
-                            itemCount: controller.venueDetails!.data!
-                                .houseEventCapabilities!.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, index) {
-                              return Row(
-                                children: [
-                                  Image(
-                                    image: AssetImage("assets/headingIcons.png"),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      controller
-                                          .venueDetails!
-                                          .data!
-                                          .houseEventCapabilities![index]
-                                          .venueItem!
-                                          .name
-                                          .toString(),
-                                      style: poppinsRegularStyle(
-                                        fontSize: 12,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              );
-                            }),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      eventsTitles(text: "Licenses and permit"),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        text:
+                            "${controller.venueDetails!.data!.venueProperty!.openingHours} to ${controller.venueDetails!.data!.venueProperty!.closingHours}"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    eventDateTime(
+                      theme: theme,
+                      context: context,
+                      iconBgClr: DynamicColor.lightBlackClr,
+                      iconClr: DynamicColor.grayClr,
+                      img: "assets/groupPeopleIcon.png",
+                      text: controller
+                          .venueDetails!.data!.venueProperty!.maxSeating,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    eventDateTime(
+                      theme: theme,
+                      context: context,
+                      iconBgClr: DynamicColor.lightBlackClr,
+                      iconClr: DynamicColor.grayClr,
+                      icon: true,
+                      text: controller.venueDetails!.data!.location.toString(),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    eventsTitles(text: "Image"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: kToolbarHeight * 2,
+                      width: Get.width,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
                         child: ListView.builder(
                             itemCount: controller
-                                .venueDetails!.data!.licensesAndPermit!.length,
+                                .venueDetails!.data!.profilePicture!.length,
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
                             itemBuilder: (BuildContext context, index) {
-                              return Row(
-                                children: [
-                                  Image(
-                                    image: AssetImage("assets/headingIcons.png"),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 8.0),
-                                    child: Text(
-                                      controller
-                                          .venueDetails!
-                                          .data!
-                                          .licensesAndPermit![index]
-                                          .venueItem!
-                                          .name
-                                          .toString(),
-                                      style: poppinsRegularStyle(
-                                        fontSize: 12,
-                                        context: context,
+                              return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Container(
+                                  width: 130,
+                                  height: kToolbarHeight * 2,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
                                         color: theme.primaryColor,
                                       ),
-                                    ),
-                                  )
-                                ],
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: controller
+                                                      .venueDetails!
+                                                      .data!
+                                                      .profilePicture![index]
+                                                      .thumbnail !=
+                                                  null
+                                              ? NetworkImage(controller
+                                                  .venueDetails!
+                                                  .data!
+                                                  .profilePicture![index]
+                                                  .thumbnail
+                                                  .toString())
+                                              : NetworkImage(controller
+                                                  .venueDetails!
+                                                  .data!
+                                                  .profilePicture![index]
+                                                  .mediaPath
+                                                  .toString()))),
+                                  child: controller
+                                              .venueDetails!
+                                              .data!
+                                              .profilePicture![index]
+                                              .thumbnail !=
+                                          null
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            Get.toNamed(Routes.videoPlayerClass,
+                                                arguments: {
+                                                  "type": "filedsaf",
+                                                  "url": controller
+                                                      .venueDetails!
+                                                      .data!
+                                                      .profilePicture![index]
+                                                      .mediaPath
+                                                      .toString()
+                                                });
+                                          },
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              size: 35,
+                                              color: theme.primaryColor,
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox.shrink(),
+                                ),
                               );
                             }),
                       ),
-                    ],
-                  ),
-                );
-        }),
-        bottomNavigationBar: btnShow == false
-            ? SizedBox.shrink()
-            : Padding(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                child: CustomButton(
-                  borderClr: Colors.transparent,
-                  onTap: () {
-                    Get.toNamed(Routes.eventPreview,
-                        arguments: {"viewDetails": 1});
-                  },
-                  text: "Continue",
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    eventsTitles(text: "Max Occupancy"),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    eventDateTime(
+                      theme: theme,
+                      context: context,
+                      iconBgClr: DynamicColor.lightBlackClr,
+                      iconClr: DynamicColor.grayClr,
+                      img: "assets/groupPeopleIcon.png",
+                      text: controller
+                          .venueDetails!.data!.venueProperty!.maxOccupancy,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    eventsTitles(text: "Max Seating"),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    eventDateTime(
+                      theme: theme,
+                      context: context,
+                      iconBgClr: DynamicColor.lightBlackClr,
+                      iconClr: DynamicColor.grayClr,
+                      img: "assets/groupPeopleIcon.png",
+                      text: controller
+                          .venueDetails!.data!.venueProperty!.maxSeating,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    eventsTitles(text: "Amenities"),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: ListView.builder(
+                          itemCount:
+                              controller.venueDetails!.data!.amenities!.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, index) {
+                            return Row(
+                              children: [
+                                Image(
+                                  image: AssetImage("assets/headingIcons.png"),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    controller.venueDetails!.data!
+                                        .amenities![index].venueItem!.name
+                                        .toString(),
+                                    style: poppinsRegularStyle(
+                                      fontSize: 12,
+                                      context: context,
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    eventsTitles(text: "House Event Capabilities"),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: ListView.builder(
+                          itemCount: controller.venueDetails!.data!
+                              .houseEventCapabilities!.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, index) {
+                            return Row(
+                              children: [
+                                Image(
+                                  image: AssetImage("assets/headingIcons.png"),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    controller
+                                        .venueDetails!
+                                        .data!
+                                        .houseEventCapabilities![index]
+                                        .venueItem!
+                                        .name
+                                        .toString(),
+                                    style: poppinsRegularStyle(
+                                      fontSize: 12,
+                                      context: context,
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    eventsTitles(text: "Licenses and permit"),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: ListView.builder(
+                          itemCount: controller
+                              .venueDetails!.data!.licensesAndPermit!.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, index) {
+                            return Row(
+                              children: [
+                                Image(
+                                  image: AssetImage("assets/headingIcons.png"),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    controller
+                                        .venueDetails!
+                                        .data!
+                                        .licensesAndPermit![index]
+                                        .venueItem!
+                                        .name
+                                        .toString(),
+                                    style: poppinsRegularStyle(
+                                      fontSize: 12,
+                                      context: context,
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
                 ),
+              );
+      }),
+      bottomNavigationBar: btnShow == false
+          ? SizedBox.shrink()
+          : Padding(
+              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              child: CustomButton(
+                borderClr: Colors.transparent,
+                onTap: () {
+                  Get.toNamed(Routes.eventPreview,
+                      arguments: {"viewDetails": 1});
+                },
+                text: "Continue",
               ),
-      ),
+            ),
     );
   }
 

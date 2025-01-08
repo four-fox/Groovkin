@@ -1,7 +1,3 @@
-
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_new
 
 import 'dart:io';
@@ -24,9 +20,9 @@ set selectIndex(index) => selectUserIndexxx.value = index;
 
 class UserBottomNavigationNav extends StatelessWidget {
   UserBottomNavigationNav({
-    Key? key,
+    super.key,
 // this.initialIndex = 1,
-  }) : super(key: key);
+  });
 
   // @override
   // void dispose() {
@@ -44,95 +40,117 @@ class UserBottomNavigationNav extends StatelessWidget {
     ];
 
     return Scaffold(
-      extendBody: true,
       body: DoubleBackToCloseApp(
         snackBar: SnackBar(
           backgroundColor: theme.primaryColor,
-          content: Text('Tap back again to exit the app',
-          style: poppinsMediumStyle(
-            fontSize: 15,
-            context: context,
-            color: theme.scaffoldBackgroundColor
-          ),
+          content: Text(
+            'Tap back again to exit the app',
+            style: poppinsMediumStyle(
+                fontSize: 15,
+                context: context,
+                color: theme.scaffoldBackgroundColor),
           ),
         ),
         child: Obx(
-              () => Center(
+          () => Center(
             child: bodyContent.elementAt(selectIndex),
           ),
         ),
       ),
-      bottomNavigationBar: Obx(() => Padding(
-        padding: Platform.isIOS? EdgeInsets.only(bottom: 10):EdgeInsets.zero,
-        child: Container(
-          height: kToolbarHeight,
-          decoration: BoxDecoration(
-              borderRadius:  BorderRadius.only(
-                topRight: Radius.circular(12),
-                topLeft: Radius.circular(12),
+      bottomNavigationBar: SafeArea(
+        child: Obx(
+          () => Padding(
+            padding:
+                Platform.isIOS ? EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+            child: Container(
+              height: kToolbarHeight,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(12),
+                    topLeft: Radius.circular(12),
+                  ),
+                  image: DecorationImage(
+                      image: AssetImage("assets/grayClor.png"),
+                      fit: BoxFit.fill)),
+              child: BottomBarBubble(
+                backgroundColor: Colors.transparent,
+                color: DynamicColor.yellowClr,
+                items: [
+                  BottomBarItem(
+                    label: "My Groovkin",
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        // AssetImage("assets/userHomeIcon.png"),
+                        AssetImage("assets/groovkin.png"),
+                        color: selectUserIndexxx.value == 0
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
+                    ),
+                  ),
+                  BottomBarItem(
+                    label: "My Events",
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage("assets/userMyEvents.png"),
+                        color: selectUserIndexxx.value == 1
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
+                    ),
+                  ),
+                  BottomBarItem(
+                    label: "Groups",
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage("assets/groups.png"),
+                        color: selectUserIndexxx.value == 2
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
+                    ),
+                  ),
+                  BottomBarItem(
+                    label: "Settings",
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage("assets/settingIcon.png"),
+                        color: selectUserIndexxx.value == 3
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
+                    ),
+                  ),
+                ],
+                selectedIndex: selectUserIndexxx.value,
+                onSelect: (index) {
+                  selectUserIndexxx.value = index;
+                  // implement your select function here
+                },
               ),
-              image: DecorationImage(
-                  image: AssetImage("assets/grayClor.png"),
-                  fit: BoxFit.fill
-              )
-          ),
-          child: BottomBarBubble(
-            backgroundColor: Colors.transparent,
-            color: DynamicColor.yellowClr,
-            items: [
-              BottomBarItem(
-                label: "Home",
-                labelTextStyle: poppinsMediumStyle(
-                    fontSize: 12,
-                    context: context,
-                    color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(AssetImage("assets/userHomeIcon.png"),color:selectUserIndexxx.value==0? DynamicColor.yellowClr:DynamicColor.grayClr,),
-                ),
-              ),
-              BottomBarItem(
-                label: "My Events",
-                labelTextStyle: poppinsMediumStyle(
-                    fontSize: 12,
-                    context: context,
-                    color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(AssetImage("assets/userMyEvents.png"),color:selectUserIndexxx.value==1? DynamicColor.yellowClr:DynamicColor.grayClr,),
-                ),
-              ),
-              BottomBarItem(
-                label: "Groups",
-                labelTextStyle: poppinsMediumStyle(
-                    fontSize: 12,
-                    context: context,
-                    color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(AssetImage("assets/groups.png"),color:selectUserIndexxx.value==2? DynamicColor.yellowClr:DynamicColor.grayClr,),
-                ),
-              ),
-              BottomBarItem(
-                label: "Setting",
-                labelTextStyle: poppinsMediumStyle(
-                    fontSize: 12,
-                    context: context,
-                    color: theme.scaffoldBackgroundColor),
-                iconBuilder: Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: ImageIcon(AssetImage("assets/settingIcon.png"),color:selectUserIndexxx.value==3? DynamicColor.yellowClr:DynamicColor.grayClr,),
-                ),
-              ),
-            ],
-            selectedIndex: selectUserIndexxx.value,
-            onSelect: (index) {
-              selectUserIndexxx.value = index;
-              // implement your select function here
-            },
+            ),
           ),
         ),
-      ),
       ),
     );
   }

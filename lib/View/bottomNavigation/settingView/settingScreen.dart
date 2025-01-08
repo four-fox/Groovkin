@@ -9,7 +9,6 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
-import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:intl/intl.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -201,7 +200,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         customWidget(
                             context: context,
                             img: "assets/switchIcon.png",
-                            text: "Change Role",
+                            text: "Switch Role",
                             onTap: () {
                               showModalBottomSheet(
                                   shape: RoundedRectangleBorder(
@@ -209,53 +208,57 @@ class _SettingScreenState extends State<SettingScreen> {
                                           BorderRadius.circular(12.0)),
                                   context: context,
                                   builder: (context) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        API().sp.read("role") == "User"
-                                            ? SizedBox()
-                                            : ListTile(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0)),
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  controller.changeRoles(
-                                                      ChangeRole.user);
-                                                },
-                                                title: Text("User"),
-                                              ),
-                                        API().sp.read("role") ==
-                                                "eventOrganizer"
-                                            ? SizedBox()
-                                            : ListTile(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0)),
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  controller.changeRoles(
-                                                      ChangeRole.organizer);
-                                                },
-                                                title: Text("Event Organizer"),
-                                              ),
-                                        API().sp.read("role") == "eventManager"
-                                            ? SizedBox()
-                                            : ListTile(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0)),
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  controller.changeRoles(
-                                                      ChangeRole.manager);
-                                                },
-                                                title: Text("Venue Manager"),
-                                              ),
-                                      ],
+                                    return SafeArea(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          API().sp.read("role") == "User"
+                                              ? SizedBox()
+                                              : ListTile(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0)),
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    controller.changeRoles(
+                                                        ChangeRole.user);
+                                                  },
+                                                  title: Text("User"),
+                                                ),
+                                          API().sp.read("role") ==
+                                                  "eventOrganizer"
+                                              ? SizedBox()
+                                              : ListTile(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0)),
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    controller.changeRoles(
+                                                        ChangeRole.organizer);
+                                                  },
+                                                  title:
+                                                      Text("Event Organizer"),
+                                                ),
+                                          API().sp.read("role") ==
+                                                  "eventManager"
+                                              ? SizedBox()
+                                              : ListTile(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0)),
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    controller.changeRoles(
+                                                        ChangeRole.manager);
+                                                  },
+                                                  title: Text("Venue Manager"),
+                                                ),
+                                        ],
+                                      ),
                                     );
                                   });
                             }),

@@ -816,8 +816,10 @@ class AuthController extends GetxController {
 
   RxBool sendingEmailLoader = true.obs;
   List<UserClass> invitationList = [];
+
   sendEmail(BuildContext context) async {
-    sendingEmailLoader(false);
+    sendingEmailLoader.value = false;
+    update();
     List eventInvitation = [];
     for (var action in invitationList) {
       eventInvitation.add(action.emailController.text);
@@ -835,20 +837,22 @@ class AuthController extends GetxController {
       ..recipients = eventInvitation
       ..subject = 'Event Invitation'
       ..text = 'Event Invitation users';
+      
     try {
-      sendingEmailLoader(false);
+      sendingEmailLoader.value = false;
+
       // final sendReport =
       await send(message, smtpServer);
       invitationList.clear();
       Get.offNamed(Routes.sendInvitationScreen);
-      sendingEmailLoader(true);
+      sendingEmailLoader.value = true;
       update();
       if (context.mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Mail Send Successfully")));
       }
     } on MailerException catch (e) {
-      sendingEmailLoader(true);
+      sendingEmailLoader.value = true;
       print('Message not sent.');
       print(e.message);
       for (var p in e.problems) {

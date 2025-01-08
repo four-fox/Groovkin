@@ -37,6 +37,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
 
   final eventForm = GlobalKey<FormState>();
   late EventController _eventController;
+
+  String intialTime = DateFormat.jm().format(DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+    12,
+  ));
+
   @override
   void initState() {
     if (Get.isRegistered<AuthController>()) {
@@ -50,19 +58,10 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     } else {
       _eventController = Get.put(EventController());
     }
-    _eventController.proposedTimeWindowsController.text =
-        DateFormat.jm().format(DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-      12,
-    ));
-    _eventController.endTimeController.text = DateFormat.jm().format(DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-      12,
-    ));
+    _eventController.proposedTimeWindowsController.text = intialTime;
+    _eventController.endTimeController.text = intialTime;
+    _eventController.postTime = intialTime;
+    _eventController.postEndTime = intialTime;
   }
 
   @override
@@ -122,6 +121,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                                           .bannerImage !=
                                                       null))
                                               ? DecorationImage(
+                                                  fit: BoxFit.fill,
                                                   image: NetworkImage(controller
                                                       .eventDetail!
                                                       .data!

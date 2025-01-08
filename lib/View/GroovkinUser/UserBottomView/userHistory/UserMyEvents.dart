@@ -40,6 +40,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight * 2.5),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 height: 35,
@@ -98,6 +99,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 5,
               ),
               GestureDetector(
                 onTap: () {
@@ -315,18 +319,36 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
 
 ///>>>>>>>>>>>>history tab
 
-class HistoryTab extends StatelessWidget {
+class HistoryTab extends StatefulWidget {
   HistoryTab({super.key});
 
+  @override
+  State<HistoryTab> createState() => _HistoryTabState();
+}
+
+class _HistoryTabState extends State<HistoryTab> {
+  late HomeController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      controller = Get.find<HomeController>();
+    } else {
+      controller = Get.put(HomeController());
+    }
+  }
+
   RxBool recommendedVal = false.obs;
+
   RxBool cancelledVal = false.obs;
+
   RxBool ongoingVal = false.obs;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return GetBuilder<HomeController>(builder: (controller) {
-      print("as");
+    return Obx(() {
       return SingleChildScrollView(
         child: Column(
           children: [
@@ -437,7 +459,7 @@ class HistoryTab extends StatelessWidget {
                                                         "statusText":
                                                             singleEventData.id
                                                                 .toString(),
-                                                                "isCancel":true,
+                                                        "isCancel": true,
                                                       });
                                                 },
                                                 context: context,

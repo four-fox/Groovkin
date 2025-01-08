@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_final_fields
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -77,40 +79,36 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButton: Obx(
               () => controller.showIndexValue!.value != 0
                   ? SizedBox.shrink()
-                  : Padding(
-                      padding: EdgeInsets.only(bottom: kToolbarHeight),
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.toNamed(Routes.viewAllEventListScreen);
-                        },
-                        child: Container(
-                          height: 35,
-                          width: 90,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              // color: Colors.amberAccent
-                              color: DynamicColor.darkGrayClr,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: theme.primaryColor,
-                              )),
-                          child: Center(
-                            child: Text(
-                              "View All",
-                              style: poppinsMediumStyle(
-                                fontSize: 14,
-                                context: context,
-                                color: theme.primaryColor,
-                              ),
+                  : GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.viewAllEventListScreen);
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 90,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                            // color: Colors.amberAccent
+                            color: DynamicColor.darkGrayClr,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: theme.primaryColor,
+                            )),
+                        child: Center(
+                          child: Text(
+                            "View All",
+                            style: poppinsMediumStyle(
+                              fontSize: 14,
+                              context: context,
+                              color: theme.primaryColor,
                             ),
                           ),
                         ),
                       ),
                     ),
             ),
-
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(kToolbarHeight * 3.5),
+              preferredSize: Size.fromHeight(kToolbarHeight * 3.7),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
@@ -118,21 +116,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Column(children: [
                   SizedBox(
-                    height: 30,
+                    height: 50,
                   ),
                   Row(
                     children: [
-                      Text(
-                        API().sp.read("role") == "eventOrganizer"
-                            ? "Welcome Event Organizer"
-                            : "Welcome Venue Manager",
-                        style: poppinsMediumStyle(
-                          fontSize: 16,
-                          context: context,
-                          color: theme.primaryColor,
+                      Expanded(
+                        child: Text(
+                          API().sp.read("role") == "eventOrganizer"
+                              ? "Welcome Event Organizer"
+                              : "Welcome Venue Manager",
+                          style: poppinsMediumStyle(
+                            fontSize: 16,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Spacer(),
                       GestureDetector(
                         onTap: () {
                           Get.toNamed(Routes.notificationScreen);
@@ -293,6 +294,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   GestureDetector(
                     onTap: () {
                       controller.showFilter.value =
@@ -308,7 +312,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ]),
               ),
             ),
-            
             body: Stack(
               alignment: Alignment.topRight,
               children: [
@@ -506,7 +509,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
 
 class ManagerUpcomingEventsView extends StatelessWidget {
   ManagerUpcomingEventsView({super.key});
@@ -803,7 +805,6 @@ class ManagerUpcomingEventsView extends StatelessWidget {
             ),
           );
         });*/
-  
   }
 
   List list = [

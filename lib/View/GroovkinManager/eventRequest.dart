@@ -13,6 +13,7 @@ class EventRequests extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
+      
       appBar: customAppBar(theme: theme, text: "Request", backArrow: false),
       body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12),
@@ -82,7 +83,6 @@ class EventRequests extends StatelessWidget {
                             height: 4,
                           ),
                           eventDateTime(
-
                               context: context,
                               iconBgClr: DynamicColor.darkGrayClr,
                               theme: theme,
@@ -98,7 +98,7 @@ class EventRequests extends StatelessWidget {
                             color: DynamicColor.avatarBgClr,
                           ),
                           ourGuestWidget(
-                            isDelete: false,
+                              isDelete: false,
                               context: context,
                               theme: theme,
                               bgClr: Colors.transparent,

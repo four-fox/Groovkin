@@ -239,8 +239,8 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       ? Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.0),
                           child: CustomTextFields(
-                            labelText: "Company name",
-                            validationError: "company name",
+                            labelText: "Company Name",
+                            validationError: "company Name",
                             iconShow: false,
                             ignoredValidation: true,
                             controller: controller.companyNameController,

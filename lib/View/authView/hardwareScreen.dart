@@ -25,7 +25,7 @@ class HardwareScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         appBar: customAppBar(theme: theme, text: "Hardware", actions: [
           ((_eventController.eventDetail == null) &&
@@ -83,9 +83,11 @@ class HardwareScreen extends StatelessWidget {
                               return Column(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
                                     child: hardwareWidget(
-                                      text: controller.hardwareListing[index].name
+                                      text: controller
+                                          .hardwareListing[index].name
                                           .toString(),
                                       theme: theme,
                                       context: context,
@@ -133,8 +135,8 @@ class HardwareScreen extends StatelessWidget {
                                             shrinkWrap: true,
                                             physics:
                                                 NeverScrollableScrollPhysics(),
-                                            itemBuilder:
-                                                (BuildContext context, indexes) {
+                                            itemBuilder: (BuildContext context,
+                                                indexes) {
                                               return Column(
                                                 children: [
                                                   Row(
@@ -152,7 +154,8 @@ class HardwareScreen extends StatelessWidget {
                                                                 fontSize: 12,
                                                                 color: theme
                                                                     .primaryColor,
-                                                                context: context),
+                                                                context:
+                                                                    context),
                                                       ),
                                                       Spacer(),
                                                       Theme(
@@ -227,10 +230,13 @@ class HardwareScreen extends StatelessWidget {
                 // }
                 Get.toNamed(Routes.quickSurveyScreen, arguments: {
                   "addMoreService": 1,
-                  "createEvent": createEventValue
+                  "createEvent": createEventValue,
+                  "title": "Music Choice!",
+                  "isFromEvent":true,
                 });
               } else {
-                bottomToast(text: "Please select hardware that can be provided");
+                bottomToast(
+                    text: "Please select hardware that can be provided");
               }
             },
             text: "Next",

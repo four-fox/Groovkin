@@ -205,7 +205,10 @@ class MapLocationPicker extends StatefulWidget {
       borderRadius: BorderRadius.all(Radius.circular(12)),
     ),
     this.bottomCardMargin = const EdgeInsets.fromLTRB(8, 8, 8, 16),
-    this.bottomCardIcon = const Icon(Icons.send,color: Colors.black,),
+    this.bottomCardIcon = const Icon(
+      Icons.send,
+      color: Colors.black,
+    ),
     this.bottomCardTooltip = "Continue with this location",
     this.bottomCardColor,
     this.onSuggestionSelected,
@@ -235,7 +238,6 @@ class MapLocationPicker extends StatefulWidget {
     this.hideLocation = false,
   }) : super(key: key);
 
-
   @override
   State<MapLocationPicker> createState() => _MapLocationPickerState();
 }
@@ -251,9 +253,9 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
     // _setMarkerIcon();
     // currentPositionLatLng();
     super.initState();
-    rootBundle.loadString('assets/map_style.txt').then((string) {
-      widget.mapStyle = string;
-    });
+    // rootBundle.loadString('assets/map_style.txt').then((string) {
+    //   widget.mapStyle = string;
+    // });
   }
 
   /// Map controller for movement & zoom
@@ -278,10 +280,10 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-      if((widget.lat !=null) && (widget.long !=null)){
+      if ((widget.lat != null) && (widget.long != null)) {
         LatLng latLng = LatLng(widget.lat!, widget.long!);
         _initialPosition = latLng;
-      }else{
+      } else {
         LatLng latLng = LatLng(position.latitude, position.longitude);
         _initialPosition = latLng;
       }
@@ -447,7 +449,6 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                       /// set zoom level
                       _zoom = position.zoom;
                     },
-
                     initialCameraPosition: CameraPosition(
                       target: _initialPosition!,
                       zoom: 18,
@@ -469,7 +470,9 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                           },
                     onMapCreated: (GoogleMapController controller) async {
                       _controller.complete(controller);
-                      controller.setMapStyle(widget.mapStyle);
+                      if (widget.mapStyle != null) {
+                        controller.setMapStyle(widget.mapStyle);
+                      }
                     },
                     markers: {
                       Marker(
@@ -478,360 +481,390 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                         icon: BitmapDescriptor.defaultMarker,
                       )
                     },
-
                     myLocationButtonEnabled: false,
                     myLocationEnabled: true,
                     zoomControlsEnabled: false,
                     padding: widget.padding,
                     compassEnabled: widget.compassEnabled,
                     liteModeEnabled: widget.liteModeEnabled,
-
                     mapType: _mapType,
                   ),
-                  widget.hideLocation ==false? Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      widget.onTap
-                          ? SafeArea(
-                              child: Card(
-                                margin: widget.topCardMargin,
-                                shape: widget.topCardShape,
-                                color: Colors.white,
-                                child: ListTile(
-                                  minVerticalPadding: 0,
-                                  contentPadding:
-                                      const EdgeInsets.only(right: 4, left: 4),
-                                  leading: widget.showBackButton
-                                      ? const BackButton(color: Colors.black,)
-                                      : widget.backButton,
-                                  title: ClipRRect(
-                                    borderRadius: widget.borderRadius!,
-                                    child: Consumer<AutoCompleteState>(
-                                      builder: (context, state, child) {
-                                        return FormBuilderTypeAhead<Prediction>(
-                                          decoration: InputDecoration(
-
-                                              labelStyle: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            hintStyle: TextStyle(color: Colors.white),
-                                            hintText: widget.searchHintText,
-                                            border: InputBorder.none,
-                                            filled: true,
-                                            suffixIcon: IconButton(
-                                              icon: const Icon(
-                                                Icons.close,
+                  widget.hideLocation == false
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            widget.onTap
+                                ? SafeArea(
+                                    child: Card(
+                                      margin: widget.topCardMargin,
+                                      shape: widget.topCardShape,
+                                      color: Colors.white,
+                                      child: ListTile(
+                                        minVerticalPadding: 0,
+                                        contentPadding: const EdgeInsets.only(
+                                            right: 4, left: 4),
+                                        leading: widget.showBackButton
+                                            ? const BackButton(
                                                 color: Colors.black,
-                                              ),
-                                              onPressed: () async {
-                                                _searchController.clear();
-                                              },
-                                            ),
-                                          ),
-                                          name: 'Search',
-                                          controller: _searchController,
-                                          selectionToTextTransformer: (result) {
-                                            return result.description ?? "";
-                                          },
-                                          itemBuilder: (context, continent) {
-                                            return ListTile(
-                                              title: Text(
-                                                  continent.description ?? "",
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
+                                              )
+                                            : widget.backButton,
+                                        title: ClipRRect(
+                                          borderRadius: widget.borderRadius!,
+                                          child: Consumer<AutoCompleteState>(
+                                            builder: (context, state, child) {
+                                              return FormBuilderTypeAhead<
+                                                  Prediction>(
+                                                decoration: InputDecoration(
+                                                  labelStyle: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily:
-                                                        'poppinsLight',
-                                                    letterSpacing: 0,
-                                                  )),
-                                            );
-                                          },
-                                          suggestionsCallback: (query) async {
-                                            await state.search(
-                                              query,
-                                              widget.apiKey,
-                                              language: widget.language,
-                                              sessionToken: widget.sessionToken,
-                                              region: widget.region,
-                                              components: widget.components,
-                                              location: widget.location,
-                                              offset: widget.offset,
-                                              origin: widget.origin,
-                                              radius: widget.radius,
-                                              strictbounds: widget.strictbounds,
-                                              types: widget.types,
-                                            );
-                                            return state.results;
-                                          },
-                                          onSuggestionSelected: (value) async {
-                                            _searchController.selection =
-                                                TextSelection.collapsed(
+                                                  ),
+                                                  hintStyle: TextStyle(
+                                                      color: Colors.white),
+                                                  hintText:
+                                                      widget.searchHintText,
+                                                  border: InputBorder.none,
+                                                  filled: true,
+                                                  suffixIcon: IconButton(
+                                                    icon: const Icon(
+                                                      Icons.close,
+                                                      color: Colors.black,
+                                                    ),
+                                                    onPressed: () async {
+                                                      _searchController.clear();
+                                                    },
+                                                  ),
+                                                ),
+                                                name: 'Search',
+                                                controller: _searchController,
+                                                selectionToTextTransformer:
+                                                    (result) {
+                                                  return result.description ??
+                                                      "";
+                                                },
+                                                itemBuilder:
+                                                    (context, continent) {
+                                                  return ListTile(
+                                                    title: Text(
+                                                        continent.description ??
+                                                            "",
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily:
+                                                              'poppinsLight',
+                                                          letterSpacing: 0,
+                                                        )),
+                                                  );
+                                                },
+                                                suggestionsCallback:
+                                                    (query) async {
+                                                  await state.search(
+                                                    query,
+                                                    widget.apiKey,
+                                                    language: widget.language,
+                                                    sessionToken:
+                                                        widget.sessionToken,
+                                                    region: widget.region,
+                                                    components:
+                                                        widget.components,
+                                                    location: widget.location,
+                                                    offset: widget.offset,
+                                                    origin: widget.origin,
+                                                    radius: widget.radius,
+                                                    strictbounds:
+                                                        widget.strictbounds,
+                                                    types: widget.types,
+                                                  );
+                                                  return state.results;
+                                                },
+                                                onSuggestionSelected:
+                                                    (value) async {
+                                                  _searchController.selection =
+                                                      TextSelection.collapsed(
                                                     offset: _searchController
-                                                        .text.length,);
-                                            _getDetailsByPlaceId(
-                                                value.placeId ?? "");
-                                            setState(() {});
-                                          },
-                                          hideSuggestionsOnKeyboardHide: widget
-                                              .hideSuggestionsOnKeyboardHide,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 26, horizontal: 14),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Container(
-                                  height: 44,
-                                  width: 44,
-                                  padding: const EdgeInsets.all(04.0),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white),
-                                  child: const Icon(
-                                    Icons.arrow_back,
-                                    size: 28,
-                                    color: Colors.white
-                                  ),
-                                ),
-                              ),
-                            ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(360),
-                          ),
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.5),
-                            child: PopupMenuButton(
-                              tooltip: 'Map Type',
-                              initialValue: _mapType,
-                              icon: const Icon(
-                                Icons.layers,
-                                color: Colors.black,
-                              ),
-                              onSelected: (MapType mapType) {
-                                setState(() {
-                                  _mapType = mapType;
-                                });
-                              },
-                              itemBuilder: (context) => const [
-                                PopupMenuItem(
-                                  value: MapType.normal,
-                                  child: Text('Normal'),
-                                ),
-                                PopupMenuItem(
-                                  value: MapType.hybrid,
-                                  child: Text('Hybrid'),
-                                ),
-                                PopupMenuItem(
-                                  value: MapType.satellite,
-                                  child: Text('Satellite'),
-                                ),
-                                PopupMenuItem(
-                                  value: MapType.terrain,
-                                  child: Text('Terrain'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      widget.onTap
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: FloatingActionButton(
-                                tooltip: 'My Location',
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.white,
-                                onPressed: () async {
-                                  var permission =
-                                      await Geolocator.checkPermission();
-                                  if (permission ==
-                                          LocationPermission
-                                              .unableToDetermine ||
-                                      permission ==
-                                          LocationPermission.deniedForever ||
-                                      permission == LocationPermission.denied) {
-                                    await Geolocator.requestPermission();
-                                  }
-                                  Position position =
-                                      await Geolocator.getCurrentPosition(
-                                    desiredAccuracy: widget.desiredAccuracy,
-                                  );
-                                  LatLng latLng = LatLng(
-                                      position.latitude, position.longitude);
-                                  _initialPosition = latLng;
-                                  final controller = await _controller.future;
-                                  controller.animateCamera(
-                                      CameraUpdate.newCameraPosition(
-                                          cameraPosition()));
-                                  _decodeAddress(Location(
-                                      lat: position.latitude,
-                                      lng: position.longitude));
-                                  widget.searchHintText =
-                                      "Start typing here to search";
-                                  setState(() {});
-                                },
-                                child: const Icon(
-                                  Icons.my_location,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            )
-                          : SizedBox.shrink(),
-                      widget.onTap
-                          ? Card(
-                              margin: widget.bottomCardMargin,
-                              shape: widget.bottomCardShape,
-                              color: Colors.white,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListTile(
-                                    title: Text(
-                                      _address ??
-                                          "Tap on map to select location",
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'MonstserratRegular',
-                                        letterSpacing: 0,
-                                      ),
-                                    ),
-                                    trailing: IconButton(
-                                      tooltip: widget.bottomCardTooltip,
-                                      icon: widget.bottomCardIcon,
-                                      onPressed: () async {
-                                        widget.onNext.call(_geocodingResult);
-                                        if (widget.canPopOnNextButtonTaped) {
-                                          if(widget.backBtnn == true){
-                                            Navigator.pop(context);
-                                          }else{
-                                            widget.nextPage;
-                                          }
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  widget.onTapShow == false?SizedBox.shrink():GestureDetector(
-                                    onTap: widget.onTappp,
-                                    child: Padding(
-                                      padding:  EdgeInsets.symmetric(vertical: 6.0,horizontal: 10),
-                                      child: Container(
-                                        height: 40,
-                                        width: MediaQuery.sizeOf(context).width,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          color: Color(0xffd6a331),
-                                        ),
-                                        child: Center(
-                                          child: Text("Continue",
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                          ),
+                                                        .text.length,
+                                                  );
+                                                  _getDetailsByPlaceId(
+                                                      value.placeId ?? "");
+                                                  setState(() {});
+                                                },
+                                                hideSuggestionsOnKeyboardHide:
+                                                    widget
+                                                        .hideSuggestionsOnKeyboardHide,
+                                              );
+                                            },
                                           ),
                                         ),
                                       ),
                                     ),
                                   )
-                                  // if (widget.showMoreOptions &&
-                                  //     _geocodingResultList.isNotEmpty)
-                                  //   GestureDetector(
-                                  //     onTap: () {
-                                  //       showDialog(
-                                  //         context: context,
-                                  //         builder: (context) => AlertDialog(
-                                  //           title: Text(widget.dialogTitle),
-                                  //           scrollable: true,
-                                  //           content: Column(
-                                  //             mainAxisSize: MainAxisSize.min,
-                                  //             children: _geocodingResultList
-                                  //                 .map((element) {
-                                  //               return ListTile(
-                                  //                 title: Text(
-                                  //                     element.formattedAddress ??
-                                  //                         "",
-                                  //                     style: TextStyle(
-                                  //                       fontSize: 14,
-                                  //                       color: Colors.black,
-                                  //                       fontWeight:
-                                  //                           FontWeight.bold,
-                                  //                       fontFamily:
-                                  //                           'MonstserratRegular',
-                                  //                       letterSpacing: 0,
-                                  //                     )),
-                                  //                 onTap: () {
-                                  //                   _address = element
-                                  //                           .formattedAddress ??
-                                  //                       "";
-                                  //                   _geocodingResult = element;
-                                  //                   setState(() {});
-                                  //                   Navigator.pop(context);
-                                  //                 },
-                                  //               );
-                                  //             }).toList(),
-                                  //           ),
-                                  //           actions: [
-                                  //             TextButton(
-                                  //               child: const Text(
-                                  //                 'Cancel',
-                                  //                 style: TextStyle(
-                                  //                     color: Colors.black),
-                                  //               ),
-                                  //               onPressed: () {
-                                  //                 Navigator.pop(context);
-                                  //               },
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //       );
-                                  //     },
-                                  //     child: Chip(
-                                  //       label: Text(
-                                  //         "Tap to show ${(_geocodingResultList.length - 1)} more result options",
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                ],
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 26, horizontal: 14),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        height: 44,
+                                        width: 44,
+                                        padding: const EdgeInsets.all(04.0),
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white),
+                                        child: const Icon(Icons.arrow_back,
+                                            size: 28, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Card(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(360),
+                                ),
+                                elevation: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.5),
+                                  child: PopupMenuButton(
+                                    tooltip: 'Map Type',
+                                    initialValue: _mapType,
+                                    icon: const Icon(
+                                      Icons.layers,
+                                      color: Colors.black,
+                                    ),
+                                    onSelected: (MapType mapType) {
+                                      setState(() {
+                                        _mapType = mapType;
+                                      });
+                                    },
+                                    itemBuilder: (context) => const [
+                                      PopupMenuItem(
+                                        value: MapType.normal,
+                                        child: Text('Normal'),
+                                      ),
+                                      PopupMenuItem(
+                                        value: MapType.hybrid,
+                                        child: Text('Hybrid'),
+                                      ),
+                                      PopupMenuItem(
+                                        value: MapType.satellite,
+                                        child: Text('Satellite'),
+                                      ),
+                                      PopupMenuItem(
+                                        value: MapType.terrain,
+                                        child: Text('Terrain'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            )
-                          : SizedBox.shrink(),
-                    ],
-                  )
-                      :Align(
-                    alignment: Alignment.topLeft,
-                    child: GestureDetector(
-                      onTap: (){
-                        Navigator.pop(context);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 30),
-                        child: CircleAvatar(
-                          backgroundColor: Color(0xff006B14),
-                          radius: 18,
-                          child: Icon(Icons.arrow_back,
-                          color: Colors.white,
+                            ),
+                            widget.onTap
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: FloatingActionButton(
+                                      tooltip: 'My Location',
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: Colors.white,
+                                      onPressed: () async {
+                                        var permission =
+                                            await Geolocator.checkPermission();
+                                        if (permission ==
+                                                LocationPermission
+                                                    .unableToDetermine ||
+                                            permission ==
+                                                LocationPermission
+                                                    .deniedForever ||
+                                            permission ==
+                                                LocationPermission.denied) {
+                                          await Geolocator.requestPermission();
+                                        }
+                                        Position position =
+                                            await Geolocator.getCurrentPosition(
+                                          desiredAccuracy:
+                                              widget.desiredAccuracy,
+                                        );
+                                        LatLng latLng = LatLng(
+                                            position.latitude,
+                                            position.longitude);
+                                        _initialPosition = latLng;
+                                        final controller =
+                                            await _controller.future;
+                                        controller.animateCamera(
+                                            CameraUpdate.newCameraPosition(
+                                                cameraPosition()));
+                                        _decodeAddress(Location(
+                                            lat: position.latitude,
+                                            lng: position.longitude));
+                                        widget.searchHintText =
+                                            "Start typing here to search";
+                                        setState(() {});
+                                      },
+                                      child: const Icon(
+                                        Icons.my_location,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
+                            widget.onTap
+                                ? Card(
+                                    margin: widget.bottomCardMargin,
+                                    shape: widget.bottomCardShape,
+                                    color: Colors.white,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          title: Text(
+                                            _address ??
+                                                "Tap on map to select location",
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'MonstserratRegular',
+                                              letterSpacing: 0,
+                                            ),
+                                          ),
+                                          trailing: IconButton(
+                                            tooltip: widget.bottomCardTooltip,
+                                            icon: widget.bottomCardIcon,
+                                            onPressed: () async {
+                                              widget.onNext
+                                                  .call(_geocodingResult);
+                                              if (widget
+                                                  .canPopOnNextButtonTaped) {
+                                                if (widget.backBtnn == true) {
+                                                  Navigator.pop(context);
+                                                } else {
+                                                  widget.nextPage;
+                                                }
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        widget.onTapShow == false
+                                            ? SizedBox.shrink()
+                                            : GestureDetector(
+                                                onTap: widget.onTappp,
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 6.0,
+                                                      horizontal: 10),
+                                                  child: Container(
+                                                    height: 40,
+                                                    width: MediaQuery.sizeOf(
+                                                            context)
+                                                        .width,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: Color(0xffd6a331),
+                                                    ),
+                                                    child: Center(
+                                                      child: Text(
+                                                        "Continue",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                        // if (widget.showMoreOptions &&
+                                        //     _geocodingResultList.isNotEmpty)
+                                        //   GestureDetector(
+                                        //     onTap: () {
+                                        //       showDialog(
+                                        //         context: context,
+                                        //         builder: (context) => AlertDialog(
+                                        //           title: Text(widget.dialogTitle),
+                                        //           scrollable: true,
+                                        //           content: Column(
+                                        //             mainAxisSize: MainAxisSize.min,
+                                        //             children: _geocodingResultList
+                                        //                 .map((element) {
+                                        //               return ListTile(
+                                        //                 title: Text(
+                                        //                     element.formattedAddress ??
+                                        //                         "",
+                                        //                     style: TextStyle(
+                                        //                       fontSize: 14,
+                                        //                       color: Colors.black,
+                                        //                       fontWeight:
+                                        //                           FontWeight.bold,
+                                        //                       fontFamily:
+                                        //                           'MonstserratRegular',
+                                        //                       letterSpacing: 0,
+                                        //                     )),
+                                        //                 onTap: () {
+                                        //                   _address = element
+                                        //                           .formattedAddress ??
+                                        //                       "";
+                                        //                   _geocodingResult = element;
+                                        //                   setState(() {});
+                                        //                   Navigator.pop(context);
+                                        //                 },
+                                        //               );
+                                        //             }).toList(),
+                                        //           ),
+                                        //           actions: [
+                                        //             TextButton(
+                                        //               child: const Text(
+                                        //                 'Cancel',
+                                        //                 style: TextStyle(
+                                        //                     color: Colors.black),
+                                        //               ),
+                                        //               onPressed: () {
+                                        //                 Navigator.pop(context);
+                                        //               },
+                                        //             ),
+                                        //           ],
+                                        //         ),
+                                        //       );
+                                        //     },
+                                        //     child: Chip(
+                                        //       label: Text(
+                                        //         "Tap to show ${(_geocodingResultList.length - 1)} more result options",
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                      ],
+                                    ),
+                                  )
+                                : SizedBox.shrink(),
+                          ],
+                        )
+                      : Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 30),
+                              child: CircleAvatar(
+                                backgroundColor: Color(0xff006B14),
+                                radius: 18,
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

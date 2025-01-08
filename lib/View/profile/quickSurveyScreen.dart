@@ -11,7 +11,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class QuickSurveyScreen extends StatefulWidget {
-  QuickSurveyScreen({Key? key}) : super(key: key);
+  QuickSurveyScreen({super.key});
 
   @override
   State<QuickSurveyScreen> createState() => _QuickSurveyScreenState();
@@ -21,6 +21,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
   int addMoreSurvey = Get.arguments['addMoreService'];
 
   String appBarTitle = Get.arguments['title'] ?? "Lifestyle Survey";
+  bool isFromEvent = Get.arguments["isFromEvent"] ?? false;
 
   bool createEvent = false;
 
@@ -29,7 +30,6 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print(Get.arguments['addMoreService']);
     print(Get.arguments['title']);
@@ -49,7 +49,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         appBar: customAppBar(
             onTap: () {
@@ -95,18 +95,28 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text(
-                          ((addMoreSurvey == 1) &&
-                                  (sp.read("role") == "eventOrganizer"))
-                              ? "Let us know more about\nyour lifestyle preference"
-                              : 'Music Genre',
-                          textAlign: TextAlign.center,
-                          style: poppinsRegularStyle(
-                            fontSize: 16,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
+                        child: isFromEvent
+                            ? Text(
+                                "Indicate the type of music\nyou are proposing for this event.",
+                                textAlign: TextAlign.center,
+                                style: poppinsRegularStyle(
+                                  fontSize: 16,
+                                  context: context,
+                                  color: theme.primaryColor,
+                                ),
+                              )
+                            : Text(
+                                ((addMoreSurvey == 1) &&
+                                        (sp.read("role") == "eventOrganizer"))
+                                    ? "Let us know more about\nyour lifestyle preference"
+                                    : 'Music Genre',
+                                textAlign: TextAlign.center,
+                                style: poppinsRegularStyle(
+                                  fontSize: 16,
+                                  context: context,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
                       ),
                       Text(
                         'Please select from given option.',
@@ -168,8 +178,9 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                               shrinkWrap: true,
                                               physics:
                                                   NeverScrollableScrollPhysics(),
-                                              itemBuilder: (BuildContext context,
-                                                  indexxx) {
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      indexxx) {
                                                 return Column(
                                                   children: [
                                                     Row(
@@ -182,18 +193,17 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                                                   indexxx]
                                                               .name
                                                               .toString(),
-                                                          style:
-                                                              poppinsRegularStyle(
-                                                                  fontSize: 12,
-                                                                  color: theme
-                                                                      .primaryColor,
-                                                                  context:
-                                                                      context),
+                                                          style: poppinsRegularStyle(
+                                                              fontSize: 12,
+                                                              color: theme
+                                                                  .primaryColor,
+                                                              context: context),
                                                         ),
                                                         Spacer(),
                                                         Theme(
-                                                          data: Theme.of(context)
-                                                              .copyWith(
+                                                          data:
+                                                              Theme.of(context)
+                                                                  .copyWith(
                                                             unselectedWidgetColor:
                                                                 Colors.white,
                                                           ),
@@ -270,7 +280,8 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                     if (/*_controller.lifeStyleItemsList.isNotEmpty ||*/ _controller
                         .itemsList.isNotEmpty) {
                       if (_eventController.eventDetail != null) {
-                        await _eventController.getMusicTag(type: "music_choice");
+                        await _eventController.getMusicTag(
+                            type: "music_choice");
                       }
                       Get.toNamed(Routes.musicChoiceScreen);
                     } else {

@@ -29,7 +29,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   num? subTotalWithText;
   num? subTotal;
   double? hoursDifference;
-
+  DateFormat format = DateFormat("yyyy-MM-dd");
+  DateFormat timeFormat = DateFormat("hh:mm");
   @override
   void initState() {
     super.initState();
@@ -37,12 +38,32 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
         _controller.postTime != null &&
         _controller.endDatePost != null &&
         _controller.postEndTime != null) {
-      String startStr = '${_controller.datePost} ${_controller.postTime}';
-      String endStr = '${_controller.endDatePost} ${_controller.postEndTime}';
-      DateTime startDt = DateTime.parse(startStr);
-      DateTime endDt = DateTime.parse(endStr);
-      Duration difference = endDt.difference(startDt);
-      hoursDifference = difference.inSeconds / 3600;
+      // String startStr = '${_controller.datePost} ${_controller.postTime}';
+      // String endStr = '${_controller.endDatePost} ${_controller.postEndTime}';
+      String startStr = '${_controller.datePost} ';
+      String endStr = '${_controller.endDatePost} ';
+      String startTi = _controller.postTime!;
+      String endTi = _controller.postEndTime!;
+
+      // Normalize the input string by replacing non-breaking spaces with regular spaces
+      startStr = startStr.replaceAll('\u202F', ' ');
+      endStr = endStr.replaceAll('\u202F', ' ');
+      startTi = startTi.replaceAll('\u202F', ' ');
+      endTi = endTi.replaceAll('\u202F', ' ');
+      // Parse start and end times
+      DateTime startTime = timeFormat.parse(startTi);
+      DateTime endTime = timeFormat.parse(endTi);
+      DateTime startDt = format.parse(startStr);
+      DateTime endDt = format.parse(endStr);
+      Duration difference = endTime.difference(startTime);
+      double dailyHours =
+          difference.inHours + (difference.inMinutes % 60) / 60.0;
+      // Calculate total days
+      int totalDays = endDt.difference(startDt).inDays + 1;
+
+      // Total hours across all days
+      double totalHours = dailyHours * totalDays;
+      hoursDifference = totalHours;
       if (_controller.rateType!.value == "hourly") {
         subTotal = double.parse(_controller.hourlyRateController.text) *
             hoursDifference!;
@@ -131,7 +152,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                   theme: theme,
                   context: context,
                   title: "Date",
-                  value: _controller.eventDateController.text),
+                  value:
+                      "${_controller.eventDateController.text}/${_controller.eventEndDateController.text}"),
               SizedBox(
                 height: 10,
               ),
