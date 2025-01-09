@@ -4,9 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Components/Network/Url.dart';
-
 ProfileModel profileModelFromJson(String str) =>
     ProfileModel.fromJson(json.decode(str));
 

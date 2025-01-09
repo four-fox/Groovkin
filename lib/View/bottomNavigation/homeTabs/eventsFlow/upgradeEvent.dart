@@ -44,6 +44,13 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     DateTime.now().day,
     12,
   ));
+  
+  String intialEndTime = DateFormat.jm().format(DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+    24,
+  ));
 
   @override
   void initState() {
@@ -59,9 +66,9 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
       _eventController = Get.put(EventController());
     }
     _eventController.proposedTimeWindowsController.text = intialTime;
-    _eventController.endTimeController.text = intialTime;
+    _eventController.endTimeController.text = intialEndTime;
     _eventController.postTime = intialTime;
-    _eventController.postEndTime = intialTime;
+    _eventController.postEndTime = intialEndTime;
   }
 
   @override
@@ -131,8 +138,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                     ),
                                     child:
                                         ((_authController.imageBytes != null) &&
-                                                ((controller.eventDetail!.data!
-                                                        .bannerImage !=
+                                                ((controller.eventDetail?.data
+                                                        ?.bannerImage !=
                                                     null)))
                                             ? SizedBox.shrink()
                                             : ImageIcon(
@@ -402,7 +409,6 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         resetIcon: null,
                         format: format,
                         onShowPicker: (context, currentValue) async {
-                          controller.proposedTimeWindowsController.clear();
                           final time = await showTimePicker(
                             initialEntryMode: TimePickerEntryMode.dial,
                             builder: (context, child) {
@@ -431,6 +437,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           print(
                               "selected time--------->${DateTimeField.convert(time).toString()}");
                           if (time != null) {
+                            controller.proposedTimeWindowsController.clear();
                             print('time>>>>>>>>>> $time');
                             final now = DateTime.now();
                             final selectedTime = DateTime(now.year, now.month,
@@ -440,7 +447,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 DateFormat.jm().format(selectedTime);
 
                             controller.postTime =
-                                DateFormat("HH:mm").format(selectedTime);
+                                DateFormat("HH:mm a").format(selectedTime);
                           }
                           return;
                         },
@@ -475,28 +482,27 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         resetIcon: null,
                         format: format,
                         onShowPicker: (context, currentValue) async {
-                          controller.endTimeController.clear();
                           final time = await showTimePicker(
                             initialEntryMode: TimePickerEntryMode.dial,
                             builder: (context, child) {
                               return Theme(
-                                  data: Theme.of(context).copyWith(
-                                    colorScheme: ColorScheme.light(
-                                      primary: Colors
-                                          .black, // header background color
-                                      onPrimary:
-                                          Colors.white, // header text color
-                                      onSurface:
-                                          Colors.black, // body text color
-                                    ),
-                                    textButtonTheme: TextButtonThemeData(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor:
-                                            Colors.red, // button text color
-                                      ),
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: ColorScheme.light(
+                                    primary:
+                                        Colors.black, // header background color
+                                    onPrimary:
+                                        Colors.white, // header text color
+                                    onSurface: Colors.black, // body text color
+                                  ),
+                                  textButtonTheme: TextButtonThemeData(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor:
+                                          Colors.red, // button text color
                                     ),
                                   ),
-                                  child: child!);
+                                ),
+                                child: child!,
+                              );
                             },
                             context: context,
                             initialTime: TimeOfDay.fromDateTime(DateTime.now()),
@@ -504,6 +510,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           print(
                               "selected time--------->${DateTimeField.convert(time).toString()}");
                           if (time != null) {
+                            controller.endTimeController.clear();
                             print('time>>>>>>>>>> $time');
                             DateTime now = DateTime.now();
                             final selectedTime = DateTime(now.year, now.month,
@@ -512,7 +519,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             controller.endTimeController.text =
                                 DateFormat.jm().format(selectedTime);
                             controller.postEndTime =
-                                DateFormat("HH:mm").format(selectedTime);
+                                DateFormat("HH:mm a").format(selectedTime);
                             print(controller.postEndTime);
                           }
                           return;
@@ -522,6 +529,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         onTap: () {
                           controller.rateType!.value = "hourly";
                           controller.eventRateHourly.value = 0;
+                          controller.hourlyRateController.clear();
                           controller.update();
                         },
                         child: SizedBox(
@@ -542,6 +550,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                       onChanged: (v) {
                                         controller.rateType!.value = "hourly";
                                         controller.eventRateHourly.value = v!;
+                                        controller.hourlyRateController.clear();
                                         controller.update();
                                       }),
                                 ),
@@ -564,6 +573,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         onTap: () {
                           controller.rateType!.value = "flat";
                           controller.eventRateHourly.value = 1;
+                          controller.hourlyRateController.clear();
                           controller.update();
                         },
                         child: SizedBox(
@@ -584,6 +594,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                       onChanged: (v) {
                                         controller.rateType!.value = "flat";
                                         controller.eventRateHourly.value = v!;
+                                        controller.hourlyRateController.clear();
                                         controller.update();
                                       }),
                                 ),

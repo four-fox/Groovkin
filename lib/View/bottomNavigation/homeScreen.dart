@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_final_fields
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -116,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Column(children: [
                   SizedBox(
-                    height: 50,
+                    height: context.height * 0.05,
                   ),
                   Row(
                     children: [

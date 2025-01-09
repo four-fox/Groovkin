@@ -55,7 +55,7 @@ class MusicChoiceScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: 8.0),
                           child: Text(
                             'Add Hashtags',
-                          textAlign: TextAlign.center,
+                            textAlign: TextAlign.center,
                             style: poppinsRegularStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w600,

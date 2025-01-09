@@ -837,7 +837,7 @@ class AuthController extends GetxController {
       ..recipients = eventInvitation
       ..subject = 'Event Invitation'
       ..text = 'Event Invitation users';
-      
+
     try {
       sendingEmailLoader.value = false;
 

@@ -30,7 +30,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   num? subTotal;
   double? hoursDifference;
   DateFormat format = DateFormat("yyyy-MM-dd");
-  DateFormat timeFormat = DateFormat("hh:mm");
+  DateFormat timeFormat = DateFormat("hh:mm a");
+
   @override
   void initState() {
     super.initState();
@@ -48,18 +49,25 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
       // Normalize the input string by replacing non-breaking spaces with regular spaces
       startStr = startStr.replaceAll('\u202F', ' ');
       endStr = endStr.replaceAll('\u202F', ' ');
-      startTi = startTi.replaceAll('\u202F', ' ');
-      endTi = endTi.replaceAll('\u202F', ' ');
+      startTi = startTi.replaceAll('\u202F', ' ').trim();
+      endTi = endTi.replaceAll('\u202F', ' ').trim();
       // Parse start and end times
       DateTime startTime = timeFormat.parse(startTi);
       DateTime endTime = timeFormat.parse(endTi);
       DateTime startDt = format.parse(startStr);
       DateTime endDt = format.parse(endStr);
+      // Check if the end time is earlier than the start time (indicating it is the next day)
+      if (endTime.isBefore(startTime)) {
+        // If so, add 1 day to the end time
+        endTime = endTime.add(Duration(days: 1));
+      }
+
       Duration difference = endTime.difference(startTime);
       double dailyHours =
           difference.inHours + (difference.inMinutes % 60) / 60.0;
+
       // Calculate total days
-      int totalDays = endDt.difference(startDt).inDays + 1;
+      int totalDays = endDt.difference(startDt).inDays;
 
       // Total hours across all days
       double totalHours = dailyHours * totalDays;

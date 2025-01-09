@@ -7,7 +7,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 
 class SurveyLifeStyleScreen extends StatelessWidget {
-  SurveyLifeStyleScreen({Key? key}) : super(key: key);
+  SurveyLifeStyleScreen({super.key});
 
   bool updatedCond = Get.arguments['update'] ?? false;
 

@@ -1,7 +1,4 @@
 // ignore_for_file: prefer_final_fields
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:get/get.dart';
@@ -237,6 +234,7 @@ class AddVenueDetailsScreen extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class Amenities {
