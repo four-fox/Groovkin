@@ -102,157 +102,156 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   Widget build(BuildContext context) {
     print("Hours: ${hoursDifference!.toInt()}");
     var theme = Theme.of(context);
-    return SafeArea(
-      top: false,
-      bottom: Platform.isIOS ? true : false,
-      child: Scaffold(
-        appBar: customAppBar(theme: theme, text: "Confirmation", actions: [
-          ((_controller.eventDetail == null) &&
-                  (_controller.draftCondition.value == true))
-              ? GestureDetector(
-                  onTap: () {
-                    _controller.postEventFunction(context, theme, draft: true);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 8.0),
-                    child: Icon(Icons.drafts),
-                  ),
-                )
-              : SizedBox.shrink()
-        ]),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 10,
+    return Scaffold(
+      appBar: customAppBar(theme: theme, text: "Confirmation", actions: [
+        ((_controller.eventDetail == null) &&
+                (_controller.draftCondition.value == true))
+            ? GestureDetector(
+                onTap: () {
+                  _controller.postEventFunction(context, theme, draft: true);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.drafts),
+                ),
+              )
+            : SizedBox.shrink()
+      ]),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            // customWidget(theme: theme,context: context),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              ((_controller.eventDetail != null) &&
+                      (_controller.eventDetail!.data!.venue != null))
+                  ? _controller.eventDetail!.data!.venue!.venueName!
+                  : _controller.venuesDetails!.venueName!,
+              style: poppinsRegularStyle(
+                fontSize: 14,
+                context: context,
+                color: theme.primaryColor,
               ),
-              // customWidget(theme: theme,context: context),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                ((_controller.eventDetail != null) &&
-                        (_controller.eventDetail!.data!.venue != null))
-                    ? _controller.eventDetail!.data!.venue!.venueName!
-                    : _controller.venuesDetails!.venueName!,
-                style: poppinsRegularStyle(
+            ),
+            Text(
+              ((_controller.eventDetail != null) &&
+                      (_controller.eventDetail!.data!.venue != null))
+                  ? _controller.eventDetail!.data!.venue!.location!
+                  : _controller.venuesDetails!.location!,
+              style: poppinsRegularStyle(
                   fontSize: 14,
                   context: context,
-                  color: theme.primaryColor,
-                ),
-              ),
-              Text(
-                ((_controller.eventDetail != null) &&
-                        (_controller.eventDetail!.data!.venue != null))
-                    ? _controller.eventDetail!.data!.venue!.location!
-                    : _controller.venuesDetails!.location!,
-                style: poppinsRegularStyle(
-                    fontSize: 14,
-                    context: context,
-                    color: DynamicColor.grayClr.withOpacity(0.7)),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Date",
-                  value:
-                      "${_controller.eventDateController.text}/${_controller.eventEndDateController.text}"),
-              SizedBox(
-                height: 10,
-              ),
-              // customWidget(
-              //     theme: theme,
-              //     context: context,
-              //     title: "Time",
-              //     value: _controller.proposedTimeWindowsController.text),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Start Time",
-                  value: _controller.proposedTimeWindowsController.text),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "End Time",
-                  value: _controller.endTimeController.text),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "No. hours",
-                  value: hoursDifference?.toStringAsFixed(2)),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Subtotal",
-                  value: "\$ ${subTotal?.toStringAsFixed(2)}"),
-              SizedBox(
-                height: 10,
-              ),
+                  color: DynamicColor.grayClr.withOpacity(0.7)),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Date",
+                value:
+                    "${_controller.eventDateController.text}/${_controller.eventEndDateController.text}"),
+            SizedBox(
+              height: 10,
+            ),
+            // customWidget(
+            //     theme: theme,
+            //     context: context,
+            //     title: "Time",
+            //     value: _controller.proposedTimeWindowsController.text),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Start Time",
+                value: _controller.proposedTimeWindowsController.text),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "End Time",
+                value: _controller.endTimeController.text),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "No. hours",
+                value: hoursDifference?.toStringAsFixed(2)),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Subtotal",
+                value: "\$ ${subTotal?.toStringAsFixed(2)}"),
+            SizedBox(
+              height: 10,
+            ),
 
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Tax (5%) ",
-                  value: "\$${tax?.toStringAsFixed(2)}"),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Groovkin Tax(5%)",
-                  value: "\$${groovkinTax?.toStringAsFixed(2)}"),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Stripe Tax(10%)",
-                  value: "\$${stripeTax?.toStringAsFixed(2)}"),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Down Payment Inc. Tax",
-                  value: "\$${downPayment?.toStringAsFixed(2)}"),
-              SizedBox(
-                height: 10,
-              ),
-              customWidget(
-                  theme: theme,
-                  context: context,
-                  title: "Balance Due",
-                  value: "\$${balanceDue?.toStringAsFixed(2)}"),
-              SizedBox(
-                height: 10,
-              ),
-              Divider(
-                color: DynamicColor.grayClr,
-              ),
-            ],
-          ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Tax (5%) ",
+                value: "\$${tax?.toStringAsFixed(2)}"),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Groovkin Tax(5%)",
+                value: "\$${groovkinTax?.toStringAsFixed(2)}"),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Stripe Tax(10%)",
+                value: "\$${stripeTax?.toStringAsFixed(2)}"),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Down Payment Inc. Tax",
+                value: "\$${downPayment?.toStringAsFixed(2)}"),
+            SizedBox(
+              height: 10,
+            ),
+            customWidget(
+                theme: theme,
+                context: context,
+                title: "Balance Due",
+                value: "\$${balanceDue?.toStringAsFixed(2)}"),
+            SizedBox(
+              height: 10,
+            ),
+            Divider(
+              color: DynamicColor.grayClr,
+            ),
+          ],
         ),
-        bottomNavigationBar: Padding(
+      ),
+      bottomNavigationBar: SafeArea(
+        bottom: Platform.isIOS ? true : false,
+        child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,

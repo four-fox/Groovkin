@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -218,14 +220,17 @@ class CreateNewGroup extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Get.toNamed(Routes.viewCreatedGroup);
-          },
-          text: "Next",
+      bottomNavigationBar: SafeArea(
+        bottom: Platform.isIOS ? true : false,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Get.toNamed(Routes.viewCreatedGroup);
+            },
+            text: "Next",
+          ),
         ),
       ),
     );
@@ -257,43 +262,32 @@ class ViewCreatedGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 4.15),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            height: kToolbarHeight * 1.4,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/grayClor.png"),
-                    fit: BoxFit.fill)),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Center(
-                    child: Text(
-                      "New group",
-                      style: poppinsMediumStyle(
-                        fontSize: 17,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: ImageIcon(
-                      AssetImage("assets/backArrow.png"),
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
+        ),
+        title: Text(
+          "New group",
+          style: poppinsMediumStyle(
+            fontSize: 17,
+            color: theme.primaryColor,
           ),
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: ImageIcon(
+            AssetImage("assets/backArrow.png"),
+            color: theme.primaryColor,
+          ),
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
             child: SizedBox(
@@ -358,61 +352,69 @@ class ViewCreatedGroup extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-        ]),
-      ),
-      body: ListView.builder(
-          itemCount: 10,
-          shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, index) {
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                Get.toNamed(Routes.createNewGroup);
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage("assets/profileImg.png"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        "The Squad",
-                        style: poppinsRegularStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          context: context,
-                          color: theme.primaryColor,
-                        ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: 10,
+                shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, index) {
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      Get.toNamed(Routes.createNewGroup);
+                    },
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundImage:
+                                AssetImage("assets/profileImg.png"),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Text(
+                              "The Squad",
+                              style: poppinsRegularStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          CircleAvatar(
+                              radius: 15,
+                              backgroundColor:
+                                  DynamicColor.grayClr.withOpacity(0.4),
+                              child: Icon(
+                                Icons.clear,
+                                size: 20,
+                                color: theme.primaryColor.withOpacity(0.7),
+                              ))
+                        ],
                       ),
                     ),
-                    Spacer(),
-                    CircleAvatar(
-                        radius: 15,
-                        backgroundColor: DynamicColor.grayClr.withOpacity(0.4),
-                        child: Icon(
-                          Icons.clear,
-                          size: 20,
-                          color: theme.primaryColor.withOpacity(0.7),
-                        ))
-                  ],
-                ),
-              ),
-            );
-          }),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Get.offAllNamed(Routes.userBottomNavigationNav);
-            // Get.toNamed(Routes.inviteFriendsInGroups);
-          },
-          text: "Create group",
+                  );
+                }),
+          ),
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        bottom: Platform.isIOS ? true : false,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Get.offAllNamed(Routes.userBottomNavigationNav);
+              // Get.toNamed(Routes.inviteFriendsInGroups);
+            },
+            text: "Create group",
+          ),
         ),
       ),
     );

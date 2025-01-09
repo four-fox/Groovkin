@@ -47,216 +47,215 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return SafeArea(
-      top: false,
-      bottom: Platform.isIOS ? true : false,
-      child: Scaffold(
-        appBar: customAppBar(
-            onTap: () {
-              Get.back();
-            },
-            theme: theme,
-            text: appBarTitle,
-            style: poppinsMediumStyle(
-              fontSize: 17,
-              context: context,
-              color: theme.primaryColor,
-              // color: DynamicColor.lightYellowClr,
-            ),
-            actions: [
-              ((_eventController.eventDetail == null) &&
-                      (_eventController.draftCondition.value == true))
-                  ? GestureDetector(
-                      onTap: () {
-                        _eventController.postEventFunction(context, theme,
-                            draft: true);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.drafts),
-                      ),
-                    )
-                  : SizedBox.shrink()
-            ]),
-        body: GetBuilder<AuthController>(initState: (v) {
-          // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
-          //   _controller.getAllService(type: "lifestyle_preference");
-          // }else{
-          _controller.getLifeStyle(surveyType: "music_genre");
-          // }
-        }, builder: (controller) {
-          return ((controller.getLifeStyleLoader.value == false) ||
-                  (controller.getAllServiceLoader.value == false))
-              ? SizedBox.shrink()
-              : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 4.0),
-                        child: isFromEvent
-                            ? Text(
-                                "Indicate the type of music\nyou are proposing for this event.",
-                                textAlign: TextAlign.center,
-                                style: poppinsRegularStyle(
-                                  fontSize: 16,
-                                  context: context,
-                                  color: theme.primaryColor,
-                                ),
-                              )
-                            : Text(
-                                ((addMoreSurvey == 1) &&
-                                        (sp.read("role") == "eventOrganizer"))
-                                    ? "Let us know more about\nyour lifestyle preference"
-                                    : 'Music Genre',
-                                textAlign: TextAlign.center,
-                                style: poppinsRegularStyle(
-                                  fontSize: 16,
-                                  context: context,
-                                  color: theme.primaryColor,
-                                ),
+    return Scaffold(
+      appBar: customAppBar(
+          onTap: () {
+            Get.back();
+          },
+          theme: theme,
+          text: appBarTitle,
+          style: poppinsMediumStyle(
+            fontSize: 17,
+            context: context,
+            color: theme.primaryColor,
+            // color: DynamicColor.lightYellowClr,
+          ),
+          actions: [
+            ((_eventController.eventDetail == null) &&
+                    (_eventController.draftCondition.value == true))
+                ? GestureDetector(
+                    onTap: () {
+                      _eventController.postEventFunction(context, theme,
+                          draft: true);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 8.0),
+                      child: Icon(Icons.drafts),
+                    ),
+                  )
+                : SizedBox.shrink()
+          ]),
+      body: GetBuilder<AuthController>(initState: (v) {
+        // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
+        //   _controller.getAllService(type: "lifestyle_preference");
+        // }else{
+        _controller.getLifeStyle(surveyType: "music_genre");
+        // }
+      }, builder: (controller) {
+        return ((controller.getLifeStyleLoader.value == false) ||
+                (controller.getAllServiceLoader.value == false))
+            ? SizedBox.shrink()
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      child: isFromEvent
+                          ? Text(
+                              "Indicate the type of music\nyou are proposing for this event.",
+                              textAlign: TextAlign.center,
+                              style: poppinsRegularStyle(
+                                fontSize: 16,
+                                context: context,
+                                color: theme.primaryColor,
                               ),
+                            )
+                          : Text(
+                              ((addMoreSurvey == 1) &&
+                                      (sp.read("role") == "eventOrganizer"))
+                                  ? "Let us know more about\nyour lifestyle preference"
+                                  : 'Music Genre',
+                              textAlign: TextAlign.center,
+                              style: poppinsRegularStyle(
+                                fontSize: 16,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                    ),
+                    Text(
+                      'Please select from given option.',
+                      style: poppinsRegularStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: DynamicColor.lightRedClr,
                       ),
-                      Text(
-                        'Please select from given option.',
-                        style: poppinsRegularStyle(
-                          fontSize: 12,
-                          context: context,
-                          color: DynamicColor.lightRedClr,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Expanded(
-                        child: SizedBox(
-                          height: Get.height / 1.41,
-                          child: ListView.builder(
-                              itemCount: controller.surveyData!.data!.length,
-                              itemBuilder: (BuildContext context, index) {
-                                return Column(
-                                  children: [
-                                    musicGenreWidget(
-                                      text: controller
-                                          .surveyData!.data![index].name
-                                          .toString(),
-                                      onTap: () {
-                                        controller.surveyData!.data![index]
-                                                .showItems!.value =
-                                            !controller.surveyData!.data![index]
-                                                .showItems!.value;
-                                        controller.update();
-                                      },
-                                      theme: theme,
-                                      context: context,
-                                      icon: controller.surveyData!.data![index]
-                                              .showItems!.value
-                                          ? Icons.keyboard_arrow_up
-                                          : Icons.keyboard_arrow_down,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 4.0),
-                                      child: Visibility(
-                                        visible: controller.surveyData!
-                                            .data![index].showItems!.value,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15),
-                                          decoration: BoxDecoration(
-                                            color: DynamicColor.dropDownClr,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: ListView.builder(
-                                              itemCount: controller
-                                                  .surveyData!
-                                                  .data![index]
-                                                  .categoryItems!
-                                                  .length,
-                                              shrinkWrap: true,
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      indexxx) {
-                                                return Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          controller
-                                                              .surveyData!
-                                                              .data![index]
-                                                              .categoryItems![
-                                                                  indexxx]
-                                                              .name
-                                                              .toString(),
-                                                          style: poppinsRegularStyle(
-                                                              fontSize: 12,
-                                                              color: theme
-                                                                  .primaryColor,
-                                                              context: context),
-                                                        ),
-                                                        Spacer(),
-                                                        Theme(
-                                                          data:
-                                                              Theme.of(context)
-                                                                  .copyWith(
-                                                            unselectedWidgetColor:
-                                                                Colors.white,
-                                                          ),
-                                                          child: Checkbox(
-                                                              activeColor:
-                                                                  DynamicColor
-                                                                      .yellowClr,
-                                                              value: controller
-                                                                  .surveyData!
-                                                                  .data![index]
-                                                                  .categoryItems![
-                                                                      indexxx]
-                                                                  .selectedItem!
-                                                                  .value,
-                                                              onChanged: (v) {
-                                                                // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
-                                                                //   controller.lifeStyleFunction(serviceObj: controller.surveyData!.data![index].categoryItems![indexxx],value: v);
-                                                                // }else{
-                                                                controller.surveyAddFtn(
-                                                                    surveyObj: controller
-                                                                            .surveyData!
-                                                                            .data![
-                                                                        index],
-                                                                    value: v,
-                                                                    items: controller
-                                                                        .surveyData!
-                                                                        .data![
-                                                                            index]
-                                                                        .categoryItems![indexxx]);
-                                                                // }
-                                                              }),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Divider(
-                                                      height: 1,
-                                                    )
-                                                  ],
-                                                );
-                                              }),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: Get.height / 1.41,
+                        child: ListView.builder(
+                            itemCount: controller.surveyData!.data!.length,
+                            itemBuilder: (BuildContext context, index) {
+                              return Column(
+                                children: [
+                                  musicGenreWidget(
+                                    text: controller
+                                        .surveyData!.data![index].name
+                                        .toString(),
+                                    onTap: () {
+                                      controller.surveyData!.data![index]
+                                              .showItems!.value =
+                                          !controller.surveyData!.data![index]
+                                              .showItems!.value;
+                                      controller.update();
+                                    },
+                                    theme: theme,
+                                    context: context,
+                                    icon: controller.surveyData!.data![index]
+                                            .showItems!.value
+                                        ? Icons.keyboard_arrow_up
+                                        : Icons.keyboard_arrow_down,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 4.0),
+                                    child: Visibility(
+                                      visible: controller.surveyData!
+                                          .data![index].showItems!.value,
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15),
+                                        decoration: BoxDecoration(
+                                          color: DynamicColor.dropDownClr,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
+                                        child: ListView.builder(
+                                            itemCount: controller
+                                                .surveyData!
+                                                .data![index]
+                                                .categoryItems!
+                                                .length,
+                                            shrinkWrap: true,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemBuilder: (BuildContext context,
+                                                indexxx) {
+                                              return Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        controller
+                                                            .surveyData!
+                                                            .data![index]
+                                                            .categoryItems![
+                                                                indexxx]
+                                                            .name
+                                                            .toString(),
+                                                        style:
+                                                            poppinsRegularStyle(
+                                                                fontSize: 12,
+                                                                color: theme
+                                                                    .primaryColor,
+                                                                context:
+                                                                    context),
+                                                      ),
+                                                      Spacer(),
+                                                      Theme(
+                                                        data: Theme.of(context)
+                                                            .copyWith(
+                                                          unselectedWidgetColor:
+                                                              Colors.white,
+                                                        ),
+                                                        child: Checkbox(
+                                                            activeColor:
+                                                                DynamicColor
+                                                                    .yellowClr,
+                                                            value: controller
+                                                                .surveyData!
+                                                                .data![index]
+                                                                .categoryItems![
+                                                                    indexxx]
+                                                                .selectedItem!
+                                                                .value,
+                                                            onChanged: (v) {
+                                                              // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
+                                                              //   controller.lifeStyleFunction(serviceObj: controller.surveyData!.data![index].categoryItems![indexxx],value: v);
+                                                              // }else{
+                                                              controller.surveyAddFtn(
+                                                                  surveyObj: controller
+                                                                          .surveyData!
+                                                                          .data![
+                                                                      index],
+                                                                  value: v,
+                                                                  items: controller
+                                                                      .surveyData!
+                                                                      .data![
+                                                                          index]
+                                                                      .categoryItems![indexxx]);
+                                                              // }
+                                                            }),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Divider(
+                                                    height: 1,
+                                                  )
+                                                ],
+                                              );
+                                            }),
                                       ),
                                     ),
-                                  ],
-                                );
-                              }),
-                        ),
+                                  ),
+                                ],
+                              );
+                            }),
                       ),
-                    ],
-                  ),
-                );
-        }),
-        bottomNavigationBar: Padding(
+                    ),
+                  ],
+                ),
+              );
+      }),
+      bottomNavigationBar: SafeArea(
+        bottom: Platform.isIOS ? true : false,
+        child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,

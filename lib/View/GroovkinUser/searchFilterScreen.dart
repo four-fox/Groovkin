@@ -1,7 +1,6 @@
-
-
-
 // ignore_for_file: prefer_collection_literals
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +14,7 @@ import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';
 
 class SearchFilterScreen extends StatefulWidget {
-  SearchFilterScreen({Key? key}) : super(key: key);
+  SearchFilterScreen({super.key});
 
   @override
   State<SearchFilterScreen> createState() => _SearchFilterScreenState();
@@ -42,163 +41,184 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Search Filter"),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            Text("Genre",
-            style: poppinsRegularStyle(
-              fontSize: 16,
-              context: context,
-              color: theme.primaryColor,
-            ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            DropDownClass(
-              hint: "Select your music type",
-                // ignore: prefer_const_literals_to_create_immutables
-                list: ["60 Rock","70 Rock","80 Rock","90 Rock","Blues",],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text("Date",
-            style: poppinsRegularStyle(
-              fontSize: 16,
-              context: context,
-              color: theme.primaryColor,
-            ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: AssetImage("assets/lightBg.png"),
-                  fit: BoxFit.fill,
+      appBar: customAppBar(theme: theme, text: "Search Filter"),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: context.height - kBottomNavigationBarHeight - kToolbarHeight,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10,
                 ),
-                border: Border.all(color: DynamicColor.grayClr.withOpacity(0.7))
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("DD/MM/YYYY",
+                Text(
+                  "Genre",
                   style: poppinsRegularStyle(
-                    fontSize: 15,
+                    fontSize: 16,
                     context: context,
                     color: theme.primaryColor,
                   ),
-                  ),
-                  GestureDetector(
-                    onTap: (){
-                      Get.to(calenderView());
-                    },
-                    child: Icon(Icons.calendar_month,
-                    size: 28,
-                      color: theme.primaryColor,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            TextField(
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: "Location",
-                labelStyle: poppinsRegularStyle(
-                  fontSize: 15,
-                  color: theme.primaryColor,
-                  context: context,
                 ),
-                  suffixIcon: Icon(Icons.location_searching,
-                  size: 20,
+                SizedBox(
+                  height: 8,
+                ),
+                DropDownClass(
+                  hint: "Select your music type",
+                  // ignore: prefer_const_literals_to_create_immutables
+                  list: [
+                    "60 Rock",
+                    "70 Rock",
+                    "80 Rock",
+                    "90 Rock",
+                    "Blues",
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Date",
+                  style: poppinsRegularStyle(
+                    fontSize: 16,
+                    context: context,
                     color: theme.primaryColor,
                   ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: DynamicColor.grayClr),
-                  ),
-                focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: DynamicColor.grayClr),
-            ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text("Distance radius",
-              style: poppinsRegularStyle(
-                  fontSize: 16,
-                  context: context,
-                  color: theme.primaryColor,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(height: 20,
-              child: Slider(
-                value: _currentSliderValue,
-                activeColor: DynamicColor.lightRedClr,
-                secondaryActiveColor: DynamicColor.grayClr,
-                thumbColor: theme.primaryColor,
-                max: 100,
-                divisions: 5,
-                label: _currentSliderValue.round().toString(),
-                onChanged: (double value) {
-                  setState(() {
-                    _currentSliderValue = value;
-                  });
-                },
-              ),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("1 mile",
-                  style: poppinsRegularStyle(
-                      fontSize: 10,
-                      context: context,
-                      color: theme.primaryColor,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: AssetImage("assets/lightBg.png"),
+                        fit: BoxFit.fill,
+                      ),
+                      border: Border.all(
+                          color: DynamicColor.grayClr.withOpacity(0.7))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "DD/MM/YYYY",
+                        style: poppinsRegularStyle(
+                          fontSize: 15,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(calenderView());
+                        },
+                        child: Icon(
+                          Icons.calendar_month,
+                          size: 28,
+                          color: theme.primaryColor,
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                Text("100 mile",
-                  style: poppinsRegularStyle(
-                      fontSize: 10,
-                      context: context,
+                SizedBox(
+                  height: 15,
+                ),
+                TextField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: "Location",
+                    labelStyle: poppinsRegularStyle(
+                      fontSize: 15,
                       color: theme.primaryColor,
+                      context: context,
+                    ),
+                    suffixIcon: Icon(
+                      Icons.location_searching,
+                      size: 20,
+                      color: theme.primaryColor,
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: DynamicColor.grayClr),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: DynamicColor.grayClr),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "Distance radius",
+                  style: poppinsRegularStyle(
+                    fontSize: 16,
+                    context: context,
+                    color: theme.primaryColor,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 20,
+                  child: Slider(
+                    value: _currentSliderValue,
+                    activeColor: DynamicColor.lightRedClr,
+                    secondaryActiveColor: DynamicColor.grayClr,
+                    thumbColor: theme.primaryColor,
+                    max: 100,
+                    divisions: 5,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "1 mile",
+                      style: poppinsRegularStyle(
+                        fontSize: 10,
+                        context: context,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                    Text(
+                      "100 mile",
+                      style: poppinsRegularStyle(
+                        fontSize: 10,
+                        context: context,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                Spacer(),
+                SafeArea(
+                  bottom: Platform.isIOS ? true : false,
+                  child: ShowCustomMap(
+                    horizontalPadding: 0.0,
+                    circle: true,
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 12,
-            ),
-           Spacer(),
-            ShowCustomMap(horizontalPadding:0.0,circle: true,),
-            // SizedBox(
-            //   height: 6,
-            // ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
 
 class calenderView extends StatelessWidget {
   final calendarController = CleanCalendarController(
@@ -220,15 +240,14 @@ class calenderView extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.primaryColor,
-      appBar: customAppBar(theme: theme,text: "Select Date Range",
-      actions: [
+      appBar: customAppBar(theme: theme, text: "Select Date Range", actions: [
         IconButton(
           onPressed: () {
             calendarController.clearSelectedDates();
           },
           icon: const Icon(Icons.clear),
-        )]
-      ),
+        )
+      ]),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_downward),
         onPressed: () {

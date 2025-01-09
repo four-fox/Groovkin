@@ -37,9 +37,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
 
   RxBool organizerGuestVal = false.obs;
 
-  ManagerController _controller = Get.find();
-
-  EventController _eventController = Get.find();
+  late ManagerController _controller;
+  late EventController _eventController;
 
   late AuthController _authController;
 
@@ -49,6 +48,16 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
       _authController = Get.find<AuthController>();
     } else {
       _authController = Get.put(AuthController());
+    }
+    if (Get.isRegistered<ManagerController>()) {
+      _controller = Get.find<ManagerController>();
+    } else {
+      _controller = Get.put(ManagerController());
+    }
+    if (Get.isRegistered<EventController>()) {
+      _eventController = Get.find<EventController>();
+    } else {
+      _eventController = Get.put(EventController());
     }
     super.initState();
   }

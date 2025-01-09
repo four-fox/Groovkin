@@ -23,197 +23,193 @@ class HardwareScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return SafeArea(
-      top: false,
-      bottom: Platform.isIOS ? true : false,
-      child: Scaffold(
-        appBar: customAppBar(theme: theme, text: "Hardware", actions: [
-          ((_eventController.eventDetail == null) &&
-                  (_eventController.draftCondition.value == true))
-              ? GestureDetector(
-                  onTap: () {
-                    _eventController.postEventFunction(context, theme,
-                        draft: true);
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 8.0),
-                    child: Icon(Icons.drafts),
-                  ),
-                )
-              : SizedBox.shrink()
-        ]),
-        body: GetBuilder<AuthController>(initState: (v) {
-          _controller.getAllService(type: "hardware_provided");
-        }, builder: (controller) {
-          return controller.getAllServiceLoader.value == false
-              ? SizedBox.shrink()
-              : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20,
+    return Scaffold(
+      appBar: customAppBar(theme: theme, text: "Hardware", actions: [
+        ((_eventController.eventDetail == null) &&
+                (_eventController.draftCondition.value == true))
+            ? GestureDetector(
+                onTap: () {
+                  _eventController.postEventFunction(context, theme,
+                      draft: true);
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.drafts),
+                ),
+              )
+            : SizedBox.shrink()
+      ]),
+      body: GetBuilder<AuthController>(initState: (v) {
+        _controller.getAllService(type: "hardware_provided");
+      }, builder: (controller) {
+        return controller.getAllServiceLoader.value == false
+            ? SizedBox.shrink()
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'Hardware that can be provided by you?',
+                        style: poppinsRegularStyle(
+                          fontSize: 16,
+                          context: context,
+                          color: theme.primaryColor,
                         ),
-                        Text(
-                          'Hardware that can be provided by you?',
-                          style: poppinsRegularStyle(
-                            fontSize: 16,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
+                      ),
+                      Text(
+                        'Please tap to select',
+                        style: poppinsRegularStyle(
+                          fontSize: 11,
+                          context: context,
+                          color: DynamicColor.lightRedClr,
                         ),
-                        Text(
-                          'Please tap to select',
-                          style: poppinsRegularStyle(
-                            fontSize: 11,
-                            context: context,
-                            color: DynamicColor.lightRedClr,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller.hardwareListing.length,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, index) {
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
-                                    child: hardwareWidget(
-                                      text: controller
-                                          .hardwareListing[index].name
-                                          .toString(),
-                                      theme: theme,
-                                      context: context,
-                                      onTap: () {
-                                        controller.hardwareListing[index]
-                                                .showItems!.value =
-                                            !controller.hardwareListing[index]
-                                                .showItems!.value;
-                                        controller.update();
-                                      },
-                                      icon: controller.hardwareListing[index]
-                                              .showItems!.value
-                                          ? Icons.keyboard_arrow_up
-                                          : Icons.keyboard_arrow_down,
-                                    ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: controller.hardwareListing.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, index) {
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: hardwareWidget(
+                                    text: controller.hardwareListing[index].name
+                                        .toString(),
+                                    theme: theme,
+                                    context: context,
+                                    onTap: () {
+                                      controller.hardwareListing[index]
+                                              .showItems!.value =
+                                          !controller.hardwareListing[index]
+                                              .showItems!.value;
+                                      controller.update();
+                                    },
+                                    icon: controller.hardwareListing[index]
+                                            .showItems!.value
+                                        ? Icons.keyboard_arrow_up
+                                        : Icons.keyboard_arrow_down,
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 6.0),
-                                    child: Visibility(
-                                      visible: controller.hardwareListing[index]
-                                          .showItems!.value,
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 12),
-                                        decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              begin: Alignment.centerRight,
-                                              end: Alignment.centerLeft,
-                                              colors: [
-                                                Color(0xff151415),
-                                                Color(0xff232223),
-                                              ],
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            border: Border.all(
-                                              color: DynamicColor.whiteClr
-                                                  .withOpacity(0.5),
-                                            )),
-                                        child: ListView.builder(
-                                            itemCount: controller
-                                                .hardwareListing[index]
-                                                .categoryItems!
-                                                .length,
-                                            shrinkWrap: true,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            itemBuilder: (BuildContext context,
-                                                indexes) {
-                                              return Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        controller
-                                                            .hardwareListing[
-                                                                index]
-                                                            .categoryItems![
-                                                                indexes]
-                                                            .name
-                                                            .toString(),
-                                                        style:
-                                                            poppinsRegularStyle(
-                                                                fontSize: 12,
-                                                                color: theme
-                                                                    .primaryColor,
-                                                                context:
-                                                                    context),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 6.0),
+                                  child: Visibility(
+                                    visible: controller.hardwareListing[index]
+                                        .showItems!.value,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 12),
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.centerRight,
+                                            end: Alignment.centerLeft,
+                                            colors: [
+                                              Color(0xff151415),
+                                              Color(0xff232223),
+                                            ],
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                            color: DynamicColor.whiteClr
+                                                .withOpacity(0.5),
+                                          )),
+                                      child: ListView.builder(
+                                          itemCount: controller
+                                              .hardwareListing[index]
+                                              .categoryItems!
+                                              .length,
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder:
+                                              (BuildContext context, indexes) {
+                                            return Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      controller
+                                                          .hardwareListing[
+                                                              index]
+                                                          .categoryItems![
+                                                              indexes]
+                                                          .name
+                                                          .toString(),
+                                                      style:
+                                                          poppinsRegularStyle(
+                                                              fontSize: 12,
+                                                              color: theme
+                                                                  .primaryColor,
+                                                              context: context),
+                                                    ),
+                                                    Spacer(),
+                                                    Theme(
+                                                      data: Theme.of(context)
+                                                          .copyWith(
+                                                        unselectedWidgetColor:
+                                                            Colors.white,
                                                       ),
-                                                      Spacer(),
-                                                      Theme(
-                                                        data: Theme.of(context)
-                                                            .copyWith(
-                                                          unselectedWidgetColor:
-                                                              Colors.white,
-                                                        ),
-                                                        child: SizedBox(
-                                                          height: 40,
-                                                          width: 25,
-                                                          child: Checkbox(
-                                                              activeColor:
-                                                                  DynamicColor
-                                                                      .yellowClr,
-                                                              value: controller
-                                                                  .hardwareListing[
-                                                                      index]
-                                                                  .categoryItems![
-                                                                      indexes]
-                                                                  .selectedItem!
-                                                                  .value,
-                                                              onChanged: (v) {
-                                                                controller.hardwareFunction(
-                                                                    serviceObj: controller
-                                                                        .hardwareListing[
-                                                                            index]
-                                                                        .categoryItems![indexes],
-                                                                    value: v);
-                                                              }),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Divider(
-                                                    thickness: 1,
-                                                    height: 1,
-                                                    color: DynamicColor.grayClr
-                                                        .withOpacity(0.3),
-                                                  ),
-                                                ],
-                                              );
-                                            }),
-                                      ),
+                                                      child: SizedBox(
+                                                        height: 40,
+                                                        width: 25,
+                                                        child: Checkbox(
+                                                            activeColor:
+                                                                DynamicColor
+                                                                    .yellowClr,
+                                                            value: controller
+                                                                .hardwareListing[
+                                                                    index]
+                                                                .categoryItems![
+                                                                    indexes]
+                                                                .selectedItem!
+                                                                .value,
+                                                            onChanged: (v) {
+                                                              controller.hardwareFunction(
+                                                                  serviceObj: controller
+                                                                      .hardwareListing[
+                                                                          index]
+                                                                      .categoryItems![indexes],
+                                                                  value: v);
+                                                            }),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Divider(
+                                                  thickness: 1,
+                                                  height: 1,
+                                                  color: DynamicColor.grayClr
+                                                      .withOpacity(0.3),
+                                                ),
+                                              ],
+                                            );
+                                          }),
                                     ),
                                   ),
-                                ],
-                              );
-                            }),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
+                                ),
+                              ],
+                            );
+                          }),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
                   ),
-                );
-        }),
-        bottomNavigationBar: Padding(
+                ),
+              );
+      }),
+      bottomNavigationBar: SafeArea(
+        bottom: Platform.isIOS ? true : false,
+        child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
@@ -232,7 +228,7 @@ class HardwareScreen extends StatelessWidget {
                   "addMoreService": 1,
                   "createEvent": createEventValue,
                   "title": "Music Choice!",
-                  "isFromEvent":true,
+                  "isFromEvent": true,
                 });
               } else {
                 bottomToast(

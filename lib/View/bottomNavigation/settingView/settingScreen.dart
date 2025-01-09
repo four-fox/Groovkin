@@ -67,48 +67,50 @@ class _SettingScreenState extends State<SettingScreen> {
                           image: AssetImage("assets/grayClor.png"),
                           fit: BoxFit.fill),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: kToolbarHeight * 1.2,
-                          // padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: DynamicColor.blackClr,
-                            shape: BoxShape.circle,
-                            border:
-                                Border.all(color: DynamicColor.lightYellowClr),
-                            // image: DecorationImage(
-                            //   image: NetworkImage(Url().imageUrl+controller.userData!.data!.profilePicture!.mediaPath!),
-                            //   fit: BoxFit.contain,
-                            // )
-                          ),
-                          child: CircleAvatar(
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                              controller.userData!.data?.profilePicture != null
-                                  ? "${Url().imageUrl}${controller.userData?.data?.profilePicture?.mediaPath}"
-                                  : groupPlaceholder,
+                    child: SafeArea(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: kToolbarHeight * 1.2,
+                            // padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: DynamicColor.blackClr,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: DynamicColor.lightYellowClr),
+                              // image: DecorationImage(
+                              //   image: NetworkImage(Url().imageUrl+controller.userData!.data!.profilePicture!.mediaPath!),
+                              //   fit: BoxFit.contain,
+                              // )
+                            ),
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                controller.userData!.data?.profilePicture !=
+                                        null
+                                    ? "${Url().imageUrl}${controller.userData?.data?.profilePicture?.mediaPath}"
+                                    : groupPlaceholder,
+                              ),
                             ),
                           ),
-                        ),
-                        Text(
-                          controller.userData!.data!.name!,
-                          style: poppinsMediumStyle(
-                            context: context,
-                            fontSize: 16,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                        if (controller.userData!.data!.profile != null)
                           Text(
-                            'Member since ${DateFormat.MMMd().format(controller.userData!.data!.profile!.createdAt!)}',
+                            controller.userData!.data!.name!,
                             style: poppinsMediumStyle(
-                                context: context,
-                                fontSize: 10,
-                                color: DynamicColor.grayClr.withOpacity(0.9)),
+                              context: context,
+                              fontSize: 16,
+                              color: theme.primaryColor,
+                            ),
                           ),
-                      ],
+                          if (controller.userData!.data!.profile != null)
+                            Text(
+                              'Member since ${DateFormat.MMMd().format(controller.userData!.data!.profile!.createdAt!)}',
+                              style: poppinsMediumStyle(
+                                  context: context,
+                                  fontSize: 10,
+                                  color: DynamicColor.grayClr.withOpacity(0.9)),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

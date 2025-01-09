@@ -1,6 +1,6 @@
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 
 class NewPasswordScreen extends StatelessWidget {
-  NewPasswordScreen({Key? key}) : super(key: key);
+  NewPasswordScreen({super.key});
 
   late AuthController _authController = Get.find();
 
@@ -20,7 +20,7 @@ class NewPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Change password"),
+      appBar: customAppBar(theme: theme, text: "Change password"),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -29,22 +29,23 @@ class NewPasswordScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Text("Reset Password",
+            Text(
+              "Reset Password",
               style: poppinsMediumStyle(
-                  fontSize: 17,
-                  context: context,
-                  color: theme.primaryColor,
+                fontSize: 17,
+                context: context,
+                color: theme.primaryColor,
               ),
             ),
             SizedBox(
               height: 5,
             ),
-            Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+            Text(
+              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
               style: poppinsRegularStyle(
                   fontSize: 14,
                   context: context,
-                  color: DynamicColor.grayClr.withOpacity(0.8)
-              ),
+                  color: DynamicColor.grayClr.withOpacity(0.8)),
             ),
             SizedBox(
               height: 10,
@@ -73,17 +74,20 @@ class NewPasswordScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 7,vertical: 4),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          color1: DynamicColor.blackClr,
-          color2: DynamicColor.blackClr,
-          onTap: (){
-            _authController.changePassword(context,theme);
-            // Get.toNamed(Routes.newPasswordScreen);
-          },
-          text: "Continue",
+      bottomNavigationBar: SafeArea(
+        bottom: Platform.isIOS ? true : false,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            color1: DynamicColor.blackClr,
+            color2: DynamicColor.blackClr,
+            onTap: () {
+              _authController.changePassword(context, theme);
+              // Get.toNamed(Routes.newPasswordScreen);
+            },
+            text: "Continue",
+          ),
         ),
       ),
     );

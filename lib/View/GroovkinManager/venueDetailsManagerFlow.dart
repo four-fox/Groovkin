@@ -1162,15 +1162,18 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
       }),
       bottomNavigationBar: btnShow == false
           ? SizedBox.shrink()
-          : Padding(
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-              child: CustomButton(
-                borderClr: Colors.transparent,
-                onTap: () {
-                  Get.toNamed(Routes.eventPreview,
-                      arguments: {"viewDetails": 1});
-                },
-                text: "Continue",
+          : SafeArea(
+              bottom: Platform.isIOS ? true : false,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                child: CustomButton(
+                  borderClr: Colors.transparent,
+                  onTap: () {
+                    Get.toNamed(Routes.eventPreview,
+                        arguments: {"viewDetails": 1});
+                  },
+                  text: "Continue",
+                ),
               ),
             ),
     );

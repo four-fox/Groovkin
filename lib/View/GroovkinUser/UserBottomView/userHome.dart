@@ -850,6 +850,7 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
 
   @override
   void initState() {
+    
     if (Get.isRegistered<HomeController>()) {
       _controller = Get.find<HomeController>();
     } else {
@@ -897,120 +898,128 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(
-              searchingShow == true ? kToolbarHeight * 2 : kToolbarHeight),
-          child: Column(
-            children: [
-              customAppBar(theme: theme, text: "All Events"),
-              searchingShow == true
-                  ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: SearchTextFields(
-                        controller: _eventController.searchingController,
-                        onChanged: (v) {
-                          if (v != "") {
-                            _onChangeHandler();
-                          } else {
-                            _eventController.searchingController.clear();
-                          }
-                        },
-                      ),
-                    )
-                  : SizedBox.shrink()
-            ],
-          )),
-      body: GetBuilder<EventController>(initState: (v) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _eventController.searchingController.clear();
-          if (searchingShow == true) {
-            _eventController.searchingEvent();
-          } else {
-            _eventController.getAllEvents();
-          }
-        });
-      }, builder: (controller) {
-        return NotificationListener<ScrollNotification>(
-          onNotification: (scroll) {
-            if (scroll.metrics.pixels == scroll.metrics.maxScrollExtent) {
-              if (controller.getAllEventWaiting == false) {
-                controller.getAllEventWaiting = true;
-                if (controller.allEvents!.data!.nextPageUrl != null) {
-                  if (searchingShow == true) {
-                    _eventController.searchingEvent(
-                        nextUrl: controller.allEvents!.data!.nextPageUrl);
-                  } else {
-                    controller.getAllEvents(
-                        nextUrl: controller.allEvents!.data!.nextPageUrl);
-                  }
-
-                  return true;
+      appBar: customAppBar(theme: theme, text: "All Events"),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 5,
+          ),
+          searchingShow == true
+              ? Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  child: SearchTextFields(
+                    controller: _eventController.searchingController,
+                    onChanged: (v) {
+                      if (v != "") {
+                        _onChangeHandler();
+                      } else {
+                        _eventController.searchingController.clear();
+                      }
+                    },
+                  ),
+                )
+              : SizedBox.shrink(),
+          Expanded(
+            child: GetBuilder<EventController>(initState: (v) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _eventController.searchingController.clear();
+                if (searchingShow == true) {
+                  _eventController.searchingEvent();
                 } else {
-                  print("next Url Null");
+                  _eventController.getAllEvents();
                 }
-              }
-              return false;
-            }
-            return false;
-          },
-          child: controller.getAllEventsLoader.value == false
-              ? SizedBox.shrink()
-              : controller.allEvents == null ||
-                      controller.allEvents!.data!.data!.isEmpty
-                  ? noData(context: context, theme: theme)
-                  : Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: DynamicColor.darkGrayClr),
-                        child: ListView.builder(
-                            itemCount: controller.allEvents!.data!.data!.length,
-                            shrinkWrap: true,
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, index) {
-                              EventData singleEventDat =
-                                  controller.allEvents!.data!.data![index];
-                              return userCustomEvent(
-                                  isDelete:
-                                      singleEventDat.user?.deleteAt == null
-                                          ? false
-                                          : true,
-                                  dayy: DateFormat.MMM()
-                                      .format(singleEventDat.startDateTime!),
-                                  datee:
-                                      "${singleEventDat.startDateTime!.day}\n",
-                                  networkImg: singleEventDat.bannerImage == null
-                                      ? false
-                                      : true,
-                                  img: singleEventDat.bannerImage == null
-                                      ? null
-                                      : singleEventDat.bannerImage!.mediaPath
-                                          .toString(),
-                                  title: singleEventDat.eventTitle.toString(),
-                                  location: singleEventDat.location,
-                                  subtitle: singleEventDat.venue == null
-                                      ? ""
-                                      : singleEventDat.venue!.venueName
-                                          .toString(),
-                                  onTap: () {
-                                    Get.toNamed(Routes.userEventDetailsScreen,
-                                        arguments: {
-                                          "notify": true,
-                                          "notifyBackBtn": true,
-                                          'appBarTitle': "Event Preview",
-                                          "statusText":
-                                              singleEventDat.id.toString()
-                                        });
-                                  },
-                                  context: context,
-                                  theme: theme);
-                            }),
-                      ),
-                    ),
-        );
-      }),
+              });
+            }, builder: (controller) {
+              return NotificationListener<ScrollNotification>(
+                onNotification: (scroll) {
+                  if (scroll.metrics.pixels == scroll.metrics.maxScrollExtent) {
+                    if (controller.getAllEventWaiting == false) {
+                      controller.getAllEventWaiting = true;
+                      if (controller.allEvents!.data!.nextPageUrl != null) {
+                        if (searchingShow == true) {
+                          _eventController.searchingEvent(
+                              nextUrl: controller.allEvents!.data!.nextPageUrl);
+                        } else {
+                          controller.getAllEvents(
+                              nextUrl: controller.allEvents!.data!.nextPageUrl);
+                        }
+
+                        return true;
+                      } else {
+                        print("next Url Null");
+                      }
+                    }
+                    return false;
+                  }
+                  return false;
+                },
+                child: controller.getAllEventsLoader.value == false
+                    ? SizedBox.shrink()
+                    : controller.allEvents == null ||
+                            controller.allEvents!.data!.data!.isEmpty
+                        ? noData(context: context, theme: theme)
+                        : Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: DynamicColor.darkGrayClr),
+                              child: ListView.builder(
+                                  itemCount:
+                                      controller.allEvents!.data!.data!.length,
+                                  shrinkWrap: true,
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  itemBuilder: (BuildContext context, index) {
+                                    EventData singleEventDat = controller
+                                        .allEvents!.data!.data![index];
+                                    return userCustomEvent(
+                                        isDelete: singleEventDat
+                                                    .user?.deleteAt ==
+                                                null
+                                            ? false
+                                            : true,
+                                        dayy: DateFormat.MMM().format(
+                                            singleEventDat.startDateTime!),
+                                        datee:
+                                            "${singleEventDat.startDateTime!.day}\n",
+                                        networkImg:
+                                            singleEventDat.bannerImage == null
+                                                ? false
+                                                : true,
+                                        img: singleEventDat.bannerImage == null
+                                            ? null
+                                            : singleEventDat
+                                                .bannerImage!.mediaPath
+                                                .toString(),
+                                        title: singleEventDat.eventTitle
+                                            .toString(),
+                                        location: singleEventDat.location,
+                                        subtitle: singleEventDat.venue == null
+                                            ? ""
+                                            : singleEventDat.venue!.venueName
+                                                .toString(),
+                                        onTap: () {
+                                          Get.toNamed(
+                                              Routes.userEventDetailsScreen,
+                                              arguments: {
+                                                "notify": true,
+                                                "notifyBackBtn": true,
+                                                'appBarTitle': "Event Preview",
+                                                "statusText":
+                                                    singleEventDat.id.toString()
+                                              });
+                                        },
+                                        context: context,
+                                        theme: theme);
+                                  }),
+                            ),
+                          ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }

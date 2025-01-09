@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
@@ -237,79 +239,84 @@ class _AddCardDetailsState extends State<AddCardDetails> {
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            if (paymentMethodFlow == 1) {
-              showDialog(
-                  barrierColor: Colors.transparent,
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (BuildContext context) {
-                    return AlertWidget(
-                      height: kToolbarHeight * 5,
-                      container: SizedBox(
-                        width: Get.width,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 4),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Payment Success',
-                                style: poppinsMediumStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  color: theme.primaryColor,
+      bottomNavigationBar: SafeArea(
+        bottom: Platform.isIOS ? true : false,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              if (paymentMethodFlow == 1) {
+                showDialog(
+                    barrierColor: Colors.transparent,
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return AlertWidget(
+                        height: kToolbarHeight * 5,
+                        container: SizedBox(
+                          width: Get.width,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 4),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Payment Success',
+                                  style: poppinsMediumStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                    context: context,
+                                    color: theme.primaryColor,
+                                  ),
                                 ),
-                              ),
-                              CircleAvatar(
-                                radius: 38,
-                                backgroundColor: DynamicColor.yellowClr,
-                                child: Icon(
-                                  Icons.check,
-                                  size: 45,
-                                  color: Theme.of(context).colorScheme.surface,
+                                CircleAvatar(
+                                  radius: 38,
+                                  backgroundColor: DynamicColor.yellowClr,
+                                  child: Icon(
+                                    Icons.check,
+                                    size: 45,
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text(
-                                    'Your Payment has been\nsuccessfully done ',
-                                    textAlign: TextAlign.center,
-                                    style: poppinsMediumStyle(
-                                      fontSize: 20,
-                                      context: context,
-                                      color:
-                                          Theme.of(context).colorScheme.surface,
-                                    ),
-                                  )),
-                            ],
+                                Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Text(
+                                      'Your Payment has been\nsuccessfully done ',
+                                      textAlign: TextAlign.center,
+                                      style: poppinsMediumStyle(
+                                        fontSize: 20,
+                                        context: context,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface,
+                                      ),
+                                    )),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  });
-              Future.delayed(Duration(seconds: 2), () {
-                Get.back();
-                Get.toNamed(Routes.serviceScreen,
-                    arguments: {"addMoreService": 1});
-              });
-            } else if (paymentMethodFlow == 2) {
-              saveCard();
-              // Get.back();
-              // Get.toNamed(Routes.viewPaymentMethod);
-            } else {
-              Get.toNamed(Routes.paymentConfirmationScreen);
-            }
-          },
-          text: isFromreplaced ? "Replace" : "Add",
+                      );
+                    });
+                Future.delayed(Duration(seconds: 2), () {
+                  Get.back();
+                  Get.toNamed(Routes.serviceScreen,
+                      arguments: {"addMoreService": 1});
+                });
+              } else if (paymentMethodFlow == 2) {
+                saveCard();
+                // Get.back();
+                // Get.toNamed(Routes.viewPaymentMethod);
+              } else {
+                Get.toNamed(Routes.paymentConfirmationScreen);
+              }
+            },
+            text: isFromreplaced ? "Replace" : "Add",
+          ),
         ),
       ),
     );

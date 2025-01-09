@@ -13,36 +13,26 @@ class AllUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 1.5),
-        child: Container(
-          height: kToolbarHeight * 1.5,
-          padding: EdgeInsets.only(top: 30, left: 10),
+      appBar: AppBar(
+        flexibleSpace: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
-          child: Stack(
-            alignment: Alignment.centerLeft,
-            children: [
-              Center(
-                child: Text(
-                  "Follow New Users",
-                  style: poppinsMediumStyle(
-                    fontSize: 17,
-                    color: theme.primaryColor,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: ImageIcon(
-                  AssetImage("assets/backArrow.png"),
-                  color: theme.primaryColor,
-                ),
-              )
-            ],
+        ),
+        title: Text(
+          "Follow New Users",
+          style: poppinsMediumStyle(
+            fontSize: 17,
+            color: theme.primaryColor,
+          ),
+        ),
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: ImageIcon(
+            AssetImage("assets/backArrow.png"),
+            color: theme.primaryColor,
           ),
         ),
       ),

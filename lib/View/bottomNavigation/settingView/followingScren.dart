@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 
@@ -22,44 +23,32 @@ class FollowingScreen extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight * 2.3),
-          child: Column(children: [
-            Container(
-              height: kToolbarHeight * 1.5,
-              padding: EdgeInsets.only(top: 30, left: 10),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/grayClor.png"),
-                      fit: BoxFit.fill)),
-              child: Stack(
-                alignment: Alignment.centerLeft,
-                children: [
-                  Center(
-                    child: Text(
-                      appBarText,
-                      style: poppinsMediumStyle(
-                        fontSize: 17,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: ImageIcon(
-                      AssetImage("assets/backArrow.png"),
-                      color: theme.primaryColor,
-                    ),
-                  )
-                ],
-              ),
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/grayClor.png"),
+                    fit: BoxFit.fill)),
+          ),
+          title: Text(
+            appBarText,
+            style: poppinsMediumStyle(
+              fontSize: 17,
+              color: theme.primaryColor,
             ),
-            // customAppBar(theme: theme,text: "Following"),
-            SizedBox(
-              height: 8,
+          ),
+          leading: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: ImageIcon(
+              AssetImage("assets/backArrow.png"),
+              color: theme.primaryColor,
             ),
+          ),
+        ),
+        body: Column(
+          children: [
             TabBar(
               unselectedLabelStyle:
                   poppinsMediumStyle(fontSize: 14, context: context),
@@ -159,63 +148,67 @@ class FollowingScreen extends StatelessWidget {
                 ),
               ],
             ),
-          ]),
-        ),
-        body: GetBuilder<AuthController>(initState: (v) {
-          _controller.allUnFollower = null;
-          _controller.getAllFollowings(userType: "user", apiHit: appBarText);
-        }, builder: (controller) {
-          return Obx(
-            () => NotificationListener<ScrollNotification>(
-              onNotification: (scrollNotification) {
-                if (scrollNotification.metrics.pixels ==
-                    scrollNotification.metrics.maxScrollExtent) {
-                  if (_controller.getAllFollowersWait == false) {
-                    _controller.getAllFollowersWait = true;
-                    if (_controller.allUnFollower!.data!.nextPageUrl != null) {
-                      String link =
-                          _controller.allUnFollower!.data!.nextPageUrl!;
-                      _controller.getAllFollowings(
-                          nextUrl: link,
-                          userType: selectedVal.value == 0
-                              ? "user"
-                              : selectedVal.value == 1
-                                  ? "event_owner"
-                                  : "venue_manager",
-                          apiHit: appBarText);
-                      return true;
-                    }
-                  }
-                  return false;
-                }
-                return false;
-              },
-              child: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  controller.getAllUnfollowingLoader.value == false
-                      ? SizedBox.shrink()
-                      : AllUsers(
-                          userValue: "User",
-                          type: appBarText,
-                        ),
-                  controller.getAllUnfollowingLoader.value == false
-                      ? SizedBox.shrink()
-                      : AllUsers(
-                          userValue: "Event Organizer",
-                          type: appBarText,
-                        ),
-                  controller.getAllUnfollowingLoader.value == false
-                      ? SizedBox.shrink()
-                      : AllUsers(
-                          userValue: "Event Organizer",
-                          type: appBarText,
-                        ),
-                ],
-              ),
+            Expanded(
+              child: GetBuilder<AuthController>(initState: (v) {
+                _controller.allUnFollower = null;
+                _controller.getAllFollowings(
+                    userType: "user", apiHit: appBarText);
+              }, builder: (controller) {
+                return Obx(
+                  () => NotificationListener<ScrollNotification>(
+                    onNotification: (scrollNotification) {
+                      if (scrollNotification.metrics.pixels ==
+                          scrollNotification.metrics.maxScrollExtent) {
+                        if (_controller.getAllFollowersWait == false) {
+                          _controller.getAllFollowersWait = true;
+                          if (_controller.allUnFollower!.data!.nextPageUrl !=
+                              null) {
+                            String link =
+                                _controller.allUnFollower!.data!.nextPageUrl!;
+                            _controller.getAllFollowings(
+                                nextUrl: link,
+                                userType: selectedVal.value == 0
+                                    ? "user"
+                                    : selectedVal.value == 1
+                                        ? "event_owner"
+                                        : "venue_manager",
+                                apiHit: appBarText);
+                            return true;
+                          }
+                        }
+                        return false;
+                      }
+                      return false;
+                    },
+                    child: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        controller.getAllUnfollowingLoader.value == false
+                            ? SizedBox.shrink()
+                            : AllUsers(
+                                userValue: "User",
+                                type: appBarText,
+                              ),
+                        controller.getAllUnfollowingLoader.value == false
+                            ? SizedBox.shrink()
+                            : AllUsers(
+                                userValue: "Event Organizer",
+                                type: appBarText,
+                              ),
+                        controller.getAllUnfollowingLoader.value == false
+                            ? SizedBox.shrink()
+                            : AllUsers(
+                                userValue: "Event Organizer",
+                                type: appBarText,
+                              ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
             ),
-          );
-        }),
+          ],
+        ),
       ),
     );
   }
