@@ -106,7 +106,7 @@ dependency_overrides:
   intl: ^0.19.0
   form_builder_extra_fields: ^10.2.0
   image_cropper_platform_interface: ^6.1.0
-
+  socket_io_client: ^3.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:groovkin/Components/Network/interceptors_service.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'ErrorMethod.dart';
 import 'Url.dart';
@@ -18,26 +19,17 @@ class API {
   ///SingleTon
   static final API _singleton = API._internal();
   var sp = GetStorage();
+  late Dio dio;
   factory API() {
     return _singleton;
   }
-  Dio dio = Dio(BaseOptions(
-    connectTimeout: Duration(seconds: 180),
-    receiveTimeout: Duration(seconds: 180),
-  ));
 
-  API._internal();
-  Dio addInterceptors() {
-    return dio
-      ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler) {
-        if (response.statusCode == 401) {
-          if (response.data["message"] == "Unauthenticated.") {
-            print("Asa");
-          }
-        }
-      }, onError: (dioError, interceptorErrorCallback) async {
-        returnResponse(dioError.response!);
-      }));
+  API._internal() : dio = Dio() {
+    dio = Dio(BaseOptions(
+      connectTimeout: Duration(seconds: 180),
+      receiveTimeout: Duration(seconds: 180),
+    ));
+    dio.interceptors.add(InterceptorsServices());
   }
 
   ///Get
@@ -46,7 +38,6 @@ class API {
       fullUrl,
       Map<String, dynamic>? queryParameters,
       bool isLoader = true}) async {
-    print(sp.read('token'));
     dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
     dio.options.headers['Accept'] = "application/json";
 

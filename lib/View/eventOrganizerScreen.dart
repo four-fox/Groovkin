@@ -27,198 +27,221 @@ class EventOrganizerScreen extends StatelessWidget {
     var theme = Theme.of(context);
     print(eventOrganizerVal);
     return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(eventOrganizerVal == 1
+      length: 3,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(
+            eventOrganizerVal == 1
                 ? kToolbarHeight * 3.5
                 : eventOrganizerVal == 3
                     ? kToolbarHeight * 5.45
-                    : kToolbarHeight * 4.7),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: Get.width,
-                  height: eventOrganizerVal == 1
-                      ? kToolbarHeight * 2.5
-                      : kToolbarHeight * 1.4,
-                  padding:
-                      EdgeInsets.only(top: eventOrganizerVal == 1 ? 30 : 22),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/grayClor.png"),
-                          fit: BoxFit.fill),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft:
-                            Radius.circular(eventOrganizerVal == 1 ? 0 : 20),
-                        bottomRight:
-                            Radius.circular(eventOrganizerVal == 1 ? 0 : 20),
-                      )),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    : kToolbarHeight * 4.7,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: Get.width,
+                height: eventOrganizerVal == 1
+                    ? kToolbarHeight * 2.5
+                    : kToolbarHeight * 1.4,
+                padding: EdgeInsets.only(top: eventOrganizerVal == 1 ? 30 : 22),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/grayClor.png"),
+                        fit: BoxFit.fill),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft:
+                          Radius.circular(eventOrganizerVal == 1 ? 0 : 20),
+                      bottomRight:
+                          Radius.circular(eventOrganizerVal == 1 ? 0 : 20),
+                    )),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 12.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: ImageIcon(
+                                AssetImage("assets/backArrow.png"),
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        eventOrganizerVal != 1
+                            ? SizedBox.shrink()
+                            : Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 12),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 22,
+                                      backgroundColor:
+                                          DynamicColor.lightYellowClr,
+                                      child: CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor:
+                                            theme.scaffoldBackgroundColor,
+                                        child: Image(
+                                          image: AssetImage(profileImg),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Michael Logan",
+                                            style: poppinsRegularStyle(
+                                              fontSize: 14,
+                                              context: context,
+                                              color: theme.primaryColor,
+                                            ),
+                                          ),
+                                          Text(
+                                            rolesType,
+                                            style: poppinsRegularStyle(
+                                              fontSize: 13,
+                                              context: context,
+                                              color: theme.primaryColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                      ],
+                    ),
+                    eventOrganizerVal == 1
+                        ? SizedBox.shrink()
+                        : Text(
+                            "Profile",
+                            style: poppinsMediumStyle(
+                              fontSize: 17,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+              eventOrganizerVal == 1
+                  ? SizedBox.shrink()
+                  : Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                      child: Row(
                         children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 12.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: ImageIcon(
-                                  AssetImage("assets/backArrow.png"),
+                          CircleAvatar(
+                            radius: 22,
+                            backgroundColor: DynamicColor.lightYellowClr,
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: theme.scaffoldBackgroundColor,
+                              child: Image(
+                                image: AssetImage(profileImg),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Michael Logan",
+                                  style: poppinsRegularStyle(
+                                    fontSize: 14,
+                                    context: context,
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                                Text(
+                                  rolesType,
+                                  style: poppinsRegularStyle(
+                                    fontSize: 13,
+                                    context: context,
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+              eventOrganizerVal == 1
+                  ? SizedBox.shrink()
+                  : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        'About',
+                        style: poppinsMediumStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          color: DynamicColor.whiteClr,
+                        ),
+                      ),
+                    ),
+              eventOrganizerVal == 1
+                  ? SizedBox.shrink()
+                  : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        '90’s Century Western presented by Tonwsquare Media.\nGates will open at 10:30pm and music begin at night.\nParking lots open at 10:30pm.',
+                        maxLines: 3,
+                        style: poppinsRegularStyle(
+                          fontSize: 12,
+                          color: theme.primaryColor.withOpacity(0.7),
+                        ),
+                      ),
+                    ),
+              Divider(
+                height: 9,
+                color: DynamicColor.lightWhite.withOpacity(0.5),
+              ),
+              eventOrganizerVal != 1
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 40,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: DynamicColor.darkGrayClr,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Following",
+                                style: poppinsRegularStyle(
+                                  fontSize: 12,
+                                  context: context,
                                   color: theme.primaryColor,
                                 ),
                               ),
                             ),
                           ),
-                          eventOrganizerVal != 1
-                              ? SizedBox.shrink()
-                              : Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 8.0, horizontal: 12),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 22,
-                                        backgroundColor:
-                                            DynamicColor.lightYellowClr,
-                                        child: CircleAvatar(
-                                          radius: 20,
-                                          backgroundColor:
-                                              theme.scaffoldBackgroundColor,
-                                          child: Image(
-                                            image: AssetImage(profileImg),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 10.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Michael Logan",
-                                              style: poppinsRegularStyle(
-                                                fontSize: 14,
-                                                context: context,
-                                                color: theme.primaryColor,
-                                              ),
-                                            ),
-                                            Text(
-                                              rolesType,
-                                              style: poppinsRegularStyle(
-                                                fontSize: 13,
-                                                context: context,
-                                                color: theme.primaryColor,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                        ],
-                      ),
-                      eventOrganizerVal == 1
-                          ? SizedBox.shrink()
-                          : Text(
-                              "Profile",
-                              style: poppinsMediumStyle(
-                                fontSize: 17,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                    ],
-                  ),
-                ),
-                eventOrganizerVal == 1
-                    ? SizedBox.shrink()
-                    : Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 22,
-                              backgroundColor: DynamicColor.lightYellowClr,
-                              child: CircleAvatar(
-                                radius: 20,
-                                backgroundColor: theme.scaffoldBackgroundColor,
-                                child: Image(
-                                  image: AssetImage(profileImg),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Michael Logan",
-                                    style: poppinsRegularStyle(
-                                      fontSize: 14,
-                                      context: context,
-                                      color: theme.primaryColor,
-                                    ),
-                                  ),
-                                  Text(
-                                    rolesType,
-                                    style: poppinsRegularStyle(
-                                      fontSize: 13,
-                                      context: context,
-                                      color: theme.primaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                eventOrganizerVal == 1
-                    ? SizedBox.shrink()
-                    : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          'About',
-                          style: poppinsMediumStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: DynamicColor.whiteClr,
-                          ),
-                        ),
-                      ),
-                eventOrganizerVal == 1
-                    ? SizedBox.shrink()
-                    : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Text(
-                          '90’s Century Western presented by Tonwsquare Media.\nGates will open at 10:30pm and music begin at night.\nParking lots open at 10:30pm.',
-                          maxLines: 3,
-                          style: poppinsRegularStyle(
-                            fontSize: 12,
-                            color: theme.primaryColor.withOpacity(0.7),
-                          ),
-                        ),
-                      ),
-                Divider(
-                  height: 9,
-                  color: DynamicColor.lightWhite.withOpacity(0.5),
-                ),
-                eventOrganizerVal != 1
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Row(
-                          children: [
-                            Container(
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Container(
                               height: 40,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 10),
@@ -228,7 +251,7 @@ class EventOrganizerScreen extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Following",
+                                  "Followers",
                                   style: poppinsRegularStyle(
                                     fontSize: 12,
                                     context: context,
@@ -237,342 +260,312 @@ class EventOrganizerScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Container(
-                                height: 40,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                  color: DynamicColor.darkGrayClr,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Followers",
-                                    style: poppinsRegularStyle(
-                                      fontSize: 12,
-                                      context: context,
-                                      color: theme.primaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 40,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: DynamicColor.darkGrayClr,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Center(
-                                  child: ImageIcon(
-                                AssetImage("assets/updatedProfileIcon.png"),
-                                color: DynamicColor.yellowClr,
-                              )),
-                            ),
-                          ],
-                        ),
-                      )
-                    : TabBar(
-                        unselectedLabelStyle:
-                            poppinsMediumStyle(fontSize: 14, context: context),
-                        labelStyle:
-                            poppinsMediumStyle(fontSize: 14, context: context),
-                        labelPadding: EdgeInsets.all(6),
-                        indicatorPadding: EdgeInsets.all(10),
-                        indicatorColor: theme.primaryColor,
-                        tabs: [
-                          Tab(text: "Organized event"),
-                          Tab(
-                            text: eventOrganizerVal == 2
-                                ? "Past Event"
-                                : "Service",
                           ),
-                          Tab(
-                            text: eventOrganizerVal == 2 ? "Property" : "About",
+                          Container(
+                            height: 40,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: DynamicColor.darkGrayClr,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                                child: ImageIcon(
+                              AssetImage("assets/updatedProfileIcon.png"),
+                              color: DynamicColor.yellowClr,
+                            )),
                           ),
                         ],
                       ),
-                eventOrganizerVal == 3
-                    ? TabBar(
-                        unselectedLabelStyle:
-                            poppinsMediumStyle(fontSize: 14, context: context),
-                        labelStyle:
-                            poppinsMediumStyle(fontSize: 14, context: context),
-                        labelPadding: EdgeInsets.all(6),
-                        indicatorPadding: EdgeInsets.all(10),
-                        indicatorColor: theme.primaryColor,
-                        tabs: [
-                          Tab(text: "Organized event"),
-                          Tab(
-                            text: eventOrganizerVal == 2
-                                ? "Past Events"
-                                : "Service",
-                          ),
-                          Tab(
-                            text: eventOrganizerVal == 2 ? "Property" : "About",
-                          ),
-                        ],
-                      )
-                    : SizedBox.shrink(),
-              ],
-            ),
+                    )
+                  : TabBar(
+                      unselectedLabelStyle:
+                          poppinsMediumStyle(fontSize: 14, context: context),
+                      labelStyle:
+                          poppinsMediumStyle(fontSize: 14, context: context),
+                      labelPadding: EdgeInsets.all(6),
+                      indicatorPadding: EdgeInsets.all(10),
+                      indicatorColor: theme.primaryColor,
+                      tabs: [
+                        Tab(text: "Organized event"),
+                        Tab(
+                          text:
+                              eventOrganizerVal == 2 ? "Past Event" : "Service",
+                        ),
+                        Tab(
+                          text: eventOrganizerVal == 2 ? "Property" : "About",
+                        ),
+                      ],
+                    ),
+              eventOrganizerVal == 3
+                  ? TabBar(
+                      unselectedLabelStyle:
+                          poppinsMediumStyle(fontSize: 14, context: context),
+                      labelStyle:
+                          poppinsMediumStyle(fontSize: 14, context: context),
+                      labelPadding: EdgeInsets.all(6),
+                      indicatorPadding: EdgeInsets.all(10),
+                      indicatorColor: theme.primaryColor,
+                      tabs: [
+                        Tab(text: "Organized event"),
+                        Tab(
+                          text: eventOrganizerVal == 2
+                              ? "Past Events"
+                              : "Service",
+                        ),
+                        Tab(
+                          text: eventOrganizerVal == 2 ? "Property" : "About",
+                        ),
+                      ],
+                    )
+                  : SizedBox.shrink(),
+            ],
           ),
-          body:
-
-              // eventOrganizerVal !=2?
-
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: TabBarView(
-                    children: [
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.darkGrayClr),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Upcoming Events",
-                                        style: poppinsMediumStyle(
-                                          fontSize: 14,
-                                          context: context,
-                                          color: theme.primaryColor,
-                                        ),
+        ),
+        body:
+            // eventOrganizerVal !=2?
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: TabBarView(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: DynamicColor.darkGrayClr),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Upcoming Events",
+                                      style: poppinsMediumStyle(
+                                        fontSize: 14,
+                                        context: context,
+                                        color: theme.primaryColor,
                                       ),
-                                      Obx(
-                                        () => GestureDetector(
-                                          onTap: () {
-                                            recommendedVal.value =
-                                                !recommendedVal.value;
-                                          },
-                                          child: Icon(
-                                            recommendedVal.value == false
-                                                ? Icons.keyboard_arrow_down
-                                                : Icons
-                                                    .keyboard_arrow_up_outlined,
-                                            size: 35,
-                                            color: theme.primaryColor,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Obx(
-                                    () => Visibility(
-                                      visible: recommendedVal.value,
-                                      child: ListView.builder(
-                                          itemCount: 12,
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemBuilder:
-                                              (BuildContext context, index) {
-                                            return userCustomEvent(
-                                                  isDelete: null,
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                      Routes
-                                                          .userEventDetailsScreen,
-                                                      arguments: {
-                                                        "notify": false,
-                                                        "appBarTitle":
-                                                            "Event Preview",
-                                                        "statusText":
-                                                            'upcoming',
-                                                      });
-                                                },
-                                                context: context,
-                                                theme: theme);
-                                          }),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.darkGrayClr),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Past Events",
-                                        style: poppinsMediumStyle(
-                                          fontSize: 14,
-                                          context: context,
+                                    Obx(
+                                      () => GestureDetector(
+                                        onTap: () {
+                                          recommendedVal.value =
+                                              !recommendedVal.value;
+                                        },
+                                        child: Icon(
+                                          recommendedVal.value == false
+                                              ? Icons.keyboard_arrow_down
+                                              : Icons
+                                                  .keyboard_arrow_up_outlined,
+                                          size: 35,
                                           color: theme.primaryColor,
                                         ),
                                       ),
-                                      Obx(
-                                        () => GestureDetector(
-                                          onTap: () {
-                                            cancelledVal.value =
-                                                !cancelledVal.value;
-                                          },
-                                          child: Icon(
-                                            cancelledVal.value == false
-                                                ? Icons.keyboard_arrow_down
-                                                : Icons
-                                                    .keyboard_arrow_up_outlined,
-                                            size: 35,
-                                            color: theme.primaryColor,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Obx(
-                                    () => Visibility(
-                                      visible: cancelledVal.value,
-                                      child: ListView.builder(
-                                          itemCount: 12,
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemBuilder:
-                                              (BuildContext context, index) {
-                                            return userCustomEvent(
-                                                  isDelete: null,
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                      Routes
-                                                          .userEventDetailsScreen,
-                                                      arguments: {
-                                                        "notify": false,
-                                                        "appBarTitle":
-                                                            "Past Event",
-                                                        "statusText":
-                                                            'upcoming',
-                                                      });
-                                                },
-                                                context: context,
-                                                theme: theme);
-                                          }),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.darkGrayClr),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Ongoing Events",
-                                        style: poppinsMediumStyle(
-                                          fontSize: 14,
-                                          context: context,
-                                          color: theme.primaryColor,
-                                        ),
-                                      ),
-                                      Obx(
-                                        () => GestureDetector(
-                                          onTap: () {
-                                            onGoingVal.value =
-                                                !onGoingVal.value;
-                                          },
-                                          child: Icon(
-                                            onGoingVal.value == false
-                                                ? Icons.keyboard_arrow_down
-                                                : Icons
-                                                    .keyboard_arrow_up_outlined,
-                                            size: 35,
-                                            color: theme.primaryColor,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Obx(
-                                    () => Visibility(
-                                      visible: onGoingVal.value,
-                                      child: ListView.builder(
-                                          itemCount: 12,
-                                          shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemBuilder:
-                                              (BuildContext context, index) {
-                                            return userCustomEvent(
+                                    )
+                                  ],
+                                ),
+                                Obx(
+                                  () => Visibility(
+                                    visible: recommendedVal.value,
+                                    child: ListView.builder(
+                                        itemCount: 12,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, index) {
+                                          return userCustomEvent(
                                               isDelete: null,
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                      Routes
-                                                          .userEventDetailsScreen,
-                                                      arguments: {
-                                                        "notify": true,
-                                                        "notifyBackBtn": true,
-                                                        'appBarTitle':
-                                                            "Event Preview",
-                                                        "statusText": "ffff"
-                                                      });
-                                                },
-                                                context: context,
-                                                theme: theme);
-                                          }),
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    Routes
+                                                        .userEventDetailsScreen,
+                                                    arguments: {
+                                                      "notify": false,
+                                                      "appBarTitle":
+                                                          "Event Preview",
+                                                      "statusText": 'upcoming',
+                                                    });
+                                              },
+                                              context: context,
+                                              theme: theme);
+                                        }),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: DynamicColor.darkGrayClr),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Past Events",
+                                      style: poppinsMediumStyle(
+                                        fontSize: 14,
+                                        context: context,
+                                        color: theme.primaryColor,
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ),
+                                    Obx(
+                                      () => GestureDetector(
+                                        onTap: () {
+                                          cancelledVal.value =
+                                              !cancelledVal.value;
+                                        },
+                                        child: Icon(
+                                          cancelledVal.value == false
+                                              ? Icons.keyboard_arrow_down
+                                              : Icons
+                                                  .keyboard_arrow_up_outlined,
+                                          size: 35,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Obx(
+                                  () => Visibility(
+                                    visible: cancelledVal.value,
+                                    child: ListView.builder(
+                                        itemCount: 12,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, index) {
+                                          return userCustomEvent(
+                                              isDelete: null,
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    Routes
+                                                        .userEventDetailsScreen,
+                                                    arguments: {
+                                                      "notify": false,
+                                                      "appBarTitle":
+                                                          "Past Event",
+                                                      "statusText": 'upcoming',
+                                                    });
+                                              },
+                                              context: context,
+                                              theme: theme);
+                                        }),
+                                  ),
+                                )
+                              ],
                             ),
-                            SizedBox(
-                              height: 10,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: DynamicColor.darkGrayClr),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Ongoing Events",
+                                      style: poppinsMediumStyle(
+                                        fontSize: 14,
+                                        context: context,
+                                        color: theme.primaryColor,
+                                      ),
+                                    ),
+                                    Obx(
+                                      () => GestureDetector(
+                                        onTap: () {
+                                          onGoingVal.value = !onGoingVal.value;
+                                        },
+                                        child: Icon(
+                                          onGoingVal.value == false
+                                              ? Icons.keyboard_arrow_down
+                                              : Icons
+                                                  .keyboard_arrow_up_outlined,
+                                          size: 35,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Obx(
+                                  () => Visibility(
+                                    visible: onGoingVal.value,
+                                    child: ListView.builder(
+                                        itemCount: 12,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, index) {
+                                          return userCustomEvent(
+                                              isDelete: null,
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    Routes
+                                                        .userEventDetailsScreen,
+                                                    arguments: {
+                                                      "notify": true,
+                                                      "notifyBackBtn": true,
+                                                      'appBarTitle':
+                                                          "Event Preview",
+                                                      "statusText": "ffff"
+                                                    });
+                                              },
+                                              context: context,
+                                              theme: theme);
+                                        }),
+                                  ),
+                                )
+                              ],
                             ),
-                            SizedBox(
-                              height: kToolbarHeight,
-                            )
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            height: kToolbarHeight,
+                          )
+                        ],
                       ),
-                      // eventOrganizerVal == 3? OrganizedEventView(attendPeople: "sda",):OrganizedEventView(),
-                      eventOrganizerVal == 2
-                          ? OrganizedEventView(
-                              attendPeople: "dsf",
-                            ) /*VenueDetailsManagerScreen(serviceCondition: true)*/
-                          : MyGroovkinScreen(
-                              appBar: true,
-                            ),
-                      /*PropertyEventView()*/
-                      eventOrganizerVal == 2
-                          ? PropertyEventView()
-                          : AboutEventView(),
-                    ],
-                  )),
-        ));
+                    ),
+                    // eventOrganizerVal == 3? OrganizedEventView(attendPeople: "sda",):OrganizedEventView(),
+                    eventOrganizerVal == 2
+                        ? OrganizedEventView(
+                            attendPeople: "dsf",
+                          ) /*VenueDetailsManagerScreen(serviceCondition: true)*/
+                        : MyGroovkinScreen(
+                            appBar: true,
+                          ),
+                    /*PropertyEventView()*/
+                    eventOrganizerVal == 2
+                        ? PropertyEventView()
+                        : AboutEventView(),
+                  ],
+                )),
+      ),
+    );
   }
 }
 

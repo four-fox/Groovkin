@@ -883,6 +883,9 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             if (_authController.imageBytes != null ||
                                 ((controller.duplicateValue.value == false) &&
                                     (controller.eventDetail != null) &&
+                                    (controller
+                                            .eventDetail!.data!.bannerImage !=
+                                        null) &&
                                     (controller.eventDetail!.data!.bannerImage!
                                             .mediaPath !=
                                         null))) {

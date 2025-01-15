@@ -41,7 +41,6 @@ class _CounterScreenState extends State<CounterScreen> {
 
   @override
   void didUpdateWidget(covariant CounterScreen oldWidget) {
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     print("DIDUPDAED");
   }

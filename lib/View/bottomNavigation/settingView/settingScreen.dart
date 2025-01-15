@@ -198,7 +198,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 switchValue.value = v;
                               }),
                         ),
-
+                        // if (API().sp.read("role") != "User")
                         customWidget(
                             context: context,
                             img: "assets/switchIcon.png",
@@ -263,6 +263,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                       ),
                                     );
                                   });
+                              // if (API().sp.read("role") == "eventManager") {
+                              //   controller.changeRoles(ChangeRole.organizer);
+                              // } else {
+                              //   controller.changeRoles(ChangeRole.manager);
+                              // }
                             }),
                         API().sp.read("role") != "User"
                             ? customWidget(

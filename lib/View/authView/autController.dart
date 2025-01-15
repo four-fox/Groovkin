@@ -858,8 +858,11 @@ class AuthController extends GetxController {
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
       }
+
     }
+
   }
+  
 
   /// following and unfollow
   RxBool getAllUnfollowingLoader = true.obs;

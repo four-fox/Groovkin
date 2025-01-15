@@ -50,7 +50,7 @@ class TheSquadScreen extends StatelessWidget {
                     'notifyBackBtn': false,
                     "statusText": "adsf",
                     "appBarTitle": "Event Preview",
-                    "notifyBackBtn": true
+                    "notifyBackBtn": true,
                   });
                 },
                 child: Padding(
@@ -62,10 +62,12 @@ class TheSquadScreen extends StatelessWidget {
                     child: Container(
                       width: Get.width / 1.4,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                              image: AssetImage("assets/grayClor.png"),
-                              fit: BoxFit.fill)),
+                        borderRadius: BorderRadius.circular(12),
+                        image: DecorationImage(
+                          image: AssetImage("assets/grayClor.png"),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
