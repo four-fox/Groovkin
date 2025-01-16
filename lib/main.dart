@@ -53,7 +53,6 @@ class _MyAppState extends State<MyApp> {
 
     // Todo Start the socket server
     // SocketClass.singleton.connectSocket();
-    
 
     // initStateNotification();
   }

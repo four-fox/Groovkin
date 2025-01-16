@@ -65,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTabController(
       length: 3,
       // initialIndex: widget.showIndexValue!.value,
-
       child: Container(
         color: theme.scaffoldBackgroundColor,
         child: GetBuilder<HomeController>(initState: (v) {

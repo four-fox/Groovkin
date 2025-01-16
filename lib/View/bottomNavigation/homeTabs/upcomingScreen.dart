@@ -95,7 +95,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       body: GetBuilder<EventController>(initState: (v) {
         _controller.eventDetails(eventId: eventId);
       }, builder: (controller) {
-        print(API().sp.read("role"));
         return controller.eventDetailsLoader.value == false
             ? SizedBox.shrink()
             : Padding(
@@ -179,7 +178,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               'profileImg':
                                                   "assets/eventOrganizer.png",
                                               "manager": sp.read("role"),
-                                              "propertyView": true
+                                              "propertyView": true,
+                                              "user": _controller
+                                                  .eventDetail?.data?.user
                                             });
                                       },
                                 child: Padding(
@@ -630,11 +631,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         height: 10,
                       ),
                       eventDateTime(
-                          text:
-                              "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
-                          theme: theme,
-                          context: context,
-                          iconClr: DynamicColor.yellowClr),
+                        text:
+                            "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
+                        theme: theme,
+                        context: context,
+                        iconClr: DynamicColor.yellowClr,
+                      ),
                       SizedBox(
                         height: 10,
                       ),

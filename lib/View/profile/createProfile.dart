@@ -32,7 +32,7 @@ class CreateProfile extends StatelessWidget {
       key: createProfileForm,
       child: SafeArea(
         top: false,
-        bottom: Platform.isIOS?true:false,
+        bottom: Platform.isIOS ? true : false,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: theme.scaffoldBackgroundColor,
@@ -158,7 +158,6 @@ class CreateProfile extends StatelessWidget {
                             ignoredValidation: true,
                           )
                         : SizedBox.shrink(),
-
                     SizedBox(
                       height: /*sp.read('role') !="User"?*/ 15 /*:0*/,
                     ),
@@ -175,9 +174,10 @@ class CreateProfile extends StatelessWidget {
                     TextField(
                       keyboardType: TextInputType.none,
                       style: poppinsRegularStyle(
-                          context: context,
-                          fontSize: 14,
-                          color: DynamicColor.grayClr),
+                        context: context,
+                        fontSize: 14,
+                        color: DynamicColor.grayClr,
+                      ),
                       readOnly: true,
                       controller: controller.dobController,
                       decoration: InputDecoration(
@@ -266,8 +266,11 @@ class CreateProfile extends StatelessWidget {
                                           context: context,
                                           color: DynamicColor.grayClr),
                                     ),
-                                    Icon(Icons.keyboard_arrow_down,
-                                        size: 25, color: DynamicColor.grayClr)
+                                    Icon(
+                                      Icons.keyboard_arrow_down,
+                                      size: 25,
+                                      color: DynamicColor.grayClr,
+                                    )
                                   ],
                                 ),
                               ),
@@ -277,7 +280,6 @@ class CreateProfile extends StatelessWidget {
                     SizedBox(
                       height: 15,
                     ),
-
                     InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
                         validateMobile(number.phoneNumber!);
@@ -325,13 +327,15 @@ class CreateProfile extends StatelessWidget {
                       initialValue: number,
                       hintText: "Phone Number(optional)",
                       hintStyle: poppinsRegularStyle(
-                          context: context,
-                          fontSize: 14,
-                          color: DynamicColor.grayClr),
+                        context: context,
+                        fontSize: 14,
+                        color: DynamicColor.grayClr,
+                      ), 
                       textStyle: poppinsRegularStyle(
-                          context: context,
-                          fontSize: 14,
-                          color: DynamicColor.grayClr),
+                        context: context,
+                        fontSize: 14,
+                        color: DynamicColor.grayClr,
+                      ),
                       spaceBetweenSelectorAndTextField: 0,
                       keyboardType: TextInputType.numberWithOptions(
                           signed: true, decimal: true),

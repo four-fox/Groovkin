@@ -5,6 +5,7 @@ import 'dart:core';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/Network/interceptors_service.dart';
@@ -20,6 +21,7 @@ class API {
   static final API _singleton = API._internal();
   var sp = GetStorage();
   late Dio dio;
+
   factory API() {
     return _singleton;
   }
@@ -73,11 +75,13 @@ class API {
   }) async {
     print(Url().baseUrl + url);
     print(sp.read('token'));
+
     try {
       if (auth == true) {
         dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
         // dio.options.headers['Accept'] = "application/json";
       }
+
       if (showProgress) {
         showLoading();
       }

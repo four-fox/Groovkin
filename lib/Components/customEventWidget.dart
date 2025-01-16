@@ -19,7 +19,7 @@ userCustomEvent(
     dayy,
     isDelete}) {
   return GestureDetector(
-    onTap: isDelete
+    onTap: (isDelete != null && isDelete == true)
         ? () {
             Utils.showToast();
           }
@@ -30,7 +30,8 @@ userCustomEvent(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isDelete) Utils.accountDelete(context),
+          if (isDelete != null && isDelete == true)
+            Utils.accountDelete(context),
           SizedBox(
             height: 10,
           ),

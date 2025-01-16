@@ -850,7 +850,6 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
 
   @override
   void initState() {
-    
     if (Get.isRegistered<HomeController>()) {
       _controller = Get.find<HomeController>();
     } else {

@@ -7,6 +7,7 @@ import 'package:groovkin/Components/customEventWidget.dart';
 import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart';
 import 'package:groovkin/View/bottomNavigation/myGroovkinScreen.dart';
 
 class EventOrganizerScreen extends StatelessWidget {
@@ -15,6 +16,7 @@ class EventOrganizerScreen extends StatelessWidget {
   int eventOrganizerVal = Get.arguments['eventOrganizerValue'];
   String profileImg = Get.arguments['profileImg'];
   String rolesType = Get.arguments['manager'];
+  User? user = Get.arguments?["user"];
   // bool propertyShow = Get.arguments['propertyView'];
 
   RxBool recommendedVal = false.obs;
@@ -153,7 +155,14 @@ class EventOrganizerScreen extends StatelessWidget {
                               radius: 20,
                               backgroundColor: theme.scaffoldBackgroundColor,
                               child: Image(
-                                image: AssetImage(profileImg),
+                                image: user != null
+                                    ? user?.profilePicture != null
+                                        ? NetworkImage(
+                                            user?.profilePicture?.mediaPath ??
+                                                "")
+                                        : AssetImage(profileImg)
+                                            as ImageProvider
+                                    : AssetImage(profileImg),
                               ),
                             ),
                           ),
@@ -163,15 +172,33 @@ class EventOrganizerScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Michael Logan",
+                                  (user != null && user!.name != null)
+                                      ? user!.name!
+                                      : "Michael Logan",
                                   style: poppinsRegularStyle(
                                     fontSize: 14,
                                     context: context,
                                     color: theme.primaryColor,
                                   ),
                                 ),
+                                // Text(
+                                //   rolesType,
+                                //   style: poppinsRegularStyle(
+                                //     fontSize: 13,
+                                //     context: context,
+                                //     color: theme.primaryColor,
+                                //   ),
+                                // ),
                                 Text(
-                                  rolesType,
+                                  (user != null && user!.role != null)
+                                      ? user!.role == "event_owner"
+                                          ? "Event Organizer"
+                                          : user!.role == "venue_manager"
+                                              ? "Event Manager"
+                                              : user!.role == "user"
+                                                  ? "User"
+                                                  : rolesType
+                                      : rolesType,
                                   style: poppinsRegularStyle(
                                     fontSize: 13,
                                     context: context,
@@ -561,7 +588,9 @@ class EventOrganizerScreen extends StatelessWidget {
                     /*PropertyEventView()*/
                     eventOrganizerVal == 2
                         ? PropertyEventView()
-                        : AboutEventView(),
+                        : AboutEventView(
+                            user: user,
+                          ),
                   ],
                 )),
       ),
@@ -656,7 +685,8 @@ class PropertyEventView extends StatelessWidget {
 }
 
 class AboutEventView extends StatelessWidget {
-  const AboutEventView({super.key});
+  final User? user;
+  const AboutEventView({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -694,7 +724,7 @@ class AboutEventView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Michael.logan',
+                      (user != null && user!.name != null) ? user!.name! : "",
                       style: poppinsRegularStyle(
                           fontSize: 14,
                           context: context,
@@ -724,7 +754,9 @@ class AboutEventView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'michael.logan@gmail.com',
+                      (user != null && user!.email != null)
+                          ? user!.email!
+                          : 'michael.logan@gmail.com',
                       style: poppinsRegularStyle(
                           fontSize: 14,
                           context: context,
@@ -754,7 +786,11 @@ class AboutEventView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '+1 (484) 4731 588',
+                      (user != null &&
+                              user!.profile != null &&
+                              user!.profile!.phoneNumber != null)
+                          ? user!.profile!.phoneNumber!
+                          : '+1 (484) 4731 588',
                       style: poppinsRegularStyle(
                           fontSize: 14,
                           context: context,

@@ -10,11 +10,10 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
-
 import '../../Components/Network/Url.dart';
 
 class VenueListScreen extends StatelessWidget {
-  VenueListScreen({Key? key}) : super(key: key);
+  VenueListScreen({super.key});
 
   ManagerController _controller = Get.find();
 
@@ -23,9 +22,10 @@ class VenueListScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:true,
+      bottom: Platform.isIOS ? true : true,
       child: Scaffold(
-        appBar: customAppBar(theme: theme, text: "My Groovkin", backArrow: false),
+        appBar:
+            customAppBar(theme: theme, text: "My Groovkin", backArrow: false),
         body: GetBuilder<ManagerController>(initState: (v) {
           _controller.getAllVenues();
         }, builder: (controller) {
@@ -50,8 +50,8 @@ class VenueListScreen extends StatelessWidget {
                             if (controller.allVenueData!.data!.nextPageUrl !=
                                 null) {
                               controller.getAllVenues(
-                                  nextUrl:
-                                      controller.allVenueData!.data!.nextPageUrl);
+                                  nextUrl: controller
+                                      .allVenueData!.data!.nextPageUrl);
                               return true;
                             } else {
                               print("next Url Null");
@@ -89,17 +89,21 @@ class VenueListScreen extends StatelessWidget {
                                 ),
                               ),
                               ListView.builder(
-                                  itemCount:
-                                      controller.allVenueData!.data!.data!.length,
+                                  itemCount: controller
+                                      .allVenueData!.data!.data!.length,
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (BuildContext context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(Routes.viewOtherEventsDetails,
+                                        Get.toNamed(
+                                            Routes.viewOtherEventsDetails,
                                             arguments: {
-                                              "venueId": controller.allVenueData!
-                                                  .data!.data![index].id,
+                                              "venueId": controller
+                                                  .allVenueData!
+                                                  .data!
+                                                  .data![index]
+                                                  .id,
                                               "buttonShow": false,
                                               "editBtn": true,
                                             });
@@ -132,13 +136,13 @@ class VenueListScreen extends StatelessWidget {
                                                         image: controller
                                                                     .allVenueData!
                                                                     .data!
-                                                                    .data![index]
+                                                                    .data![
+                                                                        index]
                                                                     .profilePicture![
                                                                         0]
                                                                     .thumbnail ==
                                                                 null
-                                                            ? NetworkImage(Url()
-                                                                    .imageUrl +
+                                                            ? NetworkImage(Url().imageUrl +
                                                                 controller
                                                                     .allVenueData!
                                                                     .data!
@@ -162,19 +166,22 @@ class VenueListScreen extends StatelessWidget {
                                                           .data![index]
                                                           .venueName
                                                           .toString(),
-                                                      style: poppinsRegularStyle(
-                                                          fontSize: 15,
-                                                          color:
-                                                              theme.primaryColor,
-                                                          context: context),
+                                                      style:
+                                                          poppinsRegularStyle(
+                                                              fontSize: 15,
+                                                              color: theme
+                                                                  .primaryColor,
+                                                              context: context),
                                                     ),
                                                     Text(
                                                       "Tap to view detail about property",
-                                                      style: poppinsRegularStyle(
-                                                          fontSize: 12,
-                                                          color: DynamicColor
-                                                              .grayClr,
-                                                          context: context),
+                                                      style:
+                                                          poppinsRegularStyle(
+                                                              fontSize: 12,
+                                                              color:
+                                                                  DynamicColor
+                                                                      .grayClr,
+                                                              context: context),
                                                     ),
                                                   ],
                                                 ),
@@ -195,16 +202,16 @@ class VenueListScreen extends StatelessWidget {
           () => _controller.getAllVenuesLoader.value == false
               ? SizedBox.shrink()
               : Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 2, left: 12, right: 12),
+                  padding: EdgeInsets.only(bottom: 2, left: 12, right: 12),
                   child: CustomButton(
                     backgroundClr: false,
                     onTap: () {
                       _controller.clearFields();
-                      Get.toNamed(Routes.createCompanyProfileScreen, arguments: {
-                        "updationCondition": false,
-                        "skipBtnHide": true
-                      });
+                      Get.toNamed(Routes.createCompanyProfileScreen,
+                          arguments: {
+                            "updationCondition": false,
+                            "skipBtnHide": true
+                          });
                     },
                     text: "Add new venue",
                     borderClr: Colors.transparent,

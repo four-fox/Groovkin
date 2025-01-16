@@ -679,6 +679,7 @@ class AuthController extends GetxController {
       }
     }
     data.fields.add(MapEntry('is_insurance', insuranceVal.value.toString()));
+
     int? iiid = -1;
     for (var a = 0; a <= serviceListPosted.length; a++) {
       if (a != serviceListPosted.length) {
@@ -699,15 +700,16 @@ class AuthController extends GetxController {
       bottomToast(text: response.data['message']);
       API().sp.write("isEventCreated", 1);
       selectIndexxx.value = 0;
-      Get.offAllNamed(Routes.bottomNavigationView,
-          arguments: {"indexValue": 0});
+      Get.offAllNamed(
+        Routes.bottomNavigationView,
+        arguments: {"indexValue": 0},
+      );
     }
   }
 
-  /// todo organizer flow have services
+  // todo organizer flow have services
 
-  /// todo Change Role
-  ///
+  // todo Change Role
   ChangeRole? changeRole;
   RxBool switchProfileLoader = false.obs;
 
@@ -820,13 +822,19 @@ class AuthController extends GetxController {
   sendEmail(BuildContext context) async {
     sendingEmailLoader.value = false;
     update();
+
+    if (sendingEmailLoader.value == false) {
+      showLoading();
+    }
+
     List eventInvitation = [];
     for (var action in invitationList) {
       eventInvitation.add(action.emailController.text);
     }
-    String username = 'william@gologonow.com'; //Your Email
+    String username = 'william@gologonow.com'; // Your Email
     String password =
         'ppqcxmrssiezdyrh'; // 16 Digits App Password Generated From Google Account
+
     final smtpServer = gmail(username, password);
     // Create our message.
     final message = Message()
@@ -835,7 +843,7 @@ class AuthController extends GetxController {
         'Groovkin',
       )
       ..recipients = eventInvitation
-      ..subject = 'Event Invitation'
+      ..subject = 'Event Invitation  | Groovkin'
       ..text = 'Event Invitation users';
 
     try {
@@ -858,11 +866,8 @@ class AuthController extends GetxController {
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
       }
-
     }
-
   }
-  
 
   /// following and unfollow
   RxBool getAllUnfollowingLoader = true.obs;

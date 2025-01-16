@@ -183,7 +183,7 @@ class AboutEventScreen extends StatelessWidget {
                     ? SizedBox.shrink()
                     : Obx(
                         () => aboutEventCreator(
-                          isDelete: null,
+                            isDelete: null,
                             theme: theme,
                             context: context,
                             followBg: organizerFollowVal.value == true

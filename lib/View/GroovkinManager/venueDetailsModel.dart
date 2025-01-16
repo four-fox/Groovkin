@@ -1,6 +1,3 @@
-
-
-
 // To parse this JSON data, do
 //
 //     final venueDetailsModel = venueDetailsModelFromJson(jsonString);
@@ -12,9 +9,11 @@ import 'package:get/get.dart';
 import '../../Components/Network/API.dart';
 import '../../Components/Network/Url.dart';
 
-VenueDetailsModel venueDetailsModelFromJson(String str) => VenueDetailsModel.fromJson(json.decode(str));
+VenueDetailsModel venueDetailsModelFromJson(String str) =>
+    VenueDetailsModel.fromJson(json.decode(str));
 
-String venueDetailsModelToJson(VenueDetailsModel data) => json.encode(data.toJson());
+String venueDetailsModelToJson(VenueDetailsModel data) =>
+    json.encode(data.toJson());
 
 class VenueDetailsModel {
   bool? status;
@@ -27,17 +26,20 @@ class VenueDetailsModel {
     this.message,
   });
 
-  factory VenueDetailsModel.fromJson(Map<String, dynamic> json) => VenueDetailsModel(
-    status: json["status"],
-    data: json["data"] == null ? null : VenueDetailsData.fromJson(json["data"]),
-    message: json["message"],
-  );
+  factory VenueDetailsModel.fromJson(Map<String, dynamic> json) =>
+      VenueDetailsModel(
+        status: json["status"],
+        data: json["data"] == null
+            ? null
+            : VenueDetailsData.fromJson(json["data"]),
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "data": data?.toJson(),
-    "message": message,
-  };
+        "status": status,
+        "data": data?.toJson(),
+        "message": message,
+      };
 }
 
 class VenueDetailsData {
@@ -75,7 +77,6 @@ class VenueDetailsData {
     this.createdAt,
     this.updatedAt,
     this.city,
-
     this.user,
     this.venueProperty,
     this.profilePicture,
@@ -84,49 +85,73 @@ class VenueDetailsData {
     this.houseEventCapabilities,
   });
 
-  factory VenueDetailsData.fromJson(Map<String, dynamic> json) => VenueDetailsData(
-    id: json["id"],
-    location: json["location"],
-    venueName: json["venue_name"],
-    streetAddress: json["street_address"],
-    state: json["state"],
-    city: json["city"],
-    zipCode: json["zip_code"],
-    phoneNumber: json["phone_number"],
-    latitude: json["latitude"],
-    longitude: json["longitude"],
-    userId: json["user_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-    venueProperty: json["venue_property"] == null ? null : VenueProperty.fromJson(json["venue_property"]),
-    profilePicture: json["profile_picture"] == null ? [] : List<ProfilePicture>.from(json["profile_picture"]!.map((x) => ProfilePicture.fromJson(x))),
-    amenities: json["amenities"] == null ? [] : List<Amenity>.from(json["amenities"]!.map((x) => Amenity.fromJson(x))),
-    licensesAndPermit: json["licenses_and_permit"] == null ? [] : List<Amenity>.from(json["licenses_and_permit"]!.map((x) => Amenity.fromJson(x))),
-    houseEventCapabilities: json["house_event_capabilities"] == null ? [] : List<Amenity>.from(json["house_event_capabilities"]!.map((x) => Amenity.fromJson(x))),
-  );
+  factory VenueDetailsData.fromJson(Map<String, dynamic> json) =>
+      VenueDetailsData(
+        id: json["id"],
+        location: json["location"],
+        venueName: json["venue_name"],
+        streetAddress: json["street_address"],
+        state: json["state"],
+        city: json["city"],
+        zipCode: json["zip_code"],
+        phoneNumber: json["phone_number"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        userId: json["user_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        venueProperty: json["venue_property"] == null
+            ? null
+            : VenueProperty.fromJson(json["venue_property"]),
+        profilePicture: json["profile_picture"] == null
+            ? []
+            : List<ProfilePicture>.from(json["profile_picture"]!
+                .map((x) => ProfilePicture.fromJson(x))),
+        amenities: json["amenities"] == null
+            ? []
+            : List<Amenity>.from(
+                json["amenities"]!.map((x) => Amenity.fromJson(x))),
+        licensesAndPermit: json["licenses_and_permit"] == null
+            ? []
+            : List<Amenity>.from(
+                json["licenses_and_permit"]!.map((x) => Amenity.fromJson(x))),
+        houseEventCapabilities: json["house_event_capabilities"] == null
+            ? []
+            : List<Amenity>.from(json["house_event_capabilities"]!
+                .map((x) => Amenity.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "location": location,
-    "venue_name": venueName,
-    "street_address": streetAddress,
-    "state": state,
-    "city": city,
-    "user": user?.toJson(),
-    "zip_code": zipCode,
-    "phone_number": phoneNumber,
-    "latitude": latitude,
-    "longitude": longitude,
-    "user_id": userId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "venue_property": venueProperty?.toJson(),
-    "profile_picture": profilePicture == null ? [] : List<dynamic>.from(profilePicture!.map((x) => x.toJson())),
-    "amenities": amenities == null ? [] : List<dynamic>.from(amenities!.map((x) => x.toJson())),
-    "licenses_and_permit": licensesAndPermit == null ? [] : List<dynamic>.from(licensesAndPermit!.map((x) => x.toJson())),
-    "house_event_capabilities": houseEventCapabilities == null ? [] : List<dynamic>.from(houseEventCapabilities!.map((x) => x.toJson())),
-  };
+        "id": id,
+        "location": location,
+        "venue_name": venueName,
+        "street_address": streetAddress,
+        "state": state,
+        "city": city,
+        "user": user?.toJson(),
+        "zip_code": zipCode,
+        "phone_number": phoneNumber,
+        "latitude": latitude,
+        "longitude": longitude,
+        "user_id": userId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "venue_property": venueProperty?.toJson(),
+        "profile_picture": profilePicture == null
+            ? []
+            : List<dynamic>.from(profilePicture!.map((x) => x.toJson())),
+        "amenities": amenities == null
+            ? []
+            : List<dynamic>.from(amenities!.map((x) => x.toJson())),
+        "licenses_and_permit": licensesAndPermit == null
+            ? []
+            : List<dynamic>.from(licensesAndPermit!.map((x) => x.toJson())),
+        "house_event_capabilities": houseEventCapabilities == null
+            ? []
+            : List<dynamic>.from(
+                houseEventCapabilities!.map((x) => x.toJson())),
+      };
 }
 
 class User {
@@ -165,37 +190,43 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    isFollow: json["isFollow"] == null?false.obs:true.obs,
-    deviceToken: json["device_token"],
-    emailVerifiedAt: json["email_verified_at"],
-    otp: json["otp"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    profile: json["profile"] == null ? null : Profile.fromJson(json["profile"]),
-    profilePicture:json["profile_picture"] == null?null: ProfilePicture.fromJson(json["profile_picture"]),
-    role: json["role"]==null?null: json["role"]["name"],
-    follower: json["follower"] == null ? null : Following.fromJson(json["follower"]),
-    following: json["following"] == null ? null : Following.fromJson(json["following"]),
-    isDelete: json["deleted_at"],
-  );
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        isFollow: json["isFollow"] == null ? false.obs : true.obs,
+        deviceToken: json["device_token"],
+        emailVerifiedAt: json["email_verified_at"],
+        otp: json["otp"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        profile:
+            json["profile"] == null ? null : Profile.fromJson(json["profile"]),
+        profilePicture: json["profile_picture"] == null
+            ? null
+            : ProfilePicture.fromJson(json["profile_picture"]),
+        role: json["role"] == null ? null : json["role"]["name"],
+        follower: json["follower"] == null
+            ? null
+            : Following.fromJson(json["follower"]),
+        following: json["following"] == null
+            ? null
+            : Following.fromJson(json["following"]),
+        isDelete: json["deleted_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "device_token": deviceToken,
-    "email_verified_at": emailVerifiedAt,
-    "otp": otp,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "profile": profile?.toJson(),
-    "profile_picture": profilePicture,
-    "role": role,
-    
-  };
+        "id": id,
+        "name": name,
+        "email": email,
+        "device_token": deviceToken,
+        "email_verified_at": emailVerifiedAt,
+        "otp": otp,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "profile": profile?.toJson(),
+        "profile_picture": profilePicture,
+        "role": role,
+      };
 }
 
 class Following {
@@ -218,24 +249,24 @@ class Following {
   });
 
   factory Following.fromJson(Map<String, dynamic> json) => Following(
-    id: json["id"],
-    userId: json["user_id"],
-    followerId: json["follower_id"],
-    type: json["type"],
-    status: json["status"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        userId: json["user_id"],
+        followerId: json["follower_id"],
+        type: json["type"],
+        status: json["status"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": userId,
-    "follower_id": followerId,
-    "type": type,
-    "status": status,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "user_id": userId,
+        "follower_id": followerId,
+        "type": type,
+        "status": status,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }
 
 class Profile {
@@ -274,40 +305,40 @@ class Profile {
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-    id: json["id"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    about: json["about"],
-    birthYear: json["birth_year"],
-    phoneNumber: json["phone_number"],
-    companyName: json["company_name"],
-    selectState: json["select_state"],
-    location: json["location"],
-    latitude: json["latitude"],
-    longitude: json["longitude"],
-    isInsurance: json["is_insurance"],
-    userId: json["user_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        about: json["about"],
+        birthYear: json["birth_year"],
+        phoneNumber: json["phone_number"],
+        companyName: json["company_name"],
+        selectState: json["select_state"],
+        location: json["location"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        isInsurance: json["is_insurance"],
+        userId: json["user_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "first_name": firstName,
-    "last_name": lastName,
-    "about": about,
-    "birth_year": birthYear,
-    "phone_number": phoneNumber,
-    "company_name": companyName,
-    "select_state": selectState,
-    "location": location,
-    "latitude": latitude,
-    "longitude": longitude,
-    "is_insurance": isInsurance,
-    "user_id": userId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "first_name": firstName,
+        "last_name": lastName,
+        "about": about,
+        "birth_year": birthYear,
+        "phone_number": phoneNumber,
+        "company_name": companyName,
+        "select_state": selectState,
+        "location": location,
+        "latitude": latitude,
+        "longitude": longitude,
+        "is_insurance": isInsurance,
+        "user_id": userId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }
 
 class Amenity {
@@ -332,26 +363,28 @@ class Amenity {
   });
 
   factory Amenity.fromJson(Map<String, dynamic> json) => Amenity(
-    id: json["id"],
-    userId: json["user_id"],
-    venueId: json["venue_id"],
-    venueItemId: json["venue_item_id"],
-    type: json["type"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    venueItem: json["venue_item"] == null ? null : VenueItem.fromJson(json["venue_item"]),
-  );
+        id: json["id"],
+        userId: json["user_id"],
+        venueId: json["venue_id"],
+        venueItemId: json["venue_item_id"],
+        type: json["type"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        venueItem: json["venue_item"] == null
+            ? null
+            : VenueItem.fromJson(json["venue_item"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "user_id": userId,
-    "venue_id": venueId,
-    "venue_item_id": venueItemId,
-    "type": type,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "venue_item": venueItem?.toJson(),
-  };
+        "id": id,
+        "user_id": userId,
+        "venue_id": venueId,
+        "venue_item_id": venueItemId,
+        "type": type,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "venue_item": venueItem?.toJson(),
+      };
 }
 
 class VenueItem {
@@ -370,20 +403,20 @@ class VenueItem {
   });
 
   factory VenueItem.fromJson(Map<String, dynamic> json) => VenueItem(
-    id: json["id"],
-    name: json["name"],
-    type: json["type"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        name: json["name"],
+        type: json["type"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "type": type,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "name": name,
+        "type": type,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }
 
 class Ity {
@@ -404,22 +437,22 @@ class Ity {
   });
 
   factory Ity.fromJson(Map<String, dynamic> json) => Ity(
-    id: json["id"],
-    name: json["name"],
-    type: json["type"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    pivot: json["pivot"] == null ? null : Pivot.fromJson(json["pivot"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        type: json["type"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        pivot: json["pivot"] == null ? null : Pivot.fromJson(json["pivot"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "type": type,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "pivot": pivot?.toJson(),
-  };
+        "id": id,
+        "name": name,
+        "type": type,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "pivot": pivot?.toJson(),
+      };
 }
 
 class Pivot {
@@ -432,14 +465,14 @@ class Pivot {
   });
 
   factory Pivot.fromJson(Map<String, dynamic> json) => Pivot(
-    venueId: json["venue_id"],
-    venueItemId: json["venue_item_id"],
-  );
+        venueId: json["venue_id"],
+        venueItemId: json["venue_item_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "venue_id": venueId,
-    "venue_item_id": venueItemId,
-  };
+        "venue_id": venueId,
+        "venue_item_id": venueItemId,
+      };
 }
 
 class ProfilePicture {
@@ -466,28 +499,30 @@ class ProfilePicture {
   });
 
   factory ProfilePicture.fromJson(Map<String, dynamic> json) => ProfilePicture(
-    id: json["id"],
-    mediaFor: json["media_for"],
-    thumbnail: json["thumbnail"],
-    mediaPath: json["media_path"] != null?Url().imageUrl+json["media_path"]:dummyProfile,
-    mediaType: json["media_type"],
-    galleryableType: json["galleryable_type"],
-    galleryableId: json["galleryable_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        mediaFor: json["media_for"],
+        thumbnail: json["thumbnail"],
+        mediaPath: json["media_path"] != null
+            ? Url().imageUrl + json["media_path"]
+            : dummyProfile,
+        mediaType: json["media_type"],
+        galleryableType: json["galleryable_type"],
+        galleryableId: json["galleryable_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "media_for": mediaFor,
-    "thumbnail": thumbnail,
-    "media_path": mediaPath,
-    "media_type": mediaType,
-    "galleryable_type": galleryableType,
-    "galleryable_id": galleryableId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "media_for": mediaFor,
+        "thumbnail": thumbnail,
+        "media_path": mediaPath,
+        "media_type": mediaType,
+        "galleryable_type": galleryableType,
+        "galleryable_id": galleryableId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }
 
 class VenueProperty {
@@ -516,28 +551,28 @@ class VenueProperty {
   });
 
   factory VenueProperty.fromJson(Map<String, dynamic> json) => VenueProperty(
-    id: json["id"],
-    maxOccupancy: json["max_occupancy"],
-    maxSeating: json["max_seating"],
-    maxHour: json["max_hour"],
-    openingHours: json["opening_hours"],
-    closingHours: json["closing_hours"],
-    venueId: json["venue_id"],
-    userId: json["user_id"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        maxOccupancy: json["max_occupancy"],
+        maxSeating: json["max_seating"],
+        maxHour: json["max_hour"],
+        openingHours: json["opening_hours"],
+        closingHours: json["closing_hours"],
+        venueId: json["venue_id"],
+        userId: json["user_id"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "max_occupancy": maxOccupancy,
-    "max_seating": maxSeating,
-    "max_hour": maxHour,
-    "opening_hours": openingHours,
-    "closing_hours": closingHours,
-    "venue_id": venueId,
-    "user_id": userId,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "max_occupancy": maxOccupancy,
+        "max_seating": maxSeating,
+        "max_hour": maxHour,
+        "opening_hours": openingHours,
+        "closing_hours": closingHours,
+        "venue_id": venueId,
+        "user_id": userId,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }
