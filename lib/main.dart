@@ -43,6 +43,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     //Todo Firebase Notification Start
 
     notificationService.requestNotificationPermission();

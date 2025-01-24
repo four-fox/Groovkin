@@ -23,6 +23,7 @@ class SocketClass {
     _mainSocket!.onConnect((_) {
       print('socket is connect');
     });
+    
   }
 
   joinRoom() {

@@ -344,8 +344,9 @@ class TouchCallbacks {
   }
 }
 
-///Every touch point must have the touch id, here touch id will be every offset on the screen
-///until finger has not left i.e., until drag doesn't end.
+/// Every touch point must have the touch id, here touch id will be every offset on the screen
+/// until finger has not left i.e., until drag doesn't end.
+
 class TouchData {
   final int touchId;
   final Offset offset;
@@ -379,3 +380,7 @@ class ItemDrag extends Drag {
     onCancel(touchId);
   }
 }
+
+
+
+

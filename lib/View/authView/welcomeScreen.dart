@@ -19,14 +19,13 @@ class WelComeScreen extends StatefulWidget {
 }
 
 class _WelComeScreenState extends State<WelComeScreen> {
- 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     // print(intialRole);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS?true:false,
+      bottom: Platform.isIOS ? true : false,
       child: Scaffold(
         // appBar: AppBar(
         //   backgroundColor: theme.scaffoldBackgroundColor,

@@ -678,6 +678,22 @@ class AuthController extends GetxController {
             .add(MapEntry('service_id[$i]', serviceList[i].id.toString()));
       }
     }
+
+    // int? indexVals = -1;
+    // for (var i = 0; i <= eventItemsList.length; i++) {
+    //   if (i != eventItemsList.length) {
+    //     indexVals = indexVals! + 1;
+    //     if (eventItemsList[i].selectedItem!.value == true) {
+    //       data.fields.add(MapEntry('events[$indexVals][item_ids]',
+    //           eventItemsList[i].categoryId.toString()));
+    //     }
+    //   }
+    // }
+
+    // for (var i = 0; i < itemsList.length; i++) {
+
+    // }
+
     data.fields.add(MapEntry('is_insurance', insuranceVal.value.toString()));
 
     int? iiid = -1;

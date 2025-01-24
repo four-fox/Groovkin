@@ -11,6 +11,8 @@ import 'package:groovkin/model/transaction_history_model.dart'
     as transaction_history_model;
 import 'package:groovkin/utils/utils.dart';
 
+import '../../model/my_groovkin_model.dart';
+
 class HomeController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> home functionality
   RxBool showFilter = false.obs;
@@ -231,6 +233,16 @@ class HomeController extends GetxController {
       } else {}
     }
     isGetTransactionHistory.value = true;
+    update();
+  }
+
+  MyGroovkinModel? myGroovkinModel;
+
+  Future<void> getMyGroovkinData() async {
+    final response = await API().getApi(url: "my-groovkin");
+    if (response.statusCode == 200) {
+      myGroovkinModel = MyGroovkinModel.fromJson(response.data);
+    }
     update();
   }
 

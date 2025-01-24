@@ -36,9 +36,10 @@ class VenueListScreen extends StatelessWidget {
                       child: Text(
                         "No Venue",
                         style: poppinsMediumStyle(
-                            fontSize: 16,
-                            color: theme.primaryColor,
-                            context: context),
+                          fontSize: 16,
+                          color: theme.primaryColor,
+                          context: context,
+                        ),
                       ),
                     )
                   : NotificationListener<ScrollNotification>(
@@ -118,9 +119,11 @@ class VenueListScreen extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(12),
                                               image: DecorationImage(
-                                                  image: AssetImage(
-                                                      "assets/grayClor.png"),
-                                                  fit: BoxFit.fill)),
+                                                image: AssetImage(
+                                                  "assets/grayClor.png",
+                                                ),
+                                                fit: BoxFit.fill,
+                                              )),
                                           child: Row(
                                             children: [
                                               Container(

@@ -5,7 +5,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class SwitchProfileScreen extends StatelessWidget {
-  const SwitchProfileScreen({Key? key}) : super(key: key);
+  const SwitchProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +57,10 @@ class SwitchProfileScreen extends StatelessWidget {
                 height: 40,
               ),
               SizedBox(
-                  width: Get.width / 1.3,
-                  height: Get.height / 2.9,
-                  child: Image(image: AssetImage("assets/switchImg.png"))),
+                width: Get.width / 1.3,
+                height: Get.height / 2.9,
+                child: Image(image: AssetImage("assets/switchImg.png")),
+              ),
               SizedBox(
                 height: 40,
               ),

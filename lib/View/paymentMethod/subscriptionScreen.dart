@@ -9,7 +9,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SubscriptionScreen extends StatelessWidget {
-  const SubscriptionScreen({Key? key}) : super(key: key);
+  const SubscriptionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
