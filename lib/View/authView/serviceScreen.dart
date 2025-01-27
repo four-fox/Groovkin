@@ -9,8 +9,12 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+
+import '../../model/my_groovkin_model.dart';
+import '../bottomNavigation/homeController.dart';
 
 class ServiceScreen extends StatefulWidget {
   ServiceScreen({super.key});
@@ -22,59 +26,60 @@ class ServiceScreen extends StatefulWidget {
 class _ServiceScreenState extends State<ServiceScreen> {
   AuthController _controller = Get.find();
 
+  bool? isComingFromMyGroovkin =
+      Get.arguments?["isComingFromMyGroovkin"] ?? false;
+
   int moreServiceAdd = Get.arguments['addMoreService'] ?? 1;
 
   late EventController _eventController;
 
+  late HomeController _homeController;
+
   @override
   void initState() {
     super.initState();
-
     if (Get.isRegistered<EventController>()) {
       _eventController = Get.find<EventController>();
     } else {
       _eventController = Get.put(EventController());
     }
+    if (Get.isRegistered<HomeController>()) {
+      _homeController = Get.find<HomeController>();
+    } else {
+      _homeController = Get.put(HomeController());
+    }
+    _controller.myGroovkinServiceListing = Get.arguments?["isService"] ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    print(moreServiceAdd);
+
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: "Service", actions: [
-        ((_eventController.eventDetail == null) &&
-                (_eventController.draftCondition.value == true))
-            ? GestureDetector(
-                onTap: () {
-                  _eventController.postEventFunction(context, theme,
-                      draft: true);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.drafts),
-                ),
-              )
-            : SizedBox.shrink()
-      ] /*imagee:moreServiceAdd==2?false:true*/),
-      // appBar: AppBar(
-      //   backgroundColor: theme.scaffoldBackgroundColor,
-      //   centerTitle: true,
-      //   title: Text("Service",
-      //   style: poppinsMediumStyle(
-      //     fontSize: 17,
-      //     context: context,
-      //     color: theme.primaryColor,
-      //   ),
-      //   ),
-      // ),
+      appBar: customAppBar(
+        theme: theme,
+        text: "Service",
+        actions: [
+          ((_eventController.eventDetail == null) &&
+                  (_eventController.draftCondition.value == true))
+              ? GestureDetector(
+                  onTap: () {
+                    _eventController.postEventFunction(context, theme,
+                        draft: true);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.drafts),
+                  ),
+                )
+              : SizedBox.shrink()
+        ],
+      ),
       body: GetBuilder<AuthController>(initState: (v) {
-        _controller.getAllService(type: "services");
-        // if(_eventController.eventDetail == null){
-        //   _controller.getAllService(type: "services");
-        // }else{
-        //   _eventController.checkServices();
-        // }
+        _controller.getAllService(
+            type: "services",
+            mygrookinHit:
+                _controller.myGroovkinServiceListing.isNotEmpty ? true : false);
       }, builder: (controller) {
         return controller.getAllServiceLoader.value == false
             ? SizedBox.shrink()
@@ -114,9 +119,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                   padding: EdgeInsets.symmetric(vertical: 8.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      controller.serviceAddFtn(
-                                          items:
-                                              controller.serviceListing[index]);
+                                      if (_controller
+                                          .myGroovkinServiceListing.isEmpty) {
+                                        controller.serviceAddFtn(
+                                            items: controller
+                                                .serviceListing[index]);
+                                      } else {
+                                        controller.myGroovkingServiceToggleFuc(
+                                            controller.serviceListing[index]);
+                                      }
+
                                       // controller.surveyData!.data![index].showItems!.value = !controller.surveyData!.data![index].showItems!.value;
                                       // controller.update();
                                     },
@@ -124,25 +136,21 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       padding: EdgeInsets.symmetric(
                                           vertical: 6, horizontal: 10),
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: controller
-                                                      .serviceListing[index]
-                                                      .showItems!
-                                                      .value ==
-                                                  false
-                                              ? DecorationImage(
-                                                  image: AssetImage(
-                                                      "assets/buttonBg.png"),
-                                                  fit: BoxFit.fill)
-                                              : null,
-                                          color: controller
-                                                      .serviceListing[index]
-                                                      .showItems!
-                                                      .value ==
-                                                  false
-                                              ? Colors.transparent
-                                              : DynamicColor.lightBlackClr),
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: controller.serviceListing[index]
+                                                    .showItems!.value ==
+                                                true
+                                            ? null
+                                            : DecorationImage(
+                                                image: AssetImage(
+                                                    "assets/buttonBg.png"),
+                                                fit: BoxFit.fill),
+                                        color: controller.serviceListing[index]
+                                                    .showItems!.value ==
+                                                true
+                                            ? DynamicColor.lightBlackClr
+                                            : Colors.transparent,
+                                      ),
                                       child: Row(
                                         children: [
                                           CircleAvatar(
@@ -260,7 +268,18 @@ class _ServiceScreenState extends State<ServiceScreen> {
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
-              if (moreServiceAdd == 2) {
+              if (isComingFromMyGroovkin == true) {
+                if (_controller.serviceLista.isNotEmpty) {
+                  _controller.updateGroovkinService().then((_) {
+                    _homeController.getMyGroovkinData().then((_){
+                      bottomToast(text: "Services Updated Successfully");
+                      Get.back();
+                    });
+                  });
+                } else {
+                  bottomToast(text: "Please Select Services");
+                }
+              } else if (moreServiceAdd == 2) {
                 Get.toNamed(Routes.quickSurveyScreen,
                     arguments: {"addMoreService": moreServiceAdd});
               } else if (moreServiceAdd == 3) {
@@ -284,7 +303,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 }
               }
             },
-            text: "Next",
+            text: isComingFromMyGroovkin == true ? "Update" : "Next",
           ),
         ),
       ),

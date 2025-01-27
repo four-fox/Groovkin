@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
@@ -538,10 +539,12 @@ class AuthController extends GetxController {
 
   RxBool getAllServiceLoader = true.obs;
   List<SurveyObject> serviceListing = [];
+  List myGroovkinServiceListing = [];
+  List<SurveyObject> myGroovkingHardwareListing = [];
   List<SurveyObject> hardwareListing = [];
   List<SurveyObject> lifeStyleListing = [];
 
-  getAllService({type}) async {
+  getAllService({type, bool mygrookinHit = false}) async {
     getAllServiceLoader(false);
     var response =
         await API().getApi(url: "show-event-with-sub-items?type=$type");
@@ -552,6 +555,9 @@ class AuthController extends GetxController {
         serviceList.clear();
         for (var element in surveyData!.data!) {
           serviceListing.add(element);
+        }
+        if (mygrookinHit == true) {
+          myGroovkinListFtn(myGroovkinServiceListing);
         }
         final EventController eventController = Get.find();
         if (eventController.eventDetail != null) {
@@ -568,12 +574,17 @@ class AuthController extends GetxController {
           }
           // _eventController.checkServices();
         }
-      } else if (type == "hardware_provided") {
+      }
+      else if (type == "hardware_provided") {
         hardwareListing.clear();
         eventItemsList.clear();
         for (var element in surveyData!.data!) {
           hardwareListing.add(element);
         }
+        if (mygrookinHit == true) {
+          myGroovkinHardwareListFtn(myGroovkingHardwareListing);
+        }
+
         final EventController eventController = Get.find();
         if (eventController.eventDetail != null) {
           List<String> temp = [];
@@ -622,9 +633,116 @@ class AuthController extends GetxController {
           }
         }
       }
-      getAllServiceLoader(true);
-      update();
+
+      if (mygrookinHit != true) {
+        getAllServiceLoader(true);
+        update();
+      }
     }
+  }
+
+  // Todo MyGroovking List Hardware Data
+  List serviceHardwareHeadList = [];
+  List serviceHardwareItemsList = [];
+
+  void myGroovkinHardwareListFtn(List data) {
+    // Clear previous lists
+    serviceHardwareHeadList.clear();
+    serviceHardwareItemsList.clear();
+
+    // Populate `serviceHardwareHeadList` and `serviceHardwareItemsList`
+    for (var action in data) {
+      var itemId = action.eventItem.id;
+
+      if (action.eventItem.categoryItems != null &&
+          action.eventItem.categoryItems.isNotEmpty) {
+        for (var categoryItem in action.eventItem.categoryItems) {
+          if (!serviceHardwareItemsList.contains(categoryItem.id)) {
+            serviceHardwareItemsList.add(categoryItem.id);
+          }
+        }
+      }
+
+      if (!serviceHardwareHeadList.contains(itemId)) {
+        serviceHardwareHeadList.add(itemId);
+      }
+    }
+
+    // Update `hardwareListing` and `showItems` values based on `categoryItems` match
+    for (var hardware in hardwareListing) {
+      // Check if any categoryItems in the hardware match the `serviceHardwareHeadList`
+      bool isInCategoryItems = serviceHardwareHeadList.any((id) {
+        return hardware.categoryItems != null &&
+            hardware.categoryItems!.any((data) => data.id == id);
+      });
+
+      // Update the `showItems` observable value
+      hardware.showItems?.value = isInCategoryItems;
+
+      // Optionally update the `selectedItem` state in category items
+      if (hardware.categoryItems != null) {
+        for (var categoryItem in hardware.categoryItems!) {
+          categoryItem.selectedItem?.value =
+              serviceHardwareItemsList.contains(categoryItem.id);
+        }
+      }
+    }
+
+    // Ensure the UI reflects these changes
+    getAllServiceLoader(true);
+    update();
+  }
+
+
+
+
+  // Todo MyGroovKin List Service Data
+  List serviceLista = [];
+  myGroovkinListFtn(List data) {
+    serviceLista.clear();
+
+    for (var action in data) {
+      serviceLista.add(action.eventItemId);
+    }
+
+    for (var action in serviceListing) {
+      serviceLista.contains(action.id)
+          ? action.showItems!.value = true
+          : action.showItems!.value = false;
+    }
+    getAllServiceLoader(true);
+    update();
+  }
+
+  updateGroovkinService() async {
+    form.FormData formData = form.FormData();
+
+    for (var data in serviceLista) {
+      formData.fields.add(MapEntry('service_id[]', data.toString()));
+    }
+    print(formData);
+
+    var response = await API().postApi(formData, "edit-services");
+    if (response.statusCode == 200) {}
+  }
+
+  Future<void> updateInsurance() async {
+    form.FormData formData = form.FormData();
+
+    formData.fields
+        .add(MapEntry("is_insurance", insuranceVal.value.toString()));
+    var response = await API().postApi(formData, "edit-insurance");
+    if (response.statusCode == 200) {}
+  }
+
+  myGroovkingServiceToggleFuc(items) {
+    items!.showItems!.value = !items.showItems!.value;
+    if (items.showItems!.value == true) {
+      serviceLista.add(items.id);
+    } else {
+      serviceLista.remove(items.id);
+    }
+    update();
   }
 
   List<SurveyObject> serviceList = [];
@@ -669,8 +787,9 @@ class AuthController extends GetxController {
   createEvent() async {
     form.FormData data = form.FormData();
     List<CategoryItem> serviceListPosted = [];
+    List<CategoryItem> serviceListPostedd = [];
     serviceListPosted.addAll(eventItemsList);
-    serviceListPosted.addAll(itemsList);
+    serviceListPostedd.addAll(itemsList);
     int? indexVal = -1;
     for (var i = 0; i <= serviceList.length; i++) {
       if (i != serviceList.length) {
@@ -680,18 +799,27 @@ class AuthController extends GetxController {
     }
 
     // int? indexVals = -1;
+    // print(eventItemsList.length);
     // for (var i = 0; i <= eventItemsList.length; i++) {
     //   if (i != eventItemsList.length) {
     //     indexVals = indexVals! + 1;
     //     if (eventItemsList[i].selectedItem!.value == true) {
-    //       data.fields.add(MapEntry('events[$indexVals][item_ids]',
-    //           eventItemsList[i].categoryId.toString()));
+    //       data.fields.add(MapEntry(
+    //           'events[$indexVals][item_ids]', eventItemsList[i].id.toString()));
     //     }
     //   }
     // }
-
+    //
+    // int? itemIndex = -1;
     // for (var i = 0; i < itemsList.length; i++) {
-
+    //   if (i != itemsList.length) {
+    //     itemIndex = itemIndex! + 1;
+    //     if (itemsList[i].selectedItem!.value == true) {
+    //       data.fields.add(MapEntry(
+    //           "music_genre[$itemIndex][${itemsList[i].id}]",
+    //           itemsList[i].id.toString()));
+    //     }
+    //   }
     // }
 
     data.fields.add(MapEntry('is_insurance', insuranceVal.value.toString()));
@@ -706,11 +834,30 @@ class AuthController extends GetxController {
         }
         if (serviceListPosted[a].selectedItem!.value == true) {
           iiid = serviceListPosted[a].eventId;
-          data.fields.add(MapEntry('events[$indexVal][event_id][]',
+          data.fields.add(MapEntry('events[$indexVal][item_ids][]',
               serviceListPosted[a].id.toString()));
         }
       }
     }
+    int? indexVal2 = -1;
+    int? iiidd = -1;
+    for (var a = 0; a <= serviceListPostedd.length; a++) {
+      if (a != serviceListPostedd.length) {
+        if (iiidd != serviceListPostedd[a].categoryId) {
+          indexVal2 = indexVal2! + 1;
+          data.fields.add(MapEntry('music_genre[$indexVal2][music_genre_id]',
+              serviceListPostedd[a].categoryId.toString()));
+        }
+        if (serviceListPostedd[a].selectedItem!.value == true) {
+          iiidd = serviceListPostedd[a].categoryId;
+          data.fields.add(MapEntry(
+              'music_genre[$indexVal2][music_genre_item_ids][]',
+              serviceListPostedd[a].id.toString()));
+        }
+      }
+    }
+    // print(data);
+
     var response = await API().postApi(data, "add-event");
     if (response.statusCode == 200) {
       bottomToast(text: response.data['message']);

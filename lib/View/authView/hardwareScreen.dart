@@ -11,12 +11,25 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
-class HardwareScreen extends StatelessWidget {
+class HardwareScreen extends StatefulWidget {
   HardwareScreen({super.key});
+
+  @override
+  State<HardwareScreen> createState() => _HardwareScreenState();
+}
+
+class _HardwareScreenState extends State<HardwareScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _controller.myGroovkingHardwareListing = Get.arguments?["isHardware"] ?? [];
+  }
 
   final AuthController _controller = Get.find();
 
   bool createEventValue = Get.arguments['createEvent'];
+
+  bool isFromGroovkin = Get.arguments?["isFromGroovkin"] ?? false;
 
   final EventController _eventController = Get.find();
 
@@ -40,8 +53,13 @@ class HardwareScreen extends StatelessWidget {
             : SizedBox.shrink()
       ]),
       body: GetBuilder<AuthController>(initState: (v) {
-        _controller.getAllService(type: "hardware_provided");
+        _controller.getAllService(
+          type: "hardware_provided",
+          mygrookinHit:
+              _controller.myGroovkingHardwareListing.isNotEmpty ? true : false,
+        );
       }, builder: (controller) {
+        print(_controller.myGroovkingHardwareListing.length);
         return controller.getAllServiceLoader.value == false
             ? SizedBox.shrink()
             : Padding(
@@ -220,22 +238,27 @@ class HardwareScreen extends StatelessWidget {
               //   }
               // );
 
-              if (_controller.eventItemsList.isNotEmpty) {
-                // if(_eventController.eventDetail != null){
-                //  await _controller.getLifeStyle(surveyType: "music_genre");
-                // }
-                Get.toNamed(Routes.quickSurveyScreen, arguments: {
-                  "addMoreService": 1,
-                  "createEvent": createEventValue,
-                  "title": "Music Choice!",
-                  "isFromEvent": true,
-                });
+              if (isFromGroovkin == true) {
+                print(_controller.serviceHardwareHeadList);
+                print(_controller.serviceHardwareItemsList);
               } else {
-                bottomToast(
-                    text: "Please select hardware that can be provided");
+                if (_controller.eventItemsList.isNotEmpty) {
+                  // if(_eventController.eventDetail != null){
+                  //  await _controller.getLifeStyle(surveyType: "music_genre");
+                  // }
+                  Get.toNamed(Routes.quickSurveyScreen, arguments: {
+                    "addMoreService": 1,
+                    "createEvent": createEventValue,
+                    "title": "Music Choice!",
+                    "isFromEvent": true,
+                  });
+                } else {
+                  bottomToast(
+                      text: "Please select hardware that can be provided");
+                }
               }
             },
-            text: "Next",
+            text: isFromGroovkin == true ? "Update" : "Next",
           ),
         ),
       ),
@@ -365,7 +388,7 @@ class AddMoreHardwareScreen extends StatelessWidget {
                         );
                       }),
                 ),
-              )
+              ),
             ],
           ),
         ),
