@@ -59,7 +59,6 @@ class _HardwareScreenState extends State<HardwareScreen> {
               _controller.myGroovkingHardwareListing.isNotEmpty ? true : false,
         );
       }, builder: (controller) {
-        print(_controller.myGroovkingHardwareListing.length);
         return controller.getAllServiceLoader.value == false
             ? SizedBox.shrink()
             : Padding(

@@ -287,7 +287,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   itemCount: data.musicGenre[index].eventItem
-                                          .categoryItems?.length ??
+                                          .categoryItems.length ??
                                       0,
                                   itemBuilder: (context, index2) {
                                     return musicGenre(

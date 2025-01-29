@@ -574,8 +574,7 @@ class AuthController extends GetxController {
           }
           // _eventController.checkServices();
         }
-      }
-      else if (type == "hardware_provided") {
+      } else if (type == "hardware_provided") {
         hardwareListing.clear();
         eventItemsList.clear();
         for (var element in surveyData!.data!) {
@@ -692,9 +691,6 @@ class AuthController extends GetxController {
     getAllServiceLoader(true);
     update();
   }
-
-
-
 
   // Todo MyGroovKin List Service Data
   List serviceLista = [];
