@@ -28,6 +28,7 @@ class API {
 
   API._internal() : dio = Dio() {
     dio = Dio(BaseOptions(
+      validateStatus: (statusCode) => statusCode! < 500,
       connectTimeout: Duration(seconds: 180),
       receiveTimeout: Duration(seconds: 180),
     ));
@@ -160,6 +161,8 @@ class API {
       }
     }
   }
+
+
 }
 
 errorIcon(postButton) async {

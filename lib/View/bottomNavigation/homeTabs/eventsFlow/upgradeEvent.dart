@@ -196,14 +196,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         maxLine: 5,
                         controller: controller.aboutController,
                         error: "about"),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    textFields(
-                        theme: theme,
-                        labelText: "Theme of Event",
-                        controller: controller.themeOfEventController,
-                        error: "theme of event"),
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
+                    // textFields(
+                    //     theme: theme,
+                    //     labelText: "Theme of Event",
+                    //     controller: controller.themeOfEventController,
+                    //     error: "theme of event"),
                     // SizedBox(
                     //   height: 15,
                     // ),

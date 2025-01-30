@@ -168,22 +168,6 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                             "createEvent": false,
                                             "isFromGroovkin": true,
                                             "isHardware": data.hardwareProvides
-                                                .map((data) {
-                                              return SurveyObject(
-                                                  id: data.id,
-                                                  createdAt: data.createdAt,
-                                                  categoryItems: (data
-                                                          .eventItem
-                                                          .categoryItems
-                                                          .isNotEmpty
-                                                      ? data.eventItem
-                                                          .categoryItems
-                                                          .cast<CategoryItem>()
-                                                      : []),
-                                                  name: data.eventItem.name,
-                                                  updatedAt: data.updatedAt,
-                                                  type: data.type);
-                                            }).toList()
                                           });
                                     },
                                     child: Icon(Icons.edit,

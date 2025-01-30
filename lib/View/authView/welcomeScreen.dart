@@ -120,6 +120,6 @@ class _WelComeScreenState extends State<WelComeScreen> {
 //           await API().sp.write("role", intialRole);
 //           Get.back(); // Only pop if role is written
 //         } else if (!didPop) {
-//           // Pop the screen if `didPop` is false, otherwise do nothing
+          // Pop the screen if `didPop` is false, otherwise do nothing
 //           Get.back();
 //         }

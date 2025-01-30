@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class MyGroovkinModel {
   final bool status;
   final Data data;
@@ -18,16 +20,15 @@ class Data {
   final List<HardwareProvided> hardwareProvides;
   final List<MusicGenre> musicGenre;
 
-  Data({
-    required this.services,
-    required this.hardwareProvides,
-    required this.musicGenre,
-    required this.isInsurance
-  });
+  Data(
+      {required this.services,
+      required this.hardwareProvides,
+      required this.musicGenre,
+      required this.isInsurance});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-        isInsurance:json["is_insurance"]??0,
+      isInsurance: json["is_insurance"] ?? 0,
       services: (json['services'] as List)
           .map((item) => Service.fromJson(item))
           .toList(),
@@ -124,6 +125,7 @@ class CategoryItem {
   final String type;
   final String createdAt;
   final String updatedAt;
+  RxBool? selectedItem = false.obs;
 
   CategoryItem({
     required this.id,
@@ -133,6 +135,7 @@ class CategoryItem {
     required this.type,
     required this.createdAt,
     required this.updatedAt,
+    this.selectedItem,
   });
 
   factory CategoryItem.fromJson(Map<String, dynamic> json) {
@@ -144,6 +147,7 @@ class CategoryItem {
       type: json['type'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      selectedItem: json["selectedItem"] ?? false.obs,
     );
   }
 }

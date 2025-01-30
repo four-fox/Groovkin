@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
 import 'package:groovkin/firebase/notification_services.dart';
+import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -234,7 +234,7 @@ class AuthController extends GetxController {
     }
   }
 
-  /// change password
+  /// Roles password
   final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final newConfirmPasswordController = TextEditingController();
@@ -540,7 +540,7 @@ class AuthController extends GetxController {
   RxBool getAllServiceLoader = true.obs;
   List<SurveyObject> serviceListing = [];
   List myGroovkinServiceListing = [];
-  List<SurveyObject> myGroovkingHardwareListing = [];
+  List<groovkin.HardwareProvided> myGroovkingHardwareListing = [];
   List<SurveyObject> hardwareListing = [];
   List<SurveyObject> lifeStyleListing = [];
 
@@ -641,53 +641,41 @@ class AuthController extends GetxController {
   }
 
   // Todo MyGroovking List Hardware Data
-  List serviceHardwareHeadList = [];
-  List serviceHardwareItemsList = [];
+  List hardwareListId = [];
+  List hardwareCategoryId = [];
+  List<groovkin.CategoryItem> hardwareCategory = [];
 
-  void myGroovkinHardwareListFtn(List data) {
+  void myGroovkinHardwareListFtn(List<groovkin.HardwareProvided> data) {
     // Clear previous lists
-    serviceHardwareHeadList.clear();
-    serviceHardwareItemsList.clear();
+    hardwareListId.clear();
+    hardwareCategoryId.clear();
+    hardwareCategory.clear();
 
-    // Populate `serviceHardwareHeadList` and `serviceHardwareItemsList`
     for (var action in data) {
-      var itemId = action.eventItem.id;
-
-      if (action.eventItem.categoryItems != null &&
-          action.eventItem.categoryItems.isNotEmpty) {
-        for (var categoryItem in action.eventItem.categoryItems) {
-          if (!serviceHardwareItemsList.contains(categoryItem.id)) {
-            serviceHardwareItemsList.add(categoryItem.id);
-          }
-        }
-      }
-
-      if (!serviceHardwareHeadList.contains(itemId)) {
-        serviceHardwareHeadList.add(itemId);
+      hardwareListId.add(action.eventItem.id);
+      for (var actions in action.eventItem.categoryItems) {
+        hardwareCategoryId.add(actions.id);
+        hardwareCategory.add(actions);
       }
     }
 
-    // Update `hardwareListing` and `showItems` values based on `categoryItems` match
-    for (var hardware in hardwareListing) {
-      // Check if any categoryItems in the hardware match the `serviceHardwareHeadList`
-      bool isInCategoryItems = serviceHardwareHeadList.any((id) {
-        return hardware.categoryItems != null &&
-            hardware.categoryItems!.any((data) => data.id == id);
-      });
+    for (var action in hardwareListing) {
+      hardwareListId.contains(action.id)
+          ? action.showItems!.value = true
+          : action.showItems!.value = false;
 
-      // Update the `showItems` observable value
-      hardware.showItems?.value = isInCategoryItems;
-
-      // Optionally update the `selectedItem` state in category items
-      if (hardware.categoryItems != null) {
-        for (var categoryItem in hardware.categoryItems!) {
-          categoryItem.selectedItem?.value =
-              serviceHardwareItemsList.contains(categoryItem.id);
+      for (var actions in action.categoryItems!) {
+        for (var data in hardwareCategory) {
+          hardwareCategory.contains(data)
+              ? data.selectedItem!.value = true
+              : data.selectedItem!.value = false;
         }
+        hardwareCategoryId.contains(actions.id)
+            ? actions.selectedItem!.value = true
+            : actions.selectedItem!.value = false;
       }
     }
 
-    // Ensure the UI reflects these changes
     getAllServiceLoader(true);
     update();
   }
@@ -765,6 +753,55 @@ class AuthController extends GetxController {
     update();
   }
 
+  myGroovkinhardwareFunction(
+      {SurveyObject? items, value, CategoryItem? serviceObj}) async {
+    serviceObj!.selectedItem!.value = value;
+    if (serviceObj.selectedItem!.value == true) {
+      hardwareCategoryId.add(serviceObj.id);
+      hardwareCategory.add(
+        groovkin.CategoryItem(
+          selectedItem: RxBool(value),
+          id: serviceObj.id!,
+          name: serviceObj.name ?? "",
+          type: serviceObj.type ?? "",
+          createdAt: serviceObj.createdAt ?? "",
+          updatedAt: serviceObj.updatedAt ?? "",
+        ),
+      );
+    } else {
+      hardwareCategoryId.remove(
+          serviceObj.id); // Update `selectedItem` to `false` before removal
+      for (var data in hardwareCategory) {
+        if (data.id == serviceObj.id) {
+          data.selectedItem!.value = false; // Set `selectedItem` to false
+        }
+      }
+      // hardwareCategory.removeWhere((data) => data.id == serviceObj.id);
+    }
+    update();
+  }
+
+  updateGroovkinghardware() async {
+    form.FormData data = form.FormData();
+    int? id = -1;
+    int index = -1;
+
+    for (var i = 0; i < hardwareCategory.length; i++) {
+      if (i != hardwareCategory.length) {
+        if (id != hardwareCategory[i].eventId) {}
+        index += 1;
+        data.fields.add(MapEntry('events[$index][event_id]',
+            hardwareCategory[i].eventId.toString()));
+      }
+      if (hardwareCategory[i].selectedItem!.value == true) {
+        id = hardwareCategory[i].eventId;
+        data.fields.add(MapEntry(
+            'events[$index][item_ids][]', hardwareCategory[i].id.toString()));
+      }
+    }
+    print(data);
+  }
+
   ///organizer add life style provided by you
   List<CategoryItem> lifeStyleItemsList = [];
   lifeStyleFunction(
@@ -835,6 +872,7 @@ class AuthController extends GetxController {
         }
       }
     }
+
     int? indexVal2 = -1;
     int? iiidd = -1;
     for (var a = 0; a <= serviceListPostedd.length; a++) {
@@ -852,6 +890,7 @@ class AuthController extends GetxController {
         }
       }
     }
+
     // print(data);
 
     var response = await API().postApi(data, "add-event");
@@ -1032,6 +1071,7 @@ class AuthController extends GetxController {
   RxBool getAllUnfollowingLoader = true.obs;
   AllUnFollowUserModel? allUnFollower;
   bool getAllUnfollowingWait = false;
+
   getAllUnfollowing({nextUrl}) async {
     getAllUnfollowingLoader(false);
     var response = await API().getApi(url: "nonfollowed", fullUrl: nextUrl);

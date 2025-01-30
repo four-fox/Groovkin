@@ -190,12 +190,25 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                                                 .selectedItem!
                                                                 .value,
                                                             onChanged: (v) {
-                                                              controller.hardwareFunction(
+                                                              if (_controller
+                                                                  .hardwareCategoryId
+                                                                  .isEmpty) {
+                                                                controller.hardwareFunction(
+                                                                    serviceObj: controller
+                                                                        .hardwareListing[
+                                                                            index]
+                                                                        .categoryItems![indexes],
+                                                                    value: v);
+                                                              } else {
+                                                                controller
+                                                                    .myGroovkinhardwareFunction(
                                                                   serviceObj: controller
                                                                       .hardwareListing[
                                                                           index]
                                                                       .categoryItems![indexes],
-                                                                  value: v);
+                                                                  value: v,
+                                                                );
+                                                              }
                                                             }),
                                                       ),
                                                     )
@@ -238,8 +251,11 @@ class _HardwareScreenState extends State<HardwareScreen> {
               // );
 
               if (isFromGroovkin == true) {
-                print(_controller.serviceHardwareHeadList);
-                print(_controller.serviceHardwareItemsList);
+                // print(_controller.hardwareCategoryId);
+                // for (var data in _controller.hardwareCategory) {
+                //   print(data.selectedItem);
+                // }
+                _controller.updateGroovkinghardware();
               } else {
                 if (_controller.eventItemsList.isNotEmpty) {
                   // if(_eventController.eventDetail != null){
