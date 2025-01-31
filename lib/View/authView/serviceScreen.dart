@@ -271,7 +271,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               if (isComingFromMyGroovkin == true) {
                 if (_controller.serviceLista.isNotEmpty) {
                   _controller.updateGroovkinService().then((_) {
-                    _homeController.getMyGroovkinData().then((_){
+                    _homeController.getMyGroovkinData().then((_) {
                       bottomToast(text: "Services Updated Successfully");
                       Get.back();
                     });

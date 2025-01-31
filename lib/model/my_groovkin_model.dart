@@ -154,82 +154,64 @@ class CategoryItem {
 
 class HardwareProvided {
   final int id;
-  final int userId;
-  final int eventId;
-  final int eventItemId;
-  final int eventSubItemId;
+  final String name;
+  final String? image;
   final String type;
-  final String userType;
   final String createdAt;
   final String updatedAt;
-  final EventItem eventItem;
+  final List<CategoryItem> categoryItems;
 
-  HardwareProvided({
-    required this.id,
-    required this.userId,
-    required this.eventId,
-    required this.eventItemId,
-    required this.eventSubItemId,
-    required this.type,
-    required this.userType,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.eventItem,
-  });
+  HardwareProvided(
+      {required this.name,
+      required this.image,
+      required this.id,
+      required this.type,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.categoryItems});
 
   factory HardwareProvided.fromJson(Map<String, dynamic> json) {
     return HardwareProvided(
+      image: json["image"],
+      name: json["name"],
       id: json['id'],
-      userId: json['user_id'],
-      eventId: json['event_id'],
-      eventItemId: json['event_item_id'],
-      eventSubItemId: json['event_sub_item_id'],
       type: json['type'],
-      userType: json['user_type'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      eventItem: EventItem.fromJson(json['event_item']),
+      categoryItems: (json['category_items'] as List)
+          .map((item) => CategoryItem.fromJson(item))
+          .toList(),
     );
   }
 }
 
 class MusicGenre {
   final int id;
-  final int userId;
-  final int eventId;
-  final int categoryId;
-  final int itemId;
+  final String name;
   final String type;
-  final String userType;
   final String createdAt;
   final String updatedAt;
-  final EventItem eventItem;
+  final List<CategoryItem>? categoryItems;
 
   MusicGenre({
     required this.id,
-    required this.userId,
-    required this.eventId,
-    required this.categoryId,
-    required this.itemId,
+    required this.name,
     required this.type,
-    required this.userType,
     required this.createdAt,
     required this.updatedAt,
-    required this.eventItem,
+    required this.categoryItems,
   });
 
   factory MusicGenre.fromJson(Map<String, dynamic> json) {
     return MusicGenre(
       id: json['id'],
-      userId: json['user_id'],
-      eventId: json['event_id'],
-      categoryId: json['category_id'],
-      itemId: json['item_id'],
+      name: json["name"],
       type: json['type'],
-      userType: json['user_type'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      eventItem: EventItem.fromJson(json['event_item']),
+      categoryItems: (json['category_items'] as List)
+          .map((item) => CategoryItem.fromJson(item))
+          .toList(),
     );
   }
 }

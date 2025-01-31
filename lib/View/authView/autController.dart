@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
@@ -439,14 +440,17 @@ class AuthController extends GetxController {
 
   /// todo survey functionality
   RxBool getLifeStyleLoader = true.obs;
+
+  List<CategoryItem> musicGenre = [];
   SurveyModel? surveyData;
-  getLifeStyle({surveyType}) async {
+  getLifeStyle({surveyType, bool mygrookinHit = false}) async {
     getLifeStyleLoader(false);
     var response =
         await API().getApi(url: "show-category-with-items?type=$surveyType");
     if (response.statusCode == 200) {
       clearLists();
       surveyData = SurveyModel.fromJson(response.data);
+
       final EventController eventController = Get.find();
       if (eventController.eventDetail != null) {
         List musicGenreId = [];
@@ -465,9 +469,49 @@ class AuthController extends GetxController {
           }
         }
       }
-      getLifeStyleLoader(true);
-      update();
+      if (mygrookinHit != true) {
+        getLifeStyleLoader(true);
+        update();
+      }
+      myGroovkinLifeStyle(myGroockingMusicListing);
     }
+  }
+
+  var musicGenereIds = [];
+  var musicGenereCategoryIds = [];
+
+  myGroovkinLifeStyle(List<groovkin.MusicGenre> data) {
+    musicGenereIds.clear();
+    musicCategory.clear();
+    musicGenereCategoryIds.clear();
+
+    for (var action in data) {
+      musicGenereIds.add(action.id);
+      for (var actions in action.categoryItems!) {
+        musicGenereCategoryIds.add(actions.id);
+        musicCategory.add(actions);
+      }
+    }
+
+    for (var action in surveyData!.data!) {
+      musicGenereIds.contains(action.id)
+          ? action.showItems!.value = true
+          : action.showItems!.value = false;
+
+      for (var actions in action.categoryItems!) {
+        for (var data in musicCategory) {
+          musicCategory.contains(data)
+              ? data.selectedItem!.value = true
+              : data.selectedItem!.value = false;
+        }
+        musicGenereCategoryIds.contains(actions.id)
+            ? actions.selectedItem!.value = true
+            : actions.selectedItem!.value = false;
+      }
+    }
+
+    getLifeStyleLoader(true);
+    update();
   }
 
   List<CategoryItem> itemsList = [];
@@ -541,6 +585,7 @@ class AuthController extends GetxController {
   List<SurveyObject> serviceListing = [];
   List myGroovkinServiceListing = [];
   List<groovkin.HardwareProvided> myGroovkingHardwareListing = [];
+  List<groovkin.MusicGenre> myGroockingMusicListing = [];
   List<SurveyObject> hardwareListing = [];
   List<SurveyObject> lifeStyleListing = [];
 
@@ -644,7 +689,7 @@ class AuthController extends GetxController {
   List hardwareListId = [];
   List hardwareCategoryId = [];
   List<groovkin.CategoryItem> hardwareCategory = [];
-
+  List<groovkin.CategoryItem> musicCategory = [];
   void myGroovkinHardwareListFtn(List<groovkin.HardwareProvided> data) {
     // Clear previous lists
     hardwareListId.clear();
@@ -652,8 +697,8 @@ class AuthController extends GetxController {
     hardwareCategory.clear();
 
     for (var action in data) {
-      hardwareListId.add(action.eventItem.id);
-      for (var actions in action.eventItem.categoryItems) {
+      hardwareListId.add(action.id);
+      for (var actions in action.categoryItems) {
         hardwareCategoryId.add(actions.id);
         hardwareCategory.add(actions);
       }
@@ -682,6 +727,7 @@ class AuthController extends GetxController {
 
   // Todo MyGroovKin List Service Data
   List serviceLista = [];
+
   myGroovkinListFtn(List data) {
     serviceLista.clear();
 
@@ -753,6 +799,57 @@ class AuthController extends GetxController {
     update();
   }
 
+  myGroovkingMusicGenerFunction(
+      {CategoryItem? items, value, SurveyObject? surveyObj}) async {
+    items!.selectedItem!.value = value;
+    if (items.selectedItem!.value == true) {
+      musicGenereCategoryIds.add(items.id);
+      musicCategory.add(groovkin.CategoryItem(
+        id: items.id!,
+        name: items.name ?? "",
+        type: items.type ?? "",
+        createdAt: items.createdAt ?? "",
+        updatedAt: items.updatedAt ?? "",
+        categoryId: items.categoryId,
+        eventId: items.eventId,
+        selectedItem: RxBool(value),
+      ));
+    } else {
+      musicGenereIds.remove(items.id);
+      for (var data in musicCategory) {
+        if (data.id == items.id) {
+          data.selectedItem!.value = false;
+        }
+      }
+      musicCategory.removeWhere((data) => data.id == items.id);
+    }
+    update();
+  }
+
+  Future myGroovkinMusicGenreUpdate() async {
+    form.FormData data = form.FormData();
+    int? id = -1;
+    int index = -1;
+
+    for (var i = 0; i < musicCategory.length; i++) {
+      if (i != musicCategory.length) {
+        if (id != musicCategory[i].categoryId) {
+          index += 1;
+          data.fields.add(MapEntry('music_genre[$index][music_genre_id]',
+              musicCategory[i].categoryId.toString()));
+        }
+      }
+      if (musicCategory[i].selectedItem!.value == true) {
+        id = musicCategory[i].categoryId;
+        data.fields.add(MapEntry('music_genre[$index][music_genre_item_ids][]',
+            musicCategory[i].id.toString()));
+      }
+    }
+    final response = await API().postApi(data, "edit-music-genre");
+
+    if (response.statusCode == 200) {}
+  }
+
   myGroovkinhardwareFunction(
       {SurveyObject? items, value, CategoryItem? serviceObj}) async {
     serviceObj!.selectedItem!.value = value;
@@ -760,6 +857,8 @@ class AuthController extends GetxController {
       hardwareCategoryId.add(serviceObj.id);
       hardwareCategory.add(
         groovkin.CategoryItem(
+          categoryId: serviceObj.categoryId,
+          eventId: serviceObj.eventId,
           selectedItem: RxBool(value),
           id: serviceObj.id!,
           name: serviceObj.name ?? "",
@@ -771,35 +870,43 @@ class AuthController extends GetxController {
     } else {
       hardwareCategoryId.remove(
           serviceObj.id); // Update `selectedItem` to `false` before removal
+
       for (var data in hardwareCategory) {
         if (data.id == serviceObj.id) {
           data.selectedItem!.value = false; // Set `selectedItem` to false
         }
       }
-      // hardwareCategory.removeWhere((data) => data.id == serviceObj.id);
+      hardwareCategory.removeWhere((data) => data.id == serviceObj.id);
     }
     update();
   }
 
-  updateGroovkinghardware() async {
+  Future updateGroovkinghardware() async {
     form.FormData data = form.FormData();
     int? id = -1;
     int index = -1;
 
     for (var i = 0; i < hardwareCategory.length; i++) {
       if (i != hardwareCategory.length) {
-        if (id != hardwareCategory[i].eventId) {}
-        index += 1;
-        data.fields.add(MapEntry('events[$index][event_id]',
-            hardwareCategory[i].eventId.toString()));
+        if (id != hardwareCategory[i].eventId) {
+          index += 1;
+          data.fields.add(MapEntry('events[$index][event_id]',
+              hardwareCategory[i].eventId.toString()));
+        }
       }
+
       if (hardwareCategory[i].selectedItem!.value == true) {
         id = hardwareCategory[i].eventId;
         data.fields.add(MapEntry(
             'events[$index][item_ids][]', hardwareCategory[i].id.toString()));
       }
     }
+
     print(data);
+
+    final response = await API().postApi(data, "edit-hardware-provides");
+
+    if (response.statusCode == 200) {}
   }
 
   ///organizer add life style provided by you

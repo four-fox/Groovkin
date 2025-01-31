@@ -8,6 +8,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class QuickSurveyScreen extends StatefulWidget {
@@ -22,11 +23,14 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
 
   String appBarTitle = Get.arguments['title'] ?? "Lifestyle Survey";
   bool isFromEvent = Get.arguments["isFromEvent"] ?? false;
+  bool isFromGroovkin = Get.arguments?["isFromGroovkin"] ?? false;
 
   bool createEvent = false;
 
   final AuthController _controller = Get.find();
   late EventController _eventController;
+
+  late HomeController _homeController;
 
   @override
   void initState() {
@@ -34,6 +38,8 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
     print(Get.arguments['addMoreService']);
     print(Get.arguments['title']);
     print(appBarTitle);
+    _controller.myGroockingMusicListing = Get.arguments?["isMusic"] ?? [];
+
     if (Get.arguments['addMoreService'] == 1) {
       createEvent = Get.arguments['createEvent'];
     }
@@ -41,6 +47,11 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
       _eventController = Get.find<EventController>();
     } else {
       _eventController = Get.put(EventController());
+    }
+    if (Get.isRegistered<EventController>()) {
+      _homeController = Get.find<HomeController>();
+    } else {
+      _homeController = Get.put(HomeController());
     }
   }
 
@@ -79,7 +90,10 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
         // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
         //   _controller.getAllService(type: "lifestyle_preference");
         // }else{
-        _controller.getLifeStyle(surveyType: "music_genre");
+        _controller.getLifeStyle(
+            surveyType: "music_genre",
+            mygrookinHit:
+                _controller.myGroockingMusicListing.isNotEmpty ? true : false);
         // }
       }, builder: (controller) {
         return ((controller.getLifeStyleLoader.value == false) ||
@@ -219,17 +233,34 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                                               // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
                                                               //   controller.lifeStyleFunction(serviceObj: controller.surveyData!.data![index].categoryItems![indexxx],value: v);
                                                               // }else{
-                                                              controller.surveyAddFtn(
-                                                                  surveyObj: controller
-                                                                          .surveyData!
-                                                                          .data![
-                                                                      index],
-                                                                  value: v,
-                                                                  items: controller
-                                                                      .surveyData!
-                                                                      .data![
-                                                                          index]
-                                                                      .categoryItems![indexxx]);
+
+                                                              if (isFromGroovkin ==
+                                                                  true) {
+                                                                controller.myGroovkingMusicGenerFunction(
+                                                                    surveyObj: controller
+                                                                            .surveyData!
+                                                                            .data![
+                                                                        index],
+                                                                    value: v,
+                                                                    items: controller
+                                                                        .surveyData!
+                                                                        .data![
+                                                                            index]
+                                                                        .categoryItems![indexxx]);
+                                                              } else {
+                                                                controller.surveyAddFtn(
+                                                                    surveyObj: controller
+                                                                            .surveyData!
+                                                                            .data![
+                                                                        index],
+                                                                    value: v,
+                                                                    items: controller
+                                                                        .surveyData!
+                                                                        .data![
+                                                                            index]
+                                                                        .categoryItems![indexxx]);
+                                                              }
+
                                                               // }
                                                             }),
                                                       )
@@ -260,37 +291,46 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
-              if (sp.read("role") == "User") {
-                if (addMoreSurvey == 2) {
-                  Get.back();
-                } else {
-                  if (_controller.itemsList.isNotEmpty) {
-                    _controller.makeMethodHit(navigation: "music");
-                  } else {
-                    bottomToast(text: "Please add life style for survey");
-                  }
-                }
+              if (isFromGroovkin == true) {
+                _controller.myGroovkinMusicGenreUpdate().then((_) {
+                  _homeController.getMyGroovkinData().then((_) {
+                    bottomToast(text: "Music Genre Updated Successfully");
+                    Get.back();
+                  });
+                });
               } else {
-                if (addMoreSurvey == 2) {
-                  Get.back();
-                  Get.back();
-                } else {
-                  if (createEvent == true) {
-                    if (/*_controller.lifeStyleItemsList.isNotEmpty ||*/ _controller
-                        .itemsList.isNotEmpty) {
-                      if (_eventController.eventDetail != null) {
-                        await _eventController.getMusicTag(
-                            type: "music_choice");
-                      }
-                      Get.toNamed(Routes.musicChoiceScreen);
+                if (sp.read("role") == "User") {
+                  if (addMoreSurvey == 2) {
+                    Get.back();
+                  } else {
+                    if (_controller.itemsList.isNotEmpty) {
+                      _controller.makeMethodHit(navigation: "music");
                     } else {
                       bottomToast(text: "Please add life style for survey");
                     }
+                  }
+                } else {
+                  if (addMoreSurvey == 2) {
+                    Get.back();
+                    Get.back();
                   } else {
-                    if (_controller.itemsList.isNotEmpty) {
-                      _controller.createEvent();
+                    if (createEvent == true) {
+                      if (/*_controller.lifeStyleItemsList.isNotEmpty ||*/ _controller
+                          .itemsList.isNotEmpty) {
+                        if (_eventController.eventDetail != null) {
+                          await _eventController.getMusicTag(
+                              type: "music_choice");
+                        }
+                        Get.toNamed(Routes.musicChoiceScreen);
+                      } else {
+                        bottomToast(text: "Please add life style for survey");
+                      }
                     } else {
-                      bottomToast(text: "Please add life style for survey");
+                      if (_controller.itemsList.isNotEmpty) {
+                        _controller.createEvent();
+                      } else {
+                        bottomToast(text: "Please add life style for survey");
+                      }
                     }
                   }
                 }

@@ -9,6 +9,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class HardwareScreen extends StatefulWidget {
@@ -19,9 +20,16 @@ class HardwareScreen extends StatefulWidget {
 }
 
 class _HardwareScreenState extends State<HardwareScreen> {
+  late HomeController _homeController;
+
   @override
   void initState() {
     super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      _homeController = Get.find<HomeController>();
+    } else {
+      _homeController = Get.put(HomeController());
+    }
     _controller.myGroovkingHardwareListing = Get.arguments?["isHardware"] ?? [];
   }
 
@@ -255,7 +263,12 @@ class _HardwareScreenState extends State<HardwareScreen> {
                 // for (var data in _controller.hardwareCategory) {
                 //   print(data.selectedItem);
                 // }
-                _controller.updateGroovkinghardware();
+                _controller.updateGroovkinghardware().then((_) {
+                  _homeController.getMyGroovkinData().then((_) {
+                    bottomToast(text: "Hardware Updated Successfully");
+                    Get.back();
+                  });
+                });
               } else {
                 if (_controller.eventItemsList.isNotEmpty) {
                   // if(_eventController.eventDetail != null){

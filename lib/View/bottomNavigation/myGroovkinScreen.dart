@@ -5,7 +5,6 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/model/my_groovkin_model.dart' as groovkinModel;
@@ -189,9 +188,9 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                               child: Row(
                                 children: [
                                   Image(
-                                    image: hardwareData.eventItem.image != null
+                                    image: hardwareData.image != null
                                         ? NetworkImage(Url().imageUrl +
-                                            hardwareData.eventItem.image!)
+                                            hardwareData.image!)
                                         : AssetImage("assets/djing.png")
                                             as ImageProvider,
                                   ),
@@ -199,7 +198,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 3.0),
                                     child: Text(
-                                      hardwareData.eventItem.name,
+                                      hardwareData.name,
                                       style: poppinsRegularStyle(
                                           fontSize: 13,
                                           color: theme.primaryColor,
@@ -237,7 +236,11 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                 : GestureDetector(
                                     onTap: () {
                                       Get.toNamed(Routes.quickSurveyScreen,
-                                          arguments: {"addMoreService": 2});
+                                          arguments: {
+                                            "addMoreService": 2,
+                                            "isFromGroovkin": true,
+                                            "isMusic": data.musicGenre,
+                                          });
                                     },
                                     child: Icon(Icons.edit,
                                         color: DynamicColor.yellowClr),
@@ -259,7 +262,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12),
                               child: Text(
-                                data.musicGenre[index].eventItem.name,
+                                data.musicGenre[index].name,
                                 style: poppinsRegularStyle(
                                     fontSize: 16,
                                     color: DynamicColor.lightRedClr),
@@ -270,15 +273,15 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: data.musicGenre[index].eventItem
-                                          .categoryItems.length ??
+                                  itemCount: data.musicGenre[index]
+                                          .categoryItems?.length ??
                                       0,
                                   itemBuilder: (context, index2) {
                                     return musicGenre(
                                         theme: theme,
                                         context: context,
-                                        title: data.musicGenre[index].eventItem
-                                            .categoryItems[index2].name);
+                                        title: data.musicGenre[index]
+                                            .categoryItems?[index2].name);
                                   }),
                             ),
                           ],
