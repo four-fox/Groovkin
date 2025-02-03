@@ -301,6 +301,9 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
               } else {
                 if (sp.read("role") == "User") {
                   if (addMoreSurvey == 2) {
+
+
+                    
                     Get.back();
                   } else {
                     if (_controller.itemsList.isNotEmpty) {
