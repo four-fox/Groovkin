@@ -108,6 +108,11 @@ abstract class Routes{
   static const viewAllRecommendedScreen = _Path.viewAllRecommendedScreen;
   static const viewAllNearByScreen = _Path.viewAllNearByScreen;
   static const viewAllTopRatingScreen = _Path.viewAllTopRatingScreen;
+
+  ///chat screen
+  static const chatNewUserScreen = _Path.chatNewUserScreen;
+  static const chatRoomScreen = _Path.chatRoomScreen;
+  static const chatInnerScreen = _Path.chatInnerScreen;
 }
 
 abstract class _Path{
@@ -217,4 +222,9 @@ abstract class _Path{
   static const viewAllRecommendedScreen = "/ViewAllRecommendedScreen";
   static const viewAllNearByScreen = "/ViewAllNearByScreen";
   static const viewAllTopRatingScreen = "/ViewAllTopRatingScreen";
+
+  /// Chat screens
+  static const chatNewUserScreen = "/ChatNewUserScreen";
+  static const chatRoomScreen = "/ChatRoomScreen";
+  static const chatInnerScreen = "/ChatInnerScreen";
 }

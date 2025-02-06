@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+
+import '../colors.dart';
 
 class InterceptorsServices extends Interceptor {
   @override
@@ -19,7 +22,11 @@ class InterceptorsServices extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.statusCode == 401) {
       // if (response.data["message"] == "Unauthenticated") {
-      getx.Get.offAllNamed(Routes.loginScreen);
+      if(API().sp.read("token") !=null){
+        getx.Get.offAllNamed(Routes.loginScreen);
+      }else{
+        bottomToast(text: response.data["message"].toString());
+      }
       // }
     }
     log(response.data.toString());

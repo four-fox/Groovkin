@@ -131,6 +131,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.chatRoomScreen);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/eventDays.png"),
+                                  fit: BoxFit.fill),
+                              borderRadius: BorderRadius.circular(8),
+                              // border: Border.all(color: DynamicColor.yellowClr.withOpacity(0.6)),
+                            ),
+                            child: Icon(
+                              Icons.chat,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
                           Get.toNamed(Routes.notificationScreen);

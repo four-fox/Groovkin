@@ -81,6 +81,11 @@ import 'package:groovkin/View/paymentMethod/subscriptionScreen.dart';
 import 'package:groovkin/View/authView/welcomeScreen.dart';
 import 'package:groovkin/View/splashScreen.dart';
 
+import '../chatView/chatController.dart';
+import '../chatView/chatInnerScreen.dart';
+import '../chatView/chatNewUser.dart';
+import '../chatView/chatRoomScreen.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -531,6 +536,22 @@ class AppPages {
     GetPage(
       name: _Path.viewAllTopRatingScreen,
       page: () => ViewAllTopRatingScreen(),
+    ),
+
+    ///chat screens
+
+    GetPage(
+      name: _Path.chatNewUserScreen,
+      page: () => ChatNewUserScreen(),
+    ),
+    GetPage(
+      name: _Path.chatRoomScreen,
+      page: () => ChatRoomScreen(),
+      binding: ChatBinding(),
+    ),
+    GetPage(
+      name: _Path.chatInnerScreen,
+      page: () => ChatInnerScreen(),
     ),
   ];
 }

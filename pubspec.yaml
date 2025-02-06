@@ -96,6 +96,15 @@ dependencies:
   country_state_city_pro:
     path: ../groovkin/plugin/Country-State-City-Picker-Pro-master
   flutter_layout_grid: ^2.0.7
+
+  custom_pop_up_menu: ^1.2.4
+  sticky_grouped_list: ^3.1.0
+  sqflite: ^2.4.1
+  socket_io_client: ^3.0.2
+  swipe_to: ^1.0.6
+
+
+
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
   wakelock_windows: ^0.2.1

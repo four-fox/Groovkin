@@ -1,0 +1,590 @@
+
+
+// ignore_for_file: sort_child_properties_last
+
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:groovkin/Components/Network/Url.dart';
+import 'package:groovkin/Components/colors.dart';
+import 'package:swipe_to/swipe_to.dart';
+
+import '../Components/Network/API.dart';
+import '../Components/timeAgoWidget.dart';
+import 'chatController.dart';
+import 'chatInnerDataModel.dart';
+import 'chatInnerScreen.dart';
+
+Widget messageWidget({ctx, ChatData? element, index,required ChatController controller,tapDownPosition,imageList}){
+  String? reportName;
+  if(controller.chatData!.data!.data![index].parentChat != null && jsonDecode(controller.chatData!.data!.data![index].parentChat!)['report'] != null){
+    Map<String, dynamic> data = json.decode(controller.chatData!.data!.data![index].parentChat!);
+    reportName = json.decode(data['report'])['name'];
+    print(reportName.toString().replaceAll("-", " ").capitalize);
+  }
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 5),
+    child: SwipeTo(
+      onRightSwipe: (v) {
+        if(controller.chatData!.data!.data![index].isDeleted == 0){
+          controller.isReplying(true);
+          controller.replyModel = controller.chatData!.data!.data![index];
+          controller.replyId = controller.chatData!.data!.data![index].id.toString();
+          if (controller.multipleImageList.isNotEmpty) {
+            controller.multipleImageList.clear();
+          }
+          // controller.bottomContainer(true);
+          controller.bottomContainer(!controller.bottomContainer.value);
+          controller.fieldUpdate(false);
+        }
+        controller.update();
+      },
+      child: GestureDetector(
+        onTapDown: (TapDownDetails details) {
+          tapDownPosition = details.globalPosition;
+        },
+        onLongPress: (){
+          onLongPress(ctx, index, element,controller,tapDownPosition);
+        },
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
+            child:controller.chatData!.data!.data![index].senderId != API().sp.read('userId') ?
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                controller.chatData!.data!.data![index].isDeleted ==1 ? Container(
+                  padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: DynamicColor.grayClr,
+                      borderRadius: BorderRadius.circular(30)
+                  ),
+                  child: Center(
+                    child: Text("Message have been deleted",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black45,
+                      ),
+                    ),
+                  ),
+                ):
+                controller.chatData!.data!.data![index].media !=null?
+                Flexible(
+                  flex:
+                  3,
+                  child: Column(
+                    // alignment: Alignment.bottomRight,
+                    children: [
+                      Container(
+                        width: Get.width/1.5,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          color: DynamicColor.grayClr,
+                        ),
+                        padding: EdgeInsets.all(6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            controller.chatData!.data!.data![index].parentChat ==null?SizedBox.shrink():
+                            jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] ==null?
+                            SizedBox.shrink(): GestureDetector(
+                              onTap: () async{
+                                await controller.scroll(
+                                    int.parse(json.decode(controller.chatData!.data!.data![index].parentChat!)['id']
+                                        .toString(),
+                                    ),
+                                    index);
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Container(
+                                  width: Get.width,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                        left: BorderSide(
+                                            color: Colors.white,
+                                            width: 5
+                                        ),
+                                      ),
+                                      color: Colors.grey
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id'] == API().sp.read("userId")? "You": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['name'],
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      Container(
+                                        height: 55,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(Url().imageUrl+(jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'])[0]['filename']),
+                                                ),fit: BoxFit.fill
+                                            )
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            controller.chatData!.data!.data![index].media != null? Container(
+                                constraints: BoxConstraints(
+                                    maxWidth: 270,
+                                    minHeight: 50,
+                                    maxHeight: json.decode(controller.chatData!.data!.data![index].media!)!.length ==2 ? 125: 250
+                                ),
+                                child: ImageGrid(imageUrls: json.decode(controller.chatData!.data!.data![index].media!))):Container(),
+                            controller.chatData!.data!.data![index].msg == null?Container(): Text(controller.chatData!.data!.data![index].msg.toString(),
+                              style: TextStyle(
+                                fontSize: 12
+                                ,color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 3),
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text('${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ) :
+                Flexible(
+                  flex: 2,
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: 250,
+                          minWidth: 20,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: DynamicColor.grayClr,
+                            borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            controller.chatData!.data!.data![index].parentChat ==null? SizedBox.shrink():
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.grey
+                              ),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await controller.scroll(
+                                      int.parse(json.decode(controller.chatData!.data!.data![index].parentChat!)['id']
+                                          .toString(),
+                                      ),
+                                      index);
+                                },
+                                child: Container(
+                                  width: Get.width,
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id'] == API().sp.read("userId")? "You": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['name'],
+                                        style: TextStyle(fontSize: 12,color: Colors.white),
+                                      ),
+                                      controller.chatData!.data!.data![index].parentChat != null? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] == null?
+                                      Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ?? reportName!.replaceAll("-", " ").capitalize,
+                                      maxLines: 3,
+                                        style: TextStyle(
+                                          color: DynamicColor.blackClr
+                                        ),
+                                      ):
+                                      jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] == null?
+                                      Container(
+                                        height: 20,
+                                        width: 20,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'])[0]['filename'])
+                                            )
+                                        ),
+                                      ) :
+                                      ((json.decode(controller.chatData!.data!.data![index].parentChat!)['msg'] !=null) && (jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] !=null))?
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 4.0),
+                                            child: Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'],
+                                            style: TextStyle(
+                                              color: Colors.black
+                                            ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            width: 20,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'])[0]['filename'])
+                                                )
+                                            ),
+                                          ),
+                                        ],
+                                      ) :
+                                      Text(
+                                        json.decode(controller.chatData!.data!.data![index].parentChat!)['is_deleted'] == 1? "Message are deleted": json.decode(controller.chatData!.data!.data![index].parentChat!)['msg']
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black45
+                                        ),
+                                        maxLines: 3,
+                                      ):Container(),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                        left: BorderSide(
+                                            color: Colors.white,
+                                            width: 5
+                                        ),
+                                      ),
+                                      color: Colors.grey.withOpacity(0.5)
+                                  ),
+                                ),
+                              ),
+                            ),
+                            (controller.chatData!.data!.data![index].msg != null && controller.chatData!.data!.data![index].media == null)?
+                            Padding(
+                              padding: EdgeInsets.only(top:controller.chatData!.data!.data![index].parentChat !=null? 6.0:0),
+                              child: Text(controller.chatData!.data!.data![index].msg.toString(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ):SizedBox.shrink(),
+                            Padding(
+                              padding: EdgeInsets.only(right: 3),
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text('${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+                :
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Spacer(),
+                controller.chatData!.data!.data![index].isDeleted ==1 ? Container(
+                  padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                  child: Center(
+                    child: Text("Message have been deleted",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ):
+                controller.chatData!.data!.data![index].media !=null?
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.all(6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            controller.chatData!.data!.data![index].parentChat ==null?SizedBox.shrink():
+                        jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] ==null?
+                        SizedBox.shrink():
+                        GestureDetector(
+                          onTap: () async{
+                            await controller.scroll(
+                                int.parse(json.decode(controller.chatData!.data!.data![index].parentChat!)['id']
+                                    .toString(),
+                                ),
+                                index);
+                          },
+                          child: Container(
+                            width: Get.width,
+                            decoration: BoxDecoration(
+                                border: Border(
+                                  left: BorderSide(
+                                      color: Colors.white,
+                                      width: 5
+                                  ),
+                                ),
+                              color: Colors.grey,
+                            ),
+                            padding: EdgeInsets.only(left: 6),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id'] == API().sp.read("userId")? "You": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['name'],
+                                  style: TextStyle(fontSize: 12,color: Colors.black),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Container(
+                                        height: 55,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(jsonDecode(jsonDecode
+                                                  (controller.chatData!.data!.data![index].parentChat!)['media'])[0]['filename'])
+                                           ,fit: BoxFit.fill )
+                                        ),
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                            controller.chatData!.data!.data![index].media != null? Container(
+                                constraints: BoxConstraints(
+                                    maxWidth: 270,
+                                    minHeight: 50,
+                                    maxHeight: json.decode(controller.chatData!.data!.data![index].media!)!.length ==2 ? 125: 245
+                                ),
+                                child: ImageGrid(imageUrls: json.decode(controller.chatData!.data!.data![index].media!))):Container(),
+                            controller.chatData!.data!.data![index].msg == null?Container(): Text(controller.chatData!.data!.data![index].msg.toString(),
+                              style: TextStyle(
+                                fontSize: 12
+                                ,color: Colors.black87,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(right: 3.0),
+                                child:Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 3),
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Text('${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    controller.chatData!.data!.data![index].isSeen==1? Icon(Icons.done_all,
+                                      size: 13,
+                                      color: Colors.blue,
+                                    ):Icon(Icons.check,
+                                      size: 13,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                )
+                            )
+                          ],
+                        ),
+                      ),
+
+                ) :
+                Flexible(
+                  flex: 2,
+                  child:
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: 250,
+                          minWidth: 20,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8)
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            controller.chatData!.data!.data![index].parentChat ==null? SizedBox.shrink():
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                              ),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await controller.scroll(
+                                      int.parse(json.decode(controller.chatData!.data!.data![index].parentChat!)['id']
+                                          .toString(),
+                                      ),
+                                      index);
+                                },
+                                child: Container(
+                                  width: Get.width,
+                                  padding: EdgeInsets.all(6),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id'] == API().sp.read("userId")? "You": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['name'],
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      controller.chatData!.data!.data![index].parentChat != null? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] == null?
+                                      Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ==null?reportName: jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'],
+                                        maxLines: 3,):
+                                      jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] == null?
+                                      Container(
+                                       height: 55,
+                                       width: 60,
+                                       decoration: BoxDecoration(
+                                         image: DecorationImage(
+                                           image: NetworkImage(
+                                               jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'])[0]['filename'])
+                                        ,fit: BoxFit.fill )
+                                       ),
+                                     ) :
+                                      ((json.decode(controller.chatData!.data!.data![index].parentChat!)['msg'] !=null) && (jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] !=null))?
+                                      Row(
+                                        children: [
+                                         Padding(
+                                           padding: EdgeInsets.only(right: 4.0),
+                                           child: Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg']),
+                                         ),
+                                          Container(
+                                            height: 20,
+                                            width: 20,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: NetworkImage(jsonDecode(
+                                                        jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'])[0]['filename'])
+                                                )
+                                            ),
+                                          ),
+                                        ],
+                                      ) :
+                                      Text(
+                                          json.decode(controller.chatData!.data!.data![index].parentChat!)['is_deleted'] == 1? "Message are deleted": json.decode(controller.chatData!.data!.data![index].parentChat!)['msg']
+                                          .toString(),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                        maxLines: 3,
+                                      ):Container(),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                        left: BorderSide(
+                                            color: Colors.white,
+                                            width: 5
+                                        ),
+                                      ),
+                                      color: Colors.grey
+                                  ),
+                                ),
+                              ),
+                            ),
+                            (controller.chatData!.data!.data![index].msg != null && controller.chatData!.data!.data![index].media == null)? Padding(
+                              padding: EdgeInsets.only(top:controller.chatData!.data!.data![index].parentChat !=null? 6.0:0),
+                              child: Text(controller.chatData!.data!.data![index].msg.toString(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ):SizedBox.shrink(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 3),
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text('${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 3.0),
+                                  child:controller.chatData!.data!.data![index].isSeen==1? Icon(Icons.done_all,
+                                    size: 13,
+                                    color: Colors.blue,
+                                  ):Icon(Icons.check,
+                                    size: 13,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                ),
+              ],
+            )
+        ),
+      ),
+    ),
+  );
+}
+
+/// long press to delete or reply
+ onLongPress(context, index, element,_controller,_tapDownPosition) {
+  final RenderBox overlay =
+  Overlay.of(context).context.findRenderObject() as RenderBox;
+  showMenu(
+    color: Colors.transparent,
+    useRootNavigator: true,
+    items: <PopupMenuEntry>[
+      PopupMenuItem(
+        value: index,
+        padding: EdgeInsets.zero,
+        child: _controller.chatTilePopUp(element, context, index),
+      )
+    ],
+    context: context,
+    position: RelativeRect.fromLTRB(
+      _tapDownPosition!.dx,
+      _tapDownPosition!.dy,
+      overlay.size.width - _tapDownPosition!.dx,
+      overlay.size.height - _tapDownPosition!.dy,
+    ),
+  );
+}

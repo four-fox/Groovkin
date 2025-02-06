@@ -183,35 +183,69 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                           padding: EdgeInsets.zero,
                           itemBuilder: (BuildContext context, index) {
                             final hardwareData = data.hardwareProvides[index];
-                            return Padding(
-                              padding: EdgeInsets.only(left: 12.0, top: 6),
-                              child: Row(
-                                children: [
-                                  Image(
-                                    image: hardwareData.image != null
-                                        ? NetworkImage(Url().imageUrl +
-                                            hardwareData.image!)
-                                        : AssetImage("assets/djing.png")
-                                            as ImageProvider,
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 12.0, top: 6),
+                                  child: Row(
+                                    children: [
+                                      // Image(
+                                      //   image: hardwareData.image != null
+                                      //       ? NetworkImage(Url().imageUrl +
+                                      //       hardwareData.image!)
+                                      //       : AssetImage("assets/djing.png")
+                                      //   as ImageProvider,
+                                      // ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 3.0),
+                                        child: Text(
+                                          hardwareData.name,
+                                          style: poppinsRegularStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                              color: theme.primaryColor,
+                                              context: context),
+                                        ),
+                                      ),
+                                      // Icon(
+                                      //   Icons.check,
+                                      //   color: DynamicColor.lightRedClr,
+                                      //   size: 17,
+                                      // )
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 3.0),
-                                    child: Text(
-                                      hardwareData.name,
-                                      style: poppinsRegularStyle(
-                                          fontSize: 13,
-                                          color: theme.primaryColor,
-                                          context: context),
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.check,
-                                    color: DynamicColor.lightRedClr,
-                                    size: 17,
-                                  )
-                                ],
-                              ),
+                                ),
+                                ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: hardwareData.categoryItems.length,
+                                    itemBuilder: (BuildContext context,indexxx){
+                                      return Padding(
+                                        padding: EdgeInsets.only(left: 12.0, top: 6),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 3.0),
+                                              child: Text(
+                                                hardwareData.categoryItems[indexxx].name,
+                                                style: poppinsRegularStyle(
+                                                    fontSize: 13,
+                                                    color: theme.primaryColor,
+                                                    context: context),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.check,
+                                              color: DynamicColor.lightRedClr,
+                                              size: 17,
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                              ],
                             );
                           }),
                     SizedBox(

@@ -12,6 +12,6 @@ class Url {
 
   ///Development Server
   String baseUrl = 'https://groovkin.gologonow.app/api/';
-  String socketUrl = 'ws://18.222.137.176:8071/safetypoint';
+  String socketUrl = 'http://45.85.146.219:9012';
   String imageUrl = 'https://groovkin.gologonow.app/';
 }
