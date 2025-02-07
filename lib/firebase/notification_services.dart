@@ -104,32 +104,49 @@ class NotificationService {
   }
 
   //! Todo showNotification
+  //! Todo showNotification
   Future<void> showNotification(RemoteMessage message) async {
+    // Check if message.notification is null (important for silent notifications)
+    if (message.notification == null) return;
+
+    // Define a default notification channel ID (for Android)
+    String channelId = "default_channel";
+    String channelName = "General Notifications";
+
+    if (Platform.isAndroid && message.notification!.android != null) {
+      channelId = message.notification!.android!.channelId ?? "default_channel";
+      channelName = message.notification!.android!.channelId ?? "General Notifications";
+    }
+
+    // Android Notification Channel (Avoid null errors)
     AndroidNotificationChannel channel = AndroidNotificationChannel(
-      message.notification!.android!.channelId.toString(),
-      message.notification!.android!.channelId.toString(),
+      channelId,
+      channelName,
       importance: Importance.max,
       showBadge: true,
       playSound: true,
     );
 
+    // Android Notification Details
     AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      channel.id.toString(),
-      channel.name.toString(),
+    AndroidNotificationDetails(
+      channel.id, // Use the non-null channel ID
+      channel.name,
       importance: Importance.high,
       priority: Priority.high,
       ticker: "ticker",
       playSound: true,
     );
 
+    // iOS Notification Details
     DarwinNotificationDetails darwinNotificationDetails =
-        const DarwinNotificationDetails(
+    const DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
     );
 
+    // Combine Android & iOS notification details
     NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
       iOS: darwinNotificationDetails,
@@ -138,8 +155,8 @@ class NotificationService {
     Future.delayed(Duration.zero, () {
       localNotificationsPlugin.show(
         message.hashCode, // Unique ID for the notification
-        message.notification!.title.toString(),
-        message.notification!.body.toString(),
+        message.notification!.title ?? "New Notification",
+        message.notification!.body ?? "Tap to open",
         notificationDetails,
       );
     });

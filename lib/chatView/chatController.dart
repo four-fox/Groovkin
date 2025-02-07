@@ -249,6 +249,7 @@ class ChatController extends GetxController{
   ChatInnerDataModel? chatData;
   getAllChat({id,nextUrl}) async{
       if(nextUrl == null){
+        initDatabase();
         getAllChatLoader(false);
       }
       var formData = form.FormData.fromMap({
@@ -257,6 +258,7 @@ class ChatController extends GetxController{
       var response = await API().postApi(formData,"chats");
       if(response.statusCode == 200){
         if(nextUrl == null){
+
           chatData = null;
           chatData = ChatInnerDataModel.fromJson(response.data);
           chatWait = false;
@@ -277,14 +279,16 @@ class ChatController extends GetxController{
         }
         getAllChatLoader(true);
         update();
-        insertChatDatabase();
+        if(chatData!.data!.data!.isNotEmpty){
+          insertChatDatabase();
+        }
       }
   }
 
   ///send message
   sendMessage({receiverId}) async{
-    try{
       if (multipleImageList.isNotEmpty) {
+        chatFileList.clear();
         for (int i = 0; i < multipleImageList.length; i++) {
           chatFileList.add(form.MultipartFile.fromFileSync(
             multipleImageList[i].filename!,
@@ -315,9 +319,6 @@ class ChatController extends GetxController{
         clearData();
         update();
       }
-    }catch (e){
-      print(e);
-    }
   }
 
   clearData() async{
@@ -428,20 +429,16 @@ class ChatController extends GetxController{
 
   /// seen all message
   messageSeen(conversationId) async {
-    try{
-      var formData = form.FormData.fromMap({
-        'chat_id': conversationId,
-      });
-      var response = await API().postApi(formData,'all-message-seen');
-      if (response.statusCode == 200) {
-        for (int i = 0; i < chatData!.data!.data!.length; i++) {
-          chatData!.data!.data![i].isSeen = 1;
-          // seenMessageSocket(innerScreenChatData!.data!.data![i].id, i);
-          update();
-        }
+    var formData = form.FormData.fromMap({
+      'conversation_id': conversationId,
+    });
+    var response = await API().postApi(formData,'all-message-seen');
+    if (response.statusCode == 200) {
+      for (int i = 0; i < chatData!.data!.data!.length; i++) {
+        chatData!.data!.data![i].isSeen = 1;
+        // seenMessageSocket(innerScreenChatData!.data!.data![i].id, i);
+        update();
       }
-    }catch(e){
-      print(e);
     }
   }
 

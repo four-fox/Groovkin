@@ -91,7 +91,7 @@ class ChatRoomScreen extends StatelessWidget {
                       arguments: {
                         "userData": chatRoomData.user
                       }
-                  );
+                  )!.then((onValue) => controller.getAllChatRoom());
                 },
                 shape: Border(
                   bottom: BorderSide(color: theme.primaryColor.withOpacity(0.7)),

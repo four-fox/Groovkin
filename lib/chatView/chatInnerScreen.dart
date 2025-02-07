@@ -77,6 +77,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
     _controller.isReplying(false);
     _controller.replyId = null;
 
+
     _controller.multipleImageList.clear();
     _controller.messageController.clear();
     userData = Get.arguments['userData'];
@@ -557,11 +558,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               if(controller.messageController.text.isNotEmpty || controller.multipleImageList.isNotEmpty){
                 _controller.sendMessage(receiverId: userData!.id);
               }else{
-                Get.snackbar("Message", "Please write something",
-                duration: Duration(milliseconds: 1200),
-                  backgroundColor: Color(0xff00327A),
-                  colorText: Colors.white
-                );
+                bottomToast(text: "Please write something");
                 // BotToast.showText(text: "Please write something");
               }
               ///Todo latter on
