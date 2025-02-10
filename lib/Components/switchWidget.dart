@@ -507,13 +507,18 @@ locationWidget({text, theme, context, Color? bgClr, double? verticalPadding}) {
             AssetImage("assets/location.png"),
             color: DynamicColor.grayClr,
           ),
-          Text(
-            'Herkimer County Fairgrounds',
-            style: poppinsRegularStyle(
-                fontSize: 11,
-                context: context,
-                color: theme.primaryColor,
-                fontWeight: FontWeight.w600),
+          SizedBox(
+            width: Get.width/2.3,
+            child: Text(
+              text??'Herkimer County Fairgrounds',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: poppinsRegularStyle(
+                  fontSize: 11,
+                  context: context,
+                  color: theme.primaryColor,
+                  fontWeight: FontWeight.w600),
+            ),
           )
         ],
       ),

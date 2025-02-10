@@ -11,6 +11,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 import '../Components/Network/API.dart';
 import '../Components/colors.dart';
+import '../View/GroovkinUser/UserBottomView/groupFlow/theSquadScreen.dart';
 import 'chatController.dart';
 import 'chatInnerDataModel.dart';
 import 'chatNewUserModel.dart';
@@ -216,13 +217,18 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    userData!.profile!.fullName! ,style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 17,
-                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Get.to(TheSquadScreen());
+                                    },
+                                    child: Text(
+                                      userData!.profile!.fullName! ,style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 17,
+                                    ),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 1,
@@ -402,7 +408,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               ),
               maxLines: 3,
             ) :controller.replyModel!.media == null && controller.replyModel!.msg == null ?
-            Text(json.decode(controller.replyModel.report!)['name'].replaceAll("-", " ").toString().capitalize!,
+            Text(json.decode(controller.replyModel.event!)['event_title'].toString().capitalize!,
               style: TextStyle(
                   color: Colors.black87
               ),

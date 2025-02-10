@@ -86,3 +86,10 @@ extension DateOnlyCompare on DateTime {
     return year == other.year && month == other.month && day == other.day;
   }
 }
+
+
+String formatShortMonth(String dateTime) {
+  DateTime parsedDate = DateTime.parse(dateTime);
+  String formattedDate = DateFormat('MMM').format(parsedDate); // 'MMM' gives short month format
+  return formattedDate;
+}

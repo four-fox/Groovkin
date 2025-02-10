@@ -135,7 +135,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Container(
+                                      appBarTitle ==""?SizedBox.shrink(): Container(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 18),
                                         decoration: BoxDecoration(

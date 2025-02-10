@@ -258,7 +258,6 @@ class ChatController extends GetxController{
       var response = await API().postApi(formData,"chats");
       if(response.statusCode == 200){
         if(nextUrl == null){
-
           chatData = null;
           chatData = ChatInnerDataModel.fromJson(response.data);
           chatWait = false;
@@ -528,6 +527,7 @@ class ChatController extends GetxController{
         flaggedBy: maps[i]["flagged_by"],
         user: maps[i]["user"],
         parentChat: maps[i]['parent_chat'],
+        event: maps[i]["event"],
       );
     });
   }

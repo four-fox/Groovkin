@@ -112,7 +112,7 @@ class ChatRoomScreen extends StatelessWidget {
                 subtitle:chatRoomData.lastMessage!.media !=null?Align(
                     alignment: Alignment.centerLeft,
                     child: Icon(Icons.photo)): Text(
-                  chatRoomData.lastMessage!.sourceId !=null?"": chatRoomData.lastMessage!.msg!,
+                  chatRoomData.lastMessage!.sourceId !=null?"created event message": chatRoomData.lastMessage!.msg!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: poppinsRegularStyle(

@@ -7,17 +7,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:groovkin/Components/Network/Url.dart';
+import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:intl/intl.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 import '../Components/Network/API.dart';
+import '../Components/switchWidget.dart';
+import '../Components/textStyle.dart';
 import '../Components/timeAgoWidget.dart';
+import '../Routes/app_pages.dart';
 import 'chatController.dart';
 import 'chatInnerDataModel.dart';
 import 'chatInnerScreen.dart';
 
 Widget messageWidget({ctx, ChatData? element, index,required ChatController controller,tapDownPosition,imageList}){
   String? reportName;
+  var theme = Theme.of(ctx);
   if(controller.chatData!.data!.data![index].parentChat != null && jsonDecode(controller.chatData!.data!.data![index].parentChat!)['report'] != null){
     Map<String, dynamic> data = json.decode(controller.chatData!.data!.data![index].parentChat!);
     reportName = json.decode(data['report'])['name'];
@@ -47,7 +53,124 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
         onLongPress: (){
           onLongPress(ctx, index, element,controller,tapDownPosition);
         },
-        child: Padding(
+        child:
+        controller.chatData!.data!.data![index].sourceId !="null"?
+        GestureDetector(
+          onTap: () {
+            // Get.toNamed(Routes.userEventDetailsScreen, arguments: {
+            //   "notify": true,
+            //   'notifyBackBtn': false,
+            //   "statusText": "adsf",
+            //   "appBarTitle": "Event Preview",
+            //   "notifyBackBtn": true,
+            // });
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 12.0),
+            child: Align(
+              alignment: controller.chatData!.data!.data![index].senderId != API().sp.read('userId')
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+              child: Container(
+                width: Get.width / 1.4,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: DecorationImage(
+                    image: AssetImage("assets/grayClor.png"),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0, left: 8),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage:
+                            NetworkImage(
+                            Url().imageUrl+ jsonDecode(controller.chatData!.data!.data![index].event!)['banner_image']['media_path'],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
+                                // jsonDecode(
+                                    // jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id']
+                                jsonDecode(controller.chatData!.data!.data![index].event!)['venue']['venue_name'],
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: ctx,
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: kToolbarHeight * 3,
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      // height: kToolbarHeight*2,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(Url().imageUrl+ jsonDecode(controller.chatData!.data!.data![index].event!)['profile_picture'][0]['media_path'],),
+                              fit: BoxFit.fill)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding:
+                                EdgeInsets.only(right: 8, top: 8),
+                                child: eventDateWidget(
+                                  date: "${DateTime.parse(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']).day} ",
+                                   day:formatShortMonth(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']),
+                                    theme: theme, context: ctx),
+                              )),
+                          locationWidget(
+                              text:  jsonDecode(controller.chatData!.data!.data![index].event!)['location'],
+                              theme: theme, context: ctx)
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0, bottom: 6),
+                      child: Text(
+                          jsonDecode(controller.chatData!.data!.data![index].event!)['event_title'],
+                        // "The Burning Cactus",
+                        style: poppinsRegularStyle(
+                            fontSize: 11,
+                            context: ctx,
+                            color: DynamicColor.grayClr),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomButton(
+                        onTap: (){
+                          Get.toNamed(Routes.upcomingScreen,
+                              arguments: {
+                                "eventId": int.parse(controller.chatData!.data!.data![index].sourceId!),
+                                "reportedEventView": 1,
+                                "notInterestedBtn": 1,
+                                "appBarTitle": ""
+                                // "${singleEvent.status.toString().capitalize} Event"
+                              });
+                        },
+                        borderClr: Colors.transparent,
+                        text: "View Details",
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ):
+        Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
             child:controller.chatData!.data!.data![index].senderId != API().sp.read('userId') ?
             Row(
@@ -69,6 +192,7 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
                     ),
                   ),
                 ):
+
                 controller.chatData!.data!.data![index].media !=null?
                 Flexible(
                   flex:

@@ -122,6 +122,7 @@ class ChatData {
   String? updatedAt;
   String? user;
   String? parentChat;
+  String? event;
 
   ChatData({
     this.id,
@@ -144,13 +145,14 @@ class ChatData {
     this.updatedAt,
     this.user,
     this.parentChat,
+    this.event,
   });
 
   factory ChatData.fromJson(Map<String, dynamic> json) => ChatData(
     id: json["id"],
     senderId: json["sender_id"],
     receiverId: json["receiver_id"],
-    sourceId: json["source_id"] ?? "null",
+    sourceId: json["source_id"].toString(),
     parentId: json["parent_id"],
     conversationId: json["conversation_id"],
     msg: json["msg"],
@@ -179,6 +181,7 @@ class ChatData {
         ? null
         : j.json.encode(User.fromJson(json["user"])),
     parentChat: json["parent_chat"] == null ? null : j.json.encode(ChatData.fromJson(json["parent_chat"])),
+    event: json["event"] == null ? null : j.json.encode(Event.fromJson(json["event"])),
   );
 
   Map<String, dynamic> toJson() => {
@@ -202,8 +205,311 @@ class ChatData {
     "updated_at": updatedAt,
     "user": user,
     "parent_chat": parentChat,
+    "event": event,
   };
 }
+
+class Event {
+  int? id;
+  String? eventTitle;
+  String? featuring;
+  String? about;
+  String? themeOfEvent;
+  DateTime? startDateTime;
+  DateTime? endDateTime;
+  dynamic maxCapacity;
+  String? rate;
+  String? downPayment;
+  String? balanceDue;
+  String? totalAmount;
+  String? rateType;
+  String? paymentSchedule;
+  String? comment;
+  String? location;
+  String? latitude;
+  String? longitude;
+  dynamic description;
+  int? userId;
+  int? venueId;
+  dynamic acceptedBy;
+  dynamic parentId;
+  int? saveDraft;
+  String? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  List<ProfilePicture>? profilePicture;
+  Venue? venue;
+  BannerImage? bannerImage;
+
+  Event({
+    this.id,
+    this.eventTitle,
+    this.featuring,
+    this.about,
+    this.themeOfEvent,
+    this.startDateTime,
+    this.endDateTime,
+    this.maxCapacity,
+    this.rate,
+    this.downPayment,
+    this.balanceDue,
+    this.totalAmount,
+    this.rateType,
+    this.paymentSchedule,
+    this.comment,
+    this.location,
+    this.latitude,
+    this.longitude,
+    this.description,
+    this.userId,
+    this.venueId,
+    this.acceptedBy,
+    this.parentId,
+    this.saveDraft,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.profilePicture,
+    this.venue,
+    this.bannerImage,
+  });
+
+  factory Event.fromJson(Map<String, dynamic> json) => Event(
+    id: json["id"],
+    eventTitle: json["event_title"],
+    featuring: json["featuring"],
+    about: json["about"],
+    themeOfEvent: json["theme_of_event"],
+    startDateTime: json["start_date_time"] == null ? null : DateTime.parse(json["start_date_time"]),
+    endDateTime: json["end_date_time"] == null ? null : DateTime.parse(json["end_date_time"]),
+    maxCapacity: json["max_capacity"],
+    rate: json["rate"],
+    downPayment: json["down_payment"],
+    balanceDue: json["balance_due"],
+    totalAmount: json["total_amount"],
+    rateType: json["rate_type"],
+    paymentSchedule: json["payment_schedule"],
+    comment: json["comment"],
+    location: json["location"],
+    latitude: json["latitude"],
+    longitude: json["longitude"],
+    description: json["description"],
+    userId: json["user_id"],
+    venueId: json["venue_id"],
+    acceptedBy: json["accepted_by"],
+    parentId: json["parent_id"],
+    saveDraft: json["save_draft"],
+    status: json["status"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    profilePicture: json["profile_picture"] == null ? [] : List<ProfilePicture>.from(json["profile_picture"]!.map((x) => ProfilePicture.fromJson(x))),
+    bannerImage: json["banner_image"] == null ? null : BannerImage.fromJson(json["banner_image"]),
+    venue: json["venue"] == null ? null : Venue.fromJson(json["venue"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "event_title": eventTitle,
+    "featuring": featuring,
+    "about": about,
+    "theme_of_event": themeOfEvent,
+    "start_date_time": startDateTime?.toIso8601String(),
+    "end_date_time": endDateTime?.toIso8601String(),
+    "max_capacity": maxCapacity,
+    "rate": rate,
+    "down_payment": downPayment,
+    "balance_due": balanceDue,
+    "total_amount": totalAmount,
+    "rate_type": rateType,
+    "payment_schedule": paymentSchedule,
+    "comment": comment,
+    "location": location,
+    "latitude": latitude,
+    "longitude": longitude,
+    "description": description,
+    "user_id": userId,
+    "venue_id": venueId,
+    "accepted_by": acceptedBy,
+    "parent_id": parentId,
+    "save_draft": saveDraft,
+    "status": status,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+    "profile_picture": profilePicture == null ? [] : List<dynamic>.from(profilePicture!.map((x) => x.toJson())),
+    "banner_image": bannerImage?.toJson(),
+    "venue": venue?.toJson(),
+  };
+}
+
+
+class BannerImage {
+  int? id;
+  String? mediaFor;
+  dynamic thumbnail;
+  String? mediaPath;
+  String? mediaType;
+  String? galleryableType;
+  int? galleryableId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  BannerImage({
+    this.id,
+    this.mediaFor,
+    this.thumbnail,
+    this.mediaPath,
+    this.mediaType,
+    this.galleryableType,
+    this.galleryableId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory BannerImage.fromJson(Map<String, dynamic> json) => BannerImage(
+    id: json["id"],
+    mediaFor: json["media_for"],
+    thumbnail: json["thumbnail"],
+    mediaPath: json["media_path"],
+    mediaType: json["media_type"],
+    galleryableType: json["galleryable_type"],
+    galleryableId: json["galleryable_id"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "media_for": mediaFor,
+    "thumbnail": thumbnail,
+    "media_path": mediaPath,
+    "media_type": mediaType,
+    "galleryable_type": galleryableType,
+    "galleryable_id": galleryableId,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+  };
+}
+
+class ProfilePicture {
+  int? id;
+  String? mediaFor;
+  dynamic thumbnail;
+  String? mediaPath;
+  String? mediaType;
+  String? galleryableType;
+  int? galleryableId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  ProfilePicture({
+    this.id,
+    this.mediaFor,
+    this.thumbnail,
+    this.mediaPath,
+    this.mediaType,
+    this.galleryableType,
+    this.galleryableId,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory ProfilePicture.fromJson(Map<String, dynamic> json) => ProfilePicture(
+    id: json["id"],
+    mediaFor: json["media_for"],
+    thumbnail: json["thumbnail"],
+    mediaPath: json["media_path"],
+    mediaType: json["media_type"],
+    galleryableType: json["galleryable_type"],
+    galleryableId: json["galleryable_id"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "media_for": mediaFor,
+    "thumbnail": thumbnail,
+    "media_path": mediaPath,
+    "media_type": mediaType,
+    "galleryable_type": galleryableType,
+    "galleryable_id": galleryableId,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+  };
+}
+
+class Venue {
+  int? id;
+  String? location;
+  String? venueName;
+  String? streetAddress;
+  String? state;
+  dynamic city;
+  String? zipCode;
+  String? phoneNumber;
+  String? latitude;
+  String? longitude;
+  int? userId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  User? user;
+  List<ProfilePicture>? profilePicture;
+
+  Venue({
+    this.id,
+    this.location,
+    this.venueName,
+    this.streetAddress,
+    this.state,
+    this.city,
+    this.zipCode,
+    this.phoneNumber,
+    this.latitude,
+    this.longitude,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
+    this.user,
+    this.profilePicture,
+  });
+
+  factory Venue.fromJson(Map<String, dynamic> json) => Venue(
+    id: json["id"],
+    location: json["location"],
+    venueName: json["venue_name"],
+    streetAddress: json["street_address"],
+    state: json["state"],
+    city: json["city"],
+    zipCode: json["zip_code"],
+    phoneNumber: json["phone_number"],
+    latitude: json["latitude"],
+    longitude: json["longitude"],
+    userId: json["user_id"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    profilePicture: json["profile_picture"] == null ? [] : List<ProfilePicture>.from(json["profile_picture"]!.map((x) => ProfilePicture.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "location": location,
+    "venue_name": venueName,
+    "street_address": streetAddress,
+    "state": state,
+    "city": city,
+    "zip_code": zipCode,
+    "phone_number": phoneNumber,
+    "latitude": latitude,
+    "longitude": longitude,
+    "user_id": userId,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+    "user": user?.toJson(),
+    "profile_picture": profilePicture == null ? [] : List<dynamic>.from(profilePicture!.map((x) => x.toJson())),
+  };
+}
+
 
 class User {
   int? id;
