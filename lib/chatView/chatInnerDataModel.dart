@@ -118,6 +118,7 @@ class ChatData {
   int? isEventRequest;
   String? eventRequestAccepted;
   int? flaggedBy;
+  String? type;
   String? createdAt;
   String? updatedAt;
   String? user;
@@ -138,6 +139,7 @@ class ChatData {
     this.deleteBy,
     this.isDeleted,
     this.isSeen,
+    this.type,
     this.isEventRequest,
     this.eventRequestAccepted,
     this.flaggedBy,
@@ -175,6 +177,7 @@ class ChatData {
     isEventRequest: json["is_event_request"],
     eventRequestAccepted: json["event_request_accepted"],
     flaggedBy: json["flagged_by"],
+    type: json["type"],
     createdAt: json["created_at"],
     updatedAt: json["updated_at"],
     user: json["user"] == null
@@ -201,6 +204,7 @@ class ChatData {
     "is_event_request": isEventRequest,
     "event_request_accepted": eventRequestAccepted,
     "flagged_by": flaggedBy,
+    "type": type,
     "created_at": createdAt,
     "updated_at": updatedAt,
     "user": user,

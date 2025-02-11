@@ -197,8 +197,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                               child: CircleAvatar(
                                   radius: 20,
                                   backgroundImage:
-                                  NetworkImage(groupPlaceholder)
-                                  // NetworkImage(userData!.profilePicture!)
+                                  // NetworkImage(groupPlaceholder)
+                                  NetworkImage(userData!.profilePicture!)
                               ),
                             ),
                             SizedBox(
@@ -217,18 +217,13 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  GestureDetector(
-                                    onTap: (){
-                                      Get.to(TheSquadScreen());
-                                    },
-                                    child: Text(
-                                      userData!.profile!.fullName! ,style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 17,
-                                    ),
-                                    ),
+                                  Text(
+                                    userData!.profile!.fullName! ,style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                  ),
                                   ),
                                   SizedBox(
                                     height: 1,

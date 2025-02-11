@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/chatView/chatController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 
@@ -43,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    final ChatController _controller = Get.put(ChatController());
     //Todo Firebase Notification Start
 
     notificationService.requestNotificationPermission();

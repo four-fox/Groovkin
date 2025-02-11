@@ -109,14 +109,15 @@ class ChatRoomScreen extends StatelessWidget {
                     color: theme.primaryColor,
                   ),
                 ),
-                subtitle:chatRoomData.lastMessage!.media !=null?Align(
+                subtitle: ((chatRoomData.lastMessage!.media !=null) && chatRoomData.lastMessage!.isDeleted ==0)?Align(
                     alignment: Alignment.centerLeft,
                     child: Icon(Icons.photo)): Text(
+                  chatRoomData.lastMessage!.isDeleted ==1?"Message have been deleted":
                   chatRoomData.lastMessage!.sourceId !=null?"created event message": chatRoomData.lastMessage!.msg!,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: poppinsRegularStyle(
-                    fontSize: chatRoomData.lastMessage!.sourceId !=null?16: 14,
+                    fontSize: ((chatRoomData.lastMessage!.sourceId !=null) && (chatRoomData.lastMessage!.isDeleted ==0))?16: 14,
                     context: context,
                     fontWeight: chatRoomData.lastMessage!.sourceId !=null?FontWeight.w700: FontWeight.w600,
                     color: theme.primaryColor.withOpacity(0.8),

@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/chatView/seenUnseenWidgets.dart';
 import 'package:intl/intl.dart';
 import 'package:swipe_to/swipe_to.dart';
 
@@ -22,13 +23,8 @@ import 'chatInnerDataModel.dart';
 import 'chatInnerScreen.dart';
 
 Widget messageWidget({ctx, ChatData? element, index,required ChatController controller,tapDownPosition,imageList}){
-  String? reportName;
   var theme = Theme.of(ctx);
-  if(controller.chatData!.data!.data![index].parentChat != null && jsonDecode(controller.chatData!.data!.data![index].parentChat!)['report'] != null){
-    Map<String, dynamic> data = json.decode(controller.chatData!.data!.data![index].parentChat!);
-    reportName = json.decode(data['report'])['name'];
-    print(reportName.toString().replaceAll("-", " ").capitalize);
-  }
+
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: SwipeTo(
@@ -55,117 +51,134 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
         },
         child:
         controller.chatData!.data!.data![index].sourceId !="null"?
-        GestureDetector(
-          onTap: () {
-            // Get.toNamed(Routes.userEventDetailsScreen, arguments: {
-            //   "notify": true,
-            //   'notifyBackBtn': false,
-            //   "statusText": "adsf",
-            //   "appBarTitle": "Event Preview",
-            //   "notifyBackBtn": true,
-            // });
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.0),
-            child: Align(
-              alignment: controller.chatData!.data!.data![index].senderId != API().sp.read('userId')
-                          ? Alignment.centerLeft
-                          : Alignment.centerRight,
-              child: Container(
-                width: Get.width / 1.4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    image: AssetImage("assets/grayClor.png"),
-                    fit: BoxFit.fill,
-                  ),
+        controller.chatData!.data!.data![index].isDeleted ==1? Align(
+          alignment: controller.chatData!.data!.data![index].senderId != API().sp.read('userId')
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
+          child:  Container(
+            height: 55,
+          width: Get.width/1.4,
+            padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+                color: Colors.red.withOpacity(0.5),
+                // borderRadius: BorderRadius.circular(30)
+            ),
+            child: Center(
+              child: Text("Message have been deleted",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.white,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.0, left: 8),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage:
-                            NetworkImage(
-                            Url().imageUrl+ jsonDecode(controller.chatData!.data!.data![index].event!)['banner_image']['media_path'],
+              ),
+            ),
+          ),
+        ):
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.0),
+          child: Align(
+            alignment: controller.chatData!.data!.data![index].senderId != API().sp.read('userId')
+                        ? Alignment.centerLeft
+                        : Alignment.centerRight,
+            child: Container(
+              width: Get.width / 1.4,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  image: AssetImage("assets/grayClor.png"),
+                  fit: BoxFit.fill,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.0, left: 8),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage:
+                          NetworkImage(
+                          Url().imageUrl+ jsonDecode(controller.chatData!.data!.data![index].event!)['banner_image']['media_path'],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text(
+                              // jsonDecode(
+                                  // jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id']
+                              jsonDecode(controller.chatData!.data!.data![index].event!)['venue']['venue_name'],
+                            style: poppinsMediumStyle(
+                              fontSize: 14,
+                              context: ctx,
+                              color: theme.primaryColor,
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text(
-                                // jsonDecode(
-                                    // jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id']
-                                jsonDecode(controller.chatData!.data!.data![index].event!)['venue']['venue_name'],
-                              style: poppinsMediumStyle(
-                                fontSize: 14,
-                                context: ctx,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                    Container(
-                      height: kToolbarHeight * 3,
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      // height: kToolbarHeight*2,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(Url().imageUrl+ jsonDecode(controller.chatData!.data!.data![index].event!)['profile_picture'][0]['media_path'],),
-                              fit: BoxFit.fill)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: Padding(
-                                padding:
-                                EdgeInsets.only(right: 8, top: 8),
-                                child: eventDateWidget(
-                                  date: "${DateTime.parse(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']).day} ",
-                                   day:formatShortMonth(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']),
-                                    theme: theme, context: ctx),
-                              )),
-                          locationWidget(
-                              text:  jsonDecode(controller.chatData!.data!.data![index].event!)['location'],
-                              theme: theme, context: ctx)
-                        ],
-                      ),
+                  ),
+                  Container(
+                    height: kToolbarHeight * 3,
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    // height: kToolbarHeight*2,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(Url().imageUrl+ jsonDecode(controller.chatData!.data!.data![index].event!)['profile_picture'][0]['media_path'],),
+                            fit: BoxFit.fill)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding:
+                              EdgeInsets.only(right: 8, top: 8),
+                              child: eventDateWidget(
+                                date: "${DateTime.parse(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']).day} ",
+                                 day:formatShortMonth(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']),
+                                  theme: theme, context: ctx),
+                            )),
+                        locationWidget(
+                            text:  jsonDecode(controller.chatData!.data!.data![index].event!)['location'],
+                            theme: theme, context: ctx)
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.0, bottom: 6),
-                      child: Text(
-                          jsonDecode(controller.chatData!.data!.data![index].event!)['event_title'],
-                        // "The Burning Cactus",
-                        style: poppinsRegularStyle(
-                            fontSize: 11,
-                            context: ctx,
-                            color: DynamicColor.grayClr),
-                      ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.0, bottom: 6),
+                    child: Text(
+                        jsonDecode(controller.chatData!.data!.data![index].event!)['event_title'],
+                      // "The Burning Cactus",
+                      style: poppinsRegularStyle(
+                          fontSize: 11,
+                          context: ctx,
+                          color: DynamicColor.grayClr),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomButton(
-                        onTap: (){
-                          Get.toNamed(Routes.upcomingScreen,
-                              arguments: {
-                                "eventId": int.parse(controller.chatData!.data!.data![index].sourceId!),
-                                "reportedEventView": 1,
-                                "notInterestedBtn": 1,
-                                "appBarTitle": ""
-                                // "${singleEvent.status.toString().capitalize} Event"
-                              });
-                        },
-                        borderClr: Colors.transparent,
-                        text: "View Details",
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomButton(
+                      onTap: (){
+                        Get.toNamed(Routes.upcomingScreen,
+                            arguments: {
+                              "eventId": int.parse(controller.chatData!.data!.data![index].sourceId!),
+                              "reportedEventView": 1,
+                              "notInterestedBtn": 1,
+                              "appBarTitle": ""
+                              // "${singleEvent.status.toString().capitalize} Event"
+                            });
+                      },
+                      borderClr: Colors.transparent,
+                      text: "View Details",
+                    ),
+                  ),
+                  controller.chatData!.data!.data![index].senderId != API().sp.read('userId')
+                      ?SizedBox.shrink(): Padding(
+                    padding: const EdgeInsets.only(right: 6.0,bottom: 6),
+                    child: SeenUnseenWidget(chatData: controller.chatData!.data!.data![index],),
+                  ),
+                ],
               ),
             ),
           ),
@@ -327,7 +340,7 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
                                         style: TextStyle(fontSize: 12,color: Colors.white),
                                       ),
                                       controller.chatData!.data!.data![index].parentChat != null? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] == null?
-                                      Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ?? reportName!.replaceAll("-", " ").capitalize,
+                                      Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ?? jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title'],
                                       maxLines: 3,
                                         style: TextStyle(
                                           color: DynamicColor.blackClr
@@ -427,7 +440,8 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Spacer(),
-                controller.chatData!.data!.data![index].isDeleted ==1 ? Container(
+                controller.chatData!.data!.data![index].isDeleted ==1 ?
+                Container(
                   padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
                   decoration: BoxDecoration(
                     color: Colors.red.withOpacity(0.5),
@@ -514,33 +528,34 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            Padding(
-                                padding: EdgeInsets.only(right: 3.0),
-                                child:Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 3),
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Text('${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    controller.chatData!.data!.data![index].isSeen==1? Icon(Icons.done_all,
-                                      size: 13,
-                                      color: Colors.blue,
-                                    ):Icon(Icons.check,
-                                      size: 13,
-                                      color: Colors.grey,
-                                    ),
-                                  ],
-                                )
-                            )
+                            SeenUnseenWidget(chatData: controller.chatData!.data!.data![index],),
+                            // Padding(
+                            //     padding: EdgeInsets.only(right: 3.0),
+                            //     child:Row(
+                            //       mainAxisAlignment: MainAxisAlignment.end,
+                            //       children: [
+                            //         Padding(
+                            //           padding: EdgeInsets.only(right: 3),
+                            //           child: Align(
+                            //             alignment: Alignment.bottomRight,
+                            //             child: Text('${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
+                            //               style: TextStyle(
+                            //                 fontSize: 10,
+                            //                 color: Colors.black87,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         controller.chatData!.data!.data![index].isSeen==1? Icon(Icons.done_all,
+                            //           size: 13,
+                            //           color: Colors.blue,
+                            //         ):Icon(Icons.check,
+                            //           size: 13,
+                            //           color: Colors.grey,
+                            //         ),
+                            //       ],
+                            //     )
+                            // )
                           ],
                         ),
                       ),
@@ -585,7 +600,7 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
                                         style: TextStyle(fontSize: 12),
                                       ),
                                       controller.chatData!.data!.data![index].parentChat != null? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] == null?
-                                      Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ==null?reportName: jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'],
+                                      Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ==null?jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title']:jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'],
                                         maxLines: 3,):
                                       jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] == null?
                                       Container(
@@ -595,7 +610,7 @@ Widget messageWidget({ctx, ChatData? element, index,required ChatController cont
                                          image: DecorationImage(
                                            image: NetworkImage(
                                                jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'])[0]['filename'])
-                                        ,fit: BoxFit.fill )
+                                        ,fit: BoxFit.fill)
                                        ),
                                      ) :
                                       ((json.decode(controller.chatData!.data!.data![index].parentChat!)['msg'] !=null) && (jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] !=null))?

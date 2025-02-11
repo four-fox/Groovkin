@@ -13,6 +13,8 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
+import '../chatView/chatRoomModel.dart';
+
 class NotificationService {
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
@@ -230,6 +232,13 @@ class NotificationService {
         "eventId": data["source_id"],
         "acceptVal": true,
       });
+    } else if (data["type"] == "single_message") {
+      User? user = User.fromJson(jsonDecode(data['data'])['user']);
+      Get.toNamed(Routes.chatInnerScreen,
+          arguments: {
+            "userData": user
+          }
+      );
     } else if (data["type"] == "event_created") {
       Get.toNamed(Routes.pendingEventDetails, arguments: {
         "notInterestedBtn": 1,

@@ -299,6 +299,7 @@ class ChatController extends GetxController{
       }
       var formData = form.FormData.fromMap({
         'receiver_id': receiverId,
+        "type": "single_message",
         if (messageController.text.isNotEmpty) 'msg': messageController.text,
         if (chatFileList.isNotEmpty) "media[]": chatFileList,
         if (bottomContainer.value || replyId != null) "parent_id": replyId
@@ -431,7 +432,7 @@ class ChatController extends GetxController{
     var formData = form.FormData.fromMap({
       'conversation_id': conversationId,
     });
-    var response = await API().postApi(formData,'all-message-seen');
+    var response = await API().postApi(formData,'all-message-seen',showProgress: false);
     if (response.statusCode == 200) {
       for (int i = 0; i < chatData!.data!.data!.length; i++) {
         chatData!.data!.data![i].isSeen = 1;
@@ -525,6 +526,7 @@ class ChatController extends GetxController{
         isEventRequest: maps[i]["is_event_request"],
         eventRequestAccepted: maps[i]["event_request_accepted"],
         flaggedBy: maps[i]["flagged_by"],
+        type: maps[i]["type"],
         user: maps[i]["user"],
         parentChat: maps[i]['parent_chat'],
         event: maps[i]["event"],
