@@ -148,10 +148,18 @@ class ChatController extends GetxController{
   RxBool newUserChatLoader = false.obs;
   ChatNewUserModel? newUserData;
   bool getNewUserWait = false;
-  getNewUser({nextUrl, }) async{
+  final searchingController = TextEditingController();
+  getNewUser({nextUrl,}) async{
     newUserChatLoader(true);
-    String type =API().sp.read('role')=="eventOrganizer"?"venue_manager": "event_owner";
-    var response = await API().getApi(url:"get-all-users?role_name=$type",fullUrl: nextUrl);
+    String searchValue="";
+    // if(searchingController.text.isNotEmpty){
+    //   searchValue = "&search${searchingController.text}";
+    // }
+    var formData = form.FormData.fromMap({
+      "search": searchingController.text,
+      "role_name":API().sp.read('role')=="eventOrganizer"?"venue_manager": "event_owner"
+    });
+    var response = await API().postApi(formData,"get-all-users",fullUrl: nextUrl);
     if(response.statusCode == 200){
       if(nextUrl == null){
         newUserData = ChatNewUserModel.fromJson(response.data);
@@ -230,11 +238,25 @@ class ChatController extends GetxController{
   ///get chat room
   RxBool getAllChatRoomLoader = true.obs;
   ChatRoomModel?chatRoomData;
-  getAllChatRoom() async{
+  bool getAllChatRoomWait = false;
+  final chatRoomDataController = TextEditingController();
+  getAllChatRoom({nextUrl}) async{
     getAllChatRoomLoader(false);
-    var response = await API().getApi(url: 'get-inbox');
+    var fromData = form.FormData.fromMap({
+      "search": chatRoomDataController.text,
+    });
+    var response = await API().postApi(fromData,'get-inbox',fullUrl: nextUrl);
     if(response.statusCode == 200){
+     if(nextUrl == null){
       chatRoomData = ChatRoomModel.fromJson(response.data);
+      getAllChatRoomWait = false;
+    }else{
+      chatRoomData!.data!.data!.addAll(ChatRoomModel.fromJson(response.data).data!.data!);
+      chatRoomData!.data!.nextPageUrl =
+          ChatNewUserModel.fromJson(response.data).data!.nextPageUrl;
+      getNewUserWait = false;
+    }
+
       for (int i = 0; i < chatRoomData!.data!.data!.length; i++) {
         disposedReceiverSocket();
         receiveMessage();

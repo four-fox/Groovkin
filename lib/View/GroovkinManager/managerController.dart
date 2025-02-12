@@ -312,7 +312,7 @@ class ManagerController extends GetxController {
       "longitude": double.parse(lng),
       "max_occupancy": int.parse(maxOccupancyController.text),
       "max_seating": int.parse(maxSeatingController.text),
-      "max_hour": int.parse(maxHourController.text),
+     if(maxHourController.text.isNotEmpty) "max_hour": int.parse(maxHourController.text),
       "opening_hours": openingHoursController.text,
       "closing_hours": closedHoursController.text,
       "amenities[]": amenities,
@@ -410,7 +410,7 @@ class ManagerController extends GetxController {
       "longitude": double.parse(lng),
       "max_occupancy": int.parse(maxOccupancyController.text),
       "max_seating": int.parse(maxSeatingController.text),
-      "max_hour": int.parse(maxHourController.text),
+     if(maxHourController.text.isNotEmpty) "max_hour": int.parse(maxHourController.text),
       "opening_hours": openingHoursController.text,
       "closing_hours": closedHoursController.text,
       "amenities[]": amenities,
@@ -503,7 +503,9 @@ class ManagerController extends GetxController {
     maxOccupancyController.text =
         venueDetails!.data!.venueProperty!.maxOccupancy!;
     maxSeatingController.text = venueDetails!.data!.venueProperty!.maxSeating!;
-    maxHourController.text = venueDetails!.data!.venueProperty!.maxHour!;
+    if(venueDetails!.data!.venueProperty!.maxHour != null){
+      maxHourController.text = venueDetails!.data!.venueProperty!.maxHour!;
+    }
     openingHoursController.text =
         venueDetails!.data!.venueProperty!.openingHours!;
     closedHoursController.text =

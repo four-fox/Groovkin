@@ -219,6 +219,8 @@ class SearchTextFields extends StatelessWidget {
     this.readOnly = false,
     this.onChanged,
     required this.controller,
+    this.bgColor,
+    this.borderRadius,
   }) : super(key: key);
   bool searchIcon = true;
   String? hintText;
@@ -227,12 +229,15 @@ class SearchTextFields extends StatelessWidget {
   bool readOnly = false;
   final ValueChanged<String>? onChanged;
   TextEditingController controller;
+Color? bgColor;
+double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+        color: bgColor??Colors.transparent,
+          borderRadius: BorderRadius.circular(borderRadius??8),
           border: Border.all(color: DynamicColor.grayClr.withOpacity(0.6))),
       child: TextFormField(
         onTap: onTap,
