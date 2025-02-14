@@ -217,19 +217,25 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   ),
                                 ),
                                 ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: hardwareData.categoryItems.length,
-                                    itemBuilder: (BuildContext context,indexxx){
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        hardwareData.categoryItems.length,
+                                    itemBuilder:
+                                        (BuildContext context, indexxx) {
                                       return Padding(
-                                        padding: EdgeInsets.only(left: 12.0, top: 6),
+                                        padding:
+                                            EdgeInsets.only(left: 12.0, top: 6),
                                         child: Row(
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 3.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 3.0),
                                               child: Text(
-                                                hardwareData.categoryItems[indexxx].name,
+                                                hardwareData
+                                                    .categoryItems[indexxx]
+                                                    .name,
                                                 style: poppinsRegularStyle(
                                                     fontSize: 13,
                                                     color: theme.primaryColor,
@@ -392,13 +398,18 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                   BlendMode.modulate,
                 ))),
         child: Center(
-          child: Text(
-            title ?? "60's\nRock",
-            textAlign: TextAlign.center,
-            style: poppinsMediumStyle(
-              fontSize: 10,
-              color: theme.primaryColor,
-              context: context,
+          child: SizedBox(
+            width: 50,
+            child: Text(
+              title ?? "60's\nRock",
+              textAlign: TextAlign.center,
+              style: poppinsMediumStyle(
+                fontSize: 10,
+                color: theme.primaryColor,
+                context: context,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),
