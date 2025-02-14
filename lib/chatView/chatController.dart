@@ -277,7 +277,7 @@ class ChatController extends GetxController{
       var formData = form.FormData.fromMap({
         'user_id': id
       });
-      var response = await API().postApi(formData,"chats");
+      var response = await API().postApi(formData,"chats",fullUrl: nextUrl);
       if(response.statusCode == 200){
         if(nextUrl == null){
           chatData = null;
