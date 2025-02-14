@@ -452,7 +452,7 @@ class ChatController extends GetxController{
   /// seen all message
   messageSeen(conversationId) async {
     var formData = form.FormData.fromMap({
-      'conversation_id': conversationId,
+      'chat_id': conversationId,
     });
     var response = await API().postApi(formData,'all-message-seen',showProgress: false);
     if (response.statusCode == 200) {
@@ -879,7 +879,6 @@ class ChatController extends GetxController{
 class ChatBinding implements Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
     Get.lazyPut<ChatController>(() => ChatController());
   }
 }
