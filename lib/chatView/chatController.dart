@@ -450,9 +450,10 @@ class ChatController extends GetxController{
   }
 
   /// seen all message
-  messageSeen(conversationId) async {
+  messageSeen(
+      conversationId) async {
     var formData = form.FormData.fromMap({
-      'chat_id': conversationId,
+      'conversation_id': conversationId,
     });
     var response = await API().postApi(formData,'all-message-seen',showProgress: false);
     if (response.statusCode == 200) {

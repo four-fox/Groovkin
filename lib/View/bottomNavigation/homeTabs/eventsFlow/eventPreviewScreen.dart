@@ -183,6 +183,7 @@ class EventPreview extends StatelessWidget {
                   ? _controller.eventDetail!.data!.venue!.longitude!
                   : _managerController.lng),
             ),
+            
             // Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
             //     avatarPadding: 8,
             //     rowVerticalPadding: 0.0,
@@ -193,6 +194,7 @@ class EventPreview extends StatelessWidget {
             //       eventVal.value = !eventVal.value;
             //     }
             // ),),
+
             customContainer(context, theme),
             customContainer(context, theme,
                 title: "Featuring", text: _controller.featuringController.text),
