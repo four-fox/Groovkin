@@ -73,8 +73,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
       double totalHours = dailyHours * totalDays;
       hoursDifference = totalHours;
       if (_controller.rateType!.value == "hourly") {
-        subTotal = double.parse(_controller.hourlyRateController.text) *
-            hoursDifference!;
+        subTotal = double.tryParse(_controller.hourlyRateController.text) ??
+            0 * hoursDifference!;
         double tempDownPayment = (subTotal! *
             (double.parse(_controller.paymentSchedule!.value) / 100));
         stripeTax = 0.10 * subTotal!;

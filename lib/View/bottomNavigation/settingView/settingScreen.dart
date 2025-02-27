@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -200,22 +201,38 @@ class _SettingScreenState extends State<SettingScreen> {
                               }),
                         ),
 
-                        if (API().sp.read("role") != "User")
+                        if (API().sp.read("currentRole") != "User")
                           customWidget(
                               context: context,
                               img: "assets/switchIcon.png",
                               text: "Switch Role",
                               onTap: () {
-                                if (API().sp.read("role") == "eventOrganizer") {
-                                  //                       controller.changeRoles(
-                                  //                           ChangeRole.user);
-                                } else {
+                                if (API().sp.read("role") == "eventOrganizer" &&
+                                    API().sp.read("currentRole") ==
+                                        "eventOrganizer") {
+                                  controller.changeRoles(ChangeRole.user);
+                                  BotToast.showText(
+                                      text: "Change Role to User");
+                                } else if (API().sp.read("role") == "User" &&
+                                    API().sp.read("currentRole") ==
+                                        "eventOrganizer") {
                                   controller.changeRoles(ChangeRole.organizer);
+                                  BotToast.showText(
+                                      text: "Change Role to Event Organizer");
                                 }
-                                if (API().sp.read("role") == "eventManager") {
-                                  //                       controller.changeRoles(
-                                  //                           ChangeRole.user);
-                                } else {}
+                                if (API().sp.read("role") == "eventManager" &&
+                                    API().sp.read("currentRole") ==
+                                        "eventManager") {
+                                  controller.changeRoles(ChangeRole.user);
+                                  BotToast.showText(
+                                      text: "Change Role to User");
+                                } else if (API().sp.read("role") == "User" &&
+                                    API().sp.read("currentRole") ==
+                                        "eventManager") {
+                                  controller.changeRoles(ChangeRole.manager);
+                                  BotToast.showText(
+                                      text: "Change Role to Event Organizer");
+                                }
 
                                 // showModalBottomSheet(
                                 //     shape: RoundedRectangleBorder(

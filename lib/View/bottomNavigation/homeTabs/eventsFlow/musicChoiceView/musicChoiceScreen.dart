@@ -70,47 +70,47 @@ class MusicChoiceScreen extends StatelessWidget {
                           color: DynamicColor.lightRedClr,
                         ),
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      SearchTextFields(
-                        controller: TextEditingController(),
-                        searchIcon: false,
-                        hintText: "add tags",
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "90’s Hip Hop Party",
-                            style: poppinsRegularStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                              context: context,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          CustomButtonWithIcon(
-                            // bgColor: null,
-                            bgColor: DynamicColor.secondaryClr,
-                            width: 90,
-                            height: 30,
-                            borderRadius: 5,
-                            iconValue: false,
-                            iconss: Icons.bookmark,
-                            iconsClr: theme.primaryColor,
-                            text: "Save",
-                            onTap: () {
-                              Get.toNamed(Routes.saveHashTagScreen, arguments: {
-                                "musicHashTag": true,
-                              });
-                            },
-                          ),
-                        ],
-                      ),
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
+                      // SearchTextFields(
+                      //   controller: TextEditingController(),
+                      //   searchIcon: false,
+                      //   hintText: "add tags",
+                      // ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       "90’s Hip Hop Party",
+                      //       style: poppinsRegularStyle(
+                      //         fontSize: 17,
+                      //         fontWeight: FontWeight.w600,
+                      //         context: context,
+                      //         color: theme.primaryColor,
+                      //       ),
+                      //     ),
+                      //     CustomButtonWithIcon(
+                      //       // bgColor: null,
+                      //       bgColor: DynamicColor.secondaryClr,
+                      //       width: 90,
+                      //       height: 30,
+                      //       borderRadius: 5,
+                      //       iconValue: false,
+                      //       iconss: Icons.bookmark,
+                      //       iconsClr: theme.primaryColor,
+                      //       text: "Save",
+                      //       onTap: () {
+                      //         Get.toNamed(Routes.saveHashTagScreen, arguments: {
+                      //           "musicHashTag": true,
+                      //         });
+                      //       },
+                      //     ),
+                      //   ],
+                      // ),
                       controller.tagListPost.isEmpty
                           ? SizedBox.shrink()
                           : SizedBox(
@@ -422,47 +422,47 @@ class ActivityChoiceScreen extends StatelessWidget {
                           color: DynamicColor.lightRedClr,
                         ),
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      SearchTextFields(
-                        controller: TextEditingController(),
-                        searchIcon: false,
-                        hintText: "add tags",
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Foodie Pool Hall",
-                            style: poppinsRegularStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                              context: context,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          CustomButtonWithIcon(
-                            // bgColor: null,
-                            bgColor: DynamicColor.secondaryClr,
-                            width: 90,
-                            height: 30,
-                            onTap: () {
-                              Get.toNamed(Routes.saveHashTagScreen, arguments: {
-                                "musicHashTag": true,
-                              });
-                            },
-                            borderRadius: 5,
-                            iconValue: false,
-                            iconss: Icons.bookmark,
-                            iconsClr: theme.primaryColor,
-                            text: "Save",
-                          ),
-                        ],
-                      ),
+                      // SizedBox(
+                      //   height: 15,
+                      // ),
+                      // SearchTextFields(
+                      //   controller: TextEditingController(),
+                      //   searchIcon: false,
+                      //   hintText: "add tags",
+                      // ),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       "Foodie Pool Hall",
+                      //       style: poppinsRegularStyle(
+                      //         fontSize: 17,
+                      //         fontWeight: FontWeight.w600,
+                      //         context: context,
+                      //         color: theme.primaryColor,
+                      //       ),
+                      //     ),
+                      //     CustomButtonWithIcon(
+                      //       // bgColor: null,
+                      //       bgColor: DynamicColor.secondaryClr,
+                      //       width: 90,
+                      //       height: 30,
+                      //       onTap: () {
+                      //         Get.toNamed(Routes.saveHashTagScreen, arguments: {
+                      //           "musicHashTag": true,
+                      //         });
+                      //       },
+                      //       borderRadius: 5,
+                      //       iconValue: false,
+                      //       iconss: Icons.bookmark,
+                      //       iconsClr: theme.primaryColor,
+                      //       text: "Save",
+                      //     ),
+                      //   ],
+                      // ),
                       controller.activityListPost.isEmpty
                           ? SizedBox.shrink()
                           : SizedBox(

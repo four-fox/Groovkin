@@ -1,6 +1,8 @@
 // ignore_for_file: unnecessary_new, prefer_final_fields
 
+import 'dart:developer';
 import 'dart:io';
+import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
+import 'package:groovkin/View/profile/editProfileScreen.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
@@ -145,7 +148,17 @@ class _CreateCompanyProfileScreenState
                     onTap: () {
                       if ((controller.mediaClass.isEmpty) ||
                           (controller.profilePictures.isEmpty)) {
-                        controller.pickFile();
+                        pictureAlert(
+                          context,
+                          galleryFtn: () {
+                            controller.pickFile();
+                            Get.back();
+                          },
+                          cameraFtn: () async {
+                            controller.pickMultipleFromCamera(context, false);
+                            Get.back();
+                          },
+                        );
                         // if(Platform.isAndroid){
                         //   controller.pickFile();
                         // }else{
@@ -175,7 +188,19 @@ class _CreateCompanyProfileScreenState
                                     child: GestureDetector(
                                       onTap: () {
                                         if (Platform.isAndroid) {
-                                          controller.pickFile();
+                                          // controller.pickFile();
+                                          pictureAlert(
+                                            context,
+                                            galleryFtn: () {
+                                              controller.pickFile();
+                                              Get.back();
+                                            },
+                                            cameraFtn: () async {
+                                              controller.pickMultipleFromCamera(
+                                                  context, false);
+                                              Get.back();
+                                            },
+                                          );
                                         } else {
                                           controller.pickFileee();
                                         }
@@ -485,6 +510,7 @@ class _CreateCompanyProfileScreenState
                     height: 20,
                   ),
                   CustomTextFields(
+                    disabled: false,
                     labelText: "State",
                     controller: controller.stateController,
                     validationError: "state",
@@ -493,6 +519,7 @@ class _CreateCompanyProfileScreenState
                     height: 20,
                   ),
                   CustomTextFields(
+                    disabled: false,
                     labelText: "City",
                     controller: controller.cityController,
                     validationError: "city",
@@ -604,6 +631,7 @@ class _CreateCompanyProfileScreenState
                               initAddress: controller.address,
                               onNext: (GeocodingResult? result) {
                                 if (result != null) {
+                                  print(result.formattedAddress);
                                   controller.lat =
                                       result.geometry.location.lat.toString();
                                   controller.lng =
@@ -621,6 +649,7 @@ class _CreateCompanyProfileScreenState
                               onSuggestionSelected:
                                   (PlacesDetailsResponse? result) {
                                 if (result != null) {
+                                  print(result.result.formattedAddress);
                                   controller.lat = result
                                       .result.geometry!.location.lat
                                       .toString();

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:country_state_city_pro/country_state_city_pro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -560,6 +559,9 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           color: DynamicColor.grayClr),
                       // readOnly: email.value,
                     ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               ),

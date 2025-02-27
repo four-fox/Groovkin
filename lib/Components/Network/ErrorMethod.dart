@@ -49,9 +49,6 @@ dynamic returnResponse(Response? responseData) {
         break;
       case 422:
         if (responseData.data["data"] == null) {
-          if (responseData.data["message"] != null) {
-            bottomToast(text: responseData.data["message"].toString());
-          }
           return null;
         } else {
           bottomToast(text: responseData.data["data"].toString());
@@ -59,11 +56,6 @@ dynamic returnResponse(Response? responseData) {
         }
         break;
       case 500:
-        if (responseData.data["data"] != null) {
-          bottomToast(text: responseData.data["data"].toString());
-        }
-        return null;
-
       default:
         throw bottomToast(
             text:

@@ -330,7 +330,7 @@ class CreateProfile extends StatelessWidget {
                         context: context,
                         fontSize: 14,
                         color: DynamicColor.grayClr,
-                      ), 
+                      ),
                       textStyle: poppinsRegularStyle(
                         context: context,
                         fontSize: 14,

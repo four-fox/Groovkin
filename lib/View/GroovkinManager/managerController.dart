@@ -144,6 +144,84 @@ class ManagerController extends GetxController {
     );
   }
 
+  ///Upload Venue Photos
+
+  Future<void> pickMultipleFromCamera(
+      BuildContext context, bool? isVideo) async {
+    try {
+      List<XFile> tempFiles = [];
+      // Ask user whether to capture an image or a video
+
+      if (isVideo == null) return; // Exit loop if user cancels
+
+      // Pick image or video based on user choice
+      XFile? pickedFile = isVideo
+          ? await _picker.pickVideo(
+              source: ImageSource.camera,
+              maxDuration: Duration(seconds: 60),
+            )
+          : await _picker.pickImage(
+              source: ImageSource.camera,
+              imageQuality: 50,
+              maxHeight: 1920,
+              maxWidth: 1080,
+            );
+
+      if (pickedFile == null) return; // Exit loop if user cancels
+
+      tempFiles.add(pickedFile);
+
+      if (tempFiles.isNotEmpty) {
+        for (XFile file in tempFiles) {
+          String extension = file.path.split('.').last.toLowerCase();
+
+          if (extension == 'mp4') {
+            // Generate video thumbnail
+            final fileName = await VideoThumbnail.thumbnailFile(
+              video: file.path,
+              thumbnailPath: (await getTemporaryDirectory()).path,
+              imageFormat: ImageFormat.PNG,
+              maxHeight: 64,
+              quality: 75,
+            );
+
+            if (updateAmenities.value == true) {
+              profilePictures.add(venueDtail.ProfilePicture(
+                  mediaPath: file.path, thumbnail: fileName));
+            }
+
+            mediaClass.add(MediaClass(
+                filename: file.path, fileType: extension, thumbnail: fileName));
+
+            multiPartImg.add(form.MultipartFile.fromFileSync(
+              file.path,
+              filename: "Video.$extension",
+              contentType: MediaType("video", extension),
+            ));
+          } else {
+            // Handle images
+            if (updateAmenities.value == true) {
+              profilePictures
+                  .add(venueDtail.ProfilePicture(mediaPath: file.path));
+            }
+
+            mediaClass
+                .add(MediaClass(filename: file.path, fileType: extension));
+
+            multiPartImg.add(form.MultipartFile.fromFileSync(
+              file.path,
+              filename: "Image.$extension",
+              contentType: MediaType("image", extension),
+            ));
+          }
+        }
+      }
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
+    update();
+  }
+
   Future<void> pickFile() async {
     final List<XFile> result = await _picker.pickMultipleMedia();
     if (result.isNotEmpty) {
@@ -312,7 +390,8 @@ class ManagerController extends GetxController {
       "longitude": double.parse(lng),
       "max_occupancy": int.parse(maxOccupancyController.text),
       "max_seating": int.parse(maxSeatingController.text),
-     if(maxHourController.text.isNotEmpty) "max_hour": int.parse(maxHourController.text),
+      if (maxHourController.text.isNotEmpty)
+        "max_hour": int.parse(maxHourController.text),
       "opening_hours": openingHoursController.text,
       "closing_hours": closedHoursController.text,
       "amenities[]": amenities,
@@ -410,7 +489,8 @@ class ManagerController extends GetxController {
       "longitude": double.parse(lng),
       "max_occupancy": int.parse(maxOccupancyController.text),
       "max_seating": int.parse(maxSeatingController.text),
-     if(maxHourController.text.isNotEmpty) "max_hour": int.parse(maxHourController.text),
+      if (maxHourController.text.isNotEmpty)
+        "max_hour": int.parse(maxHourController.text),
       "opening_hours": openingHoursController.text,
       "closing_hours": closedHoursController.text,
       "amenities[]": amenities,
@@ -503,7 +583,7 @@ class ManagerController extends GetxController {
     maxOccupancyController.text =
         venueDetails!.data!.venueProperty!.maxOccupancy!;
     maxSeatingController.text = venueDetails!.data!.venueProperty!.maxSeating!;
-    if(venueDetails!.data!.venueProperty!.maxHour != null){
+    if (venueDetails!.data!.venueProperty!.maxHour != null) {
       maxHourController.text = venueDetails!.data!.venueProperty!.maxHour!;
     }
     openingHoursController.text =

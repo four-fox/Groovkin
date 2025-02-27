@@ -5,12 +5,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/chatView/seenUnseenWidgets.dart';
-import 'package:intl/intl.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 import '../Components/Network/API.dart';

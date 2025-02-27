@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
@@ -134,6 +133,14 @@ class AuthController extends GetxController {
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
+      if (response.data["data"]["user_details"]["current_role"] == "user") {
+        API().sp.write("currentRole", "User");
+      } else if (response.data["data"]["user_details"]["current_role"] ==
+          "event_owner") {
+        API().sp.write("currentRole", "eventOrganizer");
+      } else {
+        API().sp.write("currentRole", "eventManager");
+      }
       clearTextFields();
       if (API().sp.read("role") == "User") {
         API().sp.write("isUserCreated",
@@ -176,6 +183,16 @@ class AuthController extends GetxController {
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
+
+      if (response.data["data"]["user_details"]["current_role"] == "user") {
+        API().sp.write("currentRole", "User");
+      } else if (response.data["data"]["user_details"]["current_role"] ==
+          "event_owner") {
+        API().sp.write("currentRole", "eventOrganizer");
+      } else {
+        API().sp.write("currentRole", "eventManager");
+      }
+
       if (response.data['data']['user_details']['active_role'] ==
           'venue_manager') {
         API().sp.write("role", 'eventManager');
@@ -336,6 +353,9 @@ class AuthController extends GetxController {
       // BotToast.showText(text: e.toString());
     }
   }
+
+
+
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get profile
   ProfileModel? userData;
@@ -565,6 +585,7 @@ class AuthController extends GetxController {
         }
       }
     }
+
     var response = await API().postApi(data, "create-quick-survey");
     if (response.statusCode == 200) {
       clearLists();
@@ -1131,7 +1152,7 @@ class AuthController extends GetxController {
     if (sendingEmailLoader.value == false) {
       showLoading();
     }
-
+  
     List eventInvitation = [];
     for (var action in invitationList) {
       eventInvitation.add(action.emailController.text);

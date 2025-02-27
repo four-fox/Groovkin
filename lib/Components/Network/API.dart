@@ -105,7 +105,12 @@ class API {
       return response;
     } on DioException catch (e) {
       BotToast.closeAllLoading();
+      print(e.toString());
       return returnResponse(e.response);
+    } catch (e) {
+      print(e.toString());
+      BotToast.closeAllLoading();
+      BotToast.showText(text: e.toString());
     }
   }
 
@@ -161,8 +166,6 @@ class API {
       }
     }
   }
-
-
 }
 
 errorIcon(postButton) async {

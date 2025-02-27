@@ -35,9 +35,6 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
   @override
   void initState() {
     super.initState();
-    print(Get.arguments['addMoreService']);
-    print(Get.arguments['title']);
-    print(appBarTitle);
     _controller.myGroockingMusicListing = Get.arguments?["isMusic"] ?? [];
 
     if (Get.arguments['addMoreService'] == 1) {
@@ -48,7 +45,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
     } else {
       _eventController = Get.put(EventController());
     }
-    if (Get.isRegistered<EventController>()) {
+    if (Get.isRegistered<HomeController>()) {
       _homeController = Get.find<HomeController>();
     } else {
       _homeController = Get.put(HomeController());
@@ -301,9 +298,6 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
               } else {
                 if (sp.read("role") == "User") {
                   if (addMoreSurvey == 2) {
-
-
-                    
                     Get.back();
                   } else {
                     if (_controller.itemsList.isNotEmpty) {

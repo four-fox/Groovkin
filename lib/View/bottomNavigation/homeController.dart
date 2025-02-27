@@ -7,6 +7,7 @@ import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/userPastEv
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userOngoingEventsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistoryModel.dart';
 import 'package:dio/dio.dart' as form;
+import 'package:groovkin/model/analytic_model.dart';
 import 'package:groovkin/model/transaction_history_model.dart'
     as transaction_history_model;
 import 'package:groovkin/utils/utils.dart';
@@ -247,6 +248,18 @@ class HomeController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo user Home functionality
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Analytics
+
+  AnalyticsModel? analyticsModel;
+
+  Future<void> getAllAnalyticsData() async {
+    final response = await API().getApi(url: "show-analytics-chart");
+    if (response.statusCode == 200) {
+      analyticsModel = AnalyticsModel.fromJson(response.data);
+    }
+    update();
+  }
 }
 
 class HomeBinding implements Bindings {
