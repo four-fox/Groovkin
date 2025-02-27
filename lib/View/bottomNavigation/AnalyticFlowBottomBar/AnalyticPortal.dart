@@ -1,6 +1,8 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
@@ -15,13 +17,6 @@ class ChartData {
   ChartData(this.x, this.y);
 }
 
-class ChartData2 {
-  final int x;
-  final int y;
-
-  ChartData2(this.x, this.y);
-}
-
 class AnalyticPortalScreen extends StatefulWidget {
   AnalyticPortalScreen({Key? key}) : super(key: key);
 
@@ -32,8 +27,18 @@ class AnalyticPortalScreen extends StatefulWidget {
 class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
   late HomeController _homeController;
   List<ChartData> data = [];
+  bool isSubscribe = false;
 
-  List<Map<String, dynamic>> genreData = [];
+  String returnTextAccordingToType(String type) {
+    switch (type) {
+      case "music_genre":
+        return "Music";
+      case "life_style":
+        return "Life Style";
+      default:
+        return "NAN";
+    }
+  }
 
   @override
   void initState() {
@@ -43,8 +48,10 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     } else {
       _homeController = Get.put(HomeController());
     }
+    _homeController.getAllAnalyticsListData();
     _homeController.getAllAnalyticsData().then(
       (value) {
+        data.clear();
         setState(() {
           data =
               _homeController.analyticsModel!.data!.asMap().entries.map((item) {
@@ -52,44 +59,15 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
             var data = item.value;
             return ChartData(index, data.count!);
           }).toList();
-          genreData = _homeController.analyticsModel!.data!.map((data) {
-            return {
-              "decade": data.genre,
-              "count": data.count,
-            };
-          }).toList();
         });
       },
     );
   }
 
-  List<FlSpot> getChartData() {
-    return genreData.asMap().entries.map((entry) {
-      return FlSpot(entry.key.toDouble(), entry.value["count"].toDouble());
-    }).toList();
-  }
-
-  List<BarChartGroupData> getChartData2() {
-    return genreData.asMap().entries.map((entry) {
-      return BarChartGroupData(
-        x: entry.key,
-        barRods: [
-          BarChartRodData(
-            toY: entry.value["count"].toDouble(),
-            color: Colors.blue,
-            width: 20,
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ],
-      );
-    }).toList();
-  }
-
-  final ZoomPanBehavior _zoomPanBehavior = ZoomPanBehavior(
-    enablePanning: true, // Enable scrolling
-    enablePinching: true, // Optional: Allow pinch zoom
-    zoomMode: ZoomMode.x, // Scroll only horizontally
-  );
+  List<String> list = [
+    "assets/analytic1.png",
+    "assets/analytic2.png",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -97,323 +75,198 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     return Scaffold(
       appBar: customAppBar(
           theme: theme, text: "Groovkin Analytics Portal", backArrow: false),
-      //   body: Padding(
-      //     padding: EdgeInsets.symmetric(horizontal: 12.0),
-      //     child: SingleChildScrollView(
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         // ignore: prefer_const_literals_to_create_immutables
-      //         children: [
-      //           SizedBox(
-      //             height: 8,
-      //           ),
-      //           Text(
-      //             "Discover your next event",
-      //             style: poppinsMediumStyle(
-      //               fontSize: 16,
-      //               fontWeight: FontWeight.w600,
-      //               color: theme.primaryColor,
-      //             ),
-      //           ),
-      //           Padding(
-      //             padding: EdgeInsets.symmetric(vertical: 6.0),
-      //             child: Container(
-      //               decoration: BoxDecoration(
-      //                   borderRadius: BorderRadius.circular(9),
-      //                   color: DynamicColor.avatarBgClr),
-      //               child: TextField(
-      //                 decoration: InputDecoration(
-      //                     prefixIcon: Icon(
-      //                       Icons.search_rounded,
-      //                       color: theme.primaryColor,
-      //                     ),
-      //                     border: InputBorder.none,
-      //                     hintText: "Search",
-      //                     suffixIcon: GestureDetector(
-      //                       onTap: () {
-      //                         Get.toNamed(Routes.analyticFilterScreen);
-      //                       },
-      //                       child: Padding(
-      //                         padding: EdgeInsets.all(10.0),
-      //                         child: Container(
-      //                           decoration: BoxDecoration(
-      //                             borderRadius: BorderRadius.circular(6),
-      //                             color: DynamicColor.grayClr.withOpacity(0.6),
-      //                           ),
-      //                           child: Icon(
-      //                             Icons.filter_alt,
-      //                             color: theme.primaryColor,
-      //                             size: 18,
-      //                           ),
-      //                         ),
-      //                       ),
-      //                     )),
-      //               ),
-      //             ),
-      //           ),
-      //           SizedBox(
-      //             height: Get.height / 1.38,
-      //             child: ListView.builder(
-      //                 itemCount: list.length,
-      //                 shrinkWrap: true,
-      //                 physics: AlwaysScrollableScrollPhysics(),
-      //                 itemBuilder: (BuildContext context, index) {
-      //                   return GestureDetector(
-      //                     onTap: () {
-      //                       Get.toNamed(Routes.eventDetailsScreen);
-      //                     },
-      //                     child: Padding(
-      //                       padding: EdgeInsets.symmetric(vertical: 8.0),
-      //                       child: Container(
-      //                         height: kToolbarHeight * 2.3,
-      //                         padding: EdgeInsets.only(left: 15),
-      //                         decoration: BoxDecoration(
-      //                           borderRadius: BorderRadius.circular(10),
-      //                           image: DecorationImage(
-      //                               image: AssetImage(list[index].img.toString()),
-      //                               fit: BoxFit.fill),
-      //                         ),
-      //                         child: Column(
-      //                           mainAxisAlignment: MainAxisAlignment.center,
-      //                           crossAxisAlignment: CrossAxisAlignment.start,
-      //                           children: [
-      //                             Text(
-      //                               list[index].subtitle.toString(),
-      //                               style: poppinsRegularStyle(
-      //                                 fontSize: 14,
-      //                                 context: context,
-      //                                 color: theme.primaryColor,
-      //                               ),
-      //                             ),
-      //                             SizedBox(
-      //                               height: 8,
-      //                             ),
-      //                             Text(
-      //                               list[index].title.toString(),
-      //                               style: poppinsRegularStyle(
-      //                                 fontSize: 16,
-      //                                 context: context,
-      //                                 color: theme.primaryColor,
-      //                               ),
-      //                             ),
-      //                           ],
-      //                         ),
-      //                       ),
-      //                     ),
-      //                   );
-      //                 }),
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // );
-      // body: Column(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children: [
-      //     /// Line Chart (Scrollable)
-      //     // SfCartesianChart(
-      //     //   title: ChartTitle(text: 'Sales Data'),
-      //     //   legend: Legend(isVisible: true),
-      //     //   tooltipBehavior: TooltipBehavior(enable: true),
-      //     //   primaryXAxis: NumericAxis(title: AxisTitle(text: 'Time (months)')),
-      //     //   primaryYAxis:
-      //     //       NumericAxis(title: AxisTitle(text: 'Sales (in units)')),
-      //     //   series: <LineSeries<ChartData, int>>[
-      //     //     LineSeries<ChartData, int>(
-      //     //       name: 'Sales',
-      //     //       dataSource: data,
-      //     //       xValueMapper: (ChartData sales, _) => data.indexOf(sales),
-      //     //       yValueMapper: (ChartData sales, _) => sales.y,
-      //     //       markerSettings: MarkerSettings(isVisible: true),
-      //     //       dataLabelSettings: DataLabelSettings(isVisible: true),
-      //     //     ),
-      //     //   ],
-      //     // ),
-
-      //     // SizedBox(height: 16),
-
-      //     /// Curved Line Chart (Scrollable)
-      //     // SizedBox(
-      //     //   height: 300,
-      //     //   child: Padding(
-      //     //     padding: const EdgeInsets.all(16.0),
-      //     //     child: LineChart(
-      //     //       LineChartData(
-      //     //         gridData: FlGridData(show: false),
-      //     //         titlesData: FlTitlesData(
-      //     //           leftTitles:
-      //     //               AxisTitles(sideTitles: SideTitles(showTitles: true)),
-      //     //           bottomTitles: AxisTitles(
-      //     //             sideTitles: SideTitles(
-      //     //               showTitles: true,
-      //     //               getTitlesWidget: (value, meta) {
-      //     //                 int index = value.toInt();
-      //     //                 if (index >= 0 && index < data.length) {
-      //     //                   return Text(data[index].x,
-      //     //                       style: TextStyle(fontSize: 12));
-      //     //                 }
-      //     //                 return Container();
-      //     //               },
-      //     //             ),
-      //     //           ),
-      //     //         ),
-      //     //         borderData: FlBorderData(
-      //     //             border: Border.all(color: Colors.black, width: 1)),
-      //     //         lineBarsData: [
-      //     //           LineChartBarData(
-      //     //             spots: getChartData(),
-      //     //             isCurved: true,
-      //     //             color: Colors.blue,
-      //     //             barWidth: 4,
-      //     //             belowBarData: BarAreaData(
-      //     //                 show: true, color: Colors.blue.withOpacity(0.3)),
-      //     //           ),
-      //     //         ],
-      //     //       ),
-      //     //     ),
-      //     //   ),
-      //     // ),
-
-      //     // SizedBox(height: 16),
-
-      //     /// Horizontal Scrollable Bar Chart
-
-      //     // SizedBox(height: 16),
-
-      //     /// Bar Chart (Scrollable)
-      //     // SizedBox(
-      //     //   height: 300,
-      //     //   child: Padding(
-      //     //     padding: const EdgeInsets.all(16.0),
-      //     //     child: BarChart(
-      //     //       BarChartData(
-      //     //         gridData: FlGridData(show: false),
-      //     //         titlesData: FlTitlesData(
-      //     //           leftTitles:
-      //     //               AxisTitles(sideTitles: SideTitles(showTitles: true)),
-      //     //           bottomTitles: AxisTitles(
-      //     //             sideTitles: SideTitles(
-      //     //               showTitles: true,
-      //     //               getTitlesWidget: (value, meta) {
-      //     //                 int index = value.toInt();
-      //     //                 if (index >= 0 && index < data.length) {
-      //     //                   return Text(data[index].x,
-      //     //                       style: TextStyle(fontSize: 12));
-      //     //                 }
-      //     //                 return Container();
-      //     //               },
-      //     //             ),
-      //     //           ),
-      //     //         ),
-      //     //         borderData: FlBorderData(show: true),
-      //     //         barGroups: getChartData2(),
-      //     //       ),
-      //     //     ),
-      //     //   ),
-      //     // ),
-      //   ],
-      // ),
-
-      body: Column(
+      body: Stack(
         children: [
-          SfCartesianChart(
-              borderWidth: 3,
-              palette: [DynamicColor.yellowClr],
-              zoomPanBehavior: ZoomPanBehavior(
-                enablePinching: true,
-                enablePanning: true,
-                zoomMode: ZoomMode.xy,
-              ),
-              primaryXAxis: CategoryAxis(
-                autoScrollingDelta: 8,
-                majorGridLines: MajorGridLines(width: 0),
-                labelIntersectAction: AxisLabelIntersectAction.rotate45,
-                autoScrollingMode: AutoScrollingMode.start,
-                arrangeByIndex:
-                    true, // Arrange the categories by index for better scrolling experience
-              ),
-              enableAxisAnimation: true,
-              enableMultiSelection: true,
-              series: <CartesianSeries>[
-                StackedColumnSeries<ChartData, int>(
-                  groupName: 'A',
-                  dataSource: data,
-                  xValueMapper: (ChartData data, _) => data.x,
-                  yValueMapper: (ChartData data, _) => data.y,
-                  dataLabelSettings: DataLabelSettings(
-                    isVisible: true,
-                    labelAlignment: ChartDataLabelAlignment.top,
+          Column(
+            children: [
+              // Chart
+              SfCartesianChart(
+                  borderWidth: 3,
+                  palette: [DynamicColor.yellowClr],
+                  zoomPanBehavior: ZoomPanBehavior(
+                    enablePinching: true,
+                    enablePanning: true,
+                    zoomMode: ZoomMode.xy,
                   ),
-                  width:
-                      0.95, // Increase the width of each bar (default is 0.7)
-                  spacing: 0.1,
-                ),
-              ]),
-          Expanded(
-            child: SizedBox(
-                height: Get.height / 1.38,
-                child: ListView.builder(
-                    itemCount: list.length,
-                    shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemBuilder: (BuildContext context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          // Get.toNamed(Routes.eventDetailsScreen);
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Container(
-                            height: kToolbarHeight * 2.3,
-                            padding: EdgeInsets.only(left: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: AssetImage(list[index].img.toString()),
-                                  fit: BoxFit.fill),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  list[index].subtitle.toString(),
-                                  style: poppinsRegularStyle(
-                                    fontSize: 14,
-                                    context: context,
-                                    color: theme.primaryColor,
+                  tooltipBehavior: TooltipBehavior(
+                    enable: true,
+                    header: "Details",
+                    format: "Value: {point.y}", // Customize tooltip text
+                  ),
+                  primaryXAxis: CategoryAxis(
+                    autoScrollingDelta: 8,
+                    majorGridLines: MajorGridLines(width: 0),
+                    labelIntersectAction: AxisLabelIntersectAction.rotate45,
+                    autoScrollingMode: AutoScrollingMode.start,
+                    arrangeByIndex:
+                        true, // Arrange the categories by index for better scrolling experience
+                  ),
+                  enableAxisAnimation: true,
+                  enableMultiSelection: true,
+                  series: <CartesianSeries>[
+                    StackedColumnSeries<ChartData, int>(
+                      groupName: 'A',
+                      dataSource: data,
+                      xValueMapper: (ChartData data, _) => data.x,
+                      yValueMapper: (ChartData data, _) => data.y,
+                      dataLabelSettings: DataLabelSettings(
+                        isVisible: true,
+                        labelAlignment: ChartDataLabelAlignment.top,
+                      ),
+                      width:
+                          0.95, // Increase the width of each bar (default is 0.7)
+                      spacing: 0.1,
+                    ),
+                  ]),
+
+              GetBuilder<HomeController>(builder: (controller) {
+                return (controller.analyticsListModel == null ||
+                        controller.analyticsListModel!.data == null ||
+                        controller.analyticsListModel!.data!.isEmpty)
+                    ? Center(
+                        child: Text("No Analytic Found!"),
+                      )
+                    : Expanded(
+                        child: SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: ListView.builder(
+                              itemCount:
+                                  controller.analyticsListModel!.data!.length,
+                              shrinkWrap: true,
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, index) {
+                                String randomImage =
+                                    (index % 2 == 0) ? list[0] : list[1];
+
+                                final data =
+                                    controller.analyticsListModel!.data![index];
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    // Get.toNamed(Routes.eventDetailsScreen);
+                                  },
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Stack(
+                                      children: [
+                                        // Background Image with Blur Effect
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 3,
+                                                sigmaY: 3), // Blur effect
+                                            child: Container(
+                                              height: kToolbarHeight * 2.3,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                  image:
+                                                      AssetImage(randomImage),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Content on Top
+                                        Container(
+                                          height: kToolbarHeight * 2.3,
+                                          padding: EdgeInsets.only(left: 15),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.black.withOpacity(
+                                                0.4), // Slight dark overlay
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      returnTextAccordingToType(
+                                                          data.genre?.type ??
+                                                              "NAN"),
+                                                      style:
+                                                          poppinsRegularStyle(
+                                                        fontSize: 14,
+                                                        context: context,
+                                                        color:
+                                                            theme.primaryColor,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 8),
+                                                    Text(
+                                                      data.genre?.name ??
+                                                          "No Name",
+                                                      style:
+                                                          poppinsRegularStyle(
+                                                        fontSize: 16,
+                                                        context: context,
+                                                        color:
+                                                            theme.primaryColor,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 8),
+                                                    Text(
+                                                      "Count ${(data.count ?? 0)}",
+                                                      style:
+                                                          poppinsRegularStyle(
+                                                        fontSize: 16,
+                                                        context: context,
+                                                        color:
+                                                            theme.primaryColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              if (index == 0 ||
+                                                  index == 1 ||
+                                                  index == 2)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 15),
+                                                  child: Text(
+                                                    "# ${index + 1}", // #1, #2, #3
+                                                    style: GoogleFonts.bungee(
+                                                      fontSize: 30,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: DynamicColor
+                                                          .yellowClr,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  list[index].title.toString(),
-                                  style: poppinsRegularStyle(
-                                    fontSize: 16,
-                                    context: context,
-                                    color: theme.primaryColor,
-                                  ),
-                                ),
-                              ],
+                                );
+                              },
                             ),
                           ),
                         ),
                       );
-                    })),
+              }),
+            ],
           ),
+          if (!isSubscribe) notSubscribeCardWidget(),
         ],
       ),
-      // body: SfCartesianChart(
-      //     primaryXAxis: NumericAxis(),
-      //     zoomPanBehavior: _zoomPanBehavior,
-      //     series: <CartesianSeries>[
-      //       SplineSeries<ChartData, int>(
-      //           dataSource: data,
-      //           xValueMapper: (ChartData data, _) => data.x,
-      //           yValueMapper: (ChartData data, _) => data.y)
-      //     ]),
     );
   }
 
@@ -435,40 +288,86 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     ),
   );
 
-  List<Analytic> list = [
-    Analytic(
-        title: "Top Music Genres",
-        subtitle: "Rock",
-        img: "assets/analytic1.png"),
-    Analytic(
-        title: "Top Food Trends",
-        subtitle: "Food Name",
-        img: "assets/analytic2.png"),
-    Analytic(
-        title: "Top Sports Trends",
-        subtitle: "Football",
-        img: "assets/analytic1.png"),
-    Analytic(
-        title: "Top Food Trends",
-        subtitle: "Food Name",
-        img: "assets/analytic2.png"),
-    Analytic(
-        title: "Top Music Genres",
-        subtitle: "Rock",
-        img: "assets/analytic1.png"),
-    Analytic(
-        title: "Top Food Trends",
-        subtitle: "Food Name",
-        img: "assets/analytic2.png"),
-    Analytic(
-        title: "Top Sports Trends",
-        subtitle: "Football",
-        img: "assets/analytic1.png"),
-    Analytic(
-        title: "Top Food Trends",
-        subtitle: "Food Name",
-        img: "assets/analytic2.png"),
-  ];
+  Widget notSubscribeCardWidget() {
+    return PopScope(
+      canPop: false,
+      child: Stack(
+        children: [
+          // Blurred Background
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: Container(
+              color: Colors.black.withOpacity(0.4), // Semi-transparent overlay
+            ),
+          ),
+
+          // Alert Dialog
+          Center(
+            child: SizedBox(
+              width: context.width * .8,
+              child: Card(
+                elevation: 15,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "You're not subscribed!",
+                        style: GoogleFonts.bungee(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.redAccent,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "Subscribe to use this feature and unlock premium analytics!",
+                        style: GoogleFonts.poppins(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Add subscription logic here
+                          setState(() {
+                            isSubscribe = true; // Mark as subscribed
+                          });
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: DynamicColor.yellowClr,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                        ),
+                        child: Text(
+                          "Subscribe Now",
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class Analytic {
