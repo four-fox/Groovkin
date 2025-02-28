@@ -117,9 +117,9 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                     xValueMapper: (ChartData data, _) => data.x,
                     yValueMapper: (ChartData data, _) => data.y,
                     dataLabelSettings: DataLabelSettings(
-                      isVisible: true,
-                      labelAlignment: ChartDataLabelAlignment.top,
-                    ),
+                        isVisible: true,
+                        labelAlignment: ChartDataLabelAlignment.top,
+                        margin: EdgeInsets.only(top: 5)),
                     width: 0.95,
                     spacing: 0.1,
                   ),

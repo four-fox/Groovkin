@@ -187,8 +187,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 //     arguments: {"paymentMethod": 1});
                               },
                               child: Container(
+                                height: context.height * .20,
                                 margin: EdgeInsets.only(right: 10),
                                 // width: double.infinity,
+                                // height: 160,
                                 padding: EdgeInsets.only(
                                     top: 20, bottom: 20, left: 13),
                                 decoration: BoxDecoration(
@@ -197,12 +199,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      '${data.subcriptionName!.capitalize} \$${data.subcriptionPrice} /${data.subcriptionSubType!.capitalize}',
-                                      style: poppinsMediumStyle(
-                                        fontSize: 18,
-                                        context: context,
-                                        color: theme.primaryColor,
+                                    SizedBox(
+                                      width: 150,
+                                      child: Text(
+                                        '${data.subcriptionName!.capitalize} \$${data.subcriptionPrice} /${data.subcriptionSubType!.capitalize}',
+                                        style: poppinsMediumStyle(
+                                          fontSize: 18,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     SizedBox(

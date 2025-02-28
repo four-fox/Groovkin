@@ -22,14 +22,12 @@ class InterceptorsServices extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.statusCode == 401) {
-      print(API().sp.read("token"));
-      // if (response.data["message"] == "Unauthenticated") {
-      if (API().sp.read("token") != null) {
+      if (response.data["message"] == "Unauthenticated.") {
+        API().sp.erase();
+        API().sp.write("intro", true);
         getx.Get.offAllNamed(Routes.loginScreen);
-      } else {
-        bottomToast(text: response.data["message"].toString());
+        bottomToast(text: "Token Expired!!");
       }
-      // }
     }
     if (response.statusCode! > 400) {
       BotToast.closeAllLoading();
