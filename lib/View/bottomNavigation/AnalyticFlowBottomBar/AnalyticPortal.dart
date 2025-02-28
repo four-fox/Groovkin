@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
+import 'package:groovkin/Components/shrink_tap.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:material_charts/material_charts.dart' as material;
@@ -303,7 +303,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
-              color: Colors.black.withOpacity(0.4), // Semi-transparent overlay
+              color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
             ),
           ),
 
@@ -317,53 +317,70 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "You're not subscribed!",
-                        style: GoogleFonts.bungee(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "Subscribe to use this feature and unlock premium analytics!",
-                        style: GoogleFonts.poppins(fontSize: 16),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Add subscription logic here
-                          setState(() {
-                            isSubscribe = true; // Mark as subscribed
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: DynamicColor.yellowClr,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                        ),
-                        child: Text(
-                          "Subscribe Now",
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.deepPurple,
+                        Colors.deepPurpleAccent,
+                        Colors.deepPurple.shade300,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "You're not subscribed!",
+                          style: GoogleFonts.bungee(
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Subscribe now to unlock premium analytics and access this feature.",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        ShrinkOnTap(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Add subscription logic here
+                              setState(() {
+                                isSubscribe = true; // Mark as subscribed
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: DynamicColor.yellowClr,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                            ),
+                            child: Text(
+                              "Subscribe Now",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

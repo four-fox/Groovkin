@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
@@ -23,6 +25,7 @@ import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
@@ -1333,7 +1336,45 @@ class AuthController extends GetxController {
     isNotificationLoading.value = false; // Stop loading
     update();
   }
-  
+
+  // Todo Social Sign IN
+
+  Future<dynamic> googleSignIn() async {
+    GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
+
+    if (googleSignInAccount == null) return null;
+
+    GoogleSignInAuthentication? googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final credential = firebase_auth.GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    await firebase_auth.FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<dynamic> appleSignIn() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+
+    final firebase_auth.OAuthCredential oAuthCredential =
+        firebase_auth.OAuthProvider("apple.com").credential(
+      idToken: credential.identityToken,
+      accessToken: credential.authorizationCode,
+    );
+
+    final firebase_auth.UserCredential userCredential = await firebase_auth
+        .FirebaseAuth.instance
+        .signInWithCredential(oAuthCredential);
+
+    if (userCredential != null) {}
+  }
 }
 
 class AuthBinding implements Bindings {

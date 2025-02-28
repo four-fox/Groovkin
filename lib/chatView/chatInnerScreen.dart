@@ -10,10 +10,8 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 import '../Components/Network/API.dart';
 import '../Components/colors.dart';
-import '../View/GroovkinUser/UserBottomView/groupFlow/theSquadScreen.dart';
 import 'chatController.dart';
 import 'chatInnerDataModel.dart';
-import 'chatNewUserModel.dart';
 import 'messageWidget.dart';
 
 class ChatInnerScreen extends StatefulWidget {

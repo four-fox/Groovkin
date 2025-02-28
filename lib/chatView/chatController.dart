@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
-import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';

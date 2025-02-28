@@ -156,6 +156,9 @@ class LoginScreen extends StatelessWidget {
                       height: 15,
                     ),
                     CustomButtonWithIcon(
+                        onTap: () {
+                          // controller.appleSignIn();  
+                        },
                         text: "Continue with Apple",
                         iconValue: true,
                         bgColor: Colors.transparent,
@@ -170,6 +173,9 @@ class LoginScreen extends StatelessWidget {
                       height: 20,
                     ),
                     CustomButtonWithIcon(
+                        onTap: () {
+                          // controller.googleSignIn();
+                        },
                         text: "Continue with Google",
                         iconValue: true,
                         bgColor: Colors.transparent,
@@ -192,7 +198,7 @@ class LoginScreen extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,  
                           children: [
                             Text(
                               'Don\'t have an account? ',
