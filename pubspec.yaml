@@ -109,6 +109,7 @@ dependencies:
   google_fonts: ^6.2.1
   geocoding: ^3.0.0
   firebase_auth: ^5.2.0
+  reorderables: ^0.6.0
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
   wakelock_windows: ^0.2.1

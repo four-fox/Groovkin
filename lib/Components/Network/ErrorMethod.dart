@@ -57,9 +57,14 @@ dynamic returnResponse(Response? responseData) {
         break;
       case 500:
       default:
-        throw bottomToast(
-            text:
-                ('Error occurred while Communication with Server with StatusCode : ${responseData.statusCode}'));
+        if (responseData.data["data"] != null) {
+          BotToast.showText(text: responseData.data["data"]);
+        } else {
+          throw bottomToast(
+              text:
+                  ('Error occurred while Communication with Server with StatusCode : ${responseData.statusCode}'));
+        }
+
       // throw BotToast.showText(
       //     text:
       //         ('Error occurred while Communication with Server with StatusCode : ${responseData.statusCode}'));

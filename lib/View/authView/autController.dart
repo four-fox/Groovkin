@@ -1375,6 +1375,12 @@ class AuthController extends GetxController {
 
     if (userCredential != null) {}
   }
+
+
+
+
+
+
 }
 
 class AuthBinding implements Bindings {

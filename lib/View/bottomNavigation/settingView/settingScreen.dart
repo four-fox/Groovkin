@@ -343,7 +343,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : SizedBox.shrink(),
-                        API().sp.read("role") == "eventOrganizer"
+                        API().sp.read("currentRole") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
                                 text: "Subscription",

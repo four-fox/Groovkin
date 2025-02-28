@@ -167,7 +167,7 @@ class HomeController extends GetxController {
 
   // Todo Get All Cards
 
-  final List<transaction_history_model.Data> transactionData = [];
+  List<transaction_history_model.Data> transactionData = [];
 
   Future getAllCards() async {
     var response = await API().getApi(url: "cards");
@@ -181,6 +181,12 @@ class HomeController extends GetxController {
       }
     }
   }
+
+  String cardNumber = "";
+  String cardHolderName = '';
+
+  String cvvCode = '';
+  String expiryDate = '';
 
   // Todo Add Cards
 
