@@ -28,8 +28,31 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+import 'package:geocoding/geocoding.dart';
 
 class ManagerController extends GetxController {
+  Future<Map<String, dynamic>> getCityAndState(
+      double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        String? city = placemark.locality; // City
+        String? state = placemark.administrativeArea; // State
+        String? zipCode = placemark.postalCode; // Zip Code
+        return {
+          "city": city,
+          "state": state,
+          "zipCode": zipCode,
+        };
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+    return {};
+  }
+
   ///Upload Profile Pic
   String? imageBytes;
   XFile? files;
@@ -739,6 +762,18 @@ class ManagerController extends GetxController {
   ];
 
   ///todo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> counter working
+  ///
+  ///
+  ///
+  clearController() {
+    stateController.clear();
+    cityController.clear();
+    zipController.clear();
+    venueNameController.clear();
+    streetAddressController.clear();
+  }
+
+  ///
 }
 
 class ManagerBinding implements Bindings {

@@ -343,6 +343,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : SizedBox.shrink(),
+                        API().sp.read("role") == "eventOrganizer"
+                            ? customWidget(
+                                context: context,
+                                text: "Subscription",
+                                iconShow: false,
+                                onTap: () {
+                                  Get.toNamed(Routes.subscriptionScreen,
+                                      arguments: {"isFromSettingScreen": true});
+                                })
+                            : SizedBox(),
                         sp.read("role") == "User"
                             ? SizedBox.shrink()
                             : customWidget(
@@ -358,6 +368,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   // }
                                   // );
                                 }),
+
                         SizedBox(
                           height: API().sp.read("role") == "eventOrganizer"
                               ? 30

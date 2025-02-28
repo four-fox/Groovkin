@@ -107,6 +107,7 @@ dependencies:
   fl_chart: ^0.70.2
   material_charts: ^0.0.26
   google_fonts: ^6.2.1
+  geocoding: ^3.0.0
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
   wakelock_windows: ^0.2.1

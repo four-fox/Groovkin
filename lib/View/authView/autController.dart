@@ -354,9 +354,6 @@ class AuthController extends GetxController {
     }
   }
 
-
-
-
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get profile
   ProfileModel? userData;
   RxBool getProfileLoader = true.obs;
@@ -1152,7 +1149,7 @@ class AuthController extends GetxController {
     if (sendingEmailLoader.value == false) {
       showLoading();
     }
-  
+
     List eventInvitation = [];
     for (var action in invitationList) {
       eventInvitation.add(action.emailController.text);
@@ -1336,6 +1333,7 @@ class AuthController extends GetxController {
     isNotificationLoading.value = false; // Stop loading
     update();
   }
+  
 }
 
 class AuthBinding implements Bindings {

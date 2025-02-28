@@ -1,8 +1,6 @@
 // ignore_for_file: unnecessary_new, prefer_final_fields
 
-import 'dart:developer';
 import 'dart:io';
-import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,6 +39,9 @@ class _CreateCompanyProfileScreenState
     if (editVenue == true) {
       extractNumber(_controller.phoneNumController.text);
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.clearController();
+    });
   }
 
   extractNumber(String phone) async {
@@ -509,24 +510,7 @@ class _CreateCompanyProfileScreenState
                   SizedBox(
                     height: 20,
                   ),
-                  CustomTextFields(
-                    disabled: false,
-                    labelText: "State",
-                    controller: controller.stateController,
-                    validationError: "state",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFields(
-                    disabled: false,
-                    labelText: "City",
-                    controller: controller.cityController,
-                    validationError: "city",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   InternationalPhoneNumberInput(
                     onInputChanged: (PhoneNumber number) {
                       validateMobile(number.phoneNumber!);
@@ -606,6 +590,24 @@ class _CreateCompanyProfileScreenState
                   SizedBox(
                     height: 15,
                   ),
+                  CustomTextFields(
+                    disabled: false,
+                    labelText: "State",
+                    controller: controller.stateController,
+                    validationError: "state",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFields(
+                    disabled: false,
+                    labelText: "City",
+                    controller: controller.cityController,
+                    validationError: "city",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   TextField(
                     readOnly: true,
                     controller: controller.addressController,
@@ -629,7 +631,7 @@ class _CreateCompanyProfileScreenState
                               // canPopOnNextButtonTaped: true,
                               latLng: controller.latLng,
                               initAddress: controller.address,
-                              onNext: (GeocodingResult? result) {
+                              onNext: (GeocodingResult? result) async {
                                 if (result != null) {
                                   print(result.formattedAddress);
                                   controller.lat =
@@ -639,10 +641,21 @@ class _CreateCompanyProfileScreenState
                                   controller.address =
                                       result.formattedAddress ?? "";
                                   controller.latLng = LatLng(
-                                      result.geometry.location.lat,
-                                      result.geometry.location.lng);
+                                    result.geometry.location.lat,
+                                    result.geometry.location.lng,
+                                  );
                                   controller.addressController.text =
                                       result.formattedAddress!;
+                                  final data = await controller.getCityAndState(
+                                    result.geometry.location.lat,
+                                    result.geometry.location.lng,
+                                  );
+                                  controller.stateController.text =
+                                      data["state"];
+                                  controller.cityController.text = data["city"];
+                                  controller.zipController.text =
+                                      data["zipCode"];
+
                                   controller.update();
                                 }
                               },

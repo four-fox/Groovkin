@@ -22,6 +22,7 @@ class InterceptorsServices extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.statusCode == 401) {
+      print(API().sp.read("token"));
       // if (response.data["message"] == "Unauthenticated") {
       if (API().sp.read("token") != null) {
         getx.Get.offAllNamed(Routes.loginScreen);
@@ -34,7 +35,7 @@ class InterceptorsServices extends Interceptor {
       BotToast.closeAllLoading();
       BotToast.showText(text: response.data["data"]);
     }
-    
+
     log(response.data.toString());
     handler.next(response);
   }

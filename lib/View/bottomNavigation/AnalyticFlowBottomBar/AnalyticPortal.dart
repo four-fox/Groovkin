@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +12,7 @@ import 'package:material_charts/material_charts.dart' as material;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartData {
-  final int x;
+  final String x;
   final int y;
 
   ChartData(this.x, this.y);
@@ -27,6 +28,8 @@ class AnalyticPortalScreen extends StatefulWidget {
 class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
   late HomeController _homeController;
   List<ChartData> data = [];
+  late TooltipBehavior tooltipBehavior; // Declare tooltipBehavior
+
   bool isSubscribe = false;
 
   String returnTextAccordingToType(String type) {
@@ -57,17 +60,21 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
               _homeController.analyticsModel!.data!.asMap().entries.map((item) {
             int index = item.key;
             var data = item.value;
-            return ChartData(index, data.count!);
+            return ChartData(item.value.genre ?? "", data.count!);
           }).toList();
         });
       },
     );
+    tooltipBehavior =
+        TooltipBehavior(enable: true); // Initialize tooltip behavior
   }
 
   List<String> list = [
     "assets/analytic1.png",
     "assets/analytic2.png",
   ];
+
+  ValueNotifier<int> valueNotifier = ValueNotifier<int>(0);
 
   @override
   Widget build(BuildContext context) {
@@ -81,44 +88,43 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
             children: [
               // Chart
               SfCartesianChart(
-                  borderWidth: 3,
-                  palette: [DynamicColor.yellowClr],
-                  zoomPanBehavior: ZoomPanBehavior(
-                    enablePinching: true,
-                    enablePanning: true,
-                    zoomMode: ZoomMode.xy,
-                  ),
-                  tooltipBehavior: TooltipBehavior(
-                    enable: true,
-                    header: "Details",
-                    format: "Value: {point.y}", // Customize tooltip text
-                  ),
-                  primaryXAxis: CategoryAxis(
-                    autoScrollingDelta: 8,
-                    majorGridLines: MajorGridLines(width: 0),
-                    labelIntersectAction: AxisLabelIntersectAction.rotate45,
-                    autoScrollingMode: AutoScrollingMode.start,
-                    arrangeByIndex:
-                        true, // Arrange the categories by index for better scrolling experience
-                  ),
-                  enableAxisAnimation: true,
-                  enableMultiSelection: true,
-                  series: <CartesianSeries>[
-                    StackedColumnSeries<ChartData, int>(
-                      groupName: 'A',
-                      dataSource: data,
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y,
-                      dataLabelSettings: DataLabelSettings(
-                        isVisible: true,
-                        labelAlignment: ChartDataLabelAlignment.top,
-                      ),
-                      width:
-                          0.95, // Increase the width of each bar (default is 0.7)
-                      spacing: 0.1,
+                borderWidth: 3,
+                palette: [DynamicColor.yellowClr],
+                zoomPanBehavior: ZoomPanBehavior(
+                  enablePinching: true,
+                  enablePanning: true,
+                  zoomMode: ZoomMode.xy,
+                ),
+                tooltipBehavior: TooltipBehavior(
+                  enable: true,
+                  header: "", // Show genre dynamically
+                  format: "point.x", // Customize tooltip content
+                ),
+                primaryXAxis: CategoryAxis(
+                  isVisible: false,
+                  autoScrollingDelta: 8,
+                  majorGridLines: MajorGridLines(width: 0),
+                  autoScrollingMode: AutoScrollingMode.start,
+                  arrangeByIndex: true,
+                  maximumLabels: 1,
+                ),
+                enableAxisAnimation: true,
+                enableMultiSelection: true,
+                series: <CartesianSeries>[
+                  StackedColumnSeries<ChartData, String>(
+                    groupName: 'A',
+                    dataSource: data,
+                    xValueMapper: (ChartData data, _) => data.x,
+                    yValueMapper: (ChartData data, _) => data.y,
+                    dataLabelSettings: DataLabelSettings(
+                      isVisible: true,
+                      labelAlignment: ChartDataLabelAlignment.top,
                     ),
-                  ]),
-
+                    width: 0.95,
+                    spacing: 0.1,
+                  ),
+                ],
+              ),
               GetBuilder<HomeController>(builder: (controller) {
                 return (controller.analyticsListModel == null ||
                         controller.analyticsListModel!.data == null ||
@@ -321,7 +327,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                         style: GoogleFonts.bungee(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: Colors.redAccent,
+                          color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -342,7 +348,6 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                           setState(() {
                             isSubscribe = true; // Mark as subscribed
                           });
-                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: DynamicColor.yellowClr,

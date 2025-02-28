@@ -253,6 +253,7 @@ class HomeController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Analytics
 
   AnalyticsModel? analyticsModel;
+  RxInt? pointIndex = 0.obs;
 
   Future<void> getAllAnalyticsData() async {
     final response = await API().getApi(url: "show-analytics-chart");
