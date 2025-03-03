@@ -27,12 +27,15 @@ class CreateCompanyProfileScreen extends StatefulWidget {
 
 class _CreateCompanyProfileScreenState
     extends State<CreateCompanyProfileScreen> {
+  
   final venueForm = GlobalKey<FormState>();
 
   PhoneNumber number = PhoneNumber(isoCode: "US");
+  
   ManagerController _controller = Get.find();
+  
   bool editVenue = Get.arguments['updationCondition'];
-
+  
   @override
   void initState() {
     super.initState();
@@ -43,7 +46,7 @@ class _CreateCompanyProfileScreenState
       _controller.clearController();
     });
   }
-
+  
   extractNumber(String phone) async {
     if (_controller.venueDetails!.data != null) {
       PhoneNumber numbers =
@@ -591,7 +594,6 @@ class _CreateCompanyProfileScreenState
                     height: 15,
                   ),
                   CustomTextFields(
-                    disabled: false,
                     labelText: "State",
                     controller: controller.stateController,
                     validationError: "state",
@@ -600,7 +602,6 @@ class _CreateCompanyProfileScreenState
                     height: 20,
                   ),
                   CustomTextFields(
-                    disabled: false,
                     labelText: "City",
                     controller: controller.cityController,
                     validationError: "city",
@@ -660,7 +661,7 @@ class _CreateCompanyProfileScreenState
                                 }
                               },
                               onSuggestionSelected:
-                                  (PlacesDetailsResponse? result) {
+                                  (PlacesDetailsResponse? result) async {
                                 if (result != null) {
                                   print(result.result.formattedAddress);
                                   controller.lat = result
@@ -678,6 +679,16 @@ class _CreateCompanyProfileScreenState
                                       result.result.geometry!.location.lng);
                                   controller.addressController.text =
                                       result.result.formattedAddress!;
+                                  final data = await controller.getCityAndState(
+                                    result.result.geometry!.location.lat,
+                                    result.result.geometry!.location.lng,
+                                  );
+                                  controller.stateController.text =
+                                      data["state"];
+                                  controller.cityController.text = data["city"];
+                                  controller.zipController.text =
+                                      data["zipCode"];
+
                                   controller.update();
                                 }
                               },
