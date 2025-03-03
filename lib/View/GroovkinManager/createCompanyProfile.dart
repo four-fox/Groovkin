@@ -27,15 +27,14 @@ class CreateCompanyProfileScreen extends StatefulWidget {
 
 class _CreateCompanyProfileScreenState
     extends State<CreateCompanyProfileScreen> {
-  
   final venueForm = GlobalKey<FormState>();
 
   PhoneNumber number = PhoneNumber(isoCode: "US");
-  
+
   ManagerController _controller = Get.find();
-  
+
   bool editVenue = Get.arguments['updationCondition'];
-  
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +45,7 @@ class _CreateCompanyProfileScreenState
       _controller.clearController();
     });
   }
-  
+
   extractNumber(String phone) async {
     if (_controller.venueDetails!.data != null) {
       PhoneNumber numbers =
@@ -72,7 +71,9 @@ class _CreateCompanyProfileScreenState
           padding: EdgeInsets.only(top: 30),
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+              image: AssetImage("assets/grayClor.png"),
+              fit: BoxFit.fill,
+            ),
           ),
           child: Stack(
             alignment: Alignment.center,
@@ -118,8 +119,9 @@ class _CreateCompanyProfileScreenState
                             padding: EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: DynamicColor.grayClr.withOpacity(0.4)),
+                              borderRadius: BorderRadius.circular(8),
+                              color: DynamicColor.grayClr.withOpacity(0.4),
+                            ),
                             child: Center(
                               child: Text(
                                 "Skip",
