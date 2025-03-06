@@ -1,6 +1,5 @@
 // ignore_for_file: unused_field
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +21,7 @@ class VenueListScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS ? true : true,
+      bottom: true,
       child: Scaffold(
         appBar:
             customAppBar(theme: theme, text: "My Groovkin", backArrow: false),

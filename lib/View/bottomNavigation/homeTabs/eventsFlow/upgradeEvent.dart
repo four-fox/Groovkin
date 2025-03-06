@@ -874,7 +874,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       height: 20,
                     ),
                     SafeArea(
-                      bottom: Platform.isIOS ? true : false,
+                      bottom:  true,
                       child: CustomButton(
                         text: "Continue",
                         borderClr: Colors.transparent,

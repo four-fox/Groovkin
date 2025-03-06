@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'dart:io';
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
     // print(intialRole);
     return SafeArea(
       top: false,
-      bottom: Platform.isIOS ? true : false,
+      bottom: true ,
       child: Scaffold(
         // appBar: AppBar(
         //   backgroundColor: theme.scaffoldBackgroundColor,

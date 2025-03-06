@@ -1373,7 +1373,6 @@ class AuthController extends GetxController {
         .FirebaseAuth.instance
         .signInWithCredential(oAuthCredential);
 
-    if (userCredential != null) {}
   }
 
 

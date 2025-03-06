@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_final_fields
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -493,7 +492,7 @@ class EventPreview extends StatelessWidget {
       ),
       bottomNavigationBar: upComingDetail == 1
           ? SafeArea(
-              bottom: Platform.isIOS ? true : false,
+              bottom:  true,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(

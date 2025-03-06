@@ -1,0 +1,165 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "groovkin",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "groovkin (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "groovkin (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Country-State-City-Picker-Pro-master",
+            "cwd": "plugin/Country-State-City-Picker-Pro-master",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Country-State-City-Picker-Pro-master (profile mode)",
+            "cwd": "plugin/Country-State-City-Picker-Pro-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Country-State-City-Picker-Pro-master (release mode)",
+            "cwd": "plugin/Country-State-City-Picker-Pro-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "OTPTextField-dev",
+            "cwd": "plugin/OTPTextField-dev",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "OTPTextField-dev (profile mode)",
+            "cwd": "plugin/OTPTextField-dev",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "OTPTextField-dev (release mode)",
+            "cwd": "plugin/OTPTextField-dev",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "bottom_bar_matu-master",
+            "cwd": "plugin/bottom_bar_matu-master",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "bottom_bar_matu-master (profile mode)",
+            "cwd": "plugin/bottom_bar_matu-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "bottom_bar_matu-master (release mode)",
+            "cwd": "plugin/bottom_bar_matu-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "flutter_credit_card-master",
+            "cwd": "plugin/flutter_credit_card-master",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "flutter_credit_card-master (profile mode)",
+            "cwd": "plugin/flutter_credit_card-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "flutter_credit_card-master (release mode)",
+            "cwd": "plugin/flutter_credit_card-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "intl_phone_number_input-develop",
+            "cwd": "plugin/intl_phone_number_input-develop",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "intl_phone_number_input-develop (profile mode)",
+            "cwd": "plugin/intl_phone_number_input-develop",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "intl_phone_number_input-develop (release mode)",
+            "cwd": "plugin/intl_phone_number_input-develop",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "map_location_picker-master",
+            "cwd": "plugin/map_location_picker-master",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "map_location_picker-master (profile mode)",
+            "cwd": "plugin/map_location_picker-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "map_location_picker-master (release mode)",
+            "cwd": "plugin/map_location_picker-master",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "example",
+            "cwd": "plugin/OTPTextField-dev/example",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "example (profile mode)",
+            "cwd": "plugin/OTPTextField-dev/example",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "example (release mode)",
+            "cwd": "plugin/OTPTextField-dev/example",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

@@ -83,7 +83,8 @@ class LinkYourAccountSurveyScreen extends StatelessWidget {
               "title": "Quick Survey"
             });
           },
-          text: "Enter manually",
+          // text: "Enter manually",
+          text: "Next",
         ),
         // CustomButton(
         //   borderClr: Colors.transparent,

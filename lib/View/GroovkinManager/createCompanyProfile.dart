@@ -59,7 +59,7 @@ class _CreateCompanyProfileScreenState
   }
 
   bool skipBtn = Get.arguments['skipBtnHide'];
-
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -897,7 +897,7 @@ class _CreateCompanyProfileScreenState
                     height: 20,
                   ),
                   SafeArea(
-                    bottom: Platform.isIOS ? true : false,
+                    bottom: true ,
                     child: CustomButton(
                       text: "Add Venue Detail",
                       onTap: () {

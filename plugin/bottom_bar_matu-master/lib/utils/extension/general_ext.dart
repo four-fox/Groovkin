@@ -11,18 +11,18 @@ repeat(int times, void action(int)) {
 }
 
 /// Calls the specified function [operation] with `this` value as its receiver and returns its result.
-ReturnType run<ReturnType>(ReturnType operation()) {
+ReturnType run<ReturnType>(ReturnType Function() operation) {
   return operation();
 }
 
 extension ScopeFunctionsForObject<T extends Object> on T {
   /// Calls the specified function [operation] with `this` value as its argument and returns its result.
-  ReturnType let<ReturnType>(ReturnType operation(T self)) {
+  ReturnType let<ReturnType>(ReturnType Function(T self) operation) {
     return operation(this);
   }
 
   /// Calls the specified function [operation] with `this` value as its argument and returns `this` value.
-  T also(void operation(T self)) {
+  T also(void Function(T self) operation) {
     operation(this);
     return this;
   }

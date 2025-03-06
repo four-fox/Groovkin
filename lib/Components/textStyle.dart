@@ -7,7 +7,7 @@ poppinsMediumStyle(
     {double? fontSize, color, fontWeight, double? latterSpacing,context,bool underline= false}) {
   return TextStyle(
     fontSize: fontSize ?? 20,
-    color: color ?? Theme.of(context).buttonTheme.colorScheme!.background,
+    color: color ?? Theme.of(context).buttonTheme.colorScheme!.surface,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontFamily: 'poppinsMedium',
     letterSpacing: latterSpacing ?? 0,
@@ -19,7 +19,7 @@ poppinsRegularStyle(
     {double? fontSize, color, fontWeight, double? latterSpacing,context,bool underline= false}) {
   return TextStyle(
     fontSize: fontSize ?? 20,
-    color: color ?? Theme.of(context).buttonTheme.colorScheme!.background,
+    color: color ?? Theme.of(context).buttonTheme.colorScheme!.surface,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontFamily: 'poppinsRegular',
     letterSpacing: latterSpacing ?? 0,

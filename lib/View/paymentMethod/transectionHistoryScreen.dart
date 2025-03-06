@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
@@ -382,7 +381,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
           // Show "Delete" button if a card is selected
           if (selectedIndex != null) {
             return SafeArea(
-              bottom: Platform.isIOS ? true : false,
+              bottom: true,
               child: Container(
                 margin: EdgeInsets.all(8.0),
                 child: CustomButton(
@@ -447,7 +446,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
           else if (homecontroller.transactionData.length == 1 &&
               selectedIndex == null) {
             return SafeArea(
-              bottom: Platform.isIOS ? true : false,
+              bottom:  true,
               child: Container(
                 margin: EdgeInsets.all(8.0),
                 child: CustomButton(

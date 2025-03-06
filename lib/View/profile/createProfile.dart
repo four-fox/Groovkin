@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:country_state_city_pro/country_state_city_pro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
@@ -32,7 +30,7 @@ class CreateProfile extends StatelessWidget {
       key: createProfileForm,
       child: SafeArea(
         top: false,
-        bottom: Platform.isIOS ? true : false,
+        bottom: true,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: theme.scaffoldBackgroundColor,
@@ -61,12 +59,12 @@ class CreateProfile extends StatelessWidget {
             ),
           ),
           body: GetBuilder<AuthController>(initState: (v) {
-            for (int a = DateTime.now().year; a >= 1900; a--) {
+            for (int a = DateTime.now().year - 1; a >= 1900; a--) {
               dobYear.add(a);
             }
             _controller.dobController.clear();
           }, builder: (controller) {
-            return Padding(
+            return Padding( 
               padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
                 child: Column(

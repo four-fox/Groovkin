@@ -201,7 +201,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
         );
       }),
       bottomNavigationBar: SafeArea(
-        bottom: Platform.isIOS ? true : false,
+        bottom: true,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
@@ -219,7 +219,9 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
+                        
                         return MapLocationPicker(
+                        
                           onTappp: () {
                             print(managerController.lat);
                             print(managerController.lng);
