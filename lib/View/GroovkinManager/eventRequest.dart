@@ -55,12 +55,15 @@ class _EventRequestsState extends State<EventRequests> {
                           //       "title": "About Event"
                           //     }
                           // );
+
                           Get.toNamed(Routes.upcomingScreen, arguments: {
                             "notInterestedBtn": 2,
                             "appBarTitle": "About Event",
                             "eventId": data.id ?? 1,
                             // "reportedEventView": 1
                           });
+
+                          
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.0),

@@ -210,6 +210,7 @@ class NotificationService {
 
   // ! when user tap on the notification
   void handleMessage(BuildContext context, RemoteMessage message) {
+    print(message.data);
     var data;
     if (message.data["type"] == "send_message") {
       data = jsonDecode(message.data["data"]);

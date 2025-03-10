@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/UserMyEvents.dart';
-import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/groupScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
 
@@ -21,9 +20,9 @@ set selectIndex(index) => selectUserIndexxx.value = index;
 class UserBottomNavigationNav extends StatelessWidget {
   UserBottomNavigationNav({
     super.key,
-// this.initialIndex = 1,
+  // this.initialIndex = 1,
   });
-
+  
   // @override
   // void dispose() {
   //   super.dispose();
@@ -35,7 +34,7 @@ class UserBottomNavigationNav extends StatelessWidget {
     final bodyContent = [
       UserHomeScreen(),
       MyEventsScreen(),
-      GroupScreen(),
+      // GroupScreen(),
       SettingScreen(),
     ];
 
@@ -109,22 +108,22 @@ class UserBottomNavigationNav extends StatelessWidget {
                       ),
                     ),
                   ),
-                  BottomBarItem(
-                    label: "Groups",
-                    labelTextStyle: poppinsMediumStyle(
-                        fontSize: 12,
-                        context: context,
-                        color: theme.scaffoldBackgroundColor),
-                    iconBuilder: Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0),
-                      child: ImageIcon(
-                        AssetImage("assets/groups.png"),
-                        color: selectUserIndexxx.value == 2
-                            ? DynamicColor.yellowClr
-                            : DynamicColor.grayClr,
-                      ),
-                    ),
-                  ),
+                  // BottomBarItem(
+                  //   label: "Groups",
+                  //   labelTextStyle: poppinsMediumStyle(
+                  //       fontSize: 12,
+                  //       context: context,
+                  //       color: theme.scaffoldBackgroundColor),
+                  //   iconBuilder: Padding(
+                  //     padding: const EdgeInsets.only(bottom: 6.0),
+                  //     child: ImageIcon(
+                  //       AssetImage("assets/groups.png"),
+                  //       color: selectUserIndexxx.value == 2
+                  //           ? DynamicColor.yellowClr
+                  //           : DynamicColor.grayClr,
+                  //     ),
+                  //   ),
+                  // ),
                   BottomBarItem(
                     label: "Settings",
                     labelTextStyle: poppinsMediumStyle(

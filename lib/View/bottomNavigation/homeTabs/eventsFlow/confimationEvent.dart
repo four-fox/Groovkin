@@ -226,7 +226,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 theme: theme,
                 context: context,
                 title: "Subtotal",
-                value: "\$ ${(hoursDifference! * CalculateHoursFromDate())}"),
+                value:
+                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate())}"),
             SizedBox(
               height: 10,
             ),

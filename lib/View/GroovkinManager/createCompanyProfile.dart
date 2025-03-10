@@ -59,7 +59,7 @@ class _CreateCompanyProfileScreenState
   }
 
   bool skipBtn = Get.arguments['skipBtnHide'];
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -587,30 +587,7 @@ class _CreateCompanyProfileScreenState
                   SizedBox(
                     height: 20,
                   ),
-                  CustomTextFields(
-                    labelText: "Zip Code",
-                    controller: controller.zipController,
-                    validationError: "zip code",
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  CustomTextFields(
-                    labelText: "State",
-                    controller: controller.stateController,
-                    validationError: "state",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFields(
-                    labelText: "City",
-                    controller: controller.cityController,
-                    validationError: "city",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   TextField(
                     readOnly: true,
                     controller: controller.addressController,
@@ -767,6 +744,32 @@ class _CreateCompanyProfileScreenState
                           lng: double.parse(controller.lng),
                         )
                       : SizedBox.shrink(),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFields(
+                    labelText: "State",
+                    controller: controller.stateController,
+                    validationError: "state",
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextFields(
+                    labelText: "City",
+                    controller: controller.cityController,
+                    validationError: "city",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFields(
+                    labelText: "Zip Code",
+                    controller: controller.zipController,
+                    validationError: "zip code",
+                  ),
+
                   Row(
                     children: [
                       SizedBox(
@@ -893,11 +896,8 @@ class _CreateCompanyProfileScreenState
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   SafeArea(
-                    bottom: true ,
+                    bottom: true,
                     child: CustomButton(
                       text: "Add Venue Detail",
                       onTap: () {

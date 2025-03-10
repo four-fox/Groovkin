@@ -630,7 +630,7 @@ pictureAlert(context,
                             color: DynamicColor.lightRedClr,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 20.0),
+                            padding: EdgeInsets.only(left: 15.0),
                             child: Text(
                               'Camera',
                               style: poppinsMediumStyle(

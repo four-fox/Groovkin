@@ -25,7 +25,7 @@ class ChatInnerScreen extends StatefulWidget {
 }
 
 class _ChatInnerScreenState extends State<ChatInnerScreen> {
-  ChatController _controller = Get.find();
+  late ChatController _controller;
 
   var userData;
 
@@ -65,6 +65,12 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
 
   @override
   void initState() {
+    if (Get.isRegistered<ChatController>()) {
+      _controller = Get.find<ChatController>();
+    } else {
+      _controller = Get.put(ChatController());
+    }
+
     _controller.replyModel = null;
     _controller.isReplying(false);
     _controller.replyId = null;
