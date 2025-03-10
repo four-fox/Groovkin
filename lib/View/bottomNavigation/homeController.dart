@@ -40,7 +40,13 @@ class HomeController extends GetxController {
   EventHistoryModel? eventHistory;
   completedEvent() async {
     completedEventLoader(false);
-    var response = await API().getApi(url: "history-events");
+    var response = await API().getApi(url: "history-events", queryParameters: {
+        "filter": (showIndexValue == 1 && (selectedFilter == 0))
+            ? "recent"
+            : (showIndexValue == 1 && (selectedFilter == 1))
+                ? "past_week"
+                : "older_than_1_month",
+    });
     if (response.statusCode == 200) {
       eventHistory = EventHistoryModel.fromJson(response.data);
       completedEventLoader(true);

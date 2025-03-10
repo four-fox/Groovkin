@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late HomeController _controller;
   late EventController _eventController;
   late AuthController _authController;
+  late ManagerController _managerController;
 
   @override
   void initState() {
@@ -54,6 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
       _eventController = Get.find<EventController>();
     } else {
       _eventController = Get.put(EventController());
+    }
+
+    if (Get.isRegistered<ManagerController>()) {
+      _managerController = Get.find<ManagerController>();
+    } else {
+      _managerController = Get.put(ManagerController());
     }
 
     super.initState();
@@ -231,8 +238,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     indicator: BoxDecoration(color: Colors.transparent),
                     indicatorColor: Colors.transparent,
                     onTap: (v) {
-                      print(API().sp.read("role"));
+                      controller.selectedFilter.value = 0;
                       controller.showIndexValue!.value = v;
+                      controller.showFilter.value = false;
                       controller.update();
                     },
                     tabs: [
@@ -316,18 +324,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 5,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      controller.showFilter.value =
-                          !controller.showFilter.value;
-                    },
-                    child: Align(
-                        alignment: Alignment.topRight,
-                        child: ImageIcon(
-                          AssetImage("assets/filterIcons.png"),
-                          color: DynamicColor.grayClr,
-                        )),
-                  )
+                  if (controller.showIndexValue!.value != 0)
+                    GestureDetector(
+                      onTap: () {
+                        controller.showFilter.value =
+                            !controller.showFilter.value;
+                      },
+                      child: Align(
+                          alignment: Alignment.topRight,
+                          child: ImageIcon(
+                            AssetImage("assets/filterIcons.png"),
+                            color: DynamicColor.grayClr,
+                          )),
+                    )
                 ]),
               ),
             ),
@@ -345,6 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         : PendingScreen(),
                   ],
                 ),
+
                 // Shahzain
                 Obx(
                   () => Visibility(
@@ -355,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: Container(
                         height:
-                            controller.showIndexValue!.value == 0 ? 130 : 180,
+                            controller.showIndexValue!.value == 0 ? 100 : 130,
                         width: Get.width / 2,
                         padding: EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
@@ -370,6 +380,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.selectedFilter.value = 0;
                                 controller.showFilter.value = false;
                                 controller.update();
+
+                                if (controller.showIndexValue == 1) {
+                                  controller.completedEvent();
+                                }
+                                if (controller.showIndexValue == 2 &&
+                                    sp.read("role") != "eventManager") {
+                                  _eventController.getAllSendingRequest();
+                                }
+                                if (controller.showIndexValue == 2 &&
+                                    sp.read("role") == "eventManager") {
+                                  _managerController.getAllPendingEvents();
+                                }
                               },
                               child: Container(
                                 width: Get.width,
@@ -397,6 +419,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.selectedFilter.value = 1;
                                 controller.showFilter.value = false;
                                 controller.update();
+                                if (controller.showIndexValue == 1) {
+                                  controller.completedEvent();
+                                }
+                                if (controller.showIndexValue == 2 &&
+                                    sp.read("role") != "eventManager") {
+                                  _eventController.getAllSendingRequest();
+                                }
+                                if (controller.showIndexValue == 2 &&
+                                    sp.read("role") == "eventManager") {
+                                  _managerController.getAllPendingEvents();
+                                }
                               },
                               child: Container(
                                 width: Get.width,
@@ -423,6 +456,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () {
                                 controller.selectedFilter.value = 2;
                                 controller.showFilter.value = false;
+                                controller.update();
+                                if (controller.showIndexValue == 1) {
+                                  controller.completedEvent();
+                                }
+                                if (controller.showIndexValue == 2 &&
+                                    sp.read("role") != "eventManager") {
+                                  _eventController.getAllSendingRequest();
+                                }
+                                if (controller.showIndexValue == 2 &&
+                                    sp.read("role") == "eventManager") {
+                                  _managerController.getAllPendingEvents();
+                                }
                               },
                               child: Container(
                                 width: Get.width,
@@ -445,76 +490,76 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            controller.showIndexValue!.value == 0
-                                ? SizedBox.shrink()
-                                : GestureDetector(
-                                    onTap: () {
-                                      controller.selectedFilter.value = 3;
-                                      controller.showFilter.value = false;
-                                      controller.historyStatus();
-                                    },
-                                    child: Container(
-                                      width: Get.width,
-                                      height: 35,
-                                      padding: EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color:
-                                              controller.selectedFilter.value !=
-                                                      3
-                                                  ? Colors.transparent
-                                                  : DynamicColor.yellowClr),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          controller.showIndexValue!.value == 2
-                                              ? "Requested"
-                                              : "Completed",
-                                          style: poppinsMediumStyle(
-                                              fontSize: 14,
-                                              color:
-                                                  theme.scaffoldBackgroundColor,
-                                              context: context),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                            controller.showIndexValue!.value == 0
-                                ? SizedBox.shrink()
-                                : GestureDetector(
-                                    onTap: () {
-                                      controller.selectedFilter.value = 4;
-                                      controller.showFilter.value = false;
-                                      controller.historyStatus();
-                                    },
-                                    child: Container(
-                                      width: Get.width,
-                                      height: 35,
-                                      padding: EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color:
-                                              controller.selectedFilter.value !=
-                                                      4
-                                                  ? Colors.transparent
-                                                  : DynamicColor.yellowClr),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          controller.showIndexValue!.value == 2
-                                              ? "Pending"
-                                              : "Cancelled",
-                                          style: poppinsMediumStyle(
-                                              fontSize: 14,
-                                              color:
-                                                  theme.scaffoldBackgroundColor,
-                                              context: context),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                            // controller.showIndexValue!.value == 0
+                            //     ? SizedBox.shrink()
+                            //     : GestureDetector(
+                            //         onTap: () {
+                            //           controller.selectedFilter.value = 3;
+                            //           controller.showFilter.value = false;
+                            //           controller.historyStatus();
+                            //         },
+                            //         child: Container(
+                            //           width: Get.width,
+                            //           height: 35,
+                            //           padding: EdgeInsets.only(left: 10),
+                            //           decoration: BoxDecoration(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(10),
+                            //               color:
+                            //                   controller.selectedFilter.value !=
+                            //                           3
+                            //                       ? Colors.transparent
+                            //                       : DynamicColor.yellowClr),
+                            //           child: Align(
+                            //             alignment: Alignment.centerLeft,
+                            //             child: Text(
+                            //               controller.showIndexValue!.value == 2
+                            //                   ? "Requested"
+                            //                   : "Completed",
+                            //               style: poppinsMediumStyle(
+                            //                   fontSize: 14,
+                            //                   color:
+                            //                       theme.scaffoldBackgroundColor,
+                            //                   context: context),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ),
+                            // controller.showIndexValue!.value == 0
+                            //     ? SizedBox.shrink()
+                            //     : GestureDetector(
+                            //         onTap: () {
+                            //           controller.selectedFilter.value = 4;
+                            //           controller.showFilter.value = false;
+                            //           controller.historyStatus();
+                            //         },
+                            //         child: Container(
+                            //           width: Get.width,
+                            //           height: 35,
+                            //           padding: EdgeInsets.only(left: 10),
+                            //           decoration: BoxDecoration(
+                            //               borderRadius:
+                            //                   BorderRadius.circular(10),
+                            //               color:
+                            //                   controller.selectedFilter.value !=
+                            //                           4
+                            //                       ? Colors.transparent
+                            //                       : DynamicColor.yellowClr),
+                            //           child: Align(
+                            //             alignment: Alignment.centerLeft,
+                            //             child: Text(
+                            //               controller.showIndexValue!.value == 2
+                            //                   ? "Pending"
+                            //                   : "Cancelled",
+                            //               style: poppinsMediumStyle(
+                            //                   fontSize: 14,
+                            //                   color:
+                            //                       theme.scaffoldBackgroundColor,
+                            //                   context: context),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ),
                           ],
                         ),
                       ),

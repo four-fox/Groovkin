@@ -142,6 +142,7 @@ class ChatController extends GetxController {
   }
 
   /// get all user for new chat
+
   RxBool newUserChatLoader = false.obs;
   ChatNewUserModel? newUserData;
   bool getNewUserWait = false;
@@ -298,7 +299,8 @@ class ChatController extends GetxController {
           innerUserOnline.value = true;
         }
         conversationID = chatData!.data!.data![0].conversationId;
-        if(response.data['data']['data'][0]['creator_id'] != API().sp.read("userId")){
+        if (response.data['data']['data'][0]['creator_id'] !=
+            API().sp.read("userId")) {
           messageSeen(conversationID);
         }
       }
@@ -364,6 +366,7 @@ class ChatController extends GetxController {
   }
 
   ///receive message from socket
+  
   bool receiver = false;
   receiveMessage() async {
     socket!.on('receiver-message-${API().sp.read("userId")}', (data) {
@@ -424,7 +427,9 @@ class ChatController extends GetxController {
       //       update();
       //     });
       //   } else {
+
       if ((index - currentIndex) > 2) {
+
         scrollController!
             .jumpTo(index: index, alignment: 0.5, automaticAlignment: false);
         animatedOpacity = true.obs;

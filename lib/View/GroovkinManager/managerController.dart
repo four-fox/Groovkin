@@ -16,6 +16,7 @@ import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart'
     as venueDtail;
 import 'package:groovkin/View/GroovkinManager/venueListManagerModel.dart';
 import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/counters/messagesModel.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -30,6 +31,19 @@ import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 import 'package:geocoding/geocoding.dart';
 
 class ManagerController extends GetxController {
+  late HomeController homeController;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    if (Get.isRegistered<HomeController>()) {
+      homeController = Get.find<HomeController>();
+    } else {
+      homeController = Get.put(HomeController());
+    }
+  }
+
   Future<Map<String, dynamic>> getCityAndState(
       double latitude, double longitude) async {
     try {
@@ -646,7 +660,16 @@ class ManagerController extends GetxController {
   ManagerPendingEventsModel? managerPendingEvents;
   getAllPendingEvents() async {
     getAllPendingEventsLoader(false);
-    var response = await API().getApi(url: "show-venue-requested-events");
+    var response = await API()
+        .getApi(url: "show-venue-requested-events", queryParameters: {
+      "filter": (homeController.showIndexValue == 2 &&
+              (homeController.selectedFilter == 0))
+          ? "recent"
+          : (homeController.showIndexValue == 2 &&
+                  (homeController.selectedFilter == 1))
+              ? "past_week"
+              : "older_than_1_month",
+    });
     final token = await API().sp.read("token");
     final userId = await API().sp.read("userId");
     print(token);

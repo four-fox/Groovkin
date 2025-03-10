@@ -11,6 +11,7 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userEventDetailsModel.dart';
 import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart' as survey;
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/musicChoiceView/musicChoiceModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/pastEventModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/showVenueByLatLngModel.dart';
@@ -25,6 +26,7 @@ import 'ongoingEvents/ongoingEventsModel.dart';
 class EventController extends GetxController {
   late AuthController _authController;
   late ManagerController managerController;
+  late HomeController homeController;
 
   @override
   void onInit() {
@@ -38,6 +40,11 @@ class EventController extends GetxController {
       _authController = Get.find<AuthController>();
     } else {
       _authController = Get.put(AuthController());
+    }
+    if (Get.isRegistered<HomeController>()) {
+      homeController = Get.find<HomeController>();
+    } else {
+      homeController = Get.put(HomeController());
     }
   }
 
@@ -701,8 +708,18 @@ class EventController extends GetxController {
   bool requestEventWaiting = false;
   getAllSendingRequest({nextUrl}) async {
     getAllSendingRequestLoader(false);
-    var response =
-        await API().getApi(url: "show-requested-events", fullUrl: nextUrl);
+    var response = await API().getApi(
+        url: "show-requested-events",
+        fullUrl: nextUrl,
+        queryParameters: {
+          "filter": (homeController.showIndexValue == 2 &&
+                  (homeController.selectedFilter == 0))
+              ? "recent"
+              : (homeController.showIndexValue == 2 &&
+                      (homeController.selectedFilter == 1))
+                  ? "past_week"
+                  : "older_than_1_month",
+        });
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         requestEventWaiting = false;

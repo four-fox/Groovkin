@@ -27,7 +27,7 @@ class ChatRoomScreen extends StatelessWidget {
   stopTyping() {
     _controller.getAllChatRoom();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -147,6 +147,7 @@ class ChatRoomScreen extends StatelessWidget {
                               itemBuilder: (BuildContext context, index) {
                                 ChatRoomObject chatRoomData =
                                     controller.chatRoomData!.data!.data![index];
+
                                 return Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 4.0),
