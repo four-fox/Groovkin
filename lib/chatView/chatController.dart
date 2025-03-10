@@ -471,7 +471,6 @@ class ChatController extends GetxController {
     socket!.on(
         'seen-message-$conversationId',
         (data) => {
-
               print(data),
 
               // for (int i = 0; i < data["message_count"]; i++) {
