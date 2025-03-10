@@ -59,7 +59,7 @@ class CreateProfile extends StatelessWidget {
             ),
           ),
           body: GetBuilder<AuthController>(initState: (v) {
-            for (int a = DateTime.now().year - 1; a >= 1900; a--) {
+            for (int a = DateTime.now().year - 10; a >= 1900; a--) {
               dobYear.add(a);
             }
             _controller.dobController.clear();
