@@ -123,7 +123,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                                     .bannerImage !=
                                                 null))
                                         ? DecorationImage(
-                                            fit: BoxFit.fill,
+                                            // fit: BoxFit.cover,
                                             image: NetworkImage(controller
                                                 .eventDetail!
                                                 .data!
@@ -156,7 +156,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                     borderRadius: BorderRadius.circular(12.0),
                                     child: Image.file(
                                       File(_authController.imageBytes!),
-                                      fit: BoxFit.fill,
+                                      // fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
@@ -874,7 +874,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       height: 20,
                     ),
                     SafeArea(
-                      bottom: Platform.isIOS ? true : false,
+                      bottom: true,
                       child: CustomButton(
                         text: "Continue",
                         borderClr: Colors.transparent,

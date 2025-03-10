@@ -1,5 +1,6 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
@@ -24,6 +25,7 @@ import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
@@ -134,6 +136,14 @@ class AuthController extends GetxController {
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
+      if (response.data["data"]["user_details"]["current_role"] == "user") {
+        API().sp.write("currentRole", "User");
+      } else if (response.data["data"]["user_details"]["current_role"] ==
+          "event_owner") {
+        API().sp.write("currentRole", "eventOrganizer");
+      } else {
+        API().sp.write("currentRole", "eventManager");
+      }
       clearTextFields();
       if (API().sp.read("role") == "User") {
         API().sp.write("isUserCreated",
@@ -176,6 +186,16 @@ class AuthController extends GetxController {
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
+
+      if (response.data["data"]["user_details"]["current_role"] == "user") {
+        API().sp.write("currentRole", "User");
+      } else if (response.data["data"]["user_details"]["current_role"] ==
+          "event_owner") {
+        API().sp.write("currentRole", "eventOrganizer");
+      } else {
+        API().sp.write("currentRole", "eventManager");
+      }
+
       if (response.data['data']['user_details']['active_role'] ==
           'venue_manager') {
         API().sp.write("role", 'eventManager');
@@ -565,6 +585,7 @@ class AuthController extends GetxController {
         }
       }
     }
+
     var response = await API().postApi(data, "create-quick-survey");
     if (response.statusCode == 200) {
       clearLists();
@@ -1315,6 +1336,50 @@ class AuthController extends GetxController {
     isNotificationLoading.value = false; // Stop loading
     update();
   }
+
+  // Todo Social Sign IN
+
+  Future<dynamic> googleSignIn() async {
+    GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
+
+    if (googleSignInAccount == null) return null;
+
+    GoogleSignInAuthentication? googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final credential = firebase_auth.GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    await firebase_auth.FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<dynamic> appleSignIn() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+
+    final firebase_auth.OAuthCredential oAuthCredential =
+        firebase_auth.OAuthProvider("apple.com").credential(
+      idToken: credential.identityToken,
+      accessToken: credential.authorizationCode,
+    );
+
+    final firebase_auth.UserCredential userCredential = await firebase_auth
+        .FirebaseAuth.instance
+        .signInWithCredential(oAuthCredential);
+
+  }
+
+
+
+
+
+
 }
 
 class AuthBinding implements Bindings {

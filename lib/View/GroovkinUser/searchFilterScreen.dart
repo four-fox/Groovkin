@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_collection_literals
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -205,7 +204,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                 ),
                 Spacer(),
                 SafeArea(
-                  bottom: Platform.isIOS ? true : false,
+                  bottom:  true ,
                   child: ShowCustomMap(
                     horizontalPadding: 0.0,
                     circle: true,

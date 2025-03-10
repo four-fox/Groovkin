@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,9 +32,37 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   DateFormat format = DateFormat("yyyy-MM-dd");
   DateFormat timeFormat = DateFormat("hh:mm a");
 
+  double CalculateHoursFromDate() {
+    String startDate = _controller.eventDateController.text;
+    String endDate = _controller.eventEndDateController.text;
+
+    String time =
+        _controller.proposedTimeWindowsController.text.toString().trim();
+    List<String> parts = time.split(RegExp(r'\s+'));
+
+    DateTime dt1 = DateFormat("dd-MM-yyyy hh:mm a")
+        .parse("${startDate} ${parts.first} ${parts.last}");
+
+    String time2 = _controller.endTimeController.text.toString().trim();
+    List<String> parts2 = time2.split(RegExp(r'\s+'));
+    print(parts2);
+    DateTime dt2 = DateFormat("dd-MM-yyyy hh:mm a")
+        .parse("${endDate} ${parts2.first} ${parts2.last}");
+
+    log("String time ${_controller.proposedTimeWindowsController.text}");
+    log("First Date ${dt1.millisecondsSinceEpoch}");
+    log("Second Date ${dt2}");
+
+    Duration diff = dt2.difference(dt1);
+    double totalHours = diff.inMinutes / 60;
+
+    return totalHours;
+  }
+
   @override
   void initState() {
     super.initState();
+
     if (_controller.datePost != null &&
         _controller.postTime != null &&
         _controller.endDatePost != null &&
@@ -73,8 +101,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
       double totalHours = dailyHours * totalDays;
       hoursDifference = totalHours;
       if (_controller.rateType!.value == "hourly") {
-        subTotal = double.parse(_controller.hourlyRateController.text) *
-            hoursDifference!;
+        subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
+            0 * hoursDifference!;
         double tempDownPayment = (subTotal! *
             (double.parse(_controller.paymentSchedule!.value) / 100));
         stripeTax = 0.10 * subTotal!;
@@ -190,7 +218,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 theme: theme,
                 context: context,
                 title: "No. hours",
-                value: hoursDifference?.toStringAsFixed(2)),
+                value: CalculateHoursFromDate().toString()),
             SizedBox(
               height: 10,
             ),
@@ -198,7 +226,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 theme: theme,
                 context: context,
                 title: "Subtotal",
-                value: "\$ ${subTotal?.toStringAsFixed(2)}"),
+                value:
+                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate())}"),
             SizedBox(
               height: 10,
             ),
@@ -250,7 +279,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        bottom: Platform.isIOS ? true : false,
+        bottom: true,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

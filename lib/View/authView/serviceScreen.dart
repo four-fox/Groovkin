@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_final_fields
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,11 +8,10 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
-import '../../model/my_groovkin_model.dart';
+
 import '../bottomNavigation/homeController.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -262,7 +260,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               );
       }),
       bottomNavigationBar: SafeArea(
-        bottom: Platform.isIOS ? true : false,
+        bottom: true ,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

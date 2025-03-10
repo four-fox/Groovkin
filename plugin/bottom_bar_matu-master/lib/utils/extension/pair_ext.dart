@@ -7,6 +7,11 @@ class Pair<T, U> {
   final T left;
   final U right;
 
+  @override
+  @override
+  @override
+  @override
+  @override
   String toString() => '($left, $right)';
 }
 

@@ -89,6 +89,7 @@ class FollowingScreen extends StatelessWidget {
                               color: selectedVal.value == 0
                                   ? theme.primaryColor
                                   : DynamicColor.whiteClr.withOpacity(0.3)),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -114,6 +115,7 @@ class FollowingScreen extends StatelessWidget {
                               color: selectedVal.value == 1
                                   ? theme.primaryColor
                                   : DynamicColor.whiteClr.withOpacity(0.3)),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -123,8 +125,8 @@ class FollowingScreen extends StatelessWidget {
                   child: Obx(
                     () => Container(
                       // height: 35,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      // padding:
+                      //     EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                       decoration: BoxDecoration(
                         color: selectedVal.value == 2
                             ? DynamicColor.yellowClr
@@ -140,6 +142,7 @@ class FollowingScreen extends StatelessWidget {
                               color: selectedVal.value == 2
                                   ? theme.primaryColor
                                   : DynamicColor.whiteClr.withOpacity(0.3)),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),

@@ -1163,7 +1163,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
       bottomNavigationBar: btnShow == false
           ? SizedBox.shrink()
           : SafeArea(
-              bottom: Platform.isIOS ? true : false,
+              bottom: true,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(

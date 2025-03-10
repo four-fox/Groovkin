@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
@@ -240,7 +239,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
         ],
       ),
       bottomNavigationBar: SafeArea(
-        bottom: Platform.isIOS ? true : false,
+        bottom:  true,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

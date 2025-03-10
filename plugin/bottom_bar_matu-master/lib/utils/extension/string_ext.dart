@@ -69,12 +69,12 @@ extension StringExtensions on String? {
 
   ///Returns `true` if at least one element matches the given [predicate].
   /// the [predicate] should have only one character
-  bool anyChar(bool predicate(String element)) =>
+  bool anyChar(bool Function(String element) predicate) =>
       this?.split('').any((s) => predicate(s)) ?? false;
 
   /// Returns last symbol of string or empty string if `this` is null or empty
   String get last {
-    if (this.isNullOrEmpty()) return "";
+    if (isNullOrEmpty()) return "";
     return this![this!.length - 1];
   }
 

@@ -28,6 +28,7 @@ class CustomTextFields extends StatelessWidget {
     this.onChanged,
     this.ignoredValidation = false,
     this.hintText,
+    this.disabled,
   }) : super(key: key);
 
   String? labelText;
@@ -47,6 +48,7 @@ class CustomTextFields extends StatelessWidget {
   String? validationError;
   bool? ignoredValidation = false;
   bool? isEmail = false;
+  bool? disabled = true;
   final ValueChanged<String>? onChanged;
   String? hintText;
 
@@ -55,6 +57,7 @@ class CustomTextFields extends StatelessWidget {
     return TextFormField(
         controller: controller,
         maxLines: maxLine!,
+        enabled: disabled,
         style: style ??
             poppinsRegularStyle(
                 context: context,
@@ -66,7 +69,7 @@ class CustomTextFields extends StatelessWidget {
         keyboardType:
             keyBoardType == false ? TextInputType.text : TextInputType.number,
         decoration: InputDecoration(
-          hintText:hintText,
+          hintText: hintText,
           alignLabelWithHint: true,
           suffixIcon: iconShow == true
               ? GestureDetector(
@@ -84,7 +87,17 @@ class CustomTextFields extends StatelessWidget {
                   context: context,
                   fontSize: 14,
                   color: textClr ?? DynamicColor.grayClr),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Color(0xffeabbb9)), //<-- SEE HERE
+          ),
           border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+                color: borderClr ??
+                    DynamicColor.grayClr.withOpacity(0.6)), //<-- SEE HERE
+          ),
+          disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
@@ -229,15 +242,15 @@ class SearchTextFields extends StatelessWidget {
   bool readOnly = false;
   final ValueChanged<String>? onChanged;
   TextEditingController controller;
-Color? bgColor;
-double? borderRadius;
+  Color? bgColor;
+  double? borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: bgColor??Colors.transparent,
-          borderRadius: BorderRadius.circular(borderRadius??8),
+          color: bgColor ?? Colors.transparent,
+          borderRadius: BorderRadius.circular(borderRadius ?? 8),
           border: Border.all(color: DynamicColor.grayClr.withOpacity(0.6))),
       child: TextFormField(
         onTap: onTap,

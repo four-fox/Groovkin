@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:country_state_city_pro/country_state_city_pro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
@@ -32,7 +30,7 @@ class CreateProfile extends StatelessWidget {
       key: createProfileForm,
       child: SafeArea(
         top: false,
-        bottom: Platform.isIOS ? true : false,
+        bottom: true,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: theme.scaffoldBackgroundColor,
@@ -61,7 +59,7 @@ class CreateProfile extends StatelessWidget {
             ),
           ),
           body: GetBuilder<AuthController>(initState: (v) {
-            for (int a = DateTime.now().year; a >= 1900; a--) {
+            for (int a = DateTime.now().year - 1; a >= 1900; a--) {
               dobYear.add(a);
             }
             _controller.dobController.clear();
@@ -144,9 +142,9 @@ class CreateProfile extends StatelessWidget {
                       height: 15,
                     ),
                     CustomTextFields(
-                      labelText: "Display name",
+                      labelText: "User name",
                       controller: controller.displayNameController,
-                      validationError: "display name",
+                      validationError: "User name",
                     ),
                     SizedBox(
                       height: sp.read('role') == "eventManager" ? 15 : 0,
@@ -330,7 +328,7 @@ class CreateProfile extends StatelessWidget {
                         context: context,
                         fontSize: 14,
                         color: DynamicColor.grayClr,
-                      ), 
+                      ),
                       textStyle: poppinsRegularStyle(
                         context: context,
                         fontSize: 14,
@@ -423,7 +421,6 @@ class CreateProfile extends StatelessWidget {
                                     .withOpacity(0.6)), //<-- SEE HERE
                           ),
                         )),
-
                     // sp.read("role")=="eventOrganizer"? CustomTextFields(
                     //   labelText: "Select State",
                     //   validationError: "select state",

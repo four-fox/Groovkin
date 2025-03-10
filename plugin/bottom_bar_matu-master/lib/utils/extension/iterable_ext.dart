@@ -12,7 +12,7 @@ extension IterableExtensions<T> on Iterable<T>? {
   }
 
   /// Returns `true` if at least one element matches the given [predicate].
-  bool any(bool predicate(T element)) {
+  bool any(bool Function(T element) predicate) {
     if (isNullOrEmpty()) return false;
     for (final element in this!) {
       if (predicate(element)) return true;
@@ -22,7 +22,7 @@ extension IterableExtensions<T> on Iterable<T>? {
 
   /// Returns count of elements that matches the given [predicate].
   /// Returns -1 if iterable is null
-  int countWhere(bool predicate(T element)) {
+  int countWhere(bool Function(T element) predicate) {
     if (this == null) return -1;
     return this!.where(predicate).length;
   }
@@ -76,7 +76,7 @@ extension IterableExtensions<T> on Iterable<T>? {
   /// applied to each element and returns a map where each group key is associated with a list of corresponding elements.
   ///
   /// The returned map preserves the entry iteration order of the keys produced from the original collection.
-  Map<K, List<T>> groupBy<T, K>(K keySelector(T e)) {
+  Map<K, List<T>> groupBy<T, K>(K Function(T e) keySelector) {
     if (this == null) return {};
     var map = <K, List<T>>{};
 
@@ -88,26 +88,26 @@ extension IterableExtensions<T> on Iterable<T>? {
   }
 
   /// Returns a list containing only elements matching the given [predicate!]
-  List<T> filter(bool test(T element)) {
+  List<T> filter(bool Function(T element) test) {
     if (this == null) return <T>[];
     final result = <T>[];
-    this!.forEach((e) {
+    for (var e in this!) {
       if (test(e)) {
         result.add(e);
       }
-    });
+    }
     return result;
   }
 
   /// Returns a list containing all elements not matching the given [predicate!]
-  List<T> filterNot(bool test(T element)) {
+  List<T> filterNot(bool Function(T element) test) {
     if (this == null) return <T>[];
     final result = <T>[];
-    this!.forEach((e) {
+    for (var e in this!) {
       if (!test(e)) {
         result.add(e);
       }
-    });
+    }
     return result;
   }
 
@@ -115,11 +115,11 @@ extension IterableExtensions<T> on Iterable<T>? {
   List<T> filterNotNull() {
     if (this == null) return <T>[];
     final result = <T>[];
-    this!.forEach((e) {
+    for (var e in this!) {
       if (e != null) {
         result.add(e);
       }
-    });
+    }
     return result;
   }
 

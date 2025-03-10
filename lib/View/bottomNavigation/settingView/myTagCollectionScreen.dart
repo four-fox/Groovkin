@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -101,7 +100,7 @@ class MyTagCollection extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        bottom: Platform.isIOS ? true : false,
+        bottom: true ,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(
@@ -946,7 +945,7 @@ class CreateNewTag extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        bottom: Platform.isIOS ? true : false,
+        bottom:true,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(

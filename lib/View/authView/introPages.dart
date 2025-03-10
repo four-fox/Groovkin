@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +122,7 @@ class IntroPages extends StatelessWidget {
                   ),
                   SafeArea(
                     top: false,
-                    bottom: Platform.isIOS ? true : false,
+                    bottom:  true ,
                     child: Obx(
                       () => Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),

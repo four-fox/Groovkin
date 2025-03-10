@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:country_state_city_pro/country_state_city_pro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -561,6 +560,9 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       // readOnly: email.value,
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             );
@@ -628,7 +630,7 @@ pictureAlert(context,
                             color: DynamicColor.lightRedClr,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 20.0),
+                            padding: EdgeInsets.only(left: 15.0),
                             child: Text(
                               'Camera',
                               style: poppinsMediumStyle(

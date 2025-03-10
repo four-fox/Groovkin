@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -714,132 +713,137 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                   )
                                 : SizedBox.shrink(),
                             widget.onTap
-                                ? Card(
-                                    margin: widget.bottomCardMargin,
-                                    shape: widget.bottomCardShape,
-                                    color: Colors.white,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ListTile(
-                                          title: Text(
-                                            _address ??
-                                                "Tap on map to select location",
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'MonstserratRegular',
-                                              letterSpacing: 0,
+                                ? SafeArea(
+                                    child: Card(
+                                      margin: widget.bottomCardMargin,
+                                      shape: widget.bottomCardShape,
+                                      color: Colors.white,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ListTile(
+                                            title: Text(
+                                              _address ??
+                                                  "Tap on map to select location",
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily:
+                                                    'MonstserratRegular',
+                                                letterSpacing: 0,
+                                              ),
+                                            ),
+                                            trailing: IconButton(
+                                              tooltip: widget.bottomCardTooltip,
+                                              icon: widget.bottomCardIcon,
+                                              onPressed: () async {
+                                                widget.onNext
+                                                    .call(_geocodingResult);
+                                                if (widget
+                                                    .canPopOnNextButtonTaped) {
+                                                  if (widget.backBtnn == true) {
+                                                    Navigator.pop(context);
+                                                  } else {
+                                                    widget.nextPage;
+                                                  }
+                                                }
+                                              },
                                             ),
                                           ),
-                                          trailing: IconButton(
-                                            tooltip: widget.bottomCardTooltip,
-                                            icon: widget.bottomCardIcon,
-                                            onPressed: () async {
-                                              widget.onNext
-                                                  .call(_geocodingResult);
-                                              if (widget
-                                                  .canPopOnNextButtonTaped) {
-                                                if (widget.backBtnn == true) {
-                                                  Navigator.pop(context);
-                                                } else {
-                                                  widget.nextPage;
-                                                }
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        widget.onTapShow == false
-                                            ? SizedBox.shrink()
-                                            : GestureDetector(
-                                                onTap: widget.onTappp,
-                                                child: Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 6.0,
-                                                      horizontal: 10),
-                                                  child: Container(
-                                                    height: 40,
-                                                    width: MediaQuery.sizeOf(
-                                                            context)
-                                                        .width,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: Color(0xffd6a331),
-                                                    ),
-                                                    child: Center(
-                                                      child: Text(
-                                                        "Continue",
-                                                        style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.white,
+                                          widget.onTapShow == false
+                                              ? SizedBox.shrink()
+                                              : GestureDetector(
+                                                  onTap: widget.onTappp,
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 6.0,
+                                                            horizontal: 10),
+                                                    child: Container(
+                                                      height: 40,
+                                                      width: MediaQuery.sizeOf(
+                                                              context)
+                                                          .width,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        color:
+                                                            Color(0xffd6a331),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          "Continue",
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            color: Colors.white,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              )
-                                        // if (widget.showMoreOptions &&
-                                        //     _geocodingResultList.isNotEmpty)
-                                        //   GestureDetector(
-                                        //     onTap: () {
-                                        //       showDialog(
-                                        //         context: context,
-                                        //         builder: (context) => AlertDialog(
-                                        //           title: Text(widget.dialogTitle),
-                                        //           scrollable: true,
-                                        //           content: Column(
-                                        //             mainAxisSize: MainAxisSize.min,
-                                        //             children: _geocodingResultList
-                                        //                 .map((element) {
-                                        //               return ListTile(
-                                        //                 title: Text(
-                                        //                     element.formattedAddress ??
-                                        //                         "",
-                                        //                     style: TextStyle(
-                                        //                       fontSize: 14,
-                                        //                       color: Colors.black,
-                                        //                       fontWeight:
-                                        //                           FontWeight.bold,
-                                        //                       fontFamily:
-                                        //                           'MonstserratRegular',
-                                        //                       letterSpacing: 0,
-                                        //                     )),
-                                        //                 onTap: () {
-                                        //                   _address = element
-                                        //                           .formattedAddress ??
-                                        //                       "";
-                                        //                   _geocodingResult = element;
-                                        //                   setState(() {});
-                                        //                   Navigator.pop(context);
-                                        //                 },
-                                        //               );
-                                        //             }).toList(),
-                                        //           ),
-                                        //           actions: [
-                                        //             TextButton(
-                                        //               child: const Text(
-                                        //                 'Cancel',
-                                        //                 style: TextStyle(
-                                        //                     color: Colors.black),
-                                        //               ),
-                                        //               onPressed: () {
-                                        //                 Navigator.pop(context);
-                                        //               },
-                                        //             ),
-                                        //           ],
-                                        //         ),
-                                        //       );
-                                        //     },
-                                        //     child: Chip(
-                                        //       label: Text(
-                                        //         "Tap to show ${(_geocodingResultList.length - 1)} more result options",
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                      ],
+                                                )
+                                          // if (widget.showMoreOptions &&
+                                          //     _geocodingResultList.isNotEmpty)
+                                          //   GestureDetector(
+                                          //     onTap: () {
+                                          //       showDialog(
+                                          //         context: context,
+                                          //         builder: (context) => AlertDialog(
+                                          //           title: Text(widget.dialogTitle),
+                                          //           scrollable: true,
+                                          //           content: Column(
+                                          //             mainAxisSize: MainAxisSize.min,
+                                          //             children: _geocodingResultList
+                                          //                 .map((element) {
+                                          //               return ListTile(
+                                          //                 title: Text(
+                                          //                     element.formattedAddress ??
+                                          //                         "",
+                                          //                     style: TextStyle(
+                                          //                       fontSize: 14,
+                                          //                       color: Colors.black,
+                                          //                       fontWeight:
+                                          //                           FontWeight.bold,
+                                          //                       fontFamily:
+                                          //                           'MonstserratRegular',
+                                          //                       letterSpacing: 0,
+                                          //                     )),
+                                          //                 onTap: () {
+                                          //                   _address = element
+                                          //                           .formattedAddress ??
+                                          //                       "";
+                                          //                   _geocodingResult = element;
+                                          //                   setState(() {});
+                                          //                   Navigator.pop(context);
+                                          //                 },
+                                          //               );
+                                          //             }).toList(),
+                                          //           ),
+                                          //           actions: [
+                                          //             TextButton(
+                                          //               child: const Text(
+                                          //                 'Cancel',
+                                          //                 style: TextStyle(
+                                          //                     color: Colors.black),
+                                          //               ),
+                                          //               onPressed: () {
+                                          //                 Navigator.pop(context);
+                                          //               },
+                                          //             ),
+                                          //           ],
+                                          //         ),
+                                          //       );
+                                          //     },
+                                          //     child: Chip(
+                                          //       label: Text(
+                                          //         "Tap to show ${(_geocodingResultList.length - 1)} more result options",
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                        ],
+                                      ),
                                     ),
                                   )
                                 : SizedBox.shrink(),

@@ -58,8 +58,8 @@ class NotificationService {
   }
 
   // ! Todo refresh token
-  void isRefreshToken() {
-    firebaseMessaging.onTokenRefresh.listen((event) {
+  void isRefreshToken() async {
+    await firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
     });
   }
@@ -117,7 +117,8 @@ class NotificationService {
 
     if (Platform.isAndroid && message.notification!.android != null) {
       channelId = message.notification!.android!.channelId ?? "default_channel";
-      channelName = message.notification!.android!.channelId ?? "General Notifications";
+      channelName =
+          message.notification!.android!.channelId ?? "General Notifications";
     }
 
     // Android Notification Channel (Avoid null errors)
@@ -131,7 +132,7 @@ class NotificationService {
 
     // Android Notification Details
     AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       channel.id, // Use the non-null channel ID
       channel.name,
       importance: Importance.high,
@@ -142,7 +143,7 @@ class NotificationService {
 
     // iOS Notification Details
     DarwinNotificationDetails darwinNotificationDetails =
-    const DarwinNotificationDetails(
+        const DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
@@ -181,8 +182,6 @@ class NotificationService {
         Future.delayed(Duration(seconds: 5), () {
           if (context.mounted) {
             handleMessage(context, message);
-
-            // Hide EasyLoading spinner once handleMessage completes
             EasyLoading.dismiss();
           }
         });
@@ -211,6 +210,7 @@ class NotificationService {
 
   // ! when user tap on the notification
   void handleMessage(BuildContext context, RemoteMessage message) {
+    print(message.data);
     var data;
     if (message.data["type"] == "send_message") {
       data = jsonDecode(message.data["data"]);
@@ -234,11 +234,7 @@ class NotificationService {
       });
     } else if (data["type"] == "single_message") {
       User? user = User.fromJson(jsonDecode(data['data'])['user']);
-      Get.toNamed(Routes.chatInnerScreen,
-          arguments: {
-            "userData": user
-          }
-      );
+      Get.toNamed(Routes.chatInnerScreen, arguments: {"userData": user});
     } else if (data["type"] == "event_created") {
       Get.toNamed(Routes.pendingEventDetails, arguments: {
         "notInterestedBtn": 1,
@@ -315,9 +311,4 @@ class NotificationService {
       });
     }
   }
-
-
-  
-
-
 }

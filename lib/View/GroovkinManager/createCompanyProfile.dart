@@ -11,6 +11,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
+import 'package:groovkin/View/profile/editProfileScreen.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
@@ -29,7 +30,9 @@ class _CreateCompanyProfileScreenState
   final venueForm = GlobalKey<FormState>();
 
   PhoneNumber number = PhoneNumber(isoCode: "US");
+
   ManagerController _controller = Get.find();
+
   bool editVenue = Get.arguments['updationCondition'];
 
   @override
@@ -38,6 +41,9 @@ class _CreateCompanyProfileScreenState
     if (editVenue == true) {
       extractNumber(_controller.phoneNumController.text);
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.clearController();
+    });
   }
 
   extractNumber(String phone) async {
@@ -65,7 +71,9 @@ class _CreateCompanyProfileScreenState
           padding: EdgeInsets.only(top: 30),
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+              image: AssetImage("assets/grayClor.png"),
+              fit: BoxFit.fill,
+            ),
           ),
           child: Stack(
             alignment: Alignment.center,
@@ -111,8 +119,9 @@ class _CreateCompanyProfileScreenState
                             padding: EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: DynamicColor.grayClr.withOpacity(0.4)),
+                              borderRadius: BorderRadius.circular(8),
+                              color: DynamicColor.grayClr.withOpacity(0.4),
+                            ),
                             child: Center(
                               child: Text(
                                 "Skip",
@@ -145,7 +154,17 @@ class _CreateCompanyProfileScreenState
                     onTap: () {
                       if ((controller.mediaClass.isEmpty) ||
                           (controller.profilePictures.isEmpty)) {
-                        controller.pickFile();
+                        pictureAlert(
+                          context,
+                          galleryFtn: () {
+                            controller.pickFile();
+                            Get.back();
+                          },
+                          cameraFtn: () async {
+                            controller.pickMultipleFromCamera(context, false);
+                            Get.back();
+                          },
+                        );
                         // if(Platform.isAndroid){
                         //   controller.pickFile();
                         // }else{
@@ -175,7 +194,19 @@ class _CreateCompanyProfileScreenState
                                     child: GestureDetector(
                                       onTap: () {
                                         if (Platform.isAndroid) {
-                                          controller.pickFile();
+                                          // controller.pickFile();
+                                          pictureAlert(
+                                            context,
+                                            galleryFtn: () {
+                                              controller.pickFile();
+                                              Get.back();
+                                            },
+                                            cameraFtn: () async {
+                                              controller.pickMultipleFromCamera(
+                                                  context, false);
+                                              Get.back();
+                                            },
+                                          );
                                         } else {
                                           controller.pickFileee();
                                         }
@@ -484,22 +515,7 @@ class _CreateCompanyProfileScreenState
                   SizedBox(
                     height: 20,
                   ),
-                  CustomTextFields(
-                    labelText: "State",
-                    controller: controller.stateController,
-                    validationError: "state",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFields(
-                    labelText: "City",
-                    controller: controller.cityController,
-                    validationError: "city",
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+
                   InternationalPhoneNumberInput(
                     onInputChanged: (PhoneNumber number) {
                       validateMobile(number.phoneNumber!);
@@ -571,14 +587,7 @@ class _CreateCompanyProfileScreenState
                   SizedBox(
                     height: 20,
                   ),
-                  CustomTextFields(
-                    labelText: "Zip Code",
-                    controller: controller.zipController,
-                    validationError: "zip code",
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
+
                   TextField(
                     readOnly: true,
                     controller: controller.addressController,
@@ -602,8 +611,9 @@ class _CreateCompanyProfileScreenState
                               // canPopOnNextButtonTaped: true,
                               latLng: controller.latLng,
                               initAddress: controller.address,
-                              onNext: (GeocodingResult? result) {
+                              onNext: (GeocodingResult? result) async {
                                 if (result != null) {
+                                  print(result.formattedAddress);
                                   controller.lat =
                                       result.geometry.location.lat.toString();
                                   controller.lng =
@@ -611,16 +621,28 @@ class _CreateCompanyProfileScreenState
                                   controller.address =
                                       result.formattedAddress ?? "";
                                   controller.latLng = LatLng(
-                                      result.geometry.location.lat,
-                                      result.geometry.location.lng);
+                                    result.geometry.location.lat,
+                                    result.geometry.location.lng,
+                                  );
                                   controller.addressController.text =
                                       result.formattedAddress!;
+                                  final data = await controller.getCityAndState(
+                                    result.geometry.location.lat,
+                                    result.geometry.location.lng,
+                                  );
+                                  controller.stateController.text =
+                                      data["state"];
+                                  controller.cityController.text = data["city"];
+                                  controller.zipController.text =
+                                      data["zipCode"];
+
                                   controller.update();
                                 }
                               },
                               onSuggestionSelected:
-                                  (PlacesDetailsResponse? result) {
+                                  (PlacesDetailsResponse? result) async {
                                 if (result != null) {
+                                  print(result.result.formattedAddress);
                                   controller.lat = result
                                       .result.geometry!.location.lat
                                       .toString();
@@ -636,6 +658,16 @@ class _CreateCompanyProfileScreenState
                                       result.result.geometry!.location.lng);
                                   controller.addressController.text =
                                       result.result.formattedAddress!;
+                                  final data = await controller.getCityAndState(
+                                    result.result.geometry!.location.lat,
+                                    result.result.geometry!.location.lng,
+                                  );
+                                  controller.stateController.text =
+                                      data["state"];
+                                  controller.cityController.text = data["city"];
+                                  controller.zipController.text =
+                                      data["zipCode"];
+
                                   controller.update();
                                 }
                               },
@@ -712,6 +744,32 @@ class _CreateCompanyProfileScreenState
                           lng: double.parse(controller.lng),
                         )
                       : SizedBox.shrink(),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFields(
+                    labelText: "State",
+                    controller: controller.stateController,
+                    validationError: "state",
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextFields(
+                    labelText: "City",
+                    controller: controller.cityController,
+                    validationError: "city",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFields(
+                    labelText: "Zip Code",
+                    controller: controller.zipController,
+                    validationError: "zip code",
+                  ),
+
                   Row(
                     children: [
                       SizedBox(
@@ -838,11 +896,8 @@ class _CreateCompanyProfileScreenState
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   SafeArea(
-                    bottom: Platform.isIOS ? true : false,
+                    bottom: true,
                     child: CustomButton(
                       text: "Add Venue Detail",
                       onTap: () {

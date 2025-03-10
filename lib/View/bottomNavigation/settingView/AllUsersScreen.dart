@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/followingScren.dart';
@@ -58,9 +60,28 @@ class AllUserScreen extends StatelessWidget {
                   }
                   return false;
                 },
-                child: AllUsers(
-                  userValue: "",
-                  heights: Get.height,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      color: DynamicColor.blackClr,
+                      child: SearchTextFields(
+                        borderRadius: 12,
+                        controller: TextEditingController(),
+                        bgColor: DynamicColor.blackClr,
+                        onChanged: (v) {
+                          if (v != "") {
+                          } else {}
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: AllUsers(
+                        userValue: "",
+                        heights: Get.height,
+                      ),
+                    ),
+                  ],
                 ));
       }),
     );

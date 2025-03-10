@@ -7,6 +7,8 @@ import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/userPastEv
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userOngoingEventsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistoryModel.dart';
 import 'package:dio/dio.dart' as form;
+import 'package:groovkin/model/analytic_list_model.dart';
+import 'package:groovkin/model/analytic_model.dart';
 import 'package:groovkin/model/transaction_history_model.dart'
     as transaction_history_model;
 import 'package:groovkin/utils/utils.dart';
@@ -165,7 +167,7 @@ class HomeController extends GetxController {
 
   // Todo Get All Cards
 
-  final List<transaction_history_model.Data> transactionData = [];
+  List<transaction_history_model.Data> transactionData = [];
 
   Future getAllCards() async {
     var response = await API().getApi(url: "cards");
@@ -179,6 +181,12 @@ class HomeController extends GetxController {
       }
     }
   }
+
+  String cardNumber = "";
+  String cardHolderName = '';
+
+  String cvvCode = '';
+  String expiryDate = '';
 
   // Todo Add Cards
 
@@ -247,6 +255,29 @@ class HomeController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo user Home functionality
+
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Analytics
+
+  AnalyticsModel? analyticsModel;
+  RxInt? pointIndex = 0.obs;
+
+  Future<void> getAllAnalyticsData() async {
+    final response = await API().getApi(url: "show-analytics-chart");
+    if (response.statusCode == 200) {
+      analyticsModel = AnalyticsModel.fromJson(response.data);
+    }
+    update();
+  }
+
+  AnalyticsListModel? analyticsListModel;
+
+  Future<void> getAllAnalyticsListData() async {
+    final response = await API().getApi(url: "show-analytics-list");
+    if (response.statusCode == 200) {
+      analyticsListModel = AnalyticsListModel.fromJson(response.data);
+    }
+    update();
+  }
 }
 
 class HomeBinding implements Bindings {

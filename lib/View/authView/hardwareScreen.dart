@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -246,7 +245,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
               );
       }),
       bottomNavigationBar: SafeArea(
-        bottom: Platform.isIOS ? true : false,
+        bottom:  true,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

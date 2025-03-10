@@ -63,7 +63,7 @@ class BottomNavigationView extends StatelessWidget {
       ),
       bottomNavigationBar: Obx(
         () => SafeArea(
-          bottom: Platform.isIOS ? true : false,
+          // bottom: Platform.isIOS ? true : false,
           child: Padding(
             padding:
                 Platform.isIOS ? EdgeInsets.only(bottom: 10) : EdgeInsets.zero,

@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -22,41 +19,41 @@ class LoginWithScreen extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/loginSelection1.png"),
-            fit: BoxFit.fill
-          )
-        ),
+            image: DecorationImage(
+                image: AssetImage("assets/loginSelection1.png"),
+                fit: BoxFit.fill)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: kToolbarHeight/1.5,
+              height: kToolbarHeight / 1.5,
             ),
-GestureDetector(
-  onTap: (){
-    Get.back();
-  },
-  child:   ImageIcon(AssetImage('assets/backArrow.png'),
-  size: 32,
-    color: theme.primaryColor,
-  ),
-),
+            GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: ImageIcon(
+                AssetImage('assets/backArrow.png'),
+                size: 32,
+                color: theme.primaryColor,
+              ),
+            ),
             SizedBox(
               height: 10,
             ),
-            Text('Let’s get Started',
-            style: poppinsMediumStyle(
-              fontSize: 28,
-              context: context,
-              color: theme.primaryColor,
-            ),
+            Text(
+              'Let’s get Started',
+              style: poppinsMediumStyle(
+                fontSize: 28,
+                context: context,
+                color: theme.primaryColor,
+              ),
             ),
             SizedBox(
               height: 5,
             ),
-
-            Text('Signup or login to your Event\nOrganizer account.',
+            Text(
+              'Signup or login to your Event\nOrganizer account.',
               style: poppinsRegularStyle(
                 fontSize: 14,
                 context: context,
@@ -64,10 +61,10 @@ GestureDetector(
               ),
             ),
             SizedBox(
-              height: kToolbarHeight*1.4,
+              height: kToolbarHeight * 1.4,
             ),
             CustomButton(
-              onTap: (){
+              onTap: () {
                 // if(sp.read("role") == "eventManager"){
                 //   Get.offAllNamed(Routes.welComeScreen);
                 // }else{
@@ -81,52 +78,50 @@ GestureDetector(
               borderClr: Colors.transparent,
               text: "Signup with email address",
               style: poppinsMediumStyle(
-                fontSize: 16,
-                color: DynamicColor.lightRedClr
-              ),
+                  fontSize: 16, color: DynamicColor.lightRedClr),
             ),
             SizedBox(
               height: 20,
             ),
             CustomButtonWithIcon(
-              text: "Continue with Apple",
-              iconValue: true,
-              bgColor: Colors.transparent,
-              gradientClr: true,
-              color2: DynamicColor.grayClr.withOpacity(0.4),
-              color1: DynamicColor.grayClr.withOpacity(0.1),
-              imageIconn: ImageIcon(AssetImage("assets/apple.png"),
-                color: theme.primaryColor,
-              )
-            ),
+                text: "Continue with Apple",
+                iconValue: true,
+                bgColor: Colors.transparent,
+                gradientClr: true,
+                color2: DynamicColor.grayClr.withOpacity(0.4),
+                color1: DynamicColor.grayClr.withOpacity(0.1),
+                imageIconn: ImageIcon(
+                  AssetImage("assets/apple.png"),
+                  color: theme.primaryColor,
+                )),
             SizedBox(
               height: 20,
             ),
             CustomButtonWithIcon(
-              text: "Continue with Google",
-              iconValue: true,
-              bgColor: Colors.transparent,
-              gradientClr: true,
-              color2: DynamicColor.grayClr.withOpacity(0.4),
-              color1: DynamicColor.grayClr.withOpacity(0.1),
-              imageIconn: ImageIcon(AssetImage("assets/google.png"),
-                color: theme.primaryColor,
-              )
-            ),
+                text: "Continue with Google",
+                iconValue: true,
+                bgColor: Colors.transparent,
+                gradientClr: true,
+                color2: DynamicColor.grayClr.withOpacity(0.4),
+                color1: DynamicColor.grayClr.withOpacity(0.1),
+                imageIconn: ImageIcon(
+                  AssetImage("assets/google.png"),
+                  color: theme.primaryColor,
+                )),
             SizedBox(
               height: 20,
             ),
             CustomButtonWithIcon(
-              text: "Continue with Spotify",
-              iconValue: true,
-              bgColor: Colors.transparent,
-              gradientClr: true,
-              color2: DynamicColor.grayClr.withOpacity(0.4),
-              color1: DynamicColor.grayClr.withOpacity(0.1),
-              imageIconn: ImageIcon(AssetImage("assets/spotify.png"),
-                color: theme.primaryColor,
-              )
-            ),
+                text: "Continue with Spotify",
+                iconValue: true,
+                bgColor: Colors.transparent,
+                gradientClr: true,
+                color2: DynamicColor.grayClr.withOpacity(0.4),
+                color1: DynamicColor.grayClr.withOpacity(0.1),
+                imageIconn: ImageIcon(
+                  AssetImage("assets/spotify.png"),
+                  color: theme.primaryColor,
+                )),
           ],
         ),
       ),

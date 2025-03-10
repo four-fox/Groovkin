@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_final_fields
 
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -183,6 +182,7 @@ class EventPreview extends StatelessWidget {
                   ? _controller.eventDetail!.data!.venue!.longitude!
                   : _managerController.lng),
             ),
+            
             // Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
             //     avatarPadding: 8,
             //     rowVerticalPadding: 0.0,
@@ -193,6 +193,7 @@ class EventPreview extends StatelessWidget {
             //       eventVal.value = !eventVal.value;
             //     }
             // ),),
+
             customContainer(context, theme),
             customContainer(context, theme,
                 title: "Featuring", text: _controller.featuringController.text),
@@ -491,7 +492,7 @@ class EventPreview extends StatelessWidget {
       ),
       bottomNavigationBar: upComingDetail == 1
           ? SafeArea(
-              bottom: Platform.isIOS ? true : false,
+              bottom:  true,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
