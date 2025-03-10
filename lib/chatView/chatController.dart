@@ -298,7 +298,9 @@ class ChatController extends GetxController {
           innerUserOnline.value = true;
         }
         conversationID = chatData!.data!.data![0].conversationId;
-        messageSeen(conversationID);
+        if(response.data['data']['data'][0]['creator_id'] != API().sp.read("userId")){
+          messageSeen(conversationID);
+        }
       }
       getAllChatLoader(true);
       update();

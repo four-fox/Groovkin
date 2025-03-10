@@ -147,8 +147,13 @@ Widget messageWidget(
                                                     .chatData!
                                                     .data!
                                                     .data![index]
-                                                    .event!)['profile_picture']
-                                                [0]['media_path'],
+                                                    .event!)['banner_image']['media_path'],
+                                            // jsonDecode(controller
+                                            //         .chatData!
+                                            //         .data!
+                                            //         .data![index]
+                                            //         .event!)['profile_picture']
+                                            //     [0]['media_path'],
                                       ),
                                       fit: BoxFit.fill)),
                               child: Column(
@@ -895,7 +900,7 @@ Widget messageWidget(
                                                                             null
                                                                         ? Text(
                                                                             jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] == null
-                                                                                ? jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title']
+                                                                                ? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event']==null?"Event Reply": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title']
                                                                                 : jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'],
                                                                             maxLines:
                                                                                 3,
