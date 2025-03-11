@@ -151,7 +151,7 @@ class ChatController extends GetxController {
     nextUrl,
   }) async {
     newUserChatLoader(true);
-    String searchValue = "";
+
     // if(searchingController.text.isNotEmpty){
     //   searchValue = "&search${searchingController.text}";
     // }
@@ -366,7 +366,7 @@ class ChatController extends GetxController {
   }
 
   ///receive message from socket
-  
+
   bool receiver = false;
   receiveMessage() async {
     socket!.on('receiver-message-${API().sp.read("userId")}', (data) {
@@ -429,7 +429,6 @@ class ChatController extends GetxController {
       //   } else {
 
       if ((index - currentIndex) > 2) {
-
         scrollController!
             .jumpTo(index: index, alignment: 0.5, automaticAlignment: false);
         animatedOpacity = true.obs;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -6,10 +8,31 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/followingScren.dart';
 
-class AllUserScreen extends StatelessWidget {
+class AllUserScreen extends StatefulWidget {
   AllUserScreen({super.key});
 
+  @override
+  State<AllUserScreen> createState() => _AllUserScreenState();
+}
+
+class _AllUserScreenState extends State<AllUserScreen> {
   final AuthController _controller = Get.find();
+
+  Timer? onStoppedTyping;
+
+  _onChangeHandler() {
+    const duration = Duration(
+      milliseconds: 800,
+    );
+    if (onStoppedTyping != null) {
+      onStoppedTyping!.cancel();
+    }
+    onStoppedTyping = Timer(duration, () => stopTyping());
+  }
+
+  stopTyping() {
+    _controller.getAllUnfollowing();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +90,15 @@ class AllUserScreen extends StatelessWidget {
                       color: DynamicColor.blackClr,
                       child: SearchTextFields(
                         borderRadius: 12,
-                        controller: TextEditingController(),
+                        controller: controller.allFollowUserController,
                         bgColor: DynamicColor.blackClr,
                         onChanged: (v) {
                           if (v != "") {
-                          } else {}
+                            _onChangeHandler();
+                          } else {
+                            controller.allFollowUserController.clear();
+                            _onChangeHandler();
+                          }
                         },
                       ),
                     ),

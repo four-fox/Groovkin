@@ -1199,10 +1199,14 @@ class AuthController extends GetxController {
   RxBool getAllUnfollowingLoader = true.obs;
   AllUnFollowUserModel? allUnFollower;
   bool getAllUnfollowingWait = false;
+  TextEditingController allFollowUserController = TextEditingController();
 
   getAllUnfollowing({nextUrl}) async {
     getAllUnfollowingLoader(false);
-    var response = await API().getApi(url: "nonfollowed", fullUrl: nextUrl);
+    var response = await API()
+        .getApi(url: "nonfollowed", fullUrl: nextUrl, queryParameters: {
+      "search": allFollowUserController.text,
+    });
 
     if (response.statusCode == 200) {
       if (nextUrl == null) {
@@ -1372,14 +1376,7 @@ class AuthController extends GetxController {
     final firebase_auth.UserCredential userCredential = await firebase_auth
         .FirebaseAuth.instance
         .signInWithCredential(oAuthCredential);
-
   }
-
-
-
-
-
-
 }
 
 class AuthBinding implements Bindings {
