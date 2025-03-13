@@ -227,7 +227,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Subtotal",
                 value:
-                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate())}"),
+                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate() )}"),
             SizedBox(
               height: 10,
             ),

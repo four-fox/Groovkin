@@ -65,8 +65,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     } else {
       _eventController = Get.put(EventController());
     }
-    _eventController.proposedTimeWindowsController.text = intialTime;
-    _eventController.endTimeController.text = intialEndTime;
+    if (_eventController.proposedTimeWindowsController.text.isEmpty &&
+        _eventController.endTimeController.text.isEmpty) {
+      _eventController.proposedTimeWindowsController.text = intialTime;
+      _eventController.endTimeController.text = intialEndTime;
+    }
+
     _eventController.postTime = intialTime;
     _eventController.postEndTime = intialEndTime;
   }

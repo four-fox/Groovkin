@@ -39,7 +39,7 @@ class InAppPurchasedFlutter {
       inAppPurchase
           .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
     }
-  
+    
     final ProductDetailsResponse productDetailsResponse =
         await inAppPurchase.queryProductDetails(
             Platform.isIOS ? iosProductIds.toSet() : androidProductIds.toSet());
@@ -49,7 +49,7 @@ class InAppPurchasedFlutter {
       purchased = <PurchaseDetails>[];
       return;
     }
-
+    
     if (productDetailsResponse.productDetails.isEmpty) {
       products = productDetailsResponse.productDetails;
       purchased = <PurchaseDetails>[];

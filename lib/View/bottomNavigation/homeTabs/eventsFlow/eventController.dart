@@ -225,6 +225,7 @@ class EventController extends GetxController {
 
   String? datePost;
   String? endDatePost;
+
   String? postTime;
   String? postEndTime;
 
@@ -657,6 +658,7 @@ class EventController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get my all events for organizer
+
   EventsListModel? allEvents;
   RxBool getAllEventsLoader = true.obs;
   bool getAllEventWaiting = false;
@@ -772,9 +774,9 @@ class EventController extends GetxController {
     eventEndDateController.text =
         DateFormat('dd-MM-yyyy').format(eventDetail!.data!.endDateTime!);
     proposedTimeWindowsController.text =
-        DateFormat("HH:mm").format(eventDetail!.data!.startDateTime!);
+        DateFormat("HH:mm a").format(eventDetail!.data!.startDateTime!);
     endTimeController.text =
-        DateFormat("HH:mm").format(eventDetail!.data!.endDateTime!);
+        DateFormat("HH:mm a").format(eventDetail!.data!.endDateTime!);
     postEndTime = endTimeController.text;
     postTime = proposedTimeWindowsController.text;
     endDatePost =

@@ -46,6 +46,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    
     //Todo Firebase Notification Start
 
     notificationService.requestNotificationPermission();
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
     // Todo Firebase Notification End
 
     // Todo Start the socket server
+
     // SocketClass.singleton.connectSocket();
 
     // initStateNotification();
