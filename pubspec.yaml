@@ -86,10 +86,13 @@ dependencies:
   form_builder_extra_fields: ^10.2.0
   better_player_plus: ^1.0.7
   in_app_purchase: ^3.2.1
+  purchases_flutter: ^8.6.1
     # Firebase Notification package
   firebase_messaging: ^15.0.3
   app_settings: ^5.1.1
   fluttertoast: ^8.2.8
+  url_launcher: ^6.3.1
+
 #    git:
 #      url: https://github.com/tintran-dev/betterplayer.git
   otp_text_field:

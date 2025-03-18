@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,6 +12,9 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
+import 'package:groovkin/purchased/revenue_cat.dart';
+import 'package:groovkin/utils/constant.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -19,6 +24,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  if (Platform.isIOS || Platform.isMacOS) {
+    StoreConfig(apiKey: appleApiKey, store: Store.appStore);
+  } else {
+    StoreConfig(apiKey: googleApiKey, store: Store.playStore);
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -29,6 +40,7 @@ void main() async {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+
   await GetStorage.init();
   runApp(const MyApp());
 }
@@ -46,7 +58,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    
+
     //Todo Firebase Notification Start
 
     notificationService.requestNotificationPermission();

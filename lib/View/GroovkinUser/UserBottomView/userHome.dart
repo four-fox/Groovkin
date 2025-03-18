@@ -15,6 +15,7 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:intl/intl.dart';
 
 import '../../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
