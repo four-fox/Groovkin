@@ -110,7 +110,7 @@ class NotificationService {
   Future<void> showNotification(RemoteMessage message) async {
     // Check if message.notification is null (important for silent notifications)
     if (message.notification == null) return;
-    
+
     // Define a default notification channel ID (for Android)
     String channelId = "default_channel";
     String channelName = "General Notifications";
@@ -122,12 +122,12 @@ class NotificationService {
     }
 
     // Android Notification Channel (Avoid null errors)
-    AndroidNotificationChannel channel = AndroidNotificationChannel( 
-      channelId, 
-      channelName, 
-      importance: Importance.max, 
-      showBadge: true, 
-      playSound: true, 
+    AndroidNotificationChannel channel = AndroidNotificationChannel(
+      channelId,
+      channelName,
+      importance: Importance.max,
+      showBadge: true,
+      playSound: true,
     );
 
     // Android Notification Details

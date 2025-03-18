@@ -31,15 +31,15 @@ class InAppPurchasedFlutter {
   Future<void> initStoreInfo() async {
     final bool isAvailable = await inAppPurchase.isAvailable();
     if (!isAvailable) {
-      products = []; 
-      purchased = []; 
+      products = [];
+      purchased = [];
     }
 
     if (Platform.isIOS) {
       inAppPurchase
           .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
     }
-    
+
     final ProductDetailsResponse productDetailsResponse =
         await inAppPurchase.queryProductDetails(
             Platform.isIOS ? iosProductIds.toSet() : androidProductIds.toSet());
@@ -49,7 +49,7 @@ class InAppPurchasedFlutter {
       purchased = <PurchaseDetails>[];
       return;
     }
-    
+
     if (productDetailsResponse.productDetails.isEmpty) {
       products = productDetailsResponse.productDetails;
       purchased = <PurchaseDetails>[];
@@ -244,7 +244,5 @@ class InAppPurchasedFlutter {
         .then((_) {
       completer.complete();
     });
-
   }
-
 }

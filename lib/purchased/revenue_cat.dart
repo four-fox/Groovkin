@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,6 +25,7 @@ class StoreConfig {
   static StoreConfig get instance => _instance!;
 
   bool get isFromApple => instance.store == Store.appStore;
+
   bool get isFromGoogle => instance.store == Store.playStore;
 }
 
@@ -36,7 +38,6 @@ class AppData {
     _instance ??= AppData._interval();
     return _instance!;
   }
-
   bool entitlementIsActive = false;
 }
 
@@ -52,15 +53,17 @@ class RevenueCatSubscription extends GetxController {
 
   List<SubscriptionModel> subscriptionList = [
     SubscriptionModel(
-        price: '\$2.99',
-        plan: 'Monthly Plan',
-        trial: '7 Days Free Trial',
-        isSelected: true.obs),
+      price: '\$2.99',
+      plan: 'Monthly Plan',
+      trial: '7 Days Free Trial',
+      isSelected: true.obs,
+    ),
     SubscriptionModel(
-        price: '\$29.99',
-        plan: 'Annual Plan',
-        trial: '7 Days Free Trial',
-        isSelected: false.obs),
+      price: '\$29.99',
+      plan: 'Annual Plan',
+      trial: '7 Days Free Trial',
+      isSelected: false.obs,
+    ),
   ];
 
   Offerings? offering;
@@ -120,9 +123,7 @@ class RevenueCatSubscription extends GetxController {
 
   void restoreSubscription() async {
     await Purchases.logIn(API().sp.read("userId"));
-
     CustomerInfo restoredInfo = await Purchases.restorePurchases();
-
     if (restoredInfo.entitlements.all[entitlementID] != null) {
       if (restoredInfo.entitlements.all[entitlementID]!.isActive == true) {
         final time = DateTime.parse(
@@ -130,7 +131,6 @@ class RevenueCatSubscription extends GetxController {
             .toLocal()
             .difference(DateTime.now().toLocal())
             .inMinutes;
-
         if (time >= 0) {
         } else {
           checkSub("Subscription Expired");

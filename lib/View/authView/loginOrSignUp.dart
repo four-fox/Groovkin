@@ -38,6 +38,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                   SizedBox(
                     height: kToolbarHeight / 1.5,
                   ),
+
                   GestureDetector(
                     onTap: () {
                       Get.back();
