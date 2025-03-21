@@ -1,48 +1,44 @@
+import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-class SocketClass {
-  io.Socket? _mainSocket;
+typedef ListenFunction = Function(String onData);
 
-  static final SocketClass singleton = SocketClass._interval();
-  SocketClass._interval();
+// Todo  SingleTon Class
+class SocketIoClass {
+  io.Socket? socket;
+  SocketIoClass._interval();
 
-  factory SocketClass() {
-    return singleton;
+  static SocketIoClass? singleton;
+
+  factory SocketIoClass() {
+    return singleton ??= SocketIoClass._interval();
   }
 
-  io.Socket? get mainSocket => _mainSocket;
+  // Todo Connect Socket
 
   connectSocket() {
-    io.io(
-        "",
-        io.OptionBuilder()
-            .setTransports(['websocket', 'polling']).setAuth({}).build());
-
-    _mainSocket!.connect();
-
-    _mainSocket!.onConnect((_) {
-      print('socket is connect');
+    socket = io.io("", <String, dynamic>{
+      'transports': ['webscoket'],
     });
-    
-  }
 
-  joinRoom() {
-    mainSocket!.emit("joinRoom", {
-      'roomId': "",
-      'userId': "",
+    socket!.connect();
+
+    socket!.onConnect((data) {
+      if (kDebugMode) {
+        print("Your Socket Is Connected!");
+      }
     });
   }
 
-  sendMessage() {
-    mainSocket!.emit("sendMessage", {
-      'roomId': "",
-      'message': "",
-    });
-  }
+  // Todo ListenMessage Socket
 
-  void onReceiveMessage(Function(String) callback) {
-    mainSocket!.on('receiveMessage', (data) {
-      callback(data);
+  listenMessageSocket(
+    String event,
+    ListenFunction listenFuntion,
+  ) async {
+    socket!.off(event);
+    socket!.on(event, (data) {
+      listenFuntion.call(data);
     });
   }
 }

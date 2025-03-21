@@ -106,7 +106,6 @@ class NotificationService {
   }
 
   //! Todo showNotification
-  //! Todo showNotification
   Future<void> showNotification(RemoteMessage message) async {
     // Check if message.notification is null (important for silent notifications)
     if (message.notification == null) return;

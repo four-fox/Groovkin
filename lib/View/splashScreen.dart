@@ -22,12 +22,12 @@ class _SplashScreenState extends State<SplashScreen> {
           print(API().sp.read("userId"));
           String userTypeInital = await API().sp.read('role');
           print(userTypeInital);
+
           // String selectedRole = userTypeInital == "eventOrganizer"
           //     ? "event_owner"
           //     : userTypeInital == "eventManager"
           //         ? "venue_manager"
           //         : "user";
-
           // var formData = form.FormData.fromMap({"role": selectedRole});
           // final response = await API().postApi(formData, "switch-profile");
           // if (response.statusCode == 200) {
