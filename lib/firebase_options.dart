@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCb3t2jMIEoGUDcNMjy9KWkttjwqro7YQ4',
-    appId: '1:545599432217:android:3de20e687f5417c1012c88',
-    messagingSenderId: '545599432217',
-    projectId: 'groovkin-5f843',
-    storageBucket: 'groovkin-5f843.appspot.com',
+    apiKey: 'AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc',
+    appId: '1:682228072753:android:86ad771ffd5bec383f3010',
+    messagingSenderId: '682228072753',
+    projectId: 'my-groovkin-app',
+    storageBucket: 'my-groovkin-app.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDZcMhG4T5k4QuBAMQl2zEZ4ylCZFSTjsQ',
-    appId: '1:545599432217:ios:4a892c81cc691811012c88',
-    messagingSenderId: '545599432217',
-    projectId: 'groovkin-5f843',
-    storageBucket: 'groovkin-5f843.appspot.com',
-    iosBundleId: 'com.gologonow.groovkin',
+    apiKey: 'AIzaSyCuAkWOdbbcjtEe0X4-u0TEbrsvXUdNWXA',
+    appId: '1:682228072753:ios:199be50ad42d76973f3010',
+    messagingSenderId: '682228072753',
+    projectId: 'my-groovkin-app',
+    storageBucket: 'my-groovkin-app.firebasestorage.app',
+    iosBundleId: 'com.gologonow.groovkinn',
   );
 
 }

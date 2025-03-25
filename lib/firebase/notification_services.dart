@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
@@ -53,7 +54,7 @@ class NotificationService {
   // ! Todo get devices token
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
-    print(token);
+    log("Device Token $token");
     return token!;
   }
 
@@ -65,7 +66,6 @@ class NotificationService {
   }
 
   // ! Todo initialize the android and ios settings and icon
-
   void initLocalNotifications(
     BuildContext context,
     RemoteMessage message,
@@ -79,7 +79,7 @@ class NotificationService {
         handleMessage(context, message);
       },
     );
-  }
+  } 
 
   // ! Todo listen the notification
   void firebaseInit(BuildContext context) {
@@ -95,14 +95,13 @@ class NotificationService {
           forgroundMessage();
         }
       }
-      if (Platform.isAndroid) {  
-        if (context.mounted) { 
+      if (Platform.isAndroid) {
+        if (context.mounted) {
           print("ONGOING");
           initLocalNotifications(context, message);
           showNotification(message);
-        }
+        } 
       }
-      
     });
   }
 
@@ -110,7 +109,6 @@ class NotificationService {
   Future<void> showNotification(RemoteMessage message) async {
     // Check if message.notification is null (important for silent notifications)
     if (message.notification == null) return;
-
     // Define a default notification channel ID (for Android)
     String channelId = "default_channel";
     String channelName = "General Notifications";
@@ -149,7 +147,7 @@ class NotificationService {
       presentSound: true,
     );
 
-    // Combine Android & iOS notification details
+    // Combine Android & IOS Notification Details
     NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
       iOS: darwinNotificationDetails,
@@ -167,10 +165,9 @@ class NotificationService {
 
   // !Todo when app is background and terminated
   Future<void> setUpInteractMessage(BuildContext context) async {
-    //! when app is terminated
+    // ! when app is terminated
     RemoteMessage? message =
         await FirebaseMessaging.instance.getInitialMessage();
-
     if (message != null) {
       if (context.mounted) {
         print("<Terminated>");
@@ -189,7 +186,6 @@ class NotificationService {
     }
 
     //! when app is background
-
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       if (context.mounted) {
         print("<Background>");
@@ -221,7 +217,6 @@ class NotificationService {
     EventController controller = Get.find();
     ManagerController managerController = Get.find();
     HomeController homeController = Get.find();
-
     if (message.data["type"] == "send_message") {
       print(data["source_id"].runtimeType);
       controller.eventDetails(eventId: data["source_id"]);

@@ -66,6 +66,8 @@ class _MyAppState extends State<MyApp> {
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
+    notificationService.getDeviceToken();
+    
 
     // Todo Firebase Notification End
 

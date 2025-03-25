@@ -67,7 +67,7 @@ PODS:
     - Firebase/Messaging (= 11.0.0)
     - firebase_core
     - Flutter
-  - FirebaseAppCheckInterop (11.9.0)
+  - FirebaseAppCheckInterop (11.10.0)
   - FirebaseAuth (11.0.0):
     - FirebaseAppCheckInterop (~> 11.0)
     - FirebaseAuthInterop (~> 11.0)
@@ -77,14 +77,14 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GTMSessionFetcher/Core (~> 3.4)
     - RecaptchaInterop (~> 100.0)
-  - FirebaseAuthInterop (11.9.0)
+  - FirebaseAuthInterop (11.10.0)
   - FirebaseCore (11.0.0):
     - FirebaseCoreInternal (~> 11.0)
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/Logger (~> 8.0)
   - FirebaseCoreExtension (11.4.1):
     - FirebaseCore (~> 11.0)
-  - FirebaseCoreInternal (11.9.0):
+  - FirebaseCoreInternal (11.10.0):
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
   - FirebaseInstallations (11.4.0):
     - FirebaseCore (~> 11.0)
@@ -226,7 +226,13 @@ PODS:
     - PINOperation (~> 1.2.3)
   - PINOperation (1.2.3)
   - PromisesObjC (2.4.0)
+  - purchases_flutter (8.6.1):
+    - Flutter
+    - PurchasesHybridCommon (= 13.25.0)
+  - PurchasesHybridCommon (13.25.0):
+    - RevenueCat (= 5.19.0)
   - RecaptchaInterop (100.0.0)
+  - RevenueCat (5.19.0)
   - SDWebImage (5.21.0):
     - SDWebImage/Core (= 5.21.0)
   - SDWebImage/Core (5.21.0)
@@ -241,6 +247,8 @@ PODS:
   - SwiftyGif (5.4.5)
   - Toast (4.1.1)
   - TOCropViewController (2.7.4)
+  - url_launcher_ios (0.0.1):
+    - Flutter
   - video_thumbnail (0.0.1):
     - Flutter
     - libwebp
@@ -263,8 +271,10 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - Google-Maps-iOS-Utils (= 5.0.0)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
+  - GoogleMaps (= 8.4.0)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
@@ -273,9 +283,11 @@ DEPENDENCIES:
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - PhoneNumberKit (~> 3.7.6)
+  - purchases_flutter (from `.symlinks/plugins/purchases_flutter/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - wakelock_plus (from `.symlinks/plugins/wakelock_plus/ios`)
@@ -310,7 +322,9 @@ SPEC REPOS:
     - PINCache
     - PINOperation
     - PromisesObjC
+    - PurchasesHybridCommon
     - RecaptchaInterop
+    - RevenueCat
     - SDWebImage
     - SwiftyGif
     - Toast
@@ -361,12 +375,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  purchases_flutter:
+    :path: ".symlinks/plugins/purchases_flutter/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sign_in_with_apple:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
   sqflite_darwin:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_thumbnail:
     :path: ".symlinks/plugins/video_thumbnail/ios"
   wakelock:
@@ -386,12 +404,12 @@ SPEC CHECKSUMS:
   firebase_auth: 16ac5db3d064db837ecd845080d7e18e4be7c66d
   firebase_core: ceec591a66629daaee82d3321551692c4a871493
   firebase_messaging: 15d8b557010f3bb7b98d0302e1c7c8fbcd244425
-  FirebaseAppCheckInterop: 9226f7217b43e99dfa0bc9f674ad8108cef89feb
+  FirebaseAppCheckInterop: 9664c858489710f682766ef54e2b6741d3b62070
   FirebaseAuth: d5cf28be74d7e82257f6a3f717509eff70d3cf4a
-  FirebaseAuthInterop: 2a26ee1bea6d47df8048683cfa071e7da657798f
+  FirebaseAuthInterop: 01a804fb074424fd58b92dd50dd0272277199356
   FirebaseCore: 3cf438f431f18c12cdf2aaf64434648b63f7e383
   FirebaseCoreExtension: f1bc67a4702931a7caa097d8e4ac0a1b0d16720e
-  FirebaseCoreInternal: 154779013b85b4b290fdba38414df475f42e3096
+  FirebaseCoreInternal: ef4505d2afb1d0ebbc33162cb3795382904b5679
   FirebaseInstallations: 6ef4a1c7eb2a61ee1f74727d7f6ce2e72acf1414
   FirebaseMessaging: d2d1d9c62c46dd2db49a952f7deb5b16ad2c9742
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
@@ -425,7 +443,10 @@ SPEC CHECKSUMS:
   PINCache: d9a87a0ff397acffe9e2f0db972ac14680441158
   PINOperation: fb563bcc9c32c26d6c78aaff967d405aa2ee74a7
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  purchases_flutter: af24717c282747d54ee718db91a946629e1530b8
+  PurchasesHybridCommon: f27e7fe57a9934319373b10c260db5d6c10bbb64
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
+  RevenueCat: 4be87c151dff652d2a5b7af46073db11f01ad93f
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
@@ -433,10 +454,11 @@ SPEC CHECKSUMS:
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
+  url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   wakelock_plus: 373cfe59b235a6dd5837d0fb88791d2f13a90d56
 
-PODFILE CHECKSUM: 5e05404bccd38b7fda833e4808ee7f344293ebcb
+PODFILE CHECKSUM: 412143534463cedda378d16aafeb9191758c04b0
 
 COCOAPODS: 1.16.2
