@@ -436,7 +436,7 @@ class ChatController extends GetxController {
           animatedOpacity(false);
           update();
         });
-      } else {
+      }  else {
         animatedOpacity = true.obs;
         update();
         Future.delayed(Duration(milliseconds: 1000), () {

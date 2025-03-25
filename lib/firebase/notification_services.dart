@@ -95,13 +95,14 @@ class NotificationService {
           forgroundMessage();
         }
       }
-      if (Platform.isAndroid) {
-        if (context.mounted) {
+      if (Platform.isAndroid) {  
+        if (context.mounted) { 
           print("ONGOING");
           initLocalNotifications(context, message);
           showNotification(message);
         }
       }
+      
     });
   }
 
