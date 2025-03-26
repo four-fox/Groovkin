@@ -60,7 +60,7 @@ class NotificationService {
 
   // ! Todo refresh token
   void isRefreshToken() async {
-    await firebaseMessaging.onTokenRefresh.listen((event) {
+     firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
     });
   }

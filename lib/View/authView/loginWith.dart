@@ -6,9 +6,10 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/authView/social_sign_in.dart';
 
 class LoginWithScreen extends StatelessWidget {
-  const LoginWithScreen({Key? key}) : super(key: key);
+  const LoginWithScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +18,15 @@ class LoginWithScreen extends StatelessWidget {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/loginSelection1.png"),
                 fit: BoxFit.fill)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: kToolbarHeight / 1.5,
             ),
             GestureDetector(
@@ -33,12 +34,12 @@ class LoginWithScreen extends StatelessWidget {
                 Get.back();
               },
               child: ImageIcon(
-                AssetImage('assets/backArrow.png'),
+                const AssetImage('assets/backArrow.png'),
                 size: 32,
                 color: theme.primaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -49,7 +50,7 @@ class LoginWithScreen extends StatelessWidget {
                 color: theme.primaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text(
@@ -60,7 +61,7 @@ class LoginWithScreen extends StatelessWidget {
                 color: theme.primaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kToolbarHeight * 1.4,
             ),
             CustomButton(
@@ -80,48 +81,12 @@ class LoginWithScreen extends StatelessWidget {
               style: poppinsMediumStyle(
                   fontSize: 16, color: DynamicColor.lightRedClr),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            CustomButtonWithIcon(
-                text: "Continue with Apple",
-                iconValue: true,
-                bgColor: Colors.transparent,
-                gradientClr: true,
-                color2: DynamicColor.grayClr.withOpacity(0.4),
-                color1: DynamicColor.grayClr.withOpacity(0.1),
-                imageIconn: ImageIcon(
-                  AssetImage("assets/apple.png"),
-                  color: theme.primaryColor,
-                )),
-            SizedBox(
-              height: 20,
-            ),
-            CustomButtonWithIcon(
-                text: "Continue with Google",
-                iconValue: true,
-                bgColor: Colors.transparent,
-                gradientClr: true,
-                color2: DynamicColor.grayClr.withOpacity(0.4),
-                color1: DynamicColor.grayClr.withOpacity(0.1),
-                imageIconn: ImageIcon(
-                  AssetImage("assets/google.png"),
-                  color: theme.primaryColor,
-                )),
-            SizedBox(
-              height: 20,
-            ),
-            CustomButtonWithIcon(
-                text: "Continue with Spotify",
-                iconValue: true,
-                bgColor: Colors.transparent,
-                gradientClr: true,
-                color2: DynamicColor.grayClr.withOpacity(0.4),
-                color1: DynamicColor.grayClr.withOpacity(0.1),
-                imageIconn: ImageIcon(
-                  AssetImage("assets/spotify.png"),
-                  color: theme.primaryColor,
-                )),
+            const SocialSignIn(
+              showSpotify: true,
+            )
           ],
         ),
       ),

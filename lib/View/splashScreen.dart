@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 3), () async {
       if (API().sp.read("intro") == true) {
         if (API().sp.read("token") != null) {
           print(API().sp.read("token"));
@@ -91,18 +92,21 @@ class _SplashScreenState extends State<SplashScreen> {
             }
           }
         } else {
-          Get.offAllNamed(Routes.loginScreen);
-          // Get.offAllNamed(Routes.loginSelection);
+          // Get.offAllNamed(Routes.loginScreen);
+          Get.offAllNamed(Routes.loginSelection);
         }
       } else {
         Get.offAllNamed(Routes.introPages);
       }
     });
+
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
         body: SizedBox(
       width: double.infinity,
       height: double.infinity,

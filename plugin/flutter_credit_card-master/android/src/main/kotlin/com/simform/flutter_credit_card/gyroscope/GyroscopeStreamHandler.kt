@@ -15,13 +15,17 @@ internal class GyroscopeStreamHandler(
 ) : EventChannel.StreamHandler {
     private var sensorEventListener: SensorEventListener? = null
 
-    private val sensor: Sensor by lazy {
+    private val sensor: Sensor? by lazy {
         sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
     }
 
     override fun onListen(arguments: Any?, events: EventSink) {
+        if (sensor == null) {
+            events.error("NO_SENSOR", "Gyroscope sensor not available", null)
+            return
+        }
+        
         sensorEventListener = createSensorEventListener(events)
-        // Gyroscope Event sample period set at 60 fps, specified in microseconds.
         sensorManager.registerListener(sensorEventListener, sensor, 16666)
     }
 

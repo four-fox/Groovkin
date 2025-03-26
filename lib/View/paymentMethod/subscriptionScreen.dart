@@ -52,12 +52,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 if (!isFromSettingScreen) ...[
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Align(
@@ -89,7 +89,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     ),
                   ),
                 ],
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 CustomButton(
@@ -104,10 +104,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     color: theme.primaryColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 90,
                   width: 95,
                   child: Image(
@@ -115,19 +115,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     fit: BoxFit.fill,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: DynamicColor.darkGrayClr.withOpacity(0.7)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       GradientText(
@@ -135,48 +136,48 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         style: poppinsMediumStyle(
                             fontSize: 19.0, context: context),
                         colors: [
-                          Color(0xffd6a331).withOpacity(0.5),
-                          Color(0xffd6a331),
+                          const Color(0xffd6a331).withOpacity(0.5),
+                          const Color(0xffd6a331),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       customRow(context: context, theme: theme),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       customRow(
                           text: "Tofu kogi meggings, kale chips.",
                           context: context,
                           theme: theme),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       customRow(
                           text: "Irony copper mug taxidermy.",
                           context: context,
                           theme: theme),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       customRow(
                           text: "Squid cold-pressed occupy taiyaki.",
                           context: context,
                           theme: theme),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 controller.subscriptionModel == null ||
                         controller.subscriptionModel!.data == null ||
                         controller.subscriptionModel!.data!.isEmpty
-                    ? SizedBox()
+                    ? const SizedBox()
                     : Row(
                         children:
                             controller.subscriptionModel!.data!.map((data) {
@@ -187,15 +188,15 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 //     arguments: {"paymentMethod": 1});
                               },
                               child: Container(
-                                height: context.height * .20,
-                                margin: EdgeInsets.only(right: 10),
+                                // height: context.height * .20,
+                                margin: const EdgeInsets.only(right: 10),
                                 // width: double.infinity,
                                 // height: 160,
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     top: 20, bottom: 20, left: 13),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    color: Color(0xffd9a733)),
+                                    color: const Color(0xffd9a733)),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -212,7 +213,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 8,
                                     ),
                                     Text(
@@ -223,6 +224,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                         color: theme.scaffoldBackgroundColor,
                                       ),
                                       maxLines: 3,
+                                      softWrap: true,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ],
@@ -232,11 +234,12 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           );
                         }).toList(),
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
                   child: CustomButton(
                     borderClr: Colors.transparent,
                     color1: DynamicColor.blackClr,
@@ -256,12 +259,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     text: "Buy Subscription",
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 if (!isFromSettingScreen)
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
                     child: CustomButton(
                       borderClr: Colors.transparent,
                       color1: DynamicColor.blackClr,
@@ -310,10 +314,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   Widget customRow({text, context, color, theme}) {
     return Row(
       children: [
-        Image(
+        const Image(
           image: AssetImage("assets/star.png"),
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         Text(

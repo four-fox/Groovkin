@@ -1,12 +1,19 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/foundation.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
 import 'package:groovkin/firebase/notification_services.dart';
+import 'package:groovkin/main.dart';
 import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
+import 'package:groovkin/utils/constant.dart';
+import 'package:http/http.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -26,6 +33,7 @@ import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
@@ -184,6 +192,7 @@ class AuthController extends GetxController {
     };
     var response = await API().postApi(formData, "login");
     if (response.statusCode == 200) {
+      configureSDK();
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
 
@@ -195,7 +204,6 @@ class AuthController extends GetxController {
       } else {
         API().sp.write("currentRole", "eventManager");
       }
-
       if (response.data['data']['user_details']['active_role'] ==
           'venue_manager') {
         API().sp.write("role", 'eventManager');
@@ -278,7 +286,7 @@ class AuthController extends GetxController {
                 container: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Image(image: AssetImage("assets/sucses.png")),
+                    const Image(image: AssetImage("assets/sucses.png")),
                     Text(
                       "Successfully change\nPassword",
                       textAlign: TextAlign.center,
@@ -452,7 +460,8 @@ class AuthController extends GetxController {
     if (repsposne.statusCode == 200) {
       API().sp.erase();
       API().sp.write("intro", true);
-      Get.offAllNamed(Routes.loginScreen);
+      // Get.offAllNamed(Routes.loginScreen);
+      Get.offAllNamed(Routes.loginSelection);
     }
   }
 
@@ -1164,7 +1173,7 @@ class AuthController extends GetxController {
     final smtpServer = gmail(username, password);
     // Create our message.
     final message = Message()
-      ..from = Address(
+      ..from = const Address(
         'william@gologonow',
         'Groovkin',
       )
@@ -1182,8 +1191,8 @@ class AuthController extends GetxController {
       sendingEmailLoader.value = true;
       update();
       if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Mail Send Successfully")));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Mail Send Successfully")));
       }
     } on MailerException catch (e) {
       sendingEmailLoader.value = true;
@@ -1344,38 +1353,63 @@ class AuthController extends GetxController {
   // Todo Social Sign IN
 
   Future<dynamic> googleSignIn() async {
-    GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
+    try {
+      EasyLoading.show();
+      GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
 
-    if (googleSignInAccount == null) return null;
+      if (googleSignInAccount == null) {
+        EasyLoading.dismiss();
+        return null;
+      }
 
-    GoogleSignInAuthentication? googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+      GoogleSignInAuthentication? googleSignInAuthentication =
+          await googleSignInAccount.authentication;
 
-    final credential = firebase_auth.GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-
-    await firebase_auth.FirebaseAuth.instance.signInWithCredential(credential);
+      final credential = firebase_auth.GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      final firebase_auth.UserCredential userCredential = await firebase_auth
+          .FirebaseAuth.instance
+          .signInWithCredential(credential);
+      log(userCredential.toString());
+    } catch (e) {
+      print(e.toString());
+      EasyLoading.dismiss();
+    } finally {
+      EasyLoading.dismiss();
+    }
   }
 
+  // Todo Apple Sign In
+
   Future<dynamic> appleSignIn() async {
-    final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
+    try {
+      EasyLoading.show();
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
 
-    final firebase_auth.OAuthCredential oAuthCredential =
-        firebase_auth.OAuthProvider("apple.com").credential(
-      idToken: credential.identityToken,
-      accessToken: credential.authorizationCode,
-    );
+      final firebase_auth.OAuthCredential oAuthCredential =
+          firebase_auth.OAuthProvider("apple.com").credential(
+        idToken: credential.identityToken,
+        accessToken: credential.authorizationCode,
+      );
 
-    final firebase_auth.UserCredential userCredential = await firebase_auth
-        .FirebaseAuth.instance
-        .signInWithCredential(oAuthCredential);
+      final firebase_auth.UserCredential userCredential = await firebase_auth
+          .FirebaseAuth.instance
+          .signInWithCredential(oAuthCredential);
+      print(userCredential);
+    } catch (e) {
+      EasyLoading.dismiss();
+    } finally {
+      EasyLoading.dismiss();
+    }
+
+    // userCredential.credential
   }
 }
 

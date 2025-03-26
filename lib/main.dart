@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/firebase/notification_services.dart';
@@ -23,18 +25,34 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   );
 }
 
+Future<void> configureSDK() async {
+  await Purchases.setLogLevel(LogLevel.debug);
+  PurchasesConfiguration configuration =
+      PurchasesConfiguration(StoreConfig.instance.apiKey)
+        ..appUserID = API().sp.read("userId").toString()
+        ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
+  await Purchases.configure(configuration);
+  // fetchOffers();
+}
+
+void fetchOffers() async {
+  Offerings offerings = await Purchases.getOfferings();
+  if (offerings.current != null) {
+    log(offerings.current!.availablePackages.toString());
+  }
+}
+
 void main() async {
   if (Platform.isIOS || Platform.isMacOS) {
     StoreConfig(apiKey: appleApiKey, store: Store.appStore);
   } else {
     StoreConfig(apiKey: googleApiKey, store: Store.playStore);
   }
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  
   // Todo Received BackGround Message
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -59,6 +77,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
+    if (API().sp.read("userId") != null) {
+      configureSDK();
+    }
     //Todo Firebase Notification Start
 
     notificationService.requestNotificationPermission();
@@ -87,19 +108,19 @@ class _MyAppState extends State<MyApp> {
             selectionHandleColor: DynamicColor.yellowClr,
           ),
           brightness: Brightness.light,
-          primaryColor: Color(0xff040305),
+          primaryColor: const Color(0xff040305),
           // backgroundColor: Color(0xff040305),
           scaffoldBackgroundColor: Colors.white,
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             labelLarge:
                 TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
           )),
       darkTheme: ThemeData(
           brightness: Brightness.dark,
-          primaryColor: Color(0xffFFFFFF),
+          primaryColor: const Color(0xffFFFFFF),
           // backgroundColor: Color(0xffFFFFFF),
           scaffoldBackgroundColor: Colors.black,
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             labelLarge:
                 TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
           )),

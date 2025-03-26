@@ -13,7 +13,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:intl/intl.dart';
 
 class SettingScreen extends StatefulWidget {
-  SettingScreen({super.key});
+  const SettingScreen({super.key});
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
@@ -45,14 +45,14 @@ class _SettingScreenState extends State<SettingScreen> {
         _authController.getProfile(userId: API().sp.read("userId"));
       }, builder: (controller) {
         return controller.getProfileLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Scaffold(
                 appBar: PreferredSize(
-                  preferredSize: Size.fromHeight(kToolbarHeight * 2.4),
+                  preferredSize: const Size.fromHeight(kToolbarHeight * 2.4),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: sp.read("role") == "User"
-                          ? BorderRadius.only(
+                          ? const BorderRadius.only(
                               bottomRight: Radius.circular(20),
                               bottomLeft: Radius.circular(20),
                             )
@@ -64,7 +64,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   color: DynamicColor.grayClr.withOpacity(0.6)),
                             )
                           : null,
-                      image: DecorationImage(
+                      image: const DecorationImage(
                           image: AssetImage("assets/grayClor.png"),
                           fit: BoxFit.fill),
                     ),
@@ -116,11 +116,11 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
                 body: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         customWidget(
@@ -154,7 +154,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   Get.toNamed(Routes.chatRoom);
                                 })
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         // sp.read("role") =="User"?SizedBox.shrink(): customWidget(context: context,
                         // img: "assets/following.png",
                         //   text: "Following",
@@ -314,7 +314,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   Get.toNamed(Routes.groovkinInviteScreen);
                                 })
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,
@@ -323,7 +323,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   Get.toNamed(Routes.userMyGroovkinScreen);
                                 })
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,
@@ -332,7 +332,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   Get.toNamed(Routes.groovkinInviteScreen);
                                 })
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         API().sp.read("role") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
@@ -342,7 +342,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         API().sp.read("currentRole") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
@@ -352,9 +352,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.subscriptionScreen,
                                       arguments: {"isFromSettingScreen": true});
                                 })
-                            : SizedBox(),
+                            : const SizedBox(),
+
                         sp.read("role") == "User"
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : customWidget(
                                 context: context,
                                 img: "assets/paymentMethods.png",
@@ -390,7 +391,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               height: 48,
                               width: Get.width,
                               decoration: BoxDecoration(
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                     image: AssetImage("assets/buttonBg.png"),
                                     fit: BoxFit.fill),
                                 borderRadius: BorderRadius.circular(8),
@@ -400,7 +401,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   ImageIcon(
-                                    AssetImage("assets/logoutIcon.png"),
+                                    const AssetImage("assets/logoutIcon.png"),
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   Text(
@@ -410,11 +411,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                       color: Theme.of(context).primaryColor,
                                       fontSize: 15,
                                     ),
-                                  )
+                                  ),
                                 ],
                               )),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         GestureDetector(
@@ -434,7 +435,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               height: 48,
                               width: Get.width,
                               decoration: BoxDecoration(
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                   image: AssetImage("assets/buttonBg.png"),
                                   fit: BoxFit.fill,
                                 ),
@@ -444,7 +445,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.delete,
                                     color: Colors.red,
                                   ),
@@ -460,7 +461,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 ],
                               )),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: kToolbarHeight * 1.2,
                         ),
                       ],
@@ -486,7 +487,7 @@ class _SettingScreenState extends State<SettingScreen> {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(
           children: [
             Row(
@@ -505,7 +506,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                       ),
                 Padding(
-                  padding: EdgeInsets.only(left: 14.0, top: 4),
+                  padding: const EdgeInsets.only(left: 14.0, top: 4),
                   child: Text(
                     text ?? "Profile",
                     style: poppinsMediumStyle(
@@ -515,10 +516,10 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 toggleCondition == false
                     ? iconShow == true
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : Icon(
                             Icons.arrow_forward_ios,
                             color: DynamicColor.grayClr.withOpacity(0.7),
@@ -535,7 +536,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             Divider(

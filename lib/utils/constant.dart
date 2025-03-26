@@ -8,10 +8,13 @@ const footerText =
 Read more about this here: https://www.revenuecat.com/blog/schedule-2-section-3-8-b""";
 
 //TO DO: add the Apple API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
-const appleApiKey = 'appl_api_key';
+const appleApiKey = 'appl_sUGoMUqrMbaxQGbwWvgauwEYVzn';
 
 //TO DO: add the Google API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
 const googleApiKey = 'googl_api_key';
 
-//TO DO: add the Amazon API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
-const amazonApiKey = 'amazon_api_key';
+
+
+const String clientId = "06da827311f44e9bbf405f7c9ec676ef";
+const String redirectUri = "https://groovkin.gologonow.app";
+const String clientSecret = "0c8d111be9174e3f8f74533c14d269cd";

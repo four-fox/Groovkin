@@ -9,9 +9,10 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/authView/social_sign_in.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({super.key});
 
   final loginForm = GlobalKey<FormState>();
 
@@ -38,8 +39,8 @@ class LoginScreen extends StatelessWidget {
             child: Container(
               height: Get.height,
               width: Get.width,
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/loginBg.png"),
                   fit: BoxFit.fill,
@@ -49,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 60,
                     ),
                     GestureDetector(
@@ -57,11 +58,11 @@ class LoginScreen extends StatelessWidget {
                         Get.back();
                       },
                       child: ImageIcon(
-                        AssetImage("assets/backArrow.png"),
+                        const AssetImage("assets/backArrow.png"),
                         color: theme.primaryColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Text(
@@ -73,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                         color: theme.primaryColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     CustomTextFields(
@@ -82,7 +83,7 @@ class LoginScreen extends StatelessWidget {
                       validationError: "email",
                       isEmail: true,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     CustomTextFields(
@@ -106,7 +107,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     GestureDetector(
@@ -124,7 +125,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kToolbarHeight * 2,
                     ),
                     Row(
@@ -136,7 +137,7 @@ class LoginScreen extends StatelessWidget {
                           color: DynamicColor.grayClr,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 6.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
                           child: Text(
                             "Or",
                             style: poppinsMediumStyle(
@@ -152,53 +153,20 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
-                    CustomButtonWithIcon(
-                        onTap: () {
-                          // controller.appleSignIn();  
-                        },
-                        text: "Continue with Apple",
-                        iconValue: true,
-                        bgColor: Colors.transparent,
-                        gradientClr: true,
-                        color2: DynamicColor.grayClr.withOpacity(0.4),
-                        color1: DynamicColor.grayClr.withOpacity(0.1),
-                        imageIconn: ImageIcon(
-                          AssetImage("assets/apple.png"),
-                          color: theme.primaryColor,
-                        )),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    CustomButtonWithIcon(
-                        onTap: () {
-                          // controller.googleSignIn();
-                        },
-                        text: "Continue with Google",
-                        iconValue: true,
-                        bgColor: Colors.transparent,
-                        gradientClr: true,
-                        color2: DynamicColor.grayClr.withOpacity(0.4),
-                        color1: DynamicColor.grayClr.withOpacity(0.1),
-                        imageIconn: ImageIcon(
-                          AssetImage("assets/google.png"),
-                          color: theme.primaryColor,
-                        )),
-                    SizedBox(
-                      height: 30,
-                    ),
+                    const SocialSignIn(),
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.loginSelection);
                         // Get.back();
                       },
                       child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,  
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               'Don\'t have an account? ',
@@ -221,7 +189,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     CustomButton(
@@ -233,7 +201,7 @@ class LoginScreen extends StatelessWidget {
                       },
                       text: "Login",
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     )
                   ],
