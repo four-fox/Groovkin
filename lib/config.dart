@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 class ConfigFirebaseConfig {
   static FirebaseOptions get platformOptions {
- /*   if (kIsWeb) {
+    /*   if (kIsWeb) {
       // Web
       return const FirebaseOptions(
         appId: '1:1021349151297:android:a1087dc154159c155bbcc0',
@@ -11,7 +11,8 @@ class ConfigFirebaseConfig {
         projectId: 'keep-sake-ade93',
         messagingSenderId: '1021349151297',
       );
-    } else*/ if (Platform.isIOS || Platform.isMacOS) {
+    } else*/
+    if (Platform.isIOS || Platform.isMacOS) {
       // iOS and MacOS
       return const FirebaseOptions(
         appId: '1:357674854436:android:802ebc4a147ff043fe10b1',
@@ -28,7 +29,7 @@ class ConfigFirebaseConfig {
       return FirebaseOptions(
         appId: '1:549725868575:android:b537348a10ef4d7c687b2a',
         apiKey: 'AIzaSyC7UUbIq1eM5CHfwffzsKdC6t8ILIdDQKY',
-        projectId: 'com.gologonow.groovkin',
+        projectId: 'com.gologonow.groovkinn',
         messagingSenderId: '549725868575',
         storageBucket: "groovkin-a2676.appspot.com",
       );

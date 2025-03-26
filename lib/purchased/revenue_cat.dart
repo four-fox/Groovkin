@@ -147,7 +147,7 @@ class RevenueCatSubscription extends GetxController {
     if (Platform.isAndroid) {
       launchUrl(
           Uri.parse(
-              'https://play.google.com/store/account/subscriptions?sku=asdas&package=com.gologonow.groovkin'),
+              'https://play.google.com/store/account/subscriptions?sku=asdas&package=com.gologonow.groovkinn'),
           mode: LaunchMode.externalApplication);
     } else {
       showCupertinoDialog(

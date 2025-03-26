@@ -24,7 +24,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-
   if (Platform.isIOS || Platform.isMacOS) {
     StoreConfig(apiKey: appleApiKey, store: Store.appStore);
   } else {
@@ -44,7 +43,6 @@ void main() async {
 
   await GetStorage.init();
   runApp(const MyApp());
-
 }
 
 class MyApp extends StatefulWidget {
@@ -67,7 +65,6 @@ class _MyAppState extends State<MyApp> {
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
     notificationService.getDeviceToken();
-    
 
     // Todo Firebase Notification End
 
@@ -129,4 +126,3 @@ class MyBehavior extends ScrollBehavior {
     return child;
   }
 }
-

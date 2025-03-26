@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'my-groovkin-app.firebasestorage.app',
     iosBundleId: 'com.gologonow.groovkinn',
   );
-
 }

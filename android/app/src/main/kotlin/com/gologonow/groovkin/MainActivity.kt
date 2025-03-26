@@ -1,4 +1,4 @@
-package com.gologonow.groovkin
+package com.gologonow.groovkinn
 
 import io.flutter.embedding.android.FlutterActivity
 
