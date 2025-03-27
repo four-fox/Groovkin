@@ -192,10 +192,9 @@ class AuthController extends GetxController {
     };
     var response = await API().postApi(formData, "login");
     if (response.statusCode == 200) {
-      configureSDK();
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
-
+      configureSDK();
       if (response.data["data"]["user_details"]["current_role"] == "user") {
         API().sp.write("currentRole", "User");
       } else if (response.data["data"]["user_details"]["current_role"] ==
