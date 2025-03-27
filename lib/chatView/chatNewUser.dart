@@ -36,13 +36,13 @@ class ChatNewUserScreen extends StatelessWidget {
         leading: Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: EdgeInsets.only(left: 12.0),
+            padding: const EdgeInsets.only(left: 12.0),
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: ImageIcon(
-                AssetImage("assets/backArrow.png"),
+                const AssetImage("assets/backArrow.png"),
                 color: theme.primaryColor,
               ),
             ),
@@ -78,7 +78,7 @@ class ChatNewUserScreen extends StatelessWidget {
             return false;
           },
           child: controller.newUserChatLoader.value == true
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : Column(
                   children: [
                     Container(
@@ -115,7 +115,7 @@ class ChatNewUserScreen extends StatelessWidget {
                               itemCount:
                                   controller.newUserData!.data!.data!.length,
                               shrinkWrap: true,
-                              physics: AlwaysScrollableScrollPhysics(),
+                              physics: const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 UserData userDataa =
                                     controller.newUserData!.data!.data![index];

@@ -33,7 +33,7 @@ void main() {
         'yue',
       ];
 
-      Countries.countryList.forEach((Map<String, dynamic> data) {
+      for (var data in Countries.countryList) {
         Country country = Country.fromJson(data);
 
         expect(country.name!.length, greaterThan(0));
@@ -43,9 +43,10 @@ void main() {
         expect(country.flagUri.length, greaterThan(0));
         expect(country.nameTranslations!.length,
             equals(expectedTranslations.length));
-        expectedTranslations.forEach((language) =>
-            expect(country.nameTranslations!.containsKey(language), true));
-      });
+        for (var language in expectedTranslations) {
+          expect(country.nameTranslations!.containsKey(language), true);
+        }
+      }
     });
   });
 }

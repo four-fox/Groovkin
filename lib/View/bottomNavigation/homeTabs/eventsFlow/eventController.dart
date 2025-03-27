@@ -393,7 +393,7 @@ class EventController extends GetxController {
     if (response.statusCode == 200) {
       if (draft == false) {
         Get.back();
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 2), () {
           Get.offAllNamed(Routes.bottomNavigationView,
               arguments: {"indexValue": 0});
         });
@@ -405,7 +405,7 @@ class EventController extends GetxController {
               return AlertWidget(
                 height: kToolbarHeight * 4.4,
                 container: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -427,7 +427,7 @@ class EventController extends GetxController {
                           color: theme.primaryColor,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 90,
                         child: Image(
                           image: AssetImage("assets/handshake.png"),

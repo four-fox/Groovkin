@@ -20,17 +20,17 @@ class AddVenueDetailsScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 2),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 2),
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/grayClor.png"),
                       fit: BoxFit.fill)),
               child: customAppBar(theme: theme, text: "Add Venue"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
@@ -52,10 +52,10 @@ class AddVenueDetailsScreen extends StatelessWidget {
         _controller.getAmenities(type: "amenities");
       }, builder: (controller) {
         return controller.getAmenitiesLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1, horizontal: 17),
+                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 17),
                   child: LayoutGrid(
                     columnSizes: Responsive.isDesktop(context)
                         ? [1.fr, 1.fr, 1.fr, 1.fr, 1.fr]
@@ -74,7 +74,7 @@ class AddVenueDetailsScreen extends StatelessWidget {
                       return SizedBox(
                         width: double.infinity,
                         child: Padding(
-                          padding: EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: GestureDetector(
                             onTap: () {
                               controller.amenitiesList[index].selected!.value =
@@ -107,7 +107,7 @@ class AddVenueDetailsScreen extends StatelessWidget {
                                     Container(
                                       height: 45,
                                       width: 45,
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: controller.amenitiesList[index]
@@ -115,7 +115,7 @@ class AddVenueDetailsScreen extends StatelessWidget {
                                                   false
                                               ? DynamicColor.grayClr
                                               : DynamicColor.yellowClr),
-                                      child: Image(
+                                      child: const Image(
                                         image: AssetImage("assets/djing.png"),
                                       ),
                                     ),
@@ -218,7 +218,7 @@ class AddVenueDetailsScreen extends StatelessWidget {
       }),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {
@@ -255,17 +255,17 @@ class VenuePermitDetailScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 2),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 2),
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/grayClor.png"),
                       fit: BoxFit.fill)),
               child: customAppBar(theme: theme, text: "Add Venue Detail"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
@@ -287,15 +287,15 @@ class VenuePermitDetailScreen extends StatelessWidget {
         _controller.getAmenities(type: "licenses_and_permit");
       }, builder: (controller) {
         return controller.getAmenitiesLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : ListView.builder(
                 itemCount: controller.licensesPermitList.length,
                 shrinkWrap: true,
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: GestureDetector(
                       onTap: () {
                         controller.licensesPermitList[index].selected!.value =
@@ -315,13 +315,13 @@ class VenuePermitDetailScreen extends StatelessWidget {
                       child: Container(
                           height: 40,
                           padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                              const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: controller.licensesPermitList[index]
                                           .selected!.value ==
                                       false
-                                  ? DecorationImage(
+                                  ? const DecorationImage(
                                       image: AssetImage("assets/buttonBg.png"),
                                       fit: BoxFit.fill)
                                   : null,
@@ -345,7 +345,7 @@ class VenuePermitDetailScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               controller.licensesPermitList[index].selected!
                                           .value ==
                                       true
@@ -354,7 +354,7 @@ class VenuePermitDetailScreen extends StatelessWidget {
                                       size: 28,
                                       color: DynamicColor.blackClr,
                                     )
-                                  : SizedBox.shrink(),
+                                  : const SizedBox.shrink(),
                             ],
                           )),
                     ),
@@ -363,7 +363,7 @@ class VenuePermitDetailScreen extends StatelessWidget {
       }),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {
@@ -382,7 +382,7 @@ class VenuePermitDetailScreen extends StatelessWidget {
 }
 
 class HouseEventCapabilitiesScreen extends StatefulWidget {
-  HouseEventCapabilitiesScreen({super.key});
+  const HouseEventCapabilitiesScreen({super.key});
 
   @override
   State<HouseEventCapabilitiesScreen> createState() =>
@@ -399,7 +399,7 @@ class _HouseEventCapabilitiesScreenState
           ? scrollController.position.minScrollExtent
           :*/
       listScrollController.position.maxScrollExtent,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.linear,
     );
   }
@@ -432,17 +432,17 @@ class _HouseEventCapabilitiesScreenState
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 2),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 2),
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/grayClor.png"),
                       fit: BoxFit.fill)),
               child: customAppBar(theme: theme, text: "Add Venue Detail"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
@@ -464,17 +464,17 @@ class _HouseEventCapabilitiesScreenState
         _controller.getAmenities(type: "house_event_capabilities");
       }, builder: (controller) {
         return controller.getAmenitiesLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : ListView.builder(
                 itemCount: controller.houseEventPermitList.length,
                 controller: listScrollController,
                 shrinkWrap: true,
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 itemBuilder: (BuildContext context, index) {
                   return Obx(
                     () => Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: GestureDetector(
                         onTap: () {
                           controller
@@ -492,14 +492,14 @@ class _HouseEventCapabilitiesScreenState
                           }
                         },
                         child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 image: controller.houseEventPermitList[index]
                                             .selected!.value ==
                                         false
-                                    ? DecorationImage(
+                                    ? const DecorationImage(
                                         image:
                                             AssetImage("assets/buttonBg.png"),
                                         fit: BoxFit.fill)
@@ -532,7 +532,7 @@ class _HouseEventCapabilitiesScreenState
                                         size: 28,
                                         color: DynamicColor.blackClr,
                                       )
-                                    : SizedBox.shrink(),
+                                    : const SizedBox.shrink(),
                               ],
                             )),
                       ),
@@ -548,13 +548,13 @@ class _HouseEventCapabilitiesScreenState
                 scrollToMaxExtent();
               },
               child: Container(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: theme.primaryColor,
                     ),
-                    image: DecorationImage(
+                    image: const DecorationImage(
                         image: AssetImage('assets/eventDays.png'),
                         fit: BoxFit.fill)),
                 child: Icon(
@@ -566,7 +566,7 @@ class _HouseEventCapabilitiesScreenState
             ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {

@@ -4,7 +4,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -72,7 +71,7 @@ class RevenueCatSubscription extends GetxController {
     final purchaseConfiguration =
         PurchasesConfiguration(StoreConfig.instance.apiKey)
           ..appUserID = API().sp.read("userId")
-          ..purchasesAreCompletedBy = PurchasesAreCompletedByRevenueCat();
+          ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
 
     await Purchases.configure(purchaseConfiguration);
   }
@@ -154,7 +153,7 @@ class RevenueCatSubscription extends GetxController {
           context: Get.context!,
           builder: (context) {
             return CupertinoAlertDialog(
-              title: Text("Cancel Subscription"),
+              title: const Text("Cancel Subscription"),
               // content: Text(
               //     'To ${productId!.value.isEmpty ? 'Cancel' : (productId!.value == "Monthly" && controller.selected.value == 0) ? 'Cancel' : (productId!.value == "Yearly" && controller.selected.value == 1) ? 'Cancel' : 'Upgrade Or Downgrade'} Your Subscription\nGo To Settings > Your Account > Subscription'),
               actions: <Widget>[

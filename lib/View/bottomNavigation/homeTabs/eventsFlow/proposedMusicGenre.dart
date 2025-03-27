@@ -8,7 +8,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class ProposedMusicScreen extends StatelessWidget {
-  ProposedMusicScreen({Key? key}) : super(key: key);
+  const ProposedMusicScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +29,13 @@ class ProposedMusicScreen extends StatelessWidget {
         return Stack(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         'Proposed Music Genres\nfor this event.',
                         textAlign: TextAlign.center,
@@ -47,7 +47,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -62,11 +62,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.hipHop.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             color: DynamicColor.dropDownClr,
@@ -80,7 +80,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.hipList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -91,7 +91,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -114,7 +114,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -130,11 +130,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.soul.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             // image: DecorationImage(
@@ -148,7 +148,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.soulList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -160,7 +160,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -184,7 +184,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -200,11 +200,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.rock.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             // image: DecorationImage(
@@ -218,7 +218,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.rockList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -230,7 +230,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -254,7 +254,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -262,7 +262,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         controller.african.value = !controller.african.value;
                         controller.update();
                       },
-                      text: "Reggae\Caribbean\African",
+                      text: "ReggaeCaribbeanAfrican",
                       theme: theme,
                       context: context,
                       icon: controller.african.value
@@ -270,11 +270,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.african.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             // image: DecorationImage(
@@ -288,7 +288,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.africanList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -300,7 +300,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -324,7 +324,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -340,11 +340,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.latin.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             // image: DecorationImage(
@@ -358,7 +358,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.latinList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -370,7 +370,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -391,7 +391,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -407,11 +407,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.jazz.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             // image: DecorationImage(
@@ -425,7 +425,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.jazzList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -437,7 +437,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -458,7 +458,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -474,11 +474,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.country.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             // image: DecorationImage(
@@ -492,7 +492,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.countryList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -504,7 +504,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -525,7 +525,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -541,11 +541,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.dance.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                             // image: DecorationImage(
@@ -559,7 +559,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.danceList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -571,7 +571,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -592,7 +592,7 @@ class ProposedMusicScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     musicGenreWidget(
@@ -609,11 +609,11 @@ class ProposedMusicScreen extends StatelessWidget {
                           : Icons.keyboard_arrow_down,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 4.0),
+                      padding: const EdgeInsets.only(top: 4.0),
                       child: Visibility(
                         visible: controller.international.value,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           decoration: BoxDecoration(
                               // image: DecorationImage(
@@ -627,7 +627,7 @@ class ProposedMusicScreen extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: controller.internationalList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Row(
                                   children: [
@@ -639,7 +639,7 @@ class ProposedMusicScreen extends StatelessWidget {
                                           color: theme.primaryColor,
                                           context: context),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -672,7 +672,7 @@ class ProposedMusicScreen extends StatelessWidget {
               ),
             ),
             controller.addForEvent.isEmpty
-                ? SizedBox.shrink()
+                ? const SizedBox.shrink()
                 : Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
@@ -682,15 +682,15 @@ class ProposedMusicScreen extends StatelessWidget {
                       child: ListView.builder(
                           itemCount: controller.addForEvent.length,
                           shrinkWrap: true,
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, index) {
                             return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: Center(
                                 child: Container(
                                   height: 40,
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 4),
                                   decoration: BoxDecoration(
                                       color: DynamicColor.whiteClr,
@@ -709,7 +709,7 @@ class ProposedMusicScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {
@@ -724,9 +724,9 @@ class ProposedMusicScreen extends StatelessWidget {
   Widget musicGenreWidget(
       {context, theme, text, GestureTapCallback? onTap, IconData? icon}) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       decoration: BoxDecoration(
-          image: DecorationImage(
+          image: const DecorationImage(
               image: AssetImage("assets/buttonBg.png"), fit: BoxFit.fill),
           borderRadius: BorderRadius.circular(10)),
       child: Row(
@@ -739,7 +739,7 @@ class ProposedMusicScreen extends StatelessWidget {
               color: theme.primaryColor,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             onTap: onTap,
             child: Icon(

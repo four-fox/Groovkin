@@ -11,7 +11,7 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 class InAppPurchasedFlutter {
   InAppPurchasedFlutter._interval();
 
-  static InAppPurchasedFlutter _singleton = InAppPurchasedFlutter._interval();
+  static final InAppPurchasedFlutter _singleton = InAppPurchasedFlutter._interval();
 
   factory InAppPurchasedFlutter() {
     return _singleton;
@@ -143,7 +143,7 @@ class InAppPurchasedFlutter {
   Future<bool> _verifySubscription(PurchaseDetails purchaseDetails) {
     if (check == false) {
       check = true;
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         check = false;
       });
 

@@ -9,7 +9,7 @@ import 'package:groovkin/View/counters/bottomTextFields.dart';
 import 'package:groovkin/View/counters/messagesListWidget.dart';
 
 class CounterScreen extends StatefulWidget {
-  CounterScreen({super.key});
+  const CounterScreen({super.key});
 
   @override
   State<CounterScreen> createState() => _CounterScreenState();
@@ -59,19 +59,19 @@ class _CounterScreenState extends State<CounterScreen> {
           alignment: Alignment.bottomCenter,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.only(bottom: 8),
               child: MessageListWidget(),
             ),
             Positioned(
                 bottom: 0,
                 child: GetBuilder<EventController>(builder: (controller) {
                   if (controller.eventDetail == null) {
-                    return SizedBox();
+                    return const SizedBox();
                   }
                   return ((textFieldShow.value == false) &&
                           (controller.eventDetail!.data!.status != "completed"))
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: CustomButton(
                             widths: Get.width,
                             heights: 37,
@@ -84,7 +84,7 @@ class _CounterScreenState extends State<CounterScreen> {
                           ),
                         )
                       : controller.eventDetail!.data!.status == "completed"
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : BottomTextFields(
                               userId: userId,
                               eventId: eventId,

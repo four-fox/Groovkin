@@ -17,7 +17,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import 'package:intl/intl.dart';
 
 class UserEventDetailsScreen extends StatefulWidget {
-  UserEventDetailsScreen({super.key});
+  const UserEventDetailsScreen({super.key});
 
   @override
   State<UserEventDetailsScreen> createState() => _UserEventDetailsScreenState();
@@ -59,7 +59,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
         _controller.eventDetails(eventId: statusVal);
       }, builder: (controller) {
         return controller.eventDetailsLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       alignment: Alignment.bottomRight,
                       children: [
                         controller.eventDetail!.data!.profilePicture!.isEmpty
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : SizedBox(
                                 height: kToolbarHeight * 3,
                                 width: Get.width,
@@ -79,7 +79,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .profilePicture!.length,
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 12.0),
                                         child: Container(
                                           width: controller.eventDetail!.data!
@@ -128,14 +128,14 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                               ),
                         notifyBtnShow == true
                             ? Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     right: 8, left: 8, bottom: 8),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     controller.eventDetail!.data!.status ==
                                             "completed"
-                                        ? SizedBox.shrink()
+                                        ? const SizedBox.shrink()
                                         : Align(
                                             alignment: Alignment.bottomRight,
                                             child: CustomButton(
@@ -163,7 +163,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                               },
                                             ),
                                           ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     CustomButtonWithIcon(
@@ -180,7 +180,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                 ),
                               )
                             : Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                     right: 8, left: 8, bottom: 8),
                                 child: Row(
                                   mainAxisAlignment:
@@ -227,7 +227,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       alignment: Alignment.centerLeft,
                       child: Padding(
                         padding:
-                            EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
+                            const EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
                         child: Text(
                           controller.eventDetail!.data!.eventTitle.toString(),
                           style: poppinsMediumStyle(
@@ -238,7 +238,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventDateTime(
@@ -247,7 +247,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                         theme: theme,
                         context: context,
                         iconClr: DynamicColor.yellowClr),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventDateTime(
@@ -257,7 +257,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                         text:
                             "${DateFormat.yMMMMEEEEd().format(controller.eventDetail!.data!.startDateTime!)}",
                         iconClr: DynamicColor.yellowClr),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventDateTime(
@@ -283,11 +283,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                             controller.eventDetail!.data!.featuring.toString()),
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                       child: Container(
                         width: double.infinity,
                         padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.darkGrayClr),
@@ -319,7 +319,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                     itemBuilder: (BuildContext context, indx) {
                                       return Padding(
                                         padding:
-                                            EdgeInsets.symmetric(horizontal: 6),
+                                            const EdgeInsets.symmetric(horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -342,7 +342,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                     }),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Align(
@@ -367,11 +367,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .hardwareProvide!.length,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: AlwaysScrollableScrollPhysics(),
+                                    physics: const AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
                                         padding:
-                                            EdgeInsets.symmetric(horizontal: 6),
+                                            const EdgeInsets.symmetric(horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -447,7 +447,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                     itemBuilder: (BuildContext context, indx) {
                                       return Padding(
                                         padding:
-                                            EdgeInsets.symmetric(horizontal: 6),
+                                            const EdgeInsets.symmetric(horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -492,11 +492,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .eventMusicChoiceTags!.length,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: AlwaysScrollableScrollPhysics(),
+                                    physics: const AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
                                         padding:
-                                            EdgeInsets.symmetric(horizontal: 6),
+                                            const EdgeInsets.symmetric(horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -568,11 +568,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .eventActivityChoiceTags!.length,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: AlwaysScrollableScrollPhysics(),
+                                    physics: const AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
                                         padding:
-                                            EdgeInsets.symmetric(horizontal: 6),
+                                            const EdgeInsets.symmetric(horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -626,11 +626,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Text(
                         "Live Location",
                         style: poppinsMediumStyle(
@@ -641,7 +641,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Text(
                         controller.eventDetail!.data!.location.toString(),
                         style: poppinsMediumStyle(
@@ -650,7 +650,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                             fontSize: 16),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 6,
                     ),
                     ShowCustomMap(
@@ -659,17 +659,17 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       lng: double.parse(
                           controller.eventDetail!.data!.longitude!),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
                     // Todo Event & Venu Ended
 
                     sp.read('role') == "eventManager"
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : Obx(
                             () => _authController.followingLoader.value == false
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : aboutEventCreator(
                                     isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
                                         ? false
@@ -725,10 +725,10 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                     }),
                           ),
                     sp.read('role') == "eventOrganizer"
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : Obx(
                             () => _authController.followingLoader.value == false
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : ourGuestWidget(
                                     isDelete:
                                         controller.eventDetail!.data!.user!.isDelete == null
@@ -802,14 +802,14 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                               itemCount: 12,
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
-                              physics: AlwaysScrollableScrollPhysics(),
+                              physics: const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 4),
                                   child: Container(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 15),
+                                        const EdgeInsets.symmetric(horizontal: 15),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: DynamicColor.lightRedClr,
@@ -828,20 +828,20 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                               },
                             ),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     SizedBox(
                       height: notifyBtnShow == false ? 0 : 10,
                     ),
                     API().sp.read("role") != "User"
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : controller.eventDetail!.data!.eventGoingOrInterested!
                                     .value ==
                                 1
                             ? controller.eventDetail!.data!.status ==
                                     "completed"
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : isCancel == true
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: CustomButton(
@@ -860,7 +860,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         ),
                                       )
                             : Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -912,7 +912,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -928,7 +928,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(

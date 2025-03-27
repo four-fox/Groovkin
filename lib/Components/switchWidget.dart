@@ -21,11 +21,11 @@ SwitchWiget(
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(9),
           image: bgClr == false
-              ? DecorationImage(
+              ? const DecorationImage(
                   image: AssetImage("assets/buttonBg.png"), fit: BoxFit.fill)
               : null,
           color:
@@ -33,7 +33,7 @@ SwitchWiget(
       child: Row(
         children: [
           Image(image: AssetImage(img ?? "assets/musicIcon.png")),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Text(
@@ -41,9 +41,9 @@ SwitchWiget(
             style: poppinsRegularStyle(
                 fontSize: 16, color: theme.primaryColor, context: context),
           ),
-          Spacer(),
+          const Spacer(),
           showCheckBox == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : SizedBox(
                   height: 30,
                   child: Switch(
@@ -78,7 +78,7 @@ eventDateTime({
   double? widths,
 }) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 12.0),
+    padding: const EdgeInsets.symmetric(horizontal: 12.0),
     child: Row(
       children: [
         CircleAvatar(
@@ -99,7 +99,7 @@ eventDateTime({
         SizedBox(
           width: widths ?? Get.width / 1.2,
           child: Padding(
-            padding: EdgeInsets.only(left: 6.0),
+            padding: const EdgeInsets.only(left: 6.0),
             child: Text(
               text ?? "04:00pm to 10:00pm",
               style: poppinsRegularStyle(
@@ -118,7 +118,7 @@ eventDateTime({
 eventsTitles({text}) {
   return Container(
     width: Get.width,
-    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
     color: DynamicColor.avatarBgClr.withOpacity(0.44),
     child: Text(
       text ?? "Contact Information",
@@ -156,7 +156,7 @@ aboutEventCreator(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 12.0, left: 12, right: 12),
+            padding: const EdgeInsets.only(top: 12.0, left: 12, right: 12),
             child: Text(
               title ?? 'About',
               style: poppinsMediumStyle(
@@ -167,7 +167,7 @@ aboutEventCreator(
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               text ??
                   '90’s Century Western presented by Tonwsquare Media.\nGates will open at 10:30pm and music begin at night.\nParking lots open at 10:30pm.',
@@ -177,7 +177,7 @@ aboutEventCreator(
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           GestureDetector(
@@ -191,24 +191,24 @@ aboutEventCreator(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 12.0, bottom: 15),
+                  padding: const EdgeInsets.only(left: 12.0, bottom: 15),
                   child: Container(
                     height: 40,
                     width: 40,
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                         color: DynamicColor.blackClr,
                         shape: BoxShape.circle,
                         border: Border.all(color: DynamicColor.lightYellowClr),
                         image: DecorationImage(
                           image: image == null
-                              ? AssetImage("assets/eventOrganizer.png")
+                              ? const AssetImage("assets/eventOrganizer.png")
                               : NetworkImage(image.toString()) as ImageProvider,
                           fit: BoxFit.fill,
                         )),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 GestureDetector(
@@ -222,7 +222,7 @@ aboutEventCreator(
                     // );
                   },
                   child: Padding(
-                    padding: EdgeInsets.only(left: 2.0, bottom: 30),
+                    padding: const EdgeInsets.only(left: 2.0, bottom: 30),
                     child: Text(
                       organizerName ?? "Event Organizer",
                       style: poppinsRegularStyle(
@@ -233,18 +233,18 @@ aboutEventCreator(
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 isDelete
-                    ? SizedBox()
+                    ? const SizedBox()
                     : GestureDetector(
                         onTap: onTap,
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 4),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                     bottomRight: Radius.circular(10),
                                   ),
                                   color: followBg),
@@ -333,7 +333,7 @@ ourGuestWidget(
                     )),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             Padding(
@@ -366,9 +366,9 @@ ourGuestWidget(
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             isDelete
-                ? SizedBox()
+                ? const SizedBox()
                 : GestureDetector(
                     onTap: followOnTap,
                     child: Align(
@@ -378,7 +378,7 @@ ourGuestWidget(
                           padding: EdgeInsets.all(followPadding!),
                           // padding: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 bottomRight: Radius.circular(10),
                               ),
                               color: followBgClr ?? DynamicColor.avatarBgClr),
@@ -414,7 +414,7 @@ venueListData(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       showViewAll == false
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
@@ -453,7 +453,7 @@ venueListData(
           child: ListView.builder(
               itemCount: list.length,
               shrinkWrap: true,
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, index) {
                 return GestureDetector(
@@ -469,7 +469,7 @@ venueListData(
                     ).show();
                   },
                   child: Padding(
-                    padding: EdgeInsets.only(left: 10.0),
+                    padding: const EdgeInsets.only(left: 10.0),
                     child: Container(
                       height: kToolbarHeight * 2,
                       width: Get.width / 3,
@@ -499,12 +499,12 @@ locationWidget({text, theme, context, Color? bgClr, double? verticalPadding}) {
       padding: EdgeInsets.symmetric(vertical: verticalPadding ?? 4),
       decoration: BoxDecoration(
           color: bgClr ?? DynamicColor.darkGrayClr,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topRight: Radius.circular(12), bottomRight: Radius.circular(12))),
       child: Row(
         children: [
           ImageIcon(
-            AssetImage("assets/location.png"),
+            const AssetImage("assets/location.png"),
             color: DynamicColor.grayClr,
           ),
           SizedBox(
@@ -588,7 +588,7 @@ myEventCardWidget(
   return Container(
     decoration: BoxDecoration(
       image: DecorationImage(
-          image: AssetImage('assets/bluredImg.png'),
+          image: const AssetImage('assets/bluredImg.png'),
           fit: BoxFit.fill,
           colorFilter: ColorFilter.mode(
             Colors.white.withOpacity(0.4),
@@ -604,8 +604,8 @@ myEventCardWidget(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/peopleAttend.png"),
                       fit: BoxFit.fill),
@@ -625,10 +625,10 @@ myEventCardWidget(
               ),
             ),
             attendedPeople == null
-                ? SizedBox.shrink()
+                ? const SizedBox.shrink()
                 : Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage("assets/eventDays.png"),
                             fit: BoxFit.fill),
@@ -649,7 +649,7 @@ myEventCardWidget(
                   ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: kToolbarHeight,
         ),
         Text(
@@ -660,7 +660,7 @@ myEventCardWidget(
             context: context,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         Text(
@@ -671,7 +671,7 @@ myEventCardWidget(
             context: context,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         Row(
@@ -684,7 +684,7 @@ myEventCardWidget(
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 12,
         ),
         showBtn == true
@@ -696,7 +696,7 @@ myEventCardWidget(
                   Get.back();
                 },
               )
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ],
     ),
   );
@@ -736,7 +736,7 @@ venueService(
                       image: AssetImage(image ?? "assets/lockIcon.png"),
                     ),
                   )),
-        SizedBox(
+        const SizedBox(
           width: 5,
         ),
         SizedBox(

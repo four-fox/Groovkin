@@ -27,7 +27,7 @@ class ChatCenterScreen extends StatelessWidget {
             child: Column(
               children: [
                 onGoingVal == "ongoing"
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : eventOrganizer(
                         theme: theme,
                         context: context,
@@ -44,7 +44,7 @@ class ChatCenterScreen extends StatelessWidget {
                           // );
                         }),
                 Padding(
-                  padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(13),
@@ -61,11 +61,11 @@ class ChatCenterScreen extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              Image(
+                              const Image(
                                 image: AssetImage("assets/profileImg.png"),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 8.0),
+                                padding: const EdgeInsets.only(left: 8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -91,7 +91,7 @@ class ChatCenterScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Padding(
@@ -115,11 +115,11 @@ class ChatCenterScreen extends StatelessWidget {
                             text: "View Detail",
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         onGoingVal == "ongoing"
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
@@ -141,18 +141,18 @@ class ChatCenterScreen extends StatelessWidget {
                                   text: "Cancel",
                                 ),
                               ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 onGoingVal == "ongoing"
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: CustomButton(
@@ -172,7 +172,7 @@ class ChatCenterScreen extends StatelessWidget {
                           text: "Counter",
                         ),
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
                 Divider(
@@ -180,7 +180,7 @@ class ChatCenterScreen extends StatelessWidget {
                   color: DynamicColor.grayClr,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -218,7 +218,7 @@ class ChatCenterScreen extends StatelessWidget {
                   thickness: 1,
                   color: DynamicColor.grayClr,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 70,
                 ),
               ],
@@ -230,7 +230,7 @@ class ChatCenterScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Container(
                     decoration: BoxDecoration(
                       color: theme.scaffoldBackgroundColor,
@@ -252,7 +252,7 @@ class ChatCenterScreen extends StatelessWidget {
                               color: DynamicColor.grayClr,
                             ),
                             suffixIcon: ImageIcon(
-                              AssetImage("assets/sendIcon.png"),
+                              const AssetImage("assets/sendIcon.png"),
                               color: DynamicColor.grayClr,
                             )),
                       ),
@@ -265,7 +265,7 @@ class ChatCenterScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: onGoingVal != "ongoing"
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),

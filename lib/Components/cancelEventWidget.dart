@@ -15,7 +15,7 @@ cancelEventWidget({context, theme, final GestureTapCallback? onTap}) {
         return AlertWidget(
           height: kToolbarHeight * 5,
           container: Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -22,9 +22,9 @@ timeAgoSinceDate(String dateTime) {
       if (min > 59) {
         int m = (min / 60).floor();
         if (m < 2) {
-          return "$m\h";
+          return "${m}h";
         } else {
-          return "$m\h";
+          return "${m}h";
         }
       } else {
         if (min <= 1) {
@@ -50,15 +50,15 @@ timeAgoSinceDate(String dateTime) {
       if (min > 59) {
         int m = (min / 60).floor();
         if (m < 2) {
-          return "$m\h";
+          return "${m}h";
         } else {
-          return "$m\h";
+          return "${m}h";
         }
       } else {
         if (min <= 1) {
           return "Just Now";
         }
-        return "$min\m";
+        return "${min}m";
       }
     }
   } else {
@@ -68,13 +68,13 @@ timeAgoSinceDate(String dateTime) {
     if (min < 1) {
       return "Just Now";
     } else if (min <= 59) {
-      return "$min\m";
+      return "${min}m";
     } else if (min > 59) {
       int m = (min / 60).floor();
       if (m < 2) {
-        return "$m\h";
+        return "${m}h";
       } else {
-        return "$m\h";
+        return "${m}h";
       }
     }
     return today;

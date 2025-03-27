@@ -12,7 +12,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class CancelReason extends StatelessWidget {
-  CancelReason({Key? key}) : super(key: key);
+  CancelReason({super.key});
 
 
 
@@ -30,10 +30,10 @@ class CancelReason extends StatelessWidget {
       body: GetBuilder<EventController>(
         builder: (controller) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Center(
@@ -45,7 +45,7 @@ class CancelReason extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
@@ -94,7 +94,7 @@ class CancelReason extends StatelessWidget {
         }
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: (){

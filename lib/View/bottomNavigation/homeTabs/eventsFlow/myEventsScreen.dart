@@ -15,7 +15,7 @@ import 'package:groovkin/utils/utils.dart';
 class MyEventsScreen extends StatelessWidget {
   MyEventsScreen({super.key});
 
-  HomeController _controller = Get.find();
+  final HomeController _controller = Get.find();
 
   String pageCondition = Get.arguments['pageTitle'];
 
@@ -31,7 +31,7 @@ class MyEventsScreen extends StatelessWidget {
             if (_controller.recommendedEventData!.data!.nextPageUrl != null) {
               if (_controller.newsFeedWait == false) {
                 _controller.newsFeedWait = true;
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 2), () {
                   _controller.newsFeedWait = false;
                 });
                 _controller.getMyAllEvent(
@@ -49,17 +49,17 @@ class MyEventsScreen extends StatelessWidget {
           _controller.getMyAllEvent(title: pageCondition);
         }, builder: (controller) {
           return controller.getRecommendedLoader.value == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : controller.recommendedEventData?.data?.data?.isEmpty ?? true
                   ? noData(context: context, theme: theme)
                   : Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ListView.builder(
                           itemCount: controller
                                   .recommendedEventData?.data?.data?.length ??
                               0,
                           shrinkWrap: true,
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             log(controller
                                 .recommendedEventData!.data!.data!.length
@@ -67,7 +67,7 @@ class MyEventsScreen extends StatelessWidget {
                             EventData singleEventData = controller
                                 .recommendedEventData!.data!.data![index];
                             return Padding(
-                              padding: EdgeInsets.only(bottom: 14.0),
+                              padding: const EdgeInsets.only(bottom: 14.0),
                               child: Container(
                                 // padding: EdgeInsets.all(6),
                                 decoration: BoxDecoration(
@@ -84,9 +84,9 @@ class MyEventsScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.all(6),
+                                          padding: const EdgeInsets.all(6),
                                           child: ImageIcon(
-                                            AssetImage("assets/pin.png"),
+                                            const AssetImage("assets/pin.png"),
                                             color: theme.primaryColor,
                                           ),
                                         ),
@@ -96,12 +96,12 @@ class MyEventsScreen extends StatelessWidget {
                                                     .user!.deleteAt !=
                                                 null)
                                               Utils.accountDelete(context),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 10,
                                             ),
                                             Container(
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: const BoxDecoration(
                                                 borderRadius: BorderRadius.only(
                                                     bottomLeft:
                                                         Radius.circular(10),
@@ -154,7 +154,7 @@ class MyEventsScreen extends StatelessWidget {
                                                         .toString()),
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: 8.0),
+                                            padding: const EdgeInsets.only(left: 8.0),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -187,7 +187,7 @@ class MyEventsScreen extends StatelessWidget {
                                     // venueBookingUser(
                                     // ,theme: theme,context: context),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 12.0, vertical: 6),
                                       child: CustomButtonWithIcon(
                                         height: 35,
@@ -230,7 +230,7 @@ class MyEventsScreen extends StatelessWidget {
                                     ),
                                     controller.selectedFilter.value == 4
                                         ? Padding(
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 12.0, vertical: 3),
                                             child: CustomButton(
                                               heights: 35,
@@ -246,7 +246,7 @@ class MyEventsScreen extends StatelessWidget {
                                               text: "Cancellation Reason",
                                             ),
                                           )
-                                        : SizedBox.shrink(),
+                                        : const SizedBox.shrink(),
                                   ],
                                 ),
                               ),
@@ -258,7 +258,7 @@ class MyEventsScreen extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             onTap: () {
               EventController eventController = Get.find();

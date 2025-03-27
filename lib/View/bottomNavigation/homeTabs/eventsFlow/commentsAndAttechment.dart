@@ -16,7 +16,7 @@ import 'package:map_location_picker/map_location_picker.dart';
 import '../../../../Components/Network/Url.dart';
 
 class CommentsAndAttachment extends StatefulWidget {
-  CommentsAndAttachment({super.key});
+  const CommentsAndAttachment({super.key});
 
   @override
   State<CommentsAndAttachment> createState() => _CommentsAndAttachmentState();
@@ -31,7 +31,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
 
   AuthController authController = Get.find();
 
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   // ManagerController managerController = Get.find();
 
@@ -59,23 +59,23 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                 onTap: () {
                   _controller.postEventFunction(context, theme, draft: true);
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Icon(Icons.drafts),
                 ),
               )
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ]),
       body: GetBuilder<ManagerController>(builder: (controller) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Form(
             key: commentsForm,
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -90,7 +90,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Container(
@@ -105,7 +105,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                         hintText: "write her..",
                         borderClr: DynamicColor.grayClr.withOpacity(0.6)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
@@ -119,7 +119,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                         children: [
                           // Description for attached files
                           Padding(
-                            padding: EdgeInsets.all(10.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
                               "Please upload any documents/files that will help with the negotiation.",
                               style: TextStyle(
@@ -155,7 +155,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                       }),
                                 )
                               : Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                                   child: Icon(
                                     Icons.attach_file_outlined,
                                     color: DynamicColor.grayClr,
@@ -163,7 +163,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                   ),
                                 ),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10.0),
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: GestureDetector(
                               onTap: () {
                                 if (Platform.isAndroid) {
@@ -203,7 +203,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {
@@ -231,7 +231,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                           // hideLocation: true,
                           // lat: double.parse(eventData.latitude.toString()),
                           // long: double.parse(eventData.longitude.toString()),
-                          minMaxZoomPreference: MinMaxZoomPreference(0, 15),
+                          minMaxZoomPreference: const MinMaxZoomPreference(0, 15),
                           apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
                           canPopOnNextButtonTaped: true,
                           searchHintText: managerController.address != "null"
@@ -350,7 +350,7 @@ assetImage({eventController, controller, mediaItem, bool closedIcon = true}) {
                             : NetworkImage(mediaItem.mediaPath.toString())
                                 as ImageProvider)),
                 child: closedIcon == false
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : GestureDetector(
                         onTap: () {
                           if (mediaItem!.thumbnail == null) {
@@ -363,7 +363,7 @@ assetImage({eventController, controller, mediaItem, bool closedIcon = true}) {
                           }
                           // controller.mediaClass.remove(mediaItem);
                         },
-                        child: Align(
+                        child: const Align(
                           alignment: Alignment.topRight,
                           child: CircleAvatar(
                               radius: 15, child: Icon(Icons.clear)),
@@ -403,8 +403,8 @@ assetImage({eventController, controller, mediaItem, bool closedIcon = true}) {
                     // controller.mediaClass.remove(mediaItem);
                   },
                   child: closedIcon == false
-                      ? SizedBox.shrink()
-                      : Align(
+                      ? const SizedBox.shrink()
+                      : const Align(
                           alignment: Alignment.topRight,
                           child: CircleAvatar(
                               radius: 15, child: Icon(Icons.clear)),
@@ -413,9 +413,9 @@ assetImage({eventController, controller, mediaItem, bool closedIcon = true}) {
               ),
       ),
       mediaItem.thumbnail == null
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : closedIcon == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : GestureDetector(
                   onTap: () {
                     Get.toNamed(Routes.videoPlayerClass, arguments: {
@@ -440,22 +440,22 @@ assetImage({eventController, controller, mediaItem, bool closedIcon = true}) {
 class ListOfVenuesScreen extends StatelessWidget {
   ListOfVenuesScreen({super.key});
 
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 3.3),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 3.3),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: kToolbarHeight * 1.8,
-              padding: EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               width: Get.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/map.png"), fit: BoxFit.fill)),
               child: Stack(
@@ -477,14 +477,14 @@ class ListOfVenuesScreen extends StatelessWidget {
                       onTap: () {
                         Get.back();
                       },
-                      child: ImageIcon(
+                      child: const ImageIcon(
                         AssetImage("assets/backArrow.png"),
                       )),
                 ],
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
               child: CustomTextFields(
                 borderClr: theme.primaryColor,
                 iconShow: true,
@@ -494,7 +494,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                     Get.toNamed(Routes.addLocationScreen);
                   },
                   child: Padding(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
@@ -511,7 +511,7 @@ class ListOfVenuesScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Text(
                 "Venue",
                 style: poppinsMediumStyle(
@@ -528,9 +528,9 @@ class ListOfVenuesScreen extends StatelessWidget {
         _controller.getVenuesLatLng();
       }, builder: (controller) {
         return controller.getVenuesLatLngLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: controller.allVenueList!.data!.data!.isEmpty
                     ? Center(
                         child: Text(
@@ -545,7 +545,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                     : ListView.builder(
                         itemCount: controller.allVenueList!.data!.data!.length,
                         shrinkWrap: true,
-                        physics: AlwaysScrollableScrollPhysics(),
+                        physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, index) {
                           return GestureDetector(
                             onTap: controller.allVenueList!.data!.data![index]
@@ -567,9 +567,9 @@ class ListOfVenuesScreen extends StatelessWidget {
                                     Utils.showToast();
                                   },
                             child: Padding(
-                              padding: EdgeInsets.only(top: 6.0),
+                              padding: const EdgeInsets.only(top: 6.0),
                               child: Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: controller.allVenueList!.data!
@@ -580,7 +580,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                                   image: controller.allVenueList!.data!
                                               .data![index].user!.deleteAt ==
                                           null
-                                      ? DecorationImage(
+                                      ? const DecorationImage(
                                           image:
                                               AssetImage("assets/grayClor.png"),
                                           fit: BoxFit.fill)
@@ -620,7 +620,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 7.0),
+                                      padding: const EdgeInsets.only(left: 7.0),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -668,16 +668,16 @@ class AddLocationScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Add location"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: DynamicColor.avatarBgClr),
@@ -702,9 +702,9 @@ class AddLocationScreen extends StatelessWidget {
                             color: theme.primaryColor,
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Padding(
-                          padding: EdgeInsets.only(right: 8.0),
+                          padding: const EdgeInsets.only(right: 8.0),
                           child: Text(
                             "Type here",
                             style: poppinsRegularStyle(
@@ -716,7 +716,7 @@ class AddLocationScreen extends StatelessWidget {
                         Container(
                           width: Get.width / 7,
                           // height: 30,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: DynamicColor.whiteClr)),
@@ -741,7 +741,7 @@ class AddLocationScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               CustomTextFields(
@@ -753,7 +753,7 @@ class AddLocationScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {

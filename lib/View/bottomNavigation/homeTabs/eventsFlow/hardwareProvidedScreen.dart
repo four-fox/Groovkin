@@ -12,7 +12,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class HardwareProvidedScreen extends StatelessWidget {
-  HardwareProvidedScreen({Key? key}) : super(key: key);
+  HardwareProvidedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class HardwareProvidedScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme,text: "Create Event",),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 10),
         child: Center(
           child: Column(
             children: [
@@ -32,7 +32,7 @@ class HardwareProvidedScreen extends StatelessWidget {
               ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Text("Check all that apply",
                 style: poppinsRegularStyle(
                   fontSize: 12,
@@ -47,11 +47,11 @@ SizedBox(
       itemCount: list.length,
       shrinkWrap: true,
       padding: EdgeInsets.zero,
-      physics: AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       itemBuilder: (BuildContext context,index){
     return Row(
       children: [
-        SizedBox(
+        const SizedBox(
           width: 25,
           height: 25,
           child: Image(
@@ -94,7 +94,7 @@ SizedBox(
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: (){
@@ -114,9 +114,9 @@ SizedBox(
     HardwareProvide(text: "Audio Amplifier and Speakers (Small Room)",checkBox: false.obs),
     HardwareProvide(text: "Audio Amplifier and Speakers (Med Room)",checkBox: false.obs),
     HardwareProvide(text: "Audio Amplifier and Speakers (Large Room)",checkBox: false.obs),
-    HardwareProvide(text: "Video \ Projector and Screen (5’x8’)",checkBox: false.obs),
-    HardwareProvide(text: "Video \ Projector and Screen (8’x10’)",checkBox: false.obs),
-    HardwareProvide(text: "Video \ Projector and Screen (10’x12’)",checkBox: false.obs),
+    HardwareProvide(text: "Video  Projector and Screen (5’x8’)",checkBox: false.obs),
+    HardwareProvide(text: "Video  Projector and Screen (8’x10’)",checkBox: false.obs),
+    HardwareProvide(text: "Video  Projector and Screen (10’x12’)",checkBox: false.obs),
     HardwareProvide(text: "Wired Microphones",checkBox: false.obs),
     HardwareProvide(text: "Wireless Microphones",checkBox: false.obs),
   ];

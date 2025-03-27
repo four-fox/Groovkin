@@ -10,19 +10,19 @@ class AnalyticsListModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -34,16 +34,16 @@ class Data {
   Data({this.genre, this.count});
 
   Data.fromJson(Map<String, dynamic> json) {
-    genre = json['genre'] != null ? new Genre.fromJson(json['genre']) : null;
+    genre = json['genre'] != null ? Genre.fromJson(json['genre']) : null;
     count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.genre != null) {
-      data['genre'] = this.genre!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (genre != null) {
+      data['genre'] = genre!.toJson();
     }
-    data['count'] = this.count;
+    data['count'] = count;
     return data;
   }
 }
@@ -74,13 +74,13 @@ class Genre {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['category_id'] = this.categoryId;
-    data['name'] = this.name;
-    data['type'] = this.type;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['category_id'] = categoryId;
+    data['name'] = name;
+    data['type'] = type;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

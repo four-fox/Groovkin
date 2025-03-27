@@ -96,7 +96,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Path.splashScreen,
-      page: () => SplashScreen(),
+      page: () => const SplashScreen(),
     ),
     GetPage(
       name: _Path.introPages,
@@ -105,7 +105,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.loginSelection,
-      page: () => LoginSelection(),
+      page: () => const LoginSelection(),
     ),
     GetPage(
       name: _Path.sendEmailScreen,
@@ -123,7 +123,7 @@ class AppPages {
     // ),
     GetPage(
       name: _Path.loginWithScreen,
-      page: () => LoginWithScreen(),
+      page: () => const LoginWithScreen(),
     ),
     GetPage(
       name: _Path.loginOrSignUpScreen,
@@ -137,7 +137,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.sendEmailForOtp,
-      page: () => SendEmailForOtp(),
+      page: () => const SendEmailForOtp(),
     ),
     GetPage(
       name: _Path.newPasswordScreen,
@@ -150,15 +150,15 @@ class AppPages {
     ),
     GetPage(
       name: _Path.welComeScreen,
-      page: () => WelComeScreen(),
+      page: () => const WelComeScreen(),
     ),
     GetPage(
         name: _Path.serviceScreen,
-        page: () => ServiceScreen(),
+        page: () => const ServiceScreen(),
         bindings: [AuthBinding(), EventBinding()]),
     GetPage(
       name: _Path.subscriptionScreen,
-      page: () => SubscriptionScreen(),
+      page: () => const SubscriptionScreen(),
     ),
     GetPage(
         name: _Path.paymentMethodScreen,
@@ -166,27 +166,27 @@ class AppPages {
         binding: AuthBinding()),
     GetPage(
       name: _Path.addCardDetails,
-      page: () => AddCardDetails(),
+      page: () => const AddCardDetails(),
     ),
     GetPage(
       name: _Path.transactionScreen,
-      page: () => TransactionScreen(),
+      page: () => const TransactionScreen(),
     ),
     GetPage(
       name: _Path.viewAllCardList,
-      page: () => ViewAllCardList(),
+      page: () => const ViewAllCardList(),
     ),
     GetPage(
       name: _Path.insuranceScreen,
-      page: () => InsuranceScreen(),
+      page: () => const InsuranceScreen(),
     ),
     GetPage(
         name: _Path.hardwareScreen,
-        page: () => HardwareScreen(),
+        page: () => const HardwareScreen(),
         binding: AuthBinding()),
     GetPage(
         name: _Path.quickSurveyScreen,
-        page: () => QuickSurveyScreen(),
+        page: () => const QuickSurveyScreen(),
         binding: AuthBinding()),
     // GetPage(
     //   name: _Path.homeScreen,
@@ -194,12 +194,12 @@ class AppPages {
     // ),
     GetPage(
       name: _Path.upcomingScreen,
-      page: () => UpcomingScreen(),
+      page: () => const UpcomingScreen(),
       binding: EventBinding(),
     ),
     GetPage(
       name: _Path.upGradeEvents,
-      page: () => UpGradeEvents(),
+      page: () => const UpGradeEvents(),
       binding: EventBinding(),
     ),
     GetPage(
@@ -208,7 +208,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.proposedMusicScreen,
-      page: () => ProposedMusicScreen(),
+      page: () => const ProposedMusicScreen(),
     ),
     GetPage(
       name: _Path.musicChoiceScreen,
@@ -220,12 +220,12 @@ class AppPages {
     ),
     GetPage(
       name: _Path.commentsAndAttachment,
-      page: () => CommentsAndAttachment(),
+      page: () => const CommentsAndAttachment(),
       binding: ManagerBinding(),
     ),
     GetPage(
       name: _Path.confirmationEventScreen,
-      page: () => ConfirmationEventScreen(),
+      page: () => const ConfirmationEventScreen(),
     ),
     GetPage(
       name: _Path.disclaimerScreen,
@@ -241,7 +241,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.pendingEventDetails,
-      page: () => PendingEventDetails(),
+      page: () => const PendingEventDetails(),
     ),
     GetPage(
       name: _Path.aboutEventScreen,
@@ -249,11 +249,11 @@ class AppPages {
     ),
     GetPage(
       name: _Path.generateTicket,
-      page: () => GenerateTicket(),
+      page: () => const GenerateTicket(),
     ),
     GetPage(
       name: _Path.notificationScreen,
-      page: () => NotificationScreen(),
+      page: () => const NotificationScreen(),
     ),
     GetPage(
       name: _Path.myEventsScreen,
@@ -266,7 +266,7 @@ class AppPages {
     // ),
     GetPage(
       name: _Path.bottomNavigationView,
-      page: () => BottomNavigationView(),
+      page: () => const BottomNavigationView(),
       bindings: [
         HomeBinding(),
         ManagerBinding(),
@@ -279,7 +279,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.analyticFilterScreen,
-      page: () => AnalyticFilterScreen(),
+      page: () => const AnalyticFilterScreen(),
     ),
     // GetPage(
     //   name: _Path.settingScreen,
@@ -287,12 +287,12 @@ class AppPages {
     // ),
     GetPage(
       name: _Path.profileScreen,
-      page: () => editProfileScreen(),
+      page: () => const editProfileScreen(),
       bindings: [CreateProfileBinding(), AuthBinding()],
     ),
     GetPage(
       name: _Path.viewProfileScreen,
-      page: () => ViewProfileScreen(),
+      page: () => const ViewProfileScreen(),
     ),
     // GetPage(
     //   name: _Path.venueScreen,
@@ -300,11 +300,11 @@ class AppPages {
     // ),
     GetPage(
       name: _Path.venueDetailsScreen,
-      page: () => VenueDetailsScreen(),
+      page: () => const VenueDetailsScreen(),
     ),
     GetPage(
       name: _Path.bookingFormScreen,
-      page: () => BookingFormScreen(),
+      page: () => const BookingFormScreen(),
     ),
     GetPage(
       name: _Path.bookingFormFields,
@@ -312,7 +312,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.groovkinInviteScreen,
-      page: () => GroovkinInviteScreen(),
+      page: () => const GroovkinInviteScreen(),
     ),
     GetPage(
       name: _Path.chatRoom,
@@ -328,7 +328,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.allUserScreen,
-      page: () => AllUserScreen(),
+      page: () => const AllUserScreen(),
     ),
     // GetPage(
     //   name: _Path.groovkinManagerScreen,
@@ -336,19 +336,19 @@ class AppPages {
     // ),
     GetPage(
       name: _Path.sendInvitationScreen,
-      page: () => SendInvitationScreen(),
+      page: () => const SendInvitationScreen(),
     ),
     GetPage(
       name: _Path.myTagCollection,
-      page: () => MyTagCollection(),
+      page: () => const MyTagCollection(),
     ),
     GetPage(
       name: _Path.myCollectionDetailsScreen,
-      page: () => MyCollectionDetailsScreen(),
+      page: () => const MyCollectionDetailsScreen(),
     ),
     GetPage(
       name: _Path.createNewTag,
-      page: () => CreateNewTag(),
+      page: () => const CreateNewTag(),
     ),
     // GetPage(
     //   name: _Path.viewPaymentMethod,
@@ -356,7 +356,7 @@ class AppPages {
     // ),
     GetPage(
       name: _Path.userQuickSurveyScreen,
-      page: () => UserQuickSurveyScreen(),
+      page: () => const UserQuickSurveyScreen(),
     ),
     GetPage(
       name: _Path.linkYourAccountSurveyScreen,
@@ -369,17 +369,17 @@ class AppPages {
     ),
     GetPage(
       name: _Path.userBottomNavigationNav,
-      page: () => UserBottomNavigationNav(),
+      page: () => const UserBottomNavigationNav(),
       binding: UserHomeBinding(),
     ),
     GetPage(
       name: _Path.userMyGroovkinScreen,
-      page: () => UserMyGroovkinScreen(),
+      page: () => const UserMyGroovkinScreen(),
       binding: UserHomeBinding(),
     ),
     GetPage(
         name: _Path.userEventDetailsScreen,
-        page: () => UserEventDetailsScreen(),
+        page: () => const UserEventDetailsScreen(),
         bindings: [
           UserHomeBinding(),
           EventBinding(),
@@ -387,7 +387,7 @@ class AppPages {
         ]),
     GetPage(
       name: _Path.venueMoreImageScreen,
-      page: () => VenueMoreImageScreen(),
+      page: () => const VenueMoreImageScreen(),
     ),
     GetPage(
       name: _Path.eventOrganizerScreen,
@@ -395,7 +395,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.searchFilterScreen,
-      page: () => SearchFilterScreen(),
+      page: () => const SearchFilterScreen(),
     ),
     GetPage(
       name: _Path.createNewGroup,
@@ -403,7 +403,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.viewCreatedGroup,
-      page: () => ViewCreatedGroup(),
+      page: () => const ViewCreatedGroup(),
     ),
     // GetPage(
     //   name: _Path.inviteFriendsInGroups,
@@ -417,12 +417,12 @@ class AppPages {
     ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manager
     GetPage(
       name: _Path.createCompanyProfileScreen,
-      page: () => CreateCompanyProfileScreen(),
+      page: () => const CreateCompanyProfileScreen(),
       binding: ManagerBinding(),
     ),
     GetPage(
       name: _Path.managerApprovedEventScreen,
-      page: () => ManagerApprovedEventScreen(),
+      page: () => const ManagerApprovedEventScreen(),
     ),
     GetPage(
       name: _Path.addVenueScreen,
@@ -438,7 +438,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.houseEventCapabilitiesScreen,
-      page: () => HouseEventCapabilitiesScreen(),
+      page: () => const HouseEventCapabilitiesScreen(),
     ),
     GetPage(
       name: _Path.venueDetailsManagerScreen,
@@ -450,11 +450,11 @@ class AppPages {
     ),
     GetPage(
       name: _Path.successPaymentScreen,
-      page: () => SuccessPaymentScreen(),
+      page: () => const SuccessPaymentScreen(),
     ),
     GetPage(
       name: _Path.viewOtherEventsDetails,
-      page: () => ViewOtherEventsDetails(),
+      page: () => const ViewOtherEventsDetails(),
     ),
     GetPage(
       name: _Path.managerUpcomingEventScreen,
@@ -475,11 +475,11 @@ class AppPages {
     ),
     GetPage(
       name: _Path.counterScreen,
-      page: () => CounterScreen(),
+      page: () => const CounterScreen(),
     ),
     GetPage(
       name: _Path.eventDetailsScreen,
-      page: () => EventDetailsScreen(),
+      page: () => const EventDetailsScreen(),
     ),
     GetPage(
       name: _Path.activityChoiceScreen,
@@ -491,15 +491,15 @@ class AppPages {
     ),
     GetPage(
       name: _Path.addLocationScreen,
-      page: () => AddLocationScreen(),
+      page: () => const AddLocationScreen(),
     ),
     GetPage(
       name: _Path.venueInfoScreen,
-      page: () => VenueInfoScreen(),
+      page: () => const VenueInfoScreen(),
     ),
     GetPage(
       name: _Path.switchProfileScreen,
-      page: () => SwitchProfileScreen(),
+      page: () => const SwitchProfileScreen(),
     ),
     GetPage(
       name: _Path.saveHashTagScreen,
@@ -511,15 +511,15 @@ class AppPages {
     ),
     GetPage(
       name: _Path.viewAllEventListScreen,
-      page: () => ViewAllEventListScreen(),
+      page: () => const ViewAllEventListScreen(),
     ),
     GetPage(
       name: _Path.cancellationReason,
-      page: () => CancellationReason(),
+      page: () => const CancellationReason(),
     ),
     GetPage(
       name: _Path.videoPlayerClass,
-      page: () => VideoPlayerClass(),
+      page: () => const VideoPlayerClass(),
     ),
     GetPage(
       name: _Path.completeOnGoingEventsScreen,
@@ -527,15 +527,15 @@ class AppPages {
     ),
     GetPage(
       name: _Path.viewAllRecommendedScreen,
-      page: () => ViewAllRecommendedScreen(),
+      page: () => const ViewAllRecommendedScreen(),
     ),
     GetPage(
       name: _Path.viewAllNearByScreen,
-      page: () => ViewAllNearByScreen(),
+      page: () => const ViewAllNearByScreen(),
     ),
     GetPage(
       name: _Path.viewAllTopRatingScreen,
-      page: () => ViewAllTopRatingScreen(),
+      page: () => const ViewAllTopRatingScreen(),
     ),
 
     ///chat screens

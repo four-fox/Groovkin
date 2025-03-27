@@ -19,7 +19,7 @@ class ChartData {
 }
 
 class AnalyticPortalScreen extends StatefulWidget {
-  AnalyticPortalScreen({Key? key}) : super(key: key);
+  const AnalyticPortalScreen({super.key});
 
   @override
   State<AnalyticPortalScreen> createState() => _AnalyticPortalScreenState();
@@ -100,7 +100,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                   header: "", // Show genre dynamically
                   format: "point.x", // Customize tooltip content
                 ),
-                primaryXAxis: CategoryAxis(
+                primaryXAxis: const CategoryAxis(
                   isVisible: false,
                   autoScrollingDelta: 8,
                   majorGridLines: MajorGridLines(width: 0),
@@ -117,7 +117,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                     dataSource: data,
                     xValueMapper: (ChartData data, _) => data.x,
                     yValueMapper: (ChartData data, _) => data.y,
-                    dataLabelSettings: DataLabelSettings(
+                    dataLabelSettings: const DataLabelSettings(
                         isVisible: true,
                         labelAlignment: ChartDataLabelAlignment.top,
                         margin: EdgeInsets.only(top: 5)),
@@ -130,7 +130,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                 return (controller.analyticsListModel == null ||
                         controller.analyticsListModel!.data == null ||
                         controller.analyticsListModel!.data!.isEmpty)
-                    ? Center(
+                    ? const Center(
                         child: Text("No Analytic Found!"),
                       )
                     : Expanded(
@@ -141,7 +141,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                               itemCount:
                                   controller.analyticsListModel!.data!.length,
                               shrinkWrap: true,
-                              physics: AlwaysScrollableScrollPhysics(),
+                              physics: const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 String randomImage =
                                     (index % 2 == 0) ? list[0] : list[1];
@@ -155,7 +155,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                   },
                                   child: Padding(
                                     padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
+                                        const EdgeInsets.symmetric(vertical: 8.0),
                                     child: Stack(
                                       children: [
                                         // Background Image with Blur Effect
@@ -184,7 +184,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                         // Content on Top
                                         Container(
                                           height: kToolbarHeight * 2.3,
-                                          padding: EdgeInsets.only(left: 15),
+                                          padding: const EdgeInsets.only(left: 15),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
@@ -212,7 +212,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                                             theme.primaryColor,
                                                       ),
                                                     ),
-                                                    SizedBox(height: 8),
+                                                    const SizedBox(height: 8),
                                                     Text(
                                                       data.genre?.name ??
                                                           "No Name",
@@ -224,7 +224,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                                             theme.primaryColor,
                                                       ),
                                                     ),
-                                                    SizedBox(height: 8),
+                                                    const SizedBox(height: 8),
                                                     Text(
                                                       "Count ${(data.count ?? 0)}",
                                                       style:
@@ -314,7 +314,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
               width: context.width * .8,
               child: Card(
                 elevation: 15,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -345,7 +345,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Text(
@@ -354,7 +354,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                               fontSize: 16, color: Colors.white),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         ShrinkOnTap(
@@ -367,7 +367,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DynamicColor.yellowClr,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                             ),
                             child: Text(

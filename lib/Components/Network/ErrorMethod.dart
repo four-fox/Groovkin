@@ -26,7 +26,7 @@ dynamic returnResponse(Response? responseData) {
           BotToast.showText(
               text: "Session has been expired!! Please Sign in again"
                   "",
-              duration: Duration(seconds: 2));
+              duration: const Duration(seconds: 2));
           API().sp.erase();
           // getx.Get.offAllNamed(Routes.signUpScreen);
         } else {

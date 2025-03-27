@@ -13,7 +13,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class AnalyticFilterScreen extends StatelessWidget {
-  const AnalyticFilterScreen({Key? key}) : super(key: key);
+  const AnalyticFilterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +21,12 @@ class AnalyticFilterScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme,text: "Groovkin Analytics Portal"),
     body: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Text('Music genre',
@@ -206,7 +206,7 @@ class AnalyticFilterScreen extends StatelessWidget {
                 ),),
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Text('Sport types',
@@ -274,7 +274,7 @@ class AnalyticFilterScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Text('1-Mile Radius of Selected Zip Codes',
@@ -377,7 +377,7 @@ class AnalyticFilterScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Text('Zip code',
@@ -388,7 +388,7 @@ class AnalyticFilterScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -401,7 +401,7 @@ child: TextField(
   decoration: InputDecoration(
     isDense: true,
     prefixIcon:Padding(
-      padding: EdgeInsets.symmetric(horizontal: 7.0),
+      padding: const EdgeInsets.symmetric(horizontal: 7.0),
       child: Text("#",
         style: poppinsRegularStyle(
             fontSize: 16,
@@ -411,11 +411,11 @@ child: TextField(
       ),
     ),
     hintText: "000000",
-    prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
+    prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
   ),
 ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text('Age range',
@@ -426,7 +426,7 @@ child: TextField(
               context: context
             ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Row(
@@ -447,7 +447,7 @@ child: TextField(
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Container(
@@ -455,7 +455,7 @@ child: TextField(
                 borderRadius: BorderRadius.circular(13),
                 color: DynamicColor.lightBlackClr.withOpacity(0.5),
               ),
-              padding: EdgeInsets.symmetric(vertical: 20,horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 8),
             child: Row(
               children: [
                   Column(
@@ -477,9 +477,9 @@ child: TextField(
                       ),
                     ],
                   ),
-Spacer(),
+const Spacer(),
                 Padding(
-                  padding: EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 8.0),
                   child: Text("Type here",
                     style: poppinsRegularStyle(
                         fontSize: 11,
@@ -491,7 +491,7 @@ Spacer(),
                 Container(
                   width: Get.width/7,
                   // height: 30,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: DynamicColor.whiteClr)
@@ -517,7 +517,7 @@ Spacer(),
               ],
             ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
           ],
@@ -525,7 +525,7 @@ Spacer(),
       ),
     ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: (){
@@ -541,7 +541,7 @@ Spacer(),
 
 
 class EventDetailsScreen extends StatelessWidget {
-  const EventDetailsScreen({Key? key}) : super(key: key);
+  const EventDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -549,11 +549,11 @@ class EventDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme,text: "Groovkin Analytics Portal"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 6.0),
+              padding: const EdgeInsets.only(top: 6.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -572,7 +572,7 @@ class EventDetailsScreen extends StatelessWidget {
                       Get.toNamed(Routes.analyticFilterScreen);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(3.0),
+                      padding: const EdgeInsets.all(3.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
                         color: DynamicColor.grayClr.withOpacity(0.6),
@@ -585,10 +585,10 @@ class EventDetailsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),SizedBox(height: 10,),
+            ),const SizedBox(height: 10,),
             Container(
               width: Get.width,
-              padding: EdgeInsets.symmetric(horizontal: 14,vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 6),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: DynamicColor.lightBlackClr.withOpacity(0.6),
@@ -602,21 +602,21 @@ class EventDetailsScreen extends StatelessWidget {
                       context: context,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   customRow(
                     context: context,
                     theme: theme,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 9,
                   ),
                   Divider(
                     height: 5,
                     color: theme.primaryColor.withOpacity(0.7),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 9,
                   ),
                   customRow(
@@ -626,7 +626,7 @@ class EventDetailsScreen extends StatelessWidget {
                     value: "60%",
                     textClr: theme.primaryColor.withOpacity(0.6),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 9,
                   ),
                   customRow(
@@ -636,7 +636,7 @@ class EventDetailsScreen extends StatelessWidget {
                     value: "30%",
                     textClr: theme.primaryColor.withOpacity(0.6),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 9,
                   ),
                   customRow(

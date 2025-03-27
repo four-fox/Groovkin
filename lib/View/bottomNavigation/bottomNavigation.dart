@@ -23,7 +23,7 @@ get selectIndex => selectIndexxx.value;
 set selectIndex(index) => selectIndexxx.value = index;
 
 class BottomNavigationView extends StatelessWidget {
-  BottomNavigationView({
+  const BottomNavigationView({
     super.key,
   });
 
@@ -32,14 +32,14 @@ class BottomNavigationView extends StatelessWidget {
     print(sp.read("role"));
     var theme = Theme.of(context);
     final bodyContent = [
-      HomeScreen(),
+      const HomeScreen(),
       sp.read("role") == "eventManager"
           ? VenueListScreen()
           : MyGroovkinScreen(),
       sp.read("role") == "eventManager"
-          ? EventRequests()
-          : AnalyticPortalScreen(),
-      SettingScreen(),
+          ? const EventRequests()
+          : const AnalyticPortalScreen(),
+      const SettingScreen(),
     ];
 
     return Scaffold(
@@ -66,10 +66,10 @@ class BottomNavigationView extends StatelessWidget {
           // bottom: Platform.isIOS ? true : false,
           child: Padding(
             padding:
-                Platform.isIOS ? EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+                Platform.isIOS ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
             child: Container(
               height: kToolbarHeight,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
@@ -89,7 +89,7 @@ class BottomNavigationView extends StatelessWidget {
                       iconBuilder: Padding(
                         padding: const EdgeInsets.only(bottom: 6.0),
                         child: ImageIcon(
-                          AssetImage("assets/homeScreen.png"),
+                          const AssetImage("assets/homeScreen.png"),
                           color: selectIndexxx.value == 0
                               ? DynamicColor.yellowClr
                               : DynamicColor.grayClr,
@@ -104,7 +104,7 @@ class BottomNavigationView extends StatelessWidget {
                       iconBuilder: Padding(
                         padding: const EdgeInsets.only(bottom: 6.0),
                         child: ImageIcon(
-                          AssetImage("assets/groovkin.png"),
+                          const AssetImage("assets/groovkin.png"),
                           color: selectIndexxx.value == 1
                               ? DynamicColor.yellowClr
                               : DynamicColor.grayClr,
@@ -139,7 +139,7 @@ class BottomNavigationView extends StatelessWidget {
                       iconBuilder: Padding(
                         padding: const EdgeInsets.only(bottom: 6.0),
                         child: ImageIcon(
-                          AssetImage("assets/settingIcon.png"),
+                          const AssetImage("assets/settingIcon.png"),
                           color: selectIndexxx.value == 3
                               ? DynamicColor.yellowClr
                               : DynamicColor.grayClr,

@@ -7,7 +7,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class UserQuickSurveyScreen extends StatelessWidget {
-  UserQuickSurveyScreen({Key? key}) : super(key: key);
+  const UserQuickSurveyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,13 @@ class UserQuickSurveyScreen extends StatelessWidget {
             children: [
               Container(
                 height: kToolbarHeight * 5,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/quickBinner.png"),
                         fit: BoxFit.fill)),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 13.0),
+                padding: const EdgeInsets.symmetric(horizontal: 13.0),
                 child: Column(
                   children: [
                     Text(
@@ -36,7 +36,7 @@ class UserQuickSurveyScreen extends StatelessWidget {
                         color: theme.primaryColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Text(
@@ -46,7 +46,7 @@ class UserQuickSurveyScreen extends StatelessWidget {
                         color: theme.primaryColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -60,11 +60,11 @@ class UserQuickSurveyScreen extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: CustomButton(
               borderClr: Colors.transparent,
               text: "Next",
@@ -76,11 +76,11 @@ class UserQuickSurveyScreen extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: CustomButton(
               onTap: () {
                 showDialog(
@@ -95,13 +95,13 @@ class UserQuickSurveyScreen extends StatelessWidget {
                         container: SizedBox(
                           width: Get.width,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 12.0, horizontal: 4),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 90,
                                   child: Image(
                                     image: AssetImage("assets/logo.png"),
@@ -110,7 +110,7 @@ class UserQuickSurveyScreen extends StatelessWidget {
                                 ),
                                 Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                      const EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Text(
                                     "We hope to understand more about you in the future so that we can increase the visibility of communities with common interests!",
                                     overflow: TextOverflow.ellipsis,

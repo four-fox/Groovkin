@@ -56,8 +56,8 @@ class CustomButton extends StatelessWidget {
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [
-                      color1 ?? Color(0xffd8a735),
-                      color2 ?? Color(0xffb77712).withOpacity(0.7),
+                      color1 ?? const Color(0xffd8a735),
+                      color2 ?? const Color(0xffb77712).withOpacity(0.7),
                     ],
                   )
                 : null),
@@ -135,8 +135,8 @@ class CustomButtonWithIcon extends StatelessWidget {
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: [
-                      color1 ?? Color(0xffd8a735),
-                      color2 ?? Color(0xffb77712).withOpacity(0.7),
+                      color1 ?? const Color(0xffd8a735),
+                      color2 ?? const Color(0xffb77712).withOpacity(0.7),
                     ],
                   ),
             color: bgColor == null
@@ -152,7 +152,7 @@ class CustomButtonWithIcon extends StatelessWidget {
                           color: iconsClr,
                         )
                       : imageIconn!,
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
@@ -178,7 +178,7 @@ class CustomButtonWithIcon extends StatelessWidget {
                           fontSize: fontSize ?? 15,
                         ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   iconValue == false

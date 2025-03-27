@@ -18,7 +18,7 @@ get selectIndex => selectUserIndexxx.value;
 set selectIndex(index) => selectUserIndexxx.value = index;
 
 class UserBottomNavigationNav extends StatelessWidget {
-  UserBottomNavigationNav({
+  const UserBottomNavigationNav({
     super.key,
   // this.initialIndex = 1,
   });
@@ -32,10 +32,10 @@ class UserBottomNavigationNav extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     final bodyContent = [
-      UserHomeScreen(),
-      MyEventsScreen(),
+      const UserHomeScreen(),
+      const MyEventsScreen(),
       // GroupScreen(),
-      SettingScreen(),
+      const SettingScreen(),
     ];
 
     return Scaffold(
@@ -60,10 +60,10 @@ class UserBottomNavigationNav extends StatelessWidget {
         child: Obx(
           () => Padding(
             padding:
-                Platform.isIOS ? EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+                Platform.isIOS ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
             child: Container(
               height: kToolbarHeight,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
@@ -85,7 +85,7 @@ class UserBottomNavigationNav extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(
                         // AssetImage("assets/userHomeIcon.png"),
-                        AssetImage("assets/groovkin.png"),
+                        const AssetImage("assets/groovkin.png"),
                         color: selectUserIndexxx.value == 0
                             ? DynamicColor.yellowClr
                             : DynamicColor.grayClr,
@@ -101,7 +101,7 @@ class UserBottomNavigationNav extends StatelessWidget {
                     iconBuilder: Padding(
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(
-                        AssetImage("assets/userMyEvents.png"),
+                        const AssetImage("assets/userMyEvents.png"),
                         color: selectUserIndexxx.value == 1
                             ? DynamicColor.yellowClr
                             : DynamicColor.grayClr,
@@ -133,7 +133,7 @@ class UserBottomNavigationNav extends StatelessWidget {
                     iconBuilder: Padding(
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(
-                        AssetImage("assets/settingIcon.png"),
+                        const AssetImage("assets/settingIcon.png"),
                         color: selectUserIndexxx.value == 3
                             ? DynamicColor.yellowClr
                             : DynamicColor.grayClr,

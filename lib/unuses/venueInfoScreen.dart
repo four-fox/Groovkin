@@ -10,7 +10,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class VenueInfoScreen extends StatelessWidget {
-  const VenueInfoScreen({Key? key}) : super(key: key);
+  const VenueInfoScreen({super.key});
 
   // Get.toNamed(Routes.eventPreview,
   //   arguments: {
@@ -23,9 +23,9 @@ class VenueInfoScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight*2),
+        preferredSize: const Size.fromHeight(kToolbarHeight*2),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/grayClor.png"),
                 fit: BoxFit.fill
@@ -37,18 +37,18 @@ class VenueInfoScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               // ignore: prefer_const_literals_to_create_immutables
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 GestureDetector(
                   onTap: (){
                     Get.back();
                   },
-                  child: ImageIcon(AssetImage("assets/backArrow.png"),
+                  child: ImageIcon(const AssetImage("assets/backArrow.png"),
                   color: theme.primaryColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -56,14 +56,14 @@ class VenueInfoScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 28,
                       backgroundColor: DynamicColor.secondaryClr,
-                      child: CircleAvatar(
+                      child: const CircleAvatar(
                         radius: 26,
                         backgroundImage: AssetImage("assets/profileImg.png"),
                       ),
                     ),
                     SizedBox(
                       width: Get.width/1.3,
-                      child: Padding(padding: EdgeInsets.only(left: 7),
+                      child: Padding(padding: const EdgeInsets.only(left: 7),
                       child: Text("Herkimer County Fairgrounds Event Place",
                         maxLines: 2,
                         style: poppinsRegularStyle(
@@ -84,12 +84,12 @@ class VenueInfoScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
-              width: double.infinity,     padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
+              width: double.infinity,     padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
               child: Text("Contact Information",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -98,13 +98,13 @@ class VenueInfoScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             eventDateTime(theme: theme,context: context,
               iconBgClr: DynamicColor.grayClr.withOpacity(0.3),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             eventDateTime(theme: theme,context: context,
@@ -112,7 +112,7 @@ class VenueInfoScreen extends StatelessWidget {
                 img: "assets/groupIcon.png",
               text: "400-450"
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             eventDateTime(theme: theme,context: context,
@@ -121,13 +121,13 @@ class VenueInfoScreen extends StatelessWidget {
                 Iconss: Icons.location_on_sharp,
                 text: "135 Cemetery St, Frankfort, NY 13340, USA"
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("Venue Image",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -136,28 +136,28 @@ class VenueInfoScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: SizedBox(
                 height: kToolbarHeight*1.7,
                 child: ListView.builder(
                     itemCount: 15,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context,index){
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
                         child: Container(
                           height: kToolbarHeight*1.6,
                           width: 120,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: DynamicColor.yellowClr,width: 1),
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                   image: AssetImage('assets/venueImg.png'),
                                   fit: BoxFit.fill
                               )
@@ -167,13 +167,13 @@ class VenueInfoScreen extends StatelessWidget {
                     }),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("Max Occupancy",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -182,7 +182,7 @@ class VenueInfoScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             eventDateTime(theme: theme,context: context,
@@ -190,13 +190,13 @@ class VenueInfoScreen extends StatelessWidget {
                 img: "assets/groupIcon.png",
                 text: "400-450"
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("Amenities",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -205,19 +205,19 @@ class VenueInfoScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ListView.builder(
                 itemCount: 5,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context,index){
                   return Padding(
-                    padding: EdgeInsets.only(left: 12.0,top: 6),
+                    padding: const EdgeInsets.only(left: 12.0,top: 6),
                     child: Row(
                       children: [
-                        Image(
+                        const Image(
                           image: AssetImage("assets/headingIcons.png"),
                         ),
                         Padding(
@@ -238,14 +238,14 @@ class VenueInfoScreen extends StatelessWidget {
                     ),
                   );
                 }),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: (){

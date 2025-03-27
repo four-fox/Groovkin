@@ -13,15 +13,15 @@ class CountrySearchListWidget extends StatefulWidget {
   final bool? showFlags;
   final bool? useEmoji;
 
-  CountrySearchListWidget(
+  const CountrySearchListWidget(
     this.countries,
-    this.locale, {
+    this.locale, {Key? key, 
     this.searchBoxDecoration,
     this.scrollController,
     this.showFlags,
     this.useEmoji,
     this.autoFocus = false,
-  });
+  }) : super(key: key);
 
   @override
   _CountrySearchListWidgetState createState() =>
@@ -29,7 +29,7 @@ class CountrySearchListWidget extends StatefulWidget {
 }
 
 class _CountrySearchListWidgetState extends State<CountrySearchListWidget> {
-  late TextEditingController _searchController = TextEditingController();
+  late final TextEditingController _searchController = TextEditingController();
   late List<Country> filteredCountries;
 
   @override
@@ -52,7 +52,7 @@ class _CountrySearchListWidgetState extends State<CountrySearchListWidget> {
   /// Returns [InputDecoration] of the search box
   InputDecoration getSearchBoxDecoration() {
     return widget.searchBoxDecoration ??
-        InputDecoration(labelText: 'Search by country name or dial code');
+        const InputDecoration(labelText: 'Search by country name or dial code');
   }
 
   @override
@@ -63,7 +63,7 @@ class _CountrySearchListWidgetState extends State<CountrySearchListWidget> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextFormField(
-            key: Key(TestHelper.CountrySearchInputKeyValue),
+            key: const Key(TestHelper.CountrySearchInputKeyValue),
             decoration: getSearchBoxDecoration(),
             controller: _searchController,
             autofocus: widget.autoFocus,
@@ -161,7 +161,7 @@ class DirectionalCountryListTile extends StatelessWidget {
       subtitle: Align(
         alignment: AlignmentDirectional.centerStart,
         child: Text(
-          '${country.dialCode ?? ''}',
+          country.dialCode ?? '',
           textDirection: TextDirection.ltr,
           textAlign: TextAlign.start,
         ),
@@ -193,8 +193,8 @@ class _Flag extends StatelessWidget {
                           package: 'intl_phone_number_input',
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 }

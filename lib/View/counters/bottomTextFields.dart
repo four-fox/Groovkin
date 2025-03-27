@@ -8,7 +8,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 
 class BottomTextFields extends StatelessWidget {
-  BottomTextFields({Key? key, this.userId, this.eventId}) : super(key: key);
+  BottomTextFields({super.key, this.userId, this.eventId});
 
   int? userId;
   int? eventId;
@@ -20,7 +20,7 @@ class BottomTextFields extends StatelessWidget {
       return Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
               color: theme.primaryColor,
               child: Column(
@@ -40,7 +40,7 @@ class BottomTextFields extends StatelessWidget {
                                   children: [
                                     Padding(
                                       padding:
-                                          EdgeInsets.symmetric(horizontal: 8.0),
+                                          const EdgeInsets.symmetric(horizontal: 8.0),
                                       child: Container(
                                         width: 80,
                                         height: kToolbarHeight,
@@ -79,14 +79,14 @@ class BottomTextFields extends StatelessWidget {
                                                             .filename
                                                       });
                                                 },
-                                                child: Center(
+                                                child: const Center(
                                                   child: Icon(
                                                     Icons.play_arrow,
                                                     size: 35,
                                                   ),
                                                 ),
                                               )
-                                            : SizedBox.shrink(),
+                                            : const SizedBox.shrink(),
                                       ),
                                     ),
                                     GestureDetector(
@@ -121,7 +121,7 @@ class BottomTextFields extends StatelessWidget {
                                 );
                               }),
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
                   Container(
                     width: Get.width,
                     decoration: BoxDecoration(
@@ -166,7 +166,7 @@ class BottomTextFields extends StatelessWidget {
                               }
                             },
                             child: ImageIcon(
-                              AssetImage("assets/sendIcon.png"),
+                              const AssetImage("assets/sendIcon.png"),
                               color: DynamicColor.grayClr,
                             ),
                           )),

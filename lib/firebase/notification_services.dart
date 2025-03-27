@@ -173,10 +173,10 @@ class NotificationService {
         print("<Terminated>");
         // Show EasyLoading spinner
         // Todo I Use this for the loading not show in splash screen for 3 seconds
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 3));
         EasyLoading.show(status: 'Loading...');
 
-        Future.delayed(Duration(seconds: 5), () {
+        Future.delayed(const Duration(seconds: 5), () {
           if (context.mounted) {
             handleMessage(context, message);
             EasyLoading.dismiss();

@@ -9,7 +9,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class ManagerApprovedEventScreen extends StatelessWidget {
-  const ManagerApprovedEventScreen({Key? key}) : super(key: key);
+  const ManagerApprovedEventScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +17,10 @@ class ManagerApprovedEventScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(text: "About Event", theme: theme),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             GestureDetector(
@@ -39,12 +39,12 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                       border: Border.all(color: DynamicColor.lightYellowClr),
                     ),
-                    child: Image(
+                    child: const Image(
                       image: AssetImage("assets/profileImg.png"),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 7.0),
+                    padding: const EdgeInsets.only(left: 7.0),
                     child: SizedBox(
                       width: Get.width / 2.2,
                       child: Column(
@@ -73,7 +73,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
@@ -97,11 +97,11 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Image(
+                        const Image(
                           image: AssetImage("assets/profileImg.png"),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 8.0),
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -127,7 +127,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Padding(
@@ -185,7 +185,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                       text: "View",
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 4,
                   ),
                   Padding(
@@ -203,7 +203,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                                 container: SizedBox(
                                   width: Get.width,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         vertical: 12.0, horizontal: 4),
                                     child: Column(
                                       mainAxisAlignment:
@@ -273,7 +273,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                                 container: SizedBox(
                                   width: Get.width,
                                   child: Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: 12.0, horizontal: 4),
                                       child: reportWidget(
                                           theme: theme, context: context)),
@@ -287,13 +287,13 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                       text: "Report",
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kToolbarHeight,
             ),
             Divider(
@@ -301,7 +301,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
               color: DynamicColor.grayClr,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -347,7 +347,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
 
   Widget reportWidget({theme, context}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

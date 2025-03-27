@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                         Get.back();
                       },
                       child: ImageIcon(
-                        const AssetImage("assets/backArrow.png"),
+                 const         AssetImage("assets/backArrow.png"),
                         color: theme.primaryColor,
                       ),
                     ),
@@ -156,7 +156,9 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
-                    const SocialSignIn(),
+                    const SocialSignIn(
+                      showSpotify: true,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.loginSelection);

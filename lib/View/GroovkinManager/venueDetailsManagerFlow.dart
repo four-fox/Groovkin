@@ -41,11 +41,11 @@ class VenueDetailsManagerScreen extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               serviceCondition == true
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Text(
                       "Venue Detail",
                       style: poppinsMediumStyle(
@@ -54,7 +54,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                           context: context),
                     ),
               serviceCondition == true
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Text(
                       'You have successfully added.',
                       style: poppinsRegularStyle(
@@ -67,7 +67,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 color: DynamicColor.avatarBgClr.withOpacity(0.44),
                 child: Text(
                   "Contact Information",
@@ -100,12 +100,12 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                   text: controller.addressController.text,
                   image: "assets/location.png",
                   iconClr: theme.primaryColor.withOpacity(0.7)),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 color: DynamicColor.avatarBgClr.withOpacity(0.44),
                 child: Text(
                   "Max Occupancy",
@@ -124,7 +124,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 color: DynamicColor.avatarBgClr.withOpacity(0.44),
                 child: Text(
                   "Max Seating",
@@ -143,7 +143,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 color: DynamicColor.avatarBgClr.withOpacity(0.44),
                 child: Text(
                   "Amenities",
@@ -154,17 +154,17 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ListView.builder(
                   itemCount: controller.selectedAmenities.length,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, index) {
                     return Padding(
-                      padding: EdgeInsets.only(left: 12.0, top: 6),
+                      padding: const EdgeInsets.only(left: 12.0, top: 6),
                       child: Row(
                         children: [
-                          Image(
+                          const Image(
                             image: AssetImage("assets/headingIcons.png"),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 3.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 3.0),
                             child: Text(
                               controller.selectedAmenities[index].name
                                   .toString(),
@@ -183,12 +183,12 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                       ),
                     );
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 color: DynamicColor.avatarBgClr.withOpacity(0.44),
                 child: Text(
                   "Active Licenses\\Permits",
@@ -199,13 +199,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ListView.builder(
                   itemCount: controller.selectedLicensesPermit.length,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, index) {
                     return Padding(
-                      padding: EdgeInsets.only(left: 12.0, top: 6),
+                      padding: const EdgeInsets.only(left: 12.0, top: 6),
                       child: Row(
                         children: [
-                          Image(
+                          const Image(
                             image: AssetImage("assets/headingIcons.png"),
                           ),
                           Padding(
@@ -229,12 +229,12 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                       ),
                     );
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 color: DynamicColor.avatarBgClr.withOpacity(0.44),
                 child: Text(
                   "House Event Capabilites",
@@ -245,13 +245,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ListView.builder(
                   itemCount: controller.selectedHouseEventPermit.length,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, index) {
                     return Padding(
-                      padding: EdgeInsets.only(left: 12.0, top: 6),
+                      padding: const EdgeInsets.only(left: 12.0, top: 6),
                       child: Row(
                         children: [
-                          Image(
+                          const Image(
                             image: AssetImage("assets/headingIcons.png"),
                           ),
                           Padding(
@@ -275,12 +275,12 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                       ),
                     );
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 width: Get.width,
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                 color: DynamicColor.avatarBgClr.withOpacity(0.44),
                 child: Text(
                   "Venue Pictures",
@@ -288,7 +288,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                       fontSize: 16, color: DynamicColor.lightRedClr),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SizedBox(
@@ -304,7 +304,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                             alignment: Alignment.topRight,
                             children: [
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Container(
                                   width: 100,
                                   height: kToolbarHeight * 2,
@@ -339,14 +339,14 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                                       .filename
                                                 });
                                           },
-                                          child: Center(
+                                          child: const Center(
                                             child: Icon(
                                               Icons.play_arrow,
                                               size: 35,
                                             ),
                                           ),
                                         )
-                                      : SizedBox.shrink(),
+                                      : const SizedBox.shrink(),
                                 ),
                               ),
                             ],
@@ -366,7 +366,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                     alignment: Alignment.topRight,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 8.0),
                                         child: Container(
                                           width: 100,
@@ -390,7 +390,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                   );
                                 }),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
               ),
               // Padding(
               //   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -463,11 +463,11 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextField(
                   readOnly: true,
                   controller: controller.addressController,
@@ -497,30 +497,30 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               controller.lat != "null"
                   ? Obx(
                       () => mapUpdate.value == false
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : ShowCustomMap(
                               horizontalPadding: 12.0,
                               lat: double.parse(latAssign.value.toString()),
                               lng: double.parse(lngAssign.value.toString()),
                             ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
             ],
           ),
         );
       }),
       bottomNavigationBar: serviceCondition == true
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : SafeArea(
               child: GetBuilder<ManagerController>(builder: (controller) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -540,7 +540,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                   // lat: double.parse(eventData.latitude.toString()),
                                   // long: double.parse(eventData.longitude.toString()),
                                   minMaxZoomPreference:
-                                      MinMaxZoomPreference(0, 16),
+                                      const MinMaxZoomPreference(0, 16),
                                   apiKey:
                                       "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
                                   // canPopOnNextButtonTaped: true,
@@ -666,7 +666,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
 /// those event details which done
 
 class ViewOtherEventsDetails extends StatefulWidget {
-  ViewOtherEventsDetails({super.key});
+  const ViewOtherEventsDetails({super.key});
 
   @override
   State<ViewOtherEventsDetails> createState() => _ViewOtherEventsDetailsState();
@@ -697,23 +697,23 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 3.0),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 3.0),
         child: Obx(
           () => _controller.getVenueDetailsLoader.value == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : Container(
                   height: kToolbarHeight * 2.3 + 30,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage("assets/grayClor.png"),
                           fit: BoxFit.fill)),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         Row(
@@ -724,7 +724,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                 Get.back();
                               },
                               child: ImageIcon(
-                                AssetImage("assets/backArrow.png"),
+                                const AssetImage("assets/backArrow.png"),
                                 color: theme.primaryColor,
                               ),
                             ),
@@ -735,15 +735,15 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                           context: context,
                                           builder: (context) {
                                             return Container(
-                                              padding: EdgeInsets.all(12.0),
-                                              margin: EdgeInsets.all(10.0),
+                                              padding: const EdgeInsets.all(12.0),
+                                              margin: const EdgeInsets.all(10.0),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   TextField(
                                                     controller:
                                                         venueReasonController,
-                                                    decoration: InputDecoration(
+                                                    decoration: const InputDecoration(
                                                       hintText: "Reason",
                                                       border: OutlineInputBorder(
                                                           borderSide:
@@ -765,7 +765,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                                         TextInputType.multiline,
                                                     maxLines: 5,
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 10,
                                                   ),
                                                   CustomButton(
@@ -789,7 +789,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                                     },
                                                     text: "Report",
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 10,
                                                   ),
                                                 ],
@@ -801,11 +801,11 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                       Icons.more_vert,
                                       color: theme.primaryColor,
                                     ))
-                                : SizedBox()
+                                : const SizedBox()
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 10.0),
+                          padding: const EdgeInsets.only(bottom: 10.0),
                           child: Row(
                             children: [
                               Container(
@@ -829,7 +829,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                         fit: BoxFit.fill)),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 10.0),
+                                padding: const EdgeInsets.only(left: 10.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -853,9 +853,9 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                   ],
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               editButton == false
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : GestureDetector(
                                       onTap: () {
                                         _controller.editVenueDataBind();
@@ -880,15 +880,15 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
       }, builder: (controller) {
         return ((controller.getVenueDetailsLoader.value == false) ||
                 (controller.venueDetails == null))
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventsTitles(text: "Contact Information"),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventDateTime(
@@ -898,7 +898,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                         iconClr: DynamicColor.grayClr,
                         text:
                             "${controller.venueDetails!.data!.venueProperty!.openingHours} to ${controller.venueDetails!.data!.venueProperty!.closingHours}"),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventDateTime(
@@ -910,7 +910,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                       text: controller
                           .venueDetails!.data!.venueProperty!.maxSeating,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventDateTime(
@@ -921,11 +921,11 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                       icon: true,
                       text: controller.venueDetails!.data!.location.toString(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     eventsTitles(text: "Image"),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     SizedBox(
@@ -940,7 +940,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (BuildContext context, index) {
                               return Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Container(
                                   width: 130,
                                   height: kToolbarHeight * 2,
@@ -996,17 +996,17 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                             ),
                                           ),
                                         )
-                                      : SizedBox.shrink(),
+                                      : const SizedBox.shrink(),
                                 ),
                               );
                             }),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     eventsTitles(text: "Max Occupancy"),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     eventDateTime(
@@ -1018,11 +1018,11 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                       text: controller
                           .venueDetails!.data!.venueProperty!.maxOccupancy,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     eventsTitles(text: "Max Seating"),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     eventDateTime(
@@ -1034,28 +1034,28 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                       text: controller
                           .venueDetails!.data!.venueProperty!.maxSeating,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     eventsTitles(text: "Amenities"),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ListView.builder(
                           itemCount:
                               controller.venueDetails!.data!.amenities!.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             return Row(
                               children: [
-                                Image(
+                                const Image(
                                   image: AssetImage("assets/headingIcons.png"),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
+                                  padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     controller.venueDetails!.data!
                                         .amenities![index].venueItem!.name
@@ -1071,28 +1071,28 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                             );
                           }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     eventsTitles(text: "House Event Capabilities"),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ListView.builder(
                           itemCount: controller.venueDetails!.data!
                               .houseEventCapabilities!.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             return Row(
                               children: [
-                                Image(
+                                const Image(
                                   image: AssetImage("assets/headingIcons.png"),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
+                                  padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     controller
                                         .venueDetails!
@@ -1112,28 +1112,28 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                             );
                           }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     eventsTitles(text: "Licenses and permit"),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ListView.builder(
                           itemCount: controller
                               .venueDetails!.data!.licensesAndPermit!.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             return Row(
                               children: [
-                                Image(
+                                const Image(
                                   image: AssetImage("assets/headingIcons.png"),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
+                                  padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     controller
                                         .venueDetails!
@@ -1153,7 +1153,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                             );
                           }),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                   ],
@@ -1161,11 +1161,11 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
               );
       }),
       bottomNavigationBar: btnShow == false
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : SafeArea(
               bottom: true,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
                   borderClr: Colors.transparent,
                   onTap: () {

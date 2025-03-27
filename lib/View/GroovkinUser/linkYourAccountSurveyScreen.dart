@@ -8,7 +8,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class LinkYourAccountSurveyScreen extends StatelessWidget {
-  LinkYourAccountSurveyScreen({Key? key}) : super(key: key);
+  LinkYourAccountSurveyScreen({super.key});
 
   RxBool iTuneVal = false.obs;
   RxBool spotifyVal = false.obs;
@@ -19,12 +19,12 @@ class LinkYourAccountSurveyScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Lifestyle Survey"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
@@ -36,7 +36,7 @@ class LinkYourAccountSurveyScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
                   'Groovkin wants to know more about the\ntype of music you enjoy!',
                   textAlign: TextAlign.center,
@@ -47,7 +47,7 @@ class LinkYourAccountSurveyScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               SwitchWiget(
@@ -57,7 +57,7 @@ class LinkYourAccountSurveyScreen extends StatelessWidget {
                 showCheckBox: false,
                 bgClr: true,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 23,
               ),
               SwitchWiget(
@@ -73,7 +73,7 @@ class LinkYourAccountSurveyScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {

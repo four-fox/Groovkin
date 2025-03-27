@@ -14,7 +14,7 @@ import '../../Components/Network/Url.dart';
 class VenueListScreen extends StatelessWidget {
   VenueListScreen({super.key});
 
-  ManagerController _controller = Get.find();
+  final ManagerController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class VenueListScreen extends StatelessWidget {
           _controller.getAllVenues();
         }, builder: (controller) {
           return controller.getAllVenuesLoader.value == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : controller.allVenueData!.data!.data!.isEmpty
                   ? Center(
                       child: Text(
@@ -62,12 +62,12 @@ class VenueListScreen extends StatelessWidget {
                         return false;
                       },
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 12,
                               ),
                               Text(
@@ -78,7 +78,7 @@ class VenueListScreen extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                 child: Text(
                                   "These are the venues you manage.  You can update existing entries or add a new venue to your list.",
                                   textAlign: TextAlign.center,
@@ -92,7 +92,7 @@ class VenueListScreen extends StatelessWidget {
                                   itemCount: controller
                                       .allVenueData!.data!.data!.length,
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (BuildContext context, index) {
                                     return GestureDetector(
                                       onTap: () {
@@ -110,14 +110,14 @@ class VenueListScreen extends StatelessWidget {
                                       },
                                       child: Padding(
                                         padding:
-                                            EdgeInsets.symmetric(vertical: 6.0),
+                                            const EdgeInsets.symmetric(vertical: 6.0),
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 8),
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(12),
-                                              image: DecorationImage(
+                                              image: const DecorationImage(
                                                 image: AssetImage(
                                                   "assets/grayClor.png",
                                                 ),
@@ -156,7 +156,7 @@ class VenueListScreen extends StatelessWidget {
                                               ),
                                               Padding(
                                                 padding:
-                                                    EdgeInsets.only(left: 8.0),
+                                                    const EdgeInsets.only(left: 8.0),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -202,9 +202,9 @@ class VenueListScreen extends StatelessWidget {
         }),
         bottomNavigationBar: Obx(
           () => _controller.getAllVenuesLoader.value == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : Padding(
-                  padding: EdgeInsets.only(bottom: 2, left: 12, right: 12),
+                  padding: const EdgeInsets.only(bottom: 2, left: 12, right: 12),
                   child: CustomButton(
                     backgroundClr: false,
                     onTap: () {

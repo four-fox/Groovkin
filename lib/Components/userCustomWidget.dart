@@ -9,9 +9,9 @@ venueBookingUser({theme,context}){
     padding: const EdgeInsets.all(8.0),
     child: Row(
       children: [
-        Image(image: AssetImage("assets/profileImg.png"),),
+        const Image(image: AssetImage("assets/profileImg.png"),),
         Padding(
-          padding: EdgeInsets.only(left: 8.0),
+          padding: const EdgeInsets.only(left: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

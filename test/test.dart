@@ -148,7 +148,7 @@ class NotificationService {
       if (context.mounted) {
         print("<Terminated>");
         EasyLoading.show(status: 'Loading...');
-        Future.delayed(Duration(seconds: 5), () {
+        Future.delayed(const Duration(seconds: 5), () {
           if (context.mounted) {
             handleMessage(context, message);
             EasyLoading.dismiss();

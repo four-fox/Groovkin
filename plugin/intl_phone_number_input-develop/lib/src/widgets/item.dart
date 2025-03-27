@@ -40,9 +40,9 @@ class Item extends StatelessWidget {
             showFlag: showFlag,
             useEmoji: useEmoji,
           ),
-          SizedBox(width: 12.0),
+          const SizedBox(width: 12.0),
           Text(
-            '$dialCode',
+            dialCode,
             textDirection: TextDirection.ltr,
             style: textStyle,
           ),
@@ -74,10 +74,10 @@ class _Flag extends StatelessWidget {
                     width: 32.0,
                     package: 'intl_phone_number_input',
                     errorBuilder: (context, error, stackTrace) {
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     },
                   ),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 }

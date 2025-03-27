@@ -11,18 +11,18 @@ class DisclaimerScreen extends StatelessWidget {
   DisclaimerScreen({super.key});
 
   RxBool checkBoxValue = false.obs;
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: kToolbarHeight,
             ),
             Row(
@@ -43,15 +43,15 @@ class DisclaimerScreen extends StatelessWidget {
                           _controller.postEventFunction(context, theme,
                               draft: true);
                         },
-                        child: Padding(
+                        child: const Padding(
                           padding: EdgeInsets.only(right: 8.0),
                           child: Icon(Icons.drafts),
                         ),
                       )
-                    : SizedBox.shrink()
+                    : const SizedBox.shrink()
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text(
@@ -64,7 +64,7 @@ class DisclaimerScreen extends StatelessWidget {
                 color: theme.primaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kToolbarHeight / 2,
             ),
             Text(
@@ -75,7 +75,7 @@ class DisclaimerScreen extends StatelessWidget {
                 color: theme.primaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text(
@@ -88,7 +88,7 @@ class DisclaimerScreen extends StatelessWidget {
                 color: theme.primaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -117,7 +117,7 @@ class DisclaimerScreen extends StatelessWidget {
                                         height: kToolbarHeight * 5,
                                         borderColor: Colors.transparent,
                                         container: Padding(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 12.0),
                                           child: Column(
                                             mainAxisAlignment:
@@ -141,7 +141,7 @@ class DisclaimerScreen extends StatelessWidget {
                                                 ),
                                               ),
                                               Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 7, vertical: 4),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -193,7 +193,7 @@ class DisclaimerScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 2.0),
+                  padding: const EdgeInsets.only(left: 2.0),
                   child: Text(
                     'i have read and agree to the terms and\nconditions',
                     style: poppinsRegularStyle(
@@ -211,7 +211,7 @@ class DisclaimerScreen extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom:  true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

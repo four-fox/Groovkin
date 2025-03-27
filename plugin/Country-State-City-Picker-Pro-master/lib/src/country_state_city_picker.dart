@@ -96,7 +96,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
       children: [
         ///Country TextField
         TextField(
-          style: TextStyle(
+          style: const TextStyle(
         fontSize: 14,
         color: Color(0xff9DA3B5)
     ),
@@ -116,7 +116,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
         ///State TextField
         TextField(
           controller: widget.state,
-          style: TextStyle(
+          style: const TextStyle(
     fontSize: 14,
     color: Color(0xff9DA3B5)
     ),
@@ -222,7 +222,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
                         },
                         style: TextStyle(
                             color: Colors.grey.shade800, fontSize: 16.0),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             border: UnderlineInputBorder(),
                             hintText: "Search here...",
                             contentPadding: EdgeInsets.symmetric(

@@ -9,7 +9,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class ManagerUpcomingEventScreen extends StatelessWidget {
-  ManagerUpcomingEventScreen({Key? key}) : super(key: key);
+  ManagerUpcomingEventScreen({super.key});
 
   RxBool organizerFollowVal = false.obs;
   RxBool userVal = false.obs;
@@ -19,9 +19,9 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: customAppBar(
-          theme: theme, text: "Upcoming", actions: [Icon(Icons.more_vert)]),
+          theme: theme, text: "Upcoming", actions: [const Icon(Icons.more_vert)]),
       body: Padding(
-        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,11 +42,11 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Image(
+                          const Image(
                             image: AssetImage("assets/profileImg.png"),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 8.0),
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -72,7 +72,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Padding(
@@ -91,7 +91,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                         text: "Cancel",
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Padding(
@@ -108,14 +108,14 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                         text: "Changes",
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.0),
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: Text(
                   "90’s Grunge and Bowling",
                   style: poppinsMediumStyle(
@@ -130,18 +130,18 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   Container(
                     height: 30,
                     width: 30,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: DynamicColor.darkBlueClr,
                       shape: BoxShape.circle,
                     ),
-                    child: Center(
+                    child: const Center(
                         child: Image(
                       image: AssetImage("assets/lockIcon.png"),
                     )),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 4.0),
+                    padding: const EdgeInsets.only(left: 4.0),
                     child: Text(
                       '10:30 Pm to 5:00 Am (GMT-04:00)',
                       style: poppinsRegularStyle(
@@ -154,24 +154,24 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Row(
                   children: [
                     Container(
                       height: 30,
                       width: 30,
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: DynamicColor.darkBlueClr,
                         shape: BoxShape.circle,
                       ),
-                      child: Center(
+                      child: const Center(
                           child: Image(
                         image: AssetImage("assets/calender.png"),
                       )),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 4.0),
+                      padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
                         'Saturday, June 17th of 2023',
                         style: poppinsRegularStyle(
@@ -189,19 +189,19 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   Container(
                     height: 30,
                     width: 35,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: DynamicColor.darkBlueClr,
                       shape: BoxShape.circle,
                     ),
                     child: Center(
                         child: ImageIcon(
-                      AssetImage("assets/location.png"),
+                      const AssetImage("assets/location.png"),
                       color: DynamicColor.yellowClr,
                     )),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 4.0),
+                    padding: const EdgeInsets.only(left: 4.0),
                     child: Text(
                       'Saturday, June 17th of 2023',
                       style: poppinsRegularStyle(
@@ -213,11 +213,11 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               sp.read('role') == "eventManager"
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Obx(
                       () => aboutEventCreator(
                         isDelete: null,
@@ -246,12 +246,12 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                                 });
                           }),
                     ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -315,11 +315,11 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.only(left: 2.0),
+                padding: const EdgeInsets.only(left: 2.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -333,7 +333,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 2, bottom: 8),
+                padding: const EdgeInsets.only(left: 2, bottom: 8),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -349,11 +349,11 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
               ShowCustomMap(
                 horizontalPadding: 2,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Padding(
-                padding: EdgeInsets.only(left: 2, bottom: 8),
+                padding: const EdgeInsets.only(left: 2, bottom: 8),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -370,7 +370,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   itemCount: list.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, index) {
                     return Obx(
                       () => GestureDetector(
@@ -378,7 +378,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                           list[index].value = !list[index].value;
                         },
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Container(
                             padding: EdgeInsets.symmetric(
                                 vertical: 6,
@@ -398,14 +398,14 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                                       ? DynamicColor.darkBlueClr
                                       : DynamicColor.grayClr,
                                   child: ImageIcon(
-                                    AssetImage("assets/avEquipment.png"),
+                                    const AssetImage("assets/avEquipment.png"),
                                     color: list[index] == false
                                         ? DynamicColor.yellowClr
                                         : DynamicColor.blackClr,
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 6.0),
+                                  padding: const EdgeInsets.only(left: 6.0),
                                   child: Text(
                                     "AV Equipment",
                                     style: poppinsRegularStyle(
@@ -415,10 +415,10 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 list[index] == false
-                                    ? SizedBox.shrink()
-                                    : Icon(Icons.check)
+                                    ? const SizedBox.shrink()
+                                    : const Icon(Icons.check)
                               ],
                             ),
                           ),
@@ -427,7 +427,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                     );
                   }),
               Padding(
-                padding: EdgeInsets.only(left: 2, bottom: 8),
+                padding: const EdgeInsets.only(left: 2, bottom: 8),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -444,23 +444,23 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   itemCount: 7,
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, index) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.0),
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 6),
+                        padding: const EdgeInsets.symmetric(vertical: 6),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
-                            Image(
+                            const Image(
                               image: AssetImage("assets/headingIcons.png"),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: 6.0),
+                              padding: const EdgeInsets.only(left: 6.0),
                               child: Text(
                                 "Vinyl Turntables",
                                 style: poppinsRegularStyle(
@@ -475,11 +475,11 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                       ),
                     );
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.only(left: 12.0),
+                padding: const EdgeInsets.only(left: 12.0),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -492,7 +492,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SizedBox(
@@ -500,13 +500,13 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: 12,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: DynamicColor.lightRedClr,
                               borderRadius: BorderRadius.circular(12)),
@@ -524,7 +524,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                       );
                     }),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
             ],

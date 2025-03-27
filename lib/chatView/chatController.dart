@@ -375,7 +375,7 @@ class ChatController extends GetxController {
         if (isChat.value == true) {
           messageSeen(conversationID);
         }
-        Future.delayed(Duration(seconds: 1), () {
+        Future.delayed(const Duration(seconds: 1), () {
           receiver = false;
         });
         receiveMessageEvent(data);
@@ -432,14 +432,14 @@ class ChatController extends GetxController {
         scrollController!
             .jumpTo(index: index, alignment: 0.5, automaticAlignment: false);
         animatedOpacity = true.obs;
-        Future.delayed(Duration(milliseconds: 500), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           animatedOpacity(false);
           update();
         });
       }  else {
         animatedOpacity = true.obs;
         update();
-        Future.delayed(Duration(milliseconds: 1000), () {
+        Future.delayed(const Duration(milliseconds: 1000), () {
           animatedOpacity(false);
           update();
         });
@@ -602,17 +602,17 @@ class ChatController extends GetxController {
   }) {
     return Get.dialog(AlertDialog(
       backgroundColor: Colors.black87,
-      title: Text(
+      title: const Text(
         'Delete Message',
         style: TextStyle(color: Colors.white, fontSize: 18),
       ),
-      content: Text(
+      content: const Text(
         'Are you sure you want to delete the message?',
         style: TextStyle(color: Colors.white, fontSize: 15),
       ),
       actions: [
         TextButton(
-            child: Text(
+            child: const Text(
               'Delete',
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
@@ -638,10 +638,10 @@ class ChatController extends GetxController {
               }
             }),
         isTime == true
-            ? SizedBox()
+            ? const SizedBox()
             : element.senderId == API().sp.read("userId")
                 ? TextButton(
-                    child: Text(
+                    child: const Text(
                       'Delete For EveryOne',
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
@@ -675,9 +675,9 @@ class ChatController extends GetxController {
                       update();
                       getAllChatRoom();
                     })
-                : SizedBox(),
+                : const SizedBox(),
         TextButton(
-            child: Text(
+            child: const Text(
               'No',
               style: TextStyle(color: Colors.white, fontSize: 12),
             ),
@@ -699,15 +699,15 @@ class ChatController extends GetxController {
         child: Container(
           width: 140,
           height: 50,
-          color: Color(0xFF4C4C4C),
+          color: const Color(0xFF4C4C4C),
           child: GridView.count(
-            padding: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
             crossAxisCount: /*element.senderId == API().sp.read("userId") ? */
                 2 /*:3*/,
             crossAxisSpacing: 0,
             mainAxisSpacing: 0,
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: chatTileMenuList
                 .map((item) => GestureDetector(
                       onTap: () async {
@@ -749,11 +749,11 @@ class ChatController extends GetxController {
                             color: Colors.white,
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 2),
+                            margin: const EdgeInsets.only(top: 2),
                             child: Text(
                               item.title,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
+                                  const TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ),
                         ],
@@ -777,12 +777,12 @@ class ChatController extends GetxController {
           height: 50,
           color: const Color(0xFF4C4C4C),
           child: GridView.count(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             crossAxisCount: 2,
             crossAxisSpacing: 0,
             mainAxisSpacing: 0,
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: menuItems
                 .map((item) => GestureDetector(
                       onTap: () async {
@@ -821,11 +821,11 @@ class ChatController extends GetxController {
                             color: Colors.white,
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 2),
+                            margin: const EdgeInsets.only(top: 2),
                             child: Text(
                               item.title,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
+                                  const TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ),
                         ],

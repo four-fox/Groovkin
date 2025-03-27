@@ -26,7 +26,7 @@ class ConfigFirebaseConfig {
       );
     } else {
       // Android
-      return FirebaseOptions(
+      return const FirebaseOptions(
         appId: '1:549725868575:android:b537348a10ef4d7c687b2a',
         apiKey: 'AIzaSyC7UUbIq1eM5CHfwffzsKdC6t8ILIdDQKY',
         projectId: 'com.gologonow.groovkinn',

@@ -25,6 +25,8 @@ class SpotifyWebView extends StatefulWidget {
 
 class _SpotifyWebViewState extends State<SpotifyWebView> {
   late final WebViewController _controller;
+  bool _isLoading = true;
+  bool _isHandlingRedirect = false;
   Future<bool> _clearCookies() async {
     final cookieManager = WebViewCookieManager();
     return await cookieManager.clearCookies();
@@ -37,11 +39,35 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
+        // NavigationDelegate(
+        //   onPageStarted: (String url) {
+        //     if (url.startsWith(widget.redirectUri)) {
+        //       _handleRedirect(url);
+        //     }
+        //   },
+        // ),
         NavigationDelegate(
-          onPageStarted: (String url) {
+          onPageStarted: (url) {
+            setState(() => _isLoading = true);
             if (url.startsWith(widget.redirectUri)) {
               _handleRedirect(url);
             }
+          },
+          onPageFinished: (url) {
+            setState(() => _isLoading = false);
+          },
+          onNavigationRequest: (request) {
+            if (request.url.startsWith(widget.redirectUri)) {
+              if (!_isHandlingRedirect) {
+                _isHandlingRedirect = true;
+                // Small delay to ensure proper handling on iOS
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  _handleRedirect(request.url);
+                });
+              }
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
           },
         ),
       );
@@ -116,7 +142,18 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Spotify Login")),
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text(
+          "Spotify Login",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color(0xff121212),
+        // elevation: 0.0,
+        // scrolledUnderElevation: 0.0,
+      ),
       body: WebViewWidget(controller: _controller),
     );
   }

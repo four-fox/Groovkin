@@ -18,7 +18,7 @@ import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class UpcomingScreen extends StatefulWidget {
-  UpcomingScreen({super.key});
+  const UpcomingScreen({super.key});
 
   @override
   State<UpcomingScreen> createState() => _UpcomingScreenState();
@@ -38,7 +38,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   bool isComingFromNotifcation =
       Get.arguments["isComingFromNotification"] ?? false;
 
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   late AuthController _authController;
 
@@ -58,13 +58,13 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
+        preferredSize: const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
             //     :flowBtn==3?
             // kToolbarHeight*1.3
             //     :kToolbarHeight*4.9
             ),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
           child: customAppBar(
@@ -72,7 +72,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             text: appBarTitle,
             actions: [
               reportedEventPreview == 3
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Padding(
                       padding: const EdgeInsets.only(right: 7.0),
                       child: GestureDetector(
@@ -84,8 +84,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           },
                           child: ((API().sp.read("role") == "eventOrganizer") &&
                                   (appBarTitle == "Pending"))
-                              ? Icon(Icons.edit_calendar)
-                              : SizedBox.shrink()),
+                              ? const Icon(Icons.edit_calendar)
+                              : const SizedBox.shrink()),
                     )
             ],
             imagee: false,
@@ -96,9 +96,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
         _controller.eventDetails(eventId: eventId);
       }, builder: (controller) {
         return controller.eventDetailsLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 6),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,9 +120,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.all(6),
+                                    padding: const EdgeInsets.all(6),
                                     child: ImageIcon(
-                                      AssetImage("assets/pin.png"),
+                                      const AssetImage("assets/pin.png"),
                                       color: theme.primaryColor,
                                     ),
                                   ),
@@ -132,13 +132,13 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               .isDelete !=
                                           null)
                                         Utils.accountDelete(context),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 5,
                                       ),
-                                      appBarTitle ==""?SizedBox.shrink(): Container(
-                                        padding: EdgeInsets.symmetric(
+                                      appBarTitle ==""?const SizedBox.shrink(): Container(
+                                        padding: const EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 18),
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             borderRadius: BorderRadius.only(
                                               topRight: Radius.circular(10),
                                               bottomLeft: Radius.circular(10),
@@ -184,7 +184,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             });
                                       },
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0,
                                   ),
                                   child: Row(
@@ -200,7 +200,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     .bannerImage!.mediaPath!),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.only(left: 8.0),
                                         child: SizedBox(
                                           width: Get.width / 1.7,
                                           child: Column(
@@ -210,7 +210,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               _controller.eventDetail!.data!
                                                           .venue ==
                                                       null
-                                                  ? SizedBox.shrink()
+                                                  ? const SizedBox.shrink()
                                                   : Text(
                                                       _controller.eventDetail!
                                                           .data!.venue!.location
@@ -247,7 +247,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               ((API().sp.read("role") == "eventManager") &&
@@ -255,7 +255,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       controller.eventDetail!.data!
                                               .isEventComplete!.value ==
                                           0)
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : SizedBox(
                                       child: Column(
                                         children: [
@@ -412,7 +412,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                                                 kToolbarHeight * 10,
                                                                             container:
                                                                                 Padding(
-                                                                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                                                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                                                               child: DisclaimerView(
                                                                                 onTap: () {
                                                                                   Get.back();
@@ -435,15 +435,15 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                                       "Accept",
                                                                   fontSized: 12,
                                                                 )
-                                                              : SizedBox
+                                                              : const SizedBox
                                                                   .shrink(),
                                                         ],
                                                       ),
                                                     )
-                                                  : SizedBox(),
+                                                  : const SizedBox(),
                                           appBarTitle == "Completed Event"
                                               ? Padding(
-                                                  padding: EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets.symmetric(
                                                       horizontal: 8.0,
                                                       vertical: 8),
                                                   child: CustomButton(
@@ -484,7 +484,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     text: "See Counter",
                                                   ),
                                                 )
-                                              : SizedBox.shrink(),
+                                              : const SizedBox.shrink(),
                                           SizedBox(
                                             height: flowBtn == 2 ? 0 : 8,
                                           ),
@@ -515,8 +515,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     text: "Reschedule",
                                                   ),
                                                 )
-                                              : SizedBox.shrink(),
-                                          SizedBox(
+                                              : const SizedBox.shrink(),
+                                          const SizedBox(
                                             height: 8,
                                           ),
                                         ],
@@ -535,7 +535,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                   text:
                                       "Attended user ${controller.eventDetail!.data!.eventsGoingCount}"),
                             )
-                          : SizedBox.shrink(),
+                          : const SizedBox.shrink(),
                       SizedBox(
                         height: flowBtn == 3 ? 0 : 12,
                       ),
@@ -571,7 +571,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         height: flowBtn == 3 ? 0 : 10,
                       ),
                       controller.venueImageList.isEmpty
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : SizedBox(
                               height: kToolbarHeight * 3,
                               width: Get.width,
@@ -581,7 +581,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                   itemCount: controller.venueImageList.length,
                                   itemBuilder: (BuildContext context, index) {
                                     return Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 12.0),
                                       child: Container(
                                         width:
@@ -616,7 +616,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding:
-                              EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
+                              const EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
                           child: Text(
                             controller.eventDetail!.data!.eventTitle.toString(),
                             style: poppinsMediumStyle(
@@ -627,7 +627,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       eventDateTime(
@@ -637,7 +637,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         context: context,
                         iconClr: DynamicColor.yellowClr,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       eventDateTime(
@@ -648,11 +648,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             controller.eventDetail!.data!.startDateTime!),
                         iconClr: DynamicColor.yellowClr,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       controller.eventDetail!.data!.location == null
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : eventDateTime(
                               theme: theme,
                               context: context,
@@ -661,7 +661,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                               iconClr: DynamicColor.yellowClr,
                             ),
                       controller.eventDetail!.data!.comment == null
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : customWidget(context, theme,
                               title: "Event Comments",
                               value: controller.eventDetail!.data!.comment
@@ -679,11 +679,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           value: controller.eventDetail!.data!.featuring
                               .toString()),
                       Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 10),
                         child: Container(
                           width: double.infinity,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -691,7 +691,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           child: Column(
                             children: [
                               controller.eventDetail!.data!.services!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
@@ -706,7 +706,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       ),
                                     ),
                               controller.eventDetail!.data!.services!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : SizedBox(
                                       height: kToolbarHeight,
                                       child: Align(
@@ -720,7 +720,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             itemBuilder:
                                                 (BuildContext context, indx) {
                                               return Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
@@ -749,12 +749,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             }),
                                       ),
                                     ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               controller.eventDetail!.data!.hardwareProvide!
                                       .isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
@@ -770,7 +770,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     ),
                               controller.eventDetail!.data!.hardwareProvide!
                                       .isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : SizedBox(
                                       height: kToolbarHeight,
                                       child: Align(
@@ -781,11 +781,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
                                             physics:
-                                                AlwaysScrollableScrollPhysics(),
+                                                const AlwaysScrollableScrollPhysics(),
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               return Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
@@ -838,7 +838,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       ),
                                     ),
                               controller.eventDetail!.data!.musicGenre!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
@@ -853,7 +853,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       ),
                                     ),
                               controller.eventDetail!.data!.musicGenre!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : SizedBox(
                                       height: kToolbarHeight,
                                       child: Align(
@@ -862,13 +862,13 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
                                             physics:
-                                                AlwaysScrollableScrollPhysics(),
+                                                const AlwaysScrollableScrollPhysics(),
                                             itemCount: controller.eventDetail!
                                                 .data!.musicGenre!.length,
                                             itemBuilder:
                                                 (BuildContext context, indx) {
                                               return Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
@@ -899,7 +899,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     ),
                               controller.eventDetail!.data!
                                       .eventMusicChoiceTags!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
@@ -915,7 +915,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     ),
                               controller.eventDetail!.data!
                                       .eventMusicChoiceTags!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : SizedBox(
                                       height: kToolbarHeight,
                                       child: Align(
@@ -929,11 +929,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
                                             physics:
-                                                AlwaysScrollableScrollPhysics(),
+                                                const AlwaysScrollableScrollPhysics(),
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               return Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
@@ -988,7 +988,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     ),
                               controller.eventDetail!.data!
                                       .eventActivityChoiceTags!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : Align(
                                       alignment: Alignment.topLeft,
                                       child: Text(
@@ -1004,7 +1004,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     ),
                               controller.eventDetail!.data!
                                       .eventActivityChoiceTags!.isEmpty
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : SizedBox(
                                       height: kToolbarHeight,
                                       child: Align(
@@ -1018,11 +1018,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
                                             physics:
-                                                AlwaysScrollableScrollPhysics(),
+                                                const AlwaysScrollableScrollPhysics(),
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               return Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
@@ -1079,11 +1079,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Text(
                           "Live Location",
                           style: poppinsMediumStyle(
@@ -1094,9 +1094,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         ),
                       ),
                       controller.eventDetail!.data!.location == null
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
                               child: Text(
                                 controller.eventDetail!.data!.location
                                     .toString(),
@@ -1106,34 +1106,34 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     fontSize: 16),
                               ),
                             ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       ((controller.eventDetail!.data!.latitude == null) &&
                               (controller.eventDetail!.data!.longitude == null))
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : ShowCustomMap(
                               lat: double.parse(
                                   controller.eventDetail!.data!.latitude!),
                               lng: double.parse(
                                   controller.eventDetail!.data!.longitude!),
                             ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       sp.read('role') == "eventManager"
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : ((controller.eventDetail!.data!.profilePicture!
                                       .isEmpty) &&
                                   (controller.venueImageList.isEmpty))
-                              ? SizedBox.shrink()
+                              ? const SizedBox.shrink()
                               : Obx(
                                   () => _authController.followingLoader.value ==
                                           false
-                                      ? SizedBox.shrink()
+                                      ? const SizedBox.shrink()
                                       : controller.eventDetail!.data!.venue ==
                                               null
-                                          ? SizedBox.shrink()
+                                          ? const SizedBox.shrink()
                                           : aboutEventCreator(
                                               isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
                                                   ? false
@@ -1208,11 +1208,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               }),
                                 ),
                       sp.read('role') == "eventOrganizer"
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Obx(
                               () => _authController.followingLoader.value ==
                                       false
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : ourGuestWidget(
                                       isDelete: controller.eventDetail!.data!.user!.isDelete == null
                                           ? false
@@ -1278,8 +1278,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                         "Ongoing users ${controller.eventDetail!.data!.eventsGoingCount}"),
                               ],
                             )
-                          : SizedBox.shrink(),
-                      SizedBox(
+                          : const SizedBox.shrink(),
+                      const SizedBox(
                         height: 30,
                       ),
                     ],
@@ -1290,7 +1290,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       bottomNavigationBar: isComingFromNotifcation == true
           ? null
           : API().sp.read("role") != "eventOrganizer"
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -1329,7 +1329,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     IconData? iconData,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Row(
         children: [
           CircleAvatar(
@@ -1350,7 +1350,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
           SizedBox(
             width: Get.width / 1.3,
             child: Padding(
-              padding: EdgeInsets.only(left: 6.0),
+              padding: const EdgeInsets.only(left: 6.0),
               child: Text(
                 text ?? "04:00pm to 10:00pm",
                 style: poppinsRegularStyle(
@@ -1370,7 +1370,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -1386,7 +1386,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(

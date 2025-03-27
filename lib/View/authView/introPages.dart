@@ -63,7 +63,7 @@ class IntroPages extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         GradientText(
@@ -78,11 +78,11 @@ class IntroPages extends StatelessWidget {
                             Colors.yellow,
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: Text(
                             item.body,
                             textAlign: TextAlign.center,
@@ -98,10 +98,10 @@ class IntroPages extends StatelessWidget {
                   .toList(),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0),
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Column(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Obx(
                     () => CustomButton(
                       borderClr: Colors.transparent,
@@ -125,9 +125,9 @@ class IntroPages extends StatelessWidget {
                     bottom:  true ,
                     child: Obx(
                       () => Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: controller.index == 2
-                            ? SizedBox(
+                            ? const SizedBox(
                                 height: 21,
                               )
                             : Row(

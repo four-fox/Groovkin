@@ -16,7 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class editProfileScreen extends StatefulWidget {
-  editProfileScreen({super.key});
+  const editProfileScreen({super.key});
 
   @override
   State<editProfileScreen> createState() => _editProfileScreenState();
@@ -27,7 +27,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
 
   PhoneNumber number = PhoneNumber(isoCode: 'US');
 
-  AuthController _controller = Get.find();
+  final AuthController _controller = Get.find();
 
   @override
   void initState() {
@@ -82,7 +82,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                 Container(
                                   height: 70,
                                   width: 70,
-                                  padding: EdgeInsets.all(12),
+                                  padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                       color: DynamicColor.blackClr,
                                       shape: BoxShape.circle,
@@ -126,7 +126,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                       decoration: BoxDecoration(
                                           color: DynamicColor.darkGrayClr
                                               .withOpacity(0.9)),
-                                      child: Image(
+                                      child: const Image(
                                         image: AssetImage(
                                             "assets/refreshIcon.png"),
                                       ),
@@ -136,7 +136,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                               ],
                             ),
                             Padding(
-                              padding: EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 10),
                               child: Align(
                                 alignment: Alignment.topRight,
                                 child: CustomButton(
@@ -179,11 +179,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomTextFields(
                       labelText: "First Name",
                       validationError: "first name",
@@ -196,11 +196,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       // readOnly: nameEdit.value,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomTextFields(
                       labelText: "Last Name",
                       validationError: "last name",
@@ -214,11 +214,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       // readOnly: nameLast.value,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomTextFields(
                       labelText: "Username",
                       validationError: "username",
@@ -236,7 +236,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                   ),
                   sp.read('role') == "eventManager"
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: CustomTextFields(
                             labelText: "Company Name",
                             validationError: "company Name",
@@ -250,12 +250,12 @@ class _editProfileScreenState extends State<editProfileScreen> {
                             // readOnly: userName.value,
                           ),
                         )
-                      : SizedBox.shrink(),
-                  SizedBox(
+                      : const SizedBox.shrink(),
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomTextFields(
                       labelText: "Email",
                       iconShow: false,
@@ -268,11 +268,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       // readOnly: email.value,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: TextField(
                       keyboardType: TextInputType.none,
                       style: poppinsRegularStyle(
@@ -302,7 +302,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           ),
                           hintText: "Enter Date of birth",
                           label: Padding(
-                            padding: EdgeInsets.only(left: 15.0),
+                            padding: const EdgeInsets.only(left: 15.0),
                             child: Text(
                               "Year of Birth",
                               style: poppinsRegularStyle(
@@ -313,8 +313,8 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           ),
                           labelStyle: TextStyle(color: DynamicColor.grayClr),
                           hintStyle:
-                              TextStyle(fontFamily: 'Montserrat', fontSize: 13),
-                          contentPadding: EdgeInsets.all(5),
+                              const TextStyle(fontFamily: 'Montserrat', fontSize: 13),
+                          contentPadding: const EdgeInsets.all(5),
                           suffixIcon: GestureDetector(
                             onTap: () async {
                               Get.bottomSheet(Container(
@@ -342,7 +342,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                               ));
                             },
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 4.0, vertical: 4),
                               child: Container(
                                 height: 40,
@@ -375,18 +375,18 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     ),
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   sp.read("role") == "eventOrganizer"
                       ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: CountryStateCityPicker(
                               country: controller.countryController,
                               state: controller.stateController,
                               // dialogColor: Colors.grey.shade200,
                               textFieldDecoration: InputDecoration(
-                                hintStyle: TextStyle(
+                                hintStyle: const TextStyle(
                                     fontSize: 14, color: Color(0xff9DA3B5)),
                                 fillColor: Colors.transparent,
                                 filled: true,
@@ -411,12 +411,12 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                 ),
                               )),
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
                   SizedBox(
                     height: API().sp.read("role") == "eventOrganizer" ? 15 : 0,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
                         validateMobile(number.phoneNumber!);
@@ -441,7 +441,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         filled: true,
-                        contentPadding: EdgeInsets.only(
+                        contentPadding: const EdgeInsets.only(
                           left: 15,
                         ),
                         hintText: "Enter Phone No",
@@ -451,7 +451,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       onFieldSubmitted: (value) {
                         // getPhoneNumber(signUpController.phoneController.text);
                       },
-                      selectorConfig: SelectorConfig(
+                      selectorConfig: const SelectorConfig(
                         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                         setSelectorButtonAsPrefixIcon: true,
                       ),
@@ -474,7 +474,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                         color: theme.primaryColor,
                       ),
                       spaceBetweenSelectorAndTextField: 0,
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                           signed: true, decimal: true),
                       inputBorder: InputBorder.none,
                       onSaved: (PhoneNumber number) {
@@ -501,7 +501,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                   //     },
                   //     // readOnly: dob.value,
                   //   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   // Padding(
@@ -541,7 +541,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                   // ),
 
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomTextFields(
                       labelText: "about",
                       iconShow: false,
@@ -560,7 +560,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                       // readOnly: email.value,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],
@@ -582,7 +582,7 @@ pictureAlert(context,
           data: Theme.of(context)
               .copyWith(dialogBackgroundColor: DynamicColor.avatarBgClr),
           child: AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(12.0),
               ),
@@ -604,7 +604,7 @@ pictureAlert(context,
                                 color: DynamicColor.lightRedClr,
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 15.0),
+                                padding: const EdgeInsets.only(left: 15.0),
                                 child: Text(
                                   "Gallery",
                                   style: poppinsMediumStyle(
@@ -618,11 +618,11 @@ pictureAlert(context,
                             ],
                           ),
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
                   GestureDetector(
                     onTap: cameraFtn,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
                       child: Row(
                         children: [
                           Icon(
@@ -630,7 +630,7 @@ pictureAlert(context,
                             color: DynamicColor.lightRedClr,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 15.0),
+                            padding: const EdgeInsets.only(left: 15.0),
                             child: Text(
                               'Camera',
                               style: poppinsMediumStyle(
@@ -656,7 +656,7 @@ pictureAlert(context,
                           color: DynamicColor.lightRedClr,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 15.0),
+                          padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             "Cancel",
                             style: poppinsMediumStyle(

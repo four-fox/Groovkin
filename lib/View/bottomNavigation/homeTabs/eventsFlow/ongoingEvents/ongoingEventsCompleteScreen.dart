@@ -16,10 +16,10 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import '../../../../../Components/colors.dart';
 
 class CompleteOnGoingEventsScreen extends StatelessWidget {
-  CompleteOnGoingEventsScreen({Key? key}) : super(key: key);
+  CompleteOnGoingEventsScreen({super.key});
 
   EventDetails? eventDetails = Get.arguments['eventData'];
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +27,11 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text:"Complete Event"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Align(
@@ -52,8 +52,8 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
           itemCount: 5,
           unratedColor: Colors.grey,
 
-          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(
+          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+          itemBuilder: (context, _) => const Icon(
             Icons.star,
             color: Colors.amber,
           ),
@@ -62,7 +62,7 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
             print(rating);
           },
         ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Align(
@@ -75,7 +75,7 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             CustomTextFieldsHintText(
@@ -88,7 +88,7 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: (){

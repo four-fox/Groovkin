@@ -19,7 +19,7 @@ customAppBar({
       decoration: BoxDecoration(
         // color:imagee==true?Colors.transparent: DynamicColor.yellowClr,
         image: imagee == false
-            ? DecorationImage(
+            ? const DecorationImage(
                 image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)
             : null,
       ),
@@ -33,7 +33,7 @@ customAppBar({
                   Get.back();
                 },
             child: ImageIcon(
-              AssetImage("assets/backArrow.png"),
+              const AssetImage("assets/backArrow.png"),
               color: theme.primaryColor,
             ))
         : null,

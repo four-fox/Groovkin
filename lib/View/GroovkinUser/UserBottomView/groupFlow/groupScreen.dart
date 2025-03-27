@@ -45,16 +45,16 @@ class GroupScreen extends StatelessWidget {
               Get.toNamed(Routes.theSquadScreen);
             },
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         backgroundImage: AssetImage("assets/profileImg.png"),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Text(
                           "The Squad",
                           style: poppinsRegularStyle(
@@ -92,16 +92,16 @@ class CreateNewGroup extends StatelessWidget {
         text: "Create new group",
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SearchTextFields(
               controller: TextEditingController(),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -134,7 +134,7 @@ class CreateNewGroup extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0),
+                  padding: const EdgeInsets.only(left: 6.0),
                   child: Text(
                     "Select All",
                     style: poppinsRegularStyle(
@@ -153,7 +153,7 @@ class CreateNewGroup extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: list.length,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, index) {
                       return GestureDetector(
                         behavior: HitTestBehavior.opaque,
@@ -161,18 +161,18 @@ class CreateNewGroup extends StatelessWidget {
                           Get.toNamed(Routes.createNewGroup);
                         },
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 6.0, horizontal: 12),
                           child: Column(
                             children: [
                               Row(
                                 children: [
-                                  CircleAvatar(
+                                  const CircleAvatar(
                                     backgroundImage:
                                         AssetImage("assets/profileImg.png"),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 10.0),
+                                    padding: const EdgeInsets.only(left: 10.0),
                                     child: Text(
                                       "The Squad",
                                       style: poppinsRegularStyle(
@@ -183,7 +183,7 @@ class CreateNewGroup extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   CircleAvatar(
                                     radius: 17,
                                     backgroundColor:
@@ -222,7 +222,7 @@ class CreateNewGroup extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {
@@ -263,7 +263,7 @@ class ViewCreatedGroup extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
         ),
@@ -279,7 +279,7 @@ class ViewCreatedGroup extends StatelessWidget {
             Get.back();
           },
           child: ImageIcon(
-            AssetImage("assets/backArrow.png"),
+            const AssetImage("assets/backArrow.png"),
             color: theme.primaryColor,
           ),
         ),
@@ -288,13 +288,13 @@ class ViewCreatedGroup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
             child: SizedBox(
               height: kToolbarHeight,
               width: 60,
               child: Stack(
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 26,
                     backgroundImage: AssetImage("assets/profileImg.png"),
                   ),
@@ -314,7 +314,7 @@ class ViewCreatedGroup extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: TextFormField(
               style: poppinsRegularStyle(
                   fontSize: 12, color: DynamicColor.grayClr),
@@ -334,28 +334,28 @@ class ViewCreatedGroup extends StatelessWidget {
                       BorderSide(color: DynamicColor.grayClr), //<-- SEE HERE
                 ),
                 hintText: "title",
-                contentPadding: EdgeInsets.only(left: 12, top: 12),
+                contentPadding: const EdgeInsets.only(left: 12, top: 12),
                 hintStyle: poppinsRegularStyle(
                     fontSize: 12, color: DynamicColor.grayClr),
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 12.0, top: 8),
+            padding: const EdgeInsets.only(left: 12.0, top: 8),
             child: Text(
               "Participants 3  ",
               style: poppinsRegularStyle(
                   fontSize: 13, color: theme.primaryColor.withOpacity(0.5)),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Expanded(
             child: ListView.builder(
                 itemCount: 10,
                 shrinkWrap: true,
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, index) {
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
@@ -364,16 +364,16 @@ class ViewCreatedGroup extends StatelessWidget {
                     },
                     child: Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
                       child: Row(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 25,
                             backgroundImage:
                                 AssetImage("assets/profileImg.png"),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 10.0),
+                            padding: const EdgeInsets.only(left: 10.0),
                             child: Text(
                               "The Squad",
                               style: poppinsRegularStyle(
@@ -384,7 +384,7 @@ class ViewCreatedGroup extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           CircleAvatar(
                               radius: 15,
                               backgroundColor:
@@ -405,7 +405,7 @@ class ViewCreatedGroup extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom: true ,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {

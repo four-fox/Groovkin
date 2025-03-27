@@ -11,7 +11,7 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class QuickSurveyScreen extends StatefulWidget {
-  QuickSurveyScreen({super.key});
+  const QuickSurveyScreen({super.key});
 
   @override
   State<QuickSurveyScreen> createState() => _QuickSurveyScreenState();
@@ -75,12 +75,12 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                       _eventController.postEventFunction(context, theme,
                           draft: true);
                     },
-                    child: Padding(
+                    child: const Padding(
                       padding: EdgeInsets.only(right: 8.0),
                       child: Icon(Icons.drafts),
                     ),
                   )
-                : SizedBox.shrink()
+                : const SizedBox.shrink()
           ]),
       body: GetBuilder<AuthController>(initState: (v) {
         // if((addMoreSurvey == 1) && sp.read("role")=="eventOrganizer"){
@@ -94,14 +94,14 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
       }, builder: (controller) {
         return ((controller.getLifeStyleLoader.value == false) ||
                 (controller.getAllServiceLoader.value == false))
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 4.0),
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: isFromEvent
                           ? Text(
                               "Indicate the type of music\nyou are proposing for this event.",
@@ -133,7 +133,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                         color: DynamicColor.lightRedClr,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Expanded(
@@ -164,12 +164,12 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(vertical: 4.0),
+                                        const EdgeInsets.symmetric(vertical: 4.0),
                                     child: Visibility(
                                       visible: controller.surveyData!
                                           .data![index].showItems!.value,
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 15),
                                         decoration: BoxDecoration(
                                           color: DynamicColor.dropDownClr,
@@ -184,7 +184,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                                 .length,
                                             shrinkWrap: true,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             itemBuilder: (BuildContext context,
                                                 indexxx) {
                                               return Column(
@@ -207,7 +207,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                                                 context:
                                                                     context),
                                                       ),
-                                                      Spacer(),
+                                                      const Spacer(),
                                                       Theme(
                                                         data: Theme.of(context)
                                                             .copyWith(
@@ -262,7 +262,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                                       )
                                                     ],
                                                   ),
-                                                  Divider(
+                                                  const Divider(
                                                     height: 1,
                                                   )
                                                 ],
@@ -283,7 +283,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
@@ -347,7 +347,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
   Widget musicGenreWidget(
       {context, theme, text, GestureTapCallback? onTap, IconData? icon}) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
           // image: DecorationImage(
           //     image: AssetImage("assets/buttonBg.png"),
@@ -365,7 +365,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
               color: theme.primaryColor,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             onTap: onTap,
             child: Icon(

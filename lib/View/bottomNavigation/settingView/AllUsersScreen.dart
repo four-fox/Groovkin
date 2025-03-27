@@ -9,7 +9,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/followingScren.dart';
 
 class AllUserScreen extends StatefulWidget {
-  AllUserScreen({super.key});
+  const AllUserScreen({super.key});
 
   @override
   State<AllUserScreen> createState() => _AllUserScreenState();
@@ -40,7 +40,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
         ),
@@ -56,7 +56,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
             Get.back();
           },
           child: ImageIcon(
-            AssetImage("assets/backArrow.png"),
+            const AssetImage("assets/backArrow.png"),
             color: theme.primaryColor,
           ),
         ),
@@ -65,7 +65,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
         _controller.getAllUnfollowing();
       }, builder: (controller) {
         return controller.getAllUnfollowingLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : NotificationListener<ScrollNotification>(
                 onNotification: (scrollNotification) {
                   if (scrollNotification.metrics.pixels ==

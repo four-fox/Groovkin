@@ -7,7 +7,7 @@ import 'package:groovkin/Components/textStyle.dart';
 
 interestedWidget({theme,context,text,double? height}) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 15.0,vertical: 6),
+    padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 6),
     child: Container(
       height:height?? 25,
       width: 160,

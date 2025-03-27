@@ -12,7 +12,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHomeController.dart';
 
 class UserMyGroovkinScreen extends StatelessWidget {
-  const UserMyGroovkinScreen({Key? key}) : super(key: key);
+  const UserMyGroovkinScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,22 +22,22 @@ class UserMyGroovkinScreen extends StatelessWidget {
       body: GetBuilder<UserHomeController>(
         builder: (controller) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   lifeStyleWidget(theme: theme,context: context,editShow: false,text: "Music Preference",
                   titleClr: DynamicColor.lightRedClr
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SwitchWiget(text: "iTunes Linked",theme: theme,context: context,showCheckBox: false,
                       bgClr: true),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   SwitchWiget(text: "Spotify Linked",img: "assets/spotifyIcon.png",theme: theme,
                       context: context,bgClr: true,showCheckBox: false,
                     onTap: (){
@@ -48,7 +48,7 @@ class UserMyGroovkinScreen extends StatelessWidget {
                       // );
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 22,
                   ),
                   musicGenreWidget(
@@ -62,7 +62,7 @@ class UserMyGroovkinScreen extends StatelessWidget {
                       // );
                     },
                     theme: theme,context: context,icon:Icons.arrow_forward_ios,),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   musicGenreWidget(
@@ -199,8 +199,8 @@ class UserMyGroovkinScreen extends StatelessWidget {
               color:titleClr?? theme.primaryColor,
           ),
         ),
-        editShow==false?SizedBox.shrink():  Container(
-          padding: EdgeInsets.all(3),
+        editShow==false?const SizedBox.shrink():  Container(
+          padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
               color:editBgClr?? theme.primaryColor,
@@ -217,7 +217,7 @@ class UserMyGroovkinScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
         decoration: BoxDecoration(
             // image: DecorationImage(
             //     image: AssetImage("assets/buttonBg.png"),
@@ -231,8 +231,8 @@ class UserMyGroovkinScreen extends StatelessWidget {
             showImg== true? CircleAvatar(
                 backgroundColor: theme.primaryColor,
                 radius:15,child: Image(image: AssetImage(img??'assets/foodies.png'))):
-            SizedBox.shrink(),
-            SizedBox(
+            const SizedBox.shrink(),
+            const SizedBox(
               width: 6,
             ),
             Text(text??'Sport Fan',
@@ -242,7 +242,7 @@ class UserMyGroovkinScreen extends StatelessWidget {
                 color: theme.primaryColor,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Icon(icon,
               size: 20,
               color: theme.primaryColor,
@@ -256,7 +256,7 @@ class UserMyGroovkinScreen extends StatelessWidget {
 
 
 class GroovkinPreferenceDetails extends StatelessWidget {
-  GroovkinPreferenceDetails({Key? key}) : super(key: key);
+  GroovkinPreferenceDetails({super.key});
 
   String title = Get.arguments['appBarTitle'];
 
@@ -269,7 +269,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
       appBar:
       AppBar(
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/grayClor.png"),
                 fit: BoxFit.fill
@@ -309,7 +309,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
                 color: DynamicColor.secondaryClr,
               ),
               Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Text("Edit",
                     style:poppinsMediumStyle(
                       fontSize: 17,
@@ -324,7 +324,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             musicGenreWidget(
@@ -332,14 +332,14 @@ class GroovkinPreferenceDetails extends StatelessWidget {
                 foodies.value = !foodies.value;
               },
               theme: theme,context: context,icon: foodies.value?Icons.keyboard_arrow_up: Icons.keyboard_arrow_down,),
-            SizedBox(
+            const SizedBox(
               height: 3,
             ),
             Obx(
               ()=> Visibility(
                 visible: foodies.value,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15,),
+                  padding: const EdgeInsets.symmetric(horizontal: 15,),
                   decoration: BoxDecoration(
                     // image: DecorationImage(
                     //     image: AssetImage("assets/buttonBg.png"),
@@ -351,7 +351,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
                   child: ListView.builder(
                       itemCount: 5,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context,index){
                         return Column(
                           children: [
@@ -364,7 +364,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
                                       context: context
                                   ),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 Theme(
                                   data: Theme.of(context).copyWith(
                                     unselectedWidgetColor: Colors.white,
@@ -375,7 +375,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
                                 )
                               ],
                             ),
-                            Divider(height: 1,),
+                            const Divider(height: 1,),
                           ],
                         );
                       }),
@@ -390,7 +390,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
 
   Widget musicGenreWidget({context,theme,text,GestureTapCallback? onTap,IconData? icon,String? img}) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 6,horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 6,horizontal: 10),
       decoration: BoxDecoration(
         // image: DecorationImage(
         //     image: AssetImage("assets/buttonBg.png"),
@@ -404,7 +404,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
           CircleAvatar(
               backgroundColor: theme.primaryColor,
               radius:15,child: Image(image: AssetImage(img??'assets/foodies.png'))),
-          SizedBox(
+          const SizedBox(
             width: 6,
           ),
           Text(text??'Hip Hop',
@@ -414,7 +414,7 @@ class GroovkinPreferenceDetails extends StatelessWidget {
               color:  theme.primaryColor,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             onTap: onTap,
             child: Icon(icon,

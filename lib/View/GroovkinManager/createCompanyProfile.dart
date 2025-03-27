@@ -18,7 +18,7 @@ import 'package:map_location_picker/map_location_picker.dart';
 import '../../Components/colors.dart';
 
 class CreateCompanyProfileScreen extends StatefulWidget {
-  CreateCompanyProfileScreen({super.key});
+  const CreateCompanyProfileScreen({super.key});
 
   @override
   State<CreateCompanyProfileScreen> createState() =>
@@ -65,11 +65,11 @@ class _CreateCompanyProfileScreenState
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 1.9),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 1.9),
         child: Container(
           height: kToolbarHeight * 1.9,
-          padding: EdgeInsets.only(top: 30),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.only(top: 30),
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/grayClor.png"),
               fit: BoxFit.fill,
@@ -84,7 +84,7 @@ class _CreateCompanyProfileScreenState
                         Get.back();
                       },
                       child: Padding(
-                        padding: EdgeInsets.only(left: 4.0),
+                        padding: const EdgeInsets.only(left: 4.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Icon(
@@ -94,7 +94,7 @@ class _CreateCompanyProfileScreenState
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
               Text(
                 "Add a new venue",
                 style: poppinsMediumStyle(
@@ -103,7 +103,7 @@ class _CreateCompanyProfileScreenState
                 ),
               ),
               skipBtn == true
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Align(
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
@@ -112,11 +112,11 @@ class _CreateCompanyProfileScreenState
                               arguments: {"indexValue": 1});
                         },
                         child: Padding(
-                          padding: EdgeInsets.only(right: 6.0),
+                          padding: const EdgeInsets.only(right: 6.0),
                           child: Container(
                             height: 25,
                             width: 60,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
@@ -143,11 +143,11 @@ class _CreateCompanyProfileScreenState
         key: venueForm,
         child: GetBuilder<ManagerController>(builder: (controller) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 35,
                   ),
                   GestureDetector(
@@ -174,12 +174,12 @@ class _CreateCompanyProfileScreenState
                     },
                     child: DottedBorder(
                       borderType: BorderType.RRect,
-                      radius: Radius.circular(20),
+                      radius: const Radius.circular(20),
                       color: DynamicColor.whiteClr.withOpacity(0.8),
                       child: Container(
                         height: kToolbarHeight * 2.8,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderRadius: const BorderRadius.all(Radius.circular(20)),
                           color: theme.scaffoldBackgroundColor,
                         ),
                         width: Get.width,
@@ -212,7 +212,7 @@ class _CreateCompanyProfileScreenState
                                         }
                                       },
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 6.0),
                                         child: Icon(
                                           Icons.camera_alt_outlined,
@@ -221,7 +221,7 @@ class _CreateCompanyProfileScreenState
                                       ),
                                     ),
                                   )
-                                : SizedBox.shrink(),
+                                : const SizedBox.shrink(),
                             controller.profilePictures.isEmpty
                                 ? ((editVenue == false) &&
                                         (controller.mediaClass.isNotEmpty))
@@ -240,7 +240,7 @@ class _CreateCompanyProfileScreenState
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        EdgeInsets.symmetric(
+                                                        const EdgeInsets.symmetric(
                                                             horizontal: 8.0),
                                                     child: Container(
                                                       width: 100,
@@ -286,7 +286,7 @@ class _CreateCompanyProfileScreenState
                                                                           .filename
                                                                     });
                                                               },
-                                                              child: Center(
+                                                              child: const Center(
                                                                 child: Icon(
                                                                   Icons
                                                                       .play_arrow,
@@ -294,7 +294,7 @@ class _CreateCompanyProfileScreenState
                                                                 ),
                                                               ),
                                                             )
-                                                          : SizedBox.shrink(),
+                                                          : const SizedBox.shrink(),
                                                     ),
                                                   ),
                                                   GestureDetector(
@@ -334,7 +334,7 @@ class _CreateCompanyProfileScreenState
                                               );
                                             }),
                                       )
-                                    : Image(
+                                    : const Image(
                                         image: AssetImage(
                                             "assets/locationIcon.png"),
                                         height: 45,
@@ -342,7 +342,7 @@ class _CreateCompanyProfileScreenState
                                         fit: BoxFit.contain,
                                       )
                                 : controller.profilePictures.isEmpty
-                                    ? Image(
+                                    ? const Image(
                                         image: AssetImage(
                                             "assets/locationIcon.png"),
                                         height: 45,
@@ -364,7 +364,7 @@ class _CreateCompanyProfileScreenState
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        EdgeInsets.symmetric(
+                                                        const EdgeInsets.symmetric(
                                                             horizontal: 8.0),
                                                     child: Container(
                                                       width: 100,
@@ -433,7 +433,7 @@ class _CreateCompanyProfileScreenState
                                                                 ),
                                                               ),
                                                             )
-                                                          : SizedBox.shrink(),
+                                                          : const SizedBox.shrink(),
                                                     ),
                                                   ),
                                                   GestureDetector(
@@ -484,13 +484,13 @@ class _CreateCompanyProfileScreenState
                                       color: DynamicColor.grayClr,
                                     ),
                                   )
-                                : SizedBox.shrink(),
+                                : const SizedBox.shrink(),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   // CustomTextFields(
@@ -504,7 +504,7 @@ class _CreateCompanyProfileScreenState
                     controller: controller.venueNameController,
                     validationError: "venue name",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   CustomTextFields(
@@ -512,7 +512,7 @@ class _CreateCompanyProfileScreenState
                     controller: controller.streetAddressController,
                     validationError: "street address",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
 
@@ -542,7 +542,7 @@ class _CreateCompanyProfileScreenState
                         borderRadius: BorderRadius.circular(13),
                       ),
                       filled: true,
-                      contentPadding: EdgeInsets.only(
+                      contentPadding: const EdgeInsets.only(
                         left: 15,
                       ),
                       hintText: "Enter Phone No",
@@ -554,7 +554,7 @@ class _CreateCompanyProfileScreenState
                     onFieldSubmitted: (value) {
                       // getPhoneNumber(signUpController.phoneController.text);
                     },
-                    selectorConfig: SelectorConfig(
+                    selectorConfig: const SelectorConfig(
                       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                       setSelectorButtonAsPrefixIcon: true,
                     ),
@@ -577,14 +577,14 @@ class _CreateCompanyProfileScreenState
                       color: DynamicColor.grayClr,
                     ),
                     spaceBetweenSelectorAndTextField: 0,
-                    keyboardType: TextInputType.numberWithOptions(
+                    keyboardType: const TextInputType.numberWithOptions(
                         signed: true, decimal: true),
                     inputBorder: InputBorder.none,
                     onSaved: (PhoneNumber number) {
                       print('On Saved: $number');
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
 
@@ -601,7 +601,7 @@ class _CreateCompanyProfileScreenState
                               // hideLocation: true,
                               // lat: double.parse(eventData.latitude.toString()),
                               // long: double.parse(eventData.longitude.toString()),
-                              minMaxZoomPreference: MinMaxZoomPreference(0, 15),
+                              minMaxZoomPreference: const MinMaxZoomPreference(0, 15),
                               apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
                               // apiKey: "AIzaSyAG0a15cbPw73mCfgD9AEpEFKy_6pV-nFA",
                               canPopOnNextButtonTaped: true,
@@ -734,7 +734,7 @@ class _CreateCompanyProfileScreenState
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   controller.lat != "null"
@@ -743,9 +743,9 @@ class _CreateCompanyProfileScreenState
                           lat: double.parse(controller.lat),
                           lng: double.parse(controller.lng),
                         )
-                      : SizedBox.shrink(),
+                      : const SizedBox.shrink(),
 
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   CustomTextFields(
@@ -753,7 +753,7 @@ class _CreateCompanyProfileScreenState
                     controller: controller.stateController,
                     validationError: "state",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   CustomTextFields(
@@ -761,7 +761,7 @@ class _CreateCompanyProfileScreenState
                     controller: controller.cityController,
                     validationError: "city",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   CustomTextFields(
@@ -794,7 +794,7 @@ class _CreateCompanyProfileScreenState
                                           container: SizedBox(
                                             width: Get.width,
                                             child: Padding(
-                                              padding: EdgeInsets.symmetric(
+                                              padding: const EdgeInsets.symmetric(
                                                   vertical: 0.0, horizontal: 4),
                                               child: Column(
                                                 mainAxisAlignment:
@@ -805,7 +805,7 @@ class _CreateCompanyProfileScreenState
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        EdgeInsets.symmetric(
+                                                        const EdgeInsets.symmetric(
                                                             horizontal: 10.0),
                                                     child: Text(
                                                       '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
@@ -884,7 +884,7 @@ class _CreateCompanyProfileScreenState
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 6.0),
+                        padding: const EdgeInsets.only(left: 6.0),
                         child: Text(
                           "agree to terms and condition",
                           style: poppinsRegularStyle(
@@ -918,7 +918,7 @@ class _CreateCompanyProfileScreenState
                       borderClr: Colors.transparent,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],

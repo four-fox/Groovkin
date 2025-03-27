@@ -10,19 +10,19 @@ class SubscriptionModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -59,15 +59,15 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['subcription_name'] = this.subcriptionName;
-    data['subcription_price'] = this.subcriptionPrice;
-    data['subcription_description'] = this.subcriptionDescription;
-    data['subcription_sub_value'] = this.subcriptionSubValue;
-    data['subcription_sub_type'] = this.subcriptionSubType;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['subcription_name'] = subcriptionName;
+    data['subcription_price'] = subcriptionPrice;
+    data['subcription_description'] = subcriptionDescription;
+    data['subcription_sub_value'] = subcriptionSubValue;
+    data['subcription_sub_type'] = subcriptionSubType;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

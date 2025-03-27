@@ -13,7 +13,7 @@ import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';
 
 class SearchFilterScreen extends StatefulWidget {
-  SearchFilterScreen({super.key});
+  const SearchFilterScreen({super.key});
 
   @override
   State<SearchFilterScreen> createState() => _SearchFilterScreenState();
@@ -45,11 +45,11 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
         child: SizedBox(
           height: context.height - kBottomNavigationBarHeight - kToolbarHeight,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
@@ -60,10 +60,10 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     color: theme.primaryColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
-                DropDownClass(
+                const DropDownClass(
                   hint: "Select your music type",
                   // ignore: prefer_const_literals_to_create_immutables
                   list: [
@@ -74,7 +74,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     "Blues",
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
@@ -85,14 +85,14 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     color: theme.primaryColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage("assets/lightBg.png"),
                         fit: BoxFit.fill,
                       ),
@@ -122,7 +122,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 TextField(
@@ -147,7 +147,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Text(
@@ -158,7 +158,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     color: theme.primaryColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
@@ -199,10 +199,10 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
-                Spacer(),
+                const Spacer(),
                 SafeArea(
                   bottom:  true ,
                   child: ShowCustomMap(
@@ -234,6 +234,8 @@ class calenderView extends StatelessWidget {
     // endDateSelected: DateTime(2022, 3, 20),
   );
 
+  calenderView({super.key});
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -248,7 +250,7 @@ class calenderView extends StatelessWidget {
         )
       ]),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.arrow_downward),
+        child: const Icon(Icons.arrow_downward),
         onPressed: () {
           calendarController.jumpToMonth(date: DateTime(2022, 8));
         },

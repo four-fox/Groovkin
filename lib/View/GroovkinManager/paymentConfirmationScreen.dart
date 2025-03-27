@@ -12,7 +12,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class PaymentConfirmationScreen extends StatelessWidget {
-  PaymentConfirmationScreen({Key? key}) : super(key: key);
+  PaymentConfirmationScreen({super.key});
 
   RxBool acceptTerms = false.obs;
 
@@ -22,18 +22,18 @@ class PaymentConfirmationScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme,text: "Confirmation"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
                   title: "Invoice Number",
                   value: "# SB-001598"
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Align(
@@ -58,25 +58,25 @@ class PaymentConfirmationScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
               title: "Time",
                 value: "08 : 00 PM"
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
               title: "Subtotal",
                 value: "\$1000"
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Align(
@@ -96,35 +96,35 @@ class PaymentConfirmationScreen extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
                   title: "50% Down Payment",
                   value: "\$500"
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
                   title: "Tax (5%)",
                   value: "\$50"
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
                   title: "Groovkin Tax(5%)",
                   value: "\$50"
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
                   title: "Stripe Tax(10%)",
                   value: "\$100"
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               customRow(theme: theme,context: context,
@@ -135,7 +135,7 @@ class PaymentConfirmationScreen extends StatelessWidget {
                 thickness: 2,
                 color: DynamicColor.avatarBgClr,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Align(
@@ -173,7 +173,7 @@ class PaymentConfirmationScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 4.0),
+                    padding: const EdgeInsets.only(left: 4.0),
                     child: SizedBox(
                       child: Text('i have read and agree to the terms and conditions',
                         style: poppinsRegularStyle(
@@ -185,15 +185,15 @@ class PaymentConfirmationScreen extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Padding(
-                padding: EdgeInsets.only(top: 4.0),
+                padding: const EdgeInsets.only(top: 4.0),
                 child: CustomButton(
                   heights: 50,
                   onTap: (){
-                    Future.delayed(Duration(milliseconds: 2000),(){
+                    Future.delayed(const Duration(milliseconds: 2000),(){
                       Get.offAllNamed(Routes.bottomNavigationView,
                           arguments: {
                             "indexValue": 0
@@ -207,7 +207,7 @@ class PaymentConfirmationScreen extends StatelessWidget {
                   borderClr: Colors.transparent,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               )
             ],
@@ -242,14 +242,14 @@ class PaymentConfirmationScreen extends StatelessWidget {
 
 
 class SuccessPaymentScreen extends StatelessWidget {
-  const SuccessPaymentScreen({Key? key}) : super(key: key);
+  const SuccessPaymentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -267,7 +267,7 @@ class SuccessPaymentScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text('Accept',
               style: poppinsMediumStyle(
                 fontSize: 18,

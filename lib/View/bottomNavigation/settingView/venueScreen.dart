@@ -23,11 +23,11 @@ class VenueScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight*3.3),
+          preferredSize: const Size.fromHeight(kToolbarHeight*3.3),
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/grayClor.png"),
                       fit: BoxFit.fill
@@ -52,12 +52,12 @@ class VenueScreen extends StatelessWidget {
                       child: Container(
                         height: 50,
                         width: 50,
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             border: Border.all(color: DynamicColor.grayClr.withOpacity(0.6)),
                             borderRadius: BorderRadius.circular(8)
                         ),
-                        child: ImageIcon(AssetImage("assets/filterIcons.png"),
+                        child: ImageIcon(const AssetImage("assets/filterIcons.png"),
                           color: DynamicColor.grayClr.withOpacity(0.6),),
                       ),
                     )
@@ -73,12 +73,12 @@ class VenueScreen extends StatelessWidget {
                     fontSize: 14,
                     context: context
                 ),
-                labelPadding: EdgeInsets.all(6),
-                indicatorPadding: EdgeInsets.all(10),
+                labelPadding: const EdgeInsets.all(6),
+                indicatorPadding: const EdgeInsets.all(10),
                 indicatorColor: theme.primaryColor,
                 tabs: [
-                  Tab(text: "Discover for you"),
-                  Tab(text: "Organized Event",),
+                  const Tab(text: "Discover for you"),
+                  const Tab(text: "Organized Event",),
                 ],
               ),
             ],
@@ -108,7 +108,7 @@ class DiscoverView extends StatelessWidget {
     return ListView.builder(
         itemCount: list.length,
         shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (BuildContext context,index){
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -122,7 +122,7 @@ class DiscoverView extends StatelessWidget {
                     hideLocation: true,
                     // lat: double.parse(eventData.latitude.toString()),
                     // long: double.parse(eventData.longitude.toString()),
-                    minMaxZoomPreference: MinMaxZoomPreference(0, 16),
+                    minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
                     apiKey:
                     "AIzaSyCPDZxZYp3Su6ReZTh4lHRoie6HAM2P0sU",
                     canPopOnNextButtonTaped: true,
@@ -205,7 +205,7 @@ class DiscoverView extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Divider(
                 color: DynamicColor.grayClr,
               ),
@@ -228,12 +228,12 @@ class DiscoverView extends StatelessWidget {
   Widget stackWidgets(context,theme){
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         Stack(
           children: [
-            Align(
+            const Align(
                 alignment: Alignment.centerLeft,
                 child: Icon(Icons.arrow_back_outlined,
                 size: 29,
@@ -253,21 +253,21 @@ class DiscoverView extends StatelessWidget {
         ),
 
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
           child: Container(
               color: DynamicColor.blackClr,
               child: SearchTextFields(
                 controller: TextEditingController(),
               )),
         ),
-        Spacer(),
+        const Spacer(),
         Container(
           height: kToolbarHeight*2.5,
           color: theme.scaffoldBackgroundColor,
           child: Column(
             children: [
               ListTile(
-                leading: CircleAvatar(
+                leading: const CircleAvatar(
                   backgroundImage: AssetImage('assets/profileImg.png'),
                 ),
                 trailing: SizedBox(
@@ -305,7 +305,7 @@ class DiscoverView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
                 child: CustomButton(
                   borderClr: Colors.transparent,
                   color1: DynamicColor.blackClr,

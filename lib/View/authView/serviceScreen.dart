@@ -15,7 +15,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import '../bottomNavigation/homeController.dart';
 
 class ServiceScreen extends StatefulWidget {
-  ServiceScreen({super.key});
+  const ServiceScreen({super.key});
 
   @override
   State<ServiceScreen> createState() => _ServiceScreenState();
@@ -65,12 +65,12 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     _eventController.postEventFunction(context, theme,
                         draft: true);
                   },
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.only(right: 8.0),
                     child: Icon(Icons.drafts),
                   ),
                 )
-              : SizedBox.shrink()
+              : const SizedBox.shrink()
         ],
       ),
       body: GetBuilder<AuthController>(initState: (v) {
@@ -80,9 +80,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 _controller.myGroovkinServiceListing.isNotEmpty ? true : false);
       }, builder: (controller) {
         return controller.getAllServiceLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,7 +103,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                           color: DynamicColor.lightRedClr,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       SizedBox(
@@ -111,10 +111,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         child: ListView.builder(
                             itemCount: controller.serviceListing.length,
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, index) {
                               return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                                   child: GestureDetector(
                                     onTap: () {
                                       if (_controller
@@ -131,7 +131,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                       // controller.update();
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: 6, horizontal: 10),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -139,7 +139,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                     .showItems!.value ==
                                                 true
                                             ? null
-                                            : DecorationImage(
+                                            : const DecorationImage(
                                                 image: AssetImage(
                                                     "assets/buttonBg.png"),
                                                 fit: BoxFit.fill),
@@ -172,7 +172,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                             child:
                                                 Image.asset("assets/djing.png"),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 5,
                                           ),
                                           Text(
@@ -185,7 +185,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                               color: theme.primaryColor,
                                             ),
                                           ),
-                                          Spacer(),
+                                          const Spacer(),
                                           controller.serviceListing[index]
                                                       .showItems!.value ==
                                                   true
@@ -193,7 +193,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                   Icons.check,
                                                   color: theme.primaryColor,
                                                 )
-                                              : SizedBox.shrink(),
+                                              : const SizedBox.shrink(),
                                           // Spacer(),
                                           // Checkbox(
                                           //     activeColor: DynamicColor.lightRedClr,
@@ -262,7 +262,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
       bottomNavigationBar: SafeArea(
         bottom: true ,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
@@ -319,10 +319,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
+            image: const DecorationImage(
                 image: AssetImage("assets/buttonBg.png"), fit: BoxFit.fill)),
         child: Row(
           children: [
@@ -333,7 +333,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 image: AssetImage(image ?? "assets/djing.png"),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Text(
@@ -344,7 +344,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 color: theme.primaryColor,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Icon(
               Icons.check,
               color: theme.primaryColor,

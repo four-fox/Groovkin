@@ -17,13 +17,12 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/PostEvents.da
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
-import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:groovkin/utils/utils.dart';
 
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -83,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             floatingActionButton: Obx(
               () => controller.showIndexValue!.value != 0
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.viewAllEventListScreen);
@@ -91,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         height: 35,
                         width: 90,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                             // color: Colors.amberAccent
                             color: DynamicColor.darkGrayClr,
@@ -113,9 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
             ),
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(kToolbarHeight * 3.7),
+              preferredSize: const Size.fromHeight(kToolbarHeight * 3.7),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   color: theme.scaffoldBackgroundColor,
                 ),
@@ -146,9 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             Get.toNamed(Routes.chatRoomScreen);
                           },
                           child: Container(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                   image: AssetImage("assets/eventDays.png"),
                                   fit: BoxFit.fill),
                               borderRadius: BorderRadius.circular(8),
@@ -166,9 +165,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.toNamed(Routes.notificationScreen);
                         },
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            image: DecorationImage(
+                            image: const DecorationImage(
                                 image: AssetImage("assets/eventDays.png"),
                                 fit: BoxFit.fill),
                             borderRadius: BorderRadius.circular(8),
@@ -182,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
@@ -215,18 +214,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                   height: 50,
                                   width: 50,
-                                  padding: EdgeInsets.all(6),
+                                  padding: const EdgeInsets.all(6),
                                   decoration: BoxDecoration(
                                       border: Border.all(
                                           color: DynamicColor.yellowClr
                                               .withOpacity(0.6)),
                                       borderRadius: BorderRadius.circular(8)),
-                                  child: Image(
+                                  child: const Image(
                                     image:
                                         AssetImage("assets/addEventIcon.png"),
                                   )),
                             )
-                          : SizedBox.shrink()
+                          : const SizedBox.shrink()
                     ],
                   ),
                   TabBar(
@@ -234,9 +233,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         poppinsMediumStyle(fontSize: 14, context: context),
                     labelStyle:
                         poppinsMediumStyle(fontSize: 14, context: context),
-                    labelPadding: EdgeInsets.all(6),
-                    indicatorPadding: EdgeInsets.all(10),
-                    indicator: BoxDecoration(color: Colors.transparent),
+                    labelPadding: const EdgeInsets.all(6),
+                    indicatorPadding: const EdgeInsets.all(10),
+                    indicator: const BoxDecoration(color: Colors.transparent),
                     indicatorColor: Colors.transparent,
                     onTap: (v) {
                       controller.selectedFilter.value = 0;
@@ -322,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   if (controller.showIndexValue!.value != 0)
@@ -334,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Align(
                           alignment: Alignment.topRight,
                           child: ImageIcon(
-                            AssetImage("assets/filterIcons.png"),
+                            const AssetImage("assets/filterIcons.png"),
                             color: DynamicColor.grayClr,
                           )),
                     )
@@ -345,13 +344,13 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.topRight,
               children: [
                 TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     /*sp.read("role") == "eventManager"?ManagerUpcomingEventsView() : */
                     UpcomingEvents(),
                     PostEvents(),
                     sp.read("role") == "eventManager"
-                        ? ManagerPendingView()
+                        ? const ManagerPendingView()
                         : PendingScreen(),
                   ],
                 ),
@@ -368,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height:
                             controller.showIndexValue!.value == 0 ? 100 : 130,
                         width: Get.width / 2,
-                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.whiteClr),
@@ -397,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                 width: Get.width,
                                 height: 35,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: controller.selectedFilter.value != 0
@@ -435,7 +434,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                 width: Get.width,
                                 height: 35,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: controller.selectedFilter.value != 1
@@ -473,7 +472,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                 width: Get.width,
                                 height: 35,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: controller.selectedFilter.value != 2
@@ -598,13 +597,13 @@ class ManagerUpcomingEventsView extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: DynamicColor.darkGrayClr),
@@ -644,7 +643,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
                           itemCount: 1,
                           shrinkWrap: true,
                           padding: EdgeInsets.zero,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             return SizedBox(
                               height: kToolbarHeight * 3,
@@ -674,13 +673,13 @@ class ManagerUpcomingEventsView extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: DynamicColor.darkGrayClr),
@@ -720,7 +719,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
                           itemCount: 1,
                           shrinkWrap: true,
                           padding: EdgeInsets.zero,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             return SizedBox(
                               height: kToolbarHeight * 3,
@@ -758,7 +757,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: kToolbarHeight * 1.2,
           ),
         ],
@@ -886,7 +885,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
 }
 
 class ManagerPendingView extends StatefulWidget {
-  ManagerPendingView({super.key});
+  const ManagerPendingView({super.key});
 
   @override
   State<ManagerPendingView> createState() => _ManagerPendingViewState();
@@ -912,20 +911,20 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
       _controller.getAllPendingEvents();
     }, builder: (controller) {
       return controller.getAllPendingEventsLoader.value == false
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : controller.managerPendingEvents!.data!.data!.isEmpty
               ? noData(theme: theme, context: context)
               : ListView.builder(
                   itemCount:
                       controller.managerPendingEvents!.data!.data!.length,
                   shrinkWrap: true,
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, index) {
                     EventData eventData =
                         controller.managerPendingEvents!.data!.data![index];
                     return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 10),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
@@ -938,9 +937,9 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.all(6),
+                                  padding: const EdgeInsets.all(6),
                                   child: ImageIcon(
-                                    AssetImage("assets/pin.png"),
+                                    const AssetImage("assets/pin.png"),
                                     color: theme.primaryColor,
                                   ),
                                 ),
@@ -948,12 +947,12 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                   children: [
                                     if (eventData.user!.deleteAt != null)
                                       Utils.accountDelete(context),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: const BoxDecoration(
                                           borderRadius: BorderRadius.only(
                                               bottomLeft: Radius.circular(10),
                                               topRight: Radius.circular(10)),
@@ -978,7 +977,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                               ],
                             ),
                             Padding(
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
                                   CircleAvatar(
@@ -990,7 +989,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                 .bannerImage!.mediaPath!),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 8.0),
+                                    padding: const EdgeInsets.only(left: 8.0),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -1080,8 +1079,9 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                     container: SizedBox(
                                                       width: Get.width,
                                                       child: Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
                                                                 vertical: 12.0,
                                                                 horizontal: 4),
                                                         child:
@@ -1108,7 +1108,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                       .primaryColor,
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 15,
                                                               ),
                                                               Text(
@@ -1126,7 +1126,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                       .primaryColor,
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 15,
                                                               ),
                                                               Row(
@@ -1157,10 +1157,10 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                     ),
                                                                   ),
                                                                   Padding(
-                                                                    padding: EdgeInsets
+                                                                    padding: const EdgeInsets
                                                                         .only(
-                                                                            left:
-                                                                                2.0),
+                                                                        left:
+                                                                            2.0),
                                                                     child: Text(
                                                                       'i have read and agree to the terms and\nconditions',
                                                                       style:
@@ -1269,7 +1269,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 text: "View Detail",
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                           ],

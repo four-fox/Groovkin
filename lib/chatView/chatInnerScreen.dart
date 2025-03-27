@@ -15,7 +15,7 @@ import 'chatInnerDataModel.dart';
 import 'messageWidget.dart';
 
 class ChatInnerScreen extends StatefulWidget {
-  ChatInnerScreen({Key? key}) : super(key: key);
+  ChatInnerScreen({super.key});
 
   bool notificationNav = false;
   bool staticNav = false;
@@ -132,14 +132,14 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
         return Scaffold(
             backgroundColor: Colors.transparent,
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(kToolbarHeight * 1.2),
+              preferredSize: const Size.fromHeight(kToolbarHeight * 1.2),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: Row(
                       children: [
                         GestureDetector(
@@ -153,11 +153,11 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                             Get.back();
                           },
                           child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              child: Padding(
+                              child: const Padding(
                                 padding: EdgeInsets.all(3.0),
                                 child: Icon(
                                   Icons.arrow_back_ios_new_rounded,
@@ -166,7 +166,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                 ),
                               )),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         GestureDetector(
@@ -195,7 +195,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                   // NetworkImage(groupPlaceholder)
                                   NetworkImage(userData!.profilePicture!)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         GestureDetector(
@@ -213,14 +213,14 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                             children: [
                               Text(
                                 userData!.profile!.fullName!,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'Montserrat',
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 17,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 1,
                               ),
 
@@ -247,7 +247,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                       ],
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.grey,
                     thickness: 1.2,
                   ),
@@ -255,7 +255,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               ),
             ),
             body: controller.getAllChatLoader.value == false
-                ? SizedBox.shrink()
+                ? const SizedBox.shrink()
                 : Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
@@ -307,7 +307,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                       ),
                                     ),
                                   )
-                                : SizedBox.shrink())
+                                : const SizedBox.shrink())
                           ],
                         ),
                       ),
@@ -322,7 +322,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                 )
                               : (controller.multipleImageList.isNotEmpty)
                                   ? imageShowContainer(controller)
-                                  : SizedBox.shrink(),
+                                  : const SizedBox.shrink(),
                           textFieldsContainer(controller),
                         ],
                       )
@@ -349,7 +349,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
             child: Text(
               '${"${dates.month}".padLeft(2, "0")}${"/${dates.day}".padLeft(2, "0")}/${dates.year}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: Colors.white),
+              style: const TextStyle(fontSize: 12, color: Colors.white),
             ),
           ),
         ),
@@ -365,7 +365,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
     return Container(
       color: Colors.white,
       width: Get.width,
-      padding: EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: Column(
         children: [
           Row(
@@ -373,7 +373,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
             children: [
               Text(
                 name,
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: const TextStyle(fontSize: 14, color: Colors.black87),
               ),
               GestureDetector(
                   onTap: () {
@@ -391,9 +391,9 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
           ),
           Container(
             width: Get.width,
-            padding: EdgeInsets.all(6),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-                border: Border(
+                border: const Border(
                   left: BorderSide(color: Colors.black, width: 5),
                 ),
                 // borderRadius: BorderRadius.circular(5),
@@ -402,7 +402,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                     controller.replyModel!.msg != null
                 ? Text(
                     controller.replyModel!.msg.toString(),
-                    style: TextStyle(color: Colors.black87),
+                    style: const TextStyle(color: Colors.black87),
                     maxLines: 3,
                   )
                 : controller.replyModel!.media == null &&
@@ -412,7 +412,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                             .decode(controller.replyModel.event!)['event_title']
                             .toString()
                             .capitalize!,
-                        style: TextStyle(color: Colors.black87),
+                        style: const TextStyle(color: Colors.black87),
                         maxLines: 1,
                       )
                     : Row(
@@ -422,10 +422,10 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                               : Flexible(
                                   flex: 2,
                                   child: Padding(
-                                    padding: EdgeInsets.only(right: 6.0),
+                                    padding: const EdgeInsets.only(right: 6.0),
                                     child: Text(
                                       controller.replyModel!.msg.toString(),
-                                      style: TextStyle(color: Colors.black87),
+                                      style: const TextStyle(color: Colors.black87),
                                     ),
                                   ),
                                 ),
@@ -459,8 +459,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
           shrinkWrap: true,
           itemCount: controller.multipleImageList.length,
           scrollDirection: Axis.horizontal,
-          physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
           itemBuilder: (BuildContext context, index) {
             return Stack(
               alignment: Alignment.topRight,
@@ -483,7 +483,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                         .remove(controller.multipleImageList[index]);
                     controller.update();
                   },
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 8,
                     backgroundColor: Colors.amber,
                     child: Icon(
@@ -508,7 +508,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
           SizedBox(
             width: Get.width / 1.16,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 6),
+              padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 6),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -517,14 +517,14 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                 child: TextField(
                   maxLines: 3,
                   minLines: 1,
-                  style: TextStyle(fontSize: 14, color: Colors.black),
+                  style: const TextStyle(fontSize: 14, color: Colors.black),
                   onChanged: (v) {
                     _onChangeHandler(v);
                   },
                   controller: controller.messageController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.only(left: 5, right: 6, top: 15),
+                    contentPadding: const EdgeInsets.only(left: 5, right: 6, top: 15),
                     hintText: "Write message",
                     hintStyle: TextStyle(
                         fontSize: 14, color: Colors.black87.withOpacity(0.5)),
@@ -536,14 +536,14 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                       barrierColor: Colors.transparent,
                       pressType: PressType.singleClick,
                       child: Padding(
-                        padding: EdgeInsets.all(6.0),
+                        padding: const EdgeInsets.all(6.0),
                         child: Container(
                           height: 35,
                           width: 35,
                           decoration: BoxDecoration(
                               color: Colors.black,
                               borderRadius: BorderRadius.circular(5)),
-                          child: Center(
+                          child: const Center(
                             child: Padding(
                               padding: EdgeInsets.all(6.0),
                               child: Icon(
@@ -574,14 +574,14 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               ///Todo latter on
             },
             child: Padding(
-              padding: EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(6.0),
               child: Container(
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(5)),
-                child: Center(
+                child: const Center(
                   child: Padding(
                     padding: EdgeInsets.all(6.0),
                     child: Icon(
@@ -607,7 +607,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
       order: StickyGroupedListOrder.ASC,
       itemPositionsListener: _controller.itemPositionsListener,
       itemScrollController: _controller.scrollController,
-      physics: AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       groupBy: (ChatData element) {
         var dates = DateTime.parse(element.createdAt!.toString());
         return DateTime(dates.year, dates.month, dates.day);
@@ -678,7 +678,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                               _controller.chatData!.data!.data![index], index)),
                     );
                   })
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
             _getItem(context, _controller.chatData!.data!.data![index], index)
           ],
         );
@@ -701,7 +701,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
 class ImageGrid extends StatelessWidget {
   final List imageUrls;
 
-  ImageGrid({required this.imageUrls});
+  ImageGrid({super.key, required this.imageUrls});
   List<String> a = [];
 
   @override
@@ -709,7 +709,7 @@ class ImageGrid extends StatelessWidget {
     return GridView.builder(
       itemCount: imageUrls.length,
       shrinkWrap: false,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: imageUrls.length == 1
             ? 1
@@ -771,17 +771,17 @@ class ImageGrid extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.grey,
                       ),
-                      padding: EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(7),
                       child: Text(
                         "+${imageUrls.length - 4} more",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xff00327A),
                         ),
                       ),
                     ),
                   )
-                : SizedBox.shrink()
+                : const SizedBox.shrink()
           ],
         );
       },

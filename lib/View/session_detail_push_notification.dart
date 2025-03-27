@@ -14,21 +14,21 @@ class _SessionDetailPushNotificationState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SESSION DETAILS"),
+        title: const Text("SESSION DETAILS"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Column(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 55,
                   backgroundImage: NetworkImage(""),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(

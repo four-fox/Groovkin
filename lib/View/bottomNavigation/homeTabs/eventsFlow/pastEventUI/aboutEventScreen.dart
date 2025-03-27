@@ -30,11 +30,11 @@ class AboutEventScreen extends StatelessWidget {
       appBar: customAppBar(theme: theme, text: titleText),
       body: GetBuilder<HomeController>(builder: (controller) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
@@ -51,7 +51,7 @@ class AboutEventScreen extends StatelessWidget {
                       venueBookingUser(theme: theme, context: context),
                       Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                            const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
                         child: CustomButton(
                           heights: 33,
                           color2: DynamicColor.secondaryClr,
@@ -69,7 +69,7 @@ class AboutEventScreen extends StatelessWidget {
                       ),
                       controller.selectedFilter.value == 4
                           ? Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 12.0, vertical: 3),
                               child: CustomButton(
                                 heights: 35,
@@ -88,7 +88,7 @@ class AboutEventScreen extends StatelessWidget {
                                 text: "Cancellation Reason",
                               ),
                             )
-                          : SizedBox.shrink(),
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ),
@@ -97,7 +97,7 @@ class AboutEventScreen extends StatelessWidget {
                     // padding: EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(13),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                           image: AssetImage("assets/event1.png"),
                           fit: BoxFit.fill),
                     )),
@@ -132,7 +132,7 @@ class AboutEventScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
                       "90’s Grunge and Bowling",
                       style: poppinsMediumStyle(
@@ -176,11 +176,11 @@ class AboutEventScreen extends StatelessWidget {
                     fontSize: 12
                     // icon: true,
                     ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 sp.read('role') == "eventManager"
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : Obx(
                         () => aboutEventCreator(
                             isDelete: null,
@@ -201,7 +201,7 @@ class AboutEventScreen extends StatelessWidget {
                             }),
                       ),
                 sp.read('role') == "eventOrganizer"
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : Obx(
                         () => ourGuestWidget(
                           isDelete: false,
@@ -233,11 +233,11 @@ class AboutEventScreen extends StatelessWidget {
                           },
                         ),
                       ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 12.0),
+                  padding: const EdgeInsets.only(left: 12.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -252,7 +252,7 @@ class AboutEventScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 12.0),
+                  padding: const EdgeInsets.only(left: 12.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -265,7 +265,7 @@ class AboutEventScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ShowCustomMap(),
@@ -273,7 +273,7 @@ class AboutEventScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
                     child: Text(
                       'verbiage to come',
                       style: poppinsMediumStyle(
@@ -285,18 +285,18 @@ class AboutEventScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 17,
                         backgroundColor: DynamicColor.avatarBgClr,
-                        child: Image(
+                        child: const Image(
                           image: AssetImage("assets/djing.png"),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           "DJing",
                           style: poppinsMediumStyle(
@@ -309,18 +309,18 @@ class AboutEventScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 17,
                         backgroundColor: DynamicColor.avatarBgClr,
-                        child: Image(
+                        child: const Image(
                           image: AssetImage("assets/lighting.png"),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           "Lighting",
                           style: poppinsMediumStyle(
@@ -333,18 +333,18 @@ class AboutEventScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 17,
                         backgroundColor: DynamicColor.avatarBgClr,
-                        child: Image(
+                        child: const Image(
                           image: AssetImage("assets/photobooth.png"),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           "Photobooth",
                           style: poppinsMediumStyle(
@@ -357,18 +357,18 @@ class AboutEventScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 17,
                         backgroundColor: DynamicColor.avatarBgClr,
-                        child: Image(
+                        child: const Image(
                           image: AssetImage("assets/master.png"),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           "Master of Ceremony",
                           style: poppinsMediumStyle(
@@ -382,18 +382,18 @@ class AboutEventScreen extends StatelessWidget {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Row(
                     children: [
                       CircleAvatar(
                         radius: 17,
                         backgroundColor: DynamicColor.avatarBgClr,
-                        child: Image(
+                        child: const Image(
                           image: AssetImage("assets/avEquipment.png"),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
                           "AV Equipment",
                           style: poppinsMediumStyle(
@@ -410,7 +410,7 @@ class AboutEventScreen extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
                     child: Text(
                       'All Hardware',
                       style: poppinsMediumStyle(
@@ -425,13 +425,13 @@ class AboutEventScreen extends StatelessWidget {
                     itemCount: 10,
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 3.0),
+                        padding: const EdgeInsets.symmetric(vertical: 3.0),
                         child: Row(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 25,
                               height: 25,
                               child: Image(
@@ -452,11 +452,11 @@ class AboutEventScreen extends StatelessWidget {
                         ),
                       );
                     }),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 12.0),
+                  padding: const EdgeInsets.only(left: 12.0),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -469,7 +469,7 @@ class AboutEventScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
@@ -477,13 +477,13 @@ class AboutEventScreen extends StatelessWidget {
                   child: ListView.builder(
                       itemCount: 12,
                       shrinkWrap: true,
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, index) {
                         return Padding(
-                          padding: EdgeInsets.only(left: 10.0),
+                          padding: const EdgeInsets.only(left: 10.0),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: BoxDecoration(
                                 color: DynamicColor.lightRedClr,
                                 borderRadius: BorderRadius.circular(12)),
@@ -501,7 +501,7 @@ class AboutEventScreen extends StatelessWidget {
                         );
                       }),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
               ],
@@ -522,16 +522,16 @@ class GenerateTicket extends StatelessWidget {
     return Scaffold(
         appBar: customAppBar(theme: theme, text: "Generate Ticket"),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
                 width: 60,
-                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 4),
+                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 4),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: DynamicColor.avatarBgClr),
@@ -546,7 +546,7 @@ class GenerateTicket extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -588,7 +588,7 @@ class GenerateTicket extends StatelessWidget {
                 thickness: 1,
                 color: DynamicColor.grayClr.withOpacity(0.6),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Text(
@@ -599,7 +599,7 @@ class GenerateTicket extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               CustomTextFieldsHintText(
@@ -607,7 +607,7 @@ class GenerateTicket extends StatelessWidget {
                 controller: TextEditingController(),
                 borderClr: DynamicColor.grayClr.withOpacity(0.6),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
@@ -618,7 +618,7 @@ class GenerateTicket extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               CustomTextFieldsHintText(
@@ -627,7 +627,7 @@ class GenerateTicket extends StatelessWidget {
                 controller: TextEditingController(),
                 borderClr: DynamicColor.grayClr.withOpacity(0.6),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               CustomButton(
@@ -651,7 +651,7 @@ class GenerateTicket extends StatelessWidget {
                               // border: Border.all(color: theme.primaryColor,)
                             ),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 12.0, horizontal: 5),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -671,7 +671,7 @@ class GenerateTicket extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(vertical: 18.0),
+                                        const EdgeInsets.symmetric(vertical: 18.0),
                                     child: Text(
                                       "Thank you For reporting",
                                       style: poppinsMediumStyle(
@@ -723,12 +723,12 @@ class CancellationReason extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Cancelled"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Text(
                 'Reason of cancellation',
                 style: poppinsMediumStyle(
@@ -739,7 +739,7 @@ class CancellationReason extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: DynamicColor.avatarBgClr.withOpacity(0.5)),

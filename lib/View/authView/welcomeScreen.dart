@@ -39,13 +39,13 @@ class _WelComeScreenState extends State<WelComeScreen> {
         //   ),
         // ),
         body: DoubleBackToCloseApp(
-          snackBar: SnackBar(
+          snackBar: const SnackBar(
               content: Text(
             "Please complete the profile screen",
           )),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 200,
                 width: double.infinity,
                 child: Image(
@@ -53,7 +53,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
                   fit: BoxFit.fill,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
@@ -64,11 +64,11 @@ class _WelComeScreenState extends State<WelComeScreen> {
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
                   'Welcome to Groovkin!  We welcome you to our platform and encourage you to organize new and exciting events in your local area using our service.  Please complete the registration process to tell us about the services you can provide.',
                   style: poppinsRegularStyle(
@@ -78,10 +78,10 @@ class _WelComeScreenState extends State<WelComeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
-              SizedBox(
+              const SizedBox(
                   height: 130,
                   width: 130,
                   child: Image(image: AssetImage("assets/handshake.png")))
@@ -89,7 +89,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {

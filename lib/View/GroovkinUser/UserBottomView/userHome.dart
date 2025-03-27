@@ -15,13 +15,12 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
-import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:intl/intl.dart';
 
 import '../../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 
 class UserHomeScreen extends StatefulWidget {
-  UserHomeScreen({super.key});
+  const UserHomeScreen({super.key});
 
   @override
   State<UserHomeScreen> createState() => _UserHomeScreenState();
@@ -82,7 +81,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         child: Container(
           height: 35,
           width: 90,
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               // color: Colors.amberAccent
               color: DynamicColor.darkGrayClr,
@@ -100,14 +99,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         ),
       ),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight * 2),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 2),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: theme.scaffoldBackgroundColor,
           ),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            SizedBox(
+            const SizedBox(
               height: 38,
             ),
             Row(
@@ -120,7 +119,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     color: DynamicColor.lightYellowClr,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(Routes.notificationScreen);
@@ -132,7 +131,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Row(
@@ -156,13 +155,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   child: Container(
                     height: 50,
                     width: 50,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                         border: Border.all(
                             color: DynamicColor.grayClr.withOpacity(0.6)),
                         borderRadius: BorderRadius.circular(8)),
                     child: ImageIcon(
-                      AssetImage("assets/filterIcon.png"),
+                      const AssetImage("assets/filterIcon.png"),
                       color: DynamicColor.grayClr,
                     ),
                   ),
@@ -184,7 +183,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 child: Container(
                   height: kToolbarHeight * 2,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       image: DecorationImage(
                     image: AssetImage("assets/myGroovkin.png"),
                     fit: BoxFit.fill,
@@ -203,7 +202,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 12.0),
+                        padding: const EdgeInsets.only(top: 12.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -211,17 +210,17 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               backgroundColor:
                                   DynamicColor.yellowClr.withOpacity(0.7),
                               child: ImageIcon(
-                                AssetImage("assets/groupIcons.png"),
+                                const AssetImage("assets/groupIcons.png"),
                                 color: theme.primaryColor,
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 30.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 30.0),
                               child: CircleAvatar(
                                 backgroundColor:
                                     DynamicColor.yellowClr.withOpacity(0.7),
                                 child: ImageIcon(
-                                  AssetImage("assets/musicIcons.png"),
+                                  const AssetImage("assets/musicIcons.png"),
                                   color: theme.primaryColor,
                                 ),
                               ),
@@ -230,7 +229,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               backgroundColor:
                                   DynamicColor.yellowClr.withOpacity(0.7),
                               child: ImageIcon(
-                                AssetImage("assets/supportIcon.png"),
+                                const AssetImage("assets/supportIcon.png"),
                                 color: theme.primaryColor,
                               ),
                             ),
@@ -241,13 +240,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -285,7 +284,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                       controller.getRecommendedLoader.value == false
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Visibility(
                               visible: recommendedVal.value,
                               child: controller.recommendedEventData == null ||
@@ -310,7 +309,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                             shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               EventData singleEventData =
@@ -391,13 +390,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -435,7 +434,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                       controller.getEventNearByMeLoader.value == false
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Visibility(
                               visible: nearbyVal.value,
                               child: controller.eventNearByMe == null ||
@@ -454,7 +453,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                             shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               EventData singleEvent = controller
@@ -530,13 +529,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -574,7 +573,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                       controller.getTopRatedEventLoader.value == false
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Visibility(
                               visible: topRatedVal.value,
                               child: controller.topRatingData == null ||
@@ -593,7 +592,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                             shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               EventData singleEvent = controller
@@ -669,16 +668,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -716,7 +715,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         ],
                       ),
                       controller.userOngoingLoader.value == false
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Visibility(
                               visible: ongoingVal.value,
                               child: controller.userOngoing == null ||
@@ -735,7 +734,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                             shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               EventData singleEvent = controller
@@ -811,7 +810,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: kToolbarHeight * 1.3,
               ),
             ],
@@ -834,7 +833,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 }
 
 class ViewAllEventListScreen extends StatefulWidget {
-  ViewAllEventListScreen({super.key});
+  const ViewAllEventListScreen({super.key});
 
   @override
   State<ViewAllEventListScreen> createState() => _ViewAllEventListScreenState();
@@ -901,12 +900,12 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
       appBar: customAppBar(theme: theme, text: "All Events"),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           searchingShow == true
               ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: SearchTextFields(
                     controller: _eventController.searchingController,
                     onChanged: (v) {
@@ -918,7 +917,7 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                     },
                   ),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
           Expanded(
             child: GetBuilder<EventController>(initState: (v) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -954,12 +953,12 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                   return false;
                 },
                 child: controller.getAllEventsLoader.value == false
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : controller.allEvents == null ||
                             controller.allEvents!.data!.data!.isEmpty
                         ? noData(context: context, theme: theme)
                         : Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 12.0, vertical: 8),
                             child: Container(
                               decoration: BoxDecoration(
@@ -969,7 +968,7 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                   itemCount:
                                       controller.allEvents!.data!.data!.length,
                                   shrinkWrap: true,
-                                  physics: AlwaysScrollableScrollPhysics(),
+                                  physics: const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (BuildContext context, index) {
                                     EventData singleEventDat = controller
                                         .allEvents!.data!.data![index];

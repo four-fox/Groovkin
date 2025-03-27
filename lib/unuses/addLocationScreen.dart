@@ -23,7 +23,7 @@ class AddLocationScreen extends StatelessWidget {
       ),
       body: GetBuilder<EventController>(builder: (controller) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
           child: Column(
             children: [
               CustomTextFields(
@@ -35,7 +35,7 @@ class AddLocationScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
         child: Obx(
           () => CustomButton(
             onTap: () {

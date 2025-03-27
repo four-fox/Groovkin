@@ -12,7 +12,7 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class HardwareScreen extends StatefulWidget {
-  HardwareScreen({super.key});
+  const HardwareScreen({super.key});
 
   @override
   State<HardwareScreen> createState() => _HardwareScreenState();
@@ -52,12 +52,12 @@ class _HardwareScreenState extends State<HardwareScreen> {
                   _eventController.postEventFunction(context, theme,
                       draft: true);
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Icon(Icons.drafts),
                 ),
               )
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ]),
       body: GetBuilder<AuthController>(initState: (v) {
         _controller.getAllService(
@@ -67,14 +67,14 @@ class _HardwareScreenState extends State<HardwareScreen> {
         );
       }, builder: (controller) {
         return controller.getAllServiceLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Text(
@@ -93,18 +93,18 @@ class _HardwareScreenState extends State<HardwareScreen> {
                           color: DynamicColor.lightRedClr,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       ListView.builder(
                           shrinkWrap: true,
                           itemCount: controller.hardwareListing.length,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                                   child: hardwareWidget(
                                     text: controller.hardwareListing[index].name
                                         .toString(),
@@ -124,15 +124,15 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(top: 6.0),
+                                  padding: const EdgeInsets.only(top: 6.0),
                                   child: Visibility(
                                     visible: controller.hardwareListing[index]
                                         .showItems!.value,
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 15, vertical: 12),
                                       decoration: BoxDecoration(
-                                          gradient: LinearGradient(
+                                          gradient: const LinearGradient(
                                             begin: Alignment.centerRight,
                                             end: Alignment.centerLeft,
                                             colors: [
@@ -153,7 +153,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                               .length,
                                           shrinkWrap: true,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemBuilder:
                                               (BuildContext context, indexes) {
                                             return Column(
@@ -175,7 +175,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                                                   .primaryColor,
                                                               context: context),
                                                     ),
-                                                    Spacer(),
+                                                    const Spacer(),
                                                     Theme(
                                                       data: Theme.of(context)
                                                           .copyWith(
@@ -236,7 +236,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
                               ],
                             );
                           }),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                     ],
@@ -247,7 +247,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
       bottomNavigationBar: SafeArea(
         bottom:  true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
@@ -295,9 +295,9 @@ class _HardwareScreenState extends State<HardwareScreen> {
   Widget hardwareWidget(
       {theme, context, text, GestureTapCallback? onTap, IconData? icon}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
       decoration: BoxDecoration(
-          image: DecorationImage(
+          image: const DecorationImage(
               image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: theme.primaryColor, width: 0.7)),
@@ -311,7 +311,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
               color: theme.primaryColor,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             onTap: onTap,
             child: Icon(
@@ -335,11 +335,11 @@ class AddMoreHardwareScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Hardware"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Center(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
@@ -364,7 +364,7 @@ class AddMoreHardwareScreen extends StatelessWidget {
                   child: ListView.builder(
                       itemCount: list.length,
                       shrinkWrap: true,
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, index) {
                         return Obx(
                           () => Padding(
@@ -375,7 +375,7 @@ class AddMoreHardwareScreen extends StatelessWidget {
                                     !list[index].selectedValue!.value;
                               },
                               child: Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
@@ -386,7 +386,7 @@ class AddMoreHardwareScreen extends StatelessWidget {
                                     image:
                                         list[index].selectedValue!.value == true
                                             ? null
-                                            : DecorationImage(
+                                            : const DecorationImage(
                                                 image: AssetImage(
                                                     "assets/grayClor.png"),
                                                 fit: BoxFit.fill)),
@@ -400,9 +400,9 @@ class AddMoreHardwareScreen extends StatelessWidget {
                                         color: theme.primaryColor,
                                       ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     list[index].selectedValue!.value != true
-                                        ? SizedBox.shrink()
+                                        ? const SizedBox.shrink()
                                         : Icon(
                                             Icons.check,
                                             color: DynamicColor.blackClr,
@@ -421,7 +421,7 @@ class AddMoreHardwareScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           onTap: () {
             Get.back();

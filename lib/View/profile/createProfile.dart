@@ -15,12 +15,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class CreateProfile extends StatelessWidget {
-  CreateProfile({Key? key}) : super(key: key);
+  CreateProfile({super.key});
 
   final createProfileForm = GlobalKey<FormState>();
   PhoneNumber number = PhoneNumber(isoCode: "US");
 
-  AuthController _controller = Get.find();
+  final AuthController _controller = Get.find();
   List<int> dobYear = [];
 
   @override
@@ -39,7 +39,7 @@ class CreateProfile extends StatelessWidget {
                 Get.back();
               },
               child: ImageIcon(
-                AssetImage('assets/backArrow.png'),
+                const AssetImage('assets/backArrow.png'),
                 size: 32,
                 color: theme.primaryColor,
               ),
@@ -65,7 +65,7 @@ class CreateProfile extends StatelessWidget {
             _controller.dobController.clear();
           }, builder: (controller) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,13 +92,13 @@ class CreateProfile extends StatelessWidget {
                                   ? theme.primaryColor
                                   : DynamicColor.avatarBgClr,
                               child: ImageIcon(
-                                AssetImage("assets/imageUploadIcon.png"),
+                                const AssetImage("assets/imageUploadIcon.png"),
                                 color: DynamicColor.yellowClr,
                                 size: 31,
                               ),
                             ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -111,7 +111,7 @@ class CreateProfile extends StatelessWidget {
                     ),
                     sp.read("role") == "User"
                         ? Padding(
-                            padding: EdgeInsets.symmetric(vertical: 4.0),
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Text(
                               "(optional)",
                               style: poppinsMediumStyle(
@@ -121,8 +121,8 @@ class CreateProfile extends StatelessWidget {
                               ),
                             ),
                           )
-                        : SizedBox.shrink(),
-                    SizedBox(
+                        : const SizedBox.shrink(),
+                    const SizedBox(
                       height: 28,
                     ),
                     CustomTextFields(
@@ -130,7 +130,7 @@ class CreateProfile extends StatelessWidget {
                       controller: controller.firstNameController,
                       validationError: "first name",
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     CustomTextFields(
@@ -138,7 +138,7 @@ class CreateProfile extends StatelessWidget {
                       controller: controller.lastNameController,
                       validationError: "last name",
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     CustomTextFields(
@@ -155,8 +155,8 @@ class CreateProfile extends StatelessWidget {
                             controller: controller.companyNameController,
                             ignoredValidation: true,
                           )
-                        : SizedBox.shrink(),
-                    SizedBox(
+                        : const SizedBox.shrink(),
+                    const SizedBox(
                       height: /*sp.read('role') !="User"?*/ 15 /*:0*/,
                     ),
                     //  CustomTextFields(
@@ -199,7 +199,7 @@ class CreateProfile extends StatelessWidget {
                           ),
                           hintText: "Enter Year of birth",
                           label: Padding(
-                            padding: EdgeInsets.only(left: 15.0),
+                            padding: const EdgeInsets.only(left: 15.0),
                             child: Text(
                               "Year Of Birth",
                               style: poppinsRegularStyle(
@@ -210,8 +210,8 @@ class CreateProfile extends StatelessWidget {
                           ),
                           labelStyle: TextStyle(color: DynamicColor.grayClr),
                           hintStyle:
-                              TextStyle(fontFamily: 'Montserrat', fontSize: 13),
-                          contentPadding: EdgeInsets.all(5),
+                              const TextStyle(fontFamily: 'Montserrat', fontSize: 13),
+                          contentPadding: const EdgeInsets.all(5),
                           suffixIcon: GestureDetector(
                             onTap: () async {
                               Get.bottomSheet(Container(
@@ -244,7 +244,7 @@ class CreateProfile extends StatelessWidget {
                               ));
                             },
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 4.0, vertical: 4),
                               child: Container(
                                 height: 40,
@@ -275,7 +275,7 @@ class CreateProfile extends StatelessWidget {
                             ),
                           )),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     InternationalPhoneNumberInput(
@@ -302,7 +302,7 @@ class CreateProfile extends StatelessWidget {
                           borderRadius: BorderRadius.circular(13),
                         ),
                         filled: true,
-                        contentPadding: EdgeInsets.only(
+                        contentPadding: const EdgeInsets.only(
                           left: 15,
                         ),
                         hintText: "Enter Phone No",
@@ -312,7 +312,7 @@ class CreateProfile extends StatelessWidget {
                       onFieldSubmitted: (value) {
                         // getPhoneNumber(signUpController.phoneController.text);
                       },
-                      selectorConfig: SelectorConfig(
+                      selectorConfig: const SelectorConfig(
                         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                         setSelectorButtonAsPrefixIcon: true,
                       ),
@@ -335,7 +335,7 @@ class CreateProfile extends StatelessWidget {
                         color: DynamicColor.grayClr,
                       ),
                       spaceBetweenSelectorAndTextField: 0,
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                           signed: true, decimal: true),
                       inputBorder: InputBorder.none,
                       onSaved: (PhoneNumber number) {
@@ -388,7 +388,7 @@ class CreateProfile extends StatelessWidget {
                     SizedBox(
                       height: sp.read('role') == "eventManager" ? 15 : 0,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
 
@@ -398,7 +398,7 @@ class CreateProfile extends StatelessWidget {
                         // dialogColor: Colors.grey.shade200,
                         textFieldDecoration: InputDecoration(
                           hintStyle:
-                              TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
+                              const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
                           fillColor: Colors.transparent,
                           filled: true,
                           // suffixIcon: Icon(Icons.arrow_downward_rounded),
@@ -427,17 +427,17 @@ class CreateProfile extends StatelessWidget {
                     //   controller: controller.stateController,
                     // ):SizedBox.shrink(),
                     sp.read("role") == "eventOrganizer"
-                        ? SizedBox(
+                        ? const SizedBox(
                             height: 15,
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     CustomTextFields(
                       labelText: "About us",
                       maxLine: 5,
                       controller: controller.aboutController,
                       validationError: "about us",
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     // SizedBox(
@@ -455,7 +455,7 @@ class CreateProfile extends StatelessWidget {
             );
           }),
           bottomNavigationBar: Padding(
-            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             child: CustomButton(
               borderClr: Colors.transparent,
               onTap: () {
@@ -470,7 +470,7 @@ class CreateProfile extends StatelessWidget {
                               height: kToolbarHeight * 4,
                               borderColor: Colors.transparent,
                               container: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -493,7 +493,7 @@ class CreateProfile extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 7, vertical: 4),
                                       child: Row(
                                         mainAxisAlignment:

@@ -13,7 +13,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
 
   String title = Get.arguments['appBarTitle'] ?? "Lifestyle Survey";
 
-  AuthController _controller = Get.find();
+  final AuthController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +35,13 @@ class SurveyLifeStyleScreen extends StatelessWidget {
         _controller.getLifeStyle(surveyType: "life_style");
       }, builder: (controller) {
         return controller.getLifeStyleLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -67,7 +67,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                         color: DynamicColor.lightRedClr,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Expanded(
@@ -97,12 +97,12 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.only(top: 4.0, bottom: 4),
+                                        const EdgeInsets.only(top: 4.0, bottom: 4),
                                     child: Visibility(
                                       visible: controller.surveyData!
                                           .data![index].showItems!.value,
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                           horizontal: 15,
                                         ),
                                         decoration: BoxDecoration(
@@ -122,7 +122,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                                                 .length,
                                             shrinkWrap: true,
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             itemBuilder: (BuildContext context,
                                                 indexxs) {
                                               return Column(
@@ -144,7 +144,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                                                                 context:
                                                                     context),
                                                       ),
-                                                      Spacer(),
+                                                      const Spacer(),
                                                       Theme(
                                                         data: Theme.of(context)
                                                             .copyWith(
@@ -178,7 +178,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                                                       )
                                                     ],
                                                   ),
-                                                  Divider(
+                                                  const Divider(
                                                     height: 1,
                                                   ),
                                                 ],
@@ -197,7 +197,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
               );
       }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {
@@ -225,7 +225,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
       IconData? icon,
       String? img}) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
       decoration: BoxDecoration(
           // image: DecorationImage(
           //     image: AssetImage("assets/buttonBg.png"),
@@ -239,7 +239,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
               backgroundColor: theme.primaryColor,
               radius: 15,
               child: Image(image: AssetImage(img ?? 'assets/foodies.png'))),
-          SizedBox(
+          const SizedBox(
             width: 6,
           ),
           Text(
@@ -250,7 +250,7 @@ class SurveyLifeStyleScreen extends StatelessWidget {
               color: theme.primaryColor,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             onTap: onTap,
             child: Icon(

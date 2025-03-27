@@ -13,7 +13,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:intl/intl.dart';
 
 class ViewProfileScreen extends StatefulWidget {
-  ViewProfileScreen({super.key});
+  const ViewProfileScreen({super.key});
 
   @override
   State<ViewProfileScreen> createState() => _ViewProfileScreenState();
@@ -66,14 +66,14 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
       }
     }, builder: (controller) {
       return controller.getProfileLoader.value == false
-          ? SizedBox()
+          ? const SizedBox()
           : DefaultTabController(
               length: 2,
               child: Scaffold(
                 appBar: AppBar(
                   centerTitle: true,
                   flexibleSpace: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         // color:imagee==true?Colors.transparent: DynamicColor.yellowClr,
                         image: DecorationImage(
                             image: AssetImage("assets/grayClor.png"),
@@ -94,7 +94,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         Get.back();
                       },
                       child: ImageIcon(
-                        AssetImage("assets/backArrow.png"),
+                        const AssetImage("assets/backArrow.png"),
                         color: theme.primaryColor,
                       )),
                   actions: [
@@ -106,14 +106,14 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                 context: context,
                                 builder: (context) {
                                   return Container(
-                                    padding: EdgeInsets.all(12.0),
-                                    margin: EdgeInsets.all(10.0),
+                                    padding: const EdgeInsets.all(12.0),
+                                    margin: const EdgeInsets.all(10.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         TextField(
                                           controller: eventReasonController,
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                             hintText: "Reason",
                                             border: OutlineInputBorder(
                                                 borderSide: BorderSide(
@@ -128,7 +128,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           keyboardType: TextInputType.multiline,
                                           maxLines: 5,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         CustomButton(
@@ -150,7 +150,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           },
                                           text: "Report",
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                       ],
@@ -158,7 +158,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   );
                                 });
                           },
-                          icon: Icon(Icons.more_vert)),
+                          icon: const Icon(Icons.more_vert)),
                     if (!fromNotification && venueDetails != null)
                       IconButton(
                           padding: EdgeInsets.zero,
@@ -167,14 +167,14 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                 context: context,
                                 builder: (context) {
                                   return Container(
-                                    padding: EdgeInsets.all(12.0),
-                                    margin: EdgeInsets.all(10.0),
+                                    padding: const EdgeInsets.all(12.0),
+                                    margin: const EdgeInsets.all(10.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         TextField(
                                           controller: venueReasonController,
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                             hintText: "Reason",
                                             border: OutlineInputBorder(
                                                 borderSide: BorderSide(
@@ -189,7 +189,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           keyboardType: TextInputType.multiline,
                                           maxLines: 5,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                         CustomButton(
@@ -212,7 +212,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                           },
                                           text: "Report",
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                         ),
                                       ],
@@ -220,7 +220,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   );
                                 });
                           },
-                          icon: Icon(Icons.more_vert)),
+                          icon: const Icon(Icons.more_vert)),
                   ],
                 ),
                 body: Column(
@@ -252,7 +252,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -315,7 +315,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                         !fromNotification &&
                         venueDetails == null)
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Row(
                           children: [
                             customFollowingBtn(context, onTap: () {
@@ -323,14 +323,14 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   arguments: {"appBarText": "Followings"});
                             }),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: customFollowingBtn(context, onTap: () {
                                 Get.toNamed(Routes.followingScreen,
                                     arguments: {"appBarText": "Followers"});
                               }, text: "Followers"),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: customFollowingBtn(context, onTap: () {
                                 Get.toNamed(Routes.allUserScreen);
                               }, text: "Follow"),
@@ -342,11 +342,11 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     ImageIcon(
-                                      AssetImage("assets/profileEditIcons.png"),
+                                      const AssetImage("assets/profileEditIcons.png"),
                                       color: DynamicColor.yellowClr,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 4.0),
+                                      padding: const EdgeInsets.only(left: 4.0),
                                       child: Text(
                                         "Edit",
                                         style: poppinsRegularStyle(
@@ -369,18 +369,18 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                           fontSize: 14,
                           context: context,
                           color: DynamicColor.grayClr),
-                      labelPadding: EdgeInsets.all(6),
-                      indicatorPadding: EdgeInsets.all(10),
+                      labelPadding: const EdgeInsets.all(6),
+                      indicatorPadding: const EdgeInsets.all(10),
                       indicatorColor: theme.primaryColor,
                       // onTap: (v){
                       //   tabValue.value = v;
                       // },
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       tabs: [
-                        Tab(
+                        const Tab(
                           text: "About",
                         ),
-                        Tab(
+                        const Tab(
                           text: "Contact",
                         ),
                       ],
@@ -389,7 +389,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                       child: TabBarView(
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

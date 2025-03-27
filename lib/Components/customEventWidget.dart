@@ -25,14 +25,14 @@ userCustomEvent(
           }
         : onTap,
     child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       // color: isDelete ? DynamicColor.disabledColor : Colors.transparent,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (isDelete != null && isDelete == true)
             Utils.accountDelete(context),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -45,7 +45,7 @@ userCustomEvent(
                     : NetworkImage(img) as ImageProvider,
               ),
               Padding(
-                padding: EdgeInsets.only(left: 6.0),
+                padding: const EdgeInsets.only(left: 6.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -70,7 +70,7 @@ userCustomEvent(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ImageIcon(
-                            AssetImage("assets/location.png"),
+                            const AssetImage("assets/location.png"),
                             color: DynamicColor.grayClr,
                           ),
                           SizedBox(
@@ -92,7 +92,7 @@ userCustomEvent(
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               eventDateWidget(
                 date: datee,
                 day: dayy,

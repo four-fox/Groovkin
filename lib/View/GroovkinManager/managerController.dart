@@ -194,7 +194,7 @@ class ManagerController extends GetxController {
       XFile? pickedFile = isVideo
           ? await _picker.pickVideo(
               source: ImageSource.camera,
-              maxDuration: Duration(seconds: 60),
+              maxDuration: const Duration(seconds: 60),
             )
           : await _picker.pickImage(
               source: ImageSource.camera,
@@ -449,7 +449,7 @@ class ManagerController extends GetxController {
               container: SizedBox(
                 width: Get.width,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -465,7 +465,7 @@ class ManagerController extends GetxController {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           "Your profile has been created",
                           overflow: TextOverflow.ellipsis,
@@ -477,7 +477,7 @@ class ManagerController extends GetxController {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                           height: 120,
                           child:
                               Image(image: AssetImage("assets/handshake.png"))),
@@ -487,7 +487,7 @@ class ManagerController extends GetxController {
               ),
             );
           });
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         Get.back();
         selectIndexxx.value = 0;
         Get.offAllNamed(Routes.bottomNavigationView,

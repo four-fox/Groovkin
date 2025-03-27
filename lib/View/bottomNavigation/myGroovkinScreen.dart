@@ -45,7 +45,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
     }, builder: (controller) {
       groovkinModel.Data? data = controller.myGroovkinModel?.data;
       return data == null
-          ? SizedBox()
+          ? const SizedBox()
           : Scaffold(
               appBar: widget.appBar == true
                   ? null
@@ -57,13 +57,13 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     if (data.services.isNotEmpty)
                       Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                            const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
                         color: DynamicColor.avatarBgClr.withOpacity(0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,7 +75,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   color: DynamicColor.lightRedClr),
                             ),
                             widget.appBar == true
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : GestureDetector(
                                     onTap: () {
                                       Get.toNamed(Routes.serviceScreen,
@@ -101,12 +101,12 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                             data.eventItem.image?.isNotEmpty ?? false,
                       );
                     }),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                          const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
                       color: DynamicColor.avatarBgClr.withOpacity(0.44),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,7 +117,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                 fontSize: 16, color: DynamicColor.lightRedClr),
                           ),
                           widget.appBar == true
-                              ? SizedBox.shrink()
+                              ? const SizedBox.shrink()
                               : GestureDetector(
                                   onTap: () {
                                     _authController.insuranceVal.value =
@@ -147,7 +147,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     if (data.hardwareProvides.isNotEmpty)
                       Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                            const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
                         color: DynamicColor.avatarBgClr.withOpacity(0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +159,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   color: DynamicColor.lightRedClr),
                             ),
                             widget.appBar == true
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : GestureDetector(
                                     onTap: () {
                                       Get.toNamed(Routes.hardwareScreen,
@@ -179,14 +179,14 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                       ListView.builder(
                           itemCount: data.hardwareProvides.length,
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (BuildContext context, index) {
                             final hardwareData = data.hardwareProvides[index];
                             return Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(left: 12.0, top: 6),
+                                  padding: const EdgeInsets.only(left: 12.0, top: 6),
                                   child: Row(
                                     children: [
                                       // Image(
@@ -217,7 +217,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   ),
                                 ),
                                 ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount:
                                         hardwareData.categoryItems.length,
@@ -225,7 +225,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                         (BuildContext context, indexxx) {
                                       return Padding(
                                         padding:
-                                            EdgeInsets.only(left: 12.0, top: 6),
+                                            const EdgeInsets.only(left: 12.0, top: 6),
                                         child: Row(
                                           children: [
                                             Padding(
@@ -254,13 +254,13 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                               ],
                             );
                           }),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     if (data.musicGenre.isNotEmpty)
                       Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                            const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
                         color: DynamicColor.avatarBgClr.withOpacity(0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -272,7 +272,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   color: DynamicColor.lightRedClr),
                             ),
                             widget.appBar == true
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : GestureDetector(
                                     onTap: () {
                                       Get.toNamed(Routes.quickSurveyScreen,
@@ -288,19 +288,19 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                           ],
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     // if (data.musicGenre.isNotEmpty)
                     ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12),
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
                               child: Text(
                                 data.musicGenre[index].name,
                                 style: poppinsRegularStyle(
@@ -331,7 +331,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                           ? data.musicGenre.length
                           : 0,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kToolbarHeight * 1.5,
                     ),
                   ],
@@ -350,7 +350,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
       text,
       bool? isNetworkImage = false}) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       child: Row(
         children: [
           CircleAvatar(
@@ -362,7 +362,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     : AssetImage(image ?? "assets/djing.png") as ImageProvider,
                 size: 20,
               )),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Text(
@@ -384,14 +384,14 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
     String? title,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 3.0, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 6),
       child: Container(
         height: 70,
         width: 70,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-                image: AssetImage('assets/venue1.png'),
+                image: const AssetImage('assets/venue1.png'),
                 fit: BoxFit.fill,
                 colorFilter: ColorFilter.mode(
                   DynamicColor.grayClr.withOpacity(0.3),

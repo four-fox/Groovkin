@@ -11,7 +11,7 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
 class OTPScreen extends StatelessWidget {
-  OTPScreen({Key? key}) : super(key: key);
+  OTPScreen({super.key});
 
   final newPasswordForm = GlobalKey<FormState>();
 
@@ -27,12 +27,12 @@ class OTPScreen extends StatelessWidget {
             width: Get.width,
             height: Get.height,
             color: theme.scaffoldBackgroundColor,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: SingleChildScrollView(
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: kToolbarHeight * 1.8,
                   ),
                   CustomTextFields(
@@ -43,7 +43,7 @@ class OTPScreen extends StatelessWidget {
                     isEmail: true,
                     readOnly: true,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   OTPTextField(
@@ -64,10 +64,10 @@ class OTPScreen extends StatelessWidget {
                       controller.newPassOTPController.text = v;
                     },
                     onCompleted: (pin) {
-                      print("Completed: " + pin);
+                      print("Completed: $pin");
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   CustomTextFields(
@@ -76,7 +76,7 @@ class OTPScreen extends StatelessWidget {
                     controller: controller.newPassController,
                     validationError: "new password",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   CustomTextFields(
@@ -85,7 +85,7 @@ class OTPScreen extends StatelessWidget {
                     controller: controller.newConfirmPassController,
                     validationError: "confirm password",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   CustomButton(

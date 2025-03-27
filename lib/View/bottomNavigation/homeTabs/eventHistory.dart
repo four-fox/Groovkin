@@ -25,21 +25,21 @@ class PostEvents extends StatelessWidget {
       _controller.completedEvent();
     }, builder: (controller) {
       return controller.completedEventLoader.value == false
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: controller.eventHistory!.data!.data!.isEmpty
                   ? noData(theme: theme, context: context)
                   : ListView.builder(
                       // itemCount: 2,
                       itemCount: controller.eventHistory!.data!.data!.length,
                       shrinkWrap: true,
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, index) {
                         EventData singleEvent =
                             controller.eventHistory!.data!.data![index];
                         return Padding(
-                          padding: EdgeInsets.only(bottom: 14.0),
+                          padding: const EdgeInsets.only(bottom: 14.0),
                           child: Container(
                             // padding: EdgeInsets.all(6),
 
@@ -56,9 +56,9 @@ class PostEvents extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.all(6),
+                                      padding: const EdgeInsets.all(6),
                                       child: ImageIcon(
-                                        AssetImage("assets/pin.png"),
+                                        const AssetImage("assets/pin.png"),
                                         color: theme.primaryColor,
                                       ),
                                     ),
@@ -66,20 +66,20 @@ class PostEvents extends StatelessWidget {
                                       children: [
                                         if (singleEvent.user!.deleteAt != null)
                                           Utils.accountDelete(context),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Container(
-                                          padding: EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(8),
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
+                                              borderRadius: const BorderRadius.only(
                                                 bottomLeft: Radius.circular(10),
                                                 topRight: Radius.circular(10),
                                               ),
                                               image: controller.selectedFilter
                                                           .value !=
                                                       4
-                                                  ? DecorationImage(
+                                                  ? const DecorationImage(
                                                       image: AssetImage(
                                                           "assets/topbtnGradent.png"),
                                                       fit: BoxFit.fill,
@@ -128,7 +128,7 @@ class PostEvents extends StatelessWidget {
                                                     .toString()),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.only(left: 8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -159,7 +159,7 @@ class PostEvents extends StatelessWidget {
                                 // venueBookingUser(
                                 // ,theme: theme,context: context),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 12.0, vertical: 6),
                                   child: CustomButtonWithIcon(
                                     height: 35,
@@ -208,7 +208,7 @@ class PostEvents extends StatelessWidget {
                                 ),
                                 controller.selectedFilter.value == 4
                                     ? Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 12.0, vertical: 3),
                                         child: CustomButton(
                                           heights: 35,
@@ -224,7 +224,7 @@ class PostEvents extends StatelessWidget {
                                           text: "Cancellation Reason",
                                         ),
                                       )
-                                    : SizedBox.shrink(),
+                                    : const SizedBox.shrink(),
                               ],
                             ),
                           ),
@@ -236,11 +236,11 @@ class PostEvents extends StatelessWidget {
 
   Widget reviewWidget({theme, context}) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Text(
@@ -254,7 +254,7 @@ class PostEvents extends StatelessWidget {
           ),
           RatingBarIndicator(
             rating: 2.75,
-            itemBuilder: (context, index) => Icon(
+            itemBuilder: (context, index) => const Icon(
               Icons.star,
               color: Colors.amber,
             ),
@@ -304,7 +304,7 @@ class PostEvents extends StatelessWidget {
                                   color: theme.primaryColor,
                                 )),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 12.0, horizontal: 5),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -324,7 +324,7 @@ class PostEvents extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding:
-                                        EdgeInsets.symmetric(vertical: 18.0),
+                                        const EdgeInsets.symmetric(vertical: 18.0),
                                     child: Text(
                                       "Thank you For Review",
                                       style: poppinsMediumStyle(

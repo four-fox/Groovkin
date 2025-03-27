@@ -9,21 +9,21 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class InviteFriendsInGroups extends StatelessWidget {
-  InviteFriendsInGroups({Key? key}) : super(key: key);
+  InviteFriendsInGroups({super.key});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight*3.1),
+        preferredSize: const Size.fromHeight(kToolbarHeight*3.1),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 height: kToolbarHeight*1.4,
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/grayClor.png"),
                         fit: BoxFit.fill
@@ -32,7 +32,7 @@ class InviteFriendsInGroups extends StatelessWidget {
                 child: Stack(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: Center(
                         child: Text("Invite your friends",
                           style: poppinsMediumStyle(
@@ -43,11 +43,11 @@ class InviteFriendsInGroups extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child:
-                        ImageIcon(AssetImage("assets/backArrow.png"),
+                        ImageIcon(const AssetImage("assets/backArrow.png"),
                           color: theme.primaryColor,
                         ),
                       ),
@@ -56,7 +56,7 @@ class InviteFriendsInGroups extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 18),
                 child: Text("Send an invitation to your Friends!",
                   style: poppinsRegularStyle(
                     fontSize: 14,
@@ -66,7 +66,7 @@ class InviteFriendsInGroups extends StatelessWidget {
                 )
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TextFormField(
                   style: poppinsRegularStyle(
                       fontSize: 12,
@@ -86,7 +86,7 @@ class InviteFriendsInGroups extends StatelessWidget {
                       borderSide: BorderSide(color: DynamicColor.grayClr),//<-- SEE HERE
                     ),
                     hintText:"title",
-                    contentPadding: EdgeInsets.only(left: 12,top: 12),
+                    contentPadding: const EdgeInsets.only(left: 12,top: 12),
                     hintStyle: poppinsRegularStyle(
                         fontSize: 12,
                         color: DynamicColor.grayClr
@@ -94,29 +94,29 @@ class InviteFriendsInGroups extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
             ]),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: ListView.builder(
             itemCount: list.length,
             shrinkWrap: true,
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             itemBuilder: (BuildContext context,index){
               return Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.0,horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 6.0,horizontal: 12),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           backgroundImage: AssetImage("assets/profileImg.png"),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 10.0),
+                          padding: const EdgeInsets.only(left: 10.0),
                           child: Text("The Squad",
                             style: poppinsRegularStyle(
                                 fontSize: 14,
@@ -126,7 +126,7 @@ class InviteFriendsInGroups extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         CircleAvatar(
                           radius: 17,
                           backgroundColor: DynamicColor.grayClr.withOpacity(0.6),
@@ -155,11 +155,11 @@ class InviteFriendsInGroups extends StatelessWidget {
             }),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: (){
-Future.delayed(Duration(seconds: 2),(){
+Future.delayed(const Duration(seconds: 2),(){
   Get.offAllNamed(Routes.userBottomNavigationNav);
 });
             showDialog(
@@ -172,7 +172,7 @@ Future.delayed(Duration(seconds: 2),(){
                     container: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Image(image: AssetImage("assets/sendNotify.png")),
+                        const Image(image: AssetImage("assets/sendNotify.png")),
                         Text("Send Notify",
                           style: poppinsMediumStyle(
                               fontSize: 18,

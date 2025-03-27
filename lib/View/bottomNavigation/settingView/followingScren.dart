@@ -24,7 +24,7 @@ class FollowingScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/grayClor.png"),
                     fit: BoxFit.fill)),
@@ -41,7 +41,7 @@ class FollowingScreen extends StatelessWidget {
               Get.back();
             },
             child: ImageIcon(
-              AssetImage("assets/backArrow.png"),
+              const AssetImage("assets/backArrow.png"),
               color: theme.primaryColor,
             ),
           ),
@@ -52,8 +52,8 @@ class FollowingScreen extends StatelessWidget {
               unselectedLabelStyle:
                   poppinsMediumStyle(fontSize: 14, context: context),
               labelStyle: poppinsMediumStyle(fontSize: 14, context: context),
-              labelPadding: EdgeInsets.all(6),
-              indicatorPadding: EdgeInsets.all(10),
+              labelPadding: const EdgeInsets.all(6),
+              indicatorPadding: const EdgeInsets.all(10),
               indicatorColor: Colors.transparent,
               onTap: (v) {
                 selectedVal.value = v;
@@ -183,22 +183,22 @@ class FollowingScreen extends StatelessWidget {
                       return false;
                     },
                     child: TabBarView(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       children: [
                         controller.getAllUnfollowingLoader.value == false
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : AllUsers(
                                 userValue: "User",
                                 type: appBarText,
                               ),
                         controller.getAllUnfollowingLoader.value == false
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : AllUsers(
                                 userValue: "Event Organizer",
                                 type: appBarText,
                               ),
                         controller.getAllUnfollowingLoader.value == false
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : AllUsers(
                                 userValue: "Event Organizer",
                                 type: appBarText,
@@ -235,11 +235,11 @@ class AllUsers extends StatelessWidget {
             : ListView.builder(
                 itemCount: _controller.allUnFollower!.data!.data!.length,
                 shrinkWrap: true,
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
+                        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -249,7 +249,7 @@ class AllUsers extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 8),
                             child: Container(
                               height: 50,
@@ -279,11 +279,11 @@ class AllUsers extends StatelessWidget {
                                   )),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 8,
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
                             child: SizedBox(
                               width: Get.width / 2.3,
                               child: Column(
@@ -315,7 +315,7 @@ class AllUsers extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Align(
                             alignment: Alignment.bottomRight,
                             child: GestureDetector(
@@ -343,9 +343,9 @@ class AllUsers extends StatelessWidget {
                               },
                               child: Container(
                                 width: 100,
-                                padding: EdgeInsets.symmetric(vertical: 6),
+                                padding: const EdgeInsets.symmetric(vertical: 6),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       bottomRight: Radius.circular(10),
                                     ),
                                     color: /*_controller.allUnFollower!.data!.data![index].isFollow!.value ==true?DynamicColor.grayClr.withOpacity(0.3): */

@@ -10,25 +10,25 @@ const String groupPlaceholder =
 var sp = GetStorage();
 
 class DynamicColor {
-  static Color yellowClr = Color(0xffd6a331);
-  static Color darkYellowClr = Color(0xffFF9900);
-  static Color lightYellowClr = Color(0xffFFF3A6);
-  static Color grayClr = Color(0xff9DA3B5);
-  static Color lightRedClr = Color(0xffFF9669);
-  static Color avatarBgClr = Color(0xff363537);
-  static Color darkGrayClr = Color(0xff252525);
+  static Color yellowClr = const Color(0xffd6a331);
+  static Color darkYellowClr = const Color(0xffFF9900);
+  static Color lightYellowClr = const Color(0xffFFF3A6);
+  static Color grayClr = const Color(0xff9DA3B5);
+  static Color lightRedClr = const Color(0xffFF9669);
+  static Color avatarBgClr = const Color(0xff363537);
+  static Color darkGrayClr = const Color(0xff252525);
   static Color blackClr = Colors.black;
   static Color lightGrayClr = Colors.grey;
-  static Color pinkClr = Color(0xffFC1F54);
+  static Color pinkClr = const Color(0xffFC1F54);
   static Color whiteClr = Colors.white;
-  static Color greenClr = Color(0xff40B143);
-  static Color redClr = Color(0xffFF0000);
-  static Color darkBlueClr = Color(0xff1E1F33);
-  static Color lightBlackClr = Color(0xff454447);
-  static Color lightWhite = Color(0xff878787);
-  static Color secondaryClr = Color(0xffd39e2e);
-  static Color dropDownClr = Color(0xffbb7b17);
-  static Color finishedTextClr = Color(0xff770113);
+  static Color greenClr = const Color(0xff40B143);
+  static Color redClr = const Color(0xffFF0000);
+  static Color darkBlueClr = const Color(0xff1E1F33);
+  static Color lightBlackClr = const Color(0xff454447);
+  static Color lightWhite = const Color(0xff878787);
+  static Color secondaryClr = const Color(0xffd39e2e);
+  static Color dropDownClr = const Color(0xffbb7b17);
+  static Color finishedTextClr = const Color(0xff770113);
   static Color disabledColor = Colors.grey.withOpacity(0.6);
 }
 

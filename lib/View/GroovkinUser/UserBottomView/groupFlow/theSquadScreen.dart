@@ -20,11 +20,11 @@ class TheSquadScreen extends StatelessWidget {
           container: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundImage: AssetImage("assets/profileImg.png"),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
                   "The Squad",
                   style: poppinsMediumStyle(
@@ -41,7 +41,7 @@ class TheSquadScreen extends StatelessWidget {
         // width: Get.width/1.4,
         child: ListView.builder(
             itemCount: list.length,
-            padding: EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             itemBuilder: (BuildContext context, index) {
               return GestureDetector(
                 onTap: () {
@@ -54,7 +54,7 @@ class TheSquadScreen extends StatelessWidget {
                   });
                 },
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Align(
                     alignment: list[index] == true
                         ? Alignment.centerLeft
@@ -63,7 +63,7 @@ class TheSquadScreen extends StatelessWidget {
                       width: Get.width / 1.4,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
+                        image: const DecorationImage(
                           image: AssetImage("assets/grayClor.png"),
                           fit: BoxFit.fill,
                         ),
@@ -72,15 +72,15 @@ class TheSquadScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 8.0, left: 8),
+                            padding: const EdgeInsets.only(top: 8.0, left: 8),
                             child: Row(
                               children: [
-                                CircleAvatar(
+                                const CircleAvatar(
                                   backgroundImage:
                                       AssetImage("assets/profileImg.png"),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: 8.0),
+                                  padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
                                     "john",
                                     style: poppinsMediumStyle(
@@ -94,7 +94,7 @@ class TheSquadScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 8.0),
+                            padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
                               "16.46",
                               style: poppinsRegularStyle(
@@ -105,9 +105,9 @@ class TheSquadScreen extends StatelessWidget {
                           ),
                           Container(
                             height: kToolbarHeight * 3,
-                            padding: EdgeInsets.symmetric(vertical: 8),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
                             // height: kToolbarHeight*2,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage("assets/event1.png"),
                                     fit: BoxFit.fill)),
@@ -118,7 +118,7 @@ class TheSquadScreen extends StatelessWidget {
                                     alignment: Alignment.topRight,
                                     child: Padding(
                                       padding:
-                                          EdgeInsets.only(right: 8, top: 8),
+                                          const EdgeInsets.only(right: 8, top: 8),
                                       child: eventDateWidget(
                                           theme: theme, context: context),
                                     )),
@@ -127,7 +127,7 @@ class TheSquadScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 top: 8.0, bottom: 0.0, left: 6.0),
                             child: Text(
                               "90's Grunge and Bowling",
@@ -139,7 +139,7 @@ class TheSquadScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 8.0, bottom: 6),
+                            padding: const EdgeInsets.only(left: 8.0, bottom: 6),
                             child: Text(
                               "The Burning Cactus",
                               style: poppinsRegularStyle(

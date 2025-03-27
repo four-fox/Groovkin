@@ -15,7 +15,7 @@ import '../organizerHomeModel/alleventsModel.dart';
 class PendingScreen extends StatelessWidget {
   PendingScreen({super.key});
 
-  EventController _eventController = Get.find<EventController>();
+  final EventController _eventController = Get.find<EventController>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class PendingScreen extends StatelessWidget {
       });
     }, builder: (controller) {
       return controller.getAllSendingRequestLoader.value == false
-          ? SizedBox.shrink()
+          ? const SizedBox.shrink()
           : controller.allEvents!.data!.data!.isEmpty
               ? Center(
                   child: Text(
@@ -59,12 +59,12 @@ class PendingScreen extends StatelessWidget {
                   child: ListView.builder(
                       itemCount: controller.allEvents!.data!.data!.length,
                       shrinkWrap: true,
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, index) {
                         EventData eventData =
                             controller.allEvents!.data!.data![index];
                         return Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 8),
                           child: Container(
                             decoration: BoxDecoration(
@@ -80,9 +80,9 @@ class PendingScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.all(6),
+                                      padding: const EdgeInsets.all(6),
                                       child: ImageIcon(
-                                        AssetImage("assets/pin.png"),
+                                        const AssetImage("assets/pin.png"),
                                         color: theme.primaryColor,
                                       ),
                                     ),
@@ -91,10 +91,10 @@ class PendingScreen extends StatelessWidget {
                                         if (eventData.user!.deleteAt != null)
                                           Utils.accountDelete(context),
                                         Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               vertical: 6, horizontal: 8),
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
+                                              borderRadius: const BorderRadius.only(
                                                   bottomLeft:
                                                       Radius.circular(10),
                                                   topRight:
@@ -141,7 +141,7 @@ class PendingScreen extends StatelessWidget {
                                                     .toString()),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.only(left: 8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -170,12 +170,12 @@ class PendingScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                      const EdgeInsets.symmetric(horizontal: 8.0),
                                   child: CustomButton(
                                     borderClr: Colors.transparent,
                                     heights: 35,
@@ -201,7 +201,7 @@ class PendingScreen extends StatelessWidget {
                                     text: "View Detail",
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 8,
                                 ),
                                 Padding(
@@ -239,7 +239,7 @@ class PendingScreen extends StatelessWidget {
                                     text: "Cancel",
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 8,
                                 ),
                               ],

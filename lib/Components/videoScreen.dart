@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class VideoPlayerClass extends StatefulWidget {
-  const VideoPlayerClass({Key? key}) : super(key: key);
+  const VideoPlayerClass({super.key});
 
   @override
   State<VideoPlayerClass> createState() => _VideoPlayerClassState();
@@ -23,7 +23,7 @@ class _VideoPlayerClassState extends State<VideoPlayerClass> {
             ? BetterPlayerDataSourceType.file
             : BetterPlayerDataSourceType.network,
         url);
-    betterPlayerController = BetterPlayerController(BetterPlayerConfiguration(
+    betterPlayerController = BetterPlayerController(const BetterPlayerConfiguration(
       autoDetectFullscreenDeviceOrientation: true,
     ));
 

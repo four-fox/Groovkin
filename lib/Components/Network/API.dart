@@ -29,8 +29,8 @@ class API {
   API._internal() : dio = Dio() {
     dio = Dio(BaseOptions(
       validateStatus: (statusCode) => statusCode! < 500,
-      connectTimeout: Duration(seconds: 180),
-      receiveTimeout: Duration(seconds: 180),
+      connectTimeout: const Duration(seconds: 180),
+      receiveTimeout: const Duration(seconds: 180),
     ));
 
     dio.interceptors.add(InterceptorsServices());
@@ -171,14 +171,14 @@ class API {
 
 errorIcon(postButton) async {
   postButton.error();
-  Timer(Duration(seconds: 3), () {
+  Timer(const Duration(seconds: 3), () {
     postButton.reset();
   });
 }
 //
 
 class LoaderClass extends StatelessWidget {
-  LoaderClass({this.colorOne, this.colorTwo});
+  const LoaderClass({super.key, this.colorOne, this.colorTwo});
 
   final Color? colorOne;
   final Color? colorTwo;
@@ -206,5 +206,5 @@ showLoading() {
             colorOne: DynamicColor.yellowClr,
             colorTwo: DynamicColor.yellowClr.withOpacity(0.6),
           )),
-      animationDuration: Duration(milliseconds: 300));
+      animationDuration: const Duration(milliseconds: 300));
 }

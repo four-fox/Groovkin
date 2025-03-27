@@ -24,7 +24,7 @@ class PaymentMethodScreen extends StatelessWidget {
       ),
       body: GetBuilder<AuthController>(builder: (controller) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
           child: Column(
             children: [
               cardsType(
@@ -36,7 +36,7 @@ class PaymentMethodScreen extends StatelessWidget {
                     controller.radioValue.value = v;
                     controller.update();
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               cardsType(
@@ -49,7 +49,7 @@ class PaymentMethodScreen extends StatelessWidget {
                     controller.radioValue.value = v;
                     controller.update();
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
               cardsType(
@@ -67,7 +67,7 @@ class PaymentMethodScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {
@@ -83,13 +83,13 @@ class PaymentMethodScreen extends StatelessWidget {
   Widget cardsType(
       {theme, context, controller, image, radioValuee, onChanged}) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
           border: Border.all(
             color: DynamicColor.whiteClr.withOpacity(0.4),
           ),
           borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
+          image: const DecorationImage(
               image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
       child: Row(
         children: [
@@ -97,7 +97,7 @@ class PaymentMethodScreen extends StatelessWidget {
             image: AssetImage(image ?? "assets/visaCard.png"),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 14.0),
+            padding: const EdgeInsets.symmetric(horizontal: 14.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -118,7 +118,7 @@ class PaymentMethodScreen extends StatelessWidget {
               ],
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Theme(
             data: ThemeData(
               //here change to your color
@@ -204,11 +204,11 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -231,17 +231,17 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image(image: AssetImage("assets/doubleArrowUp.png")),
+                const Image(image: AssetImage("assets/doubleArrowUp.png")),
                 Padding(
-                  padding: EdgeInsets.only(left: 14.0),
+                  padding: const EdgeInsets.only(left: 14.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -261,7 +261,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   "21-Aug-2023",
                   style: poppinsRegularStyle(
@@ -271,23 +271,23 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Divider(
               thickness: 2,
               color: DynamicColor.grayClr.withOpacity(0.7),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image(image: AssetImage("assets/doubleArrowDown.png")),
+                const Image(image: AssetImage("assets/doubleArrowDown.png")),
                 Padding(
-                  padding: EdgeInsets.only(left: 14.0),
+                  padding: const EdgeInsets.only(left: 14.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -307,7 +307,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Text(
                   "21-Aug-2023",
                   style: poppinsRegularStyle(
@@ -317,7 +317,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.0),
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Divider(
               thickness: 2,
               color: DynamicColor.grayClr.withOpacity(0.7),

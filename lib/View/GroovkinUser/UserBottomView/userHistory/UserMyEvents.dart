@@ -12,7 +12,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/allev
 import 'package:intl/intl.dart';
 
 class MyEventsScreen extends StatefulWidget {
-  MyEventsScreen({super.key});
+  const MyEventsScreen({super.key});
 
   @override
   State<MyEventsScreen> createState() => _MyEventsScreenState();
@@ -37,15 +37,15 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(kToolbarHeight * 2.5),
+          preferredSize: const Size.fromHeight(kToolbarHeight * 2.5),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Center(
                   child: Text(
                     "My Events",
@@ -56,7 +56,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               TabBar(
@@ -66,14 +66,14 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     fontSize: 14,
                     context: context,
                     color: DynamicColor.grayClr.withOpacity(0.5)),
-                labelPadding: EdgeInsets.all(6),
-                indicatorPadding: EdgeInsets.all(10),
+                labelPadding: const EdgeInsets.all(6),
+                indicatorPadding: const EdgeInsets.all(10),
                 indicatorColor: Colors.transparent,
-                indicator: BoxDecoration(color: Colors.white),
+                indicator: const BoxDecoration(color: Colors.white),
                 onTap: (v) {
                   tabValue.value = v;
                 },
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 tabs: [
                   Tab(
                     child: Obx(
@@ -99,7 +99,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               GestureDetector(
@@ -110,9 +110,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
-                    padding: EdgeInsets.only(right: 10.0),
+                    padding: const EdgeInsets.only(right: 10.0),
                     child: ImageIcon(
-                      AssetImage("assets/filterIcons.png"),
+                      const AssetImage("assets/filterIcons.png"),
                       color: theme.primaryColor,
                     ),
                   ),
@@ -122,11 +122,11 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Stack(
             alignment: Alignment.topRight,
             children: [
-              TabBarView(
+              const TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   HistoryTab(),
@@ -146,7 +146,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     child: Container(
                       height: tabValue.value == 0 ? 220 : 150,
                       width: Get.width / 2,
-                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: DynamicColor.whiteClr),
@@ -163,7 +163,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                               child: Container(
                                 width: Get.width,
                                 height: 35,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: selectedFilter.value != 0
@@ -191,7 +191,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                               child: Container(
                                 width: Get.width,
                                 height: 35,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: selectedFilter.value != 1
@@ -219,7 +219,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                               child: Container(
                                 width: Get.width,
                                 height: 35,
-                                padding: EdgeInsets.only(left: 10),
+                                padding: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: selectedFilter.value != 2
@@ -239,7 +239,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                             ),
                           ),
                           tabValue.value != 0
-                              ? SizedBox.shrink()
+                              ? const SizedBox.shrink()
                               : Obx(
                                   () => GestureDetector(
                                     onTap: () {
@@ -249,7 +249,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                     child: Container(
                                       width: Get.width,
                                       height: 35,
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding: const EdgeInsets.only(left: 10),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
@@ -271,7 +271,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                   ),
                                 ),
                           tabValue.value != 0
-                              ? SizedBox.shrink()
+                              ? const SizedBox.shrink()
                               : Obx(
                                   () => GestureDetector(
                                     onTap: () {
@@ -281,7 +281,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                     child: Container(
                                       width: Get.width,
                                       height: 35,
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding: const EdgeInsets.only(left: 10),
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
@@ -319,7 +319,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
 ///>>>>>>>>>>>>history tab
 
 class HistoryTab extends StatefulWidget {
-  HistoryTab({super.key});
+  const HistoryTab({super.key});
 
   @override
   State<HistoryTab> createState() => _HistoryTabState();
@@ -352,9 +352,9 @@ class _HistoryTabState extends State<HistoryTab> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -392,7 +392,7 @@ class _HistoryTabState extends State<HistoryTab> {
                       ],
                     ),
                     controller.getUserHistoryLoader.value == false
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : Visibility(
                             visible: recommendedVal.value,
                             child: controller.userPastHistory == null ||
@@ -411,7 +411,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                           shrinkWrap: true,
                                           padding: EdgeInsets.zero,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemBuilder:
                                               (BuildContext context, index) {
                                             EventData singleEventData =
@@ -483,13 +483,13 @@ class _HistoryTabState extends State<HistoryTab> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -527,7 +527,7 @@ class _HistoryTabState extends State<HistoryTab> {
                       ],
                     ),
                     controller.cancelEventUserHistoryLoader.value == false
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : Visibility(
                             visible: cancelledVal.value,
                             child: controller.recommendedEventData == null ||
@@ -549,7 +549,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                           shrinkWrap: true,
                                           padding: EdgeInsets.zero,
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemBuilder:
                                               (BuildContext context, index) {
                                             EventData singleEventData =
@@ -620,7 +620,7 @@ class _HistoryTabState extends State<HistoryTab> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: kToolbarHeight,
             )
           ],
@@ -632,7 +632,7 @@ class _HistoryTabState extends State<HistoryTab> {
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> upComing
 class UpcomingEvent extends StatefulWidget {
-  UpcomingEvent({super.key});
+  const UpcomingEvent({super.key});
 
   @override
   State<UpcomingEvent> createState() => _UpcomingEventState();
@@ -664,7 +664,7 @@ class _UpcomingEventState extends State<UpcomingEvent> {
           if (_controller.recommendedEventData!.data!.nextPageUrl != null) {
             if (_controller.newsFeedWait == false) {
               _controller.newsFeedWait = true;
-              Future.delayed(Duration(seconds: 2), () {
+              Future.delayed(const Duration(seconds: 2), () {
                 _controller.newsFeedWait = false;
               });
               _controller.getRecommended(
@@ -680,14 +680,14 @@ class _UpcomingEventState extends State<UpcomingEvent> {
         _controller.getRecommended(url: "user-upcoming-events");
       }, builder: (controller) {
         return controller.getRecommendedLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : controller.recommendedEventData!.data!.data!.isEmpty
                 ? noData(context: context, theme: theme)
                 : Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: DynamicColor.darkGrayClr),
@@ -695,7 +695,7 @@ class _UpcomingEventState extends State<UpcomingEvent> {
                           itemCount: controller
                               .recommendedEventData!.data!.data!.length,
                           shrinkWrap: true,
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, index) {
                             EventData singleEventData = controller
                                 .recommendedEventData!.data!.data![index];

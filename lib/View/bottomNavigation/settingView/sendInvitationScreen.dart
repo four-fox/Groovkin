@@ -16,18 +16,18 @@ class SendInvitationScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
-              Image(
+              const Image(
                 image: AssetImage("assets/sendInvitation.png"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               CircleAvatar(
@@ -43,7 +43,7 @@ class SendInvitationScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               Text(
@@ -63,7 +63,7 @@ class SendInvitationScreen extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom:  true,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(
             borderClr: Colors.transparent,
             color1: DynamicColor.blackClr,

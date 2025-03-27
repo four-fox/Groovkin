@@ -5,13 +5,13 @@ class AnalyticsModel {
 
   AnalyticsModel({bool? status, List<Data>? data, String? message}) {
     if (status != null) {
-      this._status = status;
+      _status = status;
     }
     if (data != null) {
-      this._data = data;
+      _data = data;
     }
     if (message != null) {
-      this._message = message;
+      _message = message;
     }
   }
 
@@ -27,19 +27,19 @@ class AnalyticsModel {
     if (json['data'] != null) {
       _data = <Data>[];
       json['data'].forEach((v) {
-        _data!.add(new Data.fromJson(v));
+        _data!.add(Data.fromJson(v));
       });
     }
     _message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this._status;
-    if (this._data != null) {
-      data['data'] = this._data!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = _status;
+    if (_data != null) {
+      data['data'] = _data!.map((v) => v.toJson()).toList();
     }
-    data['message'] = this._message;
+    data['message'] = _message;
     return data;
   }
 }
@@ -50,10 +50,10 @@ class Data {
 
   Data({String? genre, int? count}) {
     if (genre != null) {
-      this._genre = genre;
+      _genre = genre;
     }
     if (count != null) {
-      this._count = count;
+      _count = count;
     }
   }
 
@@ -68,9 +68,9 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['genre'] = this._genre;
-    data['count'] = this._count;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['genre'] = _genre;
+    data['count'] = _count;
     return data;
   }
 }

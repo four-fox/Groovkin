@@ -10,7 +10,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/allev
 import 'package:intl/intl.dart';
 
 class ViewAllRecommendedScreen extends StatefulWidget {
-  ViewAllRecommendedScreen({Key? key}) : super(key: key);
+  const ViewAllRecommendedScreen({super.key});
 
   @override
   State<ViewAllRecommendedScreen> createState() =>
@@ -58,7 +58,7 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
             if (_controller.recommendedEventData!.data!.nextPageUrl != null) {
               if (_controller.newsFeedWait == false) {
                 _controller.newsFeedWait = true;
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 2), () {
                   _controller.newsFeedWait = false;
                 });
                 _controller.getRecommended(
@@ -75,14 +75,14 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
           _controller.getRecommended(url: urlText);
         }, builder: (controller) {
           return controller.getRecommendedLoader.value == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : controller.recommendedEventData!.data!.data!.isEmpty
                   ? noData(context: context, theme: theme)
                   : Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.darkGrayClr),
@@ -90,7 +90,7 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
                             itemCount: controller
                                 .recommendedEventData!.data!.data!.length,
                             shrinkWrap: true,
-                            physics: AlwaysScrollableScrollPhysics(),
+                            physics: const AlwaysScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, index) {
                               EventData singleEventData = controller
                                   .recommendedEventData!.data!.data![index];
@@ -107,9 +107,7 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
                                       singleEventData.bannerImage == null
                                           ? false
                                           : true,
-                                  img: singleEventData.bannerImage == null
-                                      ? null
-                                      : singleEventData.bannerImage!.mediaPath
+                                  img: singleEventData.bannerImage?.mediaPath
                                           .toString(),
                                   title: singleEventData.eventTitle.toString(),
                                   location: singleEventData.location,
@@ -148,7 +146,7 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
 }
 
 class ViewAllNearByScreen extends StatelessWidget {
-  const ViewAllNearByScreen({Key? key}) : super(key: key);
+  const ViewAllNearByScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +155,7 @@ class ViewAllNearByScreen extends StatelessWidget {
 }
 
 class ViewAllTopRatingScreen extends StatelessWidget {
-  const ViewAllTopRatingScreen({Key? key}) : super(key: key);
+  const ViewAllTopRatingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

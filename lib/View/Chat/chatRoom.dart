@@ -7,7 +7,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class ChatRoom extends StatelessWidget {
-  ChatRoom({Key? key}) : super(key: key);
+  ChatRoom({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class ChatRoom extends StatelessWidget {
       body: ListView.builder(
           itemCount: list.length,
           shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, index) {
             return GestureDetector(
               onTap: () {
@@ -25,7 +25,7 @@ class ChatRoom extends StatelessWidget {
                     arguments: {"onGoing": 'onoing'});
               },
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.0),
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: Column(
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [

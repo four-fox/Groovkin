@@ -10,7 +10,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 
 class NotifyScreen extends StatelessWidget {
-  NotifyScreen({Key? key}) : super(key: key);
+  NotifyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class NotifyScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: customAppBar(theme: theme,text: "Notify your friends"),
-      body: Padding(   padding: EdgeInsets.symmetric(horizontal: 12),
+      body: Padding(   padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Column(
           children: [
             Padding(
@@ -33,7 +33,7 @@ class NotifyScreen extends StatelessWidget {
                       context: context,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SearchTextFields(
@@ -47,11 +47,11 @@ class NotifyScreen extends StatelessWidget {
                 height: Get.height/1.34,
                 child: ListView.builder(
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: list.length,
                     itemBuilder: (BuildContext context,index){
                   return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5.0),
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Row(
                       children: [
                         CircleAvatar(
@@ -68,7 +68,7 @@ class NotifyScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Obx(()=>
                           CircleAvatar(
                             radius: 15,
@@ -92,14 +92,14 @@ class NotifyScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: CustomButton(
           borderClr: Colors.transparent,
           widths: Get.width,
           heights: 48,
           text: "Notify",
           onTap: (){
-              Future.delayed(Duration(seconds: 2),(){
+              Future.delayed(const Duration(seconds: 2),(){
                 Get.back();
                 Get.back();
               });
@@ -112,7 +112,7 @@ class NotifyScreen extends StatelessWidget {
                       height: Get.height/3.5,
                       container: Column(
                         children: [
-                          Image(image: AssetImage("assets/notifySend.png")),
+                          const Image(image: AssetImage("assets/notifySend.png")),
                           Text("Notify Send",
                             style: poppinsMediumStyle(
                               fontSize: 16,

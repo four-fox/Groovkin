@@ -10,18 +10,18 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class SendEmailForOtp extends StatelessWidget {
-  const SendEmailForOtp({Key? key}) : super(key: key);
+  const SendEmailForOtp({super.key});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 90,
             ),
             Text("Email",
@@ -31,7 +31,7 @@ class SendEmailForOtp extends StatelessWidget {
               color: theme.primaryColor,
             ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
@@ -41,7 +41,7 @@ class SendEmailForOtp extends StatelessWidget {
               color: DynamicColor.grayClr.withOpacity(0.8)
             ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomTextFields(
@@ -51,7 +51,7 @@ class SendEmailForOtp extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 7,vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 4),
         child: CustomButton(
           borderClr: Colors.transparent,
           color1: DynamicColor.blackClr,

@@ -20,10 +20,10 @@ class BookingFormScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme,text: "Booking form"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Align(
@@ -37,7 +37,7 @@ class BookingFormScreen extends StatelessWidget {
               ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text.rich(
@@ -59,11 +59,11 @@ class BookingFormScreen extends StatelessWidget {
                     ]
                 )
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -49,7 +49,7 @@ class EventOrganizerScreen extends StatelessWidget {
                     : kToolbarHeight * 1.4,
                 padding: EdgeInsets.only(top: eventOrganizerVal == 1 ? 30 : 22),
                 decoration: BoxDecoration(
-                    image: DecorationImage(
+                    image: const DecorationImage(
                         image: AssetImage("assets/grayClor.png"),
                         fit: BoxFit.fill),
                     borderRadius: BorderRadius.only(
@@ -67,22 +67,22 @@ class EventOrganizerScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
-                            padding: EdgeInsets.only(left: 12.0),
+                            padding: const EdgeInsets.only(left: 12.0),
                             child: GestureDetector(
                               onTap: () {
                                 Get.back();
                               },
                               child: ImageIcon(
-                                AssetImage("assets/backArrow.png"),
+                                const AssetImage("assets/backArrow.png"),
                                 color: theme.primaryColor,
                               ),
                             ),
                           ),
                         ),
                         eventOrganizerVal != 1
-                            ? SizedBox.shrink()
+                            ? const SizedBox.shrink()
                             : Padding(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 12),
                                 child: Row(
                                   children: [
@@ -100,7 +100,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -130,7 +130,7 @@ class EventOrganizerScreen extends StatelessWidget {
                       ],
                     ),
                     eventOrganizerVal == 1
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : Text(
                             "Profile",
                             style: poppinsMediumStyle(
@@ -142,10 +142,10 @@ class EventOrganizerScreen extends StatelessWidget {
                 ),
               ),
               eventOrganizerVal == 1
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
                       child: Row(
                         children: [
                           CircleAvatar(
@@ -167,7 +167,7 @@ class EventOrganizerScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 10.0),
+                            padding: const EdgeInsets.only(left: 10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -212,9 +212,9 @@ class EventOrganizerScreen extends StatelessWidget {
                       ),
                     ),
               eventOrganizerVal == 1
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Text(
                         'About',
                         style: poppinsMediumStyle(
@@ -225,9 +225,9 @@ class EventOrganizerScreen extends StatelessWidget {
                       ),
                     ),
               eventOrganizerVal == 1
-                  ? SizedBox.shrink()
+                  ? const SizedBox.shrink()
                   : Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Text(
                         '90’s Century Western presented by Tonwsquare Media.\nGates will open at 10:30pm and music begin at night.\nParking lots open at 10:30pm.',
                         maxLines: 3,
@@ -248,7 +248,7 @@ class EventOrganizerScreen extends StatelessWidget {
                         children: [
                           Container(
                             height: 40,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               color: DynamicColor.darkGrayClr,
@@ -270,7 +270,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Container(
                               height: 40,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 10),
                               decoration: BoxDecoration(
                                 color: DynamicColor.darkGrayClr,
@@ -290,7 +290,7 @@ class EventOrganizerScreen extends StatelessWidget {
                           ),
                           Container(
                             height: 40,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               color: DynamicColor.darkGrayClr,
@@ -298,7 +298,7 @@ class EventOrganizerScreen extends StatelessWidget {
                             ),
                             child: Center(
                                 child: ImageIcon(
-                              AssetImage("assets/updatedProfileIcon.png"),
+                              const AssetImage("assets/updatedProfileIcon.png"),
                               color: DynamicColor.yellowClr,
                             )),
                           ),
@@ -310,11 +310,11 @@ class EventOrganizerScreen extends StatelessWidget {
                           poppinsMediumStyle(fontSize: 14, context: context),
                       labelStyle:
                           poppinsMediumStyle(fontSize: 14, context: context),
-                      labelPadding: EdgeInsets.all(6),
-                      indicatorPadding: EdgeInsets.all(10),
+                      labelPadding: const EdgeInsets.all(6),
+                      indicatorPadding: const EdgeInsets.all(10),
                       indicatorColor: theme.primaryColor,
                       tabs: [
-                        Tab(text: "Organized event"),
+                        const Tab(text: "Organized event"),
                         Tab(
                           text:
                               eventOrganizerVal == 2 ? "Past Event" : "Service",
@@ -330,11 +330,11 @@ class EventOrganizerScreen extends StatelessWidget {
                           poppinsMediumStyle(fontSize: 14, context: context),
                       labelStyle:
                           poppinsMediumStyle(fontSize: 14, context: context),
-                      labelPadding: EdgeInsets.all(6),
-                      indicatorPadding: EdgeInsets.all(10),
+                      labelPadding: const EdgeInsets.all(6),
+                      indicatorPadding: const EdgeInsets.all(10),
                       indicatorColor: theme.primaryColor,
                       tabs: [
-                        Tab(text: "Organized event"),
+                        const Tab(text: "Organized event"),
                         Tab(
                           text: eventOrganizerVal == 2
                               ? "Past Events"
@@ -345,21 +345,21 @@ class EventOrganizerScreen extends StatelessWidget {
                         ),
                       ],
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
         body:
             // eventOrganizerVal !=2?
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: TabBarView(
                   children: [
                     SingleChildScrollView(
                       child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 6),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -402,7 +402,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                     child: ListView.builder(
                                         itemCount: 12,
                                         shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return userCustomEvent(
@@ -426,11 +426,11 @@ class EventOrganizerScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 6),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -473,7 +473,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                     child: ListView.builder(
                                         itemCount: 12,
                                         shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return userCustomEvent(
@@ -497,11 +497,11 @@ class EventOrganizerScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 6),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -543,7 +543,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                     child: ListView.builder(
                                         itemCount: 12,
                                         shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return userCustomEvent(
@@ -568,10 +568,10 @@ class EventOrganizerScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: kToolbarHeight,
                           )
                         ],
@@ -587,7 +587,7 @@ class EventOrganizerScreen extends StatelessWidget {
                           ),
                     /*PropertyEventView()*/
                     eventOrganizerVal == 2
-                        ? PropertyEventView()
+                        ? const PropertyEventView()
                         : AboutEventView(
                             user: user,
                           ),
@@ -609,10 +609,10 @@ class OrganizedEventView extends StatelessWidget {
     return ListView.builder(
         itemCount: 20,
         shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, index) {
           return Padding(
-            padding: EdgeInsets.only(top: 12.0),
+            padding: const EdgeInsets.only(top: 12.0),
             child: myEventCardWidget(
                 theme: theme, context: context, attendedPeople: attendPeople),
           );
@@ -629,15 +629,15 @@ class PropertyEventView extends StatelessWidget {
     return ListView.builder(
         itemCount: 20,
         shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, index) {
           return Padding(
-              padding: EdgeInsets.only(top: 12.0),
+              padding: const EdgeInsets.only(top: 12.0),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     image: AssetImage('assets/grayClor.png'),
                     fit: BoxFit.fill,
                   ),
@@ -650,12 +650,12 @@ class PropertyEventView extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: DynamicColor.yellowClr),
-                          image: DecorationImage(
+                          image: const DecorationImage(
                               image: AssetImage("assets/profileImg.png"),
                               fit: BoxFit.fill)),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 10.0),
+                      padding: const EdgeInsets.only(left: 10.0),
                       child: Column(
                         children: [
                           Text(
@@ -693,19 +693,19 @@ class AboutEventView extends StatelessWidget {
     var theme = Theme.of(context);
     return Column(
       children: [
-        SizedBox(),
+        const SizedBox(),
         Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            image: DecorationImage(
+            image: const DecorationImage(
               image: AssetImage('assets/grayClor.png'),
               fit: BoxFit.fill,
             ),
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Padding(

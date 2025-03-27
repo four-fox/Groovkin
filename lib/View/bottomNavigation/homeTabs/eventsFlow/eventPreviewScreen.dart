@@ -38,12 +38,12 @@ class EventPreview extends StatelessWidget {
                 onTap: () {
                   _controller.postEventFunction(context, theme, draft: true);
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Icon(Icons.drafts),
                 ),
               )
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ]),
       body: SingleChildScrollView(
         child: Column(
@@ -70,9 +70,9 @@ class EventPreview extends StatelessWidget {
                           );
                         }),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 ((_controller.eventDetail != null) &&
                         (_controller.eventDetail!.data!.venue != null))
@@ -95,7 +95,7 @@ class EventPreview extends StatelessWidget {
                 iconSize: 17,
                 text:
                     "${_controller.proposedTimeWindowsController.text} to ${_controller.endTimeController.text}"),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             eventDateTime(
@@ -108,7 +108,7 @@ class EventPreview extends StatelessWidget {
               text:
                   "${_controller.eventDateController.text == _controller.eventEndDateController.text ? "" : _controller.eventDateController.text} ${_controller.eventEndDateController.text}",
             ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             eventDateTime(
@@ -137,11 +137,11 @@ class EventPreview extends StatelessWidget {
             //       organizerFollowerVal.value = !organizerFollowerVal.value;
             //     }
             // ),),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -156,7 +156,7 @@ class EventPreview extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -169,7 +169,7 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ShowCustomMap(
@@ -221,11 +221,11 @@ class EventPreview extends StatelessWidget {
             // customContainer(context, theme,title: "Max capacity",text: _controller.maxCapacityController.text),
             customContainer(context, theme,
                 title: "Comments", text: _controller.commentsController.text),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -238,7 +238,7 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -248,13 +248,13 @@ class EventPreview extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: _authController.serviceList.length,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: DynamicColor.lightRedClr,
                               borderRadius: BorderRadius.circular(12)),
@@ -274,11 +274,11 @@ class EventPreview extends StatelessWidget {
                     }),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -291,7 +291,7 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -301,13 +301,13 @@ class EventPreview extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: _authController.eventItemsList.length,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: DynamicColor.lightRedClr,
                               borderRadius: BorderRadius.circular(12)),
@@ -327,11 +327,11 @@ class EventPreview extends StatelessWidget {
                     }),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -344,7 +344,7 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -354,13 +354,13 @@ class EventPreview extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: _authController.itemsList.length,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: DynamicColor.lightRedClr,
                               borderRadius: BorderRadius.circular(12)),
@@ -379,11 +379,11 @@ class EventPreview extends StatelessWidget {
                     }),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -396,7 +396,7 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -406,13 +406,13 @@ class EventPreview extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: _controller.tagListPost.length,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: DynamicColor.lightRedClr,
                               borderRadius: BorderRadius.circular(12)),
@@ -431,11 +431,11 @@ class EventPreview extends StatelessWidget {
                     }),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 12.0),
+              padding: const EdgeInsets.only(left: 12.0),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -448,7 +448,7 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -458,13 +458,13 @@ class EventPreview extends StatelessWidget {
                 child: ListView.builder(
                     itemCount: _controller.activityListPost.length,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, index) {
                       return Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                        padding: const EdgeInsets.only(left: 10.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                               color: DynamicColor.lightRedClr,
                               borderRadius: BorderRadius.circular(12)),
@@ -484,7 +484,7 @@ class EventPreview extends StatelessWidget {
                     }),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
@@ -494,7 +494,7 @@ class EventPreview extends StatelessWidget {
           ? SafeArea(
               bottom:  true,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
                   borderClr: Colors.transparent,
                   onTap: () {
@@ -505,21 +505,21 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             )
-          : SizedBox.shrink(),
+          : const SizedBox.shrink(),
     );
   }
 
   customContainer(context, theme, {text, title}) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Container(
             width: Get.width,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
             decoration: BoxDecoration(
                 color: DynamicColor.lightRedClr.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(12)),

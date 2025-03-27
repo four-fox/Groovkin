@@ -8,7 +8,7 @@ String pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
 
 class CustomTextFields extends StatelessWidget {
   CustomTextFields({
-    Key? key,
+    super.key,
     this.labelText,
     this.textClr,
     this.maxLine = 1,
@@ -29,7 +29,7 @@ class CustomTextFields extends StatelessWidget {
     this.ignoredValidation = false,
     this.hintText,
     this.disabled,
-  }) : super(key: key);
+  });
 
   String? labelText;
   Color? textClr;
@@ -80,7 +80,7 @@ class CustomTextFields extends StatelessWidget {
                         color: DynamicColor.grayClr,
                       ),
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
           labelText: labelText ?? "Email",
           labelStyle: labelStyling ??
               poppinsRegularStyle(
@@ -89,7 +89,7 @@ class CustomTextFields extends StatelessWidget {
                   color: textClr ?? DynamicColor.grayClr),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Color(0xffeabbb9)), //<-- SEE HERE
+            borderSide: const BorderSide(color: Color(0xffeabbb9)), //<-- SEE HERE
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
@@ -152,7 +152,7 @@ class CustomTextFields extends StatelessWidget {
 
 class CustomTextFieldsHintText extends StatelessWidget {
   CustomTextFieldsHintText({
-    Key? key,
+    super.key,
     this.hintText,
     this.textClr,
     this.maxLine = 1,
@@ -161,7 +161,7 @@ class CustomTextFieldsHintText extends StatelessWidget {
     this.bgClr,
     required this.controller,
     this.validation,
-  }) : super(key: key);
+  });
 
   String? hintText;
   Color? textClr;
@@ -224,7 +224,7 @@ class CustomTextFieldsHintText extends StatelessWidget {
 
 class SearchTextFields extends StatelessWidget {
   SearchTextFields({
-    Key? key,
+    super.key,
     this.searchIcon = true,
     this.hintText,
     this.border = false,
@@ -234,7 +234,7 @@ class SearchTextFields extends StatelessWidget {
     required this.controller,
     this.bgColor,
     this.borderRadius,
-  }) : super(key: key);
+  });
   bool searchIcon = true;
   String? hintText;
   bool border = false;
@@ -271,12 +271,12 @@ class SearchTextFields extends StatelessWidget {
               borderRadius: BorderRadius.circular(10), //<-- SEE HERE
             ),
             hintText: hintText ?? "Search",
-            contentPadding: EdgeInsets.only(left: 12, top: 12),
+            contentPadding: const EdgeInsets.only(left: 12, top: 12),
             hintStyle:
                 poppinsRegularStyle(fontSize: 12, color: DynamicColor.grayClr),
             suffixIcon: searchIcon == true
                 ? Icon(Icons.search, color: DynamicColor.grayClr)
-                : SizedBox.shrink()),
+                : const SizedBox.shrink()),
       ),
     );
   }

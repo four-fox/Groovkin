@@ -17,7 +17,7 @@ class AddCardDetails extends StatefulWidget {
 }
 
 class _AddCardDetailsState extends State<AddCardDetails> {
-  HomeController _controller = Get.find();
+  final HomeController _controller = Get.find();
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
@@ -73,7 +73,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
           onTap: () {
             Get.back();
           },
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
         ),
       ),
       body: Column(
@@ -141,8 +141,8 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         // labelText: 'Number',
 
                         hintText: 'Card Number',
-                        hintStyle: TextStyle(color: Colors.white),
-                        labelStyle: TextStyle(color: Colors.white),
+                        hintStyle: const TextStyle(color: Colors.white),
+                        labelStyle: const TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
@@ -241,7 +241,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
       bottomNavigationBar: SafeArea(
         bottom:  true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {
@@ -256,7 +256,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         container: SizedBox(
                           width: Get.width,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 12.0, horizontal: 4),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -283,7 +283,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                                 ),
                                 Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                        const EdgeInsets.symmetric(horizontal: 10.0),
                                     child: Text(
                                       'Your Payment has been\nsuccessfully done ',
                                       textAlign: TextAlign.center,
@@ -301,7 +301,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         ),
                       );
                     });
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(const Duration(seconds: 2), () {
                   Get.back();
                   Get.toNamed(Routes.serviceScreen,
                       arguments: {"addMoreService": 1});

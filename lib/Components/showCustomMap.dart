@@ -54,7 +54,7 @@ class _ShowCustomMapState extends State<ShowCustomMap> {
     Set<Circle> circles = {
       if (widget.circle)
         Circle(
-          circleId: CircleId('myPosition1'),
+          circleId: const CircleId('myPosition1'),
           center: LatLng(
             widget.lat!,
             widget.lng!,
@@ -81,7 +81,7 @@ class _ShowCustomMapState extends State<ShowCustomMap> {
               <Marker>[
                 Marker(
                   draggable: true,
-                  markerId: MarkerId("1"),
+                  markerId: const MarkerId("1"),
                   position: LatLng(
                     widget.lat!,
                     widget.lng!,
@@ -122,9 +122,9 @@ class _ShowCustomMapState extends State<ShowCustomMap> {
 
 class DisclaimerView extends StatelessWidget {
   DisclaimerView({
-    Key? key,
+    super.key,
     this.onTap,
-  }) : super(key: key);
+  });
 
   RxBool acceptTerms = false.obs;
   final GestureTapCallback? onTap;
@@ -175,7 +175,7 @@ class DisclaimerView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 4.0),
+                padding: const EdgeInsets.only(left: 4.0),
                 child: SizedBox(
                   width: Get.width / 1.5,
                   child: Text(
@@ -191,7 +191,7 @@ class DisclaimerView extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(top: 4.0),
+            padding: const EdgeInsets.only(top: 4.0),
             child: CustomButton(
               heights: 35,
               onTap: onTap,
@@ -220,19 +220,19 @@ eventStatusWidget({
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Padding(
-        padding: EdgeInsets.all(6),
+        padding: const EdgeInsets.all(6),
         child: ImageIcon(
-          AssetImage("assets/pin.png"),
+          const AssetImage("assets/pin.png"),
           color: theme.primaryColor,
         ),
       ),
       Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(10), topRight: Radius.circular(10)),
             image: color == null
-                ? DecorationImage(
+                ? const DecorationImage(
                     image: AssetImage("assets/topbtnGradent.png"),
                     fit: BoxFit.fill)
                 : null,
@@ -267,18 +267,18 @@ eventOrganizer(
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.all(12),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: DynamicColor.blackClr,
               shape: BoxShape.circle,
               border: Border.all(color: DynamicColor.lightYellowClr),
             ),
-            child: Image(
+            child: const Image(
               image: AssetImage("assets/eventOrganizer.png"),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 8.0),
+            padding: const EdgeInsets.only(left: 8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -295,7 +295,7 @@ eventOrganizer(
                   child: Row(
                     children: [
                       iconShow == false
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Icon(
                               Icons.location_on_sharp,
                               color: iconClr,

@@ -24,23 +24,23 @@ class BookingFormFields extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme,text: "Booking form"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               CustomTextFields(
                 labelText: "Title",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               CustomTextFields(
                 labelText: "Featuring",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Row(
@@ -92,7 +92,7 @@ class BookingFormFields extends StatelessWidget {
                         ),
                         hintText: "Select meeting date",
                         label: Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                               left: 15.0),
                           child: Text("Date",
                             style: poppinsRegularStyle(
@@ -104,10 +104,10 @@ class BookingFormFields extends StatelessWidget {
                         labelStyle:
                         TextStyle(
                             color: DynamicColor.grayClr),
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                             fontFamily: 'Montserrat',
                             fontSize: 13),
-                        contentPadding: EdgeInsets.all(5),
+                        contentPadding: const EdgeInsets.all(5),
                         suffixIcon: Icon(
                           Icons.calendar_month,
                           color: DynamicColor.grayClr,
@@ -116,7 +116,7 @@ class BookingFormFields extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
@@ -141,7 +141,7 @@ class BookingFormFields extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               SizedBox(
@@ -165,12 +165,12 @@ class BookingFormFields extends StatelessWidget {
                             width: 1,
                             color:DynamicColor.grayClr)),
                     // border: InputBorder.none,
-                    label: Text('Check in'),
+                    label: const Text('Check in'),
                     labelStyle: poppinsRegularStyle(
                       fontSize: 14,
                       color: DynamicColor.whiteClr,
                     ),
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.access_time_rounded,
                       color: Colors.white,
                     ),
@@ -205,7 +205,7 @@ class BookingFormFields extends StatelessWidget {
                  },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               SizedBox(
@@ -229,12 +229,12 @@ class BookingFormFields extends StatelessWidget {
                             width: 1,
                             color:DynamicColor.grayClr)),
                     // border: InputBorder.none,
-                    label: Text('Check out'),
+                    label: const Text('Check out'),
                     labelStyle: poppinsRegularStyle(
                       fontSize: 14,
                       color: DynamicColor.whiteClr,
                     ),
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.access_time_rounded,
                       color: Colors.white,
                     ),
@@ -269,7 +269,7 @@ class BookingFormFields extends StatelessWidget {
                  }, 
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               CustomTextFieldsHintText(
@@ -277,7 +277,7 @@ class BookingFormFields extends StatelessWidget {
                 controller: TextEditingController(),
                 hintText: "Featuring",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               CustomButton(
@@ -285,7 +285,7 @@ class BookingFormFields extends StatelessWidget {
                 color1: DynamicColor.blackClr,
                 color2: DynamicColor.blackClr,
                 onTap: (){
-                  Future.delayed(Duration(seconds: 2),(){
+                  Future.delayed(const Duration(seconds: 2),(){
                     Get.offAllNamed(Routes.bottomNavigationView,
                         arguments: {
                           "indexValue": 0
@@ -300,7 +300,7 @@ class BookingFormFields extends StatelessWidget {
                         return AlertWidget(
                           height: kToolbarHeight*4.4,
                           container: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12.0,horizontal: 4),
+                            padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 4),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -320,7 +320,7 @@ class BookingFormFields extends StatelessWidget {
                                     color: theme.primaryColor,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 90,
                                   child: Image(
                                     image: AssetImage("assets/handshake.png"),

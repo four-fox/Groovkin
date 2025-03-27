@@ -18,7 +18,7 @@ import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class PendingEventDetails extends StatefulWidget {
-  PendingEventDetails({super.key});
+  const PendingEventDetails({super.key});
 
   @override
   State<PendingEventDetails> createState() => _PendingEventDetailsState();
@@ -77,14 +77,14 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                           context: context,
                           builder: (context) {
                             return Container(
-                              padding: EdgeInsets.all(12.0),
-                              margin: EdgeInsets.all(10.0),
+                              padding: const EdgeInsets.all(12.0),
+                              margin: const EdgeInsets.all(10.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   TextField(
                                     controller: eventReasonController,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       hintText: "Reason",
                                       border: OutlineInputBorder(
                                           borderSide:
@@ -99,7 +99,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                     keyboardType: TextInputType.multiline,
                                     maxLines: 5,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   CustomButton(
@@ -120,7 +120,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                     },
                                     text: "Report",
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                 ],
@@ -132,26 +132,26 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                       Icons.more_vert,
                       color: theme.primaryColor,
                     ))
-                : SizedBox()
-            : SizedBox.shrink()
+                : const SizedBox()
+            : const SizedBox.shrink()
       ]),
       body: GetBuilder<EventController>(initState: (v) {
         _eventController.eventDetails(eventId: eventId);
       }, builder: (controller) {
         return controller.eventDetailsLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Padding(
                         padding:
-                            EdgeInsets.only(left: 0.0, right: 0.0, top: 10.0),
+                            const EdgeInsets.only(left: 0.0, right: 0.0, top: 10.0),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(13),
@@ -166,9 +166,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.all(6),
+                                    padding: const EdgeInsets.all(6),
                                     child: ImageIcon(
-                                      AssetImage("assets/pin.png"),
+                                      const AssetImage("assets/pin.png"),
                                       color: theme.primaryColor,
                                     ),
                                   ),
@@ -178,13 +178,13 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                               .isDelete !=
                                           null)
                                         Utils.accountDelete(context),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 5,
                                       ),
                                       Container(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             vertical: 6, horizontal: 13),
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             borderRadius: BorderRadius.only(
                                                 bottomLeft: Radius.circular(10),
                                                 topRight: Radius.circular(10)),
@@ -243,7 +243,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                 .mediaPath!),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.only(left: 8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -273,7 +273,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               flowBtn != 1
@@ -337,7 +337,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                       Get.width,
                                                                   child:
                                                                       Padding(
-                                                                    padding: EdgeInsets.symmetric(
+                                                                    padding: const EdgeInsets.symmetric(
                                                                         vertical:
                                                                             12.0,
                                                                         horizontal:
@@ -360,7 +360,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                               color: theme.primaryColor,
                                                                             ),
                                                                           ),
-                                                                          SizedBox(
+                                                                          const SizedBox(
                                                                             height:
                                                                                 15,
                                                                           ),
@@ -403,7 +403,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                               color: theme.primaryColor,
                                                                             ),
                                                                           ),
-                                                                          SizedBox(
+                                                                          const SizedBox(
                                                                             height:
                                                                                 15,
                                                                           ),
@@ -428,7 +428,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                                 ),
                                                                               ),
                                                                               Padding(
-                                                                                padding: EdgeInsets.only(left: 2.0),
+                                                                                padding: const EdgeInsets.only(left: 2.0),
                                                                                 child: Text(
                                                                                   'i have read and agree to the terms and\nconditions',
                                                                                   style: poppinsRegularStyle(
@@ -523,14 +523,14 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                         text: "Cancel",
                                       ),
                                     ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                               (API().sp.read("role") == "eventOrganizer" &&
                                       controller.eventDetail!.data!
                                               .isCounterActive!.value ==
                                           0)
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
@@ -579,11 +579,11 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                         text: "Counters",
                                       ),
                                     ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                               flowBtn == 1
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
@@ -604,18 +604,18 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                         text: "Changes",
                                       ),
                                     ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       flowBtn == 1
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
@@ -641,7 +641,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                               ),
                             ),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           controller.eventDetail!.data!.eventTitle!,
                           style: poppinsMediumStyle(
@@ -686,7 +686,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                           text: controller.eventDetail!.data!.location,
                           icon: false,
                           iconClr: DynamicColor.yellowClr),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       customWidget(context, theme,
@@ -712,15 +712,15 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                       customWidget(context, theme,
                           title: "Rating",
                           value: controller.eventDetail!.data!.rate.toString()),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       sp.read('role') == "eventManager"
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Obx(
                               () => _authController.followingLoader.value ==
                                       false
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : controller.eventDetail!.data!.venue != null
                                       ? aboutEventCreator(
                                           isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
@@ -789,15 +789,15 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                   fromAllUser: false);
                                             }
                                           })
-                                      : SizedBox(),
+                                      : const SizedBox(),
                             ),
 
                       sp.read('role') == "eventOrganizer"
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : Obx(
                               () => _authController.followingLoader.value ==
                                       false
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : ourGuestWidget(
                                       isDelete:
                                           controller.eventDetail!.data!.user!.isDelete == null
@@ -860,7 +860,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                             ),
                       if (controller.eventDetail!.data!.location != null) ...[
                         Padding(
-                          padding: EdgeInsets.only(left: 2.0),
+                          padding: const EdgeInsets.only(left: 2.0),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -874,7 +874,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 2, bottom: 8),
+                          padding: const EdgeInsets.only(left: 2, bottom: 8),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -895,13 +895,13 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                               controller.eventDetail!.data!.longitude!),
                         ),
                       ],
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       if (controller.eventDetail!.data!.services!.isNotEmpty)
                         Container(
                           width: double.infinity,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -941,7 +941,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                       }),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Align(
@@ -966,7 +966,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           .hardwareProvide!.length,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: AlwaysScrollableScrollPhysics(),
+                                      physics: const AlwaysScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return controller
@@ -976,7 +976,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                     .hardwareItems!
                                                     .name ==
                                                 null
-                                            ? SizedBox.shrink()
+                                            ? const SizedBox.shrink()
                                             : customList(
                                                 context: context,
                                                 theme: theme,
@@ -1018,7 +1018,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       itemCount: controller.eventDetail!.data!
                                           .musicGenre!.length,
                                       itemBuilder:
@@ -1030,7 +1030,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                     .musicGenreItems!
                                                     .name ==
                                                 null
-                                            ? SizedBox.shrink()
+                                            ? const SizedBox.shrink()
                                             : customList(
                                                 context: context,
                                                 theme: theme,
@@ -1074,7 +1074,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           .eventMusicChoiceTags!.length,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: AlwaysScrollableScrollPhysics(),
+                                      physics: const AlwaysScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return controller
@@ -1085,7 +1085,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                     .musicChoiceItems!
                                                     .name ==
                                                 null
-                                            ? SizedBox.shrink()
+                                            ? const SizedBox.shrink()
                                             : customList(
                                                 context: context,
                                                 theme: theme,
@@ -1122,7 +1122,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           .eventActivityChoiceTags!.length,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: AlwaysScrollableScrollPhysics(),
+                                      physics: const AlwaysScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return controller
@@ -1133,7 +1133,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                     .activityChoiceItems!
                                                     .name ==
                                                 null
-                                            ? SizedBox.shrink()
+                                            ? const SizedBox.shrink()
                                             : customList(
                                                 context: context,
                                                 theme: theme,
@@ -1161,7 +1161,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                             ],
                           ),
                         ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       // flowBtn==2?SizedBox.shrink():
@@ -1342,7 +1342,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                       //         );
                       //       }),
                       // ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                     ],
@@ -1363,7 +1363,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -1379,7 +1379,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -1399,7 +1399,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
 
   customList({String? name, context, theme}) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6),
       child: Chip(
         backgroundColor: DynamicColor.lightBlackClr,
         shape: RoundedRectangleBorder(

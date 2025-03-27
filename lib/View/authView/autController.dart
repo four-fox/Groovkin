@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -12,8 +11,6 @@ import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
-import 'package:groovkin/utils/constant.dart';
-import 'package:http/http.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -33,7 +30,6 @@ import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
@@ -1392,16 +1388,19 @@ class AuthController extends GetxController {
         ],
       );
 
-      final firebase_auth.OAuthCredential oAuthCredential =
+      final firebase_auth.OAuthCredential authCredential =
           firebase_auth.OAuthProvider("apple.com").credential(
-        idToken: credential.identityToken,
-        accessToken: credential.authorizationCode,
-      );
+              accessToken: credential.authorizationCode,
+              idToken: credential.identityToken);
 
       final firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
-          .signInWithCredential(oAuthCredential);
-      print(userCredential);
+          .signInWithCredential(authCredential);
+
+      if (kDebugMode) {
+        print(userCredential);
+      }
+      
     } catch (e) {
       EasyLoading.dismiss();
     } finally {

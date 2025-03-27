@@ -65,7 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 if (controller.notificationModel!.data!.nextPageUrl != null) {
                   if (controller.notificationWait == false) {
                     controller.notificationWait = true;
-                    Future.delayed(Duration(seconds: 2), () {
+                    Future.delayed(const Duration(seconds: 2), () {
                       controller.notificationWait = false;
                     });
                     controller.getAllNotification(
@@ -82,7 +82,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               controller.getAllNotification();
             }, builder: (controller) {
               return controller.isNotificationLoading.value
-                  ? SizedBox()
+                  ? const SizedBox()
                   : controller.notificationModel!.data!.datas!.isEmpty
                       ? Center(
                           child: Text(
@@ -101,14 +101,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             final Datas data = controller
                                 .notificationModel!.data!.datas![index];
                             return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 6.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 6.0),
                               child: notificationWidget(
                                 onTap: () {
                                   if (data.type == "event_following") {
                                     Get.toNamed(Routes.viewProfileScreen,
                                         arguments: {
                                           "id":
-                                              data.sourceId, // Pass only the ID
+                                              data.senderId, // Pass only the ID
                                           "fromNotification":
                                               true, // Add this flag
                                         });
@@ -256,7 +257,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           // borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
             image: AssetImage("assets/grayClor.png"),

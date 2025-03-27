@@ -21,7 +21,7 @@ class DropDownClass extends StatelessWidget {
   List get list => _list!;
   final dynamic Function(dynamic)? _listener;
 
-  DropDownClass({
+  const DropDownClass({super.key, 
     this.customIcon = false,
     List? list,
     var hint,
@@ -56,7 +56,7 @@ class DropDownClass extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        image: DecorationImage(
+        image: const DecorationImage(
             image: AssetImage("assets/grayClor.png"),
             fit: BoxFit.fill
         ),
@@ -76,7 +76,7 @@ class DropDownClass extends StatelessWidget {
             decoration: _isPrefixIcon == false
                 ? _inputDecoration ??
                 InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 15),
                     border: buildOutlineInputBorder(),
                     enabledBorder: buildOutlineInputBorder(),
                     focusedBorder: buildOutlineInputBorder(),
@@ -91,7 +91,7 @@ class DropDownClass extends StatelessWidget {
                     fillColor: Colors.transparent,
                     filled: true),
             style: poppinsRegularStyle(
-              color: Color(0xff272727),
+              color: const Color(0xff272727),
               fontWeight: FontWeight.w300,
             ),
             isExpanded: true,
@@ -121,7 +121,7 @@ class DropDownClass extends StatelessWidget {
               : DropdownButtonFormField<dynamic>(
             dropdownColor: _dropDownColor ?? Colors.transparent,
             decoration: _isPrefixIcon == false
-                ? InputDecoration(
+                ? const InputDecoration(
                 border: InputBorder.none,
                 fillColor: Colors.transparent,
                 filled: true)
@@ -135,7 +135,7 @@ class DropDownClass extends StatelessWidget {
               fontWeight: FontWeight.w300,
             ),
             isExpanded: true,
-            icon: Icon(
+            icon: const Icon(
               Icons.keyboard_arrow_down,
               color: Colors.black87,
             ),
@@ -153,7 +153,7 @@ class DropDownClass extends StatelessWidget {
                       radius: 20,
                       backgroundImage: NetworkImage(item.thumbnail),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(item.title,

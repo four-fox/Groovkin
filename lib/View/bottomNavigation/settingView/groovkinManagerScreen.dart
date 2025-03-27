@@ -10,7 +10,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 class GroovkinManagerScreen extends StatelessWidget {
-  const GroovkinManagerScreen({Key? key}) : super(key: key);
+  const GroovkinManagerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,16 @@ class GroovkinManagerScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme,text: "Groovkin Invites"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             CustomTextFields(
               labelText: "Name",
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             CustomTextFields(
@@ -37,7 +37,7 @@ class GroovkinManagerScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 7,vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 4),
         child: CustomButton(
           borderClr: Colors.transparent,
           color1: DynamicColor.blackClr,

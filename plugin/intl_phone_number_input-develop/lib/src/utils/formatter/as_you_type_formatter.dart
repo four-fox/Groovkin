@@ -83,7 +83,7 @@ class AsYouTypeFormatter extends TextInputFormatter {
               }
             }
 
-            this.onInputFormatted(
+            onInputFormatted(
               TextEditingValue(
                 text: parsedText,
                 selection: TextSelection.collapsed(offset: offset),
@@ -117,9 +117,7 @@ class AsYouTypeFormatter extends TextInputFormatter {
     if (dialCode.length > 4) {
       if (isPartOfNorthAmericanNumberingPlan(dialCode)) {
         String northAmericaDialCode = '+1';
-        String countryDialCodeWithSpace = northAmericaDialCode +
-            ' ' +
-            dialCode.replaceFirst(northAmericaDialCode, '');
+        String countryDialCodeWithSpace = '$northAmericaDialCode ${dialCode.replaceFirst(northAmericaDialCode, '')}';
 
         return filteredPhoneNumber!
             .replaceFirst(countryDialCodeWithSpace, '')

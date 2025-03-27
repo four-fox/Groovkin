@@ -37,13 +37,13 @@ class _EventRequestsState extends State<EventRequests> {
         _eventController.getAllEvents();
       }, builder: (controller) {
         return _eventController.getAllEventsLoader.value == false
-            ? SizedBox()
+            ? const SizedBox()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: ListView.builder(
                     itemCount: controller.allEvents!.data!.data!.length,
                     shrinkWrap: true,
-                    physics: AlwaysScrollableScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, index) {
                       final data = controller.allEvents!.data!.data![index];
 
@@ -66,10 +66,10 @@ class _EventRequestsState extends State<EventRequests> {
                           
                         },
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(
                             decoration: BoxDecoration(
-                                image: DecorationImage(
+                                image: const DecorationImage(
                                   image: AssetImage("assets/grayClor.png"),
                                   fit: BoxFit.fill,
                                 ),
@@ -77,7 +77,7 @@ class _EventRequestsState extends State<EventRequests> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                                   child: Text(
                                     data.eventTitle ?? "",
                                     style: poppinsMediumStyle(
@@ -100,7 +100,7 @@ class _EventRequestsState extends State<EventRequests> {
                                     textClr: DynamicColor.lightRedClr,
                                     widths: Get.width / 1.4,
                                   ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 4,
                                 ),
                                 if (data.startDateTime != null)
@@ -115,7 +115,7 @@ class _EventRequestsState extends State<EventRequests> {
                                           .format(data.startDateTime!),
                                       textClr: DynamicColor.lightRedClr,
                                       widths: Get.width / 1.4),
-                                SizedBox(
+                                const SizedBox(
                                   height: 4,
                                 ),
                                 eventDateTime(

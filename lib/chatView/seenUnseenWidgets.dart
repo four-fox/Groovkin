@@ -12,12 +12,12 @@ class SeenUnseenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(right: 3.0),
+        padding: const EdgeInsets.only(right: 3.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsets.only(right: 3),
+              padding: const EdgeInsets.only(right: 3),
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
@@ -32,12 +32,12 @@ class SeenUnseenWidget extends StatelessWidget {
               ),
             ),
             chatData!.isSeen == 1
-                ? Icon(
+                ? const Icon(
                     Icons.done_all,
                     size: 13,
                     color: Colors.blue,
                   )
-                : Icon(
+                : const Icon(
                     Icons.check,
                     size: 13,
                     color: Colors.grey,

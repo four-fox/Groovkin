@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 class EditEventScreen extends StatelessWidget {
   EditEventScreen({super.key});
   final format = DateFormat("HH:mm");
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
   int eventId = Get.arguments['eventId'];
 
   @override
@@ -25,12 +25,12 @@ class EditEventScreen extends StatelessWidget {
       ),
       body: GetBuilder<EventController>(builder: (controller) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Center(
@@ -43,7 +43,7 @@ class EditEventScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextField(
@@ -96,7 +96,7 @@ class EditEventScreen extends StatelessWidget {
                     ),
                     hintText: "Select meeting date",
                     label: Padding(
-                      padding: EdgeInsets.only(left: 15.0),
+                      padding: const EdgeInsets.only(left: 15.0),
                       child: Text(
                         "Proposed Date",
                         style: poppinsRegularStyle(
@@ -107,15 +107,15 @@ class EditEventScreen extends StatelessWidget {
                     ),
                     labelStyle: TextStyle(color: DynamicColor.grayClr),
                     hintStyle:
-                        TextStyle(fontFamily: 'poppinsRegular', fontSize: 13),
-                    contentPadding: EdgeInsets.all(5),
+                        const TextStyle(fontFamily: 'poppinsRegular', fontSize: 13),
+                    contentPadding: const EdgeInsets.all(5),
                     suffixIcon: Icon(
                       Icons.calendar_month,
                       color: DynamicColor.whiteClr,
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 
@@ -169,7 +169,7 @@ class EditEventScreen extends StatelessWidget {
                     ),
                     hintText: "Select meeting date",
                     label: Padding(
-                      padding: EdgeInsets.only(left: 15.0),
+                      padding: const EdgeInsets.only(left: 15.0),
                       child: Text(
                         "Proposed New Date",
                         style: poppinsRegularStyle(
@@ -180,15 +180,15 @@ class EditEventScreen extends StatelessWidget {
                     ),
                     labelStyle: TextStyle(color: DynamicColor.grayClr),
                     hintStyle:
-                        TextStyle(fontFamily: 'poppinsRegular', fontSize: 13),
-                    contentPadding: EdgeInsets.all(5),
+                        const TextStyle(fontFamily: 'poppinsRegular', fontSize: 13),
+                    contentPadding: const EdgeInsets.all(5),
                     suffixIcon: Icon(
                       Icons.calendar_month,
                       color: DynamicColor.whiteClr,
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 DateTimeField(
@@ -209,7 +209,7 @@ class EditEventScreen extends StatelessWidget {
                     ),
                     labelStyle:
                         TextStyle(fontSize: 14, color: DynamicColor.whiteClr),
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.access_time_rounded,
                       color: Colors.white,
                     ),
@@ -224,7 +224,7 @@ class EditEventScreen extends StatelessWidget {
                       builder: (context, child) {
                         return Theme(
                             data: Theme.of(context).copyWith(
-                              colorScheme: ColorScheme.light(
+                              colorScheme: const ColorScheme.light(
                                 primary:
                                     Colors.black, // header background color
                                 onPrimary: Colors.white, // header text color
@@ -262,7 +262,7 @@ class EditEventScreen extends StatelessWidget {
                     return;
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 DateTimeField(
@@ -283,7 +283,7 @@ class EditEventScreen extends StatelessWidget {
                     ),
                     labelStyle:
                         TextStyle(fontSize: 14, color: DynamicColor.whiteClr),
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.access_time_rounded,
                       color: Colors.white,
                     ),
@@ -298,7 +298,7 @@ class EditEventScreen extends StatelessWidget {
                       builder: (context, child) {
                         return Theme(
                             data: Theme.of(context).copyWith(
-                              colorScheme: ColorScheme.light(
+                              colorScheme: const ColorScheme.light(
                                 primary:
                                     Colors.black, // header background color
                                 onPrimary: Colors.white, // header text color
@@ -374,7 +374,7 @@ class EditEventScreen extends StatelessWidget {
                 //     suffixIcon: Icons.calendar_month,
                 //     iconShow: true
                 // ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
@@ -385,7 +385,7 @@ class EditEventScreen extends StatelessWidget {
                     context: context,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 CustomTextFieldsHintText(
@@ -400,7 +400,7 @@ class EditEventScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {

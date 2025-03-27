@@ -50,14 +50,13 @@ class PhoneNumberTest {
         '',
       );
     } else {
-      throw new Exception('ISO Code is "${phoneNumber.isoCode}"');
+      throw Exception('ISO Code is "${phoneNumber.isoCode}"');
     }
   }
 
   String parseNumber() {
-    return this
-        .phoneNumber!
-        .replaceAll(RegExp('^([\\+]?${this.dialCode}[\\s]?)'), '');
+    return phoneNumber!
+        .replaceAll(RegExp('^([\\+]?$dialCode[\\s]?)'), '');
   }
 
   static String? getISO2CodeByPrefix(String prefix) {

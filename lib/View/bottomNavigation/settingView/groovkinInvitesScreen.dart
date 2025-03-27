@@ -7,7 +7,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/View/authView/autController.dart';
 
 class GroovkinInviteScreen extends StatefulWidget {
-  GroovkinInviteScreen({super.key});
+  const GroovkinInviteScreen({super.key});
 
   @override
   State<GroovkinInviteScreen> createState() => _GroovkinInviteScreenState();
@@ -55,18 +55,18 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
               key: invitationForm,
               child: Center(
                 child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           ListView.builder(
                               itemCount: _authController.invitationList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 10.0),
@@ -104,7 +104,7 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                                   ),
                                 );
                               }),
-                          SizedBox(
+                          const SizedBox(
                             height: 25,
                           ),
                           Padding(

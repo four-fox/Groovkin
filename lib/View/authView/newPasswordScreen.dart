@@ -13,7 +13,7 @@ import 'package:groovkin/View/authView/autController.dart';
 class NewPasswordScreen extends StatelessWidget {
   NewPasswordScreen({super.key});
 
-  late AuthController _authController = Get.find();
+  late final AuthController _authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,11 @@ class NewPasswordScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Change password"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
@@ -36,7 +36,7 @@ class NewPasswordScreen extends StatelessWidget {
                 color: theme.primaryColor,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Text(
@@ -46,28 +46,28 @@ class NewPasswordScreen extends StatelessWidget {
                   context: context,
                   color: DynamicColor.grayClr.withOpacity(0.8)),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomTextFields(
               labelText: "Old Password",
               controller: _authController.oldPasswordController,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomTextFields(
               labelText: "New Password",
               controller: _authController.newPasswordController,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomTextFields(
               labelText: "Confirm Password",
               controller: _authController.newConfirmPasswordController,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],
@@ -76,7 +76,7 @@ class NewPasswordScreen extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(
             borderClr: Colors.transparent,
             color1: DynamicColor.blackClr,

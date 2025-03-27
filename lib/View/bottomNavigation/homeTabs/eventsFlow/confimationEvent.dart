@@ -11,7 +11,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import 'package:intl/intl.dart';
 
 class ConfirmationEventScreen extends StatefulWidget {
-  ConfirmationEventScreen({super.key});
+  const ConfirmationEventScreen({super.key});
 
   @override
   State<ConfirmationEventScreen> createState() =>
@@ -19,7 +19,7 @@ class ConfirmationEventScreen extends StatefulWidget {
 }
 
 class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   num? downPayment;
   num? tax;
@@ -41,17 +41,17 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
     List<String> parts = time.split(RegExp(r'\s+'));
 
     DateTime dt1 = DateFormat("dd-MM-yyyy hh:mm a")
-        .parse("${startDate} ${parts.first} ${parts.last}");
+        .parse("$startDate ${parts.first} ${parts.last}");
 
     String time2 = _controller.endTimeController.text.toString().trim();
     List<String> parts2 = time2.split(RegExp(r'\s+'));
     print(parts2);
     DateTime dt2 = DateFormat("dd-MM-yyyy hh:mm a")
-        .parse("${endDate} ${parts2.first} ${parts2.last}");
+        .parse("$endDate ${parts2.first} ${parts2.last}");
 
     log("String time ${_controller.proposedTimeWindowsController.text}");
     log("First Date ${dt1.millisecondsSinceEpoch}");
-    log("Second Date ${dt2}");
+    log("Second Date $dt2");
 
     Duration diff = dt2.difference(dt1);
     double totalHours = diff.inMinutes / 60;
@@ -87,7 +87,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
       // Check if the end time is earlier than the start time (indicating it is the next day)
       if (endTime.isBefore(startTime)) {
         // If so, add 1 day to the end time
-        endTime = endTime.add(Duration(days: 1));
+        endTime = endTime.add(const Duration(days: 1));
       }
 
       Duration difference = endTime.difference(startTime);
@@ -138,23 +138,23 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 onTap: () {
                   _controller.postEventFunction(context, theme, draft: true);
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Icon(Icons.drafts),
                 ),
               )
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ]),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             // customWidget(theme: theme,context: context),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -178,7 +178,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                   context: context,
                   color: DynamicColor.grayClr.withOpacity(0.7)),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -187,7 +187,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 title: "Date",
                 value:
                     "${_controller.eventDateController.text}/${_controller.eventEndDateController.text}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             // customWidget(
@@ -203,7 +203,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Start Time",
                 value: _controller.proposedTimeWindowsController.text),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -211,7 +211,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "End Time",
                 value: _controller.endTimeController.text),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -219,7 +219,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "No. hours",
                 value: CalculateHoursFromDate().toString()),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -228,7 +228,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 title: "Subtotal",
                 value:
                     "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate() )}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
 
@@ -237,7 +237,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Tax (5%) ",
                 value: "\$${tax?.toStringAsFixed(2)}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -245,7 +245,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Groovkin Tax(5%)",
                 value: "\$${groovkinTax?.toStringAsFixed(2)}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -253,7 +253,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Stripe Tax(10%)",
                 value: "\$${stripeTax?.toStringAsFixed(2)}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -261,7 +261,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Down Payment Inc. Tax",
                 value: "\$${downPayment?.toStringAsFixed(2)}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             customWidget(
@@ -269,7 +269,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Balance Due",
                 value: "\$${balanceDue?.toStringAsFixed(2)}"),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Divider(
@@ -281,7 +281,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {

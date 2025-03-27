@@ -14,22 +14,22 @@ class SwitchProfileScreen extends StatelessWidget {
       body: SizedBox(
         width: Get.width,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: ImageIcon(
-                  AssetImage("assets/backArrow.png"),
+                  const AssetImage("assets/backArrow.png"),
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               Text(
@@ -41,7 +41,7 @@ class SwitchProfileScreen extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
@@ -53,15 +53,15 @@ class SwitchProfileScreen extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               SizedBox(
                 width: Get.width / 1.3,
                 height: Get.height / 2.9,
-                child: Image(image: AssetImage("assets/switchImg.png")),
+                child: const Image(image: AssetImage("assets/switchImg.png")),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Text(
@@ -83,9 +83,9 @@ class SwitchProfileScreen extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
                   borderClr: Colors.transparent,
                   onTap: () {
@@ -94,7 +94,7 @@ class SwitchProfileScreen extends StatelessWidget {
                   text: "Start",
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
             ],

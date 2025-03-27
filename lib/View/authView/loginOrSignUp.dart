@@ -13,7 +13,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
 
   final signUpForm = GlobalKey<FormState>();
 
-  AuthController _controller = Get.find();
+  final AuthController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class LoginOrSignUpScreen extends StatelessWidget {
           return Container(
             height: double.infinity,
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/loginSelection3.png"),
                   fit: BoxFit.fill),
@@ -35,7 +35,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: kToolbarHeight / 1.5,
                   ),
 
@@ -44,12 +44,12 @@ class LoginOrSignUpScreen extends StatelessWidget {
                       Get.back();
                     },
                     child: ImageIcon(
-                      AssetImage('assets/backArrow.png'),
+                      const AssetImage('assets/backArrow.png'),
                       size: 32,
                       color: theme.primaryColor,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
@@ -60,7 +60,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                       color: theme.primaryColor,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: kToolbarHeight * 1.5,
                   ),
                   CustomTextFields(
@@ -68,7 +68,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                     isEmail: true,
                     validationError: "email",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   CustomTextFields(
@@ -91,7 +91,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   CustomTextFields(
@@ -114,7 +114,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: kToolbarHeight / 2.5,
                   ),
                   GestureDetector(
@@ -123,7 +123,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                     },
                     child: Padding(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -156,7 +156,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
         bottomNavigationBar: SafeArea(
           top: false,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             child: CustomButton(
               borderClr: Colors.transparent,
               onTap: () {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ShrinkOnTap extends StatefulWidget {
   final Widget child;
-  const ShrinkOnTap({Key? key, required this.child}) : super(key: key);
+  const ShrinkOnTap({super.key, required this.child});
 
   @override
   _ShrinkOnTapState createState() => _ShrinkOnTapState();
@@ -19,7 +19,7 @@ class _ShrinkOnTapState extends State<ShrinkOnTap> {
       onTapCancel: () => setState(() => _isTapped = false),
       child: AnimatedScale(
         scale: _isTapped ? 0.90 : 1.0,
-        duration: Duration(milliseconds: 20),
+        duration: const Duration(milliseconds: 20),
         child: widget.child,
       ),
     );

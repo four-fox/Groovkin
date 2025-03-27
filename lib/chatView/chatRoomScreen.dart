@@ -40,7 +40,7 @@ class ChatRoomScreen extends StatelessWidget {
         child: Container(
           height: 35,
           width: 120,
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               // color: Colors.amberAccent
               color: DynamicColor.darkGrayClr,
@@ -65,13 +65,13 @@ class ChatRoomScreen extends StatelessWidget {
         leading: Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: EdgeInsets.only(left: 12.0),
+            padding: const EdgeInsets.only(left: 12.0),
             child: GestureDetector(
               onTap: () {
                 Get.back();
               },
               child: ImageIcon(
-                AssetImage("assets/backArrow.png"),
+                const AssetImage("assets/backArrow.png"),
                 color: theme.primaryColor,
               ),
             ),
@@ -107,7 +107,7 @@ class ChatRoomScreen extends StatelessWidget {
             return false;
           },
           child: controller.getAllChatRoomLoader.value == false
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : Column(
                   children: [
                     Container(
@@ -143,7 +143,7 @@ class ChatRoomScreen extends StatelessWidget {
                               itemCount:
                                   controller.chatRoomData!.data!.data!.length,
                               shrinkWrap: true,
-                              physics: AlwaysScrollableScrollPhysics(),
+                              physics: const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 ChatRoomObject chatRoomData =
                                     controller.chatRoomData!.data!.data![index];
@@ -185,7 +185,7 @@ class ChatRoomScreen extends StatelessWidget {
                                                 chatRoomData.lastMessage!
                                                         .isDeleted ==
                                                     0)
-                                            ? Align(
+                                            ? const Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Icon(Icons.photo))
                                             : Text(

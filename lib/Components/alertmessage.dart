@@ -15,7 +15,7 @@ void alertMethod(
     titleText,
     theme}) {
   Get.defaultDialog(
-      titlePadding: title == "" ? EdgeInsets.zero : EdgeInsets.all(8),
+      titlePadding: title == "" ? EdgeInsets.zero : const EdgeInsets.all(8),
       title: title ?? 'Update event',
       content: childrenData ??
           Text(
@@ -28,7 +28,7 @@ void alertMethod(
           ),
       actions: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 35.0),
+          padding: const EdgeInsets.symmetric(horizontal: 35.0),
           child: CustomButton(
             onTap: () {},
             backgroundClr: false,
@@ -44,13 +44,12 @@ void alertMethod(
 
 class AlertWidget extends StatelessWidget {
   AlertWidget(
-      {Key? key,
+      {super.key,
       this.container,
       this.height,
       this.borderColor,
       this.radius,
-      this.bgColor = false})
-      : super(key: key);
+      this.bgColor = false});
 
   Widget? container;
   double? height;
@@ -70,14 +69,14 @@ class AlertWidget extends StatelessWidget {
           border: Border.all(
               color: borderColor ?? DynamicColor.grayClr.withOpacity(0.5)),
           image: bgColor == false
-              ? DecorationImage(
+              ? const DecorationImage(
                   image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)
               : null,
           color: bgColor == false ? Colors.transparent : Colors.white,
         ),
         child: container,
       ),
-      contentPadding: EdgeInsets.all(0.0),
+      contentPadding: const EdgeInsets.all(0.0),
     );
   }
 }
@@ -95,7 +94,7 @@ customAlertt(
       title: "",
       titlePadding: EdgeInsets.zero,
       backgroundColor: bgClr ?? Colors.white,
-      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
       content: customWidget ??
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -107,7 +106,7 @@ customAlertt(
                 style: poppinsRegularStyle(
                     fontSize: 16, color: DynamicColor.blackClr),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
@@ -116,7 +115,7 @@ customAlertt(
                 style: poppinsRegularStyle(
                     fontSize: 14, color: DynamicColor.blackClr),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30.0,
               ),
               Row(
@@ -142,7 +141,7 @@ customAlertt(
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   GestureDetector(

@@ -18,7 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
 class UpGradeEvents extends StatefulWidget {
-  UpGradeEvents({super.key});
+  const UpGradeEvents({super.key});
 
   @override
   State<UpGradeEvents> createState() => _UpGradeEventsState();
@@ -84,12 +84,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
         return Form(
           key: eventForm,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: SingleChildScrollView(
               child: Center(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     GestureDetector(
@@ -140,9 +140,9 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                               ((controller.eventDetail?.data
                                                       ?.bannerImage !=
                                                   null)))
-                                          ? SizedBox.shrink()
+                                          ? const SizedBox.shrink()
                                           : ImageIcon(
-                                              AssetImage(
+                                              const AssetImage(
                                                   "assets/imageUploadIcon.png"),
                                               color: DynamicColor.yellowClr,
                                             ),
@@ -165,7 +165,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                   ),
                                 ),
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -176,14 +176,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         color: theme.primaryColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     textFields(
                         theme: theme,
                         controller: controller.eventTitleController,
                         error: "event title"),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     textFields(
@@ -191,7 +191,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         labelText: "Featuring",
                         controller: controller.featuringController,
                         error: "featuring"),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     textFields(
@@ -216,7 +216,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     //   error: "max capacity",
                     //   keyBoardType: true
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     TextField(
@@ -231,7 +231,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             builder: (context, child) {
                               return Theme(
                                   data: Theme.of(context).copyWith(
-                                    colorScheme: ColorScheme.light(
+                                    colorScheme: const ColorScheme.light(
                                       primary: Colors
                                           .white, // header background color
                                       onPrimary: Colors.black,
@@ -275,7 +275,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 color: DynamicColor.grayClr.withOpacity(0.6))),
                         hintText: "Select meeting date",
                         label: Padding(
-                          padding: EdgeInsets.only(left: 15.0),
+                          padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             "Start Date",
                             style: TextStyle(
@@ -286,15 +286,15 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                         labelStyle: TextStyle(color: DynamicColor.whiteClr),
                         hintStyle:
-                            TextStyle(fontFamily: 'Montserrat', fontSize: 13),
-                        contentPadding: EdgeInsets.all(5),
+                            const TextStyle(fontFamily: 'Montserrat', fontSize: 13),
+                        contentPadding: const EdgeInsets.all(5),
                         suffixIcon: Icon(
                           Icons.calendar_month,
                           color: DynamicColor.whiteClr,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     TextField(
@@ -309,7 +309,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             builder: (context, child) {
                               return Theme(
                                   data: Theme.of(context).copyWith(
-                                    colorScheme: ColorScheme.light(
+                                    colorScheme: const ColorScheme.light(
                                       primary: Colors
                                           .white, // header background color
                                       onPrimary: Colors.black,
@@ -353,7 +353,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 color: DynamicColor.grayClr.withOpacity(0.6))),
                         hintText: "Select meeting date",
                         label: Padding(
-                          padding: EdgeInsets.only(left: 15.0),
+                          padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
                             "End Date",
                             style: TextStyle(
@@ -364,15 +364,15 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                         labelStyle: TextStyle(color: DynamicColor.whiteClr),
                         hintStyle:
-                            TextStyle(fontFamily: 'Montserrat', fontSize: 13),
-                        contentPadding: EdgeInsets.all(5),
+                            const TextStyle(fontFamily: 'Montserrat', fontSize: 13),
+                        contentPadding: const EdgeInsets.all(5),
                         suffixIcon: Icon(
                           Icons.calendar_month,
                           color: DynamicColor.whiteClr,
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     DateTimeField(
@@ -393,7 +393,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                         labelStyle: TextStyle(
                             fontSize: 14, color: DynamicColor.whiteClr),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.access_time_rounded,
                           color: Colors.white,
                         ),
@@ -407,7 +407,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           builder: (context, child) {
                             return Theme(
                                 data: Theme.of(context).copyWith(
-                                  colorScheme: ColorScheme.light(
+                                  colorScheme: const ColorScheme.light(
                                     primary:
                                         Colors.black, // header background color
                                     onPrimary:
@@ -444,7 +444,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         return;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     DateTimeField(
@@ -465,7 +465,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                         labelStyle: TextStyle(
                             fontSize: 14, color: DynamicColor.whiteClr),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.access_time_rounded,
                           color: Colors.white,
                         ),
@@ -479,7 +479,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           builder: (context, child) {
                             return Theme(
                               data: Theme.of(context).copyWith(
-                                colorScheme: ColorScheme.light(
+                                colorScheme: const ColorScheme.light(
                                   primary:
                                       Colors.black, // header background color
                                   onPrimary: Colors.white, // header text color
@@ -604,7 +604,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     textFields(
@@ -622,7 +622,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     //   keyBoardType: true,
                     //   controller: controller.eventHoursController,
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Align(
@@ -675,7 +675,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             SizedBox(
                               width: 23,
                               child: Theme(
@@ -755,7 +755,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             SizedBox(
                               width: 23,
                               child: Theme(
@@ -832,7 +832,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     //     ],
                     //   ),
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     // controller.paymentScheduleValue.value == 4
@@ -874,7 +874,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     //       ),
                     //     ),
                     //     controller: controller.otherRateController),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     SafeArea(
@@ -933,7 +933,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                   ],

@@ -63,13 +63,13 @@ Widget messageWidget(
                     child: Container(
                       height: 55,
                       width: Get.width / 1.4,
-                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         color: Colors.red.withOpacity(0.5),
                         // borderRadius: BorderRadius.circular(30)
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Message have been deleted",
                           style: TextStyle(
@@ -81,7 +81,7 @@ Widget messageWidget(
                     ),
                   )
                 : Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
                     child: Align(
                       alignment:
                           controller.chatData!.data!.data![index].senderId !=
@@ -92,7 +92,7 @@ Widget messageWidget(
                         width: Get.width / 1.4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
+                          image: const DecorationImage(
                             image: AssetImage("assets/grayClor.png"),
                             fit: BoxFit.fill,
                           ),
@@ -101,7 +101,7 @@ Widget messageWidget(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(top: 8.0, left: 8),
+                              padding: const EdgeInsets.only(top: 8.0, left: 8),
                               child: Row(
                                 children: [
                                   CircleAvatar(
@@ -116,7 +116,7 @@ Widget messageWidget(
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 8.0),
+                                    padding: const EdgeInsets.only(left: 8.0),
                                     child: Text(
                                       // jsonDecode(
                                       // jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['id']
@@ -137,7 +137,7 @@ Widget messageWidget(
                             ),
                             Container(
                               height: kToolbarHeight * 3,
-                              padding: EdgeInsets.symmetric(vertical: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
                               // height: kToolbarHeight*2,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
@@ -164,7 +164,7 @@ Widget messageWidget(
                                       alignment: Alignment.topRight,
                                       child: Padding(
                                         padding:
-                                            EdgeInsets.only(right: 8, top: 8),
+                                            const EdgeInsets.only(right: 8, top: 8),
                                         child: eventDateWidget(
                                             date:
                                                 "${DateTime.parse(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']).day} ",
@@ -187,7 +187,7 @@ Widget messageWidget(
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: 8.0, bottom: 6),
+                              padding: const EdgeInsets.only(left: 8.0, bottom: 6),
                               child: Text(
                                 jsonDecode(controller.chatData!.data!
                                     .data![index].event!)['event_title'],
@@ -221,7 +221,7 @@ Widget messageWidget(
                             ),
                             controller.chatData!.data!.data![index].senderId !=
                                     API().sp.read('userId')
-                                ? SizedBox.shrink()
+                                ? const SizedBox.shrink()
                                 : Padding(
                                     padding: const EdgeInsets.only(
                                         right: 6.0, bottom: 6),
@@ -236,7 +236,7 @@ Widget messageWidget(
                     ),
                   )
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
                 child:
                     controller.chatData!.data!.data![index].senderId !=
                             API().sp.read('userId')
@@ -248,13 +248,13 @@ Widget messageWidget(
                                           .isDeleted ==
                                       1
                                   ? Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 8),
                                       decoration: BoxDecoration(
                                           color: DynamicColor.grayClr,
                                           borderRadius:
                                               BorderRadius.circular(30)),
-                                      child: Center(
+                                      child: const Center(
                                         child: Text(
                                           "Message have been deleted",
                                           style: TextStyle(
@@ -279,7 +279,7 @@ Widget messageWidget(
                                                       BorderRadius.circular(8),
                                                   color: DynamicColor.grayClr,
                                                 ),
-                                                padding: EdgeInsets.all(6),
+                                                padding: const EdgeInsets.all(6),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -290,7 +290,7 @@ Widget messageWidget(
                                                                 .data![index]
                                                                 .parentChat ==
                                                             null
-                                                        ? SizedBox.shrink()
+                                                        ? const SizedBox.shrink()
                                                         : jsonDecode(controller
                                                                         .chatData!
                                                                         .data!
@@ -299,7 +299,7 @@ Widget messageWidget(
                                                                         .parentChat!)[
                                                                     'media'] ==
                                                                 null
-                                                            ? SizedBox.shrink()
+                                                            ? const SizedBox.shrink()
                                                             : GestureDetector(
                                                                 onTap:
                                                                     () async {
@@ -311,7 +311,7 @@ Widget messageWidget(
                                                                           index);
                                                                 },
                                                                 child: Padding(
-                                                                  padding: EdgeInsets
+                                                                  padding: const EdgeInsets
                                                                       .symmetric(
                                                                           vertical:
                                                                               8.0),
@@ -320,7 +320,7 @@ Widget messageWidget(
                                                                     width: Get
                                                                         .width,
                                                                     decoration:
-                                                                        BoxDecoration(
+                                                                        const BoxDecoration(
                                                                             border:
                                                                                 Border(
                                                                               left: BorderSide(color: Colors.white, width: 5),
@@ -338,7 +338,7 @@ Widget messageWidget(
                                                                               ? "You"
                                                                               : jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['user'])['name'],
                                                                           style:
-                                                                              TextStyle(fontSize: 12),
+                                                                              const TextStyle(fontSize: 12),
                                                                         ),
                                                                         Container(
                                                                           height:
@@ -395,7 +395,7 @@ Widget messageWidget(
                                                                 .data![index]
                                                                 .msg
                                                                 .toString(),
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               fontSize: 12,
                                                               color:
                                                                   Colors.white,
@@ -405,14 +405,14 @@ Widget messageWidget(
                                                             ),
                                                           ),
                                                     Padding(
-                                                      padding: EdgeInsets.only(
+                                                      padding: const EdgeInsets.only(
                                                           right: 3),
                                                       child: Align(
                                                         alignment: Alignment
                                                             .bottomRight,
                                                         child: Text(
                                                           '${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontSize: 10,
                                                             color: Colors.white,
                                                           ),
@@ -431,11 +431,11 @@ Widget messageWidget(
                                             alignment: Alignment.bottomRight,
                                             children: [
                                               Container(
-                                                constraints: BoxConstraints(
+                                                constraints: const BoxConstraints(
                                                   maxWidth: 250,
                                                   minWidth: 20,
                                                 ),
-                                                padding: EdgeInsets.all(10),
+                                                padding: const EdgeInsets.all(10),
                                                 decoration: BoxDecoration(
                                                     color: DynamicColor.grayClr,
                                                     borderRadius:
@@ -451,10 +451,10 @@ Widget messageWidget(
                                                                 .data![index]
                                                                 .parentChat ==
                                                             null
-                                                        ? SizedBox.shrink()
+                                                        ? const SizedBox.shrink()
                                                         : Container(
                                                             decoration:
-                                                                BoxDecoration(
+                                                                const BoxDecoration(
                                                                     color: Colors
                                                                         .grey),
                                                             child:
@@ -473,7 +473,7 @@ Widget messageWidget(
                                                                 width:
                                                                     Get.width,
                                                                 padding:
-                                                                    EdgeInsets
+                                                                    const EdgeInsets
                                                                         .all(6),
                                                                 child: Column(
                                                                   crossAxisAlignment:
@@ -490,7 +490,7 @@ Widget messageWidget(
                                                                               .data!
                                                                               .data![index]
                                                                               .parentChat!)['user'])['name'],
-                                                                      style: TextStyle(
+                                                                      style: const TextStyle(
                                                                           fontSize:
                                                                               12,
                                                                           color:
@@ -515,10 +515,10 @@ Widget messageWidget(
                                                                                     ? Row(
                                                                                         children: [
                                                                                           Padding(
-                                                                                            padding: EdgeInsets.only(right: 4.0),
+                                                                                            padding: const EdgeInsets.only(right: 4.0),
                                                                                             child: Text(
                                                                                               jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'],
-                                                                                              style: TextStyle(color: Colors.black),
+                                                                                              style: const TextStyle(color: Colors.black),
                                                                                             ),
                                                                                           ),
                                                                                           Container(
@@ -530,7 +530,7 @@ Widget messageWidget(
                                                                                       )
                                                                                     : Text(
                                                                                         json.decode(controller.chatData!.data!.data![index].parentChat!)['is_deleted'] == 1 ? "Message are deleted" : json.decode(controller.chatData!.data!.data![index].parentChat!)['msg'].toString(),
-                                                                                        style: TextStyle(fontSize: 12, color: Colors.black45),
+                                                                                        style: const TextStyle(fontSize: 12, color: Colors.black45),
                                                                                         maxLines: 3,
                                                                                       )
                                                                         : Container(),
@@ -539,7 +539,7 @@ Widget messageWidget(
                                                                 decoration:
                                                                     BoxDecoration(
                                                                         border:
-                                                                            Border(
+                                                                            const Border(
                                                                           left: BorderSide(
                                                                               color: Colors.white,
                                                                               width: 5),
@@ -581,7 +581,7 @@ Widget messageWidget(
                                                                   .data![index]
                                                                   .msg
                                                                   .toString(),
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                 fontSize: 12,
                                                                 color: Colors
                                                                     .black,
@@ -591,16 +591,16 @@ Widget messageWidget(
                                                               ),
                                                             ),
                                                           )
-                                                        : SizedBox.shrink(),
+                                                        : const SizedBox.shrink(),
                                                     Padding(
-                                                      padding: EdgeInsets.only(
+                                                      padding: const EdgeInsets.only(
                                                           right: 3),
                                                       child: Align(
                                                         alignment: Alignment
                                                             .bottomRight,
                                                         child: Text(
                                                           '${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontSize: 10,
                                                             color: Colors.black,
                                                           ),
@@ -619,18 +619,18 @@ Widget messageWidget(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               controller.chatData!.data!.data![index]
                                           .isDeleted ==
                                       1
                                   ? Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 8),
                                       decoration: BoxDecoration(
                                           color: Colors.red.withOpacity(0.5),
                                           borderRadius:
                                               BorderRadius.circular(30)),
-                                      child: Center(
+                                      child: const Center(
                                         child: Text(
                                           "Message have been deleted",
                                           style: TextStyle(
@@ -651,7 +651,7 @@ Widget messageWidget(
                                                   BorderRadius.circular(8),
                                               color: Colors.white,
                                             ),
-                                            padding: EdgeInsets.all(6),
+                                            padding: const EdgeInsets.all(6),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -662,7 +662,7 @@ Widget messageWidget(
                                                             .data![index]
                                                             .parentChat ==
                                                         null
-                                                    ? SizedBox.shrink()
+                                                    ? const SizedBox.shrink()
                                                     : jsonDecode(controller
                                                                     .chatData!
                                                                     .data!
@@ -670,7 +670,7 @@ Widget messageWidget(
                                                                     .parentChat!)[
                                                                 'media'] ==
                                                             null
-                                                        ? SizedBox.shrink()
+                                                        ? const SizedBox.shrink()
                                                         : GestureDetector(
                                                             onTap: () async {
                                                               await controller
@@ -685,7 +685,7 @@ Widget messageWidget(
                                                             child: Container(
                                                               width: Get.width,
                                                               decoration:
-                                                                  BoxDecoration(
+                                                                  const BoxDecoration(
                                                                 border: Border(
                                                                   left: BorderSide(
                                                                       color: Colors
@@ -695,7 +695,7 @@ Widget messageWidget(
                                                                 color:
                                                                     Colors.grey,
                                                               ),
-                                                              padding: EdgeInsets
+                                                              padding: const EdgeInsets
                                                                   .only(
                                                                       left: 6),
                                                               child: Column(
@@ -713,14 +713,14 @@ Widget messageWidget(
                                                                             .data!
                                                                             .data![index]
                                                                             .parentChat!)['user'])['name'],
-                                                                    style: TextStyle(
+                                                                    style: const TextStyle(
                                                                         fontSize:
                                                                             12,
                                                                         color: Colors
                                                                             .black),
                                                                   ),
                                                                   Padding(
-                                                                    padding: EdgeInsets.symmetric(
+                                                                    padding: const EdgeInsets.symmetric(
                                                                         vertical:
                                                                             8.0),
                                                                     child:
@@ -779,7 +779,7 @@ Widget messageWidget(
                                                             .data![index]
                                                             .msg
                                                             .toString(),
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.black87,
                                                           fontWeight:
@@ -824,11 +824,11 @@ Widget messageWidget(
                                       : Flexible(
                                           flex: 2,
                                           child: Container(
-                                            constraints: BoxConstraints(
+                                            constraints: const BoxConstraints(
                                               maxWidth: 250,
                                               minWidth: 20,
                                             ),
-                                            padding: EdgeInsets.all(10),
+                                            padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
                                                 color: Colors.white,
                                                 borderRadius:
@@ -843,10 +843,10 @@ Widget messageWidget(
                                                             .data![index]
                                                             .parentChat ==
                                                         null
-                                                    ? SizedBox.shrink()
+                                                    ? const SizedBox.shrink()
                                                     : Container(
                                                         decoration:
-                                                            BoxDecoration(
+                                                            const BoxDecoration(
                                                           color: Colors.grey,
                                                         ),
                                                         child: GestureDetector(
@@ -867,7 +867,7 @@ Widget messageWidget(
                                                           child: Container(
                                                             width: Get.width,
                                                             padding:
-                                                                EdgeInsets.all(
+                                                                const EdgeInsets.all(
                                                                     6),
                                                             child: Column(
                                                               crossAxisAlignment:
@@ -885,7 +885,7 @@ Widget messageWidget(
                                                                           .data![
                                                                               index]
                                                                           .parentChat!)['user'])['name'],
-                                                                  style: TextStyle(
+                                                                  style: const TextStyle(
                                                                       fontSize:
                                                                           12),
                                                                 ),
@@ -899,9 +899,7 @@ Widget messageWidget(
                                                                     ? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] ==
                                                                             null
                                                                         ? Text(
-                                                                            jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] == null
-                                                                                ? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event']==null?"Event Reply": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title']
-                                                                                : jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'],
+                                                                            jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ?? (jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event']==null?"Event Reply": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title']),
                                                                             maxLines:
                                                                                 3,
                                                                           )
@@ -916,7 +914,7 @@ Widget messageWidget(
                                                                                 ? Row(
                                                                                     children: [
                                                                                       Padding(
-                                                                                        padding: EdgeInsets.only(right: 4.0),
+                                                                                        padding: const EdgeInsets.only(right: 4.0),
                                                                                         child: Text(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg']),
                                                                                       ),
                                                                                       Container(
@@ -928,7 +926,7 @@ Widget messageWidget(
                                                                                   )
                                                                                 : Text(
                                                                                     json.decode(controller.chatData!.data!.data![index].parentChat!)['is_deleted'] == 1 ? "Message are deleted" : json.decode(controller.chatData!.data!.data![index].parentChat!)['msg'].toString(),
-                                                                                    style: TextStyle(
+                                                                                    style: const TextStyle(
                                                                                       fontSize: 12,
                                                                                       color: Colors.black,
                                                                                     ),
@@ -938,7 +936,7 @@ Widget messageWidget(
                                                               ],
                                                             ),
                                                             decoration:
-                                                                BoxDecoration(
+                                                                const BoxDecoration(
                                                                     border:
                                                                         Border(
                                                                       left: BorderSide(
@@ -982,7 +980,7 @@ Widget messageWidget(
                                                               .data![index]
                                                               .msg
                                                               .toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.black,
                                                             fontWeight:
@@ -990,20 +988,20 @@ Widget messageWidget(
                                                           ),
                                                         ),
                                                       )
-                                                    : SizedBox.shrink(),
+                                                    : const SizedBox.shrink(),
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     Padding(
-                                                      padding: EdgeInsets.only(
+                                                      padding: const EdgeInsets.only(
                                                           right: 3),
                                                       child: Align(
                                                         alignment: Alignment
                                                             .bottomRight,
                                                         child: Text(
                                                           '${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             fontSize: 10,
                                                             color: Colors.black,
                                                           ),
@@ -1011,7 +1009,7 @@ Widget messageWidget(
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding: EdgeInsets.only(
+                                                      padding: const EdgeInsets.only(
                                                           right: 3.0),
                                                       child: controller
                                                                   .chatData!
@@ -1019,13 +1017,13 @@ Widget messageWidget(
                                                                   .data![index]
                                                                   .isSeen ==
                                                               1
-                                                          ? Icon(
+                                                          ? const Icon(
                                                               Icons.done_all,
                                                               size: 13,
                                                               color:
                                                                   Colors.blue,
                                                             )
-                                                          : Icon(
+                                                          : const Icon(
                                                               Icons.check,
                                                               size: 13,
                                                               color:
@@ -1046,7 +1044,7 @@ Widget messageWidget(
 }
 
 /// long press to delete or reply
-onLongPress(context, index, element, _controller, _tapDownPosition) {
+onLongPress(context, index, element, controller, tapDownPosition) {
   final RenderBox overlay =
       Overlay.of(context).context.findRenderObject() as RenderBox;
   showMenu(
@@ -1056,15 +1054,15 @@ onLongPress(context, index, element, _controller, _tapDownPosition) {
       PopupMenuItem(
         value: index,
         padding: EdgeInsets.zero,
-        child: _controller.chatTilePopUp(element, context, index),
+        child: controller.chatTilePopUp(element, context, index),
       )
     ],
     context: context,
     position: RelativeRect.fromLTRB(
-      _tapDownPosition!.dx,
-      _tapDownPosition!.dy,
-      overlay.size.width - _tapDownPosition!.dx,
-      overlay.size.height - _tapDownPosition!.dy,
+      tapDownPosition!.dx,
+      tapDownPosition!.dy,
+      overlay.size.width - tapDownPosition!.dx,
+      overlay.size.height - tapDownPosition!.dy,
     ),
   );
 }

@@ -20,7 +20,7 @@ class UpcomingEvents extends StatelessWidget {
   RxBool ongoingVal = false.obs;
   RxBool pastVal = false.obs;
 
-  EventController _eventController = Get.find<EventController>();
+  final EventController _eventController = Get.find<EventController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +33,13 @@ class UpcomingEvents extends StatelessWidget {
       return SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 6,
                 ),
@@ -98,7 +98,7 @@ class UpcomingEvents extends StatelessWidget {
                                             .data!.length,
                                     shrinkWrap: true,
                                     padding: EdgeInsets.zero,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       EventData singleEventDat = controller
                                           .upcomingEventData!
@@ -161,13 +161,13 @@ class UpcomingEvents extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -223,7 +223,7 @@ class UpcomingEvents extends StatelessWidget {
                                             .ongoingEvents!.data!.data!.length,
                                     shrinkWrap: true,
                                     padding: EdgeInsets.zero,
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       EventData singleEvent = controller
                                           .ongoingEvents!.data!.data![index];
@@ -279,7 +279,7 @@ class UpcomingEvents extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             /* API().sp.read('role') == "eventOrganizer"? Padding(
@@ -387,11 +387,11 @@ class UpcomingEvents extends StatelessWidget {
                           arguments: {"pageTitle": "drafts"});
                     },
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Container(
                         width: Get.width,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                            const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.darkGrayClr),
@@ -406,7 +406,7 @@ class UpcomingEvents extends StatelessWidget {
                       ),
                     ),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
           ],
         ),
       );

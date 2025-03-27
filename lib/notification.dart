@@ -13,14 +13,14 @@ const AndroidInitializationSettings initializationSettingsAndroid =
 
 /// Note: permissions aren't requested here just to demonstrate that can be
 /// done later
-final DarwinInitializationSettings initializationSettingsIOS =
+const DarwinInitializationSettings initializationSettingsIOS =
     DarwinInitializationSettings(
   requestAlertPermission: false,
   requestBadgePermission: false,
   requestSoundPermission: false,
 );
 
-final InitializationSettings initializationSettings = InitializationSettings(
+const InitializationSettings initializationSettings = InitializationSettings(
   android: initializationSettingsAndroid,
   iOS: initializationSettingsIOS,
 );

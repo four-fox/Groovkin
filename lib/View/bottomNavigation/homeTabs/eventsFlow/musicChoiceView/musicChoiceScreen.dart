@@ -11,7 +11,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 class MusicChoiceScreen extends StatelessWidget {
   MusicChoiceScreen({super.key});
 
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,12 @@ class MusicChoiceScreen extends StatelessWidget {
                 onTap: () {
                   _controller.postEventFunction(context, theme, draft: true);
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Icon(Icons.drafts),
                 ),
               )
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ]),
       body: GetBuilder<EventController>(initState: (v) {
         if (_controller.eventDetail != null) {
@@ -39,15 +39,15 @@ class MusicChoiceScreen extends StatelessWidget {
         }
       }, builder: (controller) {
         return controller.getMusicTagLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           'Add Hashtags',
                           textAlign: TextAlign.center,
@@ -110,7 +110,7 @@ class MusicChoiceScreen extends StatelessWidget {
                       //   ],
                       // ),
                       controller.tagListPost.isEmpty
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : SizedBox(
                               height: kToolbarHeight,
                               child: Align(
@@ -118,11 +118,11 @@ class MusicChoiceScreen extends StatelessWidget {
                                 child: ListView.builder(
                                     itemCount: controller.tagListPost.length,
                                     shrinkWrap: true,
-                                    physics: AlwaysScrollableScrollPhysics(),
+                                    physics: const AlwaysScrollableScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 5.0),
                                         child: Chip(
                                             shape: RoundedRectangleBorder(
@@ -145,7 +145,7 @@ class MusicChoiceScreen extends StatelessWidget {
                                     }),
                               ),
                             ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Align(
@@ -161,14 +161,14 @@ class MusicChoiceScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                          padding: EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.only(top: 8),
                           child: ListView.builder(
                               itemCount: controller.tagList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Container(
-                                  padding: EdgeInsets.symmetric(vertical: 4),
+                                  padding: const EdgeInsets.symmetric(vertical: 4),
                                   child: Column(
                                     children: [
                                       GestureDetector(
@@ -185,7 +185,7 @@ class MusicChoiceScreen extends StatelessWidget {
                                                 BorderRadius.circular(10),
                                             color: DynamicColor.darkGrayClr,
                                           ),
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 10),
                                           child: Row(
                                             mainAxisAlignment:
@@ -218,7 +218,7 @@ class MusicChoiceScreen extends StatelessWidget {
                                           visible: controller
                                               .tagList[index].showSubCat!.value,
                                           child: Padding(
-                                            padding: EdgeInsets.only(top: 4),
+                                            padding: const EdgeInsets.only(top: 4),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -231,7 +231,7 @@ class MusicChoiceScreen extends StatelessWidget {
                                                       .categoryItems!
                                                       .length,
                                                   physics:
-                                                      NeverScrollableScrollPhysics(),
+                                                      const NeverScrollableScrollPhysics(),
                                                   shrinkWrap: true,
                                                   itemBuilder:
                                                       (BuildContext context,
@@ -239,7 +239,7 @@ class MusicChoiceScreen extends StatelessWidget {
                                                     return Column(
                                                       children: [
                                                         Container(
-                                                          padding: EdgeInsets
+                                                          padding: const EdgeInsets
                                                               .symmetric(
                                                                   horizontal:
                                                                       8),
@@ -329,7 +329,7 @@ class MusicChoiceScreen extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
@@ -360,7 +360,7 @@ class MusicChoiceScreen extends StatelessWidget {
 class ActivityChoiceScreen extends StatelessWidget {
   ActivityChoiceScreen({super.key});
 
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -373,12 +373,12 @@ class ActivityChoiceScreen extends StatelessWidget {
                 onTap: () {
                   _controller.postEventFunction(context, theme, draft: true);
                 },
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(right: 8.0),
                   child: Icon(Icons.drafts),
                 ),
               )
-            : SizedBox.shrink()
+            : const SizedBox.shrink()
       ]),
       body: GetBuilder<EventController>(initState: (v) {
         if (_controller.eventDetail != null) {
@@ -388,9 +388,9 @@ class ActivityChoiceScreen extends StatelessWidget {
         }
       }, builder: (controller) {
         return controller.getMusicTagLoader.value == false
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,7 +398,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Text(
                             'Activity Choice!',
                             textAlign: TextAlign.center,
@@ -462,7 +462,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                       //   ],
                       // ),
                       controller.activityListPost.isEmpty
-                          ? SizedBox.shrink()
+                          ? const SizedBox.shrink()
                           : SizedBox(
                               height: kToolbarHeight,
                               child: Align(
@@ -471,11 +471,11 @@ class ActivityChoiceScreen extends StatelessWidget {
                                     itemCount:
                                         controller.activityListPost.length,
                                     shrinkWrap: true,
-                                    physics: AlwaysScrollableScrollPhysics(),
+                                    physics: const AlwaysScrollableScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 5.0),
                                         child: Chip(
                                             shape: RoundedRectangleBorder(
@@ -500,14 +500,14 @@ class ActivityChoiceScreen extends StatelessWidget {
                               ),
                             ),
                       Container(
-                          padding: EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.only(top: 8),
                           child: ListView.builder(
                               itemCount: controller.activityList.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Container(
-                                  padding: EdgeInsets.symmetric(vertical: 4),
+                                  padding: const EdgeInsets.symmetric(vertical: 4),
                                   child: Column(
                                     children: [
                                       GestureDetector(
@@ -524,7 +524,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                                                 BorderRadius.circular(10),
                                             color: DynamicColor.darkGrayClr,
                                           ),
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 10),
                                           child: Row(
                                             mainAxisAlignment:
@@ -560,7 +560,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                                               .showSubCat!
                                               .value,
                                           child: Padding(
-                                            padding: EdgeInsets.only(top: 4),
+                                            padding: const EdgeInsets.only(top: 4),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -573,7 +573,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                                                       .categoryItems!
                                                       .length,
                                                   physics:
-                                                      NeverScrollableScrollPhysics(),
+                                                      const NeverScrollableScrollPhysics(),
                                                   shrinkWrap: true,
                                                   itemBuilder:
                                                       (BuildContext context,
@@ -581,7 +581,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                                                     return Column(
                                                       children: [
                                                         Container(
-                                                          padding: EdgeInsets
+                                                          padding: const EdgeInsets
                                                               .symmetric(
                                                                   horizontal:
                                                                       8),
@@ -671,7 +671,7 @@ class ActivityChoiceScreen extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom:  true,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {
@@ -712,7 +712,7 @@ class ActivityChoiceScreen extends StatelessWidget {
 
 class SaveHashTagScreen extends StatelessWidget {
   SaveHashTagScreen({super.key});
-  EventController _controller = Get.find();
+  final EventController _controller = Get.find();
   bool hashTag = Get.arguments['musicHashTag'];
   List selectedHashList = [];
 
@@ -726,7 +726,7 @@ class SaveHashTagScreen extends StatelessWidget {
       ),
       body: GetBuilder<EventController>(builder: (controller) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
             children: [
               Wrap(
@@ -745,7 +745,7 @@ class SaveHashTagScreen extends StatelessWidget {
                         ),
                       )),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Chip(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -774,7 +774,7 @@ class SaveHashTagScreen extends StatelessWidget {
                         ),
                       )),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Chip(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -809,14 +809,14 @@ class SaveHashTagScreen extends StatelessWidget {
                   height: Get.height / 3.15,
                   child: ListView.builder(
                       itemCount: listA.length,
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, index) {
                         return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 4),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Container(
                             height: 45,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -882,7 +882,7 @@ class SaveHashTagScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {
@@ -908,7 +908,7 @@ class SaveHashTagScreen extends StatelessWidget {
 
 class CreateNewHashTagScreen extends StatelessWidget {
   CreateNewHashTagScreen({super.key});
-  List<String> _myListCustom = [];
+  final List<String> _myListCustom = [];
   final hashController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -922,13 +922,13 @@ class CreateNewHashTagScreen extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Container(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: const EdgeInsets.only(left: 8),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: DynamicColor.avatarBgClr),
@@ -938,7 +938,7 @@ class CreateNewHashTagScreen extends StatelessWidget {
                         fontSize: 14,
                         color: theme.primaryColor,
                         context: context),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         hintText: "here", border: InputBorder.none),
                     onChanged: (v) {
                       if (v != "") {
@@ -957,7 +957,7 @@ class CreateNewHashTagScreen extends StatelessWidget {
                 children: <Widget>[
                   for (var i in _myListCustom)
                     Padding(
-                      padding: EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(left: 8.0),
                       child: Chip(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -979,7 +979,7 @@ class CreateNewHashTagScreen extends StatelessWidget {
         );
       }),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
           onTap: () {

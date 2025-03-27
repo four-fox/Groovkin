@@ -12,7 +12,7 @@ import 'package:popup_banner/popup_banner.dart';
 class MessageListWidget extends StatelessWidget {
   MessageListWidget({super.key});
 
-  ManagerController _controller = Get.find();
+  final ManagerController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class MessageListWidget extends StatelessWidget {
           if (_controller.chatData!.data!.nextPageUrl != null) {
             if (_controller.chatWaiting == false) {
               _controller.chatWaiting = true;
-              Future.delayed(Duration(seconds: 2), () {
+              Future.delayed(const Duration(seconds: 2), () {
                 _controller.chatWaiting = false;
               });
               _controller.getAllMessages(
@@ -38,9 +38,9 @@ class MessageListWidget extends StatelessWidget {
       },
       child: GetBuilder<ManagerController>(builder: (controller) {
         return controller.chatData == null
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Padding(
-                padding: EdgeInsets.only(bottom: kToolbarHeight * 1.2),
+                padding: const EdgeInsets.only(bottom: kToolbarHeight * 1.2),
                 child: ListView.builder(
                     itemCount: controller.chatData!.data!.data!.length,
                     reverse: true,
@@ -53,7 +53,7 @@ class MessageListWidget extends StatelessWidget {
                           messageObject.senderId != currentUserId;
 
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: GestureDetector(
                           onLongPress: isFromReceiver
                               ? () {
@@ -105,7 +105,7 @@ class MessageListWidget extends StatelessWidget {
                                 /// da d image widgets d
                                 messageObject.media!.isNotEmpty
                                     ? imageWidgets(items: messageObject)
-                                    : SizedBox.shrink(),
+                                    : const SizedBox.shrink(),
 
                                 ///da landy da message widget d
                                 messageObject.msg != null
@@ -118,8 +118,8 @@ class MessageListWidget extends StatelessWidget {
                                           color: theme.primaryColor,
                                         ),
                                       )
-                                    : SizedBox.shrink(),
-                                Divider(),
+                                    : const SizedBox.shrink(),
+                                const Divider(),
                               ],
                             ),
                           ),
@@ -139,7 +139,7 @@ imageWidgets({required MessageItem items}) {
     child: GridView.builder(
       itemCount: items.media!.length,
       shrinkWrap: false,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: items.media!.length == 1
             ? 1
@@ -202,17 +202,17 @@ imageWidgets({required MessageItem items}) {
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.grey,
                       ),
-                      padding: EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(7),
                       child: Text(
                         "+${items.media!.length - 4} more",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           color: Color(0xff00327A),
                         ),
                       ),
                     ),
                   )
-                : SizedBox.shrink()
+                : const SizedBox.shrink()
           ],
         );
       },

@@ -24,12 +24,12 @@ class AddVenueScreen extends StatelessWidget {
         return Form(
             key: venueForm,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(
@@ -46,7 +46,7 @@ class AddVenueScreen extends StatelessWidget {
                           context: context,
                           color: DynamicColor.lightRedClr),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     CustomTextFields(
@@ -55,7 +55,7 @@ class AddVenueScreen extends StatelessWidget {
                       validationError: "max occupancy",
                       keyBoardType: true,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     CustomTextFields(
@@ -73,7 +73,7 @@ class AddVenueScreen extends StatelessWidget {
                     //   validationError: "max hour",
                     //   keyBoardType: true,
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     DateTimeField(
@@ -98,7 +98,7 @@ class AddVenueScreen extends StatelessWidget {
                           fontSize: 14,
                           color: DynamicColor.whiteClr,
                         ),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.access_time_rounded,
                           color: Colors.grey,
                         ),
@@ -147,7 +147,7 @@ class AddVenueScreen extends StatelessWidget {
                         return;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     DateTimeField(
@@ -172,7 +172,7 @@ class AddVenueScreen extends StatelessWidget {
                           fontSize: 14,
                           color: DynamicColor.whiteClr,
                         ),
-                        suffixIcon: Icon(
+                        suffixIcon: const Icon(
                           Icons.access_time_rounded,
                           color: Colors.grey,
                         ),
@@ -222,7 +222,7 @@ class AddVenueScreen extends StatelessWidget {
                         return;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Column(
@@ -237,7 +237,7 @@ class AddVenueScreen extends StatelessWidget {
                             color: theme.primaryColor,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Wrap(
                           runSpacing: 5,
                           spacing: 5,
@@ -292,7 +292,7 @@ class AddVenueScreen extends StatelessWidget {
       }),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {

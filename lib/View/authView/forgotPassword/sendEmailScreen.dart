@@ -8,7 +8,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 
 class SendEmailScreen extends StatelessWidget {
-  SendEmailScreen({Key? key}) : super(key: key);
+  SendEmailScreen({super.key});
 
   final forgotPasswordForm = GlobalKey<FormState>();
 
@@ -25,27 +25,27 @@ class SendEmailScreen extends StatelessWidget {
               color: theme.scaffoldBackgroundColor,
               width: Get.width,
               height: Get.height,
-              padding: EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               child: SingleChildScrollView(
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: kToolbarHeight*2,
                     ),
                     Text(
                       "Forget Passwords",
                       style: poppinsRegularStyle(fontSize: 16,fontWeight: FontWeight.w700,context: context,color: theme.primaryColor,),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
                       "To Reset your Password, Please Enter Your Email Address and Press Send",
                       style: poppinsRegularStyle(fontSize: 13,context: context,color: theme.primaryColor,),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     CustomTextFields(
@@ -54,7 +54,7 @@ class SendEmailScreen extends StatelessWidget {
                       validationError: "email",
                       isEmail: true,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kToolbarHeight * 3,
                     ),
                     CustomButton(
@@ -66,7 +66,7 @@ class SendEmailScreen extends StatelessWidget {
                       },
                       text: "Email Send",
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     )
                   ],

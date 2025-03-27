@@ -80,12 +80,12 @@ class Utils {
 
   static accountDelete(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(
+      constraints: const BoxConstraints(
         maxWidth: 150, // Set max width
         minWidth: 100, // Set min width
       ),
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(2.0),
       decoration: BoxDecoration(
           border: Border.all(
             color: Colors.red,

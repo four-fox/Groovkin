@@ -25,7 +25,7 @@ class VenueDetailsScreen extends StatelessWidget {
           children: [
             Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.0),
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: Text("About Herkimer County Fairgrounds",
                 style: poppinsRegularStyle(
                   fontSize: 12,
@@ -35,12 +35,12 @@ class VenueDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
     Container(
     color: DynamicColor.darkGrayClr.withOpacity(0.7),
-    width: double.infinity,     padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
+    width: double.infinity,     padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
               child: Text("Contact Information",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -49,22 +49,22 @@ class VenueDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Padding( padding: EdgeInsets.symmetric(horizontal: 12.0),
+            Padding( padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 children: [
                   CircleAvatar(
                     radius: 15,
                     backgroundColor: DynamicColor.grayClr.withOpacity(0.3),
-                    child: ImageIcon(AssetImage("assets/clock2.png"),
+                    child: ImageIcon(const AssetImage("assets/clock2.png"),
                       color: DynamicColor.grayClr,
                       size: 21,
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 6.0),
+                    padding: const EdgeInsets.only(left: 6.0),
                     child: Text("04:00pm to 10:00pm",
                     style: poppinsRegularStyle(
                       fontSize: 12,
@@ -76,22 +76,22 @@ color: theme.primaryColor,
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Padding(       padding: EdgeInsets.symmetric(horizontal: 12.0),
+            Padding(       padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 children: [
                   CircleAvatar(
                     radius: 15,
                     backgroundColor: DynamicColor.grayClr.withOpacity(0.3),
-                    child: ImageIcon(AssetImage("assets/groupIcon.png"),
+                    child: ImageIcon(const AssetImage("assets/groupIcon.png"),
                       color: DynamicColor.grayClr,
                       size: 21,
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 6.0),
+                    padding: const EdgeInsets.only(left: 6.0),
                     child: Text("400-450",
                     style: poppinsRegularStyle(
                       fontSize: 12,
@@ -103,10 +103,10 @@ color: theme.primaryColor,
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Padding(       padding: EdgeInsets.symmetric(horizontal: 12.0),
+            Padding(       padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 children: [
                   CircleAvatar(
@@ -118,7 +118,7 @@ color: theme.primaryColor,
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 6.0),
+                    padding: const EdgeInsets.only(left: 6.0),
                     child: Text("135 Cemetery St, Frankfort, NY 13340, USA",
                     style: poppinsRegularStyle(
                       fontSize: 12,
@@ -131,13 +131,13 @@ color: theme.primaryColor,
               ),
             ),
 
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("Venue Image",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -146,7 +146,7 @@ color: theme.primaryColor,
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -154,18 +154,18 @@ color: theme.primaryColor,
               child: ListView.builder(
                   itemCount: 15,
                   shrinkWrap: true,
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context,index){
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 3.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
                   child: Container(
                     height: kToolbarHeight*1.6,
                     width: 120,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: DynamicColor.yellowClr,width: 1),
-                    image: DecorationImage(
+                    image: const DecorationImage(
                       image: AssetImage('assets/venueImg.png'),
                       fit: BoxFit.fill
                     )
@@ -174,10 +174,10 @@ color: theme.primaryColor,
                 );
               }),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            Padding(       padding: EdgeInsets.symmetric(horizontal: 12.0),
+            Padding(       padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: CustomButton(
                 borderClr: Colors.transparent,
                 color1: DynamicColor.blackClr,
@@ -188,13 +188,13 @@ color: theme.primaryColor,
                 text: "Next",
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("Max Occupancy",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -203,21 +203,21 @@ color: theme.primaryColor,
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Row(
                 children: [
                   CircleAvatar(
                     radius: 15,
                     backgroundColor: DynamicColor.grayClr.withOpacity(0.3),
-                    child: ImageIcon(AssetImage('assets/oppositArrow.png'),
+                    child: ImageIcon(const AssetImage('assets/oppositArrow.png'),
                     color: DynamicColor.grayClr,
                     ),
                   ),
-                  Padding(  padding: EdgeInsets.only(left: 6.0),
+                  Padding(  padding: const EdgeInsets.only(left: 6.0),
                     child: Text("600 Square Yard",
                       style: poppinsRegularStyle(
                         fontSize: 12,
@@ -228,13 +228,13 @@ color: theme.primaryColor,
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("Amenities",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -246,13 +246,13 @@ color: theme.primaryColor,
             ListView.builder(
                 itemCount: 5,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context,index){
                   return Padding(
-                    padding: EdgeInsets.only(left: 12.0,top: 6),
+                    padding: const EdgeInsets.only(left: 12.0,top: 6),
                     child: Row(
                       children: [
-                        Image(
+                        const Image(
                           image: AssetImage("assets/headingIcons.png"),
                         ),
                         Padding(
@@ -273,13 +273,13 @@ color: theme.primaryColor,
                     ),
                   );
                 }),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("Active Licenses\\Permits",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -291,13 +291,13 @@ color: theme.primaryColor,
             ListView.builder(
                 itemCount: 5,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context,index){
                   return Padding(
-                    padding: EdgeInsets.only(left: 12.0,top: 6),
+                    padding: const EdgeInsets.only(left: 12.0,top: 6),
                     child: Row(
                       children: [
-                        Image(
+                        const Image(
                           image: AssetImage("assets/headingIcons.png"),
                         ),
                         Padding(
@@ -318,13 +318,13 @@ color: theme.primaryColor,
                     ),
                   );
                 }),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
               color: DynamicColor.darkGrayClr.withOpacity(0.7),
               width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: 8,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
               child: Text("House Event Capabilities",
                 style: poppinsRegularStyle(
                   fontSize: 16,
@@ -336,13 +336,13 @@ color: theme.primaryColor,
             ListView.builder(
                 itemCount: 5,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context,index){
                   return Padding(
-                    padding: EdgeInsets.only(left: 12.0,top: 6),
+                    padding: const EdgeInsets.only(left: 12.0,top: 6),
                     child: Row(
                       children: [
-                        Image(
+                        const Image(
                           image: AssetImage("assets/headingIcons.png"),
                         ),
                         Padding(
@@ -363,11 +363,11 @@ color: theme.primaryColor,
                     ),
                   );
                 }),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: CustomButton(
                 borderClr: Colors.transparent,
                 color1: DynamicColor.blackClr,
@@ -378,7 +378,7 @@ color: theme.primaryColor,
                 text: "Send Booking Request",
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ],

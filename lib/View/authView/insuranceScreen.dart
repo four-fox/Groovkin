@@ -11,7 +11,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 
 class InsuranceScreen extends StatefulWidget {
-  InsuranceScreen({super.key});
+  const InsuranceScreen({super.key});
 
   @override
   State<InsuranceScreen> createState() => _InsuranceScreenState();
@@ -44,7 +44,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text(
@@ -55,11 +55,11 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                   context: context,
                   color: DynamicColor.lightRedClr),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

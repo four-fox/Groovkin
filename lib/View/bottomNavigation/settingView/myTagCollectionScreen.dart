@@ -19,12 +19,12 @@ class MyTagCollection extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "My Tag Collection"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
@@ -36,7 +36,7 @@ class MyTagCollection extends StatelessWidget {
                   color: theme.primaryColor,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               customWidget(
@@ -45,7 +45,7 @@ class MyTagCollection extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(Routes.myCollectionDetailsScreen);
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               customWidget(
@@ -55,7 +55,7 @@ class MyTagCollection extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(Routes.myCollectionDetailsScreen);
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               customWidget(
@@ -65,7 +65,7 @@ class MyTagCollection extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(Routes.myCollectionDetailsScreen);
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               customWidget(
@@ -75,7 +75,7 @@ class MyTagCollection extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(Routes.myCollectionDetailsScreen);
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               customWidget(
@@ -85,7 +85,7 @@ class MyTagCollection extends StatelessWidget {
                   onTap: () {
                     Get.toNamed(Routes.myCollectionDetailsScreen);
                   }),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               customWidget(
@@ -102,7 +102,7 @@ class MyTagCollection extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom: true ,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(
             borderClr: Colors.transparent,
             color1: DynamicColor.blackClr,
@@ -121,7 +121,7 @@ class MyTagCollection extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
         alignment: Alignment.centerLeft,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -149,11 +149,11 @@ class MyCollectionDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "My Collection"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Wrap(
@@ -530,7 +530,7 @@ class MyCollectionDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
         child: CustomButton(
           borderClr: Colors.transparent,
           color1: DynamicColor.blackClr,
@@ -554,11 +554,11 @@ class CreateNewTag extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "My Collection"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SearchTextFields(
@@ -947,7 +947,7 @@ class CreateNewTag extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         bottom:true,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(
             borderClr: Colors.transparent,
             color1: DynamicColor.blackClr,

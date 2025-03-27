@@ -14,14 +14,14 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/utils/utils.dart';
 
 class TransactionScreen extends StatefulWidget {
-  TransactionScreen({super.key});
+  const TransactionScreen({super.key});
 
   @override
   State<TransactionScreen> createState() => _TransactionScreenState();
 }
 
 class _TransactionScreenState extends State<TransactionScreen> {
-  HomeController _controller = Get.find();
+  final HomeController _controller = Get.find();
 
   String cardNumber = '';
 
@@ -71,7 +71,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Transaction History"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -135,7 +135,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
@@ -158,9 +158,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           // Get.toNamed(Routes.confirmationEventScreen);
                         },
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 4.0),
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 vertical: 4.0, horizontal: 9),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
@@ -229,7 +229,7 @@ class ViewAllCardList extends StatefulWidget {
 }
 
 class _ViewAllCardListState extends State<ViewAllCardList> {
-  HomeController _controller = Get.find();
+  final HomeController _controller = Get.find();
   bool isDeleteCard = false;
   bool cardListCheckBox = false;
   int? selectedIndex;
@@ -254,7 +254,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
         ),
         body: GetBuilder<HomeController>(builder: (homecontroller) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: homecontroller.transactionData.isEmpty
                 ? Center(
                     child: Text(
@@ -288,7 +288,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text("Delete Card"),
+                                const Text("Delete Card"),
                                 Checkbox(
                                   value: isDeleteCard,
                                   onChanged: (value) {
@@ -312,7 +312,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                         child: ListView.builder(
                             itemCount: homecontroller.transactionData.length,
                             shrinkWrap: true,
-                            physics: AlwaysScrollableScrollPhysics(),
+                            physics: const AlwaysScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, index) {
                               final transactionData =
                                   homecontroller.transactionData[index];
@@ -383,7 +383,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
             return SafeArea(
               bottom: true,
               child: Container(
-                margin: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
                 child: CustomButton(
                   borderClr: Colors.transparent,
                   onTap: () {
@@ -393,8 +393,8 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                       barrierDismissible: false,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text("Confirm Deletion"),
-                          content: Text(
+                          title: const Text("Confirm Deletion"),
+                          content: const Text(
                             "Are you sure you want to delete this payment method? This action cannot be undone.",
                           ),
                           actions: [
@@ -406,7 +406,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                               },
                               text: "No",
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             CustomButton(
@@ -448,7 +448,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
             return SafeArea(
               bottom:  true,
               child: Container(
-                margin: EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0),
                 child: CustomButton(
                   onTap: () {
                     Get.toNamed(Routes.addCardDetails, arguments: {
@@ -462,7 +462,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
               ),
             );
           }
-          return SizedBox();
+          return const SizedBox();
           // Return null if neither condition is met (no button shown)
         }));
   }
