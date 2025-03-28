@@ -1,5 +1,3 @@
-
-
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                         Get.back();
                       },
                       child: ImageIcon(
-                 const         AssetImage("assets/backArrow.png"),
+                        const AssetImage("assets/backArrow.png"),
                         color: theme.primaryColor,
                       ),
                     ),

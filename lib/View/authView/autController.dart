@@ -95,12 +95,9 @@ class AuthController extends GetxController {
   RxBool showConfirmPassword = true.obs;
 
   /// user register
-  sigUp(context) async {
+  sigUp(context, {String? signUpPlatform, String? platformId}) async {
     NotificationService notificationService = NotificationService();
-    String? token;
-    if (Platform.isAndroid) {
-      token = await notificationService.getDeviceToken();
-    }
+
     List imageList = [];
     if (imageBytes != null) {
       var a = multiPartingImage(imageBytes);
@@ -131,15 +128,21 @@ class AuthController extends GetxController {
           : API().sp.read("role") == "eventManager"
               ? "venue_manager"
               : "event_owner",
+      "signup_platform": signUpPlatform,
+      "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token": Platform.isIOS ? "adsfadskljf" : token,
+      "device_token": await notificationService.getDeviceToken(),
       "about": aboutController.text,
     });
+    log(formData.toString());
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
+      API().sp.write("isCompleteProfile",
+          response.data['data']['user_details']['is_complete_profile']);
+
       if (response.data["data"]["user_details"]["current_role"] == "user") {
         API().sp.write("currentRole", "User");
       } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -176,15 +179,11 @@ class AuthController extends GetxController {
 
   login() async {
     NotificationService notificationService = NotificationService();
-    String? token;
-    if (Platform.isAndroid) {
-      token = await notificationService.getDeviceToken();
-    }
-    print("Token $token");
+
     var formData = {
       "email": loginEmailController.text,
       "password": loginPasswordController.text,
-      "device_token": Platform.isIOS ? "sdafj" : token
+      "device_token": await notificationService.getDeviceToken(),
     };
     var response = await API().postApi(formData, "login");
     if (response.statusCode == 200) {
@@ -1400,7 +1399,6 @@ class AuthController extends GetxController {
       if (kDebugMode) {
         print(userCredential);
       }
-      
     } catch (e) {
       EasyLoading.dismiss();
     } finally {

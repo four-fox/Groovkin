@@ -68,9 +68,8 @@ class LoginWithScreen extends StatelessWidget {
               onTap: () {
                 // if(sp.read("role") == "eventManager"){
                 //   Get.offAllNamed(Routes.welComeScreen);
-                // }else{
+                // } else{
                 Get.toNamed(Routes.loginOrSignUpScreen);
-
                 // }
               },
               color2: DynamicColor.grayClr.withOpacity(0.4),
@@ -86,7 +85,7 @@ class LoginWithScreen extends StatelessWidget {
             ),
             const SocialSignIn(
               showSpotify: true,
-            )
+            ),
           ],
         ),
       ),

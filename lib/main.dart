@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
@@ -32,39 +31,13 @@ Future<void> configureSDK() async {
         ..appUserID = API().sp.read("userId").toString()
         ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
   await Purchases.configure(configuration);
-  // fetchOffers();
-  perfomMagic();
+  checkUserSubscriptionIsActive();
 }
 
-void perfomMagic() async {
+checkUserSubscriptionIsActive() async {
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-
-  if (customerInfo.entitlements.all[entitlementID] != null &&
-      customerInfo.entitlements.all[entitlementID]?.isActive == true) {
-  } else {
-    Offerings? offerings;
-    try {
-      offerings = await Purchases.getOfferings();
-    } on PlatformException catch (e) {
-      print(e);
-    }
-
-    if (offerings == null || offerings.current == null) {
-      // offerings are empty, show a message to your user
-    } else {
-      // current offering is available, show paywall
-      print(
-        offerings.current!,
-      );
-    }
-  }
-}
-
-void fetchOffers() async {
-  Offerings offerings = await Purchases.getOfferings();
-  if (offerings.current != null) {
-    log(offerings.current!.availablePackages.toString());
-  }
+  appData.entitlementIsActive =
+      customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
 }
 
 void main() async {

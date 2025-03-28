@@ -8,6 +8,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/shrink_tap.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:material_charts/material_charts.dart' as material;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -29,8 +30,6 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
   late HomeController _homeController;
   List<ChartData> data = [];
   late TooltipBehavior tooltipBehavior; // Declare tooltipBehavior
-
-  bool isSubscribe = false;
 
   String returnTextAccordingToType(String type) {
     switch (type) {
@@ -154,8 +153,8 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                     // Get.toNamed(Routes.eventDetailsScreen);
                                   },
                                   child: Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 8.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: Stack(
                                       children: [
                                         // Background Image with Blur Effect
@@ -184,7 +183,8 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                         // Content on Top
                                         Container(
                                           height: kToolbarHeight * 2.3,
-                                          padding: const EdgeInsets.only(left: 15),
+                                          padding:
+                                              const EdgeInsets.only(left: 15),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
@@ -271,7 +271,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
               }),
             ],
           ),
-          if (!isSubscribe) notSubscribeCardWidget(),
+          if (!appData.entitlementIsActive) notSubscribeCardWidget(),
         ],
       ),
     );
@@ -361,9 +361,6 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               // Add subscription logic here
-                              setState(() {
-                                isSubscribe = true; // Mark as subscribed
-                              });
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DynamicColor.yellowClr,

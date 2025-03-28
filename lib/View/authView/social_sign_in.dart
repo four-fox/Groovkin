@@ -26,6 +26,9 @@ class SocialSignIn extends StatefulWidget {
 class _SocialSignInState extends State<SocialSignIn> {
   final AuthController controller = Get.put(AuthController());
 
+
+
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);

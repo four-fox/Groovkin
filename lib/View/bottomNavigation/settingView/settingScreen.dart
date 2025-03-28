@@ -10,6 +10,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:intl/intl.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -343,14 +344,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : const SizedBox.shrink(),
-                        API().sp.read("currentRole") == "eventOrganizer"
+                        API().sp.read("currentRole") != "User"
                             ? customWidget(
                                 context: context,
                                 text: "Subscription",
                                 iconShow: false,
                                 onTap: () {
-                                  Get.toNamed(Routes.subscriptionScreen,
-                                      arguments: {"isFromSettingScreen": true});
+                                  // Get.toNamed(Routes.subscriptionScreen,
+                                  //     arguments: {"isFromSettingScreen": true});
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              const SubscriptionScreenTwo()));
                                 })
                             : const SizedBox(),
 

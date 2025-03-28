@@ -60,7 +60,7 @@ class NotificationService {
 
   // ! Todo refresh token
   void isRefreshToken() async {
-     firebaseMessaging.onTokenRefresh.listen((event) {
+    firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
     });
   }
@@ -79,7 +79,7 @@ class NotificationService {
         handleMessage(context, message);
       },
     );
-  } 
+  }
 
   // ! Todo listen the notification
   void firebaseInit(BuildContext context) {
@@ -100,7 +100,7 @@ class NotificationService {
           print("ONGOING");
           initLocalNotifications(context, message);
           showNotification(message);
-        } 
+        }
       }
     });
   }
