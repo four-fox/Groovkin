@@ -38,6 +38,8 @@ import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 enum ChangeRole { user, organizer, manager }
 
 class AuthController extends GetxController {
+  String? accessToken;
+
   ///intro functionality
   final _index = 0.obs;
   RxInt indexValue = 0.obs;
@@ -97,8 +99,9 @@ class AuthController extends GetxController {
   /// user register
   sigUp(context, {String? signUpPlatform, String? platformId}) async {
     NotificationService notificationService = NotificationService();
-
+    String token = await notificationService.getDeviceToken();
     List imageList = [];
+
     if (imageBytes != null) {
       var a = multiPartingImage(imageBytes);
       imageList.add(a);
@@ -131,18 +134,21 @@ class AuthController extends GetxController {
       "signup_platform": signUpPlatform,
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token": await notificationService.getDeviceToken(),
+      "device_token": token,
       "about": aboutController.text,
     });
     log(formData.toString());
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
     if (response.statusCode == 200) {
+      API().sp.write("socialType", signUpPlatform);
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
       API().sp.write("isCompleteProfile",
           response.data['data']['user_details']['is_complete_profile']);
-
+      API().sp.write("signupPlatform",
+          response.data['data']['user_details']['signup_platform']);
+      configureSDK();
       if (response.data["data"]["user_details"]["current_role"] == "user") {
         API().sp.write("currentRole", "User");
       } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -152,22 +158,58 @@ class AuthController extends GetxController {
         API().sp.write("currentRole", "eventManager");
       }
       clearTextFields();
-      if (API().sp.read("role") == "User") {
-        API().sp.write("isUserCreated",
-            response.data['data']['user_details']['is_user_created']);
-        Get.offAllNamed(Routes.welComeScreen);
-      } else if (API().sp.read("role") == "eventOrganizer") {
-        API().sp.write("isEventCreated",
-            response.data['data']['user_details']['is_event_created']);
-        Get.offAllNamed(Routes.welComeScreen);
+      if (response.data["data"]["user_details"]["signup_platform"] == null) {
+        if (API().sp.read("role") == "User") {
+          API().sp.write("isUserCreated",
+              response.data['data']['user_details']['is_user_created']);
+          Get.offAllNamed(Routes.welComeScreen);
+        } else if (API().sp.read("role") == "eventOrganizer") {
+          API().sp.write("isEventCreated",
+              response.data['data']['user_details']['is_event_created']);
+          Get.offAllNamed(Routes.welComeScreen);
+        } else {
+          Get.offAllNamed(Routes.welComeScreen);
+          // Get.offAllNamed(Routes.createCompanyProfileScreen,
+          //   arguments: {
+          //   "updationCondition": false,
+          //     "skipBtnHide": false,
+          //   }
+          // );
+        }
       } else {
-        Get.offAllNamed(Routes.welComeScreen);
-        // Get.offAllNamed(Routes.createCompanyProfileScreen,
-        //   arguments: {
-        //   "updationCondition": false,
-        //     "skipBtnHide": false,
-        //   }
-        // );
+        if (response.data["data"]["user_details"]["is_complete_profile"] == 1) {
+          if (API().sp.read("role") == "User") {
+            API().sp.write("isUserCreated",
+                response.data['data']['user_details']['is_user_created']);
+            if (response.data['data']['user_details']['is_user_created'] == 0) {
+              Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
+                "update": false,
+              });
+            } else {
+              selectUserIndexxx.value = 0;
+              Get.offAllNamed(Routes.userBottomNavigationNav);
+            }
+          } else if (API().sp.read("role") == "eventOrganizer") {
+            API().sp.write("isEventCreated",
+                response.data['data']['user_details']['is_event_created']);
+            Get.offAllNamed(Routes.welComeScreen);
+          } else {
+            Get.offAllNamed(Routes.welComeScreen);
+            // Get.offAllNamed(Routes.createCompanyProfileScreen,
+            //   arguments: {
+            //   "updationCondition": false,
+            //     "skipBtnHide": false,
+            //   }
+            // );
+          }
+        } else {
+          emailController.text = API().sp.read("emailSocial");
+          update();
+          Get.toNamed(Routes.createProfile, arguments: {
+            "socialType": API().sp.read("socialType"),
+            "accessToken": API().sp.read("accessToken"),
+          });
+        }
       }
     }
   }
@@ -1366,6 +1408,15 @@ class AuthController extends GetxController {
       final firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
           .signInWithCredential(credential);
+      if (userCredential.user != null) {
+        emailController.text = userCredential.user!.email!;
+        API().sp.write("emailSocial", userCredential.user!.email!);
+        API().sp.write("accessToken", userCredential.credential!.accessToken);
+        sigUp(Get.context,
+            signUpPlatform: "google",
+            platformId: userCredential.credential!.accessToken);
+      }
+
       log(userCredential.toString());
     } catch (e) {
       print(e.toString());
@@ -1389,22 +1440,29 @@ class AuthController extends GetxController {
 
       final firebase_auth.OAuthCredential authCredential =
           firebase_auth.OAuthProvider("apple.com").credential(
-              accessToken: credential.authorizationCode,
-              idToken: credential.identityToken);
+        accessToken: credential.authorizationCode,
+        idToken: credential.identityToken,
+      );
 
       final firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
           .signInWithCredential(authCredential);
-
       if (kDebugMode) {
         print(userCredential);
+      }
+      if (userCredential.user != null) {
+        emailController.text = userCredential.user!.email!;
+        API().sp.write("emailSocial", userCredential.user!.email!);
+        API().sp.write("accessToken", userCredential.credential!.accessToken);
+        sigUp(Get.context,
+            signUpPlatform: "apple",
+            platformId: userCredential.credential!.accessToken);
       }
     } catch (e) {
       EasyLoading.dismiss();
     } finally {
       EasyLoading.dismiss();
     }
-
     // userCredential.credential
   }
 }

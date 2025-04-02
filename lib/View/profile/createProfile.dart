@@ -14,14 +14,35 @@ import 'package:groovkin/View/profile/editProfileScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-class CreateProfile extends StatelessWidget {
-  CreateProfile({super.key});
+class CreateProfile extends StatefulWidget {
+  const CreateProfile({super.key});
 
+  @override
+  State<CreateProfile> createState() => _CreateProfileState();
+}
+
+class _CreateProfileState extends State<CreateProfile> {
   final createProfileForm = GlobalKey<FormState>();
+
   PhoneNumber number = PhoneNumber(isoCode: "US");
 
-  final AuthController _controller = Get.find();
+  late final AuthController _controller;
+
   List<int> dobYear = [];
+
+  final String? accessToken = Get.arguments?["accessToken"];
+
+  final String? socialType = Get.arguments?["socialType"];
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<AuthController>()) {
+      _controller = Get.find<AuthController>();
+    } else {
+      _controller = Get.put(AuthController());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,8 +230,8 @@ class CreateProfile extends StatelessWidget {
                             ),
                           ),
                           labelStyle: TextStyle(color: DynamicColor.grayClr),
-                          hintStyle:
-                              const TextStyle(fontFamily: 'Montserrat', fontSize: 13),
+                          hintStyle: const TextStyle(
+                              fontFamily: 'Montserrat', fontSize: 13),
                           contentPadding: const EdgeInsets.all(5),
                           suffixIcon: GestureDetector(
                             onTap: () async {
@@ -397,8 +418,8 @@ class CreateProfile extends StatelessWidget {
                         state: controller.stateController,
                         // dialogColor: Colors.grey.shade200,
                         textFieldDecoration: InputDecoration(
-                          hintStyle:
-                              const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
+                          hintStyle: const TextStyle(
+                              fontSize: 14, color: Color(0xff9DA3B5)),
                           fillColor: Colors.transparent,
                           filled: true,
                           // suffixIcon: Icon(Icons.arrow_downward_rounded),
@@ -470,7 +491,8 @@ class CreateProfile extends StatelessWidget {
                               height: kToolbarHeight * 4,
                               borderColor: Colors.transparent,
                               container: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
                                 child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -523,7 +545,9 @@ class CreateProfile extends StatelessWidget {
                                             fontSized: 12,
                                             onTap: () {
                                               // if(_controller.imageBytes != null){
-                                              _controller.sigUp(context);
+                                              _controller.sigUp(context,
+                                                  signUpPlatform: socialType,
+                                                  platformId: accessToken);
                                               // }else{
                                               //   bottomToast(text: "Please upload profile image");
                                               // }
@@ -539,7 +563,8 @@ class CreateProfile extends StatelessWidget {
                         });
                   } else {
                     // if(_controller.imageBytes != null){
-                    _controller.sigUp(context);
+                    _controller.sigUp(context,
+                        signUpPlatform: socialType, platformId: accessToken);
                     // }else{
                     //   bottomToast(text: "Please upload profile image");
                     // }

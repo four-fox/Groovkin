@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/alertmessage.dart';
@@ -96,7 +98,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             ),
                           ),
                           Text(
-                            controller.userData!.data!.name!,
+                            controller.userData!.data?.name ?? "",
                             style: poppinsMediumStyle(
                               context: context,
                               fontSize: 16,
@@ -390,7 +392,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                 cancelAlert: 'No',
                                 btnSuccess: 'Yes',
                                 onTap: () async {
-                                  await controller.logout();
+                                  if (API().sp.read("socialType") != null &&
+                                      API().sp.read("socialType") == "google") {
+                                    await GoogleSignIn().signOut();
+                                    await FirebaseAuth.instance.signOut();
+                                    await controller.logout();
+                                  } else {
+                                    await controller.logout();
+                                  }
                                 });
                           },
                           child: Container(

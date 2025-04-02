@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +32,7 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
   bool _isLoading = true;
   String? accessToken;
   bool _isHandlingRedirect = false;
+
   Future<bool> _clearCookies() async {
     final cookieManager = WebViewCookieManager();
     return await cookieManager.clearCookies();
@@ -94,12 +97,15 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
     final String? code = uri.queryParameters["code"];
 
     if (code != null) {
-      await _exchangeCodeForToken(code);
+      String? accessToken = await _exchangeCodeForToken(code);
+      await _fetchUserProfile(accessToken!);
       Get.back(); // Close WebView after successful login
+      // Get.toNamed(Routes.createProfile,
+      //     arguments: {"socialType": "spotify", "accessToken": accessToken});
     }
   }
 
-  Future<void> _exchangeCodeForToken(String code) async {
+  Future<String?> _exchangeCodeForToken(String code) async {
     final response = await http.post(
       Uri.parse("https://accounts.spotify.com/api/token"),
       headers: {
@@ -116,14 +122,19 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       String accessToken = data["access_token"];
+      _authController.accessToken = accessToken;
+      API().sp.write("accessToken", accessToken);
+      _authController.update();
       setState(() {
         this.accessToken = accessToken;
       });
       log("Access Token: $accessToken");
+      return accessToken;
+
       // 🔹 Fetch User Profile (to get email)
-      await _fetchUserProfile(accessToken);
     } else {
       print("Error getting access token: ${response.body}");
+      return null;
     }
   }
 
@@ -139,8 +150,10 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
       final userData = jsonDecode(response.body);
       String email = userData["email"];
       _authController.emailController.text = email;
+      API().sp.write("emailSocial", email);
       _authController.sigUp(context,
           signUpPlatform: "spotify", platformId: this.accessToken);
+
       log("User Email: $email");
     } else {
       print("Error fetching user profile: ${response.body}");

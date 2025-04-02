@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:groovkin/utils/constant.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../model/single_ton_data.dart';
@@ -153,7 +154,9 @@ class _PaywallState extends State<Paywall> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // InAppPurchase.instance.restorePurchases(applicationUserName: );
+                },
                 child: const Text(
                   "Restore",
                   style: TextStyle(color: Colors.white),
