@@ -55,6 +55,9 @@ class NotificationService {
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
     log("Device Token $token");
+    if (kDebugMode) {
+      print("Device Token $token");
+    }
     return token!;
   }
 

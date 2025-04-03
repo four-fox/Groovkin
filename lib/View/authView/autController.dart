@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -11,6 +12,7 @@ import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
+import 'package:groovkin/model/spotify_music_genre_model.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -1464,6 +1466,23 @@ class AuthController extends GetxController {
       EasyLoading.dismiss();
     }
     // userCredential.credential
+  }
+
+  /// Spotify & ITUNES Genre API
+  SpotifyMusicGenre? spotifyMusicGenre;
+  RxBool isSpotify = false.obs;
+  Future<dynamic> getSpotifyMusicGenreAPI() async {
+    isSpotify(true);
+    final response = await API().getApi(
+        fullUrl:
+            "https://itunes.apple.com/search?term=music&entity=album&limit=1000");
+    if (response.statusCode == 200) {
+      spotifyMusicGenre = SpotifyMusicGenre.fromJson(jsonDecode(response.data));
+      isSpotify(false);
+      update();
+    }
+    isSpotify(false);
+    update();
   }
 }
 

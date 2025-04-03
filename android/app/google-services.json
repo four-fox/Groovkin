@@ -12,7 +12,20 @@
           "package_name": "com.gologonow.groovkinn"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "682228072753-0thr3a4cgic3g4cg8gc1opl8vud2gu2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkinn",
+            "certificate_hash": "a840f8617a6fe5d4c6367c3f60bfff9c614c6976"
+          }
+        },
+        {
+          "client_id": "682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gologonow.groovkinn"
+              }
+            }
+          ]
         }
       }
     }

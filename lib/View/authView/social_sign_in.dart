@@ -53,26 +53,26 @@ class _SocialSignInState extends State<SocialSignIn> {
               height: 20,
             ),
         if (widget.showGoogle)
-          if (Platform.isAndroid)
-            CustomButtonWithIcon(
-                onTap: () {
-                  controller.googleSignIn();
-                },
-                text: "Continue with Google",
-                iconValue: true,
-                bgColor: Colors.transparent,
-                gradientClr: true,
-                color2: DynamicColor.grayClr.withOpacity(0.4),
-                color1: DynamicColor.grayClr.withOpacity(0.1),
-                imageIconn: ImageIcon(
-                  const AssetImage("assets/google.png"),
-                  color: theme.primaryColor,
-                )),
+          // if (Platform.isAndroid)
+          CustomButtonWithIcon(
+              onTap: () {
+                controller.googleSignIn();
+              },
+              text: "Continue with Google",
+              iconValue: true,
+              bgColor: Colors.transparent,
+              gradientClr: true,
+              color2: DynamicColor.grayClr.withOpacity(0.4),
+              color1: DynamicColor.grayClr.withOpacity(0.1),
+              imageIconn: ImageIcon(
+                const AssetImage("assets/google.png"),
+                color: theme.primaryColor,
+              )),
         if (widget.showGoogle)
-          if (Platform.isAndroid)
-            const SizedBox(
-              height: 20,
-            ),
+          // if (Platform.isAndroid)
+          const SizedBox(
+            height: 20,
+          ),
         if (widget.showSpotify)
           CustomButtonWithIcon(
               onTap: () {

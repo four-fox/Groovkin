@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -163,8 +162,8 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                                         : Icons.keyboard_arrow_down,
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
                                     child: Visibility(
                                       visible: controller.surveyData!
                                           .data![index].showItems!.value,

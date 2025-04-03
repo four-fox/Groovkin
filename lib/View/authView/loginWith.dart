@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
@@ -83,9 +84,10 @@ class LoginWithScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const SocialSignIn(
-              showSpotify: true,
-            ),
+            if (API().sp.read("role") == "User")
+              const SocialSignIn(
+                showSpotify: true,
+              ),
           ],
         ),
       ),

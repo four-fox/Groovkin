@@ -236,7 +236,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                   BotToast.showText(
                                       text: "Change Role to Event Organizer");
                                 }
-
                                 // showModalBottomSheet(
                                 //     shape: RoundedRectangleBorder(
                                 //         borderRadius:
@@ -361,7 +360,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                               const SubscriptionScreenTwo()));
                                 })
                             : const SizedBox(),
-
                         sp.read("role") == "User"
                             ? const SizedBox.shrink()
                             : customWidget(
@@ -377,7 +375,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                   // }
                                   // );
                                 }),
-
                         SizedBox(
                           height: API().sp.read("role") == "eventOrganizer"
                               ? 30

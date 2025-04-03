@@ -49,7 +49,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     } else {
       _authController = Get.put(AuthController());
     }
-
     super.initState();
   }
 
@@ -58,11 +57,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
-            //     :flowBtn==3?
-            // kToolbarHeight*1.3
-            //     :kToolbarHeight*4.9
-            ),
+        preferredSize:
+            const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
+                //     :flowBtn==3?
+                // kToolbarHeight*1.3
+                //     :kToolbarHeight*4.9
+                ),
         child: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
@@ -98,7 +98,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
         return controller.eventDetailsLoader.value == false
             ? const SizedBox.shrink()
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 0.0, vertical: 6),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,31 +136,38 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       const SizedBox(
                                         width: 5,
                                       ),
-                                      appBarTitle ==""?const SizedBox.shrink(): Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 6, horizontal: 18),
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
+                                      appBarTitle == ""
+                                          ? const SizedBox.shrink()
+                                          : Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 6,
+                                                      horizontal: 18),
+                                              decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(10),
+                                                    bottomLeft:
+                                                        Radius.circular(10),
+                                                  ),
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                        "assets/topbtnGradent.png"),
+                                                    fit: BoxFit.fill,
+                                                  )),
+                                              child: Center(
+                                                child: Text(
+                                                  appBarTitle,
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 11,
+                                                    context: context,
+                                                    color: theme
+                                                        .scaffoldBackgroundColor,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/topbtnGradent.png"),
-                                              fit: BoxFit.fill,
-                                            )),
-                                        child: Center(
-                                          child: Text(
-                                            appBarTitle,
-                                            style: poppinsRegularStyle(
-                                              fontSize: 11,
-                                              context: context,
-                                              color:
-                                                  theme.scaffoldBackgroundColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ],
@@ -200,7 +208,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     .bannerImage!.mediaPath!),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
                                         child: SizedBox(
                                           width: Get.width / 1.7,
                                           child: Column(
@@ -443,7 +452,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                   : const SizedBox(),
                                           appBarTitle == "Completed Event"
                                               ? Padding(
-                                                  padding: const EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       horizontal: 8.0,
                                                       vertical: 8),
                                                   child: CustomButton(
@@ -615,8 +625,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
+                          padding: const EdgeInsets.only(
+                              top: 10.0, bottom: 10, left: 12),
                           child: Text(
                             controller.eventDetail!.data!.eventTitle.toString(),
                             style: poppinsMediumStyle(
@@ -720,8 +730,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             itemBuilder:
                                                 (BuildContext context, indx) {
                                               return Padding(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 6),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
                                                       .lightBlackClr,
@@ -785,8 +796,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               return Padding(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 6),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
                                                       .lightBlackClr,
@@ -868,8 +880,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             itemBuilder:
                                                 (BuildContext context, indx) {
                                               return Padding(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 6),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
                                                       .lightBlackClr,
@@ -933,8 +946,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               return Padding(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 6),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
                                                       .lightBlackClr,
@@ -1022,8 +1036,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             itemBuilder:
                                                 (BuildContext context, index) {
                                               return Padding(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 6),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
                                                 child: Chip(
                                                   backgroundColor: DynamicColor
                                                       .lightBlackClr,
@@ -1096,7 +1111,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       controller.eventDetail!.data!.location == null
                           ? const SizedBox.shrink()
                           : Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
                               child: Text(
                                 controller.eventDetail!.data!.location
                                     .toString(),

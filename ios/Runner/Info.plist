@@ -64,6 +64,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- <key>GIDClientID</key>
+	<string>682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com</string> -->
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>CFBundleURLTypes</key>
@@ -73,7 +75,8 @@
 		<string>Editor</string>
 		<key>CFBundleURLSchemes</key>
 		<array>
-		<string>com.gologonow.groovkinn</string>
+		<string>com.googleusercontent.apps.682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0</string>
+		
 		</array>
 	</dict>
 	</array>

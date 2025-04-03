@@ -27,7 +27,8 @@ class SpotifyWebView extends StatefulWidget {
 }
 
 class _SpotifyWebViewState extends State<SpotifyWebView> {
-  final AuthController _authController = Get.find();
+  late final AuthController _authController;
+
   late final WebViewController _controller;
   bool _isLoading = true;
   String? accessToken;
@@ -42,6 +43,11 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
   void initState() {
     super.initState();
     _clearCookies();
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find();
+    } else {
+      _authController = Get.put(AuthController());
+    }
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
