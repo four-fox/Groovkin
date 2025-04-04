@@ -39,8 +39,8 @@ class BottomTextFields extends StatelessWidget {
                                   alignment: Alignment.topRight,
                                   children: [
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.symmetric(horizontal: 8.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
                                       child: Container(
                                         width: 80,
                                         height: kToolbarHeight,

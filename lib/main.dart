@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,6 +37,10 @@ Future<void> configureSDK() async {
 
 checkUserSubscriptionIsActive() async {
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+  if (kDebugMode) {
+    print(
+        "Revnuecat Subscrion if Active?   ${customerInfo.entitlements.all[entitlementID]?.isActive ?? false}");
+  }
   appData.entitlementIsActive =
       customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
 }

@@ -26,11 +26,12 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () async {
       if (API().sp.read("intro") == true) {
         if (API().sp.read("token") != null) {
+          
           print(API().sp.read("token"));
           print(API().sp.read("userId"));
           print(API().sp.read("role"));
-          // String userTypeInital = await API().sp.read('role');
 
+          // String userTypeInital = await API().sp.read('role');
           // String selectedRole = userTypeInital == "eventOrganizer"
           //     ? "event_owner"
           //     : userTypeInital == "eventManager"

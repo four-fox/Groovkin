@@ -16,7 +16,7 @@ class CountryStateCityPicker extends StatefulWidget {
       {super.key,
       required this.country,
       required this.state,
-        this.city,
+      this.city,
       this.textFieldDecoration,
       this.dialogColor});
 
@@ -96,10 +96,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
       children: [
         ///Country TextField
         TextField(
-          style: const TextStyle(
-        fontSize: 14,
-        color: Color(0xff9DA3B5)
-    ),
+          style: const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
           controller: widget.country,
           onTap: () {
             setState(() => _title = 'Country');
@@ -116,10 +113,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
         ///State TextField
         TextField(
           controller: widget.state,
-          style: const TextStyle(
-    fontSize: 14,
-    color: Color(0xff9DA3B5)
-    ),
+          style: const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
           onTap: () {
             setState(() => _title = 'State');
             if (widget.country.text.isNotEmpty) {
@@ -326,9 +320,11 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Theme.of(context).primaryColor,
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        behavior: SnackBarBehavior.floating,
         content: Text(message,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 16.0))));
+            style: const TextStyle(color: Colors.black, fontSize: 16.0))));
   }
 
   InputDecoration defaultDecoration = const InputDecoration(

@@ -42,6 +42,9 @@ class _CreateProfileState extends State<CreateProfile> {
     } else {
       _controller = Get.put(AuthController());
     }
+    if (API().sp.read("nameSocial") != null) {
+      _controller.displayNameController.text = API().sp.read("nameSocial");
+    }
   }
 
   @override
@@ -166,6 +169,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       labelText: "User name",
                       controller: controller.displayNameController,
                       validationError: "User name",
+                      readOnly: API().sp.read("nameSocial") != null,
                     ),
                     SizedBox(
                       height: sp.read('role') == "eventManager" ? 15 : 0,
@@ -418,6 +422,7 @@ class _CreateProfileState extends State<CreateProfile> {
                         state: controller.stateController,
                         // dialogColor: Colors.grey.shade200,
                         textFieldDecoration: InputDecoration(
+                          
                           hintStyle: const TextStyle(
                               fontSize: 14, color: Color(0xff9DA3B5)),
                           fillColor: Colors.transparent,
@@ -435,6 +440,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                 color: DynamicColor.grayClr
                                     .withOpacity(0.6)), //<-- SEE HERE
                           ),
+
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(

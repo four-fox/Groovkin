@@ -100,7 +100,6 @@ class NotificationService {
       }
       if (Platform.isAndroid) {
         if (context.mounted) {
-          print("ONGOING");
           initLocalNotifications(context, message);
           showNotification(message);
         }

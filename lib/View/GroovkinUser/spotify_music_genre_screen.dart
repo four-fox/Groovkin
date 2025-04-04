@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -33,6 +32,22 @@ class _SpotifyMusicGenreScreenState extends State<SpotifyMusicGenreScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    return AndroidSpotifyWidget(authController: _authController, theme: theme);
+  }
+}
+
+class AndroidSpotifyWidget extends StatelessWidget {
+  const AndroidSpotifyWidget({
+    super.key,
+    required AuthController authController,
+    required this.theme,
+  }) : _authController = authController;
+
+  final AuthController _authController;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
     return GetBuilder<AuthController>(initState: (state) async {
       await _authController.getSpotifyMusicGenreAPI();
     }, builder: (controller) {
@@ -44,7 +59,6 @@ class _SpotifyMusicGenreScreenState extends State<SpotifyMusicGenreScreen> {
           );
         },
       ).toList();
-
       return controller.isSpotify.value == true
           ? const SizedBox.shrink()
           : Scaffold(
@@ -94,12 +108,13 @@ class _SpotifyMusicGenreScreenState extends State<SpotifyMusicGenreScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 10),
                                   decoration: BoxDecoration(
-                                      // image: DecorationImage(
-                                      //     image: AssetImage("assets/buttonBg.png"),
-                                      //     fit: BoxFit.fill
-                                      // ),
-                                      color: DynamicColor.secondaryClr,
-                                      borderRadius: BorderRadius.circular(10)),
+                                    // image: DecorationImage(
+                                    //     image: AssetImage("assets/buttonBg.png"),
+                                    //     fit: BoxFit.fill
+                                    // ),
+                                    color: DynamicColor.secondaryClr,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                   child: Row(
                                     children: [
                                       Text(
@@ -132,7 +147,7 @@ class _SpotifyMusicGenreScreenState extends State<SpotifyMusicGenreScreen> {
                                               .value = value!;
                                           controller.update();
                                         },
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -41,8 +41,8 @@ class _SocialSignInState extends State<SocialSignIn> {
                 iconValue: true,
                 bgColor: Colors.transparent,
                 gradientClr: true,
-                color2: DynamicColor.grayClr.withOpacity(0.4),
-                color1: DynamicColor.grayClr.withOpacity(0.1),
+                color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+                color1: DynamicColor.grayClr.withValues(alpha: 0.1),
                 imageIconn: ImageIcon(
                   const AssetImage("assets/apple.png"),
                   color: theme.primaryColor,
@@ -84,6 +84,8 @@ class _SocialSignInState extends State<SocialSignIn> {
                               clientSecret: clientSecret,
                               redirectUri: redirectUri,
                             )));
+
+                // loginWithSpotify();
               },
               text: "Continue with Spotify",
               iconValue: true,
@@ -98,4 +100,57 @@ class _SocialSignInState extends State<SocialSignIn> {
       ],
     );
   }
+
+  // void loginWithSpotify() async {
+  //   const clientId = '06da827311f44e9bbf405f7c9ec676ef';
+  //   const redirectUri = 'https://groovkin.gologonow.app';
+
+  //   final authUrl = Uri.parse(
+  //     'https://accounts.spotify.com/authorize'
+  //     '?client_id=$clientId'
+  //     '&response_type=code'
+  //     '&redirect_uri=$redirectUri'
+  //     '&scope=user-read-email%20user-read-private',
+  //   );
+
+  //   // Launch system browser and wait for callback
+  //   final result = await FlutterWebAuth2.authenticate(
+  //     url: authUrl.toString(),
+  //     callbackUrlScheme: "yourapp",
+  //   );
+
+  //   final code = Uri.parse(result).queryParameters['code'];
+  //   if (code != null) {
+  //     Get.back(); // Close WebView after successful login
+  //     // Get.toNamed(Routes.createProfile,
+  //     //     arguments: {"socialType": "spotify", "accessToken": accessToken});
+  //   }
+  //   // Exchange code for access token
+  //   final response = await http.post(
+  //     Uri.parse("https://accounts.spotify.com/api/token"),
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded',
+  //     },
+  //     body: {
+  //       'grant_type': 'authorization_code',
+  //       'code': code!,
+  //       'redirect_uri': redirectUri,
+  //       'client_id': clientId,
+  //       'client_secret': '0c8d111be9174e3f8f74533c14d269cd',
+  //     },
+  //   );
+
+  //   final data = json.decode(response.body);
+  //   final accessToken = data['access_token'];
+
+  //   // Fetch user info
+  //   final userInfo = await http.get(
+  //     Uri.parse("https://api.spotify.com/v1/me"),
+  //     headers: {
+  //       'Authorization': 'Bearer $accessToken',
+  //     },
+  //   );
+
+  //   print(userInfo.body); // Contains email, name, etc.
+  // }
 }

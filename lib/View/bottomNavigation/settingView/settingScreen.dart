@@ -165,7 +165,6 @@ class _SettingScreenState extends State<SettingScreen> {
                         //   Get.toNamed(Routes.followingScreen);
                         //   }
                         // ),
-
                         customWidget(
                             context: context,
                             img: "assets/lock.png",
@@ -174,7 +173,6 @@ class _SettingScreenState extends State<SettingScreen> {
                               Get.toNamed(Routes.newPasswordScreen);
                               // Get.toNamed(Routes.sendEmailForOtp);
                             }),
-
                         // Obx(
                         //   () => customWidget(
                         //       context: context,
@@ -191,7 +189,6 @@ class _SettingScreenState extends State<SettingScreen> {
                         //         }
                         //       }),
                         // ),
-
                         Obx(
                           () => customWidget(
                               context: context,
@@ -203,7 +200,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                 switchValue.value = v;
                               }),
                         ),
-
                         if (API().sp.read("currentRole") != "User")
                           customWidget(
                               context: context,
@@ -345,7 +341,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : const SizedBox.shrink(),
-                        API().sp.read("currentRole") != "User"
+                        API().sp.read("currentRole") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
                                 text: "Subscription",

@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -102,7 +103,9 @@ class ChatController extends GetxController {
 
   /// socket initialization
   void _socketConnect() async {
-    print("object object");
+    if (kDebugMode) {
+      print("object object");
+    }
     Map<String, dynamic> map = {
       'token': API().sp.read("token"),
       'user_id': API().sp.read("userId")
@@ -117,7 +120,9 @@ class ChatController extends GetxController {
     socket!.connect();
 
     socket!.onConnect((data) {
-      print('connect');
+      if (kDebugMode) {
+        print('connect');
+      }
     });
 
     // socket!.on('receiver-message-${API().sp.read("id")}', (data) {
@@ -130,7 +135,9 @@ class ChatController extends GetxController {
     // });
 
     socket!.onDisconnect((_) {
-      print('disconnect');
+      if (kDebugMode) {
+        print('disconnect');
+      }
     });
     // connectDisconnect();
   }
@@ -362,7 +369,10 @@ class ChatController extends GetxController {
   /// socket disposed receiver
   disposedReceiverSocket() async {
     socket!.off(
-        'receiver-message-${API().sp.read("userId")}', (data) => {print(data)});
+        'receiver-message-${API().sp.read("userId")}',
+        (data) => {
+              print(data),
+            });
   }
 
   ///receive message from socket
@@ -436,7 +446,7 @@ class ChatController extends GetxController {
           animatedOpacity(false);
           update();
         });
-      }  else {
+      } else {
         animatedOpacity = true.obs;
         update();
         Future.delayed(const Duration(milliseconds: 1000), () {
@@ -752,8 +762,8 @@ class ChatController extends GetxController {
                             margin: const EdgeInsets.only(top: 2),
                             child: Text(
                               item.title,
-                              style:
-                                  const TextStyle(color: Colors.white, fontSize: 12),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
                             ),
                           ),
                         ],
@@ -824,8 +834,8 @@ class ChatController extends GetxController {
                             margin: const EdgeInsets.only(top: 2),
                             child: Text(
                               item.title,
-                              style:
-                                  const TextStyle(color: Colors.white, fontSize: 12),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
                             ),
                           ),
                         ],

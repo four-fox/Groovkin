@@ -1369,6 +1369,7 @@ class AuthController extends GetxController {
   }
 
   NotificationModel? notificationModel;
+
   Future<dynamic> getAllNotification(
       {fullUrl, String url = 'notifications'}) async {
     isNotificationLoading.value = true; // Start loading
@@ -1413,12 +1414,12 @@ class AuthController extends GetxController {
       if (userCredential.user != null) {
         emailController.text = userCredential.user!.email!;
         API().sp.write("emailSocial", userCredential.user!.email!);
+        API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
         API().sp.write("accessToken", userCredential.credential!.accessToken);
         sigUp(Get.context,
             signUpPlatform: "google",
             platformId: userCredential.credential!.accessToken);
       }
-
       log(userCredential.toString());
     } catch (e) {
       print(e.toString());
@@ -1433,6 +1434,7 @@ class AuthController extends GetxController {
   Future<dynamic> appleSignIn() async {
     try {
       EasyLoading.show();
+
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
@@ -1455,10 +1457,13 @@ class AuthController extends GetxController {
       if (userCredential.user != null) {
         emailController.text = userCredential.user!.email!;
         API().sp.write("emailSocial", userCredential.user!.email!);
+        // API().sp.write("nameSocial", userCredential.user!.displayName!);
         API().sp.write("accessToken", userCredential.credential!.accessToken);
-        sigUp(Get.context,
-            signUpPlatform: "apple",
-            platformId: userCredential.credential!.accessToken);
+        sigUp(
+          Get.context,
+          signUpPlatform: "apple",
+          platformId: userCredential.credential!.accessToken,
+        );
       }
     } catch (e) {
       EasyLoading.dismiss();

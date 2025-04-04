@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -51,28 +50,20 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
-        // NavigationDelegate(
-        //   onPageStarted: (String url) {
-        //     if (url.startsWith(widget.redirectUri)) {
-        //       _handleRedirect(url);
-        //     }
-        //   },
-        // ),
         NavigationDelegate(
-          onPageStarted: (url) {
+          onPageStarted: (url) async {
+            await _controller.runJavaScript(_hideSocialButtonsScript());
             setState(() => _isLoading = true);
-            if (url.startsWith(widget.redirectUri)) {
-              _handleRedirect(url);
-            }
+            // Handle social login redirections
           },
-          onPageFinished: (url) {
+          onPageFinished: (url) async {
             setState(() => _isLoading = false);
+            await _controller.runJavaScript(_hideSocialButtonsScript());
           },
           onNavigationRequest: (request) {
             if (request.url.startsWith(widget.redirectUri)) {
               if (!_isHandlingRedirect) {
                 _isHandlingRedirect = true;
-                // Small delay to ensure proper handling on iOS
                 Future.delayed(const Duration(milliseconds: 300), () {
                   _handleRedirect(request.url);
                 });
@@ -92,10 +83,32 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
           "client_id=${widget.clientId}&"
           "response_type=code&"
           "redirect_uri=${widget.redirectUri}&"
-          "scope=user-read-email,user-library-read",
+          "scope=user-read-email,user-library-read,user-top-read",
         ),
       );
     });
+  }
+
+  String _hideSocialButtonsScript() {
+    return """
+    (function() {
+      // Hide all social login buttons
+      let google = document.querySelector('[data-testid="google-login"]');
+      let facebook = document.querySelector('[data-testid="facebook-login"]');
+      let apple = document.querySelector('[data-testid="apple-login"]');
+      let others = document.querySelectorAll('[data-testid="signup-section"]');
+
+      if (google) google.style.display = 'none';
+      if (facebook) facebook.style.display = 'none';
+      if (apple) apple.style.display = 'none';
+
+      others.forEach(el => el.style.display = 'none');
+
+      // Hide divider text (e.g., "or")
+      let orDiv = document.querySelector('[data-testid="or-separator"]');
+      if (orDiv) orDiv.style.display = 'none';
+    })();
+  """;
   }
 
   void _handleRedirect(String url) async {
@@ -154,8 +167,11 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
 
     if (response.statusCode == 200) {
       final userData = jsonDecode(response.body);
+      print(userData);
       String email = userData["email"];
+      String name = userData["display_name"];
       _authController.emailController.text = email;
+      API().sp.write("nameSocial", name);
       API().sp.write("emailSocial", email);
       _authController.sigUp(context,
           signUpPlatform: "spotify", platformId: this.accessToken);
