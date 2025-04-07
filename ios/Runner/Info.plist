@@ -68,6 +68,9 @@
 	<string>682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com</string> -->
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>Misica uses Apple Music to help you rediscover your music.</string>
+	<!-- google  -->
 	<key>CFBundleURLTypes</key>
 	<array>
 	<dict>
@@ -76,7 +79,7 @@
 		<key>CFBundleURLSchemes</key>
 		<array>
 		<string>com.googleusercontent.apps.682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0</string>
-		
+		<string>groovkin</string>
 		</array>
 	</dict>
 	</array>

@@ -36,7 +36,7 @@ class _SpotifyMusicGenreScreenState extends State<SpotifyMusicGenreScreen> {
   }
 }
 
-class AndroidSpotifyWidget extends StatelessWidget {
+class AndroidSpotifyWidget extends StatefulWidget {
   const AndroidSpotifyWidget({
     super.key,
     required AuthController authController,
@@ -47,22 +47,19 @@ class AndroidSpotifyWidget extends StatelessWidget {
   final ThemeData theme;
 
   @override
+  State<AndroidSpotifyWidget> createState() => _AndroidSpotifyWidgetState();
+}
+
+class _AndroidSpotifyWidgetState extends State<AndroidSpotifyWidget> {
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(initState: (state) async {
-      await _authController.getSpotifyMusicGenreAPI();
+      await widget._authController.getSpotifyArtistGenre();
     }, builder: (controller) {
-      final Set<String> uniqueGenres = {};
-      final filteredGenres = controller.spotifyMusicGenre!.results!.where(
-        (genre) {
-          return uniqueGenres.add(
-            genre.primaryGenreName!,
-          );
-        },
-      ).toList();
-      return controller.isSpotify.value == true
+      return controller.isArtistLoading.value == true
           ? const SizedBox.shrink()
           : Scaffold(
-              appBar: customAppBar(theme: theme, text: "Quick Survey"),
+              appBar: customAppBar(theme: widget.theme, text: "Quick Survey"),
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
@@ -76,7 +73,7 @@ class AndroidSpotifyWidget extends StatelessWidget {
                         style: poppinsRegularStyle(
                           fontSize: 16,
                           context: context,
-                          color: theme.primaryColor,
+                          color: widget.theme.primaryColor,
                         ),
                       ),
                     ),
@@ -94,68 +91,95 @@ class AndroidSpotifyWidget extends StatelessWidget {
                     Expanded(
                         child: SizedBox(
                       height: Get.height / 1.41,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) => const SizedBox(
-                            height: 4.0,
-                          ),
-                          itemCount: filteredGenres.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    // image: DecorationImage(
-                                    //     image: AssetImage("assets/buttonBg.png"),
-                                    //     fit: BoxFit.fill
-                                    // ),
-                                    color: DynamicColor.secondaryClr,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
+                      child: widget._authController.filteredGenres.isEmpty
+                          ? Center(
+                              child: Text(
+                                "No Data Found",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(
+                                    height: 10,
+                                  );
+                                },
+                                itemCount: widget
+                                    ._authController.filteredGenres.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
                                     children: [
-                                      Text(
-                                        filteredGenres[index].primaryGenreName!,
-                                        style: poppinsMediumStyle(
-                                          fontSize: 16,
-                                          context: context,
-                                          color: theme.primaryColor,
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          // image: DecorationImage(
+                                          //     image: AssetImage("assets/buttonBg.png"),
+                                          //     fit: BoxFit.fill
+                                          // ),
+                                          color: DynamicColor.secondaryClr,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              widget._authController
+                                                      .filteredGenres[index]
+                                                  ["name"]!,
+                                              style: poppinsMediumStyle(
+                                                fontSize: 16,
+                                                context: context,
+                                                color:
+                                                    widget.theme.primaryColor,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            // GestureDetector(
+                                            //   onTap: () {},
+                                            //   child: Icon(
+                                            //     Icons.keyboard_arrow_down,
+                                            //     size: 30,
+                                            //     color:
+                                            //         widget.theme.primaryColor,
+                                            //   ),
+                                            // ),
+                                            Checkbox(
+                                              activeColor:
+                                                  DynamicColor.whiteClr,
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              value: widget
+                                                  ._authController
+                                                  .filteredGenres[index]
+                                                      ["selected"]!
+                                                  .value,
+                                              onChanged: (value) {
+                                                widget
+                                                    ._authController
+                                                    .filteredGenres[index]
+                                                        ["selected"]!
+                                                    .value = value!;
+                                                controller.update();
+                                              },
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      const Spacer(),
-                                      // GestureDetector(
-                                      //   onTap: () {},
-                                      //   child: Icon(
-                                      //     Icons.keyboard_arrow_down,
-                                      //     size: 30,
-                                      //     color: theme.primaryColor,
-                                      //   ),
-                                      // )
-                                      Checkbox(
-                                        activeColor: DynamicColor.whiteClr,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        value: filteredGenres[index]
-                                            .selectedItem!
-                                            .value,
-                                        onChanged: (value) {
-                                          filteredGenres[index]
-                                              .selectedItem!
-                                              .value = value!;
-                                          controller.update();
-                                        },
-                                      ),
                                     ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+                                  );
+                                },
+                              ),
+                            ),
                     )),
                   ],
                 ),
@@ -166,19 +190,18 @@ class AndroidSpotifyWidget extends StatelessWidget {
                 child: CustomButton(
                   borderClr: Colors.transparent,
                   onTap: () {
-                    bool isAnySelected = controller.spotifyMusicGenre!.results!
-                        .any((genre) => genre.selectedItem!.value);
-                    if (isAnySelected) {
-                      Get.offAllNamed(
-                        Routes.userBottomNavigationNav,
-                        // arguments: {
-                        //   "indexValue": 0
-                        // }
-                      );
+                    if (widget._authController.filteredGenres.isNotEmpty) {
+                      bool isAnySelected = widget._authController.filteredGenres
+                          .any((genre) => genre["selected"]!.value);
+                      if (isAnySelected) {
+                        controller.addSpotifyArtistGenre();
+                      } else {
+                        bottomToast(
+                            text:
+                                "Please select at least one genre before proceeding");
+                      }
                     } else {
-                      bottomToast(
-                          text:
-                              "Please select at least one genre before proceeding");
+                      bottomToast(text: "No Data Found!");
                     }
                   },
                   text: "Next",

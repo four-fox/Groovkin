@@ -37,12 +37,16 @@ class API {
   }
 
   ///Get
-  Future<dynamic> getApi(
-      {url,
-      fullUrl,
-      Map<String, dynamic>? queryParameters,
-      bool isLoader = true}) async {
-    dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
+  Future<dynamic> getApi({
+    url,
+    fullUrl,
+    Map<String, dynamic>? queryParameters,
+    bool isLoader = true,
+    bool isFromSpotify = false,
+  }) async {
+    dio.options.headers['Authorization'] = isFromSpotify
+        ? "Bearer ${sp.read('accessToken')}"
+        : "Bearer ${sp.read('token')}";
     dio.options.headers['Accept'] = "application/json";
 
     if (url != "") {

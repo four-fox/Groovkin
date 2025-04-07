@@ -96,8 +96,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         )
                       : ListView.builder(
                           itemBuilder: (BuildContext context, index) {
-                            print(controller
-                                .notificationModel!.data!.datas!.length);
                             final Datas data = controller
                                 .notificationModel!.data!.datas![index];
                             return Padding(

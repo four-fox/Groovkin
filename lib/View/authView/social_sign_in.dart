@@ -1,12 +1,16 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/View/authView/autController.dart';
-import 'package:groovkin/View/spotify_login_view.dart';
-import 'package:groovkin/utils/constant.dart';
+import 'package:groovkin/utils/constant.dart' as con;
+import 'package:http/http.dart' as http;
 
 class SocialSignIn extends StatefulWidget {
   final bool showGoogle, showFacebook, showApple, showSpotify;
@@ -24,7 +28,96 @@ class SocialSignIn extends StatefulWidget {
 }
 
 class _SocialSignInState extends State<SocialSignIn> {
-  final AuthController controller = Get.put(AuthController());
+  late final AuthController _authController;
+  String? _accessToken;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find();
+    } else {
+      _authController = Get.put(AuthController());
+    }
+  }
+
+  Future<void> loginWithSpotify() async {
+    const clientId = con.clientId;
+    const clientSecret = con.clientSecret;
+    const redirectUri = "groovkin://callback";
+
+    final authUrl = Uri.parse(
+      'https://accounts.spotify.com/authorize'
+      '?client_id=$clientId'
+      '&response_type=code'
+      '&redirect_uri=$redirectUri'
+      '&scope=user-read-email user-top-read user-read-private'
+      '&show_dialog=true',
+    );
+
+    try {
+      // Open browser for Spotify login
+      final result = await FlutterWebAuth2.authenticate(
+          url: authUrl.toString(),
+          callbackUrlScheme: 'groovkin',
+          options: const FlutterWebAuth2Options(
+            useWebview: false,
+          ));
+
+      final code = Uri.parse(result).queryParameters['code'];
+
+      // Exchange code for access token
+      final response = await http.post(
+        Uri.parse("https://accounts.spotify.com/api/token"),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization':
+              'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}',
+        },
+        body: {
+          'grant_type': 'authorization_code',
+          'code': code!,
+          'redirect_uri': redirectUri,
+        },
+      );
+
+      final data = json.decode(response.body);
+      setState(() {
+        _accessToken = data['access_token'];
+      });
+      await API().sp.write("accessToken", _accessToken);
+      if (_accessToken != null) {
+        await _fetchUserProfile(_accessToken!);
+      }
+      print("Spotify Access Token: $_accessToken");
+    } catch (e) {
+      print('Spotify login error: $e');
+    }
+  }
+
+  Future<void> _fetchUserProfile(String accessToken) async {
+    final response = await http.get(
+      Uri.parse("https://api.spotify.com/v1/me"),
+      headers: {
+        "Authorization": "Bearer $accessToken",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final userData = jsonDecode(response.body);
+      print(userData);
+      String email = userData["email"];
+      String name = userData["display_name"];
+      _authController.emailController.text = email;
+      API().sp.write("nameSocial", name);
+      API().sp.write("emailSocial", email);
+      _authController.sigUp(context,
+          signUpPlatform: "spotify", platformId: accessToken);
+      log("User Email: $email");
+    } else {
+      print("Error fetching user profile: ${response.body}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +128,7 @@ class _SocialSignInState extends State<SocialSignIn> {
           if (Platform.isIOS)
             CustomButtonWithIcon(
                 onTap: () {
-                  controller.appleSignIn();
+                  _authController.appleSignIn();
                 },
                 text: "Continue with Apple",
                 iconValue: true,
@@ -56,7 +149,7 @@ class _SocialSignInState extends State<SocialSignIn> {
           // if (Platform.isAndroid)
           CustomButtonWithIcon(
               onTap: () {
-                controller.googleSignIn();
+                _authController.googleSignIn();
               },
               text: "Continue with Google",
               iconValue: true,
@@ -74,29 +167,30 @@ class _SocialSignInState extends State<SocialSignIn> {
             height: 20,
           ),
         if (widget.showSpotify)
-          CustomButtonWithIcon(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SpotifyWebView(
-                              clientId: clientId,
-                              clientSecret: clientSecret,
-                              redirectUri: redirectUri,
-                            )));
-
-                // loginWithSpotify();
-              },
-              text: "Continue with Spotify",
-              iconValue: true,
-              bgColor: Colors.transparent,
-              gradientClr: true,
-              color2: DynamicColor.grayClr.withOpacity(0.4),
-              color1: DynamicColor.grayClr.withOpacity(0.1),
-              imageIconn: ImageIcon(
-                const AssetImage("assets/spotify.png"),
-                color: theme.primaryColor,
-              )),
+          if (Platform.isAndroid)
+            CustomButtonWithIcon(
+                onTap: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const SpotifyWebView(
+                  //               clientId: clientId,
+                  //               clientSecret: clientSecret,
+                  //               redirectUri: redirectUri,
+                  //             )));
+                  loginWithSpotify();
+                  // loginWithSpotify();
+                },
+                text: "Continue with Spotify",
+                iconValue: true,
+                bgColor: Colors.transparent,
+                gradientClr: true,
+                color2: DynamicColor.grayClr.withOpacity(0.4),
+                color1: DynamicColor.grayClr.withOpacity(0.1),
+                imageIconn: ImageIcon(
+                  const AssetImage("assets/spotify.png"),
+                  color: theme.primaryColor,
+                )),
       ],
     );
   }

@@ -10,8 +10,10 @@ import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.da
 import 'package:groovkin/View/bottomNavigation/settingView/groovkinInvitesScreen.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/main.dart';
+import 'package:groovkin/model/get_specific_artist_model.dart' as get_specific;
 import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
+import 'package:groovkin/model/spotify_artist_genre_model.dart';
 import 'package:groovkin/model/spotify_music_genre_model.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -1488,6 +1490,122 @@ class AuthController extends GetxController {
     }
     isSpotify(false);
     update();
+  }
+
+// Get Spotify Artist Genre
+  SpotifyArtistGenreModel? spotifyArtistGenreModel;
+  RxBool isArtistLoading = false.obs;
+  set setIsArtistLoading(bool loading) {
+    isArtistLoading.value = loading;
+    update();
+  }
+
+  List<dynamic> filteredGenres = [];
+  Future<dynamic> getSpotifyArtistGenre() async {
+    setIsArtistLoading = true;
+    try {
+      final response = await API().getApi(
+        fullUrl: "https://api.spotify.com/v1/me/top/artists",
+        isFromSpotify: true,
+      );
+      if (response.statusCode == 200) {
+        spotifyArtistGenreModel =
+            SpotifyArtistGenreModel.fromJson(response.data);
+        if (spotifyArtistGenreModel!.items!.isNotEmpty) {
+          filteredGenres.clear();
+          final Set<String> seenGenres = {};
+          for (var item in spotifyArtistGenreModel!.items!) {
+            for (var genre in item.genres!) {
+              if (!seenGenres.contains(genre)) {
+                seenGenres.add(genre);
+                filteredGenres.add({
+                  'name': genre,
+                  'selected': false.obs, // make it observable
+                });
+              }
+            }
+          }
+          update();
+        }
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setIsArtistLoading = false;
+    }
+  }
+
+  RxBool addArtistLoading = false.obs;
+  set setAddArtistLoading(bool loading) {
+    addArtistLoading.value = loading;
+    update();
+  }
+
+  Future<dynamic> addSpotifyArtistGenre() async {
+    try {
+      setAddArtistLoading = true;
+      final formData = form.FormData();
+      for (var genre in filteredGenres) {
+        if (genre['selected'].value == true) {
+          formData.fields.add(MapEntry('music_genre[]', genre['name']));
+        }
+      }
+      formData.fields.add(const MapEntry("type", "spotify"));
+
+      final response = await API().postApi(formData, "add-music-genre");
+      if (response.statusCode == 200) {
+        Get.offAllNamed(
+          Routes.userBottomNavigationNav,
+          // arguments: {
+          //   "indexValue": 0
+          // }
+        );
+        BotToast.showText(
+          text: "Genre Add Succesfully!",
+          contentColor: Colors.black,
+        );
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  get_specific.GetSpecificArtistGenre? getSpecificArtistGenreModel;
+  RxBool isSpecificArtistLoading = false.obs;
+  set setSpecificArtistLoading(bool loading) {
+    isSpecificArtistLoading.value = loading;
+    update();
+  }
+
+  Future<dynamic> getSpecificArtistGenre({fullUrl}) async {
+    setSpecificArtistLoading = true;
+    try {
+      final resposne = await API()
+          .getApi(url: "get-music-genre", fullUrl: fullUrl, queryParameters: {
+        "type": "spotify",
+      });
+
+      if (resposne.statusCode == 200) {
+        if (fullUrl == null) {
+          getSpecificArtistGenreModel =
+              get_specific.GetSpecificArtistGenre.fromJson(resposne.data);
+        } else {
+          getSpecificArtistGenreModel!.data!.data!.addAll(
+              get_specific.GetSpecificArtistGenre.fromJson(resposne.data)
+                  .data!
+                  .data!);
+          getSpecificArtistGenreModel!.data!.nextPageUrl =
+              get_specific.GetSpecificArtistGenre.fromJson(resposne.data)
+                  .data!
+                  .nextPageUrl;
+        }
+        update();
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setSpecificArtistLoading = false;
+    }
   }
 }
 

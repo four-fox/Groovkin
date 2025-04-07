@@ -27,7 +27,6 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
 
   final AuthController _controller = Get.find();
   late EventController _eventController;
-
   late HomeController _homeController;
 
   @override
