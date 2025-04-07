@@ -74,7 +74,6 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
           },
         ),
       );
-
     // Load Spotify Login URL
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.loadRequest(
