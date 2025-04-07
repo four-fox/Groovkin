@@ -50,7 +50,7 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
-        NavigationDelegate( 
+        NavigationDelegate(
           onPageStarted: (url) async {
             await _controller.runJavaScript(_hideSocialButtonsScript());
             setState(() => _isLoading = true);

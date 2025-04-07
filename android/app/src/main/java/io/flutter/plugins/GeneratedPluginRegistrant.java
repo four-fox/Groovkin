@@ -116,11 +116,6 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin libphonenumber_plugin, com.example.libphonenumber_plugin.LibphonenumberPlugin", e);
     }
     try {
-      flutterEngine.getPlugins().add(new app.misi.music_kit.MusicKitPlugin());
-    } catch (Exception e) {
-      Log.e(TAG, "Error registering plugin music_kit, app.misi.music_kit.MusicKitPlugin", e);
-    }
-    try {
       flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.packageinfo.PackageInfoPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin package_info_plus, dev.fluttercommunity.plus.packageinfo.PackageInfoPlugin", e);

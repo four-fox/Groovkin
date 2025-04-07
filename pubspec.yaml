@@ -87,7 +87,6 @@ dependencies:
   in_app_purchase: ^3.2.1
   purchases_flutter: ^8.6.1
   webview_flutter: ^4.4.2
-  
   app_settings: ^5.1.1
   fluttertoast: ^8.2.8
   url_launcher: ^6.3.1
@@ -114,7 +113,7 @@ dependencies:
   reorderables: ^0.6.0
   firebase_messaging: ^15.2.4
   flutter_web_auth_2: ^4.1.0
-  music_kit: ^1.2.1
+  
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
   collection: ^1.19.0
