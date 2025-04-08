@@ -55,17 +55,22 @@ class _SocialSignInState extends State<SocialSignIn> {
       '&show_dialog=true',
     );
 
+    // final authUrl = Uri.parse('https://appleid.apple.com/auth/authorize?'
+    //     'response_type=code&'
+    //     'client_id=com.your.bundle.id&' // Your Services ID
+    //     'redirect_uri=$redirectUri&'
+    //     'scope=music');
+
     try {
       // Open browser for Spotify login
       final result = await FlutterWebAuth2.authenticate(
-          url: authUrl.toString(),
-          callbackUrlScheme: 'groovkin',
-          options: const FlutterWebAuth2Options(
-            useWebview: false,
-          ));
-
+        url: authUrl.toString(),
+        callbackUrlScheme: 'groovkin',
+        options: const FlutterWebAuth2Options(
+          useWebview: false,
+        ),
+      );
       final code = Uri.parse(result).queryParameters['code'];
-
       // Exchange code for access token
       final response = await http.post(
         Uri.parse("https://accounts.spotify.com/api/token"),
@@ -80,7 +85,6 @@ class _SocialSignInState extends State<SocialSignIn> {
           'redirect_uri': redirectUri,
         },
       );
-
       final data = json.decode(response.body);
       setState(() {
         _accessToken = data['access_token'];
@@ -179,7 +183,6 @@ class _SocialSignInState extends State<SocialSignIn> {
                   //               redirectUri: redirectUri,
                   //             )));
                   loginWithSpotify();
-                  // loginWithSpotify();
                 },
                 text: "Continue with Spotify",
                 iconValue: true,

@@ -201,8 +201,6 @@ PODS:
   - libwebp/sharpyuv (1.5.0)
   - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
-  - music_kit (1.2.0):
-    - Flutter
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -284,7 +282,6 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - in_app_purchase_storekit (from `.symlinks/plugins/in_app_purchase_storekit/darwin`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
-  - music_kit (from `.symlinks/plugins/music_kit/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -376,8 +373,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/in_app_purchase_storekit/darwin"
   libphonenumber_plugin:
     :path: ".symlinks/plugins/libphonenumber_plugin/ios"
-  music_kit:
-    :path: ".symlinks/plugins/music_kit/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -445,7 +440,6 @@ SPEC CHECKSUMS:
   in_app_purchase_storekit: a1ce04056e23eecc666b086040239da7619cd783
   libphonenumber_plugin: 48bf4078546377eedaab4aa54978cd0f6fa23072
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
-  music_kit: 5da96088fa6f82b78b81bab9cf5c71dd31f480df
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
@@ -469,6 +463,6 @@ SPEC CHECKSUMS:
   wakelock_plus: 373cfe59b235a6dd5837d0fb88791d2f13a90d56
   webview_flutter_wkwebview: a4af96a051138e28e29f60101d094683b9f82188
 
-PODFILE CHECKSUM: adf356b8672b73454496fac4894b8b0a86f4cc1f
+PODFILE CHECKSUM: 7b67c7215d69294ce7a3ffd4026e9f95e9cfea64
 
 COCOAPODS: 1.16.2
