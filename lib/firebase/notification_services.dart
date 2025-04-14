@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +12,6 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
-
 import '../chatView/chatRoomModel.dart';
 
 class NotificationService {
@@ -23,6 +21,7 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   // ! Todo check the permissions of the notification service
+
   void requestNotificationPermission() async {
     final NotificationSettings notificationSettings =
         await firebaseMessaging.requestPermission(
@@ -52,6 +51,7 @@ class NotificationService {
   }
 
   // ! Todo get devices token
+
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
     log("Device Token $token");
@@ -62,6 +62,7 @@ class NotificationService {
   }
 
   // ! Todo refresh token
+
   void isRefreshToken() async {
     firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
@@ -69,6 +70,7 @@ class NotificationService {
   }
 
   // ! Todo initialize the android and ios settings and icon
+
   void initLocalNotifications(
     BuildContext context,
     RemoteMessage message,
@@ -85,6 +87,7 @@ class NotificationService {
   }
 
   // ! Todo listen the notification
+
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
       if (kDebugMode) {
@@ -108,6 +111,7 @@ class NotificationService {
   }
 
   //! Todo showNotification
+
   Future<void> showNotification(RemoteMessage message) async {
     // Check if message.notification is null (important for silent notifications)
     if (message.notification == null) return;
@@ -172,7 +176,6 @@ class NotificationService {
         await FirebaseMessaging.instance.getInitialMessage();
     if (message != null) {
       if (context.mounted) {
-        print("<Terminated>");
         // Show EasyLoading spinner
         // Todo I Use this for the loading not show in splash screen for 3 seconds
         await Future.delayed(const Duration(seconds: 3));
@@ -190,13 +193,16 @@ class NotificationService {
     //! when app is background
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       if (context.mounted) {
-        print("<Background>");
+        if (kDebugMode) {
+          print("<Background>");
+        }
         handleMessage(context, event);
       }
     });
   }
 
   // ! Todo ios notification message
+
   Future forgroundMessage() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
@@ -207,8 +213,11 @@ class NotificationService {
   }
 
   // ! when user tap on the notification
+
   void handleMessage(BuildContext context, RemoteMessage message) {
-    print(message.data);
+    if (kDebugMode) {
+      print(message.data);
+    }
     var data;
     if (message.data["type"] == "send_message") {
       data = jsonDecode(message.data["data"]);
@@ -220,7 +229,6 @@ class NotificationService {
     ManagerController managerController = Get.find();
     HomeController homeController = Get.find();
     if (message.data["type"] == "send_message") {
-      print(data["source_id"].runtimeType);
       controller.eventDetails(eventId: data["source_id"]);
       managerController.getAllMessages(
           userId: data["sender_id"], sourceId: data["source_id"]);

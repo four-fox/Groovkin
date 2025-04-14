@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
@@ -15,6 +16,7 @@ import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
 import 'package:groovkin/model/spotify_artist_genre_model.dart';
 import 'package:groovkin/model/spotify_music_genre_model.dart';
+import 'package:groovkin/utils/constant.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -33,8 +35,9 @@ import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:purchases_flutter/models/customer_info_wrapper.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
 import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
@@ -235,40 +238,44 @@ class AuthController extends GetxController {
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
-      configureSDK();
-      if (response.data["data"]["user_details"]["current_role"] == "user") {
-        API().sp.write("currentRole", "User");
-      } else if (response.data["data"]["user_details"]["current_role"] ==
-          "event_owner") {
-        API().sp.write("currentRole", "eventOrganizer");
-      } else {
-        API().sp.write("currentRole", "eventManager");
-      }
-      if (response.data['data']['user_details']['active_role'] ==
-          'venue_manager') {
-        API().sp.write("role", 'eventManager');
-      } else if (response.data['data']['user_details']['active_role'] ==
-          'user') {
-        API().sp.write("role", 'User');
-      } else {
-        API().sp.write('role', 'eventOrganizer');
-      }
-      if (sp.read("role") == "User") {
-        API().sp.write("isUserCreated",
-            response.data['data']['user_details']['is_user_created']);
-        if (response.data['data']['user_details']['is_user_created'] == 0) {
-          Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
-            "update": false,
-          });
+      await configureSDK();
+      Future.delayed(const Duration(microseconds: 1000), () {
+        restore();
+        logInWithRevenueCat();
+        if (response.data["data"]["user_details"]["current_role"] == "user") {
+          API().sp.write("currentRole", "User");
+        } else if (response.data["data"]["user_details"]["current_role"] ==
+            "event_owner") {
+          API().sp.write("currentRole", "eventOrganizer");
         } else {
-          selectUserIndexxx.value = 0;
-          Get.offAllNamed(Routes.userBottomNavigationNav);
+          API().sp.write("currentRole", "eventManager");
         }
-      } else {
-        selectIndexxx.value = 0;
-        Get.offAllNamed(Routes.bottomNavigationView,
-            arguments: {"indexValue": 0});
-      }
+        if (response.data['data']['user_details']['active_role'] ==
+            'venue_manager') {
+          API().sp.write("role", 'eventManager');
+        } else if (response.data['data']['user_details']['active_role'] ==
+            'user') {
+          API().sp.write("role", 'User');
+        } else {
+          API().sp.write('role', 'eventOrganizer');
+        }
+        if (sp.read("role") == "User") {
+          API().sp.write("isUserCreated",
+              response.data['data']['user_details']['is_user_created']);
+          if (response.data['data']['user_details']['is_user_created'] == 0) {
+            Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
+              "update": false,
+            });
+          } else {
+            selectUserIndexxx.value = 0;
+            Get.offAllNamed(Routes.userBottomNavigationNav);
+          }
+        } else {
+          selectIndexxx.value = 0;
+          Get.offAllNamed(Routes.bottomNavigationView,
+              arguments: {"indexValue": 0});
+        }
+      });
     }
   }
 
@@ -1223,7 +1230,6 @@ class AuthController extends GetxController {
 
     try {
       sendingEmailLoader.value = false;
-
       // final sendReport =
       await send(message, smtpServer);
       invitationList.clear();
@@ -1319,7 +1325,6 @@ class AuthController extends GetxController {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get all follower
   RxBool getAllFollowersLoader = true.obs;
-
   getAllFollowers({type}) async {
     getAllFollowersLoader(false);
     var response = await API().getApi(url: "followers?type=$type");
@@ -1418,9 +1423,11 @@ class AuthController extends GetxController {
         API().sp.write("emailSocial", userCredential.user!.email!);
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
         API().sp.write("accessToken", userCredential.credential!.accessToken);
-        sigUp(Get.context,
-            signUpPlatform: "google",
-            platformId: userCredential.credential!.accessToken);
+        sigUp(
+          Get.context,
+          signUpPlatform: "google",
+          platformId: userCredential.credential!.accessToken,
+        );
       }
       log(userCredential.toString());
     } catch (e) {
@@ -1432,7 +1439,6 @@ class AuthController extends GetxController {
   }
 
   // Todo Apple Sign In
-
   Future<dynamic> appleSignIn() async {
     try {
       EasyLoading.show();
@@ -1606,6 +1612,96 @@ class AuthController extends GetxController {
     } finally {
       setSpecificArtistLoading = false;
     }
+  }
+
+  /// Subsction Work  By Revenue Cat
+
+  RxInt selected = 0.obs;
+
+  logInWithRevenueCat() async {
+    try {
+      await Purchases.logIn(API().sp.read("userId").toString());
+    } on PlatformException catch (e) {
+      BotToast.showText(
+        text: e.message ?? "Unknown error",
+      );
+    }
+  }
+
+  completePurchase(CustomerInfo purchaseDetails) async {
+    final entitlement = purchaseDetails.entitlements.all[entitlementID];
+    final productId = entitlement?.productIdentifier;
+    // Determine plan type
+    int planType = 0;
+    if (productId?.toLowerCase().contains("monthly") == true) {
+      planType = 1;
+    } else if (productId?.toLowerCase().contains("yearly") == true) {
+      planType = 2;
+    }
+
+    Purchases.logIn(purchaseDetails.originalAppUserId);
+    final data = form.FormData();
+    data.fields.add(MapEntry("id", planType.toString()));
+    final response = await API().postApi(data, "subscription");
+    if (response.statusCode == 200) {
+      BotToast.showText(text: "Subscription Purchased");
+    }
+  }
+
+  restore() async {
+    try {
+      BotToast.showLoading();
+      if (API().sp.read("userId") != null) {
+        try {
+          Purchases.logIn(API().sp.read("userId").toString()).then(
+            (value) async {
+              if (value.customerInfo.entitlements.all[entitlementID] != null) {
+                if (value.customerInfo.entitlements.all[entitlementID]!
+                        .isActive ==
+                    true) {
+                  await Purchases.restorePurchases();
+                  if (kDebugMode) {
+                    log("Restore Purchased!");
+                  }
+                  final time = DateTime.parse(value.customerInfo.entitlements
+                          .all[entitlementID]!.expirationDate!)
+                      .toLocal()
+                      .difference(DateTime.now().toLocal())
+                      .inMinutes;
+                  if (time >= 0) {
+                    BotToast.closeAllLoading();
+                    checkUserSubscriptionIsActive();
+                    checkSub("Subscription Is Not Expired!");
+                  } else {
+                    checkSub("Subscription expired");
+                  }
+                } else {
+                  checkSub("No Active Subscription");
+                }
+              } else {
+                checkSub("No Active Subscription");
+              }
+            },
+          ).onError(
+            (error, stackTrace) {
+              BotToast.closeAllLoading();
+            },
+          );
+        } catch (e) {
+          BotToast.closeAllLoading();
+        }
+      }
+      BotToast.closeAllLoading();
+    } on PlatformException catch (e) {
+      BotToast.closeAllLoading();
+    }
+  }
+
+  checkSub(String text) {
+    BotToast.closeAllLoading();
+    BotToast.showText(
+      text: text,
+    );
   }
 }
 

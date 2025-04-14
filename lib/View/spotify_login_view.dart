@@ -27,7 +27,6 @@ class SpotifyWebView extends StatefulWidget {
 
 class _SpotifyWebViewState extends State<SpotifyWebView> {
   late final AuthController _authController;
-
   late final WebViewController _controller;
   bool _isLoading = true;
   String? accessToken;

@@ -7,6 +7,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/paymentMethod/subscriptionController.dart';
+import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class SubscriptionScreen extends StatefulWidget {
@@ -29,9 +30,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     } else {
       subscriptionController = Get.put(SubscriptionController());
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await subscriptionController.getSubscription();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   await subscriptionController.getSubscription();
+    // });
   }
 
   @override
@@ -174,91 +175,92 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                controller.subscriptionModel == null ||
-                        controller.subscriptionModel!.data == null ||
-                        controller.subscriptionModel!.data!.isEmpty
-                    ? const SizedBox()
-                    : Row(
-                        children:
-                            controller.subscriptionModel!.data!.map((data) {
-                          return Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                // Get.toNamed(Routes.paymentMethodScreen,
-                                //     arguments: {"paymentMethod": 1});
-                              },
-                              child: Container(
-                                // height: context.height * .20,
-                                margin: const EdgeInsets.only(right: 10),
-                                // width: double.infinity,
-                                // height: 160,
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 13),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: const Color(0xffd9a733)),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 150,
-                                      child: Text(
-                                        '${data.subcriptionName!.capitalize} \$${data.subcriptionPrice} /${data.subcriptionSubType!.capitalize}',
-                                        style: poppinsMediumStyle(
-                                          fontSize: 18,
-                                          context: context,
-                                          color: theme.primaryColor,
-                                        ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    Text(
-                                      data.subcriptionDescription ?? "",
-                                      style: poppinsRegularStyle(
-                                        fontSize: 13,
-                                        context: context,
-                                        color: theme.scaffoldBackgroundColor,
-                                      ),
-                                      maxLines: 3,
-                                      softWrap: true,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                  child: CustomButton(
-                    borderClr: Colors.transparent,
-                    color1: DynamicColor.blackClr,
-                    color2: DynamicColor.blackClr,
-                    onTap: () {
-                      // Get.toNamed(Routes.paymentMethodScreen,
-                      //     arguments: {
-                      //       "paymentMethod":1
-                      //     }
-                      // );
-                    },
-                    style: poppinsMediumStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: theme.primaryColor,
-                    ),
-                    text: "Buy Subscription",
-                  ),
-                ),
+                // controller.subscriptionModel == null ||
+                //         controller.subscriptionModel!.data == null ||
+                //         controller.subscriptionModel!.data!.isEmpty
+                //     ? const SizedBox()
+                //     : Row(
+                //         children:
+                //             controller.subscriptionModel!.data!.map((data) {
+                //           return Expanded(
+                //             child: GestureDetector(
+                //               onTap: () {
+                //                 // Get.toNamed(Routes.paymentMethodScreen,
+                //                 //     arguments: {"paymentMethod": 1});
+                //               },
+                //               child: Container(
+                //                 // height: context.height * .20,
+                //                 margin: const EdgeInsets.only(right: 10),
+                //                 // width: double.infinity,
+                //                 // height: 160,
+                //                 padding: const EdgeInsets.only(
+                //                     top: 20, bottom: 20, left: 13),
+                //                 decoration: BoxDecoration(
+                //                     borderRadius: BorderRadius.circular(15),
+                //                     color: const Color(0xffd9a733)),
+                //                 child: Column(
+                //                   crossAxisAlignment: CrossAxisAlignment.start,
+                //                   children: [
+                //                     SizedBox(
+                //                       width: 150,
+                //                       child: Text(
+                //                         '${data.subcriptionName!.capitalize} \$${data.subcriptionPrice} /${data.subcriptionSubType!.capitalize}',
+                //                         style: poppinsMediumStyle(
+                //                           fontSize: 18,
+                //                           context: context,
+                //                           color: theme.primaryColor,
+                //                         ),
+                //                         maxLines: 2,
+                //                         overflow: TextOverflow.ellipsis,
+                //                       ),
+                //                     ),
+                //                     const SizedBox(
+                //                       height: 8,
+                //                     ),
+                //                     Text(
+                //                       data.subcriptionDescription ?? "",
+                //                       style: poppinsRegularStyle(
+                //                         fontSize: 13,
+                //                         context: context,
+                //                         color: theme.scaffoldBackgroundColor,
+                //                       ),
+                //                       maxLines: 3,
+                //                       softWrap: true,
+                //                       overflow: TextOverflow.ellipsis,
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //         }).toList(),
+                //       ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Padding(
+                //   padding:
+                //       const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                //   child: CustomButton(
+                //     borderClr: Colors.transparent,
+                //     color1: DynamicColor.blackClr,
+                //     color2: DynamicColor.blackClr,
+                //     onTap: () {
+                //       // Get.toNamed(Routes.paymentMethodScreen,
+                //       //     arguments: {
+                //       //       "paymentMethod":1
+                //       //     }
+                //       // );
+                //     },
+                //     style: poppinsMediumStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.w600,
+                //       color: theme.primaryColor,
+                //     ),
+                //     text: "Buy Subscription",
+                //   ),
+                // ),
+                const SubscriptionScreenTwo(),
                 const SizedBox(
                   height: 5,
                 ),

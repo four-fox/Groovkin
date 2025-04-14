@@ -14,6 +14,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
+import 'package:groovkin/model/single_ton_data.dart';
 import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -32,14 +33,14 @@ Future<void> configureSDK() async {
         ..appUserID = API().sp.read("userId").toString()
         ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
   await Purchases.configure(configuration);
-  checkUserSubscriptionIsActive();
+  // checkUserSubscriptionIsActive();
 }
 
 checkUserSubscriptionIsActive() async {
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
   if (kDebugMode) {
     print(
-        "Revnuecat Subscrion if Active?   ${customerInfo.entitlements.all[entitlementID]?.isActive ?? false}");
+        "Revnuecat Subscrion if Active?  ${customerInfo.entitlements.all[entitlementID]?.isActive ?? false}");
   }
   appData.entitlementIsActive =
       customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
@@ -55,13 +56,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   // Todo Received BackGround Message
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
-
   await GetStorage.init();
   runApp(const MyApp());
 }
@@ -79,17 +77,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     if (API().sp.read("userId") != null) {
       configureSDK();
     }
-    //Todo Firebase Notification Start
 
+    //Todo Firebase Notification Start
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
-    notificationService.getDeviceToken();
-
+    // notificationService.getDeviceToken();
     // Todo Firebase Notification End
 
     // Todo Start the socket server

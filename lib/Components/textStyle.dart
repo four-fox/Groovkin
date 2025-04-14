@@ -1,32 +1,40 @@
-
-
-
 import 'package:flutter/material.dart';
 
 poppinsMediumStyle(
-    {double? fontSize, color, fontWeight, double? latterSpacing,context,bool underline= false}) {
+    {double? fontSize,
+    color,
+    fontWeight,
+    double? latterSpacing,
+    context,
+    bool underline = false}) {
   return TextStyle(
     fontSize: fontSize ?? 20,
     color: color ?? Theme.of(context).buttonTheme.colorScheme!.surface,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontFamily: 'poppinsMedium',
     letterSpacing: latterSpacing ?? 0,
-    decoration:underline==false?null: TextDecoration.underline,
+    decoration: underline == false ? null : TextDecoration.underline,
   );
 }
 
 poppinsRegularStyle(
-    {double? fontSize, color, fontWeight, double? latterSpacing,context,bool underline= false}) {
+    {double? fontSize,
+    color,
+    fontWeight,
+    double? latterSpacing,
+    context,
+    FontStyle? fontStyle,
+    bool underline = false}) {
   return TextStyle(
     fontSize: fontSize ?? 20,
     color: color ?? Theme.of(context).buttonTheme.colorScheme!.surface,
     fontWeight: fontWeight ?? FontWeight.w500,
     fontFamily: 'poppinsRegular',
+    fontStyle: fontStyle,
     letterSpacing: latterSpacing ?? 0,
-    decoration:underline==false?null: TextDecoration.underline,
+    decoration: underline == false ? null : TextDecoration.underline,
   );
 }
-
 
 validateMobile(String value) {
   String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';

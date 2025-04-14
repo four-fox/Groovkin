@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () async {
       if (API().sp.read("intro") == true) {
         if (API().sp.read("token") != null) {
-          
+
           print(API().sp.read("token"));
           print(API().sp.read("userId"));
           print(API().sp.read("role"));
@@ -76,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
           //     Get.offAllNamed(Routes.bottomNavigationView);
           //   }
           // }
-
+          
           if (API().sp.read("signupPlatform") != null) {
             if (API().sp.read("isCompleteProfile") == 1) {
               if (API().sp.read("role") == "User") {

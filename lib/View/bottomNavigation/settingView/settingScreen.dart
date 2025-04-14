@@ -341,19 +341,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : const SizedBox.shrink(),
-                        API().sp.read("currentRole") == "eventOrganizer"
+                        API().sp.read("role") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
                                 text: "Subscription",
                                 iconShow: false,
                                 onTap: () {
-                                  // Get.toNamed(Routes.subscriptionScreen,
-                                  //     arguments: {"isFromSettingScreen": true});
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const SubscriptionScreenTwo()));
+                                  Get.toNamed(Routes.subscriptionScreen,
+                                      arguments: {"isFromSettingScreen": true});
                                 })
                             : const SizedBox(),
                         sp.read("role") == "User"

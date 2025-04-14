@@ -78,20 +78,22 @@
       "subscriptions" : [
         {
           "adHocOffers" : [
-
+            {
+              "internalID" : "4053FB50",
+              "offerID" : "free_trial ",
+              "paymentMode" : "free",
+              "referenceName" : "Free trial",
+              "subscriptionPeriod" : "P2W"
+            }
           ],
           "codeOffers" : [
 
           ],
           "displayPrice" : "2.99",
-          "familyShareable" : true,
+          "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "B9A401D2",
-          "introductoryOffer" : {
-            "internalID" : "CC7A2F8F",
-            "paymentMode" : "free",
-            "subscriptionPeriod" : "P1W"
-          },
+          "introductoryOffer" : null,
           "localizations" : [
             {
               "description" : "",

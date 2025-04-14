@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -84,11 +82,12 @@ class FollowingScreen extends StatelessWidget {
                         child: Text(
                           "User",
                           style: poppinsRegularStyle(
-                              fontSize: 12,
-                              context: context,
-                              color: selectedVal.value == 0
-                                  ? theme.primaryColor
-                                  : DynamicColor.whiteClr.withOpacity(0.3)),
+                            fontSize: 12,
+                            context: context,
+                            color: selectedVal.value == 0
+                                ? theme.primaryColor
+                                : DynamicColor.whiteClr.withOpacity(0.3),
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -238,8 +237,8 @@ class AllUsers extends StatelessWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (BuildContext context, index) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 12),
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -343,7 +342,8 @@ class AllUsers extends StatelessWidget {
                               },
                               child: Container(
                                 width: 100,
-                                padding: const EdgeInsets.symmetric(vertical: 6),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 6),
                                 decoration: BoxDecoration(
                                     borderRadius: const BorderRadius.only(
                                       bottomRight: Radius.circular(10),

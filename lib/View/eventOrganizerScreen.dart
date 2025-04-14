@@ -25,7 +25,6 @@ class EventOrganizerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    print(eventOrganizerVal);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -98,7 +97,8 @@ class EventOrganizerScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -142,8 +142,8 @@ class EventOrganizerScreen extends StatelessWidget {
               eventOrganizerVal == 1
                   ? const SizedBox.shrink()
                   : Padding(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 12),
                       child: Row(
                         children: [
                           CircleAvatar(
@@ -400,7 +400,8 @@ class EventOrganizerScreen extends StatelessWidget {
                                     child: ListView.builder(
                                         itemCount: 12,
                                         shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return userCustomEvent(
@@ -471,7 +472,8 @@ class EventOrganizerScreen extends StatelessWidget {
                                     child: ListView.builder(
                                         itemCount: 12,
                                         shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return userCustomEvent(
@@ -541,7 +543,8 @@ class EventOrganizerScreen extends StatelessWidget {
                                     child: ListView.builder(
                                         itemCount: 12,
                                         shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return userCustomEvent(
@@ -632,7 +635,8 @@ class PropertyEventView extends StatelessWidget {
           return Padding(
               padding: const EdgeInsets.only(top: 12.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: const DecorationImage(
