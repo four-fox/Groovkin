@@ -1214,10 +1214,12 @@ class AuthController extends GetxController {
       eventInvitation.add(action.emailController.text);
     }
     String username = 'william@gologonow.com'; // Your Email
+
     String password =
         'ppqcxmrssiezdyrh'; // 16 Digits App Password Generated From Google Account
 
     final smtpServer = gmail(username, password);
+  
     // Create our message.
     final message = Message()
       ..from = const Address(
@@ -1415,6 +1417,7 @@ class AuthController extends GetxController {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
+
       final firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
           .signInWithCredential(credential);
@@ -1671,7 +1674,7 @@ class AuthController extends GetxController {
                   if (time >= 0) {
                     BotToast.closeAllLoading();
                     checkUserSubscriptionIsActive();
-                    checkSub("Subscription Is Not Expired!");
+                    // checkSub("Subscription Is Not Expired!");
                   } else {
                     checkSub("Subscription expired");
                   }

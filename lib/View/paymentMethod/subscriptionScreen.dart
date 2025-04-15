@@ -26,7 +26,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void initState() {
     super.initState();
     if (Get.isRegistered<SubscriptionController>()) {
-      subscriptionController = Get.find<SubscriptionController>();
+      subscriptionController = Get.find<SubscriptionController>();  
     } else {
       subscriptionController = Get.put(SubscriptionController());
     }
@@ -124,8 +124,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: DynamicColor.darkGrayClr.withOpacity(0.7)),
+                    borderRadius: BorderRadius.circular(20),
+                    color: DynamicColor.darkGrayClr.withOpacity(0.7),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

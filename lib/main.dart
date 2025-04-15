@@ -12,6 +12,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
@@ -33,10 +34,15 @@ Future<void> configureSDK() async {
         ..appUserID = API().sp.read("userId").toString()
         ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
   await Purchases.configure(configuration);
-  // checkUserSubscriptionIsActive();
 }
 
 checkUserSubscriptionIsActive() async {
+  final homeController;
+  if (Get.isRegistered<HomeController>()) {
+    homeController = Get.find<HomeController>();
+  } else {
+    homeController = Get.put(HomeController());
+  }
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
   if (kDebugMode) {
     print(
@@ -44,6 +50,7 @@ checkUserSubscriptionIsActive() async {
   }
   appData.entitlementIsActive =
       customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
+  homeController.update();
 }
 
 void main() async {
@@ -79,6 +86,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     if (API().sp.read("userId") != null) {
       configureSDK();
+      checkUserSubscriptionIsActive();
     }
 
     //Todo Firebase Notification Start

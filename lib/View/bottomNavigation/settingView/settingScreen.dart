@@ -13,6 +13,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
+import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -349,6 +350,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () {
                                   Get.toNamed(Routes.subscriptionScreen,
                                       arguments: {"isFromSettingScreen": true});
+                                })
+                            : const SizedBox(),
+                        (API().sp.read("role") == "eventOrganizer" &&
+                                appData.entitlementIsActive)
+                            ? customWidget(
+                                context: context,
+                                text: "Active Subscription",
+                                iconShow: false,
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SubscrptionScreenCheck()));
                                 })
                             : const SizedBox(),
                         sp.read("role") == "User"
