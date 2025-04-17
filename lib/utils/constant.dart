@@ -6,7 +6,7 @@ const entitlementID = 'premium';
 const appleApiKey = 'appl_sUGoMUqrMbaxQGbwWvgauwEYVzn';
 
 //TO DO: add the Google API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
-const googleApiKey = 'googl_api_key';
+const googleApiKey = 'goog_rqCDHATPRHlNnhWBEEXtmkfnSba';
 
 
 

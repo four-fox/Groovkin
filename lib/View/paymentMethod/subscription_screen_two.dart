@@ -259,6 +259,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                         BotToast.closeAllLoading();
                         return value;
                       }).onError((error, _) {
+                        BotToast.showText(text: "Purchased Cancel");
                         BotToast.closeAllLoading();
                         throw Exception(error.toString());
                       });

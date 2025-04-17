@@ -125,7 +125,7 @@ dependency_overrides:
   modal_progress_hud_nsn: ^0.5.1
   web: ^0.5.1
   flutter_widget_from_html_core: 0.10.0
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
