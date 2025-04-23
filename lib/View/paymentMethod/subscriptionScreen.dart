@@ -26,7 +26,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   void initState() {
     super.initState();
     if (Get.isRegistered<SubscriptionController>()) {
-      subscriptionController = Get.find<SubscriptionController>();  
+      subscriptionController = Get.find<SubscriptionController>();
     } else {
       subscriptionController = Get.put(SubscriptionController());
     }
@@ -261,7 +261,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 //     text: "Buy Subscription",
                 //   ),
                 // ),
-                const SubscriptionScreenTwo(),
+                // const SubscriptionScreenTwo(),
                 const SizedBox(
                   height: 5,
                 ),

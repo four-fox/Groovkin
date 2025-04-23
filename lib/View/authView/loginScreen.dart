@@ -20,18 +20,15 @@ class LoginScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       extendBody: true,
+
       // appBar: customAppBar(theme: theme,text: "New Hashtag",),
-      body: DoubleBackToCloseApp(
-        snackBar: SnackBar(
-          backgroundColor: theme.primaryColor,
-          content: Text(
-            'Tap back again to exit the app',
-            style: poppinsMediumStyle(
-                fontSize: 15,
-                context: context,
-                color: theme.scaffoldBackgroundColor),
-          ),
-        ),
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop) {
+            Get.offAllNamed(Routes.loginSelection);
+          }
+        },
         child: GetBuilder<AuthController>(builder: (controller) {
           return Form(
             key: loginForm,
@@ -54,7 +51,8 @@ class LoginScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.back();
+                        // Get.back();
+                        Get.offAllNamed(Routes.loginSelection);
                       },
                       child: ImageIcon(
                         const AssetImage("assets/backArrow.png"),
@@ -155,10 +153,10 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
-                    if(API().sp.read("role") == "User")
-                    const SocialSignIn(
-                      showSpotify: true,
-                    ),
+                    if (API().sp.read("role") == "User")
+                      const SocialSignIn(
+                        showSpotify: true,
+                      ),
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.loginSelection);

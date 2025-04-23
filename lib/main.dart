@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,28 +36,33 @@ Future<void> configureSDK() async {
 }
 
 checkUserSubscriptionIsActive() async {
-  final homeController;
+  final HomeController homeController;
   if (Get.isRegistered<HomeController>()) {
     homeController = Get.find<HomeController>();
   } else {
     homeController = Get.put(HomeController());
   }
+
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+
   if (kDebugMode) {
+    print(customerInfo.toString());
     print(
         "Revnuecat Subscrion if Active?  ${customerInfo.entitlements.all[entitlementID]?.isActive ?? false}");
   }
+
   appData.entitlementIsActive =
       customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
+
   homeController.update();
 }
 
 void main() async {
-  if (Platform.isIOS || Platform.isMacOS) {
-    StoreConfig(apiKey: appleApiKey, store: Store.appStore);
-  } else {
-    StoreConfig(apiKey: googleApiKey, store: Store.playStore);
-  }
+  // if (Platform.isIOS || Platform.isMacOS) {
+  //   StoreConfig(apiKey: appleApiKey, store: Store.appStore);
+  // } else {
+  //   StoreConfig(apiKey: googleApiKey, store: Store.playStore);
+  // }
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -84,12 +88,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    if (API().sp.read("userId") != null) {
-      configureSDK();
-      checkUserSubscriptionIsActive();
-    }
+    // if (API().sp.read("userId") != null) {
+    //   configureSDK();
+    //   checkUserSubscriptionIsActive();
+    // }
 
-    //Todo Firebase Notification Start
+    // Todo Firebase Notification Start
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
@@ -123,14 +127,15 @@ class _MyAppState extends State<MyApp> {
                 TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
           )),
       darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: const Color(0xffFFFFFF),
-          // backgroundColor: Color(0xffFFFFFF),
-          scaffoldBackgroundColor: Colors.black,
-          textTheme: const TextTheme(
-            labelLarge:
-                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
-          )),
+        brightness: Brightness.dark,
+        primaryColor: const Color(0xffFFFFFF),
+        // backgroundColor: Color(0xffFFFFFF),
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: const TextTheme(
+          labelLarge:
+              TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+        ),
+      ),
       navigatorObservers: [BotToastNavigatorObserver()],
       builder: (context, child) {
         child = ScrollConfiguration(

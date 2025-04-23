@@ -38,6 +38,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:purchases_flutter/models/customer_info_wrapper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import '../../model/single_ton_data.dart';
 import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
@@ -155,7 +156,7 @@ class AuthController extends GetxController {
           response.data['data']['user_details']['is_complete_profile']);
       API().sp.write("signupPlatform",
           response.data['data']['user_details']['signup_platform']);
-      configureSDK();
+      // configureSDK();
       if (response.data["data"]["user_details"]["current_role"] == "user") {
         API().sp.write("currentRole", "User");
       } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -235,28 +236,34 @@ class AuthController extends GetxController {
       "device_token": await notificationService.getDeviceToken(),
     };
     var response = await API().postApi(formData, "login");
+
     if (response.statusCode == 200) {
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
-      await configureSDK();
+      API().sp.remove("currentRole");
+      API().sp.remove("role");
+      // await configureSDK();
       Future.delayed(const Duration(microseconds: 1000), () {
-        restore();
-        logInWithRevenueCat();
+        // restore();
+        // logInWithRevenueCat();
         if (response.data["data"]["user_details"]["current_role"] == "user") {
           API().sp.write("currentRole", "User");
         } else if (response.data["data"]["user_details"]["current_role"] ==
             "event_owner") {
           API().sp.write("currentRole", "eventOrganizer");
-        } else {
+        } else if (response.data["data"]["user_details"]["current_role"] ==
+            "venue_manager") {
           API().sp.write("currentRole", "eventManager");
         }
+
         if (response.data['data']['user_details']['active_role'] ==
             'venue_manager') {
           API().sp.write("role", 'eventManager');
         } else if (response.data['data']['user_details']['active_role'] ==
             'user') {
           API().sp.write("role", 'User');
-        } else {
+        } else if (response.data['data']['user_details']['active_role'] ==
+            "event_owner") {
           API().sp.write('role', 'eventOrganizer');
         }
         if (sp.read("role") == "User") {
@@ -1422,8 +1429,9 @@ class AuthController extends GetxController {
           .FirebaseAuth.instance
           .signInWithCredential(credential);
       if (userCredential.user != null) {
-        emailController.text = userCredential.user!.email!;
-        API().sp.write("emailSocial", userCredential.user!.email!);
+        emailController.text = userCredential.user!.email ?? "";
+        displayNameController.text = userCredential.user!.displayName ?? "";
+        API().sp.write("emailSocial", userCredential.user!.email ?? "");
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
         API().sp.write("accessToken", userCredential.credential!.accessToken);
         sigUp(
@@ -1623,7 +1631,14 @@ class AuthController extends GetxController {
 
   logInWithRevenueCat() async {
     try {
-      await Purchases.logIn(API().sp.read("userId").toString());
+      final loginResult =
+          await Purchases.logIn(API().sp.read("userId").toString());
+      // Optionally check if anonymous user was merged
+      if (loginResult.created) {
+        print("New user created in RevenueCat");
+      } else {
+        print("Existing user logged in");
+      }
     } on PlatformException catch (e) {
       BotToast.showText(
         text: e.message ?? "Unknown error",
@@ -1632,13 +1647,15 @@ class AuthController extends GetxController {
   }
 
   completePurchase(CustomerInfo purchaseDetails) async {
-    final entitlement = purchaseDetails.entitlements.all[entitlementID];
-    final productId = entitlement?.productIdentifier;
+    final productId = purchaseDetails.entitlements.active["productIdentifier"];
+    // final productId = entitlement?.productIdentifier;
     // Determine plan type
     int planType = 0;
-    if (productId?.toLowerCase().contains("monthly") == true) {
+    if (productId?.productIdentifier.toLowerCase().contains("monthly") ==
+        true) {
       planType = 1;
-    } else if (productId?.toLowerCase().contains("yearly") == true) {
+    } else if (productId?.productIdentifier.toLowerCase().contains("yearly") ==
+        true) {
       planType = 2;
     }
 
@@ -1692,8 +1709,9 @@ class AuthController extends GetxController {
         } catch (e) {
           BotToast.closeAllLoading();
         }
+        // checkUserSubscriptionIsActive();
       }
-      checkUserSubscriptionIsActive();
+
       BotToast.closeAllLoading();
     } on PlatformException catch (e) {
       BotToast.closeAllLoading();
@@ -1705,6 +1723,18 @@ class AuthController extends GetxController {
     BotToast.showText(
       text: text,
     );
+  }
+
+  logOutRevenuecat() async {
+    try {
+      await Purchases.logOut();
+      appData.appUserID = await Purchases.appUserID;
+    } on PlatformException catch (e) {
+      print(e);
+      // BotToast.showText(
+      //   text: e.message ?? "Unknown error",
+      // );
+    }
   }
 }
 

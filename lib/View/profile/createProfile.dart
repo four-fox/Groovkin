@@ -422,7 +422,6 @@ class _CreateProfileState extends State<CreateProfile> {
                         state: controller.stateController,
                         // dialogColor: Colors.grey.shade200,
                         textFieldDecoration: InputDecoration(
-                          
                           hintStyle: const TextStyle(
                               fontSize: 14, color: Color(0xff9DA3B5)),
                           fillColor: Colors.transparent,

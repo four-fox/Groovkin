@@ -155,7 +155,8 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                       }),
                                 )
                               : Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
                                   child: Icon(
                                     Icons.attach_file_outlined,
                                     color: DynamicColor.grayClr,
@@ -166,10 +167,13 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: GestureDetector(
                               onTap: () {
+                                if (FocusScope.of(context).hasFocus) {
+                                  FocusScope.of(context).unfocus();
+                                }
                                 if (Platform.isAndroid) {
                                   managerController.pickFile();
                                 } else {
-                                  managerController.pickFileee();
+                                managerController.pickFileee();
                                 }
                               },
                               child: Container(
@@ -219,9 +223,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        
                         return MapLocationPicker(
-                        
                           onTappp: () {
                             print(managerController.lat);
                             print(managerController.lng);
@@ -231,7 +233,8 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                           // hideLocation: true,
                           // lat: double.parse(eventData.latitude.toString()),
                           // long: double.parse(eventData.longitude.toString()),
-                          minMaxZoomPreference: const MinMaxZoomPreference(0, 15),
+                          minMaxZoomPreference:
+                              const MinMaxZoomPreference(0, 15),
                           apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
                           canPopOnNextButtonTaped: true,
                           searchHintText: managerController.address != "null"
@@ -484,7 +487,8 @@ class ListOfVenuesScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
               child: CustomTextFields(
                 borderClr: theme.primaryColor,
                 iconShow: true,
@@ -677,7 +681,8 @@ class AddLocationScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: DynamicColor.avatarBgClr),

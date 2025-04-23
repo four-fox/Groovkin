@@ -9,7 +9,6 @@ import 'package:groovkin/Components/shrink_tap.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
-import 'package:groovkin/View/paymentMethod/subscriptionScreen.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:material_charts/material_charts.dart' as material;
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -273,11 +272,11 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
               }),
             ],
           ),
-          GetBuilder<HomeController>(builder: (context) {
-            return appData.entitlementIsActive == true
-                ? const SizedBox()
-                : notSubscribeCardWidget();
-          })
+          // GetBuilder<HomeController>(builder: (context) {
+          //   return appData.entitlementIsActive == true
+          //       ? const SizedBox()
+          //       : notSubscribeCardWidget();
+          // })
         ],
       ),
     );
@@ -367,8 +366,10 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               // Add subscription logic here
-                              Get.toNamed(Routes.subscriptionScreen,
-                                  arguments: {"isFromSettingScreen": true});
+                              // Get.toNamed(Routes.subscriptionScreen,
+                              //     arguments: {"isFromSettingScreen": true});
+                              appData.entitlementIsActive == true;
+                              setState(() {});
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DynamicColor.yellowClr,

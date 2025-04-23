@@ -37,7 +37,9 @@ class _SpotifyFetchScreenState extends State<SpotifyFetchScreen> {
           appBar: customAppBar(theme: theme, text: "Spotify Genre"),
           body: controller.isSpecificArtistLoading.value == true
               ? const SizedBox()
-              : controller.getSpecificArtistGenreModel!.data!.data!.isEmpty
+              : controller.getSpecificArtistGenreModel != null &&
+                      controller
+                          .getSpecificArtistGenreModel!.data!.data!.isEmpty
                   ? Center(
                       child: Text(
                         "No Data Found",
