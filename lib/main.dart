@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,10 +12,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
+import 'package:groovkin/purchased/purchased.dart';
 import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -37,12 +40,17 @@ Future<void> configureSDK() async {
 
 checkUserSubscriptionIsActive() async {
   final HomeController homeController;
+  final AuthController authController;
   if (Get.isRegistered<HomeController>()) {
     homeController = Get.find<HomeController>();
   } else {
     homeController = Get.put(HomeController());
   }
-
+  if (Get.isRegistered<AuthController>()) {
+    authController = Get.find<AuthController>();
+  } else {
+    authController = Get.put(AuthController());
+  }
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
 
   if (kDebugMode) {
@@ -54,6 +62,7 @@ checkUserSubscriptionIsActive() async {
   appData.entitlementIsActive =
       customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
 
+  authController.update();
   homeController.update();
 }
 
@@ -67,6 +76,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   // Todo Received BackGround Message
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   SystemChrome.setPreferredOrientations(
@@ -88,6 +98,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     // if (API().sp.read("userId") != null) {
     //   configureSDK();
     //   checkUserSubscriptionIsActive();
@@ -99,7 +110,6 @@ class _MyAppState extends State<MyApp> {
     notificationService.firebaseInit(context);
     // notificationService.getDeviceToken();
     // Todo Firebase Notification End
-
     // Todo Start the socket server
 
     // SocketClass.singleton.connectSocket();

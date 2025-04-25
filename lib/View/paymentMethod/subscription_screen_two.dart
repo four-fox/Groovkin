@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,9 +10,11 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/purchased/purchased.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../model/single_ton_data.dart';
 
 class SubscriptionScreenTwo extends StatefulWidget {
@@ -24,9 +25,7 @@ class SubscriptionScreenTwo extends StatefulWidget {
 }
 
 class _SubscriptionScreenTwoState extends State<SubscriptionScreenTwo> {
-  bool isActive = false;
   CustomerInfo? _customerInfo;
-  bool loader = true;
   late AuthController controller;
 
   Future<void> initPlatformState() async {
@@ -36,18 +35,12 @@ class _SubscriptionScreenTwoState extends State<SubscriptionScreenTwo> {
       EntitlementInfo? entitlement =
           customerInfo.entitlements.all[entitlementID];
       appData.entitlementIsActive = entitlement?.isActive ?? false;
-      bool isAutoRenewOff = entitlement?.willRenew == false;
-      String expirationTime = entitlement?.expirationDate ?? "";
-      if (kDebugMode) {
-        print("Is AUTO RENEW $isAutoRenewOff");
-        print("Expiration Time $expirationTime");
-      }
       controller.update();
       Future.delayed(const Duration(seconds: 3), () {
         controller.update();
       });
     } catch (e) {
-      loader = false;
+      rethrow;
     }
     controller.update();
   }
@@ -138,6 +131,8 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
       homeController = Get.put(HomeController());
     }
     fetchData();
+    InAppPurchasedFlutter().initStoreInfo();
+    InAppPurchasedFlutter().getInAppSubscriptions();
   }
 
   @override
@@ -353,7 +348,7 @@ class SubscrptionScreenCheck extends StatefulWidget {
 
 class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
   CustomerInfo? _customerInfo;
-  Offerings? _offerings;
+  // Offerings? _offerings;
   late HomeController homeController;
   RxString? productId = "".obs;
 
@@ -365,7 +360,8 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
     } else {
       homeController = Get.put(HomeController());
     }
-    fetchData();
+    // fetchData();
+
     initPlatform();
   }
 
@@ -373,9 +369,9 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
     if (_customerInfo != null) {
       if (Platform.isAndroid) {
         productId!.value = _customerInfo!.activeSubscriptions.isNotEmpty &&
-                _customerInfo!.activeSubscriptions[0] == "monthly"
-            ? "Yearly"
-            : "Monthly";
+                _customerInfo!.activeSubscriptions[0] == "rc_monthly:monthly"
+            ? "Monthly"
+            : "Yearly";
       } else {
         productId!.value = _customerInfo!.activeSubscriptions.isNotEmpty &&
                 _customerInfo!.activeSubscriptions[0] == "rc_monthly"
@@ -397,26 +393,26 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
     });
   }
 
-  fetchData() async {
-    Offerings? offerings;
-    try {
-      offerings = await Purchases.getOfferings();
-    } on PlatformException catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    } on SocketException catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
-    if (!mounted) return;
-    setState(() {
-      if (offerings != null) {
-        _offerings = offerings;
-      }
-    });
-  }
+  // fetchData() async {
+  //   Offerings? offerings;
+  //   try {
+  //     offerings = await Purchases.getOfferings();
+  //   } on PlatformException catch (e) {
+  //     if (kDebugMode) {
+  //       print(e);
+  //     }
+  //   } on SocketException catch (e) {
+  //     if (kDebugMode) {
+  //       print(e);
+  //     }
+  //   }
+  //   if (!mounted) return;
+  //   setState(() {
+  //     if (offerings != null) {
+  //       _offerings = offerings;
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -648,6 +644,10 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
                   color2: DynamicColor.blackClr,
                   onTap: () {
                     if (Platform.isAndroid) {
+                      launchUrl(
+                          Uri.parse(
+                              'https://play.google.com/store/account/subscriptions?sku=${productId!.value == "Yearly" ? "" : "rc_monthly"}&package=com.gologonow.groovkinn'),
+                          mode: LaunchMode.externalApplication);
                     } else {
                       showCupertinoDialog(
                           context: context,

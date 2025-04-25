@@ -35,7 +35,6 @@ import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:purchases_flutter/models/customer_info_wrapper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../model/single_ton_data.dart';
@@ -246,6 +245,7 @@ class AuthController extends GetxController {
       Future.delayed(const Duration(microseconds: 1000), () {
         // restore();
         // logInWithRevenueCat();
+        // checkUserSubscriptionIsActive();
         if (response.data["data"]["user_details"]["current_role"] == "user") {
           API().sp.write("currentRole", "User");
         } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -1647,6 +1647,10 @@ class AuthController extends GetxController {
   }
 
   completePurchase(CustomerInfo purchaseDetails) async {
+    print(purchaseDetails);
+    print(purchaseDetails.entitlements.active["premium"]?.productIdentifier);
+    await sp.write("identifier",
+        purchaseDetails.entitlements.active["premium"]?.productIdentifier);
     final productId = purchaseDetails.entitlements.active["productIdentifier"];
     // final productId = entitlement?.productIdentifier;
     // Determine plan type
@@ -1688,6 +1692,7 @@ class AuthController extends GetxController {
                       .toLocal()
                       .difference(DateTime.now().toLocal())
                       .inMinutes;
+
                   if (time >= 0) {
                     BotToast.closeAllLoading();
                     // checkSub("Subscription Is Not Expired!");
@@ -1711,7 +1716,6 @@ class AuthController extends GetxController {
         }
         // checkUserSubscriptionIsActive();
       }
-
       BotToast.closeAllLoading();
     } on PlatformException catch (e) {
       BotToast.closeAllLoading();

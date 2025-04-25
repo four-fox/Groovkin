@@ -11,10 +11,10 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 class InAppPurchasedFlutter {
   InAppPurchasedFlutter._interval();
 
-  static final InAppPurchasedFlutter _singleton = InAppPurchasedFlutter._interval();
+  static InAppPurchasedFlutter? _singleton;
 
   factory InAppPurchasedFlutter() {
-    return _singleton;
+    return _singleton ??= InAppPurchasedFlutter._interval();
   }
 
   final InAppPurchase inAppPurchase = InAppPurchase.instance;
@@ -25,8 +25,8 @@ class InAppPurchasedFlutter {
   List<ProductDetails> products = [];
   List<PurchaseDetails> purchased = [];
 
-  final List<String> androidProductIds = [];
-  final List<String> iosProductIds = [];
+  final List<String> androidProductIds = ["rc_monthly"];
+  final List<String> iosProductIds = ["rc_monthly"];
 
   Future<void> initStoreInfo() async {
     final bool isAvailable = await inAppPurchase.isAvailable();
@@ -239,8 +239,8 @@ class InAppPurchasedFlutter {
     await inAppPurchase
         .buyNonConsumable(
             purchaseParam: PurchaseParam(
-                productDetails:
-                    products.singleWhere((ProductDetails e) => e.id == "")))
+                productDetails: products
+                    .singleWhere((ProductDetails e) => e.id == "rc_monthly")))
         .then((_) {
       completer.complete();
     });

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +6,6 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/shrink_tap.dart';
 import 'package:groovkin/Components/textStyle.dart';
-import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:material_charts/material_charts.dart' as material;
@@ -42,7 +40,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
         return "NAN";
     }
   }
-
+  
   @override
   void initState() {
     super.initState();
