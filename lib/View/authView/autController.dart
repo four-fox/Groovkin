@@ -155,7 +155,7 @@ class AuthController extends GetxController {
           response.data['data']['user_details']['is_complete_profile']);
       API().sp.write("signupPlatform",
           response.data['data']['user_details']['signup_platform']);
-      // configureSDK();
+      configureSDK();
       if (response.data["data"]["user_details"]["current_role"] == "user") {
         API().sp.write("currentRole", "User");
       } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -241,11 +241,11 @@ class AuthController extends GetxController {
       API().sp.write("userId", response.data['data']['user_details']['id']);
       API().sp.remove("currentRole");
       API().sp.remove("role");
-      // await configureSDK();
+      await configureSDK();
       Future.delayed(const Duration(microseconds: 1000), () {
-        // restore();
-        // logInWithRevenueCat();
-        // checkUserSubscriptionIsActive();
+        restore();
+        logInWithRevenueCat();
+        checkUserSubscriptionIsActive();
         if (response.data["data"]["user_details"]["current_role"] == "user") {
           API().sp.write("currentRole", "User");
         } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -1692,7 +1692,6 @@ class AuthController extends GetxController {
                       .toLocal()
                       .difference(DateTime.now().toLocal())
                       .inMinutes;
-
                   if (time >= 0) {
                     BotToast.closeAllLoading();
                     // checkSub("Subscription Is Not Expired!");

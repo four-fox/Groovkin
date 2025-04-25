@@ -131,177 +131,177 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
       homeController = Get.put(HomeController());
     }
     fetchData();
-    InAppPurchasedFlutter().initStoreInfo();
-    InAppPurchasedFlutter().getInAppSubscriptions();
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: GestureDetector(
-                    onTap: () {
-                      for (var i = 0; i < subscriptionList.length; i++) {
-                        subscriptionList[i].isSelected.value = false;
-                      }
-                      subscriptionList[index].isSelected.value = true;
-                      controller.selected.value = index;
-                    },
-                    child: Obx(
-                      () => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            colors: [
-                              DynamicColor.darkGrayClr.withValues(alpha: 0.7),
-                              DynamicColor.darkGrayClr,
-                              DynamicColor.darkGrayClr.withValues(alpha: 0.2),
-                              DynamicColor.darkGrayClr.withValues(alpha: 0.5),
-                            ],
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topCenter,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: GestureDetector(
+                      onTap: () {
+                        for (var i = 0; i < subscriptionList.length; i++) {
+                          subscriptionList[i].isSelected.value = false;
+                        }
+                        subscriptionList[index].isSelected.value = true;
+                        controller.selected.value = index;
+                      },
+                      child: Obx(
+                        () => Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                              colors: [
+                                DynamicColor.darkGrayClr.withValues(alpha: 0.7),
+                                DynamicColor.darkGrayClr,
+                                DynamicColor.darkGrayClr.withValues(alpha: 0.2),
+                                DynamicColor.darkGrayClr.withValues(alpha: 0.5),
+                              ],
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topCenter,
+                            ),
+                            // color: Colors.grey[200],
+                            // color: DynamicColor.darkGrayClr.withOpacity(0.7),
+                            border: Border.all(
+                              color: subscriptionList[index].isSelected.value ==
+                                      true
+                                  ? DynamicColor.yellowClr
+                                  : Colors.grey,
+                              width: 2,
+                            ),
                           ),
-                          // color: Colors.grey[200],
-                          // color: DynamicColor.darkGrayClr.withOpacity(0.7),
-                          border: Border.all(
-                            color:
-                                subscriptionList[index].isSelected.value == true
-                                    ? DynamicColor.yellowClr
-                                    : Colors.grey,
-                            width: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  subscriptionList[index].price,
+                                  style: poppinsRegularStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  // subscriptionList[index].trial,
+                                  subscriptionList[index].plan,
+                                  style: poppinsRegularStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w300),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                subscriptionList[index].price,
-                                style: poppinsRegularStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                // subscriptionList[index].trial,
-                                subscriptionList[index].plan,
-                                style: poppinsRegularStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w300),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )),
-              );
-            },
-            itemCount: subscriptionList.length,
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: CustomButton(
-                  borderClr: Colors.transparent,
-                  color1: DynamicColor.blackClr,
-                  color2: DynamicColor.blackClr,
-                  onTap: () async {
-                    final entitlement =
-                        widget.customerInfo?.entitlements.all[entitlementID];
-                    if (entitlement?.isActive == true) {
-                      return;
-                    }
-                    if (Platform.isAndroid) {
-                      final customerInfo =
-                          await Purchases.purchaseSubscriptionOption(_offerings!
-                              .current!
-                              .availablePackages[controller.selected.value]
-                              .storeProduct
-                              .subscriptionOptions![0]);
-                      final isPro = customerInfo.entitlements.active
-                          .containsKey(entitlementID);
-                      if (isPro) {
-                        appData.entitlementIsActive = customerInfo
-                                .entitlements.all[entitlementID]?.isActive ??
-                            false;
-                        homeController.update();
-                        controller.completePurchase(customerInfo);
-                        controller.update();
+                      )),
+                );
+              },
+              itemCount: subscriptionList.length,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: CustomButton(
+                    borderClr: Colors.transparent,
+                    color1: DynamicColor.blackClr,
+                    color2: DynamicColor.blackClr,
+                    onTap: () async {
+                      final entitlement =
+                          widget.customerInfo?.entitlements.all[entitlementID];
+                      if (entitlement?.isActive == true) {
+                        return;
                       }
-                    } else {
-                      BotToast.showLoading();
-                      final customerInfo = await Purchases.purchasePackage(
-                              _offerings!.current!
-                                  .availablePackages[controller.selected.value])
-                          .then((value) {
-                        BotToast.closeAllLoading();
-                        return value;
-                      }).onError((error, _) {
-                        BotToast.showText(text: "Purchased Cancel");
-                        BotToast.closeAllLoading();
-                        throw Exception(error.toString());
-                      });
+                      if (Platform.isAndroid) {
+                        final customerInfo = await Purchases
+                            .purchaseSubscriptionOption(_offerings!
+                                .current!
+                                .availablePackages[controller.selected.value]
+                                .storeProduct
+                                .subscriptionOptions![0]);
+                        final isPro = customerInfo.entitlements.active
+                            .containsKey(entitlementID);
+                        if (isPro) {
+                          appData.entitlementIsActive = customerInfo
+                                  .entitlements.all[entitlementID]?.isActive ??
+                              false;
+                          homeController.update();
+                          controller.completePurchase(customerInfo);
+                          controller.update();
+                        }
+                      } else {
+                        BotToast.showLoading();
+                        final customerInfo = await Purchases.purchasePackage(
+                                _offerings!.current!.availablePackages[
+                                    controller.selected.value])
+                            .then((value) {
+                          BotToast.closeAllLoading();
+                          return value;
+                        }).onError((error, _) {
+                          BotToast.showText(text: "Purchased Cancel");
+                          BotToast.closeAllLoading();
+                          throw Exception(error.toString());
+                        });
 
-                      final isPro = customerInfo.entitlements.active
-                          .containsKey(entitlementID);
-                      if (isPro) {
-                        appData.entitlementIsActive = customerInfo
-                                .entitlements.all[entitlementID]?.isActive ??
-                            false;
-                        homeController.update();
-                        BotToast.closeAllLoading();
-                        controller.completePurchase(customerInfo);
+                        final isPro = customerInfo.entitlements.active
+                            .containsKey(entitlementID);
+                        if (isPro) {
+                          appData.entitlementIsActive = customerInfo
+                                  .entitlements.all[entitlementID]?.isActive ??
+                              false;
+                          homeController.update();
+                          BotToast.closeAllLoading();
+                          controller.completePurchase(customerInfo);
+                        }
                       }
-                    }
-                  },
-                  style: poppinsMediumStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: theme.primaryColor,
+                    },
+                    style: poppinsMediumStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: theme.primaryColor,
+                    ),
+                    text: getSubscriptionText(widget.customerInfo),
                   ),
-                  text: getSubscriptionText(widget.customerInfo),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 7),
-                child: CustomButton(
-                  borderClr: Colors.transparent,
-                  color1: DynamicColor.blackClr,
-                  color2: DynamicColor.blackClr,
-                  onTap: () {
-                    controller.restore();
-                  },
-                  style: poppinsMediumStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: theme.primaryColor,
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 7),
+                  child: CustomButton(
+                    borderClr: Colors.transparent,
+                    color1: DynamicColor.blackClr,
+                    color2: DynamicColor.blackClr,
+                    onTap: () {
+                      controller.restore();
+                    },
+                    style: poppinsMediumStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: theme.primaryColor,
+                    ),
+                    text: "Restore Subscription",
                   ),
-                  text: "Restore Subscription",
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -391,6 +391,7 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
     Future.delayed(const Duration(seconds: 1), () {
       homeController.update();
     });
+    setState(() {});
   }
 
   // fetchData() async {
@@ -646,7 +647,7 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
                     if (Platform.isAndroid) {
                       launchUrl(
                           Uri.parse(
-                              'https://play.google.com/store/account/subscriptions?sku=${productId!.value == "Yearly" ? "" : "rc_monthly"}&package=com.gologonow.groovkinn'),
+                              'https://play.google.com/store/account/subscriptions?sku=${sp.read("identifier")}&package=com.gologonow.groovkinn'),
                           mode: LaunchMode.externalApplication);
                     } else {
                       showCupertinoDialog(

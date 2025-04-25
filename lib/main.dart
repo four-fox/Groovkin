@@ -67,11 +67,11 @@ checkUserSubscriptionIsActive() async {
 }
 
 void main() async {
-  // if (Platform.isIOS || Platform.isMacOS) {
-  //   StoreConfig(apiKey: appleApiKey, store: Store.appStore);
-  // } else {
-  //   StoreConfig(apiKey: googleApiKey, store: Store.playStore);
-  // }
+  if (Platform.isIOS || Platform.isMacOS) {
+    StoreConfig(apiKey: appleApiKey, store: Store.appStore);
+  } else {
+    StoreConfig(apiKey: googleApiKey, store: Store.playStore);
+  }
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -99,10 +99,10 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    // if (API().sp.read("userId") != null) {
-    //   configureSDK();
-    //   checkUserSubscriptionIsActive();
-    // }
+    if (API().sp.read("userId") != null) {
+      configureSDK();
+      checkUserSubscriptionIsActive();
+    }
 
     // Todo Firebase Notification Start
     notificationService.requestNotificationPermission();

@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -261,7 +260,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 //     text: "Buy Subscription",
                 //   ),
                 // ),
-                // const SubscriptionScreenTwo(),
+                const SubscriptionScreenTwo(),
                 const SizedBox(
                   height: 5,
                 ),
@@ -290,7 +289,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       text: "Continue without premium",
                     ),
                   ),
-
                 // SizedBox(
                 //   height: 20,
                 // ),

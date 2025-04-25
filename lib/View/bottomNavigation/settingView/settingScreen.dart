@@ -344,30 +344,30 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : const SizedBox.shrink(),
-                        // API().sp.read("role") == "eventOrganizer"
-                        //     ? customWidget(
-                        //         context: context,
-                        //         text: "Subscription",
-                        //         iconShow: false,
-                        //         onTap: () {
-                        //           Get.toNamed(Routes.subscriptionScreen,
-                        //               arguments: {"isFromSettingScreen": true});
-                        //         })
-                        //     : const SizedBox(),
-                        // (API().sp.read("role") == "eventOrganizer" &&
-                        //         appData.entitlementIsActive)
-                        //     ? customWidget(
-                        //         context: context,
-                        //         text: "Active Subscription",
-                        //         iconShow: false,
-                        //         onTap: () {
-                        //           Navigator.push(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                   builder: (context) =>
-                        //                       const SubscrptionScreenCheck()));
-                        //         })
-                        //     : const SizedBox(),
+                        API().sp.read("role") == "eventOrganizer"
+                            ? customWidget(
+                                context: context,
+                                text: "Subscription",
+                                iconShow: false,
+                                onTap: () {
+                                  Get.toNamed(Routes.subscriptionScreen,
+                                      arguments: {"isFromSettingScreen": true});
+                                })
+                            : const SizedBox(),
+                        (API().sp.read("role") == "eventOrganizer" &&
+                                appData.entitlementIsActive)
+                            ? customWidget(
+                                context: context,
+                                text: "Active Subscription",
+                                iconShow: false,
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SubscrptionScreenCheck()));
+                                })
+                            : const SizedBox(),
                         sp.read("role") == "User"
                             ? const SizedBox.shrink()
                             : customWidget(
@@ -402,10 +402,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                     await GoogleSignIn().signOut();
                                     await FirebaseAuth.instance.signOut();
                                     await controller.logout();
-                                    // await controller.logOutRevenuecat();
+                                    await controller.logOutRevenuecat();
                                   } else {
                                     await controller.logout();
-                                    // await controller.logOutRevenuecat();
+                                    await controller.logOutRevenuecat();
                                   }
                                 });
                           },
