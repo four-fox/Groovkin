@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "682228072753-0m5f50rd9kitotseuj4mjqhht78drnok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkin",
+            "certificate_hash": "a840f8617a6fe5d4c6367c3f60bfff9c614c6976"
+          }
+        },
+        {
+          "client_id": "682228072753-hrfe1o46m4rqqlfcuoeqjs956tvc46f5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkin",
+            "certificate_hash": "9eed7aea4ac0d73399ab1744d1c957db82b74344"
+          }
+        },
+        {
           "client_id": "682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com",
           "client_type": 3
         }
