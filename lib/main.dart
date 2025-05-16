@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,7 +16,6 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
-import 'package:groovkin/purchased/purchased.dart';
 import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -41,16 +39,19 @@ Future<void> configureSDK() async {
 checkUserSubscriptionIsActive() async {
   final HomeController homeController;
   final AuthController authController;
+
   if (Get.isRegistered<HomeController>()) {
     homeController = Get.find<HomeController>();
   } else {
     homeController = Get.put(HomeController());
   }
+
   if (Get.isRegistered<AuthController>()) {
     authController = Get.find<AuthController>();
   } else {
     authController = Get.put(AuthController());
   }
+  
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
 
   if (kDebugMode) {
@@ -63,6 +64,7 @@ checkUserSubscriptionIsActive() async {
       customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
 
   authController.update();
+
   homeController.update();
 }
 
@@ -72,6 +74,7 @@ void main() async {
   } else {
     StoreConfig(apiKey: googleApiKey, store: Store.playStore);
   }
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -113,7 +116,6 @@ class _MyAppState extends State<MyApp> {
     // Todo Start the socket server
 
     // SocketClass.singleton.connectSocket();
-
     // initStateNotification();
   }
 

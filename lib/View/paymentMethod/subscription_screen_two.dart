@@ -10,7 +10,6 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
-import 'package:groovkin/purchased/purchased.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -228,12 +227,23 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                         return;
                       }
                       if (Platform.isAndroid) {
-                        final customerInfo = await Purchases
-                            .purchaseSubscriptionOption(_offerings!
-                                .current!
-                                .availablePackages[controller.selected.value]
-                                .storeProduct
-                                .subscriptionOptions![0]);
+                        BotToast.showLoading();
+                        final customerInfo =
+                            await Purchases.purchaseSubscriptionOption(
+                                    _offerings!
+                                        .current!
+                                        .availablePackages[
+                                            controller.selected.value]
+                                        .storeProduct
+                                        .subscriptionOptions![0])
+                                .then((value) {
+                          BotToast.closeAllLoading();
+                          return value;
+                        }).onError((error, _) {
+                          BotToast.showText(text: "Purchased Cancel");
+                          BotToast.closeAllLoading();
+                          throw Exception(error.toString());
+                        });
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);
                         if (isPro) {
@@ -647,7 +657,7 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
                     if (Platform.isAndroid) {
                       launchUrl(
                           Uri.parse(
-                              'https://play.google.com/store/account/subscriptions?sku=${sp.read("identifier")}&package=com.gologonow.groovkinn'),
+                              'https://play.google.com/store/account/subscriptions?sku=${sp.read("identifier")}&package=com.gologonow.groovkin'),
                           mode: LaunchMode.externalApplication);
                     } else {
                       showCupertinoDialog(

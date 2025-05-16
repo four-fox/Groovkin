@@ -3,7 +3,7 @@ class AppData {
 
   bool entitlementIsActive = false;
   String appUserID = '';
-  
+
   factory AppData() {
     return _appData;
   }

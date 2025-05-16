@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:682228072753:android:cb8de8728eb9544c3f3010",
+        "android_client_info": {
+          "package_name": "com.gologonow.groovkin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108310936936281340241",
+              "client_type": 3
+            },
+            {
+              "client_id": "682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gologonow.groovkinn"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:682228072753:android:86ad771ffd5bec383f3010",
         "android_client_info": {
           "package_name": "com.gologonow.groovkinn"
@@ -19,6 +55,14 @@
           "android_info": {
             "package_name": "com.gologonow.groovkinn",
             "certificate_hash": "a840f8617a6fe5d4c6367c3f60bfff9c614c6976"
+          }
+        },
+        {
+          "client_id": "682228072753-qvumh3qj1npsdpbe4com5jo4h4o4c96o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkinn",
+            "certificate_hash": "5af32871b0fa84253120b5f3f90386dac40206c6"
           }
         },
         {
@@ -35,7 +79,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com",
+              "client_id": "108310936936281340241",
               "client_type": 3
             },
             {

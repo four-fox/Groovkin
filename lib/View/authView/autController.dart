@@ -1647,8 +1647,6 @@ class AuthController extends GetxController {
   }
 
   completePurchase(CustomerInfo purchaseDetails) async {
-    print(purchaseDetails);
-    print(purchaseDetails.entitlements.active["premium"]?.productIdentifier);
     await sp.write("identifier",
         purchaseDetails.entitlements.active["premium"]?.productIdentifier);
     final productId = purchaseDetails.entitlements.active["productIdentifier"];
@@ -1662,7 +1660,7 @@ class AuthController extends GetxController {
         true) {
       planType = 2;
     }
-
+    
     Purchases.logIn(purchaseDetails.originalAppUserId);
     final data = form.FormData();
     data.fields.add(MapEntry("id", planType.toString()));
@@ -1692,6 +1690,7 @@ class AuthController extends GetxController {
                       .toLocal()
                       .difference(DateTime.now().toLocal())
                       .inMinutes;
+
                   if (time >= 0) {
                     BotToast.closeAllLoading();
                     // checkSub("Subscription Is Not Expired!");
@@ -1713,11 +1712,13 @@ class AuthController extends GetxController {
         } catch (e) {
           BotToast.closeAllLoading();
         }
+
         // checkUserSubscriptionIsActive();
       }
       BotToast.closeAllLoading();
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, _) {
       BotToast.closeAllLoading();
+      rethrow;
     }
   }
 

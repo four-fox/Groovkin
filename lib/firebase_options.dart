@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc',
-    appId: '1:682228072753:android:86ad771ffd5bec383f3010',
+    appId: '1:682228072753:android:cb8de8728eb9544c3f3010',
     messagingSenderId: '682228072753',
     projectId: 'my-groovkin-app',
     storageBucket: 'my-groovkin-app.firebasestorage.app',
@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '682228072753',
     projectId: 'my-groovkin-app',
     storageBucket: 'my-groovkin-app.firebasestorage.app',
+    androidClientId: '682228072753-0thr3a4cgic3g4cg8gc1opl8vud2gu2f.apps.googleusercontent.com',
+    iosClientId: '682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com',
     iosBundleId: 'com.gologonow.groovkinn',
   );
+
 }

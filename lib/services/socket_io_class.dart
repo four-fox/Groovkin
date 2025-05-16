@@ -22,7 +22,6 @@ class SocketIoClass {
     });
 
     socket!.connect();
-
     socket!.onConnect((data) {
       if (kDebugMode) {
         print("Your Socket Is Connected!");

@@ -55,7 +55,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   double_back_to_close_app: ^2.1.0
   flutter_local_notifications: ^17.2.1+2
-  firebase_core: ^3.12.1
+  firebase_core: ^3.13.0
   map_location_picker:
     path: ../groovkin/plugin/map_location_picker-master
   intl: ^0.19.0
@@ -90,7 +90,7 @@ dependencies:
   fluttertoast: ^8.2.8
   url_launcher: ^6.3.1
   #    git:
-  #      url: https://github.com/tintran-dev/betterplayer.git
+  #      url: https://github.com/tintran-dev/betterplayer.git 
   otp_text_field:
     path: ../groovkin/plugin/OTPTextField-dev
   country_state_city_pro:
