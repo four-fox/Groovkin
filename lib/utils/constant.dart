@@ -5,7 +5,7 @@ const entitlementID = 'premium';
 const appleApiKey = 'appl_sUGoMUqrMbaxQGbwWvgauwEYVzn';
 
 //TO DO: add the Google API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
-const googleApiKey = 'goog_rqCDHATPRHlNnhWBEEXtmkfnSba';
+const googleApiKey = 'goog_UILXHDQwjnEFQbzLknGmHsYFinw';
 
 const String clientId = "06da827311f44e9bbf405f7c9ec676ef";
 const String redirectUri = "https://groovkin.gologonow.app";

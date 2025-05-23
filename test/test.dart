@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -32,7 +31,6 @@ class NotificationService {
       criticalAlert: true,
       provisional: true,
     );
-
     if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.authorized) {
       if (kDebugMode) {
@@ -380,7 +378,3 @@ class ItemDrag extends Drag {
     onCancel(touchId);
   }
 }
-
-
-
-

@@ -7,6 +7,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/shrink_tap.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:material_charts/material_charts.dart' as material;
@@ -28,6 +29,7 @@ class AnalyticPortalScreen extends StatefulWidget {
 
 class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
   late HomeController _homeController;
+  late AuthController _authController;
   List<ChartData> data = [];
   late TooltipBehavior tooltipBehavior; // Declare tooltipBehavior
 
@@ -50,6 +52,12 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     } else {
       _homeController = Get.put(HomeController());
     }
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
+    }
+
     _homeController.getAllAnalyticsListData();
     _homeController.getAllAnalyticsData().then(
       (value) {
@@ -57,7 +65,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
         setState(() {
           data =
               _homeController.analyticsModel!.data!.asMap().entries.map((item) {
-            int index = item.key;
+            // int index = item.key;
             var data = item.value;
             return ChartData(item.value.genre ?? "", data.count!);
           }).toList();
@@ -271,7 +279,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
               }),
             ],
           ),
-          GetBuilder<HomeController>(builder: (context) {
+          GetBuilder<AuthController>(builder: (context) {
             return appData.entitlementIsActive == true
                 ? const SizedBox()
                 : notSubscribeCardWidget();

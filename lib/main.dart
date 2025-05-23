@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -51,7 +52,7 @@ checkUserSubscriptionIsActive() async {
   } else {
     authController = Get.put(AuthController());
   }
-  
+
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
 
   if (kDebugMode) {
@@ -66,6 +67,23 @@ checkUserSubscriptionIsActive() async {
   authController.update();
 
   homeController.update();
+}
+
+logInWithRevenueCat() async {
+  try {
+    final loginResult =
+        await Purchases.logIn(API().sp.read("userId").toString());
+    // Optionally check if anonymous user was merged
+    if (loginResult.created) {
+      print("New user created in RevenueCat");
+    } else {
+      print("Existing user logged in");
+    }
+  } on PlatformException catch (e) {
+    BotToast.showText(
+      text: e.message ?? "Unknown error",
+    );
+  }
 }
 
 void main() async {
@@ -97,14 +115,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   NotificationService notificationService = NotificationService();
+  late AuthController authController;
 
   @override
   void initState() {
     super.initState();
 
+    if (Get.isRegistered<AuthController>()) {
+      authController = Get.find<AuthController>();
+    } else {
+      authController = Get.put(AuthController());
+    }
+
     if (API().sp.read("userId") != null) {
       configureSDK();
       checkUserSubscriptionIsActive();
+      authController.restore();
     }
 
     // Todo Firebase Notification Start

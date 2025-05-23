@@ -1660,19 +1660,20 @@ class AuthController extends GetxController {
         true) {
       planType = 2;
     }
-    
+
     Purchases.logIn(purchaseDetails.originalAppUserId);
     final data = form.FormData();
     data.fields.add(MapEntry("id", planType.toString()));
     final response = await API().postApi(data, "subscription");
     if (response.statusCode == 200) {
+
       BotToast.showText(text: "Subscription Purchased");
     }
   }
 
   restore() async {
     try {
-      BotToast.showLoading();
+      // BotToast.showLoading();
       if (API().sp.read("userId") != null) {
         try {
           Purchases.logIn(API().sp.read("userId").toString()).then(
@@ -1692,32 +1693,32 @@ class AuthController extends GetxController {
                       .inMinutes;
 
                   if (time >= 0) {
-                    BotToast.closeAllLoading();
+                    // BotToast.closeAllLoading();
                     // checkSub("Subscription Is Not Expired!");
                   } else {
-                    checkSub("Subscription expired");
+                    // checkSub("Subscription expired");
                   }
                 } else {
-                  checkSub("No Active Subscription");
+                  // checkSub("No Active Subscription");
                 }
               } else {
-                checkSub("No Active Subscription");
+                // checkSub("No Active Subscription");
               }
             },
           ).onError(
             (error, stackTrace) {
-              BotToast.closeAllLoading();
+              // BotToast.closeAllLoading();
             },
           );
         } catch (e) {
-          BotToast.closeAllLoading();
+          // BotToast.closeAllLoading();
         }
 
         // checkUserSubscriptionIsActive();
       }
-      BotToast.closeAllLoading();
+      // BotToast.closeAllLoading();
     } on PlatformException catch (e, _) {
-      BotToast.closeAllLoading();
+      // BotToast.closeAllLoading();
       rethrow;
     }
   }
@@ -1739,6 +1740,25 @@ class AuthController extends GetxController {
       //   text: e.message ?? "Unknown error",
       // );
     }
+  }
+
+  CustomerInfo? customerInfo;
+
+  Future<void> initPlatformState() async {
+    try {
+      CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+      this.customerInfo = customerInfo;
+      EntitlementInfo? entitlement =
+          customerInfo.entitlements.all[entitlementID];
+      appData.entitlementIsActive = entitlement?.isActive ?? false;
+      update();
+      Future.delayed(const Duration(seconds: 3), () {
+        update();
+      });
+    } catch (e) {
+      rethrow;
+    }
+    update();
   }
 }
 

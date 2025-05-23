@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,25 +25,7 @@ class SubscriptionScreenTwo extends StatefulWidget {
 }
 
 class _SubscriptionScreenTwoState extends State<SubscriptionScreenTwo> {
-  CustomerInfo? _customerInfo;
   late AuthController controller;
-
-  Future<void> initPlatformState() async {
-    try {
-      CustomerInfo customerInfo = await Purchases.getCustomerInfo();
-      _customerInfo = customerInfo;
-      EntitlementInfo? entitlement =
-          customerInfo.entitlements.all[entitlementID];
-      appData.entitlementIsActive = entitlement?.isActive ?? false;
-      controller.update();
-      Future.delayed(const Duration(seconds: 3), () {
-        controller.update();
-      });
-    } catch (e) {
-      rethrow;
-    }
-    controller.update();
-  }
 
   @override
   void initState() {
@@ -52,14 +35,15 @@ class _SubscriptionScreenTwoState extends State<SubscriptionScreenTwo> {
     } else {
       controller = Get.put(AuthController());
     }
-    initPlatformState();
+    controller.restore();
+    controller.initPlatformState();
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(builder: (controller) {
       return SubscriptionClass(
-        customerInfo: _customerInfo,
+        customerInfo: controller.customerInfo,
       );
     });
   }
@@ -82,21 +66,24 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
 
   List<SubscriptionModel> subscriptionList = [
     SubscriptionModel(
-        price: '\$2.99',
-        plan: 'Monthly Plan',
-        trial: '7 Days Free Trial',
-        isSelected: true.obs),
+      price: '\$2.99',
+      plan: 'Monthly Plan',
+      trial: '7 Days Free Trial',
+      isSelected: true.obs,
+    ),
     SubscriptionModel(
-        price: '\$29.99',
-        plan: 'Annual Plan',
-        trial: '7 Days Free Trial',
-        isSelected: false.obs),
+      price: '\$29.99',
+      plan: 'Annual Plan',
+      trial: '7 Days Free Trial',
+      isSelected: false.obs,
+    ),
   ];
 
   void fetchData() async {
     Offerings? offerings;
     try {
       offerings = await Purchases.getOfferings();
+      log(offerings.current!.availablePackages.toString());
     } on PlatformException catch (e) {
       if (kDebugMode) {
         print(e);
@@ -106,8 +93,8 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
         print(e);
       }
     }
-    if (!mounted) return;
 
+    if (!mounted) return;
     setState(() {
       if (offerings != null) {
         _offerings = offerings;
@@ -195,11 +182,12 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                                   // subscriptionList[index].trial,
                                   subscriptionList[index].plan,
                                   style: poppinsRegularStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w300),
-                                )
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -231,9 +219,8 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                         final customerInfo =
                             await Purchases.purchaseSubscriptionOption(
                                     _offerings!
-                                        .current!
-                                        .availablePackages[
-                                            controller.selected.value]
+                                        .current!.availablePackages.reversed
+                                        .toList()[controller.selected.value]
                                         .storeProduct
                                         .subscriptionOptions![0])
                                 .then((value) {
@@ -250,8 +237,8 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           appData.entitlementIsActive = customerInfo
                                   .entitlements.all[entitlementID]?.isActive ??
                               false;
-                          homeController.update();
                           controller.completePurchase(customerInfo);
+                          controller.initPlatformState();
                           controller.update();
                         }
                       } else {
@@ -267,16 +254,16 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           throw Exception(error.toString());
                         });
-
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);
                         if (isPro) {
                           appData.entitlementIsActive = customerInfo
                                   .entitlements.all[entitlementID]?.isActive ??
                               false;
-                          homeController.update();
                           BotToast.closeAllLoading();
                           controller.completePurchase(customerInfo);
+                          controller.initPlatformState();
+                          controller.update();
                         }
                       }
                     },
@@ -379,7 +366,8 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
     if (_customerInfo != null) {
       if (Platform.isAndroid) {
         productId!.value = _customerInfo!.activeSubscriptions.isNotEmpty &&
-                _customerInfo!.activeSubscriptions[0] == "rc_monthly:monthly"
+                _customerInfo!.activeSubscriptions[0] ==
+                    "rc_premium_month:monthly"
             ? "Monthly"
             : "Yearly";
       } else {
@@ -655,6 +643,7 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
                   color2: DynamicColor.blackClr,
                   onTap: () {
                     if (Platform.isAndroid) {
+                      print(productId!.value);
                       launchUrl(
                           Uri.parse(
                               'https://play.google.com/store/account/subscriptions?sku=${sp.read("identifier")}&package=com.gologonow.groovkin'),

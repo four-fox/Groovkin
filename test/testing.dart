@@ -50,7 +50,8 @@ class MultiTapButton extends StatelessWidget {
   final int minTouches;
   final Widget? widget;
 
-  const MultiTapButton({super.key, 
+  const MultiTapButton({
+    super.key,
     required this.minTouches,
     required this.onTapCallback,
     this.widget,
