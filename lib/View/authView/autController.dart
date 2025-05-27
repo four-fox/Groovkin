@@ -1666,7 +1666,6 @@ class AuthController extends GetxController {
     data.fields.add(MapEntry("id", planType.toString()));
     final response = await API().postApi(data, "subscription");
     if (response.statusCode == 200) {
-
       BotToast.showText(text: "Subscription Purchased");
     }
   }
@@ -1713,7 +1712,6 @@ class AuthController extends GetxController {
         } catch (e) {
           // BotToast.closeAllLoading();
         }
-
         // checkUserSubscriptionIsActive();
       }
       // BotToast.closeAllLoading();
@@ -1723,12 +1721,12 @@ class AuthController extends GetxController {
     }
   }
 
-  checkSub(String text) {
-    BotToast.closeAllLoading();
-    BotToast.showText(
-      text: text,
-    );
-  }
+  // checkSub(String text) {
+  //   BotToast.closeAllLoading();
+  //   BotToast.showText(
+  //     text: text,
+  //   );
+  // }
 
   logOutRevenuecat() async {
     try {

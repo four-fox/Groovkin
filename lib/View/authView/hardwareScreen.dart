@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -104,7 +102,8 @@ class _HardwareScreenState extends State<HardwareScreen> {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
                                   child: hardwareWidget(
                                     text: controller.hardwareListing[index].name
                                         .toString(),
@@ -245,7 +244,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
               );
       }),
       bottomNavigationBar: SafeArea(
-        bottom:  true,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

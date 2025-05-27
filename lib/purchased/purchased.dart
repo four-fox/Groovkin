@@ -5,8 +5,9 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 // ignore: depend_on_referenced_packages
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 // ignore: depend_on_referenced_packages
-import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+// ignore: depend_on_referenced_packages
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 
 class InAppPurchasedFlutter {
   InAppPurchasedFlutter._interval();

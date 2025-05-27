@@ -358,7 +358,6 @@ class _SubscrptionScreenCheckState extends State<SubscrptionScreenCheck> {
       homeController = Get.put(HomeController());
     }
     // fetchData();
-
     initPlatform();
   }
 

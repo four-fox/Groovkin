@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -65,7 +64,6 @@ checkUserSubscriptionIsActive() async {
       customerInfo.entitlements.all[entitlementID]?.isActive ?? false;
 
   authController.update();
-
   homeController.update();
 }
 
