@@ -44,7 +44,8 @@ class ChatCenterScreen extends StatelessWidget {
                           // );
                         }),
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                  padding:
+                      const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(13),

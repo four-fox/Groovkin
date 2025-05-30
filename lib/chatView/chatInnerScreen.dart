@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 import 'package:popup_banner/popup_banner.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
-
 import '../Components/Network/API.dart';
 import '../Components/colors.dart';
 import 'chatController.dart';
@@ -129,205 +128,213 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
       child: GetBuilder<ChatController>(initState: (v) {
         _controller.getAllChat(id: userData!.id);
       }, builder: (controller) {
-        return Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight * 1.2),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            ///Todo latter on
-                            controller.isChat.value = false;
-                            isOnChat.value = false;
-                            _controller.innerUserOnline.value = false;
-                            // _controller.offChatInnerScreenSocket();
-                            ///Todo latter on
-                            Get.back();
-                          },
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(3.0),
-                                child: Icon(
-                                  Icons.arrow_back_ios_new_rounded,
-                                  color: Colors.black45,
-                                  size: 20,
-                                ),
-                              )),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            ///Todo latter on
-                            /* if(notificationFlow == false){
-                                  if (chatData!.user!.profile!.userImage != null || chatData!.userImage != null) {
-                                    Get.toNamed(Routes.photoViews, arguments: {
-                                      'fileImage': false,
-                                      'image': chatRoomNavigation==true? chatData!.user!.profile!.userImage:chatData!.userImage,
-                                    });
-                                  }
-                                }else{
-                                  if (chatData['profile']['user_image'] != null */ /*|| chatData!.userImage != null*/ /*) {
-                                    Get.toNamed(Routes.photoViews, arguments: {
-                                      'fileImage': false,
-                                      'image': chatData['profile']['user_image'],
-                                    });
-                                  }
-                                }*/
-                            ///Todo latter on
-                          },
-                          child: CircleAvatar(
-                              radius: 20,
-                              backgroundImage:
-                                  // NetworkImage(groupPlaceholder)
-                                  NetworkImage(userData!.profilePicture!)),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            ///ToDo latter on
-                            /*Get.toNamed(Routes.viewOtherProfile,
-                                    arguments: {
-                                      "otherUserData": notificationFlow==true?chatData['id'] : chatRoomNavigation==true? chatData.addresserId:chatData.userId,
-                                    });*/
-                            ///ToDo latter on
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                userData!.profile!.fullName!,
-                                style: const TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 17,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 1,
-                              ),
-
-                              ///ToDo latter on
-                              /*   Obx(()=> _controller.innerUserOnline.value == true?
-                                  Text(
-                                    typing.value == false? "Online":"Typing....." ,
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 10,
-                                        color: DynamicColors.primaryColor),
-                                  ):Text(
-                                    typing.value == false? "":"Typing....." ,
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 10,
-                                        color: DynamicColors.primaryColor),
-                                  )
-                                  ),*/
-                              ///ToDo latter on
-                            ],
-                          ),
-                        )
-                      ],
+        return SafeArea(
+          top: false,
+          child: Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight(kToolbarHeight * 1.2),
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ),
-                  const Divider(
-                    color: Colors.grey,
-                    thickness: 1.2,
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              ///Todo latter on
+                              controller.isChat.value = false;
+                              isOnChat.value = false;
+                              _controller.innerUserOnline.value = false;
+                              // _controller.offChatInnerScreenSocket();
+                              ///Todo latter on
+                              Get.back();
+                            },
+                            child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white,
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(3.0),
+                                  child: Icon(
+                                    Icons.arrow_back_ios_new_rounded,
+                                    color: Colors.black45,
+                                    size: 20,
+                                  ),
+                                )),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              ///Todo latter on
+                              /* if(notificationFlow == false){
+                                    if (chatData!.user!.profile!.userImage != null || chatData!.userImage != null) {
+                                      Get.toNamed(Routes.photoViews, arguments: {
+                                        'fileImage': false,
+                                        'image': chatRoomNavigation==true? chatData!.user!.profile!.userImage:chatData!.userImage,
+                                      });
+                                    }
+                                  }else{
+                                    if (chatData['profile']['user_image'] != null */ /*|| chatData!.userImage != null*/ /*) {
+                                      Get.toNamed(Routes.photoViews, arguments: {
+                                        'fileImage': false,
+                                        'image': chatData['profile']['user_image'],
+                                      });
+                                    }
+                                  }*/
+                              ///Todo latter on
+                            },
+                            child: CircleAvatar(
+                                radius: 20,
+                                backgroundImage:
+                                    // NetworkImage(groupPlaceholder)
+                                    NetworkImage(userData!.profilePicture!)),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              ///ToDo latter on
+                              /*Get.toNamed(Routes.viewOtherProfile,
+                                      arguments: {
+                                        "otherUserData": notificationFlow==true?chatData['id'] : chatRoomNavigation==true? chatData.addresserId:chatData.userId,
+                                      });*/
+                              ///ToDo latter on
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userData!.profile!.fullName!,
+                                  style: const TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 1,
+                                ),
+
+                                ///ToDo latter on
+                                /*   Obx(()=> _controller.innerUserOnline.value == true?
+                                    Text(
+                                      typing.value == false? "Online":"Typing....." ,
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 10,
+                                          color: DynamicColors.primaryColor),
+                                    ):Text(
+                                      typing.value == false? "":"Typing....." ,
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 10,
+                                          color: DynamicColors.primaryColor),
+                                    )
+                                    ),*/
+                                ///ToDo latter on
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1.2,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            body: controller.getAllChatLoader.value == false
-                ? const SizedBox.shrink()
-                : Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      NotificationListener<ScrollNotification>(
-                        onNotification: (scrollNotification) {
-                          if (scrollNotification.metrics.pixels ==
-                              scrollNotification.metrics.maxScrollExtent) {
-                            if (controller.chatWait == false) {
-                              controller.chatWait = true;
-                              if (controller.chatData!.data!.nextPageUrl !=
-                                  null) {
-                                String link =
-                                    controller.chatData!.data!.nextPageUrl;
-                                controller.getAllChat(
-                                    id: userData!.id, nextUrl: link);
-                                return true;
+              body: controller.getAllChatLoader.value == false
+                  ? const SizedBox.shrink()
+                  : Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        NotificationListener<ScrollNotification>(
+                          onNotification: (scrollNotification) {
+                            if (scrollNotification.metrics.pixels ==
+                                scrollNotification.metrics.maxScrollExtent) {
+                              if (controller.chatWait == false) {
+                                controller.chatWait = true;
+                                if (controller.chatData!.data!.nextPageUrl !=
+                                    null) {
+                                  String link =
+                                      controller.chatData!.data!.nextPageUrl;
+                                  controller.getAllChat(
+                                      id: userData!.id, nextUrl: link);
+                                  return true;
+                                }
                               }
+                              return false;
                             }
                             return false;
-                          }
-                          return false;
-                        },
-                        child: Stack(
-                          children: [
-                            buildStickyGroupedListView(context),
-                            Obx(() => _controller.bottomPosition.value == true
-                                ? Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 100, right: 20),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          _controller.scrollController!.jumpTo(
-                                              index: 0,
-                                              alignment: 0.5,
-                                              automaticAlignment: false);
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.black
-                                                  .withOpacity(0.7)),
-                                          child: Icon(
-                                            Icons.keyboard_double_arrow_down,
-                                            color: DynamicColor.yellowClr,
+                          },
+                          child: Stack(
+                            children: [
+                              buildStickyGroupedListView(context),
+                              Obx(
+                                () => _controller.bottomPosition.value == true
+                                    ? Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 100, right: 20),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              _controller.scrollController!
+                                                  .jumpTo(
+                                                      index: 0,
+                                                      alignment: 0.5,
+                                                      automaticAlignment:
+                                                          false);
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.black
+                                                      .withOpacity(0.7)),
+                                              child: Icon(
+                                                Icons
+                                                    .keyboard_double_arrow_down,
+                                                color: DynamicColor.yellowClr,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                : const SizedBox.shrink())
-                          ],
+                                      )
+                                    : const SizedBox.shrink(),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
 
-                      /// da da parent message show kavalo widget d.......
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          controller.isReplying.value == true
-                              ? replying(
-                                  controller,
-                                )
-                              : (controller.multipleImageList.isNotEmpty)
-                                  ? imageShowContainer(controller)
-                                  : const SizedBox.shrink(),
-                          textFieldsContainer(controller),
-                        ],
-                      )
-                    ],
-                  ));
+                        /// da da parent message show kavalo widget d.......
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            controller.isReplying.value == true
+                                ? replying(
+                                    controller,
+                                  )
+                                : (controller.multipleImageList.isNotEmpty)
+                                    ? imageShowContainer(controller)
+                                    : const SizedBox.shrink(),
+                            textFieldsContainer(controller),
+                          ],
+                        )
+                      ],
+                    )),
+        );
       }),
     );
   }
@@ -425,7 +432,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                     padding: const EdgeInsets.only(right: 6.0),
                                     child: Text(
                                       controller.replyModel!.msg.toString(),
-                                      style: const TextStyle(color: Colors.black87),
+                                      style: const TextStyle(
+                                          color: Colors.black87),
                                     ),
                                   ),
                                 ),
@@ -524,7 +532,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                   controller: controller.messageController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.only(left: 5, right: 6, top: 15),
+                    contentPadding:
+                        const EdgeInsets.only(left: 5, right: 6, top: 15),
                     hintText: "Write message",
                     hintStyle: TextStyle(
                         fontSize: 14, color: Colors.black87.withOpacity(0.5)),

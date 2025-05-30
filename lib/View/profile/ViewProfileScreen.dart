@@ -252,7 +252,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -323,14 +324,16 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   arguments: {"appBarText": "Followings"});
                             }),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
                               child: customFollowingBtn(context, onTap: () {
                                 Get.toNamed(Routes.followingScreen,
                                     arguments: {"appBarText": "Followers"});
                               }, text: "Followers"),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
                               child: customFollowingBtn(context, onTap: () {
                                 Get.toNamed(Routes.allUserScreen);
                               }, text: "Follow"),
@@ -342,7 +345,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     ImageIcon(
-                                      const AssetImage("assets/profileEditIcons.png"),
+                                      const AssetImage(
+                                          "assets/profileEditIcons.png"),
                                       color: DynamicColor.yellowClr,
                                     ),
                                     Padding(
@@ -389,7 +393,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                       child: TabBarView(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_collection_literals
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -89,7 +88,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                   height: 8,
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       image: const DecorationImage(
@@ -204,7 +204,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                 ),
                 const Spacer(),
                 SafeArea(
-                  bottom:  true ,
+                  bottom: true,
                   child: ShowCustomMap(
                     horizontalPadding: 0.0,
                     circle: true,
@@ -240,7 +240,8 @@ class calenderView extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.primaryColor,
+      // backgroundColor: theme.primaryColor,
+      backgroundColor: Colors.transparent,
       appBar: customAppBar(theme: theme, text: "Select Date Range", actions: [
         IconButton(
           onPressed: () {

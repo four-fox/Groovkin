@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -18,7 +17,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:dio/dio.dart' as form;
 import 'package:http_parser/http_parser.dart';
-
 import '../Components/Network/API.dart';
 import '../Components/Network/Url.dart';
 import '../Components/mediaModel.dart';
@@ -39,7 +37,6 @@ RxBool isOnChat = false.obs;
 
 class ChatController extends GetxController {
   /// bool variables
-
   RxBool bottomPosition = false.obs;
   int? selectedIndexes;
   RxBool animatedOpacity = false.obs;
@@ -110,6 +107,7 @@ class ChatController extends GetxController {
       'token': API().sp.read("token"),
       'user_id': API().sp.read("userId")
     };
+
     socket = IO.io(
         Url().socketUrl,
         OptionBuilder()
@@ -149,7 +147,7 @@ class ChatController extends GetxController {
   }
 
   /// get all user for new chat
-
+  ///
   RxBool newUserChatLoader = false.obs;
   ChatNewUserModel? newUserData;
   bool getNewUserWait = false;
@@ -158,18 +156,21 @@ class ChatController extends GetxController {
     nextUrl,
   }) async {
     newUserChatLoader(true);
-
     // if(searchingController.text.isNotEmpty){
     //   searchValue = "&search${searchingController.text}";
     // }
-    var formData = form.FormData.fromMap({
-      "search": searchingController.text,
-      "role_name": API().sp.read('role') == "eventOrganizer"
-          ? "venue_manager"
-          : "event_owner"
-    });
+    var formData = form.FormData.fromMap(
+      {
+        "search": searchingController.text,
+        "role_name": API().sp.read('role') == "eventOrganizer"
+            ? "venue_manager"
+            : "event_owner"
+      },
+    );
+
     var response =
         await API().postApi(formData, "get-all-users", fullUrl: nextUrl);
+
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         newUserData = ChatNewUserModel.fromJson(response.data);
@@ -250,6 +251,7 @@ class ChatController extends GetxController {
   ChatRoomModel? chatRoomData;
   bool getAllChatRoomWait = false;
   final chatRoomDataController = TextEditingController();
+
   getAllChatRoom({nextUrl}) async {
     getAllChatRoomLoader(false);
     var fromData = form.FormData.fromMap({
@@ -277,9 +279,10 @@ class ChatController extends GetxController {
     }
   }
 
-  ///get all chat
+  /// get all chats
   RxBool getAllChatLoader = true.obs;
   ChatInnerDataModel? chatData;
+
   getAllChat({id, nextUrl}) async {
     if (nextUrl == null) {
       initDatabase();
@@ -319,7 +322,7 @@ class ChatController extends GetxController {
     }
   }
 
-  ///send message
+  /// send message
   sendMessage({receiverId}) async {
     if (multipleImageList.isNotEmpty) {
       chatFileList.clear();
@@ -332,6 +335,7 @@ class ChatController extends GetxController {
         ));
       }
     }
+
     var formData = form.FormData.fromMap({
       'receiver_id': receiverId,
       "type": "single_message",
@@ -460,7 +464,7 @@ class ChatController extends GetxController {
   }
 
   ///message notification socket
-  messageNotificationSocket(id) async {
+  messageNotificationSocket(id) {
     socket!.emit("message-ack", {
       "id": id,
     });

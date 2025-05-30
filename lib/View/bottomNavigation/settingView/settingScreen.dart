@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +22,11 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+
   RxBool switchValue = false.obs;
-
   RxBool switchProfileValue = false.obs;
-
   late AuthController _authController;
-
+  
   @override
   void initState() {
     super.initState();
@@ -39,7 +36,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _authController = Get.put(AuthController());
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -190,17 +187,17 @@ class _SettingScreenState extends State<SettingScreen> {
                         //         }
                         //       }),
                         // ),
-                        Obx(
-                          () => customWidget(
-                              context: context,
-                              img: "assets/themeIcon.png",
-                              text: "Light & Dark Mood",
-                              toggleCondition: true,
-                              switchCondition: switchValue.value,
-                              onChanged: (v) {
-                                switchValue.value = v;
-                              }),
-                        ),
+                        // Obx(
+                        //   () => customWidget(
+                        //       context: context,
+                        //       img: "assets/themeIcon.png",
+                        //       text: "Light & Dark Mood",
+                        //       toggleCondition: true,
+                        //       switchCondition: switchValue.value,
+                        //       onChanged: (v) {
+                        //         switchValue.value = v;
+                        //       }),
+                        // ),
                         if (API().sp.read("currentRole") != "User")
                           customWidget(
                               context: context,

@@ -31,7 +31,6 @@ class _SocialSignInState extends State<SocialSignIn> {
   late final AuthController _authController;
   String? _accessToken;
 
-
   @override
   void initState() {
     super.initState();
@@ -41,13 +40,12 @@ class _SocialSignInState extends State<SocialSignIn> {
       _authController = Get.put(AuthController());
     }
   }
-  
-  Future<void> loginWithSpotify() async {
 
+  Future<void> loginWithSpotify() async {
     const clientId = con.clientId;
     const clientSecret = con.clientSecret;
     const redirectUri = "groovkin://callback";
-    
+
     final authUrl = Uri.parse(
       'https://accounts.spotify.com/authorize'
       '?client_id=$clientId'
@@ -72,7 +70,6 @@ class _SocialSignInState extends State<SocialSignIn> {
           useWebview: false,
         ),
       );
-
 
       final code = Uri.parse(result).queryParameters['code'];
       // Exchange code for access token

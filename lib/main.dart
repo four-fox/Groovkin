@@ -16,9 +16,21 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
-import 'package:groovkin/purchased/revenue_cat.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+
+class StoreConfig {
+  final Store store;
+  final String apiKey;
+  StoreConfig._interval({required this.store, required this.apiKey});
+  static StoreConfig? instances;
+
+  factory StoreConfig({required Store store, required String apiKey}) {
+    return instances ??= StoreConfig._interval(store: store, apiKey: apiKey);
+  }
+  static StoreConfig get instance => StoreConfig.instances!;
+}
+
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -115,6 +127,12 @@ class _MyAppState extends State<MyApp> {
   NotificationService notificationService = NotificationService();
   late AuthController authController;
 
+  Future<void> fetchSubscription() async {
+    await configureSDK();
+    checkUserSubscriptionIsActive();
+    authController.restore();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -126,9 +144,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     if (API().sp.read("userId") != null) {
-      configureSDK();
-      checkUserSubscriptionIsActive();
-      authController.restore();
+      fetchSubscription();
     }
 
     // Todo Firebase Notification Start

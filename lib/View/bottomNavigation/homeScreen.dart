@@ -18,7 +18,6 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
 import 'package:groovkin/utils/utils.dart';
-
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       _managerController = Get.put(ManagerController());
     }
-
     super.initState();
   }
 

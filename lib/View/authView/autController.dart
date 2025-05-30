@@ -237,6 +237,8 @@ class AuthController extends GetxController {
     var response = await API().postApi(formData, "login");
 
     if (response.statusCode == 200) {
+      loginEmailController.clear();
+      loginPasswordController.clear();
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
       API().sp.remove("currentRole");

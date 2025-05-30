@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -100,7 +99,7 @@ class MyTagCollection extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        bottom: true ,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(
@@ -146,399 +145,401 @@ class MyCollectionDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme, text: "My Collection"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Wrap(
-                spacing: 10,
-                children: <Widget>[
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+    return SafeArea(
+      child: Scaffold(
+        appBar: customAppBar(theme: theme, text: "My Collection"),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                  spacing: 10,
+                  children: <Widget>[
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Hamilton',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Hamilton',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Pop music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Popular music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Pop music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Hip hop music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Rhythm and blues',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Popular music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Popular music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Hip hop music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '##Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Hip hop music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Rhythm and blues',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Rhythm and blues',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Popular music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Popular music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '##Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Hip hop music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Rhythm and blues',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '##Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Popular music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Hip hop music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '##Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Hip hop music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Rhythm and blues',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Rhythm and blues',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Popular music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Popular music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '##Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Hip hop music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Rhythm and blues',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '##Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Popular music',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '#Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                    label: Text(
-                      '#Hip hop music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
+                    Chip(
+                      backgroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      label: Text(
+                        '##Outcast',
+                        style: poppinsRegularStyle(
+                            fontSize: 14,
+                            context: context,
+                            color: theme.scaffoldBackgroundColor),
+                      ),
                     ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Rhythm and blues',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Popular music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '##Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Hip hop music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Rhythm and blues',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Popular music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '##Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Hip hop music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Rhythm and blues',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Popular music',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '#Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                  Chip(
-                    backgroundColor: theme.primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    label: Text(
-                      '##Outcast',
-                      style: poppinsRegularStyle(
-                          fontSize: 14,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          color1: DynamicColor.blackClr,
-          color2: DynamicColor.blackClr,
-          onTap: () {
-            Get.toNamed(Routes.createNewTag);
-          },
-          text: "Add More",
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            color1: DynamicColor.blackClr,
+            color2: DynamicColor.blackClr,
+            onTap: () {
+              Get.toNamed(Routes.createNewTag);
+            },
+            text: "Add More",
+          ),
         ),
       ),
     );
@@ -945,7 +946,7 @@ class CreateNewTag extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        bottom:true,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(

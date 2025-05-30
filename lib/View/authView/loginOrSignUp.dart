@@ -38,7 +38,6 @@ class LoginOrSignUpScreen extends StatelessWidget {
                   const SizedBox(
                     height: kToolbarHeight / 1.5,
                   ),
-
                   GestureDetector(
                     onTap: () {
                       Get.back();
@@ -122,8 +121,8 @@ class LoginOrSignUpScreen extends StatelessWidget {
                       Get.offAllNamed(Routes.loginScreen);
                     },
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

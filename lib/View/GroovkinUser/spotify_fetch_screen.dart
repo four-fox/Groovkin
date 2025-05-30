@@ -23,16 +23,15 @@ class _SpotifyFetchScreenState extends State<SpotifyFetchScreen> {
     } else {
       _authController = Get.put(AuthController());
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _authController.getSpecificArtistGenre();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return GetBuilder<AuthController>(initState: (state) async {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await _authController.getSpecificArtistGenre();
-      });
-    }, builder: (controller) {
+    return GetBuilder<AuthController>(builder: (controller) {
       return Scaffold(
           appBar: customAppBar(theme: theme, text: "Spotify Genre"),
           body: controller.isSpecificArtistLoading.value == true
@@ -95,8 +94,9 @@ class _SpotifyFetchScreenState extends State<SpotifyFetchScreen> {
                               ),
                             );
                           },
-                          itemCount: controller
-                              .getSpecificArtistGenreModel!.data!.data!.length,
+                          itemCount: controller.getSpecificArtistGenreModel
+                                  ?.data?.data?.length ??
+                              0,
                         ),
                       ),
                     ));

@@ -1,9 +1,9 @@
-
 import 'dart:io';
 
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_item.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -28,7 +28,9 @@ class BottomNavigationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(sp.read("role"));
+    if (kDebugMode) {
+      print(sp.read("role"));
+    }
     var theme = Theme.of(context);
     final bodyContent = [
       const HomeScreen(),
@@ -49,9 +51,10 @@ class BottomNavigationView extends StatelessWidget {
           content: Text(
             'Tap back again to exit the app',
             style: poppinsMediumStyle(
-                fontSize: 15,
-                context: context,
-                color: theme.scaffoldBackgroundColor),
+              fontSize: 15,
+              context: context,
+              color: theme.scaffoldBackgroundColor,
+            ),
           ),
         ),
         child: Obx(
@@ -64,8 +67,9 @@ class BottomNavigationView extends StatelessWidget {
         () => SafeArea(
           // bottom: Platform.isIOS ? true : false,
           child: Padding(
-            padding:
-                Platform.isIOS ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+            padding: Platform.isIOS
+                ? const EdgeInsets.only(bottom: 10)
+                : EdgeInsets.zero,
             child: Container(
               height: kToolbarHeight,
               decoration: const BoxDecoration(
@@ -81,20 +85,21 @@ class BottomNavigationView extends StatelessWidget {
                 color: DynamicColor.yellowClr,
                 items: [
                   BottomBarItem(
-                      labelTextStyle: poppinsMediumStyle(
-                          fontSize: 12,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                      iconBuilder: Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: ImageIcon(
-                          const AssetImage("assets/homeScreen.png"),
-                          color: selectIndexxx.value == 0
-                              ? DynamicColor.yellowClr
-                              : DynamicColor.grayClr,
-                        ),
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        const AssetImage("assets/homeScreen.png"),
+                        color: selectIndexxx.value == 0
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
                       ),
-                      label: "Home"),
+                    ),
+                    label: "Home",
+                  ),
                   BottomBarItem(
                       labelTextStyle: poppinsMediumStyle(
                           fontSize: 12,
