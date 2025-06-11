@@ -3,11 +3,12 @@ on:
     branches:
       - main
       - master
+      - developer
   push:
     branches:
       - main
       - master
-      - develop
+      - developer
 name: "Build & Release"
 jobs:
   build:
