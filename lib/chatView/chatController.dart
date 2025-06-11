@@ -138,6 +138,7 @@ class ChatController extends GetxController {
       }
     });
     // connectDisconnect();
+    receiveMessage();
   }
 
   ///Data base initialized
@@ -273,7 +274,6 @@ class ChatController extends GetxController {
 
       for (int i = 0; i < chatRoomData!.data!.data!.length; i++) {
         disposedReceiverSocket();
-        receiveMessage();
       }
       getAllChatRoomLoader(true);
       update();
@@ -324,7 +324,9 @@ class ChatController extends GetxController {
   }
 
   /// send message
+  RxBool isSendLoading = false.obs;
   sendMessage({receiverId}) async {
+    isSendLoading.value = true;
     if (multipleImageList.isNotEmpty) {
       chatFileList.clear();
       for (int i = 0; i < multipleImageList.length; i++) {
@@ -344,14 +346,14 @@ class ChatController extends GetxController {
       if (chatFileList.isNotEmpty) "media[]": chatFileList,
       if (bottomContainer.value || replyId != null) "parent_id": replyId
     });
-    var response = await API().postApi(formData, 'send-message');
+    var response =
+        await API().postApi(formData, 'send-message', showProgress: false);
     if (response.statusCode == 200) {
       var d = ChatData.fromJson(response.data['data']);
       conversationID = d.conversationId;
       if (d.senderId == API().sp.read("userId")) {
         chatData!.data!.data!.insert(0, d);
       }
-
       insertChatDatabase(oneInsertion: true, model: d);
       if (chatData!.data!.data!.length > 5) {
         scrollController!
@@ -360,6 +362,7 @@ class ChatController extends GetxController {
       clearData();
       update();
     }
+    isSendLoading.value = false;
   }
 
   clearData() async {
@@ -418,7 +421,8 @@ class ChatController extends GetxController {
     } else {
       var d = ChatData.fromJson(data['message']);
       if (d.senderId != API().sp.read("userId")) {
-        insertChatDatabase(oneInsertion: true, model: d);
+        // insertChatDatabase(oneInsertion: true, model: d);
+        chatData!.data!.data!.insert(0, d);
       }
       update();
     }
@@ -506,6 +510,7 @@ class ChatController extends GetxController {
                     }
                 },
               // },
+              insertChatDatabase(),
               update(),
             });
   }
@@ -744,12 +749,14 @@ class ChatController extends GetxController {
                           // var difference = DateTime.now().difference(date).inHours;
                           print(difference);
                           if (difference > 1) {
+                            FocusManager.instance.primaryFocus!.unfocus();
                             alertDialog(
                               element,
                               index,
                               isTime: true,
                             );
                           } else {
+                            FocusManager.instance.primaryFocus!.unfocus();
                             alertDialog(
                               element,
                               index,

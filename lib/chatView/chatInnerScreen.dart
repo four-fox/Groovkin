@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/Url.dart';
@@ -117,13 +118,14 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        isOnChat.value = false;
-        _controller.isChat.value = false;
-        print('${_controller.isChat.value}');
-        print('value of is chat');
-        return true;
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) {
+          isOnChat.value = false;
+          _controller.isChat.value = false;
+          _controller.innerUserOnline.value = false;
+        }
       },
       child: GetBuilder<ChatController>(initState: (v) {
         _controller.getAllChat(id: userData!.id);
@@ -513,8 +515,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
       color: Colors.white,
       child: Row(
         children: [
-          SizedBox(
-            width: Get.width / 1.16,
+          Expanded(
+            // width: Get.width / 1.16,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 6),
               child: Container(
@@ -536,7 +538,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                         const EdgeInsets.only(left: 5, right: 6, top: 15),
                     hintText: "Write message",
                     hintStyle: TextStyle(
-                        fontSize: 14, color: Colors.black87.withOpacity(0.5)),
+                        fontSize: 14,
+                        color: Colors.black87.withValues(alpha: 0.5)),
                     suffixIcon: CustomPopupMenu(
                       controller: controller.customPopupMenuController,
                       menuBuilder: controller.popUpMenu,
@@ -569,39 +572,54 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              ///Todo latter on
-              if (controller.messageController.text.isNotEmpty ||
-                  controller.multipleImageList.isNotEmpty) {
-                _controller.sendMessage(receiverId: userData!.id);
-              } else {
-                bottomToast(text: "Please write something");
-                // BotToast.showText(text: "Please write something");
-              }
+          Obx(
+            () => GestureDetector(
+              onTap: () {
+                ///Todo latter on
+                if (controller.messageController.text.isNotEmpty ||
+                    controller.multipleImageList.isNotEmpty) {
+                  _controller.sendMessage(receiverId: userData!.id);
+                } else {
+                  bottomToast(text: "Please write something");
+                  // BotToast.showText(text: "Please write something");
+                }
 
-              ///Todo latter on
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(5)),
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    ),
-                  ),
+                ///Todo latter on
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: _controller.isSendLoading.value == true
+                      ? Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Platform.isIOS
+                              ? const CupertinoActivityIndicator(
+                                  color: Colors.white,
+                                )
+                              : const CircularProgressIndicator.adaptive(
+                                  backgroundColor: Colors.white,
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Color(0xff00327A)),
+                                ),
+                        )
+                      : const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(6.0),
+                            child: Icon(
+                              Icons.send,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -645,7 +663,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               _controller.chatData!.data!.data![index].conversationId);
           _controller.seenMessageSocket(
               _controller.chatData!.data!.data![index].conversationId, index);
-  
+
           ///ToDo latter on
         }
 
@@ -659,13 +677,21 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
             }
           }
         });*/
-        ///ToDo latter on
-        for (int a = 0; a < _controller.chatData!.data!.data!.length; a++) {
+
+        if (_controller.chatData!.data!.data![index].isDeleted == 1) {
           _controller.disposedDeleteForEveryOneSocket(
               _controller.chatData!.data!.data![index].conversationId);
           _controller.deleteForEveryOneSocket(
               _controller.chatData!.data!.data![index].conversationId);
         }
+
+        ///ToDo latter on
+        // for (int a = 0; a < _controller.chatData!.data!.data!.length; a++) {
+        //   _controller.disposedDeleteForEveryOneSocket(
+        //       _controller.chatData!.data!.data![index].conversationId);
+        //   _controller.deleteForEveryOneSocket(
+        //       _controller.chatData!.data!.data![index].conversationId);
+        // }
         // _controller.socket!.on('typing-${_controller.innerScreenChatData!.data!.data![index].conversationId}', (data) => {
         //
         // });
