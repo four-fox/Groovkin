@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late EventController _eventController;
   late AuthController _authController;
   late ManagerController _managerController;
-
+  
   @override
   void initState() {
     if (Get.isRegistered<HomeController>()) {

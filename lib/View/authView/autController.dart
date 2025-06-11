@@ -442,7 +442,7 @@ class AuthController extends GetxController {
         userData!.data!.profile!.companyName.toString();
     emailController.text = userData!.data!.email.toString();
     aboutController.text = userData!.data!.profile!.about.toString();
-    dobController.text = userData!.data!.profile!.birthYear.toString();
+    dobController.text = userData?.data?.profile?.birthYear ?? "";
     phoneNumController.text = userData!.data!.profile!.phoneNumber.toString();
     if (userData!.data!.profile!.selectState != null) {
       stateController.text = userData!.data!.profile!.selectState.toString();

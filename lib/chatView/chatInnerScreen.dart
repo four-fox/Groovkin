@@ -645,7 +645,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               _controller.chatData!.data!.data![index].conversationId);
           _controller.seenMessageSocket(
               _controller.chatData!.data!.data![index].conversationId, index);
-
+  
           ///ToDo latter on
         }
 

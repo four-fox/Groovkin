@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
     // print(intialRole);
     return SafeArea(
       top: false,
-      bottom: true ,
+      bottom: true,
       child: Scaffold(
         // appBar: AppBar(
         //   backgroundColor: theme.scaffoldBackgroundColor,
@@ -40,9 +39,10 @@ class _WelComeScreenState extends State<WelComeScreen> {
         // ),
         body: DoubleBackToCloseApp(
           snackBar: const SnackBar(
-              content: Text(
-            "Please complete the profile screen",
-          )),
+            content: Text(
+              "Please complete the profile screen",
+            ),
+          ),
           child: Column(
             children: [
               const SizedBox(

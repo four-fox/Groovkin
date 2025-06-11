@@ -173,7 +173,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                 if (Platform.isAndroid) {
                                   managerController.pickFile();
                                 } else {
-                                managerController.pickFileee();
+                                  managerController.pickFileee();
                                 }
                               },
                               child: Container(

@@ -10,7 +10,7 @@ class ShrinkOnTap extends StatefulWidget {
 
 class _ShrinkOnTapState extends State<ShrinkOnTap> {
   bool _isTapped = false;
-
+  
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -19,6 +19,7 @@ class _ShrinkOnTapState extends State<ShrinkOnTap> {
       onTapCancel: () => setState(() => _isTapped = false),
       child: AnimatedScale(
         scale: _isTapped ? 0.90 : 1.0,
+        curve: Curves.easeInOut,
         duration: const Duration(milliseconds: 20),
         child: widget.child,
       ),

@@ -148,6 +148,7 @@ class ChatController extends GetxController {
 
   /// get all user for new chat
   ///
+
   RxBool newUserChatLoader = false.obs;
   ChatNewUserModel? newUserData;
   bool getNewUserWait = false;
@@ -350,7 +351,8 @@ class ChatController extends GetxController {
       if (d.senderId == API().sp.read("userId")) {
         chatData!.data!.data!.insert(0, d);
       }
-      // insertChatDatabase(oneInsertion: true, model: d);
+
+      insertChatDatabase(oneInsertion: true, model: d);
       if (chatData!.data!.data!.length > 5) {
         scrollController!
             .jumpTo(index: 0, automaticAlignment: false, alignment: 0.4);
@@ -648,6 +650,7 @@ class ChatController extends GetxController {
                 });
                 update();
                 getAllChatRoom();
+
                 Get.back();
               }
             }),

@@ -31,7 +31,6 @@ class StoreConfig {
   static StoreConfig get instance => StoreConfig.instances!;
 }
 
-
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(
@@ -165,19 +164,20 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Groovkin',
       theme: ThemeData(
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: DynamicColor.yellowClr,
-            selectionColor: DynamicColor.yellowClr,
-            selectionHandleColor: DynamicColor.yellowClr,
-          ),
-          brightness: Brightness.light,
-          primaryColor: const Color(0xff040305),
-          // backgroundColor: Color(0xff040305),
-          scaffoldBackgroundColor: Colors.white,
-          textTheme: const TextTheme(
-            labelLarge:
-                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
-          )),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: DynamicColor.yellowClr,
+          selectionColor: DynamicColor.yellowClr,
+          selectionHandleColor: DynamicColor.yellowClr,
+        ),
+        brightness: Brightness.light,
+        primaryColor: const Color(0xff040305),
+        // backgroundColor: Color(0xff040305),
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: const TextTheme(
+          labelLarge:
+              TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+        ),
+      ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: const Color(0xffFFFFFF),

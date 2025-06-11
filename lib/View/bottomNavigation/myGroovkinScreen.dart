@@ -37,6 +37,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
     }
   }
 
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -62,8 +63,8 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     ),
                     if (data.services.isNotEmpty)
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 18),
                         color: DynamicColor.avatarBgClr.withOpacity(0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,8 +72,9 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                             Text(
                               "Given Services",
                               style: poppinsRegularStyle(
-                                  fontSize: 16,
-                                  color: DynamicColor.lightRedClr),
+                                fontSize: 16,
+                                color: DynamicColor.lightRedClr,
+                              ),
                             ),
                             widget.appBar == true
                                 ? const SizedBox.shrink()
@@ -82,7 +84,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                           arguments: {
                                             "addMoreService": 2,
                                             "isComingFromMyGroovkin": true,
-                                            "isService": data.services
+                                            "isService": data.services,
                                           });
                                     },
                                     child: Icon(Icons.edit,
@@ -105,9 +107,9 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                       height: 10,
                     ),
                     Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
-                      color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 18),
+                      color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -146,8 +148,8 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     ),
                     if (data.hardwareProvides.isNotEmpty)
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 18),
                         color: DynamicColor.avatarBgClr.withOpacity(0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -155,8 +157,9 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                             Text(
                               "Hardware",
                               style: poppinsRegularStyle(
-                                  fontSize: 16,
-                                  color: DynamicColor.lightRedClr),
+                                fontSize: 16,
+                                color: DynamicColor.lightRedClr,
+                              ),
                             ),
                             widget.appBar == true
                                 ? const SizedBox.shrink()
@@ -171,7 +174,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                     },
                                     child: Icon(Icons.edit,
                                         color: DynamicColor.yellowClr),
-                                  )
+                                  ),
                           ],
                         ),
                       ),
@@ -186,7 +189,8 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                             return Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0, top: 6),
+                                  padding:
+                                      const EdgeInsets.only(left: 12.0, top: 6),
                                   child: Row(
                                     children: [
                                       // Image(
@@ -217,15 +221,16 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   ),
                                 ),
                                 ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount:
                                         hardwareData.categoryItems.length,
                                     itemBuilder:
                                         (BuildContext context, indexxx) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 12.0, top: 6),
+                                        padding: const EdgeInsets.only(
+                                            left: 12.0, top: 6),
                                         child: Row(
                                           children: [
                                             Padding(
@@ -259,8 +264,8 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     ),
                     if (data.musicGenre.isNotEmpty)
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 18),
                         color: DynamicColor.avatarBgClr.withOpacity(0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -300,7 +305,8 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
                               child: Text(
                                 data.musicGenre[index].name,
                                 style: poppinsRegularStyle(

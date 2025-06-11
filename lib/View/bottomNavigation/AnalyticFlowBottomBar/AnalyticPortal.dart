@@ -88,7 +88,10 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: customAppBar(
-          theme: theme, text: "Groovkin Analytics Portal", backArrow: false),
+        theme: theme,
+        text: "Groovkin Analytics Portal",
+        backArrow: false,
+      ),
       body: Stack(
         children: [
           Column(
@@ -133,6 +136,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                   ),
                 ],
               ),
+              
               GetBuilder<HomeController>(builder: (controller) {
                 return (controller.analyticsListModel == null ||
                         controller.analyticsListModel!.data == null ||
@@ -373,8 +377,10 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               // Add subscription logic here
-                              Get.toNamed(Routes.subscriptionScreen,
-                                  arguments: {"isFromSettingScreen": true});
+                              Get.toNamed(
+                                Routes.subscriptionScreen,
+                                arguments: {"isFromSettingScreen": true},
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DynamicColor.yellowClr,

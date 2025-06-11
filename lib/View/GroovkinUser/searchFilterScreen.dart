@@ -34,7 +34,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
     // initialDateSelected: DateTime(2022, 3, 15),
     // endDateSelected: DateTime(2022, 3, 20),
   );
-
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
