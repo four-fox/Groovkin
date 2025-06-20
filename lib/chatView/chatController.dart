@@ -279,7 +279,7 @@ class ChatController extends GetxController {
       update();
     }
   }
-
+  
   /// get all chats
   RxBool getAllChatLoader = true.obs;
   ChatInnerDataModel? chatData;
@@ -296,7 +296,7 @@ class ChatController extends GetxController {
         chatData = null;
         chatData = ChatInnerDataModel.fromJson(response.data);
         chatWait = false;
-        isChat.value = true;
+        isChat.value = true;  
       } else {
         chatData!.data!.data!
             .addAll(ChatInnerDataModel.fromJson(response.data).data!.data!);

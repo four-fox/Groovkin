@@ -58,6 +58,7 @@ class EventOrganizerScreen extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
+                    
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

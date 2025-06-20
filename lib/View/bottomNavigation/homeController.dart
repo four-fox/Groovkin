@@ -41,9 +41,9 @@ class HomeController extends GetxController {
   completedEvent() async {
     completedEventLoader(false);
     var response = await API().getApi(url: "history-events", queryParameters: {
-      "filter": (showIndexValue == 1 && (selectedFilter == 0))
+      "filter": (showIndexValue!.value == 1 && (selectedFilter.value == 0))
           ? "recent"
-          : (showIndexValue == 1 && (selectedFilter == 1))
+          : (showIndexValue!.value == 1 && (selectedFilter.value == 1))
               ? "past_week"
               : "older_than_1_month",
     });

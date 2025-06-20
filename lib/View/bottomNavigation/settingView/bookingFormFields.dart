@@ -1,5 +1,3 @@
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:date_field/date_field.dart';
@@ -17,12 +15,12 @@ import 'package:intl/intl.dart';
 class BookingFormFields extends StatelessWidget {
   BookingFormFields({super.key});
   final format = DateFormat("HH:mm");
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Booking form"),
+      appBar: customAppBar(theme: theme, text: "Booking form"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: SingleChildScrollView(
@@ -47,66 +45,57 @@ class BookingFormFields extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: Get.width/1.5,
+                    width: Get.width / 1.5,
                     child: TextField(
                       keyboardType: TextInputType.none,
                       onTap: () async {
-                         await showDatePicker(
-                            builder: (context, child) {
-                              return Theme(
-                                  data: Theme.of(context)
-                                      .copyWith(
-                                    colorScheme: ColorScheme
-                                        .light(
-                                      primary: DynamicColor.grayClr,
-                                      onPrimary: DynamicColor.grayClr,
-                                      onSurface:
-                                      Colors
-                                          .black,
-                                    ),
+                        await showDatePicker(
+                          builder: (context, child) {
+                            return Theme(
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: ColorScheme.light(
+                                    primary: DynamicColor.grayClr,
+                                    onPrimary: DynamicColor.grayClr,
+                                    onSurface: Colors.black,
                                   ),
-                                  child: child!);
-                            },
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2101));
+                                ),
+                                child: child!);
+                          },
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2101),
+                        );
                       },
                       readOnly: true,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius
-                                .circular(8),
+                            borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                width: 1,
-                                color: DynamicColor.grayClr)),
+                                width: 1, color: DynamicColor.grayClr)),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius
-                                .circular(8),
+                            borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                width: 1,
-                                color: DynamicColor.grayClr)),
+                                width: 1, color: DynamicColor.grayClr)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: DynamicColor.grayClr), //<-- SEE HERE
+                          borderSide: BorderSide(
+                              color: DynamicColor.grayClr), //<-- SEE HERE
                         ),
                         hintText: "Select meeting date",
                         label: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0),
-                          child: Text("Date",
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Text(
+                            "Date",
                             style: poppinsRegularStyle(
                               fontSize: 14,
                               color: DynamicColor.grayClr,
                             ),
                           ),
                         ),
-                        labelStyle:
-                        TextStyle(
-                            color: DynamicColor.grayClr),
+                        labelStyle: TextStyle(color: DynamicColor.grayClr),
                         hintStyle: const TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 13),
+                            fontFamily: 'Montserrat', fontSize: 13),
                         contentPadding: const EdgeInsets.all(5),
                         suffixIcon: Icon(
                           Icons.calendar_month,
@@ -119,21 +108,22 @@ class BookingFormFields extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     height: 50,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: DynamicColor.darkGrayClr
-                    ),
+                        borderRadius: BorderRadius.circular(6),
+                        color: DynamicColor.darkGrayClr),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("One Time",
-                        style: poppinsRegularStyle(
-                          fontSize: 13,
-                          context: context,
-                          color: theme.primaryColor,
+                        Text(
+                          "One Time",
+                          style: poppinsRegularStyle(
+                            fontSize: 13,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
                         ),
-                        ),
-                        Icon(Icons.keyboard_arrow_down_rounded,
-                        size: 26,
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: 26,
                           color: DynamicColor.whiteClr,
                         )
                       ],
@@ -150,20 +140,17 @@ class BookingFormFields extends StatelessWidget {
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: DynamicColor.grayClr), //<-- SEE HERE
+                      borderSide: BorderSide(
+                          color: DynamicColor.grayClr), //<-- SEE HERE
                     ),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius
-                            .circular(8),
-                        borderSide: BorderSide(
-                            width: 1,
-                            color: DynamicColor.grayClr)),
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            BorderSide(width: 1, color: DynamicColor.grayClr)),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius
-                            .circular(8),
-                        borderSide: BorderSide(
-                            width: 1,
-                            color:DynamicColor.grayClr)),
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            BorderSide(width: 1, color: DynamicColor.grayClr)),
                     // border: InputBorder.none,
                     label: const Text('Check in'),
                     labelStyle: poppinsRegularStyle(
@@ -174,35 +161,29 @@ class BookingFormFields extends StatelessWidget {
                       Icons.access_time_rounded,
                       color: Colors.white,
                     ),
-                    hintStyle: poppinsRegularStyle(
-                        fontSize: 16, color: Colors.black),
+                    hintStyle:
+                        poppinsRegularStyle(fontSize: 16, color: Colors.black),
                   ),
-                    onChanged: (DateTime? value) async{
+                  onChanged: (DateTime? value) async {
                     await showTimePicker(
-                     initialEntryMode:
-                     TimePickerEntryMode.dial,
-                     builder: (context, child) {
-                       return Theme(
-                           data: Theme.of(context)
-                               .copyWith(
-                             colorScheme: ColorScheme
-                                 .light(
-                               primary: DynamicColor.blackClr,
-                               // <-- SEE HERE
-                               onPrimary: DynamicColor.blackClr,
-                               // <-- SEE HERE
-                               onSurface:
-                               Colors
-                                   .black, // <-- SEE HERE
-                             ),
-                           ),
-                           child: child!);
-                     },
-                     context: context,
-                     initialTime: TimeOfDay.fromDateTime(
-                         DateTime.now()),
-                   );
-                 },
+                      initialEntryMode: TimePickerEntryMode.dial,
+                      builder: (context, child) {
+                        return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                primary: DynamicColor.blackClr,
+                                // <-- SEE HERE
+                                onPrimary: DynamicColor.blackClr,
+                                // <-- SEE HERE
+                                onSurface: Colors.black, // <-- SEE HERE
+                              ),
+                            ),
+                            child: child!);
+                      },
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                    );
+                  },
                 ),
               ),
               const SizedBox(
@@ -214,20 +195,17 @@ class BookingFormFields extends StatelessWidget {
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: DynamicColor.grayClr), //<-- SEE HERE
+                      borderSide: BorderSide(
+                          color: DynamicColor.grayClr), //<-- SEE HERE
                     ),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius
-                            .circular(8),
-                        borderSide: BorderSide(
-                            width: 1,
-                            color: DynamicColor.grayClr)),
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            BorderSide(width: 1, color: DynamicColor.grayClr)),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius
-                            .circular(8),
-                        borderSide: BorderSide(
-                            width: 1,
-                            color:DynamicColor.grayClr)),
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide:
+                            BorderSide(width: 1, color: DynamicColor.grayClr)),
                     // border: InputBorder.none,
                     label: const Text('Check out'),
                     labelStyle: poppinsRegularStyle(
@@ -238,35 +216,29 @@ class BookingFormFields extends StatelessWidget {
                       Icons.access_time_rounded,
                       color: Colors.white,
                     ),
-                    hintStyle: poppinsRegularStyle(
-                        fontSize: 16, color: Colors.black),
+                    hintStyle:
+                        poppinsRegularStyle(fontSize: 16, color: Colors.black),
                   ),
-                    onChanged: (DateTime? value)  async{
-                 await showTimePicker(
-                     initialEntryMode:
-                     TimePickerEntryMode.dial,
-                     builder: (context, child) {
-                       return Theme(
-                           data: Theme.of(context)
-                               .copyWith(
-                             colorScheme: ColorScheme
-                                 .light(
-                               primary: DynamicColor.blackClr,
-                               // <-- SEE HERE
-                               onPrimary: DynamicColor.blackClr,
-                               // <-- SEE HERE
-                               onSurface:
-                               Colors
-                                   .black, // <-- SEE HERE
-                             ),
-                           ),
-                           child: child!);
-                     },
-                     context: context,
-                     initialTime: TimeOfDay.fromDateTime(
-                         DateTime.now()),
-                   );
-                 }, 
+                  onChanged: (DateTime? value) async {
+                    await showTimePicker(
+                      initialEntryMode: TimePickerEntryMode.dial,
+                      builder: (context, child) {
+                        return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.light(
+                                primary: DynamicColor.blackClr,
+                                // <-- SEE HERE
+                                onPrimary: DynamicColor.blackClr,
+                                // <-- SEE HERE
+                                onSurface: Colors.black, // <-- SEE HERE
+                              ),
+                            ),
+                            child: child!);
+                      },
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                    );
+                  },
                 ),
               ),
               const SizedBox(
@@ -284,13 +256,10 @@ class BookingFormFields extends StatelessWidget {
                 borderClr: Colors.transparent,
                 color1: DynamicColor.blackClr,
                 color2: DynamicColor.blackClr,
-                onTap: (){
-                  Future.delayed(const Duration(seconds: 2),(){
+                onTap: () {
+                  Future.delayed(const Duration(seconds: 2), () {
                     Get.offAllNamed(Routes.bottomNavigationView,
-                        arguments: {
-                          "indexValue": 0
-                        }
-                    );
+                        arguments: {"indexValue": 0});
                   });
                   showDialog(
                       barrierColor: Colors.transparent,
@@ -298,14 +267,16 @@ class BookingFormFields extends StatelessWidget {
                       barrierDismissible: true,
                       builder: (BuildContext context) {
                         return AlertWidget(
-                          height: kToolbarHeight*4.4,
+                          height: kToolbarHeight * 4.4,
                           container: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 4),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 4),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text('Congratulation!',
+                                Text(
+                                  'Congratulation!',
                                   style: poppinsRegularStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w700,
@@ -313,7 +284,8 @@ class BookingFormFields extends StatelessWidget {
                                     color: theme.primaryColor,
                                   ),
                                 ),
-                                Text('The proposal has been sent to\nthe Venue Manager',
+                                Text(
+                                  'The proposal has been sent to\nthe Venue Manager',
                                   style: poppinsRegularStyle(
                                     fontSize: 16,
                                     context: context,

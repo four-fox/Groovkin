@@ -20,9 +20,9 @@ set selectIndex(index) => selectUserIndexxx.value = index;
 class UserBottomNavigationNav extends StatelessWidget {
   const UserBottomNavigationNav({
     super.key,
-  // this.initialIndex = 1,
+    // this.initialIndex = 1,
   });
-  
+
   // @override
   // void dispose() {
   //   super.dispose();
@@ -59,8 +59,9 @@ class UserBottomNavigationNav extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         child: Obx(
           () => Padding(
-            padding:
-                Platform.isIOS ? const EdgeInsets.only(bottom: 10) : EdgeInsets.zero,
+            padding: Platform.isIOS
+                ? const EdgeInsets.only(bottom: 10)
+                : EdgeInsets.zero,
             child: Container(
               height: kToolbarHeight,
               decoration: const BoxDecoration(

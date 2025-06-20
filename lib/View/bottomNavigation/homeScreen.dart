@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   decoration: BoxDecoration(
                                       border: Border.all(
                                           color: DynamicColor.yellowClr
-                                              .withOpacity(0.6)),
+                                              .withValues(alpha: 0.6)),
                                       borderRadius: BorderRadius.circular(8)),
                                   child: const Image(
                                     image:
@@ -273,10 +273,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           () => Container(
                             height: 35,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: controller.showIndexValue!.value == 1
-                                    ? DynamicColor.secondaryClr
-                                    : DynamicColor.lightBlackClr),
+                              borderRadius: BorderRadius.circular(10),
+                              color: controller.showIndexValue!.value == 1
+                                  ? DynamicColor.secondaryClr
+                                  : DynamicColor.lightBlackClr,
+                            ),
                             child: Center(
                               child: Text(
                                 "History",
@@ -379,14 +380,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.showFilter.value = false;
                                 controller.update();
 
-                                if (controller.showIndexValue == 1) {
+                                if (controller.showIndexValue!.value == 1) {
                                   controller.completedEvent();
                                 }
-                                if (controller.showIndexValue == 2 &&
+                                if (controller.showIndexValue!.value == 2 &&
                                     sp.read("role") != "eventManager") {
                                   _eventController.getAllSendingRequest();
                                 }
-                                if (controller.showIndexValue == 2 &&
+                                if (controller.showIndexValue!.value == 2 &&
                                     sp.read("role") == "eventManager") {
                                   _managerController.getAllPendingEvents();
                                 }
@@ -417,14 +418,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.selectedFilter.value = 1;
                                 controller.showFilter.value = false;
                                 controller.update();
-                                if (controller.showIndexValue == 1) {
+                                if (controller.showIndexValue!.value == 1) {
                                   controller.completedEvent();
                                 }
-                                if (controller.showIndexValue == 2 &&
+                                if (controller.showIndexValue!.value == 2 &&
                                     sp.read("role") != "eventManager") {
                                   _eventController.getAllSendingRequest();
                                 }
-                                if (controller.showIndexValue == 2 &&
+                                if (controller.showIndexValue!.value == 2 &&
                                     sp.read("role") == "eventManager") {
                                   _managerController.getAllPendingEvents();
                                 }
@@ -455,14 +456,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.selectedFilter.value = 2;
                                 controller.showFilter.value = false;
                                 controller.update();
-                                if (controller.showIndexValue == 1) {
+                                if (controller.showIndexValue!.value == 1) {
                                   controller.completedEvent();
                                 }
-                                if (controller.showIndexValue == 2 &&
+                                if (controller.showIndexValue!.value == 2 &&
                                     sp.read("role") != "eventManager") {
                                   _eventController.getAllSendingRequest();
                                 }
-                                if (controller.showIndexValue == 2 &&
+                                if (controller.showIndexValue!.value == 2 &&
                                     sp.read("role") == "eventManager") {
                                   _managerController.getAllPendingEvents();
                                 }
@@ -571,6 +572,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
 }
 
 class ManagerUpcomingEventsView extends StatelessWidget {
@@ -583,14 +585,14 @@ class ManagerUpcomingEventsView extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    List list = [
-      'false',
-      "true",
-      'false',
-      'true',
-      'true',
-      'false',
-    ];
+    // List list = [
+    //   'false',
+    //   "true",
+    //   'false',
+    //   'true',
+    //   'true',
+    //   'false',
+    // ];
 
     return SingleChildScrollView(
       child: Column(
