@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: Icon(
                               Icons.chat,
-                              color: theme.primaryColor,
+                              color: theme.primaryColor, 
                             ),
                           ),
                         ),

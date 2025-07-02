@@ -133,66 +133,67 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: GestureDetector(
-                      onTap: () {
-                        for (var i = 0; i < subscriptionList.length; i++) {
-                          subscriptionList[i].isSelected.value = false;
-                        }
-                        subscriptionList[index].isSelected.value = true;
-                        controller.selected.value = index;
-                      },
-                      child: Obx(
-                        () => Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: LinearGradient(
-                              colors: [
-                                DynamicColor.darkGrayClr.withValues(alpha: 0.7),
-                                DynamicColor.darkGrayClr,
-                                DynamicColor.darkGrayClr.withValues(alpha: 0.2),
-                                DynamicColor.darkGrayClr.withValues(alpha: 0.5),
-                              ],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topCenter,
-                            ),
-                            // color: Colors.grey[200],
-                            // color: DynamicColor.darkGrayClr.withOpacity(0.7),
-                            border: Border.all(
-                              color: subscriptionList[index].isSelected.value ==
-                                      true
-                                  ? DynamicColor.yellowClr
-                                  : Colors.grey,
-                              width: 2,
-                            ),
+                    onTap: () {
+                      for (var i = 0; i < subscriptionList.length; i++) {
+                        subscriptionList[i].isSelected.value = false;
+                      }
+                      subscriptionList[index].isSelected.value = true;
+                      controller.selected.value = index;
+                    },
+                    child: Obx(
+                      () => Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                            colors: [
+                              DynamicColor.darkGrayClr.withValues(alpha: 0.7),
+                              DynamicColor.darkGrayClr,
+                              DynamicColor.darkGrayClr.withValues(alpha: 0.2),
+                              DynamicColor.darkGrayClr.withValues(alpha: 0.5),
+                            ],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topCenter,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  subscriptionList[index].price,
-                                  style: poppinsRegularStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  // subscriptionList[index].trial,
-                                  subscriptionList[index].plan,
-                                  style: poppinsRegularStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          // color: Colors.grey[200],
+                          // color: DynamicColor.darkGrayClr.withOpacity(0.7),
+                          border: Border.all(
+                            color:
+                                subscriptionList[index].isSelected.value == true
+                                    ? DynamicColor.yellowClr
+                                    : Colors.grey,
+                            width: 2,
                           ),
                         ),
-                      )),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                subscriptionList[index].price,
+                                style: poppinsRegularStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                // subscriptionList[index].trial,
+                                subscriptionList[index].plan,
+                                style: poppinsRegularStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 );
               },
               itemCount: subscriptionList.length,
@@ -227,7 +228,10 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           return value;
                         }).onError((error, _) {
-                          BotToast.showText(text: "Purchased Cancel");
+                          if (error is PlatformException) {
+                            BotToast.showText(
+                                text: error.message ?? "Purchased Cancel");
+                          }
                           BotToast.closeAllLoading();
                           throw Exception(error.toString());
                         });

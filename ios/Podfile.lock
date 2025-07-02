@@ -101,6 +101,8 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 8.0)
     - nanopb (~> 3.30910.0)
   - Flutter (1.0.0)
+  - flutter_app_badge (2.0.0):
+    - Flutter
   - flutter_credit_card (0.0.1):
     - Flutter
   - flutter_keyboard_visibility (0.0.1):
@@ -267,6 +269,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
+  - flutter_app_badge (from `.symlinks/plugins/flutter_app_badge/ios`)
   - flutter_credit_card (from `.symlinks/plugins/flutter_credit_card/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -347,6 +350,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  flutter_app_badge:
+    :path: ".symlinks/plugins/flutter_app_badge/ios"
   flutter_credit_card:
     :path: ".symlinks/plugins/flutter_credit_card/ios"
   flutter_keyboard_visibility:
@@ -417,6 +422,7 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 9980995bdd06ec8081dfb6ab364162bdd64245c3
   FirebaseMessaging: 2b9f56aa4ed286e1f0ce2ee1d413aabb8f9f5cb9
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_app_badge: edb873d09e1d7eb6a146c12f9a8db260f6465c8d
   flutter_credit_card: 48fb35065294868bc6a3e7f18a42f28929b84f48
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086

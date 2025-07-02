@@ -30,8 +30,8 @@ class NotificationService {
       announcement: true,
       badge: true,
       carPlay: true,
-      criticalAlert: true,
-      provisional: true,
+      criticalAlert: false,
+      provisional: false,
     );
 
     if (notificationSettings.authorizationStatus ==
@@ -94,6 +94,7 @@ class NotificationService {
         print(message.notification!.title);
         print(message.notification!.body);
       }
+
       if (Platform.isIOS) {
         if (context.mounted) {
           // initLocalNotifications(context, message);
@@ -169,7 +170,8 @@ class NotificationService {
     });
   }
 
-  // !Todo when app is background and terminated
+  // ! Todo when app is background and terminated
+
   Future<void> setUpInteractMessage(BuildContext context) async {
     // ! when app is terminated
     RemoteMessage? message =

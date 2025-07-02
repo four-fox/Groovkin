@@ -36,6 +36,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // FlutterAppBadge.count(1);
 }
 
 Future<void> configureSDK() async {
@@ -147,15 +148,23 @@ class _MyAppState extends State<MyApp> {
     }
 
     // Todo Firebase Notification Start
+
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
+
     // notificationService.getDeviceToken();
     // Todo Firebase Notification End
     // Todo Start the socket server
 
     // SocketClass.singleton.connectSocket();
     // initStateNotification();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    NotificationService().localNotificationsPlugin.cancelAll();
   }
 
   @override

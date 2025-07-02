@@ -24,7 +24,7 @@ dependencies:
     path: ../groovkin/plugin/flutter_credit_card-master
   permission_handler: ^11.3.1
   get_storage: ^2.1.1
-
+  flutter_app_badge: ^2.0.2
   bottom_bar_matu:
     path: ../groovkin/plugin/bottom_bar_matu-master
   date_field: ^6.0.3+1
@@ -68,7 +68,7 @@ dependencies:
   app_settings: ^5.1.1  
   fluttertoast: ^8.2.8  
   url_launcher: ^6.3.1  
-
+  
   otp_text_field:
     path: ../groovkin/plugin/OTPTextField-dev
   country_state_city_pro:
