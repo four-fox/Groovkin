@@ -481,7 +481,7 @@ class AuthController extends GetxController {
       if ((API().sp.read("role") == "eventManager") &&
           (companyNameController.text.isNotEmpty))
         "company_name": companyNameController.text,
-      /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
+      // /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
       if (API().sp.read("role") == "eventOrganizer" &&
           stateController.text.isNotEmpty)
         "select_state": stateController.text,
@@ -502,13 +502,13 @@ class AuthController extends GetxController {
 
   ///>>>>>>>>>>>>>>>>>>>>> edit profile
 
-  editProfile() async {
-    var formData = form.FormData.fromMap({
-      "firstName": firstNameController.text,
-      "lastName": lastNameController.text,
-      "UserName": displayNameController.text,
-    });
-  }
+  // editProfile() async {
+  //   var formData = form.FormData.fromMap({
+  //     "firstName": firstNameController.text,
+  //     "lastName": lastNameController.text,
+  //     "UserName": displayNameController.text,
+  //   });
+  // }
 
   // Todo Logout
   Future<void> logout() async {

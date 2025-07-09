@@ -63,10 +63,11 @@ Widget messageWidget(
                     child: Container(
                       height: 55,
                       width: Get.width / 1.4,
-                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.red.withOpacity(0.5),
+                        color: Colors.red.withValues(alpha:0.5),
                         // borderRadius: BorderRadius.circular(30)
                       ),
                       child: const Center(
@@ -147,13 +148,14 @@ Widget messageWidget(
                                                     .chatData!
                                                     .data!
                                                     .data![index]
-                                                    .event!)['banner_image']['media_path'],
-                                            // jsonDecode(controller
-                                            //         .chatData!
-                                            //         .data!
-                                            //         .data![index]
-                                            //         .event!)['profile_picture']
-                                            //     [0]['media_path'],
+                                                    .event!)['banner_image']
+                                                ['media_path'],
+                                        // jsonDecode(controller
+                                        //         .chatData!
+                                        //         .data!
+                                        //         .data![index]
+                                        //         .event!)['profile_picture']
+                                        //     [0]['media_path'],
                                       ),
                                       fit: BoxFit.fill)),
                               child: Column(
@@ -163,8 +165,8 @@ Widget messageWidget(
                                   Align(
                                       alignment: Alignment.topRight,
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8, top: 8),
+                                        padding: const EdgeInsets.only(
+                                            right: 8, top: 8),
                                         child: eventDateWidget(
                                             date:
                                                 "${DateTime.parse(jsonDecode(controller.chatData!.data!.data![index].event!)['start_date_time']).day} ",
@@ -187,7 +189,8 @@ Widget messageWidget(
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(left: 8.0, bottom: 6),
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, bottom: 6),
                               child: Text(
                                 jsonDecode(controller.chatData!.data!
                                     .data![index].event!)['event_title'],
@@ -236,7 +239,8 @@ Widget messageWidget(
                     ),
                   )
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5),
                 child:
                     controller.chatData!.data!.data![index].senderId !=
                             API().sp.read('userId')
@@ -279,7 +283,8 @@ Widget messageWidget(
                                                       BorderRadius.circular(8),
                                                   color: DynamicColor.grayClr,
                                                 ),
-                                                padding: const EdgeInsets.all(6),
+                                                padding:
+                                                    const EdgeInsets.all(6),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -290,7 +295,8 @@ Widget messageWidget(
                                                                 .data![index]
                                                                 .parentChat ==
                                                             null
-                                                        ? const SizedBox.shrink()
+                                                        ? const SizedBox
+                                                            .shrink()
                                                         : jsonDecode(controller
                                                                         .chatData!
                                                                         .data!
@@ -299,7 +305,8 @@ Widget messageWidget(
                                                                         .parentChat!)[
                                                                     'media'] ==
                                                                 null
-                                                            ? const SizedBox.shrink()
+                                                            ? const SizedBox
+                                                                .shrink()
                                                             : GestureDetector(
                                                                 onTap:
                                                                     () async {
@@ -313,8 +320,8 @@ Widget messageWidget(
                                                                 child: Padding(
                                                                   padding: const EdgeInsets
                                                                       .symmetric(
-                                                                          vertical:
-                                                                              8.0),
+                                                                      vertical:
+                                                                          8.0),
                                                                   child:
                                                                       Container(
                                                                     width: Get
@@ -395,7 +402,8 @@ Widget messageWidget(
                                                                 .data![index]
                                                                 .msg
                                                                 .toString(),
-                                                            style: const TextStyle(
+                                                            style:
+                                                                const TextStyle(
                                                               fontSize: 12,
                                                               color:
                                                                   Colors.white,
@@ -405,14 +413,16 @@ Widget messageWidget(
                                                             ),
                                                           ),
                                                     Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          right: 3),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 3),
                                                       child: Align(
                                                         alignment: Alignment
                                                             .bottomRight,
                                                         child: Text(
                                                           '${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
-                                                          style: const TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 10,
                                                             color: Colors.white,
                                                           ),
@@ -431,11 +441,13 @@ Widget messageWidget(
                                             alignment: Alignment.bottomRight,
                                             children: [
                                               Container(
-                                                constraints: const BoxConstraints(
+                                                constraints:
+                                                    const BoxConstraints(
                                                   maxWidth: 250,
                                                   minWidth: 20,
                                                 ),
-                                                padding: const EdgeInsets.all(10),
+                                                padding:
+                                                    const EdgeInsets.all(10),
                                                 decoration: BoxDecoration(
                                                     color: DynamicColor.grayClr,
                                                     borderRadius:
@@ -451,7 +463,8 @@ Widget messageWidget(
                                                                 .data![index]
                                                                 .parentChat ==
                                                             null
-                                                        ? const SizedBox.shrink()
+                                                        ? const SizedBox
+                                                            .shrink()
                                                         : Container(
                                                             decoration:
                                                                 const BoxDecoration(
@@ -546,7 +559,7 @@ Widget messageWidget(
                                                                         ),
                                                                         color: Colors
                                                                             .grey
-                                                                            .withOpacity(0.5)),
+                                                                            .withValues(alpha:0.5)),
                                                               ),
                                                             ),
                                                           ),
@@ -581,7 +594,8 @@ Widget messageWidget(
                                                                   .data![index]
                                                                   .msg
                                                                   .toString(),
-                                                              style: const TextStyle(
+                                                              style:
+                                                                  const TextStyle(
                                                                 fontSize: 12,
                                                                 color: Colors
                                                                     .black,
@@ -591,16 +605,19 @@ Widget messageWidget(
                                                               ),
                                                             ),
                                                           )
-                                                        : const SizedBox.shrink(),
+                                                        : const SizedBox
+                                                            .shrink(),
                                                     Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          right: 3),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 3),
                                                       child: Align(
                                                         alignment: Alignment
                                                             .bottomRight,
                                                         child: Text(
                                                           '${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
-                                                          style: const TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 10,
                                                             color: Colors.black,
                                                           ),
@@ -627,7 +644,7 @@ Widget messageWidget(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 8),
                                       decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.5),
+                                          color: Colors.red.withValues(alpha:0.5),
                                           borderRadius:
                                               BorderRadius.circular(30)),
                                       child: const Center(
@@ -670,7 +687,8 @@ Widget messageWidget(
                                                                     .parentChat!)[
                                                                 'media'] ==
                                                             null
-                                                        ? const SizedBox.shrink()
+                                                        ? const SizedBox
+                                                            .shrink()
                                                         : GestureDetector(
                                                             onTap: () async {
                                                               await controller
@@ -695,8 +713,9 @@ Widget messageWidget(
                                                                 color:
                                                                     Colors.grey,
                                                               ),
-                                                              padding: const EdgeInsets
-                                                                  .only(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
                                                                       left: 6),
                                                               child: Column(
                                                                 crossAxisAlignment:
@@ -720,7 +739,8 @@ Widget messageWidget(
                                                                             .black),
                                                                   ),
                                                                   Padding(
-                                                                    padding: const EdgeInsets.symmetric(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
                                                                         vertical:
                                                                             8.0),
                                                                     child:
@@ -867,8 +887,8 @@ Widget messageWidget(
                                                           child: Container(
                                                             width: Get.width,
                                                             padding:
-                                                                const EdgeInsets.all(
-                                                                    6),
+                                                                const EdgeInsets
+                                                                    .all(6),
                                                             child: Column(
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
@@ -899,7 +919,8 @@ Widget messageWidget(
                                                                     ? jsonDecode(controller.chatData!.data!.data![index].parentChat!)['media'] ==
                                                                             null
                                                                         ? Text(
-                                                                            jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ?? (jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event']==null?"Event Reply": jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title']),
+                                                                            jsonDecode(controller.chatData!.data!.data![index].parentChat!)['msg'] ??
+                                                                                (jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'] == null ? "Event Reply" : jsonDecode(jsonDecode(controller.chatData!.data!.data![index].parentChat!)['event'])['event_title']),
                                                                             maxLines:
                                                                                 3,
                                                                           )
@@ -980,7 +1001,8 @@ Widget messageWidget(
                                                               .data![index]
                                                               .msg
                                                               .toString(),
-                                                          style: const TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 12,
                                                             color: Colors.black,
                                                             fontWeight:
@@ -994,14 +1016,16 @@ Widget messageWidget(
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          right: 3),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 3),
                                                       child: Align(
                                                         alignment: Alignment
                                                             .bottomRight,
                                                         child: Text(
                                                           '${timeAgoSinceDate(controller.chatData!.data!.data![index].createdAt!.toString())}',
-                                                          style: const TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             fontSize: 10,
                                                             color: Colors.black,
                                                           ),
@@ -1009,8 +1033,9 @@ Widget messageWidget(
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          right: 3.0),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 3.0),
                                                       child: controller
                                                                   .chatData!
                                                                   .data!

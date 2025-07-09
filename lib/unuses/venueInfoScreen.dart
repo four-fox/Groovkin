@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -23,13 +20,11 @@ class VenueInfoScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight*2),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 2),
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/grayClor.png"),
-                fit: BoxFit.fill
-            ),
+                image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -41,11 +36,12 @@ class VenueInfoScreen extends StatelessWidget {
                   height: 40,
                 ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Get.back();
                   },
-                  child: ImageIcon(const AssetImage("assets/backArrow.png"),
-                  color: theme.primaryColor,
+                  child: ImageIcon(
+                    const AssetImage("assets/backArrow.png"),
+                    color: theme.primaryColor,
                   ),
                 ),
                 const SizedBox(
@@ -62,16 +58,18 @@ class VenueInfoScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: Get.width/1.3,
-                      child: Padding(padding: const EdgeInsets.only(left: 7),
-                      child: Text("Herkimer County Fairgrounds Event Place",
-                        maxLines: 2,
-                        style: poppinsRegularStyle(
-                          fontSize: 15,
-                          context: context,
-                          color: theme.primaryColor,
+                      width: Get.width / 1.3,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 7),
+                        child: Text(
+                          "Herkimer County Fairgrounds Event Place",
+                          maxLines: 2,
+                          style: poppinsRegularStyle(
+                            fontSize: 15,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
                         ),
-                      ),
                       ),
                     )
                   ],
@@ -88,9 +86,12 @@ class VenueInfoScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withOpacity(0.7),
-              width: double.infinity,     padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
-              child: Text("Contact Information",
+              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              width: double.infinity,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+              child: Text(
+                "Contact Information",
                 style: poppinsRegularStyle(
                   fontSize: 16,
                   color: DynamicColor.lightRedClr,
@@ -101,34 +102,39 @@ class VenueInfoScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            eventDateTime(theme: theme,context: context,
-              iconBgClr: DynamicColor.grayClr.withOpacity(0.3),
+            eventDateTime(
+              theme: theme,
+              context: context,
+              iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
             ),
             const SizedBox(
               height: 10,
             ),
-            eventDateTime(theme: theme,context: context,
-              iconBgClr: DynamicColor.grayClr.withOpacity(0.3),
+            eventDateTime(
+                theme: theme,
+                context: context,
+                iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
                 img: "assets/groupIcon.png",
-              text: "400-450"
-            ),
+                text: "400-450"),
             const SizedBox(
               height: 10,
             ),
-            eventDateTime(theme: theme,context: context,
-                iconBgClr: DynamicColor.grayClr.withOpacity(0.3),
+            eventDateTime(
+                theme: theme,
+                context: context,
+                iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
                 icon: true,
                 Iconss: Icons.location_on_sharp,
-                text: "135 Cemetery St, Frankfort, NY 13340, USA"
-            ),
+                text: "135 Cemetery St, Frankfort, NY 13340, USA"),
             const SizedBox(
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withOpacity(0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
-              child: Text("Venue Image",
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Text(
+                "Venue Image",
                 style: poppinsRegularStyle(
                   fontSize: 16,
                   color: DynamicColor.lightRedClr,
@@ -142,26 +148,25 @@ class VenueInfoScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
               child: SizedBox(
-                height: kToolbarHeight*1.7,
+                height: kToolbarHeight * 1.7,
                 child: ListView.builder(
                     itemCount: 15,
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context,index){
+                    itemBuilder: (BuildContext context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 3.0),
                         child: Container(
-                          height: kToolbarHeight*1.6,
+                          height: kToolbarHeight * 1.6,
                           width: 120,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: DynamicColor.yellowClr,width: 1),
+                              border: Border.all(
+                                  color: DynamicColor.yellowClr, width: 1),
                               image: const DecorationImage(
                                   image: AssetImage('assets/venueImg.png'),
-                                  fit: BoxFit.fill
-                              )
-                          ),
+                                  fit: BoxFit.fill)),
                         ),
                       );
                     }),
@@ -171,10 +176,11 @@ class VenueInfoScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withOpacity(0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
-              child: Text("Max Occupancy",
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Text(
+                "Max Occupancy",
                 style: poppinsRegularStyle(
                   fontSize: 16,
                   color: DynamicColor.lightRedClr,
@@ -185,19 +191,21 @@ class VenueInfoScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            eventDateTime(theme: theme,context: context,
-                iconBgClr: DynamicColor.grayClr.withOpacity(0.3),
+            eventDateTime(
+                theme: theme,
+                context: context,
+                iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
                 img: "assets/groupIcon.png",
-                text: "400-450"
-            ),
+                text: "400-450"),
             const SizedBox(
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withOpacity(0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 12),
-              child: Text("Amenities",
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Text(
+                "Amenities",
                 style: poppinsRegularStyle(
                   fontSize: 16,
                   color: DynamicColor.lightRedClr,
@@ -212,9 +220,9 @@ class VenueInfoScreen extends StatelessWidget {
                 itemCount: 5,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context,index){
+                itemBuilder: (BuildContext context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(left: 12.0,top: 6),
+                    padding: const EdgeInsets.only(left: 12.0, top: 6),
                     child: Row(
                       children: [
                         const Image(
@@ -222,15 +230,16 @@ class VenueInfoScreen extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                          child: Text('Cabaret Licenses',
+                          child: Text(
+                            'Cabaret Licenses',
                             style: poppinsRegularStyle(
-                                fontSize: 13,color:
-                            theme.primaryColor,
-                                context: context
-                            ),
+                                fontSize: 13,
+                                color: theme.primaryColor,
+                                context: context),
                           ),
                         ),
-                        Icon(Icons.check,
+                        Icon(
+                          Icons.check,
                           color: DynamicColor.lightRedClr,
                           size: 17,
                         )
@@ -245,15 +254,11 @@ class VenueInfoScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
-            Get.toNamed(Routes.eventPreview,
-                arguments: {
-                  "viewDetails": 1
-                }
-            );
+          onTap: () {
+            Get.toNamed(Routes.eventPreview, arguments: {"viewDetails": 1});
           },
           text: "Continue",
         ),

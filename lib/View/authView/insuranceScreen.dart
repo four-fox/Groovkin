@@ -22,7 +22,6 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (Get.isRegistered<HomeController>()) {
       _homeController = Get.find<HomeController>();

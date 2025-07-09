@@ -226,8 +226,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
+                        padding: const EdgeInsets.only(
+                            top: 10.0, bottom: 10, left: 12),
                         child: Text(
                           controller.eventDetail!.data!.eventTitle.toString(),
                           style: poppinsMediumStyle(
@@ -282,12 +282,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                         value:
                             controller.eventDetail!.data!.featuring.toString()),
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 10),
                       child: Container(
                         width: double.infinity,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.darkGrayClr),
@@ -318,8 +318,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .eventDetail!.data!.services!.length,
                                     itemBuilder: (BuildContext context, indx) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(horizontal: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -367,11 +367,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .hardwareProvide!.length,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: const AlwaysScrollableScrollPhysics(),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(horizontal: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -446,8 +447,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .eventDetail!.data!.services!.length,
                                     itemBuilder: (BuildContext context, indx) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(horizontal: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -492,11 +493,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .eventMusicChoiceTags!.length,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: const AlwaysScrollableScrollPhysics(),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(horizontal: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -568,11 +570,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         .eventActivityChoiceTags!.length,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    physics: const AlwaysScrollableScrollPhysics(),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(horizontal: 6),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
                                         child: Chip(
                                           backgroundColor:
                                               DynamicColor.lightBlackClr,
@@ -808,8 +811,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 4),
                                   child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 15),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
                                       color: DynamicColor.lightRedClr,
@@ -860,7 +863,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                         ),
                                       )
                             : Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -938,7 +942,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withOpacity(0.6)),
+                  color: DynamicColor.whiteClr.withValues(alpha:0.6)),
             ),
           ),
         ),

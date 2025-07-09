@@ -54,6 +54,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
 
   @override
   void initState() {
+    super.initState();
     if (Get.isRegistered<AuthController>()) {
       _authController = Get.find<AuthController>();
     } else {
@@ -268,11 +269,13 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withOpacity(0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withOpacity(0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         hintText: "Select meeting date",
                         label: Padding(
                           padding: const EdgeInsets.only(left: 15.0),
@@ -285,8 +288,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           ),
                         ),
                         labelStyle: TextStyle(color: DynamicColor.whiteClr),
-                        hintStyle:
-                            const TextStyle(fontFamily: 'Montserrat', fontSize: 13),
+                        hintStyle: const TextStyle(
+                            fontFamily: 'Montserrat', fontSize: 13),
                         contentPadding: const EdgeInsets.all(5),
                         suffixIcon: Icon(
                           Icons.calendar_month,
@@ -346,11 +349,13 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withOpacity(0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withOpacity(0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         hintText: "Select meeting date",
                         label: Padding(
                           padding: const EdgeInsets.only(left: 15.0),
@@ -363,8 +368,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           ),
                         ),
                         labelStyle: TextStyle(color: DynamicColor.whiteClr),
-                        hintStyle:
-                            const TextStyle(fontFamily: 'Montserrat', fontSize: 13),
+                        hintStyle: const TextStyle(
+                            fontFamily: 'Montserrat', fontSize: 13),
                         contentPadding: const EdgeInsets.all(5),
                         suffixIcon: Icon(
                           Icons.calendar_month,

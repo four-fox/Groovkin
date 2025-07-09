@@ -1085,7 +1085,6 @@ class ListClass {
 class EventBinding implements Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
     Get.lazyPut<EventController>(() => EventController());
   }
 }

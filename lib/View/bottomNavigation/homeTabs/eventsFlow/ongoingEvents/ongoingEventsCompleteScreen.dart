@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -25,7 +22,7 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme, text:"Complete Event"),
+      appBar: customAppBar(theme: theme, text: "Complete Event"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -36,7 +33,8 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Review',
+              child: Text(
+                'Review',
                 style: poppinsRegularStyle(
                   fontSize: 16,
                   color: theme.primaryColor,
@@ -44,30 +42,30 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
                 ),
               ),
             ),
-          RatingBar.builder(
-          initialRating: 3,
-          minRating: 1,
-          direction: Axis.horizontal,
-          allowHalfRating: false,
-          itemCount: 5,
-          unratedColor: Colors.grey,
-
-          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => const Icon(
-            Icons.star,
-            color: Colors.amber,
-          ),
-          onRatingUpdate: (rating) {
-            _controller.ratingValue = rating.toString();
-            print(rating);
-          },
-        ),
+            RatingBar.builder(
+              initialRating: 3,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: false,
+              itemCount: 5,
+              unratedColor: Colors.grey,
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => const Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              onRatingUpdate: (rating) {
+                _controller.ratingValue = rating.toString();
+                print(rating);
+              },
+            ),
             const SizedBox(
               height: 20,
             ),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Description',
+              child: Text(
+                'Description',
                 style: poppinsRegularStyle(
                   fontSize: 16,
                   color: theme.primaryColor,
@@ -81,17 +79,17 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
             CustomTextFieldsHintText(
               maxLine: 6,
               controller: _controller.ratingDescriptionController,
-              borderClr: DynamicColor.grayClr.withOpacity(0.5),
+              borderClr: DynamicColor.grayClr.withValues(alpha:0.5),
               hintText: "write here...",
             ),
           ],
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () {
             _controller.completeEvent(eventDetails: eventDetails);
             // Get.toNamed(Routes.disclaimerScreen);
           },

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dio/dio.dart' as form;
 
 class UserHomeController extends GetxController {
   /// quick survey of groovkin
@@ -90,12 +89,12 @@ class UserHomeController extends GetxController {
   getAllFollower() async {}
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> create new group
-  crateNewGroup() async {
-    var formData = form.FormData.fromMap({
-      "userLis": [],
-      "groupName": "asdf",
-    });
-  }
+  // crateNewGroup() async {
+  //   var formData = form.FormData.fromMap({
+  //     "userLis": [],
+  //     "groupName": "asdf",
+  //   });
+  // }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo Group
 }
@@ -103,7 +102,6 @@ class UserHomeController extends GetxController {
 class UserHomeBinding implements Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
     Get.lazyPut<UserHomeController>(() => UserHomeController());
   }
 }

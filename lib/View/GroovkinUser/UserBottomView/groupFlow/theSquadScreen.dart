@@ -50,7 +50,7 @@ class TheSquadScreen extends StatelessWidget {
                     'notifyBackBtn': false,
                     "statusText": "adsf",
                     "appBarTitle": "Event Preview",
-                    "notifyBackBtn": true,
+                    // "notifyBackBtn": true,
                   });
                 },
                 child: Padding(

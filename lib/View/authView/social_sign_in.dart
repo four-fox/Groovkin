@@ -160,8 +160,8 @@ class _SocialSignInState extends State<SocialSignIn> {
               iconValue: true,
               bgColor: Colors.transparent,
               gradientClr: true,
-              color2: DynamicColor.grayClr.withOpacity(0.4),
-              color1: DynamicColor.grayClr.withOpacity(0.1),
+              color2: DynamicColor.grayClr.withValues(alpha:0.4),
+              color1: DynamicColor.grayClr.withValues(alpha:0.1),
               imageIconn: ImageIcon(
                 const AssetImage("assets/google.png"),
                 color: theme.primaryColor,
@@ -190,8 +190,8 @@ class _SocialSignInState extends State<SocialSignIn> {
                 iconValue: true,
                 bgColor: Colors.transparent,
                 gradientClr: true,
-                color2: DynamicColor.grayClr.withOpacity(0.4),
-                color1: DynamicColor.grayClr.withOpacity(0.1),
+                color2: DynamicColor.grayClr.withValues(alpha:0.4),
+                color1: DynamicColor.grayClr.withValues(alpha:0.1),
                 imageIconn: ImageIcon(
                   const AssetImage("assets/spotify.png"),
                   color: theme.primaryColor,

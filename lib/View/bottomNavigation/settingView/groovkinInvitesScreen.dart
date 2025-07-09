@@ -177,7 +177,7 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                     //                 // width:width?? 100,
                     //                 padding: EdgeInsets.symmetric(horizontal: 8,vertical: 6),
                     //                 decoration: BoxDecoration(
-                    //                   color:DynamicColor.lightBlackClr.withOpacity(0.8),
+                    //                   color:DynamicColor.lightBlackClr.withValues(0.8),
                     //                   borderRadius: BorderRadius.circular(8),
                     //                 ),
                     //                 child:Row(
@@ -217,7 +217,7 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                     //                   // width:width?? 100,
                     //                   padding: EdgeInsets.symmetric(horizontal: 6,vertical: 3),
                     //                   decoration: BoxDecoration(
-                    //                     color:DynamicColor.lightBlackClr.withOpacity(0.8),
+                    //                     color:DynamicColor.lightBlackClr.withValues(0.8),
                     //                     borderRadius: BorderRadius.circular(8),
                     //                   ),
                     //                   child:Row(

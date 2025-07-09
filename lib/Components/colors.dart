@@ -29,7 +29,7 @@ class DynamicColor {
   static Color secondaryClr = const Color(0xffd39e2e);
   static Color dropDownClr = const Color(0xffbb7b17);
   static Color finishedTextClr = const Color(0xff770113);
-  static Color disabledColor = Colors.grey.withOpacity(0.6);
+  static Color disabledColor = Colors.grey.withValues(alpha:0.6);
 }
 
 getformattedTime(TimeOfDay time) {

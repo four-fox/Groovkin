@@ -37,7 +37,7 @@ class OTPScreen extends StatelessWidget {
                   ),
                   CustomTextFields(
                     labelText: "email",
-                    borderClr: DynamicColor.grayClr.withOpacity(0.4),
+                    borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
                     controller: controller.forgotPassEmailController,
                     validationError: "new password",
                     isEmail: true,
@@ -72,7 +72,7 @@ class OTPScreen extends StatelessWidget {
                   ),
                   CustomTextFields(
                     labelText: "password",
-                    borderClr: DynamicColor.grayClr.withOpacity(0.4),
+                    borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
                     controller: controller.newPassController,
                     validationError: "new password",
                   ),
@@ -81,7 +81,7 @@ class OTPScreen extends StatelessWidget {
                   ),
                   CustomTextFields(
                     labelText: 'confirm password',
-                    borderClr: DynamicColor.grayClr.withOpacity(0.4),
+                    borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
                     controller: controller.newConfirmPassController,
                     validationError: "confirm password",
                   ),

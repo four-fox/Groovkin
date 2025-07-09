@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:get/get.dart';
@@ -56,7 +55,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
   void initState() {
     border = OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.grey.withOpacity(0.7),
+        color: Colors.grey.withValues(alpha:0.7),
         width: 2.0,
       ),
     );
@@ -239,7 +238,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
         ],
       ),
       bottomNavigationBar: SafeArea(
-        bottom:  true,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
@@ -282,8 +281,8 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                                   ),
                                 ),
                                 Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 10.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
                                     child: Text(
                                       'Your Payment has been\nsuccessfully done ',
                                       textAlign: TextAlign.center,

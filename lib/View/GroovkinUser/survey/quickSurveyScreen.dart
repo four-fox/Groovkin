@@ -53,7 +53,7 @@ class UserQuickSurveyScreen extends StatelessWidget {
                       'We will match your life style in interest section then you can get easily your desire events.',
                       style: poppinsMediumStyle(
                           fontSize: 12,
-                          color: DynamicColor.lightRedClr.withOpacity(0.9)),
+                          color: DynamicColor.lightRedClr.withValues(alpha:0.9)),
                     ),
                   ],
                 ),
@@ -109,8 +109,8 @@ class UserQuickSurveyScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
                                   child: Text(
                                     "We hope to understand more about you in the future so that we can increase the visibility of communities with common interests!",
                                     overflow: TextOverflow.ellipsis,

@@ -150,13 +150,13 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                         height: 15,
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsets.only(left: 0.0, right: 0.0, top: 10.0),
+                        padding: const EdgeInsets.only(
+                            left: 0.0, right: 0.0, top: 10.0),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(13),
                             border: Border.all(
-                                color: DynamicColor.grayClr.withOpacity(0.6)),
+                                color: DynamicColor.grayClr.withValues(alpha:0.6)),
                           ),
                           child: Column(
                             children: [
@@ -243,7 +243,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                 .mediaPath!),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -287,9 +288,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           CustomButton(
                                             heights: 35,
                                             color2: DynamicColor.redClr
-                                                .withOpacity(0.8),
+                                                .withValues(alpha:0.8),
                                             color1: DynamicColor.redClr
-                                                .withOpacity(0.8),
+                                                .withValues(alpha:0.8),
                                             widths: Get.width / 2.4,
                                             backgroundClr: false,
                                             fontSized: 12,
@@ -337,7 +338,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                       Get.width,
                                                                   child:
                                                                       Padding(
-                                                                    padding: const EdgeInsets.symmetric(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
                                                                         vertical:
                                                                             12.0,
                                                                         horizontal:
@@ -452,9 +454,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                               Get.back();
                                                                             },
                                                                             color2:
-                                                                                DynamicColor.greenClr.withOpacity(0.8),
+                                                                                DynamicColor.greenClr.withValues(alpha:0.8),
                                                                             color1:
-                                                                                DynamicColor.greenClr.withOpacity(0.8),
+                                                                                DynamicColor.greenClr.withValues(alpha:0.8),
                                                                             widths:
                                                                                 Get.width / 1.4,
                                                                             backgroundClr:
@@ -474,9 +476,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                         Utils.showToast();
                                                       },
                                             color2: DynamicColor.greenClr
-                                                .withOpacity(0.8),
+                                                .withValues(alpha:0.8),
                                             color1: DynamicColor.greenClr
-                                                .withOpacity(0.8),
+                                                .withValues(alpha:0.8),
                                             widths: Get.width / 2.4,
                                             backgroundClr: false,
                                             borderClr: Colors.transparent,
@@ -966,7 +968,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           .hardwareProvide!.length,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: const AlwaysScrollableScrollPhysics(),
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return controller
@@ -1018,7 +1021,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       itemCount: controller.eventDetail!.data!
                                           .musicGenre!.length,
                                       itemBuilder:
@@ -1074,7 +1078,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           .eventMusicChoiceTags!.length,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: const AlwaysScrollableScrollPhysics(),
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return controller
@@ -1122,7 +1127,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           .eventActivityChoiceTags!.length,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
-                                      physics: const AlwaysScrollableScrollPhysics(),
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return controller
@@ -1389,7 +1395,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withOpacity(0.6)),
+                  color: DynamicColor.whiteClr.withValues(alpha:0.6)),
             ),
           ),
         ),

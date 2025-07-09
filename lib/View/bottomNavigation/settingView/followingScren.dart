@@ -86,7 +86,7 @@ class FollowingScreen extends StatelessWidget {
                             context: context,
                             color: selectedVal.value == 0
                                 ? theme.primaryColor
-                                : DynamicColor.whiteClr.withOpacity(0.3),
+                                : DynamicColor.whiteClr.withValues(alpha:0.3),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -113,7 +113,7 @@ class FollowingScreen extends StatelessWidget {
                               context: context,
                               color: selectedVal.value == 1
                                   ? theme.primaryColor
-                                  : DynamicColor.whiteClr.withOpacity(0.3)),
+                                  : DynamicColor.whiteClr.withValues(alpha:0.3)),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -140,7 +140,7 @@ class FollowingScreen extends StatelessWidget {
                               context: context,
                               color: selectedVal.value == 2
                                   ? theme.primaryColor
-                                  : DynamicColor.whiteClr.withOpacity(0.3)),
+                                  : DynamicColor.whiteClr.withValues(alpha:0.3)),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -348,7 +348,7 @@ class AllUsers extends StatelessWidget {
                                     borderRadius: const BorderRadius.only(
                                       bottomRight: Radius.circular(10),
                                     ),
-                                    color: /*_controller.allUnFollower!.data!.data![index].isFollow!.value ==true?DynamicColor.grayClr.withOpacity(0.3): */
+                                    color: /*_controller.allUnFollower!.data!.data![index].isFollow!.value ==true?DynamicColor.grayClr.withValues(0.3): */
                                         DynamicColor.grayClr),
                                 child: Center(
                                   child: Text(

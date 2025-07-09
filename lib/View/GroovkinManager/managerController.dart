@@ -801,7 +801,6 @@ class ManagerController extends GetxController {
 class ManagerBinding implements Bindings {
   @override
   void dependencies() {
-    // TODO: implement dependencies
     Get.lazyPut<ManagerController>(() => ManagerController());
   }
 }

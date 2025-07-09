@@ -131,7 +131,7 @@ class ChatNewUserScreen extends StatelessWidget {
                                       shape: Border(
                                         bottom: BorderSide(
                                             color: theme.primaryColor
-                                                .withOpacity(0.7)),
+                                                .withValues(alpha:0.7)),
                                       ),
                                       leading: CircleAvatar(
                                         radius: 25,
@@ -155,7 +155,7 @@ class ChatNewUserScreen extends StatelessWidget {
                                           fontSize: 14,
                                           context: context,
                                           color: theme.primaryColor
-                                              .withOpacity(0.8),
+                                              .withValues(alpha:0.8),
                                         ),
                                       ),
                                     ),

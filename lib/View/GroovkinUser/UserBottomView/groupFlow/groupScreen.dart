@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -45,7 +44,8 @@ class GroupScreen extends StatelessWidget {
               Get.toNamed(Routes.theSquadScreen);
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
               child: Column(
                 children: [
                   Row(
@@ -109,7 +109,7 @@ class CreateNewGroup extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 17,
-                  backgroundColor: DynamicColor.grayClr.withOpacity(0.6),
+                  backgroundColor: DynamicColor.grayClr.withValues(alpha:0.6),
                   child: Theme(
                     data: Theme.of(context).copyWith(
                       unselectedWidgetColor: Colors.white,
@@ -187,7 +187,7 @@ class CreateNewGroup extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 17,
                                     backgroundColor:
-                                        DynamicColor.grayClr.withOpacity(0.6),
+                                        DynamicColor.grayClr.withValues(alpha:0.6),
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -345,7 +345,7 @@ class ViewCreatedGroup extends StatelessWidget {
             child: Text(
               "Participants 3  ",
               style: poppinsRegularStyle(
-                  fontSize: 13, color: theme.primaryColor.withOpacity(0.5)),
+                  fontSize: 13, color: theme.primaryColor.withValues(alpha:0.5)),
             ),
           ),
           const SizedBox(
@@ -363,8 +363,8 @@ class ViewCreatedGroup extends StatelessWidget {
                       Get.toNamed(Routes.createNewGroup);
                     },
                     child: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 12),
                       child: Row(
                         children: [
                           const CircleAvatar(
@@ -388,11 +388,11 @@ class ViewCreatedGroup extends StatelessWidget {
                           CircleAvatar(
                               radius: 15,
                               backgroundColor:
-                                  DynamicColor.grayClr.withOpacity(0.4),
+                                  DynamicColor.grayClr.withValues(alpha:0.4),
                               child: Icon(
                                 Icons.clear,
                                 size: 20,
-                                color: theme.primaryColor.withOpacity(0.7),
+                                color: theme.primaryColor.withValues(alpha:0.7),
                               ))
                         ],
                       ),
@@ -403,7 +403,7 @@ class ViewCreatedGroup extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: SafeArea(
-        bottom: true ,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

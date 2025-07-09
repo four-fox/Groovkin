@@ -39,7 +39,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       Get.arguments["isComingFromNotification"] ?? false;
 
   final EventController _controller = Get.find();
-
   late AuthController _authController;
 
   @override
@@ -108,10 +107,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: DynamicColor.avatarBgClr.withOpacity(0.4),
+                            color:
+                                DynamicColor.avatarBgClr.withValues(alpha: 0.4),
                             borderRadius: BorderRadius.circular(13),
                             border: Border.all(
-                                color: DynamicColor.grayClr.withOpacity(0.6)),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6)),
                           ),
                           child: Column(
                             children: [
@@ -144,18 +145,17 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                       vertical: 6,
                                                       horizontal: 18),
                                               decoration: const BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topRight:
-                                                        Radius.circular(10),
-                                                    bottomLeft:
-                                                        Radius.circular(10),
-                                                  ),
-                                                  image: DecorationImage(
-                                                    image: AssetImage(
-                                                        "assets/topbtnGradent.png"),
-                                                    fit: BoxFit.fill,
-                                                  )),
+                                                borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(10),
+                                                  bottomLeft:
+                                                      Radius.circular(10),
+                                                ),
+                                                image: DecorationImage(
+                                                  image: AssetImage(
+                                                      "assets/topbtnGradent.png"),
+                                                  fit: BoxFit.fill,
+                                                ),
+                                              ),
                                               child: Center(
                                                 child: Text(
                                                   appBarTitle,
@@ -1412,7 +1412,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withOpacity(0.6)),
+                  color: DynamicColor.whiteClr.withValues(alpha:0.6)),
             ),
           ),
         ),

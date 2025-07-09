@@ -813,8 +813,8 @@ class ChatController extends GetxController {
                         isReplying(false);
                         replyModel = null;
                         // replyId = null;
-                        Map<Permission, PermissionStatus> statuses =
-                            await permissionsNeeded.request();
+                        // Map<Permission, PermissionStatus> statuses =
+                        //     await permissionsNeeded.request();
                         if (item.title == 'Camera') {
                           customPopupMenuController.hideMenu();
                           // if (statuses.values.every(

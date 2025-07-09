@@ -208,7 +208,7 @@ showLoading() {
       toastBuilder: (_) => Center(
               child: LoaderClass(
             colorOne: DynamicColor.yellowClr,
-            colorTwo: DynamicColor.yellowClr.withOpacity(0.6),
+            colorTwo: DynamicColor.yellowClr.withValues(alpha:0.6),
           )),
       animationDuration: const Duration(milliseconds: 300));
 }

@@ -72,7 +72,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         width: 80,
                         // padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
                         decoration: BoxDecoration(
-                          color: DynamicColor.lightBlackClr.withOpacity(0.5),
+                          color: DynamicColor.lightBlackClr.withValues(alpha:0.5),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
@@ -123,7 +123,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: DynamicColor.darkGrayClr.withOpacity(0.7),
+                    color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +136,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         style: poppinsMediumStyle(
                             fontSize: 19.0, context: context),
                         colors: [
-                          const Color(0xffd6a331).withOpacity(0.5),
+                          const Color(0xffd6a331).withValues(alpha:0.5),
                           const Color(0xffd6a331),
                         ],
                       ),
@@ -325,7 +325,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
           style: poppinsRegularStyle(
             context: context,
             fontSize: 15,
-            color: DynamicColor.whiteClr.withOpacity(0.6),
+            color: DynamicColor.whiteClr.withValues(alpha:0.6),
           ),
         )
       ],

@@ -96,25 +96,25 @@ class CustomTextFields extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withOpacity(0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
           ),
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withOpacity(0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withOpacity(0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withOpacity(0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
           ),
         ),
         validator: (value) {
@@ -252,7 +252,7 @@ class SearchTextFields extends StatelessWidget {
       decoration: BoxDecoration(
           color: bgColor ?? Colors.transparent,
           borderRadius: BorderRadius.circular(borderRadius ?? 8),
-          border: Border.all(color: DynamicColor.grayClr.withOpacity(0.6))),
+          border: Border.all(color: DynamicColor.grayClr.withValues(alpha:0.6))),
       child: TextFormField(
         onTap: onTap,
         controller: controller,

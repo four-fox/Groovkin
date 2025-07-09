@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -23,17 +20,16 @@ class VenueScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight*3.3),
+          preferredSize: const Size.fromHeight(kToolbarHeight * 3.3),
           child: Column(
             children: [
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/grayClor.png"),
-                      fit: BoxFit.fill
-                  ),
+                      fit: BoxFit.fill),
                 ),
-                child: customAppBar(theme: theme,text: "Venue",imagee: true),
+                child: customAppBar(theme: theme, text: "Venue", imagee: true),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -41,44 +37,42 @@ class VenueScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                        width: Get.width/1.25,
+                        width: Get.width / 1.25,
                         child: SearchTextFields(
                           controller: TextEditingController(),
                           hintText: "Search Venue",
                         )),
                     GestureDetector(
-                      onTap: (){
-                      },
+                      onTap: () {},
                       child: Container(
                         height: 50,
                         width: 50,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                            border: Border.all(color: DynamicColor.grayClr.withOpacity(0.6)),
-                            borderRadius: BorderRadius.circular(8)
+                            border: Border.all(
+                                color: DynamicColor.grayClr.withValues(alpha:0.6,)),
+                            borderRadius: BorderRadius.circular(8)),
+                        child: ImageIcon(
+                          const AssetImage("assets/filterIcons.png"),
+                          color: DynamicColor.grayClr.withValues(alpha:0.6),
                         ),
-                        child: ImageIcon(const AssetImage("assets/filterIcons.png"),
-                          color: DynamicColor.grayClr.withOpacity(0.6),),
                       ),
                     )
                   ],
                 ),
               ),
               TabBar(
-                unselectedLabelStyle: poppinsMediumStyle(
-                    fontSize: 14,
-                    context: context
-                ),
-                labelStyle: poppinsMediumStyle(
-                    fontSize: 14,
-                    context: context
-                ),
+                unselectedLabelStyle:
+                    poppinsMediumStyle(fontSize: 14, context: context),
+                labelStyle: poppinsMediumStyle(fontSize: 14, context: context),
                 labelPadding: const EdgeInsets.all(6),
                 indicatorPadding: const EdgeInsets.all(10),
                 indicatorColor: theme.primaryColor,
                 tabs: [
                   const Tab(text: "Discover for you"),
-                  const Tab(text: "Organized Event",),
+                  const Tab(
+                    text: "Organized Event",
+                  ),
                 ],
               ),
             ],
@@ -95,7 +89,6 @@ class VenueScreen extends StatelessWidget {
   }
 }
 
-
 class DiscoverView extends StatelessWidget {
   DiscoverView({super.key});
   Prediction? initialValue;
@@ -109,123 +102,152 @@ class DiscoverView extends StatelessWidget {
         itemCount: list.length,
         shrinkWrap: true,
         physics: const AlwaysScrollableScrollPhysics(),
-        itemBuilder: (BuildContext context,index){
-      return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return
-                  MapLocationPicker(
-                    hideLocation: true,
-                    // lat: double.parse(eventData.latitude.toString()),
-                    // long: double.parse(eventData.longitude.toString()),
-                    minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
-                    apiKey:
-                    "AIzaSyCPDZxZYp3Su6ReZTh4lHRoie6HAM2P0sU",
-                    canPopOnNextButtonTaped: true,
+        itemBuilder: (BuildContext context, index) {
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return MapLocationPicker(
+                      hideLocation: true,
+                      // lat: double.parse(eventData.latitude.toString()),
+                      // long: double.parse(eventData.longitude.toString()),
+                      minMaxZoomPreference: const MinMaxZoomPreference(0, 16),
+                      apiKey: "AIzaSyCPDZxZYp3Su6ReZTh4lHRoie6HAM2P0sU",
+                      canPopOnNextButtonTaped: true,
 
-                    onNext: (GeocodingResult? result) {
-                    },
-                  );
+                      onNext: (GeocodingResult? result) {},
+                    );
 
-                //   MapLocationPicker(
-                //   apiKey: "AIzaSyCPDZxZYp3Su6ReZTh4lHRoie6HAM2P0sU",
-                //   popOnNextButtonTaped: true,
-                //   currentLatLng: const LatLng(29.146727, 76.464895),
-                //     stackWidget:stackWidgets(context,theme),
-                //   btnOnTap: (){
-                //     // Get.toNamed(Routes.hardwareProvidedScreen);
-                //   },
-                //   onNext: (GeocodingResult? result) {
-                //     if (result != null) {
-                //       address = result.formattedAddress ?? "";
-                //     }
-                //   },
-                //   onSuggestionSelected: (PlacesDetailsResponse? result) {
-                //     if (result != null) {
-                //
-                //       autocompletePlace =
-                //           result.result.formattedAddress ?? "";
-                //       // controller.update();
-                //     }
-                //   },
-                // );
-              },
-            ),
-          );
-        },
-        child: Column(
-          children: [
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage(list[index].img.toString()),
-              ),
-              // trailing:
-              // Text(list[index].distance.toString(),
-              //   style: poppinsRegularStyle(
-              //     fontSize: 11,
-              //     color: DynamicColor.lightRedClr,
-              //   ),
-              // ),
-              trailing: SizedBox(
-                width: 60,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    children: [
-                      Icon(Icons.location_on_sharp,
-                      size: 12,
-                        color: DynamicColor.lightRedClr,
+                    //   MapLocationPicker(
+                    //   apiKey: "AIzaSyCPDZxZYp3Su6ReZTh4lHRoie6HAM2P0sU",
+                    //   popOnNextButtonTaped: true,
+                    //   currentLatLng: const LatLng(29.146727, 76.464895),
+                    //     stackWidget:stackWidgets(context,theme),
+                    //   btnOnTap: (){
+                    //     // Get.toNamed(Routes.hardwareProvidedScreen);
+                    //   },
+                    //   onNext: (GeocodingResult? result) {
+                    //     if (result != null) {
+                    //       address = result.formattedAddress ?? "";
+                    //     }
+                    //   },
+                    //   onSuggestionSelected: (PlacesDetailsResponse? result) {
+                    //     if (result != null) {
+                    //
+                    //       autocompletePlace =
+                    //           result.result.formattedAddress ?? "";
+                    //       // controller.update();
+                    //     }
+                    //   },
+                    // );
+                  },
+                ),
+              );
+            },
+            child: Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: AssetImage(list[index].img.toString()),
+                  ),
+                  // trailing:
+                  // Text(list[index].distance.toString(),
+                  //   style: poppinsRegularStyle(
+                  //     fontSize: 11,
+                  //     color: DynamicColor.lightRedClr,
+                  //   ),
+                  // ),
+                  trailing: SizedBox(
+                    width: 60,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_sharp,
+                            size: 12,
+                            color: DynamicColor.lightRedClr,
+                          ),
+                          Text(
+                            list[index].distance.toString(),
+                            style: poppinsRegularStyle(
+                              fontSize: 11,
+                              color: DynamicColor.lightRedClr,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(list[index].distance.toString(),
-                        style: poppinsRegularStyle(
-                          fontSize: 11,
-                          color: DynamicColor.lightRedClr,
-                        ),),
-                    ],
+                    ),
+                  ),
+                  title: Text(
+                    list[index].title.toString(),
+                    style: poppinsRegularStyle(
+                        fontSize: 14,
+                        color: theme.primaryColor,
+                        context: context),
+                  ),
+                  subtitle: Text(
+                    list[index].subtitle.toString(),
+                    style: poppinsRegularStyle(
+                        fontSize: 14,
+                        color: theme.primaryColor.withValues(alpha:0.5),
+                        context: context),
                   ),
                 ),
-              ),
-              title: Text(list[index].title.toString(),
-              style: poppinsRegularStyle(
-                fontSize: 14,
-                color: theme.primaryColor,
-                context: context
-              ),
-              ),
-              subtitle: Text(list[index].subtitle.toString(),
-              style: poppinsRegularStyle(
-                fontSize: 14,
-                color: theme.primaryColor.withOpacity(0.5),
-                  context: context
-              ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Divider(
+                    color: DynamicColor.grayClr,
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Divider(
-                color: DynamicColor.grayClr,
-              ),
-            )
-          ],
-        ),
-      );
-    });
+          );
+        });
   }
+
   List<Discover> list = [
-    Discover(img: "assets/profileImg.png",title: "Herkimer County Fairgrounds",subtitle: "Event Place",distance: "1.5 miles"),
-    Discover(img: "assets/profileImg.png",title: "Charles A. Gaetano Stadium",subtitle: "Event Place",distance: "1.5 miles"),
-    Discover(img: "assets/profileImg.png",title: "Herkimer County Fairgrounds",subtitle: "Event Place",distance: "1.5 miles"),
-    Discover(img: "assets/profileImg.png",title: "Charles A. Gaetano Stadium",subtitle: "Event Place",distance: "1.5 miles"),
-    Discover(img: "assets/profileImg.png",title: "Herkimer County Fairgrounds",subtitle: "Event Place",distance: "1.5 miles"),
-    Discover(img: "assets/profileImg.png",title: "Charles A. Gaetano Stadium",subtitle: "Event Place",distance: "1.5 miles"),
-    Discover(img: "assets/profileImg.png",title: "Charles A. Gaetano Stadium",subtitle: "Event Place",distance: "1.5 miles"),
+    Discover(
+        img: "assets/profileImg.png",
+        title: "Herkimer County Fairgrounds",
+        subtitle: "Event Place",
+        distance: "1.5 miles"),
+    Discover(
+        img: "assets/profileImg.png",
+        title: "Charles A. Gaetano Stadium",
+        subtitle: "Event Place",
+        distance: "1.5 miles"),
+    Discover(
+        img: "assets/profileImg.png",
+        title: "Herkimer County Fairgrounds",
+        subtitle: "Event Place",
+        distance: "1.5 miles"),
+    Discover(
+        img: "assets/profileImg.png",
+        title: "Charles A. Gaetano Stadium",
+        subtitle: "Event Place",
+        distance: "1.5 miles"),
+    Discover(
+        img: "assets/profileImg.png",
+        title: "Herkimer County Fairgrounds",
+        subtitle: "Event Place",
+        distance: "1.5 miles"),
+    Discover(
+        img: "assets/profileImg.png",
+        title: "Charles A. Gaetano Stadium",
+        subtitle: "Event Place",
+        distance: "1.5 miles"),
+    Discover(
+        img: "assets/profileImg.png",
+        title: "Charles A. Gaetano Stadium",
+        subtitle: "Event Place",
+        distance: "1.5 miles"),
   ];
 
-  Widget stackWidgets(context,theme){
+  Widget stackWidgets(context, theme) {
     return Column(
       children: [
         const SizedBox(
@@ -235,25 +257,25 @@ class DiscoverView extends StatelessWidget {
           children: [
             const Align(
                 alignment: Alignment.centerLeft,
-                child: Icon(Icons.arrow_back_outlined,
-                size: 29,
+                child: Icon(
+                  Icons.arrow_back_outlined,
+                  size: 29,
                 )),
             Align(
               alignment: Alignment.center,
-              child: Text("Venue",
-              style: poppinsMediumStyle(
-                fontSize: 16,
-                context: context,
-                color: DynamicColor.blackClr,
-                fontWeight: FontWeight.w600
-              ),
+              child: Text(
+                "Venue",
+                style: poppinsMediumStyle(
+                    fontSize: 16,
+                    context: context,
+                    color: DynamicColor.blackClr,
+                    fontWeight: FontWeight.w600),
               ),
             )
           ],
         ),
-
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
           child: Container(
               color: DynamicColor.blackClr,
               child: SearchTextFields(
@@ -262,7 +284,7 @@ class DiscoverView extends StatelessWidget {
         ),
         const Spacer(),
         Container(
-          height: kToolbarHeight*2.5,
+          height: kToolbarHeight * 2.5,
           color: theme.scaffoldBackgroundColor,
           child: Column(
             children: [
@@ -276,41 +298,44 @@ class DiscoverView extends StatelessWidget {
                     alignment: Alignment.bottomCenter,
                     child: Row(
                       children: [
-                        Icon(Icons.location_on_sharp,
+                        Icon(
+                          Icons.location_on_sharp,
                           size: 12,
                           color: DynamicColor.lightRedClr,
                         ),
-                        Text('1.5 miles',
+                        Text(
+                          '1.5 miles',
                           style: poppinsRegularStyle(
                             fontSize: 11,
                             color: DynamicColor.lightRedClr,
-                          ),),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                title: Text('Charles A. Gaetano Stadium',
+                title: Text(
+                  'Charles A. Gaetano Stadium',
                   style: poppinsRegularStyle(
                       fontSize: 14,
                       color: theme.primaryColor,
-                      context: context
-                  ),
+                      context: context),
                 ),
-                subtitle: Text('Event Place',
+                subtitle: Text(
+                  'Event Place',
                   style: poppinsRegularStyle(
                       fontSize: 14,
-                      color: theme.primaryColor.withOpacity(0.5),
-                      context: context
-                  ),
+                      color: theme.primaryColor.withValues(0.5),
+                      context: context),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
                   borderClr: Colors.transparent,
                   color1: DynamicColor.blackClr,
                   color2: DynamicColor.blackClr,
-                  onTap: (){
+                  onTap: () {
                     Get.toNamed(Routes.venueDetailsScreen);
                   },
                   text: "Next",
@@ -319,14 +344,12 @@ class DiscoverView extends StatelessWidget {
             ],
           ),
         ),
-
       ],
     );
   }
 }
 
-class Discover{
-  String? img,title,subtitle,distance;
-  Discover({this.title,this.img,this.subtitle,this.distance});
+class Discover {
+  String? img, title, subtitle, distance;
+  Discover({this.title, this.img, this.subtitle, this.distance});
 }
-

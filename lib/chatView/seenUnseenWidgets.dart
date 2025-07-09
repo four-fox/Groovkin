@@ -4,11 +4,16 @@ import '../Components/Network/API.dart';
 import '../Components/timeAgoWidget.dart';
 import 'chatInnerDataModel.dart';
 
-class SeenUnseenWidget extends StatelessWidget {
-  SeenUnseenWidget({super.key, this.chatData});
+class SeenUnseenWidget extends StatefulWidget {
+  const SeenUnseenWidget({super.key, this.chatData});
 
-  ChatData? chatData;
+  final ChatData? chatData;
 
+  @override
+  State<SeenUnseenWidget> createState() => _SeenUnseenWidgetState();
+}
+
+class _SeenUnseenWidgetState extends State<SeenUnseenWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,17 +26,17 @@ class SeenUnseenWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  '${timeAgoSinceDate(chatData!.createdAt!.toString())}',
+                  '${timeAgoSinceDate(widget.chatData!.createdAt!.toString())}',
                   style: TextStyle(
                     fontSize: 10,
-                    color: chatData!.senderId != API().sp.read('userId')
+                    color: widget.chatData!.senderId != API().sp.read('userId')
                         ? Colors.black87
                         : Colors.white,
                   ),
                 ),
               ),
             ),
-            chatData!.isSeen == 1
+            widget.chatData!.isSeen == 1
                 ? const Icon(
                     Icons.done_all,
                     size: 13,

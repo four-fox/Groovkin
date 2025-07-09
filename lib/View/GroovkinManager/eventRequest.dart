@@ -62,8 +62,6 @@ class _EventRequestsState extends State<EventRequests> {
                             "eventId": data.id ?? 1,
                             // "reportedEventView": 1
                           });
-
-                          
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -77,7 +75,8 @@ class _EventRequestsState extends State<EventRequests> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
                                   child: Text(
                                     data.eventTitle ?? "",
                                     style: poppinsMediumStyle(

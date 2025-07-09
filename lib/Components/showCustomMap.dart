@@ -60,7 +60,7 @@ class _ShowCustomMapState extends State<ShowCustomMap> {
             widget.lng!,
           ),
           radius: 500,
-          fillColor: Colors.red.withOpacity(0.4),
+          fillColor: Colors.red.withValues(alpha:0.4),
           strokeWidth: 0,
         ),
     };
@@ -306,7 +306,7 @@ eventOrganizer(
                         style: poppinsRegularStyle(
                             fontSize: 12,
                             context: context,
-                            color: DynamicColor.grayClr.withOpacity(0.6),
+                            color: DynamicColor.grayClr.withValues(alpha:0.6),
                             fontWeight: FontWeight.w600),
                       ),
                     ],

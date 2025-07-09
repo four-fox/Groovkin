@@ -70,7 +70,7 @@ class PendingScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
-                                  color: DynamicColor.grayClr.withOpacity(0.6)),
+                                  color: DynamicColor.grayClr.withValues(alpha:0.6)),
                             ),
                             child: Column(
                               children: [
@@ -94,11 +94,12 @@ class PendingScreen extends StatelessWidget {
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 6, horizontal: 8),
                                           decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(10),
-                                                  topRight:
-                                                      Radius.circular(10)),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(10),
+                                                      topRight:
+                                                          Radius.circular(10)),
                                               color: DynamicColor.lightBlackClr
                                               // image: DecorationImage(
                                               //     image: AssetImage("assets/topbtnGradent.png"),
@@ -141,7 +142,8 @@ class PendingScreen extends StatelessWidget {
                                                     .toString()),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -174,8 +176,8 @@ class PendingScreen extends StatelessWidget {
                                   height: 15,
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: CustomButton(
                                     borderClr: Colors.transparent,
                                     heights: 35,

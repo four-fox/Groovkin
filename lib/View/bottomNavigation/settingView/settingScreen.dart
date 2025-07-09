@@ -22,11 +22,10 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-
   RxBool switchValue = false.obs;
   RxBool switchProfileValue = false.obs;
   late AuthController _authController;
-  
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +35,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _authController = Get.put(AuthController());
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -62,7 +61,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           ? Border(
                               bottom: BorderSide(
                                   width: 4.0,
-                                  color: DynamicColor.grayClr.withOpacity(0.6)),
+                                  color: DynamicColor.grayClr.withValues(alpha:0.6)),
                             )
                           : null,
                       image: const DecorationImage(
@@ -109,7 +108,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               style: poppinsMediumStyle(
                                   context: context,
                                   fontSize: 10,
-                                  color: DynamicColor.grayClr.withOpacity(0.9)),
+                                  color: DynamicColor.grayClr.withValues(alpha:0.9)),
                             ),
                         ],
                       ),
@@ -521,7 +520,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         style: poppinsMediumStyle(
                           fontSize: 18,
                           context: context,
-                          color: DynamicColor.lightYellowClr.withOpacity(0.8),
+                          color: DynamicColor.lightYellowClr.withValues(alpha:0.8),
                         ),
                       ),
                 Padding(
@@ -531,7 +530,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     style: poppinsMediumStyle(
                       fontSize: 16,
                       context: context,
-                      color: DynamicColor.grayClr.withOpacity(0.7),
+                      color: DynamicColor.grayClr.withValues(alpha:0.7),
                     ),
                   ),
                 ),
@@ -541,7 +540,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ? const SizedBox.shrink()
                         : Icon(
                             Icons.arrow_forward_ios,
-                            color: DynamicColor.grayClr.withOpacity(0.7),
+                            color: DynamicColor.grayClr.withValues(alpha:0.7),
                           )
                     : SizedBox(
                         height: 30,
@@ -559,7 +558,7 @@ class _SettingScreenState extends State<SettingScreen> {
               height: 4,
             ),
             Divider(
-              color: DynamicColor.grayClr.withOpacity(0.7),
+              color: DynamicColor.grayClr.withValues(alpha:0.7),
               thickness: 1.2,
             ),
           ],

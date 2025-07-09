@@ -208,19 +208,19 @@ class _CreateProfileState extends State<CreateProfile> {
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withOpacity(0.6)), //<-- SEE HERE
+                                    .withValues(alpha:0.6)), //<-- SEE HERE
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withOpacity(0.6)), //<-- SEE HERE
+                                    .withValues(alpha:0.6)), //<-- SEE HERE
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withOpacity(0.6)), //<-- SEE HERE
+                                    .withValues(alpha:0.6)), //<-- SEE HERE
                           ),
                           hintText: "Enter Year of birth",
                           label: Padding(
@@ -277,7 +277,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
                                     color: DynamicColor.avatarBgClr
-                                        .withOpacity(0.6)),
+                                        .withValues(alpha:0.6)),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -431,20 +431,20 @@ class _CreateProfileState extends State<CreateProfile> {
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withOpacity(0.6)), //<-- SEE HERE
+                                    .withValues(alpha:0.6)), //<-- SEE HERE
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withOpacity(0.6)), //<-- SEE HERE
+                                    .withValues(alpha:0.6)), //<-- SEE HERE
                           ),
 
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withOpacity(0.6)), //<-- SEE HERE
+                                    .withValues(alpha:0.6)), //<-- SEE HERE
                           ),
                         )),
                     // sp.read("role")=="eventOrganizer"? CustomTextFields(

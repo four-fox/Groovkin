@@ -79,8 +79,7 @@ class ManagerApprovedEventScreen extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(13),
-                border:
-                    Border.all(color: DynamicColor.grayClr.withOpacity(0.6)),
+                border: Border.all(color: DynamicColor.grayClr.withValues(alpha:0.6)),
               ),
               child: Column(
                 children: [
@@ -144,8 +143,8 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                           },
                           backgroundClr: false,
                           borderClr: Colors.transparent,
-                          color2: DynamicColor.lightBlackClr.withOpacity(0.7),
-                          color1: DynamicColor.lightBlackClr.withOpacity(0.7),
+                          color2: DynamicColor.lightBlackClr.withValues(alpha:0.7),
+                          color1: DynamicColor.lightBlackClr.withValues(alpha:0.7),
                           text: "Change",
                           textClr: theme.primaryColor,
                         ),
@@ -157,8 +156,8 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                           },
                           backgroundClr: false,
                           borderClr: Colors.transparent,
-                          color2: DynamicColor.lightBlackClr.withOpacity(0.7),
-                          color1: DynamicColor.lightBlackClr.withOpacity(0.7),
+                          color2: DynamicColor.lightBlackClr.withValues(alpha:0.7),
+                          color1: DynamicColor.lightBlackClr.withValues(alpha:0.7),
                           textClr: theme.primaryColor,
                           text: "Cancel",
                         ),
@@ -211,12 +210,12 @@ class ManagerApprovedEventScreen extends StatelessWidget {
                                       children: [
                                         CircleAvatar(
                                           backgroundColor: DynamicColor.greenClr
-                                              .withOpacity(0.3),
+                                              .withValues(alpha:0.3),
                                           radius: 35,
                                           child: CircleAvatar(
                                             backgroundColor: DynamicColor
                                                 .greenClr
-                                                .withOpacity(0.3),
+                                                .withValues(alpha:0.3),
                                             radius: 23,
                                             child: Icon(
                                               Icons.check,

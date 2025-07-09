@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_final_fields
 
 import 'package:flutter/material.dart';
@@ -14,8 +11,6 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 class CancelReason extends StatelessWidget {
   CancelReason({super.key});
 
-
-
   int _eventId = Get.arguments['eventId'];
   bool doubleBack = Get.arguments['doubleBack'];
 
@@ -26,86 +21,89 @@ class CancelReason extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Cancel"),
-      body: GetBuilder<EventController>(
-        builder: (controller) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Text("Reason for cancellation",
-                    style: poppinsRegularStyle(
-                      fontSize: 18,
-                      context: context,
-                      color: theme.primaryColor,
-                    ),
+      appBar: customAppBar(theme: theme, text: "Cancel"),
+      body: GetBuilder<EventController>(builder: (controller) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: Text(
+                  "Reason for cancellation",
+                  style: poppinsRegularStyle(
+                    fontSize: 18,
+                    context: context,
+                    color: theme.primaryColor,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  color: DynamicColor.avatarBgClr.withOpacity(0.4),
-                  child: TextFormField(
-                    maxLines: 6,
-                    controller: controller.cancellationController,
-                    style:poppinsRegularStyle(
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.4),
+                child: TextFormField(
+                  maxLines: 6,
+                  controller: controller.cancellationController,
+                  style: poppinsRegularStyle(
+                      context: context,
+                      fontSize: 14,
+                      color: DynamicColor.whiteClr),
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if (value == null) {
+                      return null;
+                    } else {
+                      return "Please enter cancellation reason";
+                    }
+                  },
+                  decoration: InputDecoration(
+                    hintText: "write here",
+                    hintStyle: poppinsRegularStyle(
                         context: context,
                         fontSize: 14,
-                        color: DynamicColor.whiteClr
+                        color: DynamicColor.grayClr.withValues(alpha:0.7)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                          color: DynamicColor.grayClr
+                              .withValues(alpha:0.5)), //<-- SEE HERE
                     ),
-                      textInputAction:TextInputAction.done,
-                    validator: (value){
-                      if(value == null){
-                        return null;
-                      } else {
-                        return "Please enter cancellation reason";
-                      }
-                    },
-                    decoration: InputDecoration(
-                      hintText: "write here",
-                      hintStyle: poppinsRegularStyle(
-                          context: context,
-                          fontSize: 14,
-                          color: DynamicColor.grayClr.withOpacity(0.7)
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: DynamicColor.grayClr.withOpacity(0.5)), //<-- SEE HERE
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: DynamicColor.grayClr.withOpacity(0.5)), //<-- SEE HERE
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: DynamicColor.grayClr.withOpacity(0.5)), //<-- SEE HERE
-                      ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                          color: DynamicColor.grayClr
+                              .withValues(alpha:0.5)), //<-- SEE HERE
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                          color: DynamicColor.grayClr
+                              .withValues(alpha:0.5)), //<-- SEE HERE
                     ),
                   ),
                 ),
-              ],
-            ),
-          );
-        }
-      ),
+              ),
+            ],
+          ),
+        );
+      }),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: (){
+          onTap: () {
             // if(cancellationForm.currentState!.validate()){
-              _controller.cancelEvents(eventId: _eventId,back: doubleBack);
+            _controller.cancelEvents(eventId: _eventId, back: doubleBack);
             // }
-         // Get.offAllNamed(Routes.bottomNavigationView,
-         // arguments: {
-         //   "indexValue": 2
-         // }
-         // );
+            // Get.offAllNamed(Routes.bottomNavigationView,
+            // arguments: {
+            //   "indexValue": 2
+            // }
+            // );
           },
           text: "Send",
         ),

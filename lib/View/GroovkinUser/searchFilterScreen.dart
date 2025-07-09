@@ -34,7 +34,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
     // initialDateSelected: DateTime(2022, 3, 15),
     // endDateSelected: DateTime(2022, 3, 20),
   );
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -97,7 +97,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                         fit: BoxFit.fill,
                       ),
                       border: Border.all(
-                          color: DynamicColor.grayClr.withOpacity(0.7))),
+                          color: DynamicColor.grayClr.withValues(alpha:0.7))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

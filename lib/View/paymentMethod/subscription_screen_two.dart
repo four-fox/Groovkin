@@ -41,11 +41,13 @@ class _SubscriptionScreenTwoState extends State<SubscriptionScreenTwo> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AuthController>(builder: (controller) {
-      return SubscriptionClass(
-        customerInfo: controller.customerInfo,
-      );
-    });
+    return GetBuilder<AuthController>(
+      builder: (controller) {
+        return SubscriptionClass(
+          customerInfo: controller.customerInfo,
+        );
+      },
+    );
   }
 }
 
@@ -155,7 +157,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                             end: Alignment.topCenter,
                           ),
                           // color: Colors.grey[200],
-                          // color: DynamicColor.darkGrayClr.withOpacity(0.7),
+                          // color: DynamicColor.darkGrayClr.withValues(0.7),
                           border: Border.all(
                             color:
                                 subscriptionList[index].isSelected.value == true

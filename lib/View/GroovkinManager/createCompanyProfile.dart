@@ -120,7 +120,7 @@ class _CreateCompanyProfileScreenState
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: DynamicColor.grayClr.withOpacity(0.4),
+                              color: DynamicColor.grayClr.withValues(alpha:0.4),
                             ),
                             child: Center(
                               child: Text(
@@ -175,11 +175,12 @@ class _CreateCompanyProfileScreenState
                     child: DottedBorder(
                       borderType: BorderType.RRect,
                       radius: const Radius.circular(20),
-                      color: DynamicColor.whiteClr.withOpacity(0.8),
+                      color: DynamicColor.whiteClr.withValues(alpha:0.8),
                       child: Container(
                         height: kToolbarHeight * 2.8,
                         decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(20)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
                           color: theme.scaffoldBackgroundColor,
                         ),
                         width: Get.width,
@@ -239,9 +240,9 @@ class _CreateCompanyProfileScreenState
                                                 alignment: Alignment.topRight,
                                                 children: [
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                            horizontal: 8.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
                                                     child: Container(
                                                       width: 100,
                                                       height:
@@ -286,7 +287,8 @@ class _CreateCompanyProfileScreenState
                                                                           .filename
                                                                     });
                                                               },
-                                                              child: const Center(
+                                                              child:
+                                                                  const Center(
                                                                 child: Icon(
                                                                   Icons
                                                                       .play_arrow,
@@ -294,7 +296,8 @@ class _CreateCompanyProfileScreenState
                                                                 ),
                                                               ),
                                                             )
-                                                          : const SizedBox.shrink(),
+                                                          : const SizedBox
+                                                              .shrink(),
                                                     ),
                                                   ),
                                                   GestureDetector(
@@ -363,9 +366,9 @@ class _CreateCompanyProfileScreenState
                                                 alignment: Alignment.topRight,
                                                 children: [
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                            horizontal: 8.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
                                                     child: Container(
                                                       width: 100,
                                                       height:
@@ -433,7 +436,8 @@ class _CreateCompanyProfileScreenState
                                                                 ),
                                                               ),
                                                             )
-                                                          : const SizedBox.shrink(),
+                                                          : const SizedBox
+                                                              .shrink(),
                                                     ),
                                                   ),
                                                   GestureDetector(
@@ -601,7 +605,8 @@ class _CreateCompanyProfileScreenState
                               // hideLocation: true,
                               // lat: double.parse(eventData.latitude.toString()),
                               // long: double.parse(eventData.longitude.toString()),
-                              minMaxZoomPreference: const MinMaxZoomPreference(0, 15),
+                              minMaxZoomPreference:
+                                  const MinMaxZoomPreference(0, 15),
                               apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
                               // apiKey: "AIzaSyAG0a15cbPw73mCfgD9AEpEFKy_6pV-nFA",
                               canPopOnNextButtonTaped: true,
@@ -794,8 +799,10 @@ class _CreateCompanyProfileScreenState
                                           container: SizedBox(
                                             width: Get.width,
                                             child: Padding(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 0.0, horizontal: 4),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 0.0,
+                                                      horizontal: 4),
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -804,9 +811,9 @@ class _CreateCompanyProfileScreenState
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Padding(
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                            horizontal: 10.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10.0),
                                                     child: Text(
                                                       '“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”',
                                                       overflow:

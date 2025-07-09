@@ -119,7 +119,7 @@ eventsTitles({text}) {
   return Container(
     width: Get.width,
     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-    color: DynamicColor.avatarBgClr.withOpacity(0.44),
+    color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
     child: Text(
       text ?? "Contact Information",
       style: poppinsRegularStyle(fontSize: 16, color: DynamicColor.lightRedClr),
@@ -162,7 +162,7 @@ aboutEventCreator(
               style: poppinsMediumStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
-                color: DynamicColor.lightGrayClr.withOpacity(0.5),
+                color: DynamicColor.lightGrayClr.withValues(alpha:0.5),
               ),
             ),
           ),
@@ -508,9 +508,9 @@ locationWidget({text, theme, context, Color? bgClr, double? verticalPadding}) {
             color: DynamicColor.grayClr,
           ),
           SizedBox(
-            width: Get.width/2.3,
+            width: Get.width / 2.3,
             child: Text(
-              text??'Herkimer County Fairgrounds',
+              text ?? 'Herkimer County Fairgrounds',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: poppinsRegularStyle(
@@ -533,7 +533,7 @@ eventDateWidget({theme, context, Color? bgClr, Color? textClr, date, day}) {
     width: 35,
     decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: bgClr ?? DynamicColor.avatarBgClr.withOpacity(0.8),
+        color: bgClr ?? DynamicColor.avatarBgClr.withValues(alpha:0.8),
         border: Border.all(
           color: theme.primaryColor,
         )),
@@ -591,12 +591,12 @@ myEventCardWidget(
           image: const AssetImage('assets/bluredImg.png'),
           fit: BoxFit.fill,
           colorFilter: ColorFilter.mode(
-            Colors.white.withOpacity(0.4),
+            Colors.white.withValues(alpha:0.4),
             BlendMode.modulate,
           )),
     ),
     // decoration: BoxDecoration(
-    //   color: DynamicColor.blackClr.withOpacity(0.2),
+    //   color: DynamicColor.blackClr.withValues(0.2),
     // ),
     child: Column(
       children: [
@@ -627,7 +627,8 @@ myEventCardWidget(
             attendedPeople == null
                 ? const SizedBox.shrink()
                 : Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage("assets/eventDays.png"),
@@ -723,7 +724,7 @@ venueService(
         CircleAvatar(
             radius: radius ?? 15,
             backgroundColor:
-                bgColor ?? DynamicColor.avatarBgClr.withOpacity(0.8),
+                bgColor ?? DynamicColor.avatarBgClr.withValues(alpha:0.8),
             child: icon == false
                 ? ImageIcon(
                     AssetImage(image ?? "assets/djing.png"),

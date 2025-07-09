@@ -73,8 +73,8 @@ class MyEventsScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(13),
                                   border: Border.all(
-                                      color: DynamicColor.grayClr
-                                          .withOpacity(0.6)),
+                                      color:
+                                          DynamicColor.grayClr.withValues(alpha:0.6)),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +154,8 @@ class MyEventsScreen extends StatelessWidget {
                                                         .toString()),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -193,9 +194,9 @@ class MyEventsScreen extends StatelessWidget {
                                         height: 35,
                                         bgColor: DynamicColor.avatarBgClr,
                                         color2: DynamicColor.avatarBgClr
-                                            .withOpacity(0.8),
+                                            .withValues(alpha:0.8),
                                         color1: DynamicColor.avatarBgClr
-                                            .withOpacity(0.8),
+                                            .withValues(alpha:0.8),
                                         iconValue: false,
                                         style: poppinsRegularStyle(
                                           fontSize: 13,

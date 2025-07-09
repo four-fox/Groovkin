@@ -19,7 +19,9 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: customAppBar(
-          theme: theme, text: "Upcoming", actions: [const Icon(Icons.more_vert)]),
+          theme: theme,
+          text: "Upcoming",
+          actions: [const Icon(Icons.more_vert)]),
       body: Padding(
         padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
         child: SingleChildScrollView(
@@ -30,7 +32,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(13),
                   border:
-                      Border.all(color: DynamicColor.grayClr.withOpacity(0.6)),
+                      Border.all(color: DynamicColor.grayClr.withValues(alpha:0.6)),
                 ),
                 child: Column(
                   children: [
@@ -220,7 +222,7 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
                   ? const SizedBox.shrink()
                   : Obx(
                       () => aboutEventCreator(
-                        isDelete: null,
+                          isDelete: null,
                           horizontalPadding: 0,
                           theme: theme,
                           context: context,
@@ -251,7 +253,8 @@ class ManagerUpcomingEventScreen extends StatelessWidget {
               ),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),

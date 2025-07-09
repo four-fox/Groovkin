@@ -145,7 +145,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.createProfile,
-      page: () => CreateProfile(),
+      page: () => const CreateProfile(),
       binding: CreateProfileBinding(),
     ),
     GetPage(

@@ -110,8 +110,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  color2: DynamicColor.lightWhite.withOpacity(0.5),
-                  color1: DynamicColor.lightWhite.withOpacity(0.5),
+                  color2: DynamicColor.lightWhite.withValues(alpha:0.5),
+                  color1: DynamicColor.lightWhite.withValues(alpha:0.5),
                   // bgImage: ,
                   widths: 80,
                   heights: 35,
@@ -389,7 +389,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                   onTap: () {
                     showDialog(
                       context: context,
-                      barrierColor: Colors.black.withOpacity(0.7),
+                      barrierColor: Colors.black.withValues(alpha:0.7),
                       barrierDismissible: false,
                       builder: (context) {
                         return AlertDialog(
@@ -446,7 +446,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
           else if (homecontroller.transactionData.length == 1 &&
               selectedIndex == null) {
             return SafeArea(
-              bottom:  true,
+              bottom: true,
               child: Container(
                 margin: const EdgeInsets.all(8.0),
                 child: CustomButton(

@@ -158,7 +158,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: DynamicColor.grayClr.withOpacity(0.6)),
+                            color: DynamicColor.grayClr.withValues(alpha:0.6)),
                         borderRadius: BorderRadius.circular(8)),
                     child: ImageIcon(
                       const AssetImage("assets/filterIcon.png"),
@@ -208,17 +208,18 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           children: [
                             CircleAvatar(
                               backgroundColor:
-                                  DynamicColor.yellowClr.withOpacity(0.7),
+                                  DynamicColor.yellowClr.withValues(alpha:0.7),
                               child: ImageIcon(
                                 const AssetImage("assets/groupIcons.png"),
                                 color: theme.primaryColor,
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30.0),
                               child: CircleAvatar(
                                 backgroundColor:
-                                    DynamicColor.yellowClr.withOpacity(0.7),
+                                    DynamicColor.yellowClr.withValues(alpha:0.7),
                                 child: ImageIcon(
                                   const AssetImage("assets/musicIcons.png"),
                                   color: theme.primaryColor,
@@ -227,7 +228,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             ),
                             CircleAvatar(
                               backgroundColor:
-                                  DynamicColor.yellowClr.withOpacity(0.7),
+                                  DynamicColor.yellowClr.withValues(alpha:0.7),
                               child: ImageIcon(
                                 const AssetImage("assets/supportIcon.png"),
                                 color: theme.primaryColor,
@@ -246,7 +247,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -396,7 +398,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -535,7 +538,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -677,7 +681,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: DynamicColor.darkGrayClr),
@@ -968,7 +973,8 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                   itemCount:
                                       controller.allEvents!.data!.data!.length,
                                   shrinkWrap: true,
-                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (BuildContext context, index) {
                                     EventData singleEventDat = controller
                                         .allEvents!.data!.data![index];

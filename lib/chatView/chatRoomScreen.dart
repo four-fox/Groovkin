@@ -10,9 +10,14 @@ import '../Components/textStyle.dart';
 import '../Routes/app_pages.dart';
 import 'chatRoomModel.dart';
 
-class ChatRoomScreen extends StatelessWidget {
-  ChatRoomScreen({super.key});
+class ChatRoomScreen extends StatefulWidget {
+  const ChatRoomScreen({super.key});
 
+  @override
+  State<ChatRoomScreen> createState() => _ChatRoomScreenState();
+}
+
+class _ChatRoomScreenState extends State<ChatRoomScreen> {
   final ChatController _controller = Get.find();
 
   Timer? onStoppedTyping;
@@ -163,7 +168,7 @@ class ChatRoomScreen extends StatelessWidget {
                                     shape: Border(
                                       bottom: BorderSide(
                                           color: theme.primaryColor
-                                              .withOpacity(0.7)),
+                                              .withValues(alpha:0.7)),
                                     ),
                                     leading: CircleAvatar(
                                       radius: 25,
@@ -220,7 +225,7 @@ class ChatRoomScreen extends StatelessWidget {
                                                       ? FontWeight.w700
                                                       : FontWeight.w600,
                                                   color: theme.primaryColor
-                                                      .withOpacity(0.8),
+                                                      .withValues(alpha: 0.8),
                                                 ),
                                               ),
                                   ),

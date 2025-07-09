@@ -106,8 +106,8 @@ class EditEventScreen extends StatelessWidget {
                       ),
                     ),
                     labelStyle: TextStyle(color: DynamicColor.grayClr),
-                    hintStyle:
-                        const TextStyle(fontFamily: 'poppinsRegular', fontSize: 13),
+                    hintStyle: const TextStyle(
+                        fontFamily: 'poppinsRegular', fontSize: 13),
                     contentPadding: const EdgeInsets.all(5),
                     suffixIcon: Icon(
                       Icons.calendar_month,
@@ -179,8 +179,8 @@ class EditEventScreen extends StatelessWidget {
                       ),
                     ),
                     labelStyle: TextStyle(color: DynamicColor.grayClr),
-                    hintStyle:
-                        const TextStyle(fontFamily: 'poppinsRegular', fontSize: 13),
+                    hintStyle: const TextStyle(
+                        fontFamily: 'poppinsRegular', fontSize: 13),
                     contentPadding: const EdgeInsets.all(5),
                     suffixIcon: Icon(
                       Icons.calendar_month,
@@ -246,7 +246,7 @@ class EditEventScreen extends StatelessWidget {
                         "selected time--------->${DateTimeField.convert(time).toString()}");
                     if (time != null) {
                       print('time>>>>>>>>>> $time');
-                      var format = DateFormat("HH:mm ss");
+                      // var format = DateFormat("HH:mm ss");
                       controller.proposedTimeWindowsController.text =
                           DateFormat.jm().format(DateFormat("hh:mm:ss").parse(
                               DateTimeField.convert(time)
@@ -391,7 +391,7 @@ class EditEventScreen extends StatelessWidget {
                 CustomTextFieldsHintText(
                   maxLine: 6,
                   controller: controller.rescheduleDescriptionController,
-                  borderClr: DynamicColor.grayClr.withOpacity(0.5),
+                  borderClr: DynamicColor.grayClr.withValues(alpha:0.5),
                   hintText: "write here...",
                 ),
               ],

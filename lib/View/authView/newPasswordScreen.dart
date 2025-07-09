@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -44,7 +43,7 @@ class NewPasswordScreen extends StatelessWidget {
               style: poppinsRegularStyle(
                   fontSize: 14,
                   context: context,
-                  color: DynamicColor.grayClr.withOpacity(0.8)),
+                  color: DynamicColor.grayClr.withValues(alpha:0.8)),
             ),
             const SizedBox(
               height: 10,

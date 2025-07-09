@@ -57,7 +57,7 @@ class CustomButton extends StatelessWidget {
                     end: Alignment.bottomLeft,
                     colors: [
                       color1 ?? const Color(0xffd8a735),
-                      color2 ?? const Color(0xffb77712).withOpacity(0.7),
+                      color2 ?? const Color(0xffb77712).withValues(alpha:0.7),
                     ],
                   )
                 : null),
@@ -136,7 +136,7 @@ class CustomButtonWithIcon extends StatelessWidget {
                     end: Alignment.bottomLeft,
                     colors: [
                       color1 ?? const Color(0xffd8a735),
-                      color2 ?? const Color(0xffb77712).withOpacity(0.7),
+                      color2 ?? const Color(0xffb77712).withValues(alpha:0.7),
                     ],
                   ),
             color: bgColor == null

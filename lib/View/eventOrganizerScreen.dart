@@ -58,7 +58,6 @@ class EventOrganizerScreen extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -232,13 +231,13 @@ class EventOrganizerScreen extends StatelessWidget {
                         maxLines: 3,
                         style: poppinsRegularStyle(
                           fontSize: 12,
-                          color: theme.primaryColor.withOpacity(0.7),
+                          color: theme.primaryColor.withValues(alpha:0.7),
                         ),
                       ),
                     ),
               Divider(
                 height: 9,
-                color: DynamicColor.lightWhite.withOpacity(0.5),
+                color: DynamicColor.lightWhite.withValues(alpha:0.5),
               ),
               eventOrganizerVal != 1
                   ? Padding(

@@ -176,7 +176,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
               style: poppinsRegularStyle(
                   fontSize: 14,
                   context: context,
-                  color: DynamicColor.grayClr.withOpacity(0.7)),
+                  color: DynamicColor.grayClr.withValues(alpha:0.7)),
             ),
             const SizedBox(
               height: 10,
@@ -227,7 +227,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Subtotal",
                 value:
-                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate() )}"),
+                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate())}"),
             const SizedBox(
               height: 10,
             ),

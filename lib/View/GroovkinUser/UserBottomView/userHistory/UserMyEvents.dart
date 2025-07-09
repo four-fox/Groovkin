@@ -65,7 +65,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 labelStyle: poppinsMediumStyle(
                     fontSize: 14,
                     context: context,
-                    color: DynamicColor.grayClr.withOpacity(0.5)),
+                    color: DynamicColor.grayClr.withValues(alpha:0.5)),
                 labelPadding: const EdgeInsets.all(6),
                 indicatorPadding: const EdgeInsets.all(10),
                 indicatorColor: Colors.transparent,
@@ -354,7 +354,8 @@ class _HistoryTabState extends State<HistoryTab> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -489,7 +490,8 @@ class _HistoryTabState extends State<HistoryTab> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -684,8 +686,8 @@ class _UpcomingEventState extends State<UpcomingEvent> {
             : controller.recommendedEventData!.data!.data!.isEmpty
                 ? noData(context: context, theme: theme)
                 : Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 8),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       decoration: BoxDecoration(
@@ -831,7 +833,7 @@ class _UpcomingEventState extends State<UpcomingEvent> {
 //                         //   width: 50,
 //                         //   decoration: BoxDecoration(
 //                         //       shape: BoxShape.circle,
-//                         //       color: DynamicColor.darkGrayClr.withOpacity(0.6),
+//                         //       color: DynamicColor.darkGrayClr.withValues(0.6),
 //                         //       border: Border.all(color: color: theme.primaryColor,)
 //                         //   ),
 //                         //   child: Column(

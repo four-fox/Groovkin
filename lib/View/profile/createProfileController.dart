@@ -52,7 +52,6 @@ class CreateProfileController extends GetxController{
 class CreateProfileBinding implements Bindings{
   @override
   void dependencies() {
-    // TODO: implement dependencies
   Get.lazyPut<CreateProfileController>(() => CreateProfileController());
   }
 

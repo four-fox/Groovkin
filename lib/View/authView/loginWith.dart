@@ -73,8 +73,8 @@ class LoginWithScreen extends StatelessWidget {
                 Get.toNamed(Routes.loginOrSignUpScreen);
                 // }
               },
-              color2: DynamicColor.grayClr.withOpacity(0.4),
-              color1: DynamicColor.grayClr.withOpacity(0.1),
+              color2: DynamicColor.grayClr.withValues(alpha:0.4),
+              color1: DynamicColor.grayClr.withValues(alpha:0.1),
               backgroundClr: false,
               borderClr: Colors.transparent,
               text: "Signup with email address",

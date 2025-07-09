@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_final_fields
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -182,7 +181,7 @@ class EventPreview extends StatelessWidget {
                   ? _controller.eventDetail!.data!.venue!.longitude!
                   : _managerController.lng),
             ),
-            
+
             // Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
             //     avatarPadding: 8,
             //     rowVerticalPadding: 0.0,
@@ -492,7 +491,7 @@ class EventPreview extends StatelessWidget {
       ),
       bottomNavigationBar: upComingDetail == 1
           ? SafeArea(
-              bottom:  true,
+              bottom: true,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
@@ -521,7 +520,7 @@ class EventPreview extends StatelessWidget {
             width: Get.width,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
             decoration: BoxDecoration(
-                color: DynamicColor.lightRedClr.withOpacity(0.7),
+                color: DynamicColor.lightRedClr.withValues(alpha:0.7),
                 borderRadius: BorderRadius.circular(12)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

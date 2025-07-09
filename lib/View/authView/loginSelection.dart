@@ -24,7 +24,7 @@ class _LoginSelectionState extends State<LoginSelection> {
     var theme = Theme.of(context);
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop,_) {
         if (!didPop) {
           final now = DateTime.now();
           if (_lastBackPressed == null ||
@@ -89,7 +89,7 @@ class _LoginSelectionState extends State<LoginSelection> {
               DottedBorder(
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(30),
-                color: DynamicColor.whiteClr.withOpacity(0.8),
+                color: DynamicColor.whiteClr.withValues(alpha:0.8),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(30)),
                   child: Container(
@@ -134,7 +134,7 @@ class _LoginSelectionState extends State<LoginSelection> {
               DottedBorder(
                 borderType: BorderType.RRect,
                 radius: const Radius.circular(30),
-                color: DynamicColor.whiteClr.withOpacity(0.8),
+                color: DynamicColor.whiteClr.withValues(alpha:0.8),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(30)),
                   child: Container(

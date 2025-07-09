@@ -149,11 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   image: AssetImage("assets/eventDays.png"),
                                   fit: BoxFit.fill),
                               borderRadius: BorderRadius.circular(8),
-                              // border: Border.all(color: DynamicColor.yellowClr.withOpacity(0.6)),
+                              // border: Border.all(color: DynamicColor.yellowClr.withValues(0.6)),
                             ),
                             child: Icon(
                               Icons.chat,
-                              color: theme.primaryColor, 
+                              color: theme.primaryColor,
                             ),
                           ),
                         ),
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 image: AssetImage("assets/eventDays.png"),
                                 fit: BoxFit.fill),
                             borderRadius: BorderRadius.circular(8),
-                            // border: Border.all(color: DynamicColor.yellowClr.withOpacity(0.6)),
+                            // border: Border.all(color: DynamicColor.yellowClr.withValues(0.6)),
                           ),
                           child: Icon(
                             Icons.notification_important,
@@ -353,7 +353,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         : PendingScreen(),
                   ],
                 ),
-
                 // Shahzain
                 Obx(
                   () => Visibility(
@@ -368,8 +367,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: Get.width / 2,
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: DynamicColor.whiteClr),
+                          borderRadius: BorderRadius.circular(10),
+                          color: DynamicColor.whiteClr,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -397,10 +397,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 35,
                                 padding: const EdgeInsets.only(left: 10),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: controller.selectedFilter.value != 0
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: controller.selectedFilter.value != 0
+                                      ? Colors.transparent
+                                      : DynamicColor.yellowClr,
+                                ),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -572,7 +573,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }
 
 class ManagerUpcomingEventsView extends StatelessWidget {
@@ -857,7 +857,7 @@ class ManagerUpcomingEventsView extends StatelessWidget {
                           Text("The Burning Cactus",
                             style: poppinsMediumStyle(
                                 fontSize: 14,
-                                color: DynamicColor.grayClr.withOpacity(0.7),
+                                color: DynamicColor.grayClr.withValues(0.7),
                                 context: context
                             ),
                           ),
@@ -929,7 +929,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
                           border: Border.all(
-                              color: DynamicColor.grayClr.withOpacity(0.6)),
+                              color: DynamicColor.grayClr.withValues(alpha:0.6)),
                         ),
                         child: Column(
                           children: [
@@ -1026,10 +1026,10 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                   CustomButton(
                                     heights: 35,
                                     color2: eventData.user!.deleteAt == null
-                                        ? DynamicColor.redClr.withOpacity(0.8)
+                                        ? DynamicColor.redClr.withValues(alpha:0.8)
                                         : DynamicColor.disabledColor,
                                     color1: eventData.user!.deleteAt == null
-                                        ? DynamicColor.redClr.withOpacity(0.8)
+                                        ? DynamicColor.redClr.withValues(alpha:0.8)
                                         : DynamicColor.disabledColor,
                                     widths: Get.width / 2.4,
                                     backgroundClr: false,
@@ -1198,11 +1198,11 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                 },
                                                                 color2: DynamicColor
                                                                     .greenClr
-                                                                    .withOpacity(
+                                                                    .withValues(alpha:
                                                                         0.8),
                                                                 color1: DynamicColor
                                                                     .greenClr
-                                                                    .withOpacity(
+                                                                    .withValues(alpha:
                                                                         0.8),
                                                                 widths:
                                                                     Get.width /
@@ -1224,10 +1224,10 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                             Utils.showToast();
                                           },
                                     color2: eventData.user!.deleteAt == null
-                                        ? DynamicColor.greenClr.withOpacity(0.8)
+                                        ? DynamicColor.greenClr.withValues(alpha:0.8)
                                         : DynamicColor.disabledColor,
                                     color1: eventData.user!.deleteAt == null
-                                        ? DynamicColor.greenClr.withOpacity(0.8)
+                                        ? DynamicColor.greenClr.withValues(alpha:0.8)
                                         : DynamicColor.disabledColor,
                                     widths: Get.width / 2.4,
                                     backgroundClr: false,

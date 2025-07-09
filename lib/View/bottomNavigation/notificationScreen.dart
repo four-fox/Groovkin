@@ -299,7 +299,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             style: poppinsRegularStyle(
               fontSize: 14,
               context: context,
-              color: DynamicColor.grayClr.withOpacity(0.8),
+              color: DynamicColor.grayClr.withValues(alpha:0.8),
             ),
           ),
           trailing: Column(

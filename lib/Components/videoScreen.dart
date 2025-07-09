@@ -36,7 +36,6 @@ class _VideoPlayerClassState extends State<VideoPlayerClass> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     betterPlayerConfig();
   }

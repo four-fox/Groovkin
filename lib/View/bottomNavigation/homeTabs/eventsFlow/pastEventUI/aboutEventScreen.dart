@@ -41,8 +41,8 @@ class AboutEventScreen extends StatelessWidget {
                   // padding: EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(13),
-                    border: Border.all(
-                        color: DynamicColor.grayClr.withOpacity(0.6)),
+                    border:
+                        Border.all(color: DynamicColor.grayClr.withValues(alpha:0.6)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,8 +50,8 @@ class AboutEventScreen extends StatelessWidget {
                       eventStatusWidget(theme: theme, context: context),
                       venueBookingUser(theme: theme, context: context),
                       Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 8),
                         child: CustomButton(
                           heights: 33,
                           color2: DynamicColor.secondaryClr,
@@ -108,7 +108,7 @@ class AboutEventScreen extends StatelessWidget {
                     width: 150,
                     // padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
                     decoration: BoxDecoration(
-                      color: DynamicColor.lightBlackClr.withOpacity(0.8),
+                      color: DynamicColor.lightBlackClr.withValues(alpha:0.8),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
@@ -272,8 +272,8 @@ class AboutEventScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 12),
                     child: Text(
                       'verbiage to come',
                       style: poppinsMediumStyle(
@@ -309,7 +309,8 @@ class AboutEventScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 10),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -357,7 +358,8 @@ class AboutEventScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 10),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -409,8 +411,8 @@ class AboutEventScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 12),
                     child: Text(
                       'All Hardware',
                       style: poppinsMediumStyle(
@@ -557,7 +559,7 @@ class GenerateTicket extends StatelessWidget {
                     style: poppinsRegularStyle(
                         fontSize: 14,
                         context: context,
-                        color: DynamicColor.grayClr.withOpacity(0.8)),
+                        color: DynamicColor.grayClr.withValues(alpha:0.8)),
                   ),
                   Text(
                     "John",
@@ -572,7 +574,7 @@ class GenerateTicket extends StatelessWidget {
                     style: poppinsRegularStyle(
                         fontSize: 14,
                         context: context,
-                        color: DynamicColor.grayClr.withOpacity(0.8)),
+                        color: DynamicColor.grayClr.withValues(alpha:0.8)),
                   ),
                   Text(
                     "01-Sep-23",
@@ -586,7 +588,7 @@ class GenerateTicket extends StatelessWidget {
               ),
               Divider(
                 thickness: 1,
-                color: DynamicColor.grayClr.withOpacity(0.6),
+                color: DynamicColor.grayClr.withValues(alpha:0.6),
               ),
               const SizedBox(
                 height: 8,
@@ -605,7 +607,7 @@ class GenerateTicket extends StatelessWidget {
               CustomTextFieldsHintText(
                 hintText: "Type here",
                 controller: TextEditingController(),
-                borderClr: DynamicColor.grayClr.withOpacity(0.6),
+                borderClr: DynamicColor.grayClr.withValues(alpha:0.6),
               ),
               const SizedBox(
                 height: 10,
@@ -625,7 +627,7 @@ class GenerateTicket extends StatelessWidget {
                 hintText: "Type here",
                 maxLine: 5,
                 controller: TextEditingController(),
-                borderClr: DynamicColor.grayClr.withOpacity(0.6),
+                borderClr: DynamicColor.grayClr.withValues(alpha:0.6),
               ),
               const SizedBox(
                 height: 20,
@@ -659,7 +661,7 @@ class GenerateTicket extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 30,
                                     backgroundColor:
-                                        DynamicColor.greenClr.withOpacity(0.3),
+                                        DynamicColor.greenClr.withValues(alpha:0.3),
                                     child: CircleAvatar(
                                       radius: 15,
                                       backgroundColor: DynamicColor.greenClr,
@@ -670,8 +672,8 @@ class GenerateTicket extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 18.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 18.0),
                                     child: Text(
                                       "Thank you For reporting",
                                       style: poppinsMediumStyle(
@@ -742,7 +744,7 @@ class CancellationReason extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: DynamicColor.avatarBgClr.withOpacity(0.5)),
+                  color: DynamicColor.avatarBgClr.withValues(alpha:0.5)),
               child: Text(
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to",
                 style: poppinsRegularStyle(

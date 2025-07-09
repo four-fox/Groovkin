@@ -41,6 +41,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
 
   @override
   void initState() {
+    super.initState();
     if (Get.isRegistered<ManagerController>()) {
       managerController = Get.find<ManagerController>();
     } else {
@@ -103,7 +104,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                         validation: "comments",
                         controller: _controller.commentsController,
                         hintText: "write her..",
-                        borderClr: DynamicColor.grayClr.withOpacity(0.6)),
+                        borderClr: DynamicColor.grayClr.withValues(alpha: 0.6)),
                   ),
                   const SizedBox(
                     height: 10,
@@ -181,7 +182,8 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.grayClr.withOpacity(0.2),
+                                  color: DynamicColor.grayClr
+                                      .withValues(alpha: 0.2),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -645,7 +647,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                                                 fontSize: 12,
                                                 context: context,
                                                 color: theme.primaryColor
-                                                    .withOpacity(0.5)),
+                                                    .withValues(alpha: 0.5)),
                                           ),
                                         ],
                                       ),
@@ -714,7 +716,8 @@ class AddLocationScreen extends StatelessWidget {
                             "Type here",
                             style: poppinsRegularStyle(
                                 fontSize: 11,
-                                color: DynamicColor.grayClr.withOpacity(0.9),
+                                color:
+                                    DynamicColor.grayClr.withValues(alpha: 0.9),
                                 context: context),
                           ),
                         ),

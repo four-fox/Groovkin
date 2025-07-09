@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -32,7 +31,7 @@ class SendInvitationScreen extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 40,
-                backgroundColor: DynamicColor.greenClr.withOpacity(0.3),
+                backgroundColor: DynamicColor.greenClr.withValues(alpha:0.3),
                 child: CircleAvatar(
                   radius: 30,
                   backgroundColor: DynamicColor.greenClr,
@@ -61,7 +60,7 @@ class SendInvitationScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        bottom:  true,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(

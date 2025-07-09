@@ -136,7 +136,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                   ),
                 ],
               ),
-              
+
               GetBuilder<HomeController>(builder: (controller) {
                 return (controller.analyticsListModel == null ||
                         controller.analyticsListModel!.data == null ||
@@ -200,8 +200,8 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            color: Colors.black.withOpacity(
-                                                0.4), // Slight dark overlay
+                                            color: Colors.black.withValues(
+                                                alpha:0.4), // Slight dark overlay
                                           ),
                                           child: Row(
                                             children: [
@@ -307,7 +307,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     forceYAxisFromZero: false,
     crosshair: material.CrosshairConfig(
       enabled: true,
-      lineColor: Colors.grey.withOpacity(0.5),
+      lineColor: Colors.grey.withValues(alpha:0.5),
     ),
   );
 
@@ -320,7 +320,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
-              color: Colors.black.withOpacity(0.6), // Semi-transparent overlay
+              color: Colors.black.withValues(alpha:0.6), // Semi-transparent overlay
             ),
           ),
 

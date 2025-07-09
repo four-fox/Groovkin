@@ -1,6 +1,3 @@
-
-
-
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
@@ -18,7 +15,7 @@ class BookingFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Booking form"),
+      appBar: customAppBar(theme: theme, text: "Booking form"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -28,37 +25,39 @@ class BookingFormScreen extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.center,
-              child: Text("After confirmation of property owner you can\norganize your event here!",
-              textAlign: TextAlign.center,
-              style: poppinsRegularStyle(
-                fontSize: 12,
-                context: context,
-                color: DynamicColor.lightRedClr
-              ),
+              child: Text(
+                "After confirmation of property owner you can\norganize your event here!",
+                textAlign: TextAlign.center,
+                style: poppinsRegularStyle(
+                    fontSize: 12,
+                    context: context,
+                    color: DynamicColor.lightRedClr),
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            Text.rich(
-                TextSpan(
-                    children: <InlineSpan>[
-                      TextSpan(
-                        text: 'Venue rent is',
-                        style: poppinsRegularStyle(fontSize: 12,color: DynamicColor.grayClr.withOpacity(0.6)),
-                      ),
-                      TextSpan(
-                        text: ' \$1500.00',
-                        style: poppinsRegularStyle(fontSize: 12,color: theme.primaryColor,fontWeight: FontWeight.w600,),
-                      ),
-
-                      TextSpan(
-                        text: ' but you can still negotiate with venue owner. is it ok for you?',
-                        style: poppinsRegularStyle(fontSize: 12,color: DynamicColor.grayClr.withOpacity(0.6)),
-                      ),
-                    ]
-                )
-            ),
+            Text.rich(TextSpan(children: <InlineSpan>[
+              TextSpan(
+                text: 'Venue rent is',
+                style: poppinsRegularStyle(
+                    fontSize: 12, color: DynamicColor.grayClr.withValues(alpha:0.6)),
+              ),
+              TextSpan(
+                text: ' \$1500.00',
+                style: poppinsRegularStyle(
+                  fontSize: 12,
+                  color: theme.primaryColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              TextSpan(
+                text:
+                    ' but you can still negotiate with venue owner. is it ok for you?',
+                style: poppinsRegularStyle(
+                    fontSize: 12, color: DynamicColor.grayClr.withValues(alpha:0.6)),
+              ),
+            ])),
             const SizedBox(
               height: 30,
             ),
@@ -68,18 +67,18 @@ class BookingFormScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomButton(
-                    widths: Get.width/2.4,
+                    widths: Get.width / 2.4,
                     heights: 48,
                     borderClr: DynamicColor.yellowClr,
                     color1: DynamicColor.yellowClr,
                     color2: DynamicColor.yellowClr,
-                    onTap: (){
+                    onTap: () {
                       Get.toNamed(Routes.bookingFormFields);
                     },
                     text: "Yes",
                   ),
                   CustomButton(
-                    widths: Get.width/2.4,
+                    widths: Get.width / 2.4,
                     heights: 48,
                     borderClr: DynamicColor.yellowClr,
                     color1: Colors.transparent,
@@ -87,7 +86,7 @@ class BookingFormScreen extends StatelessWidget {
                     backgroundClr: false,
                     textClr: DynamicColor.yellowClr,
                     text: "No",
-                    onTap: (){
+                    onTap: () {
                       Get.back();
                       Get.back();
                       Get.back();

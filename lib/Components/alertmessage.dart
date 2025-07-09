@@ -67,7 +67,7 @@ class AlertWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius ?? 15),
           border: Border.all(
-              color: borderColor ?? DynamicColor.grayClr.withOpacity(0.5)),
+              color: borderColor ?? DynamicColor.grayClr.withValues(alpha:0.5)),
           image: bgColor == false
               ? const DecorationImage(
                   image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)

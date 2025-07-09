@@ -157,7 +157,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
     showGeneralDialog(
       barrierLabel: _title,
       barrierDismissible: false,
-      barrierColor: Colors.black.withOpacity(0.5),
+      barrierColor: Colors.black.withValues(alpha:0.5),
       transitionDuration: const Duration(milliseconds: 350),
       context: context,
       pageBuilder: (context, __, ___) {

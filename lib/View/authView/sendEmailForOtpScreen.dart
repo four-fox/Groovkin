@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -24,22 +21,23 @@ class SendEmailForOtp extends StatelessWidget {
             const SizedBox(
               height: 90,
             ),
-            Text("Email",
-            style: poppinsMediumStyle(
-              fontSize: 17,
-              context: context,
-              color: theme.primaryColor,
-            ),
+            Text(
+              "Email",
+              style: poppinsMediumStyle(
+                fontSize: 17,
+                context: context,
+                color: theme.primaryColor,
+              ),
             ),
             const SizedBox(
               height: 5,
             ),
-            Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-            style: poppinsRegularStyle(
-              fontSize: 14,
-              context: context,
-              color: DynamicColor.grayClr.withOpacity(0.8)
-            ),
+            Text(
+              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+              style: poppinsRegularStyle(
+                  fontSize: 14,
+                  context: context,
+                  color: DynamicColor.grayClr.withValues(alpha:0.8)),
             ),
             const SizedBox(
               height: 10,
@@ -51,12 +49,12 @@ class SendEmailForOtp extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
         child: CustomButton(
           borderClr: Colors.transparent,
           color1: DynamicColor.blackClr,
           color2: DynamicColor.blackClr,
-          onTap: (){
+          onTap: () {
             Get.toNamed(Routes.newPasswordScreen);
           },
           text: "Continue",

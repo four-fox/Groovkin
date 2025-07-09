@@ -46,7 +46,7 @@ class PostEvents extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
-                                  color: DynamicColor.grayClr.withOpacity(0.6)),
+                                  color: DynamicColor.grayClr.withValues(alpha:0.6)),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,8 @@ class PostEvents extends StatelessWidget {
                                         Container(
                                           padding: const EdgeInsets.all(8),
                                           decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.only(
+                                              borderRadius:
+                                                  const BorderRadius.only(
                                                 bottomLeft: Radius.circular(10),
                                                 topRight: Radius.circular(10),
                                               ),
@@ -110,7 +111,7 @@ class PostEvents extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                
+
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8.0,
@@ -128,7 +129,8 @@ class PostEvents extends StatelessWidget {
                                                     .toString()),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8.0),
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -312,7 +314,7 @@ class PostEvents extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 30,
                                     backgroundColor:
-                                        DynamicColor.greenClr.withOpacity(0.3),
+                                        DynamicColor.greenClr.withValues(alpha:0.3),
                                     child: CircleAvatar(
                                       radius: 15,
                                       backgroundColor: DynamicColor.greenClr,
@@ -323,8 +325,8 @@ class PostEvents extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 18.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 18.0),
                                     child: Text(
                                       "Thank you For Review",
                                       style: poppinsMediumStyle(

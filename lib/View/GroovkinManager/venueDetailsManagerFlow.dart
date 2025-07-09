@@ -67,8 +67,9 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
                 child: Text(
                   "Contact Information",
                   style: poppinsRegularStyle(
@@ -80,33 +81,34 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                   theme: theme,
                   text: controller.phoneNumController.text,
                   image: "assets/phoneIcons.png",
-                  iconClr: theme.primaryColor.withOpacity(0.7)),
+                  iconClr: theme.primaryColor.withValues(alpha:0.7)),
               venueService(
                   context: context,
                   theme: theme,
                   text:
                       "${controller.openingHoursController.text} to ${controller.closedHoursController.text}",
-                  iconClr: theme.primaryColor.withOpacity(0.7),
+                  iconClr: theme.primaryColor.withValues(alpha:0.7),
                   image: "assets/clrlessClock.png"),
               venueService(
                   context: context,
                   theme: theme,
                   text: controller.maxSeatingController.text,
                   image: "assets/groupPeopleIcon.png",
-                  iconClr: theme.primaryColor.withOpacity(0.7)),
+                  iconClr: theme.primaryColor.withValues(alpha:0.7)),
               venueService(
                   context: context,
                   theme: theme,
                   text: controller.addressController.text,
                   image: "assets/location.png",
-                  iconClr: theme.primaryColor.withOpacity(0.7)),
+                  iconClr: theme.primaryColor.withValues(alpha:0.7)),
               const SizedBox(
                 height: 10,
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
                 child: Text(
                   "Max Occupancy",
                   style: poppinsRegularStyle(
@@ -120,12 +122,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                     theme: theme,
                     text: controller.maxOccupancyController.text,
                     image: "assets/groupPeopleIcon.png",
-                    iconClr: theme.primaryColor.withOpacity(0.7)),
+                    iconClr: theme.primaryColor.withValues(alpha:0.7)),
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
                 child: Text(
                   "Max Seating",
                   style: poppinsRegularStyle(
@@ -139,12 +142,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                     theme: theme,
                     text: controller.maxSeatingController.text,
                     image: "assets/groupPeopleIcon.png",
-                    iconClr: theme.primaryColor.withOpacity(0.7)),
+                    iconClr: theme.primaryColor.withValues(alpha:0.7)),
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
                 child: Text(
                   "Amenities",
                   style: poppinsRegularStyle(
@@ -164,7 +168,8 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                             image: AssetImage("assets/headingIcons.png"),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 3.0),
                             child: Text(
                               controller.selectedAmenities[index].name
                                   .toString(),
@@ -188,8 +193,9 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
                 child: Text(
                   "Active Licenses\\Permits",
                   style: poppinsRegularStyle(
@@ -234,8 +240,9 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
                 child: Text(
                   "House Event Capabilites",
                   style: poppinsRegularStyle(
@@ -280,8 +287,9 @@ class VenueDetailsManagerScreen extends StatelessWidget {
               ),
               Container(
                 width: Get.width,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withOpacity(0.44),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
                 child: Text(
                   "Venue Pictures",
                   style: poppinsRegularStyle(
@@ -304,7 +312,8 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                             alignment: Alignment.topRight,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Container(
                                   width: 100,
                                   height: kToolbarHeight * 2,
@@ -520,7 +529,8 @@ class VenueDetailsManagerScreen extends StatelessWidget {
           : SafeArea(
               child: GetBuilder<ManagerController>(builder: (controller) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -735,15 +745,18 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                           context: context,
                                           builder: (context) {
                                             return Container(
-                                              padding: const EdgeInsets.all(12.0),
-                                              margin: const EdgeInsets.all(10.0),
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              margin:
+                                                  const EdgeInsets.all(10.0),
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   TextField(
                                                     controller:
                                                         venueReasonController,
-                                                    decoration: const InputDecoration(
+                                                    decoration:
+                                                        const InputDecoration(
                                                       hintText: "Reason",
                                                       border: OutlineInputBorder(
                                                           borderSide:
@@ -940,7 +953,8 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (BuildContext context, index) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Container(
                                   width: 130,
                                   height: kToolbarHeight * 2,
