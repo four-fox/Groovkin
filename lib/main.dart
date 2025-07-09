@@ -22,6 +22,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 class StoreConfig {
   final Store store;
   final String apiKey;
+
   StoreConfig._interval({required this.store, required this.apiKey});
   static StoreConfig? instances;
 
@@ -79,22 +80,22 @@ checkUserSubscriptionIsActive() async {
   homeController.update();
 }
 
-logInWithRevenueCat() async {
-  try {
-    final loginResult =
-        await Purchases.logIn(API().sp.read("userId").toString());
-    // Optionally check if anonymous user was merged
-    if (loginResult.created) {
-      print("New user created in RevenueCat");
-    } else {
-      print("Existing user logged in");
-    }
-  } on PlatformException catch (e) {
-    BotToast.showText(
-      text: e.message ?? "Unknown error",
-    );
-  }
-}
+// logInWithRevenueCat() async {
+//   try {
+//     final loginResult =
+//         await Purchases.logIn(API().sp.read("userId").toString());
+//     // Optionally check if anonymous user was merged
+//     if (loginResult.created) {
+//       print("New user created in RevenueCat");
+//     } else {
+//       print("Existing user logged in");
+//     }
+//   } on PlatformException catch (e) {
+//     BotToast.showText(
+//       text: e.message ?? "Unknown error",
+//     );
+//   }
+// }
 
 void main() async {
   if (Platform.isIOS || Platform.isMacOS) {

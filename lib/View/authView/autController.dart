@@ -1495,30 +1495,31 @@ class AuthController extends GetxController {
   }
 
   /// Spotify & ITUNES Genre API
-  SpotifyMusicGenre? spotifyMusicGenre;
-  RxBool isSpotify = false.obs;
-  Future<dynamic> getSpotifyMusicGenreAPI() async {
-    isSpotify(true);
-    final response = await API().getApi(
-        fullUrl:
-            "https://itunes.apple.com/search?term=music&entity=album&limit=1000");
-    if (response.statusCode == 200) {
-      spotifyMusicGenre = SpotifyMusicGenre.fromJson(jsonDecode(response.data));
-      isSpotify(false);
-      update();
-    }
-    isSpotify(false);
-    update();
-  }
+  // SpotifyMusicGenre? spotifyMusicGenre;
+  // RxBool isSpotify = false.obs;
+  // Future<dynamic> getSpotifyMusicGenreAPI() async {
+  //   isSpotify(true);
+  //   final response = await API().getApi(
+  //       fullUrl:
+  //           "https://itunes.apple.com/search?term=music&entity=album&limit=1000");
+  //   if (response.statusCode == 200) {
+  //     spotifyMusicGenre = SpotifyMusicGenre.fromJson(jsonDecode(response.data));
+  //     isSpotify(false);
+  //     update();
+  //   }
+  //   isSpotify(false);
+  //   update();
+  // }
 
-// Get Spotify Artist Genre
+  // Get Spotify Artist Genre
   SpotifyArtistGenreModel? spotifyArtistGenreModel;
   RxBool isArtistLoading = false.obs;
+  
   set setIsArtistLoading(bool loading) {
     isArtistLoading.value = loading;
     update();
   }
-
+  
   List<dynamic> filteredGenres = [];
   Future<dynamic> getSpotifyArtistGenre() async {
     setIsArtistLoading = true;
