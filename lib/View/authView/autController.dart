@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -15,7 +14,6 @@ import 'package:groovkin/model/get_specific_artist_model.dart' as get_specific;
 import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
 import 'package:groovkin/model/spotify_artist_genre_model.dart';
-import 'package:groovkin/model/spotify_music_genre_model.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -1514,12 +1512,12 @@ class AuthController extends GetxController {
   // Get Spotify Artist Genre
   SpotifyArtistGenreModel? spotifyArtistGenreModel;
   RxBool isArtistLoading = false.obs;
-  
+
   set setIsArtistLoading(bool loading) {
     isArtistLoading.value = loading;
     update();
   }
-  
+
   List<dynamic> filteredGenres = [];
   Future<dynamic> getSpotifyArtistGenre() async {
     setIsArtistLoading = true;
@@ -1759,7 +1757,7 @@ class AuthController extends GetxController {
     } catch (e) {
       rethrow;
     }
-    update();
+    update();          
   }
 }
 

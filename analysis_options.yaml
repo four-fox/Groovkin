@@ -13,6 +13,7 @@ analyzer:
     unused_field: ignore
     file_names: ignore
     must_be_immutable: ignore
+    sdk_version_since: ignore
 # include: package:flutter_lints/flutter.yaml
 
 linter:

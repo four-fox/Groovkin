@@ -267,8 +267,6 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
   LatLng? _initialPosition;
 
   currentPositionLatLng({latLng, address}) async {
-    print(widget.lat);
-    print(widget.long);
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.unableToDetermine ||
         permission == LocationPermission.deniedForever ||

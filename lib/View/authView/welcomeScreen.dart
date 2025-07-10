@@ -8,6 +8,7 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/utils/utils.dart';
 
 class WelComeScreen extends StatefulWidget {
   const WelComeScreen({super.key});
@@ -37,12 +38,13 @@ class _WelComeScreenState extends State<WelComeScreen> {
         //   ),
         //   ),
         // ),
-        body: DoubleBackToCloseApp(
-          snackBar: const SnackBar(
-            content: Text(
-              "Please complete the profile screen",
-            ),
-          ),
+        body: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (!didPop) {
+              Utils.onWillPop(context: context);
+            }
+          },
           child: Column(
             children: [
               const SizedBox(

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_item.dart';
-import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +13,7 @@ import 'package:groovkin/View/bottomNavigation/AnalyticFlowBottomBar/AnalyticPor
 import 'package:groovkin/View/bottomNavigation/homeScreen.dart';
 import 'package:groovkin/View/bottomNavigation/myGroovkinScreen.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
+import 'package:groovkin/utils/utils.dart';
 
 RxInt selectIndexxx = 0.obs;
 
@@ -45,18 +45,13 @@ class BottomNavigationView extends StatelessWidget {
 
     return Scaffold(
       extendBody: false,
-      body: DoubleBackToCloseApp(
-        snackBar: SnackBar(
-          backgroundColor: theme.primaryColor,
-          content: Text(
-            'Tap back again to exit the app',
-            style: poppinsMediumStyle(
-              fontSize: 15,
-              context: context,
-              color: theme.scaffoldBackgroundColor,
-            ),
-          ),
-        ),
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop) {
+            Utils.onWillPop(context: context);
+          }
+        },
         child: Obx(
           () => Center(
             child: bodyContent.elementAt(selectIndex),

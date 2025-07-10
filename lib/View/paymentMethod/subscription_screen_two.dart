@@ -62,6 +62,7 @@ class SubscriptionClass extends StatefulWidget {
 class _SubscriptionClassState extends State<SubscriptionClass> {
   late AuthController controller;
   late HomeController homeController;
+
   Offerings? _offerings;
   List<Package> availablePackages = [];
   RxString? productId = "".obs;
@@ -164,7 +165,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                                     ? DynamicColor.yellowClr
                                     : Colors.grey,
                             width: 2,
-                          ),
+                          ),  
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -341,7 +342,7 @@ class SubscriptionModel {
     required this.isSelected,
   });
 }
-
+  
 class SubscrptionScreenCheck extends StatefulWidget {
   const SubscrptionScreenCheck({super.key});
 

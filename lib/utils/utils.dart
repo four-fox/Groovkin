@@ -7,40 +7,82 @@ import 'package:intl/intl.dart';
 
 class Utils {
   // Todo show Dialog
-
-  Future onWillPop({required BuildContext context}) async {
+  // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //             ScaffoldMessenger.of(context).showSnackBar(
+  //               SnackBar(
+  //                 backgroundColor: theme.primaryColor,
+  //                 content: Text(
+  //                   'Tap back again to exit the app',
+  //                   style: TextStyle(
+  //                     fontSize: 15,
+  //                     color: theme.scaffoldBackgroundColor,
+  //                   ),
+  //                 ),
+  //                 duration: const Duration(seconds: 2),
+  //               ),
+  //             );
+  static Future onWillPop({required BuildContext context}) async {
     return showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text(
-          "Exit Application",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          "Are You Sure?",
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text(
-              "Yes",
-              style: TextStyle(color: Colors.red),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xffb77712),
+                Color(0xffeac15a),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            onPressed: () {
-              SystemNavigator.pop();
-            },
+            borderRadius: BorderRadius.circular(12),
           ),
-          TextButton(
-            child: const Text(
-              "No",
-              style: TextStyle(color: Colors.blue),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Exit Application",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "Are You Sure?",
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge!
+                    .copyWith(color: Colors.white),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    child: const Text("Yes",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      SystemNavigator.pop();
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    child:
+                        const Text("No", style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

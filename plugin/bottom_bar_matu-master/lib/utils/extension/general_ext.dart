@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_types_as_parameter_names, use_function_type_syntax_for_parameters
+
 part of '../app_utils.dart';
 
 /// To create list from [Iterable]
