@@ -21,71 +21,71 @@ class Utils {
   //                 duration: const Duration(seconds: 2),
   //               ),
   //             );
-  static Future onWillPop({required BuildContext context}) async {
-    return showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xffb77712),
-                Color(0xffeac15a),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "Exit Application",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "Are You Sure?",
-                style: Theme.of(context)
-                    .textTheme
-                    .labelLarge!
-                    .copyWith(color: Colors.white),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    child: const Text("Yes",
-                        style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      SystemNavigator.pop();
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  TextButton(
-                    child:
-                        const Text("No", style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // static Future onWillPop({required BuildContext context}) async {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) => Dialog(
+  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  //       child: Container(
+  //         decoration: BoxDecoration(
+  //           gradient: LinearGradient(
+  //             colors: [
+  //               Color(0xffb77712),
+  //               Color(0xffeac15a),
+  //             ],
+  //             begin: Alignment.topLeft,
+  //             end: Alignment.bottomRight,
+  //           ),
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         padding: const EdgeInsets.all(16.0),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             const Text(
+  //               "Exit Application",
+  //               style: TextStyle(
+  //                 fontWeight: FontWeight.bold,
+  //                 color: Colors.white,
+  //                 fontSize: 20,
+  //               ),
+  //             ),
+  //             const SizedBox(height: 16),
+  //             Text(
+  //               "Are You Sure?",
+  //               style: Theme.of(context)
+  //                   .textTheme
+  //                   .labelLarge!
+  //                   .copyWith(color: Colors.white),
+  //             ),
+  //             const SizedBox(height: 24),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.end,
+  //               children: [
+  //                 TextButton(
+  //                   child: const Text("Yes",
+  //                       style: TextStyle(color: Colors.white)),
+  //                   onPressed: () {
+  //                     SystemNavigator.pop();
+  //                   },
+  //                 ),
+  //                 const SizedBox(width: 8),
+  //                 TextButton(
+  //                   child:
+  //                       const Text("No", style: TextStyle(color: Colors.white)),
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                 ),
+  //               ],
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // show Bot Toast
   static showToast() async {

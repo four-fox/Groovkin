@@ -2,7 +2,9 @@
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
@@ -26,7 +28,14 @@ class _LoginSelectionState extends State<LoginSelection> {
         canPop: false,
         onPopInvokedWithResult: (didPop, _) {
           if (!didPop) {
-            Utils.onWillPop(context: context);
+            customAlertt(
+              context: context,
+              title: "Exit Application",
+              text: "Are You Sure?",              btnSuccess: "Yes",
+              onTap: () {
+                SystemNavigator.pop();
+              },
+            );
           }
         },
         child: Scaffold(

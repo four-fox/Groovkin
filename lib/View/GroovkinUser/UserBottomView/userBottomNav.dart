@@ -5,7 +5,9 @@ import 'dart:io';
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/UserMyEvents.dart';
@@ -43,7 +45,15 @@ class UserBottomNavigationNav extends StatelessWidget {
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
           if (!didPop) {
-            Utils.onWillPop(context: context);
+            customAlertt(
+              context: context,
+              title: "Exit Application",
+              text: "Are You Sure?",
+              btnSuccess: "Yes",
+              onTap: () {
+                SystemNavigator.pop();
+              },
+            );
           }
         },
         child: Obx(

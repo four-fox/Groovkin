@@ -387,6 +387,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         GestureDetector(
                           onTap: () {
                             customAlertt(
+                              context: context,
                                 alignment: Alignment.topLeft,
                                 title: 'Logout',
                                 text: 'Are you sure you want to logout?',
@@ -438,7 +439,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            customAlertt(
+                            customAlertt(                   context: context,
                                 alignment: Alignment.topLeft,
                                 title: 'Delete Account',
                                 text: 'Are you sure you want to Delete?',

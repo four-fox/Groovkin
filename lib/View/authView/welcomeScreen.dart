@@ -2,8 +2,10 @@
 
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
@@ -42,7 +44,14 @@ class _WelComeScreenState extends State<WelComeScreen> {
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {
             if (!didPop) {
-              Utils.onWillPop(context: context);
+                customAlertt(
+              context: context,
+              title: "Exit Application",
+              text: "Are You Sure?",              btnSuccess: "Yes",
+              onTap: () {
+                SystemNavigator.pop();
+              },
+            );
             }
           },
           child: Column(

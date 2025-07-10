@@ -59,6 +59,7 @@ class MessageListWidget extends StatelessWidget {
                               ? () {
                                   // Only enable if message is from receiver
                                   customAlertt(
+                                    context: context,
                                     alignment: Alignment.topLeft,
                                     title: 'Report this user',
                                     text:

@@ -67,7 +67,8 @@ class AlertWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius ?? 15),
           border: Border.all(
-              color: borderColor ?? DynamicColor.grayClr.withValues(alpha:0.5)),
+              color:
+                  borderColor ?? DynamicColor.grayClr.withValues(alpha: 0.5)),
           image: bgColor == false
               ? const DecorationImage(
                   image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)
@@ -88,96 +89,114 @@ customAlertt(
     GestureTapCallback? onTap,
     String? btnSuccess,
     AlignmentGeometry? alignment,
-    Widget? customWidget,
+    // Widget? customWidget,
+    required BuildContext context,
     Color? bgClr}) {
-  return Get.defaultDialog(
-      title: "",
-      titlePadding: EdgeInsets.zero,
-      backgroundColor: bgClr ?? Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-      content: customWidget ??
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title.toString(),
-                textAlign: TextAlign.center,
-                style: poppinsRegularStyle(
-                    fontSize: 16, color: DynamicColor.blackClr),
+  return showDialog(
+      context: context,
+      builder: (context) => Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xffeac15a),
+                    Color(0xffb77712),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                text.toString(),
-                textAlign: TextAlign.center,
-                style: poppinsRegularStyle(
-                    fontSize: 14, color: DynamicColor.blackClr),
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Container(
-                      height: 35,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: DynamicColor.yellowClr,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "No",
-                          style: poppinsMediumStyle(
-                              fontSize: 16, color: DynamicColor.whiteClr),
-                        ),
-                      ),
-                    ),
+                  Text(
+                    title.toString(),
+                    textAlign: TextAlign.center,
+                    style: poppinsRegularStyle(
+                        fontSize: 16,
+                        color: DynamicColor.whiteClr,
+                        fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
-                    width: 15,
+                    height: 15,
                   ),
-                  GestureDetector(
-                    onTap: onTap,
-                    child: Container(
-                      height: 35,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: Colors.black,
-                      ),
-                      child: Center(
-                        child: Text(
-                          btnSuccess.toString(),
-                          style: poppinsMediumStyle(
-                              fontSize: 16, color: DynamicColor.whiteClr),
+                  Text(
+                    text.toString(),
+                    textAlign: TextAlign.center,
+                    style: poppinsRegularStyle(
+                        fontSize: 14,
+                        color: DynamicColor.whiteClr,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Container(
+                          height: 35,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: DynamicColor.dropDownClr,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "No",
+                              style: poppinsMediumStyle(
+                                  fontSize: 16, color: DynamicColor.whiteClr),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  // GestureDetector(
-                  //   onTap: onTap,
-                  //   child: Padding(
-                  //     padding: EdgeInsets.symmetric(horizontal: 14.0),
-                  //     child: Text(
-                  //       btnSuccess.toString(),
-                  //       style: gilroyRegularStyle(
-                  //           fontSize: 18,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: DynamicColors.primaryClr),
-                  //     ),
-                  //   ),
-                  // ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      GestureDetector(
+                        onTap: onTap,
+                        child: Container(
+                          height: 35,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: DynamicColor.blackClr,
+                          ),
+                          child: Center(
+                            child: Text(
+                              btnSuccess.toString(),
+                              style: poppinsMediumStyle(
+                                  fontSize: 16, color: DynamicColor.whiteClr),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // GestureDetector(
+                      //   onTap: onTap,
+                      //   child: Padding(
+                      //     padding: EdgeInsets.symmetric(horizontal: 14.0),
+                      //     child: Text(
+                      //       btnSuccess.toString(),
+                      //       style: gilroyRegularStyle(
+                      //           fontSize: 18,
+                      //           fontWeight: FontWeight.w700,
+                      //           color: DynamicColors.primaryClr),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-      radius: 10.0);
+              ),
+            ),
+          ));
 }

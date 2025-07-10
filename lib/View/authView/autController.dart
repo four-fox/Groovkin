@@ -235,8 +235,6 @@ class AuthController extends GetxController {
     var response = await API().postApi(formData, "login");
 
     if (response.statusCode == 200) {
-      loginEmailController.clear();
-      loginPasswordController.clear();
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
       API().sp.remove("currentRole");
@@ -246,6 +244,7 @@ class AuthController extends GetxController {
         restore();
         logInWithRevenueCat();
         checkUserSubscriptionIsActive();
+
         if (response.data["data"]["user_details"]["current_role"] == "user") {
           API().sp.write("currentRole", "User");
         } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -283,6 +282,8 @@ class AuthController extends GetxController {
               arguments: {"indexValue": 0});
         }
       });
+      loginEmailController.clear();
+      loginPasswordController.clear();
     }
   }
 
@@ -1757,7 +1758,7 @@ class AuthController extends GetxController {
     } catch (e) {
       rethrow;
     }
-    update();          
+    update();
   }
 }
 
