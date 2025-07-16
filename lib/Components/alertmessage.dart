@@ -118,9 +118,10 @@ customAlertt(
                     title.toString(),
                     textAlign: TextAlign.center,
                     style: poppinsRegularStyle(
-                        fontSize: 16,
-                        color: DynamicColor.whiteClr,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 16,
+                      color: DynamicColor.whiteClr,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(
                     height: 15,

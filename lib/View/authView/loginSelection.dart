@@ -9,7 +9,6 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/utils/utils.dart';
 
 class LoginSelection extends StatefulWidget {
   const LoginSelection({super.key});

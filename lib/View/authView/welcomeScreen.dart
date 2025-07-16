@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,7 +9,6 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
-import 'package:groovkin/utils/utils.dart';
 
 class WelComeScreen extends StatefulWidget {
   const WelComeScreen({super.key});

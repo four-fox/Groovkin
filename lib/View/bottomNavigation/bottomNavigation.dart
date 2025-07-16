@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_item.dart';
 import 'package:flutter/foundation.dart';
@@ -15,7 +14,6 @@ import 'package:groovkin/View/bottomNavigation/AnalyticFlowBottomBar/AnalyticPor
 import 'package:groovkin/View/bottomNavigation/homeScreen.dart';
 import 'package:groovkin/View/bottomNavigation/myGroovkinScreen.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
-import 'package:groovkin/utils/utils.dart';
 
 RxInt selectIndexxx = 0.obs;
 
@@ -44,17 +42,18 @@ class BottomNavigationView extends StatelessWidget {
           : const AnalyticPortalScreen(),
       const SettingScreen(),
     ];
-
+    
     return Scaffold(
       extendBody: false,
       body: PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
           if (!didPop) {
-   customAlertt(
+            customAlertt(
               context: context,
               title: "Exit Application",
-              text: "Are You Sure?",              btnSuccess: "Yes",
+              text: "Are You Sure?",
+              btnSuccess: "Yes",
               onTap: () {
                 SystemNavigator.pop();
               },

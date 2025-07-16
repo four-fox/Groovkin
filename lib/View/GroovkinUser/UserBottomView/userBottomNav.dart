@@ -13,7 +13,6 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/UserMyEvents.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
-import 'package:groovkin/utils/utils.dart';
 
 RxInt selectUserIndexxx = 0.obs;
 get selectIndex => selectUserIndexxx.value;
