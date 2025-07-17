@@ -133,7 +133,7 @@ class _MyAppState extends State<MyApp> {
     checkUserSubscriptionIsActive();
     authController.restore();
   }
-
+  
   @override
   void initState() {
     super.initState();
@@ -173,7 +173,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Groovkin',
-      theme: ThemeData(
+      theme: ThemeData(           
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: DynamicColor.yellowClr,
           selectionColor: DynamicColor.yellowClr,

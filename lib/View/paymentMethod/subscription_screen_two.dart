@@ -165,7 +165,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                                     ? DynamicColor.yellowClr
                                     : Colors.grey,
                             width: 2,
-                          ),  
+                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -261,6 +261,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           throw Exception(error.toString());
                         });
+                            
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);
                         if (isPro) {
@@ -342,7 +343,7 @@ class SubscriptionModel {
     required this.isSelected,
   });
 }
-  
+
 class SubscrptionScreenCheck extends StatefulWidget {
   const SubscrptionScreenCheck({super.key});
 
