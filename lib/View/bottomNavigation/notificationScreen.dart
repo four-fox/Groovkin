@@ -135,6 +135,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             });
                                       } else if (data.type ==
                                           "event_reschedule") {
+                                        Get.toNamed(Routes.upcomingScreen,
+                                            arguments: {
+                                              "eventId": data.sourceId,
+                                              "reportedEventView": 1,
+                                              "notInterestedBtn": 1,
+                                              "appBarTitle": "Upcoming"
+                                            });
                                       } else if (data.type ==
                                           "event_complete") {
                                         Get.toNamed(Routes.upcomingScreen,
@@ -299,7 +306,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
             style: poppinsRegularStyle(
               fontSize: 14,
               context: context,
-              color: DynamicColor.grayClr.withValues(alpha:0.8),
+              color: DynamicColor.grayClr.withValues(alpha: 0.8),
             ),
           ),
           trailing: Column(

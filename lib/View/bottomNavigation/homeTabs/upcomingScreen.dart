@@ -216,6 +216,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+
                                               _controller.eventDetail!.data!
                                                           .venue ==
                                                       null
@@ -285,7 +286,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     backgroundClr: false,
                                                     borderClr:
                                                         Colors.transparent,
-                                                    onTap: () {
+                                                    onTap: () {  
+
                                                       if ((API().sp.read(
                                                                   "role") ==
                                                               "eventManager") &&
@@ -297,7 +299,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                                 eventId: controller
                                                                     .eventDetail!
                                                                     .data!
-                                                                    .id);
+                                                                    .id,);
                                                       } else {
                                                         if (controller
                                                                 .eventDetail!

@@ -313,6 +313,13 @@ class NotificationService {
         "appBarTitle": "Completed",
         "isComingFromNotification": true,
       });
+    } else if (data.type == "event_reschedule") {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
+        "eventId": data.sourceId,
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "Upcoming"
+      });
     }
   }
 }

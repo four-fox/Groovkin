@@ -449,7 +449,8 @@ class ManagerController extends GetxController {
               container: SizedBox(
                 width: Get.width,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,

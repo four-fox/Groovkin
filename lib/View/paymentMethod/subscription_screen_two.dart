@@ -257,24 +257,24 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           return value;
                         }).onError((error, _) {
-                          BotToast.showText(text: "Purchased Cancel");
-                          BotToast.closeAllLoading();
-                          throw Exception(error.toString());
-                        });
-                            
+                          BotToast.showText(text: "Purchased Cancel");  
+                          BotToast.closeAllLoading();  
+                          throw Exception(error.toString());  
+                        }); 
+
                         final isPro = customerInfo.entitlements.active
-                            .containsKey(entitlementID);
+                            .containsKey(entitlementID); 
                         if (isPro) {
                           appData.entitlementIsActive = customerInfo
                                   .entitlements.all[entitlementID]?.isActive ??
-                              false;
-                          BotToast.closeAllLoading();
-                          controller.completePurchase(customerInfo);
-                          controller.initPlatformState();
-                          controller.update();
+                              false; 
+                          BotToast.closeAllLoading();  
+                          controller.completePurchase(customerInfo);  
+                          controller.initPlatformState();   
+                          controller.update();   
                         }
                       }
-                    },
+                    },  
                     style: poppinsMediumStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
