@@ -50,7 +50,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     }
     super.initState();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);

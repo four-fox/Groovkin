@@ -344,14 +344,14 @@ class ChatController extends GetxController {
       "type": "single_message",
       if (messageController.text.isNotEmpty) 'msg': messageController.text,
       if (chatFileList.isNotEmpty) "media[]": chatFileList,
-      if (bottomContainer.value || replyId != null) "parent_id": replyId
+      if (bottomContainer.value || replyId != null) "parent_id": replyId,
     });
     var response =
         await API().postApi(formData, 'send-message', showProgress: false);
     if (response.statusCode == 200) {
       var d = ChatData.fromJson(response.data['data']);
-      conversationID = d.conversationId;
       if (d.senderId == API().sp.read("userId")) {
+        conversationID = d.conversationId;
         chatData!.data!.data!.insert(0, d);
       }
       insertChatDatabase(oneInsertion: true, model: d);
@@ -419,6 +419,7 @@ class ChatController extends GetxController {
         update();
       }
     } else {
+      print(API().sp.read("userId"));
       var d = ChatData.fromJson(data['message']);
       if (d.senderId != API().sp.read("userId")) {
         // insertChatDatabase(oneInsertion: true, model: d);

@@ -100,6 +100,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
       // Total hours across all days
       double totalHours = dailyHours * totalDays;
       hoursDifference = totalHours;
+
       if (_controller.rateType!.value == "hourly") {
         subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
             0 * hoursDifference!;
@@ -176,7 +177,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
               style: poppinsRegularStyle(
                   fontSize: 14,
                   context: context,
-                  color: DynamicColor.grayClr.withValues(alpha:0.7)),
+                  color: DynamicColor.grayClr.withValues(alpha: 0.7)),
             ),
             const SizedBox(
               height: 10,

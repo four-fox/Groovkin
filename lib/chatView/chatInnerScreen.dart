@@ -304,7 +304,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
                                                   color: Colors.black
-                                                      .withValues(alpha:0.7)),
+                                                      .withValues(alpha: 0.7)),
                                               child: Icon(
                                                 Icons
                                                     .keyboard_double_arrow_down,
@@ -350,7 +350,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
         child: Container(
           width: 120,
           decoration: BoxDecoration(
-            color: DynamicColor.yellowClr.withValues(alpha:0.6),
+            color: DynamicColor.yellowClr.withValues(alpha: 0.6),
             borderRadius: const BorderRadius.all(Radius.circular(20.0)),
           ),
           child: Padding(
@@ -406,7 +406,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                   left: BorderSide(color: Colors.black, width: 5),
                 ),
                 // borderRadius: BorderRadius.circular(5),
-                color: Colors.grey.withValues(alpha:0.5)),
+                color: Colors.grey.withValues(alpha: 0.5)),
             child: controller.replyModel!.media == null &&
                     controller.replyModel!.msg != null
                 ? Text(
@@ -439,6 +439,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                     ),
                                   ),
                                 ),
+
                           // Spacer(),
                           Container(
                               height: 30,
@@ -575,6 +576,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
           Obx(
             () => GestureDetector(
               onTap: () {
+                if (_controller.isSendLoading.value) return;
+
                 ///Todo latter on
                 if (controller.messageController.text.isNotEmpty ||
                     controller.multipleImageList.isNotEmpty) {
@@ -706,7 +709,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                       child: Container(
                           decoration: BoxDecoration(
                             color: _controller.selectedIndexes == index
-                                ? Colors.red.withValues(alpha:0.8)
+                                ? Colors.red.withValues(alpha: 0.8)
                                 : Colors.transparent,
                           ),
                           child: _getItem(context,

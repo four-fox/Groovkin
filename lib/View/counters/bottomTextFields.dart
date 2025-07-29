@@ -155,6 +155,7 @@ class BottomTextFields extends StatelessWidget {
                           ),
                           suffixIcon: GestureDetector(
                             onTap: () {
+                              
                               if (controller
                                       .messageController.text.isNotEmpty ||
                                   controller.multiPartImg.isNotEmpty) {
