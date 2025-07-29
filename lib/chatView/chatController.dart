@@ -142,20 +142,21 @@ class ChatController extends GetxController {
     // connectDisconnect();
     receiveMessage();
   }
-
+  
   ///Data base initialized
   initDatabase() async {
     chatDatabase = await _chatDatabase.getDatabase;
     // getMessageCount();
   }
-
+  
   /// get all user for new chat
   ///
-
+  
   RxBool newUserChatLoader = false.obs;
   ChatNewUserModel? newUserData;
   bool getNewUserWait = false;
   final searchingController = TextEditingController();
+
   getNewUser({
     nextUrl,
   }) async {
@@ -329,19 +330,21 @@ class ChatController extends GetxController {
   }
 
   /// send message
-  
+
   RxBool isSendLoading = false.obs;
   sendMessage({receiverId}) async {
     isSendLoading.value = true;
     if (multipleImageList.isNotEmpty) {
       chatFileList.clear();
       for (int i = 0; i < multipleImageList.length; i++) {
-        chatFileList.add(form.MultipartFile.fromFileSync(
-          multipleImageList[i].filename!,
-          filename: "Image.${multipleImageList[i].filename!.split('.').last}",
-          contentType: MediaType(
-              "image", multipleImageList[i].filename!.split('.').last),
-        ));
+        chatFileList.add(
+          form.MultipartFile.fromFileSync(
+            multipleImageList[i].filename!,
+            filename: "Image.${multipleImageList[i].filename!.split('.').last}",
+            contentType: MediaType(
+                "image", multipleImageList[i].filename!.split('.').last),
+          ),
+        );
       }
     }
 
@@ -352,8 +355,10 @@ class ChatController extends GetxController {
       if (chatFileList.isNotEmpty) "media[]": chatFileList,
       if (bottomContainer.value || replyId != null) "parent_id": replyId,
     });
+
     var response =
         await API().postApi(formData, 'send-message', showProgress: false);
+
     if (response.statusCode == 200) {
       var d = ChatData.fromJson(response.data['data']);
       if (d.senderId == API().sp.read("userId")) {
@@ -382,7 +387,7 @@ class ChatController extends GetxController {
   }
 
   /// socket disposed receiver
-  
+
   disposedReceiverSocket() async {
     socket!.off(
         'receiver-message-${API().sp.read("userId")}',

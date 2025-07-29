@@ -1569,6 +1569,7 @@ class AuthController extends GetxController {
           formData.fields.add(MapEntry('music_genre[]', genre['name']));
         }
       }
+
       formData.fields.add(const MapEntry("type", "spotify"));
 
       final response = await API().postApi(formData, "add-music-genre");
@@ -1598,6 +1599,7 @@ class AuthController extends GetxController {
 
   Future<dynamic> getSpecificArtistGenre({fullUrl}) async {
     setSpecificArtistLoading = true;
+
     try {
       final resposne = await API()
           .getApi(url: "get-music-genre", fullUrl: fullUrl, queryParameters: {

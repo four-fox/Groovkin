@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   cupertino_icons: ^1.0.6
   get: ^4.6.6
   rename: ^2.1.1
@@ -62,19 +62,17 @@ dependencies:
   image_cropper_platform_interface: ^7.0.0
   form_builder_extra_fields: ^10.2.0
   better_player_plus: 1.0.6
-  in_app_purchase: ^3.2.1  
-  purchases_flutter: ^8.6.1  
-  webview_flutter: ^4.4.2  
-  app_settings: ^5.1.1  
-  fluttertoast: ^8.2.8  
-  url_launcher: ^6.3.1  
-  
+  in_app_purchase: ^3.2.1
+  purchases_flutter: ^8.6.1
+  webview_flutter: ^4.4.2
+  app_settings: ^5.1.1
+  fluttertoast: ^8.2.8
+  url_launcher: ^6.3.1
   otp_text_field:
     path: ../groovkin/plugin/OTPTextField-dev
   country_state_city_pro:
     path: ../groovkin/plugin/Country-State-City-Picker-Pro-master
   flutter_layout_grid: ^2.0.7
-
   custom_pop_up_menu: ^1.2.4
   sticky_grouped_list: ^3.1.0
   sqflite: ^2.4.1

@@ -42,9 +42,9 @@ class _SocialSignInState extends State<SocialSignIn> {
   }
 
   Future<void> loginWithSpotify() async {
-    const clientId = con.clientId;
-    const clientSecret = con.clientSecret;
-    const redirectUri = "groovkin://callback";
+    const clientId = con.clientId;  
+    const clientSecret = con.clientSecret;  
+    const redirectUri = "groovkin://callback";  
 
     final authUrl = Uri.parse(
       'https://accounts.spotify.com/authorize'
