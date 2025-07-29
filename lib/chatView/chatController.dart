@@ -103,6 +103,7 @@ class ChatController extends GetxController {
     if (kDebugMode) {
       print("object object");
     }
+
     Map<String, dynamic> map = {
       'token': API().sp.read("token"),
       'user_id': API().sp.read("userId")
@@ -137,6 +138,7 @@ class ChatController extends GetxController {
         print('disconnect');
       }
     });
+
     // connectDisconnect();
     receiveMessage();
   }
@@ -256,10 +258,13 @@ class ChatController extends GetxController {
 
   getAllChatRoom({nextUrl}) async {
     getAllChatRoomLoader(false);
+
     var fromData = form.FormData.fromMap({
       "search": chatRoomDataController.text,
     });
+
     var response = await API().postApi(fromData, 'get-inbox', fullUrl: nextUrl);
+
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         chatRoomData = ChatRoomModel.fromJson(response.data);
@@ -324,6 +329,7 @@ class ChatController extends GetxController {
   }
 
   /// send message
+  
   RxBool isSendLoading = false.obs;
   sendMessage({receiverId}) async {
     isSendLoading.value = true;
@@ -376,6 +382,7 @@ class ChatController extends GetxController {
   }
 
   /// socket disposed receiver
+  
   disposedReceiverSocket() async {
     socket!.off(
         'receiver-message-${API().sp.read("userId")}',

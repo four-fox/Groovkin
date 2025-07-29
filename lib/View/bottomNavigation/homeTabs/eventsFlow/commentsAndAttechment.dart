@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -53,20 +52,25 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: "", imagee: true, actions: [
-        ((_controller.eventDetail == null) &&
-                (_controller.draftCondition.value == true))
-            ? GestureDetector(
-                onTap: () {
-                  _controller.postEventFunction(context, theme, draft: true);
-                },
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.drafts),
-                ),
-              )
-            : const SizedBox.shrink()
-      ]),
+      appBar: customAppBar(
+        theme: theme,
+        text: "",
+        imagee: true,
+        actions: [
+          ((_controller.eventDetail == null) &&
+                  (_controller.draftCondition.value == true))
+              ? GestureDetector(
+                  onTap: () {
+                    _controller.postEventFunction(context, theme, draft: true);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.drafts),
+                  ),
+                )
+              : const SizedBox.shrink()
+        ],
+      ),
       body: GetBuilder<ManagerController>(builder: (controller) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -100,11 +104,12 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: CustomTextFieldsHintText(
-                        maxLine: 5,
-                        validation: "comments",
-                        controller: _controller.commentsController,
-                        hintText: "write her..",
-                        borderClr: DynamicColor.grayClr.withValues(alpha: 0.6)),
+                      maxLine: 5,
+                      validation: "comments",
+                      controller: _controller.commentsController,
+                      hintText: "write her..",
+                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.6),
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -530,9 +535,12 @@ class ListOfVenuesScreen extends StatelessWidget {
           ],
         ),
       ),
+   
       body: GetBuilder<EventController>(initState: (v) {
         _controller.getVenuesLatLng();
-      }, builder: (controller) {
+      },
+      
+      builder: (controller) {
         return controller.getVenuesLatLngLoader.value == false
             ? const SizedBox.shrink()
             : Padding(
@@ -663,7 +671,7 @@ class ListOfVenuesScreen extends StatelessWidget {
   }
 }
 
-///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add Location
+///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add Location   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 class AddLocationScreen extends StatelessWidget {
   const AddLocationScreen({super.key});
