@@ -50,7 +50,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     }
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -216,7 +216,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-
                                               _controller.eventDetail!.data!
                                                           .venue ==
                                                       null
@@ -286,8 +285,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     backgroundClr: false,
                                                     borderClr:
                                                         Colors.transparent,
-                                                    onTap: () {  
-
+                                                    onTap: () {
                                                       if ((API().sp.read(
                                                                   "role") ==
                                                               "eventManager") &&
@@ -296,10 +294,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                           )) {
                                                         controller
                                                             .acknowledgedEvent(
-                                                                eventId: controller
-                                                                    .eventDetail!
-                                                                    .data!
-                                                                    .id,);
+                                                          eventId: controller
+                                                              .eventDetail!
+                                                              .data!
+                                                              .id,
+                                                        );
                                                       } else {
                                                         if (controller
                                                                 .eventDetail!
@@ -1414,7 +1413,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withValues(alpha:0.6)),
+                  color: DynamicColor.whiteClr.withValues(alpha: 0.6)),
             ),
           ),
         ),

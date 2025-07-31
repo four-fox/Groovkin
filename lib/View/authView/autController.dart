@@ -1471,20 +1471,22 @@ class AuthController extends GetxController {
       final firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
           .signInWithCredential(authCredential);
+
       if (kDebugMode) {
         print(userCredential);
       }
+
       if (userCredential.user != null) {
         emailController.text = userCredential.user!.email!;
         API().sp.write("emailSocial", userCredential.user!.email!);
         // API().sp.write("nameSocial", userCredential.user!.displayName!);
         API().sp.write("accessToken", userCredential.credential!.accessToken);
-        sigUp(
+      sigUp(     
           Get.context,
           signUpPlatform: "apple",
           platformId: userCredential.credential!.accessToken,
-        );
-      }
+        );    
+      }  
     } catch (e) {
       EasyLoading.dismiss();
     } finally {
@@ -1592,6 +1594,7 @@ class AuthController extends GetxController {
 
   get_specific.GetSpecificArtistGenre? getSpecificArtistGenreModel;
   RxBool isSpecificArtistLoading = false.obs;
+
   set setSpecificArtistLoading(bool loading) {
     isSpecificArtistLoading.value = loading;
     update();
@@ -1600,7 +1603,8 @@ class AuthController extends GetxController {
   Future<dynamic> getSpecificArtistGenre({fullUrl}) async {
     setSpecificArtistLoading = true;
 
-    try {
+    try { 
+
       final resposne = await API()
           .getApi(url: "get-music-genre", fullUrl: fullUrl, queryParameters: {
         "type": "spotify",
@@ -1630,7 +1634,7 @@ class AuthController extends GetxController {
   }
 
   /// Subsction Work  By Revenue Cat
-
+  
   RxInt selected = 0.obs;
 
   logInWithRevenueCat() async {

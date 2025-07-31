@@ -135,12 +135,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             });
                                       } else if (data.type ==
                                           "event_reschedule") {
-                                        Get.toNamed(Routes.upcomingScreen,
+                                        // Get.toNamed(Routes.upcomingScreen,
+                                        //     arguments: {
+                                        //       "eventId": data.sourceId,
+                                        //       "reportedEventView": 1,
+                                        //       "notInterestedBtn": 1,
+                                        //       "appBarTitle": "Upcoming"
+                                        //     });
+
+                                        Get.toNamed(Routes.pendingEventDetails,
                                             arguments: {
                                               "eventId": data.sourceId,
-                                              "reportedEventView": 1,
                                               "notInterestedBtn": 1,
-                                              "appBarTitle": "Upcoming"
+                                              "title": "Reschedule Event",
+                                              "type": "event",
                                             });
                                       } else if (data.type ==
                                           "event_complete") {
@@ -215,13 +223,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             });
                                       } else if (data.type ==
                                           "event_acknowledged") {
+                                        // Get.toNamed(Routes.upcomingScreen,
+                                        //     arguments: {
+                                        //       "eventId": data.sourceId,
+                                        //       "reportedEventView": 1,
+                                        //       "notInterestedBtn": 1,
+                                        //       "appBarTitle": "Completed",
+                                        //       "isComingFromNotification": true,
+                                        //     });
                                         Get.toNamed(Routes.upcomingScreen,
                                             arguments: {
                                               "eventId": data.sourceId,
                                               "reportedEventView": 1,
                                               "notInterestedBtn": 1,
-                                              "appBarTitle": "Completed",
-                                              "isComingFromNotification": true,
+                                              "appBarTitle": "Acknowledged"
                                             });
                                         // Get.toNamed(Routes.upcomingScreen,
                                         //     arguments: {
@@ -237,8 +252,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               "eventId": data.sourceId,
                                               "reportedEventView": 1,
                                               "notInterestedBtn": 1,
-                                              "appBarTitle": "Declined",
-                                              "isComingFromNotification": true,
+                                              "appBarTitle": "Cancelled",
+                                              // "isComingFromNotification": true,
                                             });
                                       }
                                     }

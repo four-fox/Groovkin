@@ -929,7 +929,8 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
                           border: Border.all(
-                              color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.6)),
                         ),
                         child: Column(
                           children: [
@@ -1026,10 +1027,12 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                   CustomButton(
                                     heights: 35,
                                     color2: eventData.user!.deleteAt == null
-                                        ? DynamicColor.redClr.withValues(alpha:0.8)
+                                        ? DynamicColor.redClr
+                                            .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
                                     color1: eventData.user!.deleteAt == null
-                                        ? DynamicColor.redClr.withValues(alpha:0.8)
+                                        ? DynamicColor.redClr
+                                            .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
                                     widths: Get.width / 2.4,
                                     backgroundClr: false,
@@ -1198,12 +1201,14 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                 },
                                                                 color2: DynamicColor
                                                                     .greenClr
-                                                                    .withValues(alpha:
-                                                                        0.8),
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.8),
                                                                 color1: DynamicColor
                                                                     .greenClr
-                                                                    .withValues(alpha:
-                                                                        0.8),
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.8),
                                                                 widths:
                                                                     Get.width /
                                                                         1.4,
@@ -1224,10 +1229,12 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                             Utils.showToast();
                                           },
                                     color2: eventData.user!.deleteAt == null
-                                        ? DynamicColor.greenClr.withValues(alpha:0.8)
+                                        ? DynamicColor.greenClr
+                                            .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
                                     color1: eventData.user!.deleteAt == null
-                                        ? DynamicColor.greenClr.withValues(alpha:0.8)
+                                        ? DynamicColor.greenClr
+                                            .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
                                     widths: Get.width / 2.4,
                                     backgroundClr: false,

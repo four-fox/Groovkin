@@ -98,7 +98,8 @@ class UpcomingEvents extends StatelessWidget {
                                             .data!.length,
                                     shrinkWrap: true,
                                     padding: EdgeInsets.zero,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       EventData singleEventDat = controller
                                           .upcomingEventData!
@@ -167,7 +168,8 @@ class UpcomingEvents extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: DynamicColor.darkGrayClr),
@@ -223,7 +225,8 @@ class UpcomingEvents extends StatelessWidget {
                                             .ongoingEvents!.data!.data!.length,
                                     shrinkWrap: true,
                                     padding: EdgeInsets.zero,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       EventData singleEvent = controller
                                           .ongoingEvents!.data!.data![index];
@@ -255,7 +258,7 @@ class UpcomingEvents extends StatelessWidget {
                                                   "eventId": singleEvent.id,
                                                   "reportedEventView": 1,
                                                   "notInterestedBtn": 1,
-                                                  "appBarTitle": "On Going"
+                                                  "appBarTitle": "On Going",
                                                 });
                                           },
                                           context: context,
@@ -390,8 +393,8 @@ class UpcomingEvents extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Container(
                         width: Get.width,
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: DynamicColor.darkGrayClr),
