@@ -550,7 +550,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                       .eventDetail!
                                                       .data!
                                                       .venue!
-                                                      .userId;
+                                                      .userId; 
                                                 } else {
                                                   userId = controller
                                                       .eventDetail!

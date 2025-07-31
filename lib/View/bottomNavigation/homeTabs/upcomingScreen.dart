@@ -328,7 +328,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                                     "role") ==
                                                                 "eventManager") &&
                                                             (appBarTitle ==
-                                                                "On Going" /*"Past Event"*/))
+                                                                "On Going" /*"Past Event"*/ ))
                                                         ? "Acknowledged Event"
                                                         : controller
                                                                     .eventDetail!
