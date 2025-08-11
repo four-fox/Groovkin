@@ -22,6 +22,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
   RxInt tabValue = 0.obs;
   RxInt selectedFilter = 0.obs;
   RxBool showFilter = false.obs;
+
   @override
   void initState() {
     super.initState();
@@ -121,7 +122,6 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
             ],
           ),
         ),
-
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Stack(
@@ -312,7 +312,6 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
             ],
           ),
         ),
-        
       ),
     );
   }
@@ -632,6 +631,7 @@ class _HistoryTabState extends State<HistoryTab> {
       );
     });
   }
+
 }
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> upComing
@@ -739,7 +739,6 @@ class _UpcomingEventState extends State<UpcomingEvent> {
     );
   }
 }
-
 
 // ///Upcoming Event
 //
