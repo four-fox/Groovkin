@@ -183,15 +183,20 @@ class AuthController extends GetxController {
         } else if (API().sp.read("role") == "eventOrganizer") {
           API().sp.write("isEventCreated",
               response.data['data']['user_details']['is_event_created']);
+
           Get.offAllNamed(Routes.welComeScreen);
+
         } else {
+          
           Get.offAllNamed(Routes.welComeScreen);
+          
           // Get.offAllNamed(Routes.createCompanyProfileScreen,
           //   arguments: {
           //   "updationCondition": false,
           //     "skipBtnHide": false,
           //   }
           // );
+
         }
       } else {
         if (response.data["data"]["user_details"]["is_complete_profile"] == 1) {
@@ -428,11 +433,10 @@ class AuthController extends GetxController {
         } else {
           imageBytes = files!.path;
         }
-      } 
+      }
 
       imageLoaders(true);
       update();
-            
     } catch (e) {
       imageLoaders(true);
       // BotToast.showText(text: e.toString());

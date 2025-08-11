@@ -25,7 +25,7 @@ class _SettingScreenState extends State<SettingScreen> {
   RxBool switchValue = false.obs;
   RxBool switchProfileValue = false.obs;
   late AuthController _authController;
-  
+
   @override
   void initState() {
     super.initState();
@@ -334,15 +334,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.groovkinInviteScreen);
                                 })
                             : const SizedBox.shrink(),
-                        API().sp.read("role") == "User"
-                            ? customWidget(
-                                context: context,
-                                img: "assets/groovkin.png",
-                                text: "My Groovkin",
-                                onTap: () {
-                                  Get.toNamed(Routes.userMyGroovkinScreen);
-                                })
-                            : const SizedBox.shrink(),
+                        // API().sp.read("role") == "User"
+                        //     ? customWidget(
+                        //         context: context,
+                        //         img: "assets/groovkin.png",
+                        //         text: "My Groovkin",
+                        //         onTap: () {
+                        //           Get.toNamed(Routes.userMyGroovkinScreen);
+                        //         })
+                        //     : const SizedBox.shrink(),
                         API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,

@@ -65,7 +65,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 labelStyle: poppinsMediumStyle(
                     fontSize: 14,
                     context: context,
-                    color: DynamicColor.grayClr.withValues(alpha:0.5)),
+                    color: DynamicColor.grayClr.withValues(alpha: 0.5)),
                 labelPadding: const EdgeInsets.all(6),
                 indicatorPadding: const EdgeInsets.all(10),
                 indicatorColor: Colors.transparent,
@@ -121,6 +121,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
             ],
           ),
         ),
+
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Stack(
@@ -291,7 +292,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Cancel",
+                                          "Cancelled",
                                           style: poppinsMediumStyle(
                                               fontSize: 14,
                                               color:
@@ -307,10 +308,11 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
+        
       ),
     );
   }
