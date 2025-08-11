@@ -21,6 +21,7 @@ class InterceptorsServices extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
+    
     if (response.statusCode == 401) {
       if (response.data["message"] == "Unauthenticated.") {
         API().sp.erase();
@@ -29,6 +30,7 @@ class InterceptorsServices extends Interceptor {
         bottomToast(text: "Token Expired!!");
       }
     }
+
     if (response.statusCode! > 400) {
       BotToast.closeAllLoading();
       BotToast.showText(text: response.data["data"]);

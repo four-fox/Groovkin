@@ -6,30 +6,35 @@ String pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
     r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
     r"{0,253}[a-zA-Z0-9])?)*$";
 
+String linkPattern =
+    r'^(https:\/\/(?:www\.)?(?:facebook|instagram|twitter|x|tiktok|linkedin|snapchat|pinterest|youtube)\.com\/[A-Za-z0-9._%-]+\/?)$';
+
 class CustomTextFields extends StatelessWidget {
-  CustomTextFields({
-    super.key,
-    this.labelText,
-    this.textClr,
-    this.maxLine = 1,
-    this.keyBoardType = false,
-    this.borderClr,
-    this.iconShow = false,
-    this.onTap,
-    this.readOnly = false,
-    this.style,
-    this.labelStyling,
-    this.suffixIcon,
-    this.suffixWidget,
-    this.controller,
-    this.obscureText = false,
-    this.validationError,
-    this.isEmail = false,
-    this.onChanged,
-    this.ignoredValidation = false,
-    this.hintText,
-    this.disabled,
-  });
+  CustomTextFields(
+      {super.key,
+      this.labelText,
+      this.textClr,
+      this.maxLine = 1,
+      this.keyBoardType = false,
+      this.borderClr,
+      this.iconShow = false,
+      this.onTap,
+      this.readOnly = false,
+      this.style,
+      this.labelStyling,
+      this.suffixIcon,
+      this.suffixWidget,
+      this.controller,
+      this.obscureText = false,
+      this.validationError,
+      this.isEmail = false,
+      this.onChanged,
+      this.ignoredValidation = false,
+      this.hintText,
+      this.disabled,
+      this.prefixWidget,
+      this.isOptional = false,
+      this.isLink});
 
   String? labelText;
   Color? textClr;
@@ -43,12 +48,15 @@ class CustomTextFields extends StatelessWidget {
   TextStyle? labelStyling;
   final IconData? suffixIcon;
   Widget? suffixWidget;
+  Widget? prefixWidget;
   TextEditingController? controller = TextEditingController();
   bool obscureText = false;
+  bool isOptional = false;
   String? validationError;
   bool? ignoredValidation = false;
   bool? isEmail = false;
   bool? disabled = true;
+  bool? isLink = false;
   final ValueChanged<String>? onChanged;
   String? hintText;
 
@@ -69,6 +77,7 @@ class CustomTextFields extends StatelessWidget {
         keyboardType:
             keyBoardType == false ? TextInputType.text : TextInputType.number,
         decoration: InputDecoration(
+          prefixIcon: prefixWidget,
           hintText: hintText,
           alignLabelWithHint: true,
           suffixIcon: iconShow == true
@@ -96,45 +105,52 @@ class CustomTextFields extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha: 0.6)), //<-- SEE HERE
           ),
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha: 0.6)), //<-- SEE HERE
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha: 0.6)), //<-- SEE HERE
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(
                 color: borderClr ??
-                    DynamicColor.grayClr.withValues(alpha:0.6)), //<-- SEE HERE
+                    DynamicColor.grayClr.withValues(alpha: 0.6)), //<-- SEE HERE
           ),
         ),
-        validator: (value) {
-          if (ignoredValidation == false) {
-            if (value!.isEmpty) {
-              return 'Please enter $validationError';
-            } else {
-              if (isEmail == true) {
-                RegExp regex = RegExp(pattern);
-                if (!regex.hasMatch(value)) {
-                  return "Enter a valid email address";
+        validator: isOptional
+            ? null
+            : (value) {
+                if (ignoredValidation == false) {
+                  if (value!.isEmpty) {
+                    return 'Please enter $validationError';
+                  } else {
+                    if (isEmail == true) {
+                      RegExp regex = RegExp(pattern);
+                      if (!regex.hasMatch(value)) {
+                        return "Enter a valid email address";
+                      }
+                      return null;
+                    } else if (isLink == true) {
+                      RegExp regex = RegExp(linkPattern);
+                      if (!regex.hasMatch(value)) {
+                        return "Enter a valid social link";
+                      }
+                    }
+                  }
+                } else {
+                  return null;
                 }
                 return null;
-              }
-            }
-          } else {
-            return null;
-          }
-          return null;
-        });
+              });
   }
 
   validateEmail(String value) {
@@ -252,7 +268,8 @@ class SearchTextFields extends StatelessWidget {
       decoration: BoxDecoration(
           color: bgColor ?? Colors.transparent,
           borderRadius: BorderRadius.circular(borderRadius ?? 8),
-          border: Border.all(color: DynamicColor.grayClr.withValues(alpha:0.6))),
+          border:
+              Border.all(color: DynamicColor.grayClr.withValues(alpha: 0.6))),
       child: TextFormField(
         onTap: onTap,
         controller: controller,

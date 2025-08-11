@@ -24,59 +24,70 @@ class SendEmailScreen extends StatelessWidget {
             width: Get.width,
             height: Get.height,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: SingleChildScrollView(
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: kToolbarHeight * 2,
-                  ),
-                  Text(
-                    "Forget Passwords",
-                    style: poppinsRegularStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      context: context,
-                      color: theme.primaryColor,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: ImageIcon(
+                        const AssetImage("assets/backArrow.png"),
+                        color: theme.primaryColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "To Reset your Password, Please Enter Your Email Address and Press Send",
-                    style: poppinsRegularStyle(
-                      fontSize: 13,
-                      context: context,
-                      color: theme.primaryColor,
+                    const SizedBox(
+                      height: kToolbarHeight * 2,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  CustomTextFields(
-                    borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
-                    controller: controller.forgotPassEmailController,
-                    validationError: "email",
-                    isEmail: true,
-                  ),
-                  const SizedBox(
-                    height: kToolbarHeight * 3,
-                  ),
-                  CustomButton(
-                    borderClr: Colors.transparent,
-                    onTap: () {
-                      if (forgotPasswordForm.currentState!.validate()) {
-                        controller.forgotPassword();
-                      }
-                    },
-                    text: "Email Send",
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  )
-                ],
+                    Text(
+                      "Forget Passwords",
+                      style: poppinsRegularStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        context: context,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "To Reset your Password, Please Enter Your Email Address and Press Send",
+                      style: poppinsRegularStyle(
+                        fontSize: 13,
+                        context: context,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    CustomTextFields(
+                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.4),
+                      controller: controller.forgotPassEmailController,
+                      validationError: "email",
+                      isEmail: true,
+                    ),
+                    const SizedBox(
+                      height: kToolbarHeight * 3,
+                    ),
+                    CustomButton(
+                      borderClr: Colors.transparent,
+                      onTap: () {
+                        if (forgotPasswordForm.currentState!.validate()) {
+                          controller.forgotPassword();
+                        }
+                      },
+                      text: "Email Send",
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

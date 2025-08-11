@@ -196,22 +196,24 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                 ),
               );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            if (updatedCond == true) {
-              Get.back();
-            } else {
-              if (_controller.itemsList.isNotEmpty) {
-                _controller.makeMethodHit(navigation: "survey");
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              if (updatedCond == true) {
+                Get.back();
               } else {
-                bottomToast();
+                if (_controller.itemsList.isNotEmpty) {
+                  _controller.makeMethodHit(navigation: "survey");
+                } else {
+                  bottomToast();
+                }
               }
-            }
-          },
-          text: updatedCond == true ? "Save" : "Next",
+            },
+            text: updatedCond == true ? "Save" : "Next",
+          ),
         ),
       ),
     );

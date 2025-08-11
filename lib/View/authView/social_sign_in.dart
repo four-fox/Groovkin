@@ -42,9 +42,9 @@ class _SocialSignInState extends State<SocialSignIn> {
   }
 
   Future<void> loginWithSpotify() async {
-    const clientId = con.clientId;  
-    const clientSecret = con.clientSecret;  
-    const redirectUri = "groovkin://callback";  
+    const clientId = con.clientId;
+    const clientSecret = con.clientSecret;
+    const redirectUri = "groovkin://callback";
 
     final authUrl = Uri.parse(
       'https://accounts.spotify.com/authorize'
@@ -132,19 +132,20 @@ class _SocialSignInState extends State<SocialSignIn> {
         if (widget.showApple)
           if (Platform.isIOS)
             CustomButtonWithIcon(
-                onTap: () {
-                  _authController.appleSignIn();
-                },
-                text: "Continue with Apple",
-                iconValue: true,
-                bgColor: Colors.transparent,
-                gradientClr: true,
-                color2: DynamicColor.grayClr.withValues(alpha: 0.4),
-                color1: DynamicColor.grayClr.withValues(alpha: 0.1),
-                imageIconn: ImageIcon(
-                  const AssetImage("assets/apple.png"),
-                  color: theme.primaryColor,
-                )),
+              onTap: () {
+                _authController.appleSignIn();
+              },
+              text: "Continue with Apple",
+              iconValue: true,
+              bgColor: Colors.transparent,
+              gradientClr: true,
+              color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+              color1: DynamicColor.grayClr.withValues(alpha: 0.1),
+              imageIconn: ImageIcon(
+                const AssetImage("assets/apple.png"),
+                color: theme.primaryColor,
+              ),
+            ),
         if (widget.showApple)
           if (Platform.isIOS)
             const SizedBox(
@@ -160,8 +161,8 @@ class _SocialSignInState extends State<SocialSignIn> {
               iconValue: true,
               bgColor: Colors.transparent,
               gradientClr: true,
-              color2: DynamicColor.grayClr.withValues(alpha:0.4),
-              color1: DynamicColor.grayClr.withValues(alpha:0.1),
+              color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+              color1: DynamicColor.grayClr.withValues(alpha: 0.1),
               imageIconn: ImageIcon(
                 const AssetImage("assets/google.png"),
                 color: theme.primaryColor,
@@ -190,8 +191,8 @@ class _SocialSignInState extends State<SocialSignIn> {
                 iconValue: true,
                 bgColor: Colors.transparent,
                 gradientClr: true,
-                color2: DynamicColor.grayClr.withValues(alpha:0.4),
-                color1: DynamicColor.grayClr.withValues(alpha:0.1),
+                color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+                color1: DynamicColor.grayClr.withValues(alpha: 0.1),
                 imageIconn: ImageIcon(
                   const AssetImage("assets/spotify.png"),
                   color: theme.primaryColor,

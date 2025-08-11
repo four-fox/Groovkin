@@ -419,13 +419,15 @@ class AddMoreHardwareScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          onTap: () {
-            Get.back();
-          },
-          text: "Update",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            onTap: () {
+              Get.back();
+            },
+            text: "Update",
+          ),
         ),
       ),
     );

@@ -95,43 +95,45 @@ class NotifyScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(4),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          widths: Get.width,
-          heights: 48,
-          text: "Notify",
-          onTap: () {
-            Future.delayed(const Duration(seconds: 2), () {
-              Get.back();
-              Get.back();
-            });
-            showDialog(
-                barrierColor: Colors.transparent,
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return AlertWidget(
-                    height: Get.height / 3.5,
-                    container: Column(
-                      children: [
-                        const Image(image: AssetImage("assets/notifySend.png")),
-                        Text(
-                          "Notify Send",
-                          style: poppinsMediumStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: theme.primaryColor,
-                            context: context,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                });
-          },
-          textClr: theme.primaryColor,
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            widths: Get.width,
+            heights: 48,
+            text: "Notify",
+            onTap: () {
+              Future.delayed(const Duration(seconds: 2), () {
+                Get.back();
+                Get.back();
+              });
+              showDialog(
+                  barrierColor: Colors.transparent,
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return AlertWidget(
+                      height: Get.height / 3.5,
+                      container: Column(
+                        children: [
+                          const Image(image: AssetImage("assets/notifySend.png")),
+                          Text(
+                            "Notify Send",
+                            style: poppinsMediumStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: theme.primaryColor,
+                              context: context,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  });
+            },
+            textClr: theme.primaryColor,
+          ),
         ),
       ),
     );

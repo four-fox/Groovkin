@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:app_settings/app_settings.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
@@ -39,6 +41,7 @@ import '../../model/single_ton_data.dart';
 import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 
 enum ChangeRole { user, organizer, manager }
 
@@ -48,6 +51,7 @@ class AuthController extends GetxController {
   ///intro functionality
   final _index = 0.obs;
   RxInt indexValue = 0.obs;
+
   List<intro> introduction = [
     intro(
       title: "Event Attendee",
@@ -98,6 +102,10 @@ class AuthController extends GetxController {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final aboutController = TextEditingController();
+  final zipController = TextEditingController();
+  final instagramController = TextEditingController();
+  final twitterXController = TextEditingController();
+  final youtubeController = TextEditingController();
   RxBool showPassword = true.obs;
   RxBool showConfirmPassword = true.obs;
 
@@ -140,6 +148,10 @@ class AuthController extends GetxController {
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
       "device_token": token,
+      "zip_code": zipController.text,
+      "instagram_link": instagramController.text,
+      "twitter_link": twitterXController.text,
+      "youtube_link": youtubeController.text,
       "about": aboutController.text,
     });
     log(formData.toString());
@@ -389,31 +401,38 @@ class AuthController extends GetxController {
   }
 
   /// todo create profile functionality
+
   String initialCountry = 'NG';
   final dobController = TextEditingController();
 
   ///Upload Profile Pic
+
   String? imageBytes;
   XFile? files;
   final ImagePicker _picker = ImagePicker();
   File? profileImage;
   RxBool imageLoaders = true.obs;
+
   cameraImage(context, source) async {
     try {
       imageLoaders(false);
       files = await _picker.pickImage(
           source: source, imageQuality: 50, maxHeight: 1920, maxWidth: 1080);
-      CroppedFile? file =
-          await ImageCropper().cropImage(sourcePath: files!.path);
+      CroppedFile? file = await ImageCropper().cropImage(
+        sourcePath: files!.path,
+      );
+
       if (files != null) {
         if (file != null) {
           imageBytes = file.path;
         } else {
           imageBytes = files!.path;
         }
-      }
+      } 
+
       imageLoaders(true);
       update();
+            
     } catch (e) {
       imageLoaders(true);
       // BotToast.showText(text: e.toString());
@@ -1099,6 +1118,59 @@ class AuthController extends GetxController {
 
   // todo organizer flow have services
 
+// todo get current location
+
+  geo.Position? position;
+
+  Future<void> getCurrentLocation([bool getZipCode = false]) async {
+    bool serviceEnabled = await geo.Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await AppSettings.openAppSettings(type: AppSettingsType.location);
+      return;
+    }
+
+    geo.LocationPermission permission = await geo.Geolocator.checkPermission();
+
+    if (permission == geo.LocationPermission.denied) {
+      permission = await geo.Geolocator.requestPermission();
+      if (permission == geo.LocationPermission.denied) {
+        print("Location permission denied");
+        return;
+      }
+    }
+
+    if (permission == geo.LocationPermission.deniedForever) {
+      await AppSettings.openAppSettings(type: AppSettingsType.location);
+      return;
+    } // If we reach here, we have permission
+
+    geo.Position position = await geo.Geolocator.getCurrentPosition(
+      desiredAccuracy: geo.LocationAccuracy.high,
+    );
+
+    this.position = position;
+
+    if (getZipCode) {
+      getZipCodes();
+    }
+    update();
+  }
+
+  getZipCodes() async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        position?.latitude ?? 0.0, position?.longitude ?? 0.0);
+    if (placemarks.isNotEmpty) {
+      Placemark placemark = placemarks.first;
+      print("Country: ${placemark.country}");
+      print("State: ${placemark.administrativeArea}");
+      print("ZIP Code ${placemark.postalCode}");
+      if (placemark.postalCode != null && placemark.postalCode!.isNotEmpty) {
+        zipController.text = placemark.postalCode!;
+        update();
+      }
+    }
+  }
+
   // todo Change Role
   ChangeRole? changeRole;
   RxBool switchProfileLoader = false.obs;
@@ -1120,9 +1192,17 @@ class AuthController extends GetxController {
     }
   }
 
+  bool switchProfileLoading = false;
+
+  setSwitchProfileLoading(bool loading) {
+    switchProfileLoading = loading;
+    update();
+  }
+
   switchProfile() async {
     String userType = checkUserRole(changeRole!);
     print(userType);
+    setSwitchProfileLoading(true);
     var formData = form.FormData.fromMap({"role": userType});
     final response = await API().postApi(formData, "switch-profile");
     if (response.statusCode == 200) {
@@ -1170,6 +1250,7 @@ class AuthController extends GetxController {
         }
       }
     }
+    setSwitchProfileLoading(false);
   }
 
   // Todo Delete Account
@@ -1246,6 +1327,7 @@ class AuthController extends GetxController {
       Get.offNamed(Routes.sendInvitationScreen);
       sendingEmailLoader.value = true;
       update();
+
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Mail Send Successfully")));
@@ -1406,11 +1488,28 @@ class AuthController extends GetxController {
     update();
   }
 
+  // Todo Verify Email After Sign Up
+
+  String? otpVerifyController;
+
+  setOtpController(String otp) {
+    otpVerifyController = otp;
+    update();
+  }
+
+  Future<dynamic> verifyEmail() async {
+    if ((otpVerifyController?.length ?? 0) < 4) {
+      BotToast.showText(text: "Invalid Otp!");
+      return;
+    }
+  }
+
   // Todo Social Sign IN
 
   Future<dynamic> googleSignIn() async {
     try {
       EasyLoading.show();
+
       GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
 
       if (googleSignInAccount == null) {
@@ -1429,12 +1528,14 @@ class AuthController extends GetxController {
       final firebase_auth.UserCredential userCredential = await firebase_auth
           .FirebaseAuth.instance
           .signInWithCredential(credential);
+
       if (userCredential.user != null) {
         emailController.text = userCredential.user!.email ?? "";
         displayNameController.text = userCredential.user!.displayName ?? "";
         API().sp.write("emailSocial", userCredential.user!.email ?? "");
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
         API().sp.write("accessToken", userCredential.credential!.accessToken);
+
         sigUp(
           Get.context,
           signUpPlatform: "google",
@@ -1481,12 +1582,12 @@ class AuthController extends GetxController {
         API().sp.write("emailSocial", userCredential.user!.email!);
         // API().sp.write("nameSocial", userCredential.user!.displayName!);
         API().sp.write("accessToken", userCredential.credential!.accessToken);
-      sigUp(     
+        sigUp(
           Get.context,
           signUpPlatform: "apple",
           platformId: userCredential.credential!.accessToken,
-        );    
-      }  
+        );
+      }
     } catch (e) {
       EasyLoading.dismiss();
     } finally {
@@ -1603,8 +1704,7 @@ class AuthController extends GetxController {
   Future<dynamic> getSpecificArtistGenre({fullUrl}) async {
     setSpecificArtistLoading = true;
 
-    try { 
-
+    try {
       final resposne = await API()
           .getApi(url: "get-music-genre", fullUrl: fullUrl, queryParameters: {
         "type": "spotify",
@@ -1634,7 +1734,7 @@ class AuthController extends GetxController {
   }
 
   /// Subsction Work  By Revenue Cat
-  
+
   RxInt selected = 0.obs;
 
   logInWithRevenueCat() async {

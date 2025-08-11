@@ -104,170 +104,160 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 6.0),
                               child: notificationWidget(
-                                  onTap: () {
-                                    if (data.sender?.deletedAt != null) {
-                                      BotToast.showText(
-                                          text: "Account Deleted!");
-                                    } else {
-                                      if (data.type == "event_following") {
-                                        Get.toNamed(Routes.viewProfileScreen,
-                                            arguments: {
-                                              "id": data
-                                                  .senderId, // Pass only the ID
-                                              "fromNotification":
-                                                  true, // Add this flag
-                                            });
-                                      } else if (data.type == "event_accept") {
-                                        Get.toNamed(Routes.pendingEventDetails,
-                                            arguments: {
-                                              "notInterestedBtn": 1,
-                                              "title": "About Event",
-                                              "eventId": data.sourceId!,
-                                              "type": "event",
-                                            });
-                                      } else if (data.type == "event_created") {
-                                        Get.toNamed(Routes.pendingEventDetails,
-                                            arguments: {
-                                              "notInterestedBtn": 1,
-                                              "title": "About Event",
-                                              "eventId": data.sourceId!,
-                                              "type": "event",
-                                            });
-                                      } else if (data.type ==
-                                          "event_reschedule") {
-                                        // Get.toNamed(Routes.upcomingScreen,
-                                        //     arguments: {
-                                        //       "eventId": data.sourceId,
-                                        //       "reportedEventView": 1,
-                                        //       "notInterestedBtn": 1,
-                                        //       "appBarTitle": "Upcoming"
-                                        //     });
+                                onTap: () {
+                                  if (data.sender?.deletedAt != null) {
+                                    BotToast.showText(text: "Account Deleted!");
+                                  } else {
+                                    if (data.type == "event_following") {
+                                      Get.toNamed(Routes.viewProfileScreen,
+                                          arguments: {
+                                            "id": data
+                                                .senderId, // Pass only the ID
+                                            "fromNotification":
+                                                true, // Add this flag
+                                          });
+                                    } else if (data.type == "event_accept") {
+                                      Get.toNamed(Routes.pendingEventDetails,
+                                          arguments: {
+                                            "notInterestedBtn": 1,
+                                            "title": "About Event",
+                                            "eventId": data.sourceId!,
+                                            "type": "event",
+                                          });
+                                    } else if (data.type == "event_created") {
+                                      Get.toNamed(Routes.pendingEventDetails,
+                                          arguments: {
+                                            "notInterestedBtn": 1,
+                                            "title": "About Event",
+                                            "eventId": data.sourceId!,
+                                            "type": "event",
+                                          });
+                                    } else if (data.type ==
+                                        "event_reschedule") {
+                                      Get.toNamed(Routes.pendingEventDetails,
+                                          arguments: {
+                                            "eventId": data.sourceId,
+                                            "notInterestedBtn": 1,
+                                            "title": "Reschedule Event",
+                                            "type": "event",
+                                          });
+                                    } else if (data.type == "event_rate") {
+                                      Get.toNamed(Routes.pendingEventDetails,
+                                              arguments: {
+                                            "eventId": data.sourceId,
+                                            "notInterestedBtn": 1,
+                                            "title": "About Event",
+                                            "type": "event",
+                                          })!
+                                          .then(
+                                        (value) => _managercontroller
+                                            .getAllPendingEvents(),
+                                      );
+                                    } else if (data.type ==
+                                        "event_price_update") {
+                                      Get.toNamed(Routes.pendingEventDetails,
+                                              arguments: {
+                                            "eventId": data.sourceId,
+                                            "notInterestedBtn": 1,
+                                            "title": "About Event",
+                                            "type": "event",
+                                          })!
+                                          .then(
+                                        (value) => _managercontroller
+                                            .getAllPendingEvents(),
+                                      );
+                                    } else if (data.type == "event_complete") {
+                                      Get.toNamed(Routes.upcomingScreen,
+                                              arguments: {
+                                            "eventId": data.sourceId,
+                                            "reportedEventView": 1,
+                                            "notInterestedBtn": 1,
+                                            "appBarTitle": "Completed",
+                                            // "${singleEvent.status.toString().capitalize} Event"
+                                          })!
+                                          .then(
+                                        (value) => _controller.completedEvent(),
+                                      );
+                                      // Get.toNamed(Routes.upcomingScreen,
+                                      //         arguments: {
+                                      //       "eventId": data.sourceId,
+                                      //       "reportedEventView": 1,
+                                      //       "notInterestedBtn": 1,
+                                      //       "appBarTitle": "Completed Event"
+                                      //       // "${singleEvent.status.toString().capitalize} Event"
+                                      //     })!
+                                      //     .then(
+                                      //   (value) => _controller.completedEvent(),
+                                      // );
+                                      // Get.toNamed(Routes.upcomingScreen,
+                                      //         arguments: {
+                                      //       "eventId": data.sourceId,
+                                      //       "reportedEventView": 1,
+                                      //       "notInterestedBtn": 1,
+                                      //       "appBarTitle": "Completed Event",
+                                      //       "isComingFromNotification": true,
+                                      //     })!
+                                      //     .then(
+                                      //   (value) => _controller.completedEvent(),
+                                      // );
+                                    } else if (data.type == "event_cancelled") {
+                                      Get.toNamed(Routes.upcomingScreen,
+                                          arguments: {
+                                            "eventId": data.sourceId,
+                                            "reportedEventView": 1,
+                                            "notInterestedBtn": 1,
+                                            "appBarTitle": "Cancelled",
+                                            "isComingFromNotification": true,
+                                          });
+                                    } else if (data.type ==
+                                        "event_acknowledged") {
+                                      // Get.toNamed(Routes.upcomingScreen,
+                                      //     arguments: {
+                                      //       "eventId": data.sourceId,
+                                      //       "reportedEventView": 1,
+                                      //       "notInterestedBtn": 1,
+                                      //       "appBarTitle": "Completed",
+                                      //       "isComingFromNotification": true,
+                                      //     });
 
-                                        Get.toNamed(Routes.pendingEventDetails,
-                                            arguments: {
-                                              "eventId": data.sourceId,
-                                              "notInterestedBtn": 1,
-                                              "title": "Reschedule Event",
-                                              "type": "event",
-                                            });
-                                      } else if (data.type ==
-                                          "event_complete") {
-                                        Get.toNamed(Routes.upcomingScreen,
-                                                arguments: {
-                                              "eventId": data.sourceId,
-                                              "reportedEventView": 1,
-                                              "notInterestedBtn": 1,
-                                              "appBarTitle": "Completed"
-                                              // "${singleEvent.status.toString().capitalize} Event"
-                                            })!
-                                            .then(
-                                          (value) =>
-                                              _controller.completedEvent(),
-                                        );
-                                        // Get.toNamed(Routes.upcomingScreen,
-                                        //         arguments: {
-                                        //       "eventId": data.sourceId,
-                                        //       "reportedEventView": 1,
-                                        //       "notInterestedBtn": 1,
-                                        //       "appBarTitle": "Completed Event"
-                                        //       // "${singleEvent.status.toString().capitalize} Event"
-                                        //     })!
-                                        //     .then(
-                                        //   (value) => _controller.completedEvent(),
-                                        // );
-                                        // Get.toNamed(Routes.upcomingScreen,
-                                        //         arguments: {
-                                        //       "eventId": data.sourceId,
-                                        //       "reportedEventView": 1,
-                                        //       "notInterestedBtn": 1,
-                                        //       "appBarTitle": "Completed Event",
-                                        //       "isComingFromNotification": true,
-                                        //     })!
-                                        //     .then(
-                                        //   (value) => _controller.completedEvent(),
-                                        // );
-                                      } else if (data.type == "event_rate") {
-                                        Get.toNamed(Routes.pendingEventDetails,
-                                                arguments: {
-                                              "eventId": data.sourceId,
-                                              "notInterestedBtn": 1,
-                                              "title": "About Event",
-                                              "type": "event",
-                                            })!
-                                            .then(
-                                          (value) => _managercontroller
-                                              .getAllPendingEvents(),
-                                        );
-                                      } else if (data.type ==
-                                          "event_price_update") {
-                                        Get.toNamed(Routes.pendingEventDetails,
-                                                arguments: {
-                                              "eventId": data.sourceId,
-                                              "notInterestedBtn": 1,
-                                              "title": "About Event",
-                                              "type": "event",
-                                            })!
-                                            .then(
-                                          (value) => _managercontroller
-                                              .getAllPendingEvents(),
-                                        );
-                                      } else if (data.type ==
-                                          "event_cancelled") {
-                                        Get.toNamed(Routes.upcomingScreen,
-                                            arguments: {
-                                              "eventId": data.sourceId,
-                                              "reportedEventView": 1,
-                                              "notInterestedBtn": 1,
-                                              "appBarTitle": "Cancelled",
-                                              "isComingFromNotification": true,
-                                            });
-                                      } else if (data.type ==
-                                          "event_acknowledged") {
-                                        // Get.toNamed(Routes.upcomingScreen,
-                                        //     arguments: {
-                                        //       "eventId": data.sourceId,
-                                        //       "reportedEventView": 1,
-                                        //       "notInterestedBtn": 1,
-                                        //       "appBarTitle": "Completed",
-                                        //       "isComingFromNotification": true,
-                                        //     });
-                                        Get.toNamed(Routes.upcomingScreen,
-                                            arguments: {
-                                              "eventId": data.sourceId,
-                                              "reportedEventView": 1,
-                                              "notInterestedBtn": 1,
-                                              "appBarTitle": "Acknowledged"
-                                            });
-                                        // Get.toNamed(Routes.upcomingScreen,
-                                        //     arguments: {
-                                        //       "eventId": data.sourceId,
-                                        //       "reportedEventView": 1,
-                                        //       "notInterestedBtn": 1,
-                                        //       "appBarTitle": "On Going"
-                                        //     });
-                                      } else if (data.type ==
-                                          "event_declined") {
-                                        Get.toNamed(Routes.upcomingScreen,
-                                            arguments: {
-                                              "eventId": data.sourceId,
-                                              "reportedEventView": 1,
-                                              "notInterestedBtn": 1,
-                                              "appBarTitle": "Cancelled",
-                                              // "isComingFromNotification": true,
-                                            });
-                                      }
+                                      Get.toNamed(Routes.upcomingScreen,
+                                          arguments: {
+                                            "eventId": data.sourceId,
+                                            "reportedEventView": 1,
+                                            "notInterestedBtn": 1,
+                                            "appBarTitle": "Acknowledged"
+                                          });
+
+                                      // Get.toNamed(Routes.upcomingScreen,
+                                      //     arguments: {
+                                      //       "eventId": data.sourceId,
+                                      //       "reportedEventView": 1,
+                                      //       "notInterestedBtn": 1,
+                                      //       "appBarTitle": "On Going"
+                                      //     });
+                                    } else if (data.type == "event_declined") {
+                                      Get.toNamed(Routes.upcomingScreen,
+                                          arguments: {
+                                            "eventId": data.sourceId,
+                                            "reportedEventView": 1,
+                                            "notInterestedBtn": 1,
+                                            "appBarTitle": "Cancelled",
+                                            // "isComingFromNotification": true,
+                                          });
                                     }
-                                  },
-                                  theme: theme,
-                                  context: context,
-                                  text: data.sender!.name,
-                                  subtitle: data.text,
-                                  imageUrl:
-                                      data.sender?.profilePicture?.mediaPath,
-                                  time: formatDate(data.createdAt!),
-                                  isDelete: data.sender?.deletedAt == null
-                                      ? false
-                                      : true),
+                                  }
+                                },
+                                theme: theme,
+                                context: context,
+                                text: data.sender!.name,
+                                subtitle: data.text,
+                                imageUrl:
+                                    data.sender?.profilePicture?.mediaPath,
+                                time: formatDate(data.createdAt!),
+                                isDelete: data.sender?.deletedAt == null
+                                    ? false
+                                    : true,
+                              ),
                             );
                           },
                           itemCount:

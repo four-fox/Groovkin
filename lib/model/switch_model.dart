@@ -27,11 +27,11 @@ class Data {
   String? name;
   String? email;
   String? deviceToken;
-  Null referralCode;
-  Null emailVerifiedAt;
-  Null otp;
+  dynamic referralCode;
+  dynamic emailVerifiedAt;
+  int? otp;
   String? activeRole;
-  Null deletedAt;
+  dynamic deletedAt;
   String? createdAt;
   String? updatedAt;
   String? token;

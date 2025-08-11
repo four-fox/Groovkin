@@ -273,14 +273,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           () => Container(
                             height: 35,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: controller.showIndexValue!.value == 1
-                                  ? DynamicColor.secondaryClr
-                                  : DynamicColor.lightBlackClr,
-                            ),
+                                borderRadius: BorderRadius.circular(10),
+                                color: controller.showIndexValue!.value == 1
+                                    ? DynamicColor.secondaryClr
+                                    : DynamicColor.lightBlackClr),
                             child: Center(
                               child: Text(
-                                "History",
+                                /*sp.read("role") == "eventManager"
+                                    ? "Pending"
+                                    :*/
+                                "Requests",
                                 style: poppinsMediumStyle(
                                     fontSize: 14,
                                     context: context,
@@ -297,16 +299,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           () => Container(
                             height: 35,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: controller.showIndexValue!.value == 2
-                                    ? DynamicColor.secondaryClr
-                                    : DynamicColor.lightBlackClr),
+                              borderRadius: BorderRadius.circular(10),
+                              color: controller.showIndexValue!.value == 2
+                                  ? DynamicColor.secondaryClr
+                                  : DynamicColor.lightBlackClr,
+                            ),
                             child: Center(
                               child: Text(
-                                /*sp.read("role") == "eventManager"
-                                    ? "Pending"
-                                    :*/
-                                "Requests",
+                                "History",
                                 style: poppinsMediumStyle(
                                     fontSize: 14,
                                     context: context,
@@ -320,9 +320,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  // const SizedBox(
+                  //   height: 5,
+                  // ),
+
                   if (controller.showIndexValue!.value != 0)
                     GestureDetector(
                       onTap: () {
@@ -330,12 +331,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             !controller.showFilter.value;
                       },
                       child: Align(
-                          alignment: Alignment.topRight,
-                          child: ImageIcon(
-                            const AssetImage("assets/filterIcons.png"),
-                            color: DynamicColor.grayClr,
-                          )),
-                    )
+                        alignment: Alignment.topRight,
+                        child: ImageIcon(
+                          const AssetImage("assets/filterIcons.png"),
+                          color: DynamicColor.grayClr,
+                        ),
+                      ),
+                    ),
                 ]),
               ),
             ),
@@ -347,13 +349,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     /*sp.read("role") == "eventManager"?ManagerUpcomingEventsView() : */
                     UpcomingEvents(),
-                    PostEvents(),
                     sp.read("role") == "eventManager"
                         ? const ManagerPendingView()
                         : PendingScreen(),
+                    PostEvents(),
                   ],
                 ),
+
                 // Shahzain
+
                 Obx(
                   () => Visibility(
                     visible: controller.showFilter.value,

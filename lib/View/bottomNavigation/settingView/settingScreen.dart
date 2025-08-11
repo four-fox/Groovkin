@@ -25,7 +25,7 @@ class _SettingScreenState extends State<SettingScreen> {
   RxBool switchValue = false.obs;
   RxBool switchProfileValue = false.obs;
   late AuthController _authController;
-
+  
   @override
   void initState() {
     super.initState();
@@ -34,6 +34,23 @@ class _SettingScreenState extends State<SettingScreen> {
     } else {
       _authController = Get.put(AuthController());
     }
+  }
+
+  String switchRoleText() {
+    String title = (API().sp.read("role") == "eventOrganizer" &&
+            API().sp.read("currentRole") == "eventOrganizer")
+        ? "Switch Role to User"
+        : (API().sp.read("role") == "User" &&
+                API().sp.read("currentRole") == "eventOrganizer")
+            ? "Switch Role to Event Organizer"
+            : (API().sp.read("role") == "eventManager" &&
+                    API().sp.read("currentRole") == "eventManager")
+                ? "Switch  Role to User"
+                : (API().sp.read("role") == "User" &&
+                        API().sp.read("currentRole") == "eventManager")
+                    ? "Switch  Role to Event Organizer"
+                    : "Switch Role";
+    return title;
   }
 
   @override
@@ -61,7 +78,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           ? Border(
                               bottom: BorderSide(
                                   width: 4.0,
-                                  color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                                  color: DynamicColor.grayClr
+                                      .withValues(alpha: 0.6)),
                             )
                           : null,
                       image: const DecorationImage(
@@ -108,7 +126,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               style: poppinsMediumStyle(
                                   context: context,
                                   fontSize: 10,
-                                  color: DynamicColor.grayClr.withValues(alpha:0.9)),
+                                  color: DynamicColor.grayClr
+                                      .withValues(alpha: 0.9)),
                             ),
                         ],
                       ),
@@ -201,7 +220,9 @@ class _SettingScreenState extends State<SettingScreen> {
                           customWidget(
                               context: context,
                               img: "assets/switchIcon.png",
-                              text: "Switch Role",
+                              text: controller.switchProfileLoading == true
+                                  ? "Switching"
+                                  : switchRoleText(),
                               onTap: () {
                                 print(API().sp.read("role"));
                                 print(API().sp.read("currentRole"));
@@ -231,6 +252,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   BotToast.showText(
                                       text: "Change Role to Event Organizer");
                                 }
+
                                 // showModalBottomSheet(
                                 //     shape: RoundedRectangleBorder(
                                 //         borderRadius:
@@ -387,7 +409,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         GestureDetector(
                           onTap: () {
                             customAlertt(
-                              context: context,
+                                context: context,
                                 alignment: Alignment.topLeft,
                                 title: 'Logout',
                                 text: 'Are you sure you want to logout?',
@@ -439,7 +461,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            customAlertt(                   context: context,
+                            customAlertt(
+                                context: context,
                                 alignment: Alignment.topLeft,
                                 title: 'Delete Account',
                                 text: 'Are you sure you want to Delete?',
@@ -521,7 +544,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         style: poppinsMediumStyle(
                           fontSize: 18,
                           context: context,
-                          color: DynamicColor.lightYellowClr.withValues(alpha:0.8),
+                          color: DynamicColor.lightYellowClr
+                              .withValues(alpha: 0.8),
                         ),
                       ),
                 Padding(
@@ -531,7 +555,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     style: poppinsMediumStyle(
                       fontSize: 16,
                       context: context,
-                      color: DynamicColor.grayClr.withValues(alpha:0.7),
+                      color: DynamicColor.grayClr.withValues(alpha: 0.7),
                     ),
                   ),
                 ),
@@ -541,7 +565,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ? const SizedBox.shrink()
                         : Icon(
                             Icons.arrow_forward_ios,
-                            color: DynamicColor.grayClr.withValues(alpha:0.7),
+                            color: DynamicColor.grayClr.withValues(alpha: 0.7),
                           )
                     : SizedBox(
                         height: 30,
@@ -559,7 +583,7 @@ class _SettingScreenState extends State<SettingScreen> {
               height: 4,
             ),
             Divider(
-              color: DynamicColor.grayClr.withValues(alpha:0.7),
+              color: DynamicColor.grayClr.withValues(alpha: 0.7),
               thickness: 1.2,
             ),
           ],

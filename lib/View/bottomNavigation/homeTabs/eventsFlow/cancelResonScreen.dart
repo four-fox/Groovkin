@@ -44,8 +44,9 @@ class CancelReason extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.4),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.4),
                 child: TextFormField(
+                  key: cancellationForm,
                   maxLines: 6,
                   controller: controller.cancellationController,
                   style: poppinsRegularStyle(
@@ -65,24 +66,24 @@ class CancelReason extends StatelessWidget {
                     hintStyle: poppinsRegularStyle(
                         context: context,
                         fontSize: 14,
-                        color: DynamicColor.grayClr.withValues(alpha:0.7)),
+                        color: DynamicColor.grayClr.withValues(alpha: 0.7)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(
                           color: DynamicColor.grayClr
-                              .withValues(alpha:0.5)), //<-- SEE HERE
+                              .withValues(alpha: 0.5)), //<-- SEE HERE
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(
                           color: DynamicColor.grayClr
-                              .withValues(alpha:0.5)), //<-- SEE HERE
+                              .withValues(alpha: 0.5)), //<-- SEE HERE
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(
                           color: DynamicColor.grayClr
-                              .withValues(alpha:0.5)), //<-- SEE HERE
+                              .withValues(alpha: 0.5)), //<-- SEE HERE
                     ),
                   ),
                 ),
@@ -91,21 +92,23 @@ class CancelReason extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            // if(cancellationForm.currentState!.validate()){
-            _controller.cancelEvents(eventId: _eventId, back: doubleBack);
-            // }
-            // Get.offAllNamed(Routes.bottomNavigationView,
-            // arguments: {
-            //   "indexValue": 2
-            // }
-            // );
-          },
-          text: "Send",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              if (cancellationForm.currentState!.validate()) {
+                _controller.cancelEvents(eventId: _eventId, back: doubleBack);
+              }
+              // Get.offAllNamed(Routes.bottomNavigationView,
+              // arguments: {
+              //   "indexValue": 2
+              // }
+              // );
+            },
+            text: "Send",
+          ),
         ),
       ),
     );

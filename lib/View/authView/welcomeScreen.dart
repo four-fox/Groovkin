@@ -97,26 +97,28 @@ class _WelComeScreenState extends State<WelComeScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () {
-              if (API().sp.read("role") == "User") {
-                Get.offAllNamed(Routes.userQuickSurveyScreen);
-              } else if (API().sp.read("role") == "eventOrganizer") {
-                Get.offAllNamed(Routes.subscriptionScreen);
-              } else {
-                Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
-                  "updationCondition": false,
-                  "skipBtnHide": false,
-                });
-              }
-              // Get.toNamed(Routes.loginWithScreen);
-            },
-            text: sp.read("role") == "eventManager"
-                ? "Service Availability Survey"
-                : "Let's Get Started",
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: CustomButton(
+              borderClr: Colors.transparent,
+              onTap: () {
+                if (API().sp.read("role") == "User") {
+                  Get.offAllNamed(Routes.userQuickSurveyScreen);
+                } else if (API().sp.read("role") == "eventOrganizer") {
+                  Get.offAllNamed(Routes.subscriptionScreen);
+                } else {
+                  Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
+                    "updationCondition": false,
+                    "skipBtnHide": false,
+                  });
+                }
+                // Get.toNamed(Routes.loginWithScreen);
+              },
+              text: sp.read("role") == "eventManager"
+                  ? "Service Availability Survey"
+                  : "Let's Get Started",
+            ),
           ),
         ),
       ),

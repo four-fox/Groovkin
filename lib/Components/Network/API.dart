@@ -17,6 +17,7 @@ String dummyProfile =
     "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg";
 
 class API {
+  
   /// SingleTon
   static final API _singleton = API._internal();
   var sp = GetStorage();
@@ -35,7 +36,7 @@ class API {
 
     dio.interceptors.add(InterceptorsServices());
   }
-
+  
   ///Get
   Future<dynamic> getApi({
     url,
@@ -87,10 +88,11 @@ class API {
         dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
         // dio.options.headers['Accept'] = "application/json";
       }
-
+      
       if (showProgress) {
         showLoading();
       }
+
       dynamic response = await dio.post(fullUrl ?? Url().baseUrl + url,
           data: formData,
           options: multiPart == true
@@ -106,6 +108,7 @@ class API {
                   },
                 ),
           onSendProgress: (int progress, int total) {});
+
       BotToast.closeAllLoading();
       return response;
     } on DioException catch (e) {
@@ -208,7 +211,7 @@ showLoading() {
       toastBuilder: (_) => Center(
               child: LoaderClass(
             colorOne: DynamicColor.yellowClr,
-            colorTwo: DynamicColor.yellowClr.withValues(alpha:0.6),
+            colorTwo: DynamicColor.yellowClr.withValues(alpha: 0.6),
           )),
       animationDuration: const Duration(milliseconds: 300));
 }

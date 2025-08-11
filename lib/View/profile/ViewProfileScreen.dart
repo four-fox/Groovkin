@@ -284,7 +284,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                               "",
                                   style: poppinsRegularStyle(
                                     fontSize: 13,
-                                    color: theme.primaryColor.withValues(alpha:0.7),
+                                    color: theme.primaryColor
+                                        .withValues(alpha: 0.7),
                                   ),
                                 ),
                                 Text(
@@ -301,7 +302,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                               : "",
                                   style: poppinsRegularStyle(
                                     fontSize: 10,
-                                    color: DynamicColor.grayClr.withValues(alpha:0.8),
+                                    color: DynamicColor.grayClr
+                                        .withValues(alpha: 0.8),
                                   ),
                                 ),
                               ],
@@ -367,7 +369,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                       unselectedLabelStyle: poppinsMediumStyle(
                           fontSize: 14,
                           context: context,
-                          color: DynamicColor.grayClr.withValues(alpha:0.5)),
+                          color: DynamicColor.grayClr.withValues(alpha: 0.5)),
                       labelStyle: poppinsMediumStyle(
                           fontSize: 14,
                           context: context,
@@ -422,8 +424,8 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   style: poppinsRegularStyle(
                                       fontSize: 12,
                                       context: context,
-                                      color:
-                                          theme.primaryColor.withValues(alpha:0.5)),
+                                      color: theme.primaryColor
+                                          .withValues(alpha: 0.5)),
                                 ),
                               ],
                             ),
@@ -485,7 +487,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
         width: width ?? 80,
         // padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
         decoration: BoxDecoration(
-          color: DynamicColor.lightBlackClr.withValues(alpha:0.8),
+          color: DynamicColor.lightBlackClr.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(8),
         ),
         child: customWidget ??

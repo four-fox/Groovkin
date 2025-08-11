@@ -25,10 +25,9 @@ class ChatInnerScreen extends StatefulWidget {
 }
 
 class _ChatInnerScreenState extends State<ChatInnerScreen> {
+  
   late ChatController _controller;
-
   var userData;
-
   Offset? _tapDownPosition;
   Timer? onStoppedTyping;
   bool firstTime = false;
@@ -622,7 +621,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

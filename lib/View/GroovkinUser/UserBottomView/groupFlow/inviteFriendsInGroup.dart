@@ -22,9 +22,11 @@ class InviteFriendsInGroups extends StatelessWidget {
             height: kToolbarHeight * 1.4,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/grayClor.png"),
-                    fit: BoxFit.fill)),
+              image: DecorationImage(
+                image: AssetImage("assets/grayClor.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
             child: Stack(
               children: [
                 Padding(
@@ -127,7 +129,8 @@ class InviteFriendsInGroups extends StatelessWidget {
                         const Spacer(),
                         CircleAvatar(
                           radius: 17,
-                          backgroundColor: DynamicColor.grayClr.withValues(alpha:0.6),
+                          backgroundColor:
+                              DynamicColor.grayClr.withValues(alpha: 0.6),
                           child: Theme(
                             data: Theme.of(context).copyWith(
                               unselectedWidgetColor: Colors.white,
@@ -153,39 +156,42 @@ class InviteFriendsInGroups extends StatelessWidget {
               );
             }),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Future.delayed(const Duration(seconds: 2), () {
-              Get.offAllNamed(Routes.userBottomNavigationNav);
-            });
-            showDialog(
-                barrierColor: Colors.transparent,
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  return AlertWidget(
-                    height: Get.height / 2.5,
-                    container: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Image(image: AssetImage("assets/sendNotify.png")),
-                        Text(
-                          "Send Notify",
-                          style: poppinsMediumStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                              color: theme.primaryColor,
-                              context: context),
-                        )
-                      ],
-                    ),
-                  );
-                });
-          },
-          text: "Notify",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Future.delayed(const Duration(seconds: 2), () {
+                Get.offAllNamed(Routes.userBottomNavigationNav);
+              });
+              showDialog(
+                  barrierColor: Colors.transparent,
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return AlertWidget(
+                      height: Get.height / 2.5,
+                      container: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Image(
+                              image: AssetImage("assets/sendNotify.png")),
+                          Text(
+                            "Send Notify",
+                            style: poppinsMediumStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: theme.primaryColor,
+                                context: context),
+                          )
+                        ],
+                      ),
+                    );
+                  });
+            },
+            text: "Notify",
+          ),
         ),
       ),
     );

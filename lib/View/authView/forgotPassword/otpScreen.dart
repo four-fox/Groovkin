@@ -28,80 +28,93 @@ class OTPScreen extends StatelessWidget {
             height: Get.height,
             color: theme.scaffoldBackgroundColor,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: SingleChildScrollView(
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(
-                    height: kToolbarHeight * 1.8,
-                  ),
-                  CustomTextFields(
-                    labelText: "email",
-                    borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
-                    controller: controller.forgotPassEmailController,
-                    validationError: "new password",
-                    isEmail: true,
-                    readOnly: true,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  OTPTextField(
-                    length: 4,
-                    otpFieldStyle:
-                        OtpFieldStyle(focusBorderColor: Colors.orange //(here)
-                            ),
-                    width: MediaQuery.of(context).size.width,
-                    fieldWidth: 55,
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: theme.primaryColor,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: ImageIcon(
+                        const AssetImage("assets/backArrow.png"),
+                        color: theme.primaryColor,
+                      ),
                     ),
-                    textFieldAlignment: MainAxisAlignment.spaceAround,
-                    fieldStyle: FieldStyle.box,
-                    onChanged: (v) {
-                      print('value of v>>>>>>$v');
-                      controller.newPassOTPController.text = v;
-                    },
-                    onCompleted: (pin) {
-                      print("Completed: $pin");
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFields(
-                    labelText: "password",
-                    borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
-                    controller: controller.newPassController,
-                    validationError: "new password",
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFields(
-                    labelText: 'confirm password',
-                    borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
-                    controller: controller.newConfirmPassController,
-                    validationError: "confirm password",
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  CustomButton(
-                    borderClr: Colors.transparent,
-                    onTap: () {
-                      if (newPasswordForm.currentState!.validate()) {
-                        if (controller.newPassOTPController.text.length == 4) {
-                          controller.newPassword();
-                        } else {
-                          bottomToast(text: "Please complete otp fields");
+                    const SizedBox(
+                      height: kToolbarHeight * 1.8,
+                    ),
+                    CustomTextFields(
+                      labelText: "email",
+                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.4),
+                      controller: controller.forgotPassEmailController,
+                      validationError: "new password",
+                      isEmail: true,
+                      readOnly: true,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    OTPTextField(
+                      length: 4,
+                      otpFieldStyle:
+                          OtpFieldStyle(focusBorderColor: Colors.orange //(here)
+                              ),
+                      width: MediaQuery.of(context).size.width,
+                      fieldWidth: 55,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: theme.primaryColor,
+                      ),
+                      textFieldAlignment: MainAxisAlignment.spaceAround,
+                      fieldStyle: FieldStyle.box,
+                      onChanged: (v) {
+                        print('value of v>>>>>>$v');
+                        controller.newPassOTPController.text = v;
+                      },
+                      onCompleted: (pin) {
+                        print("Completed: $pin");
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextFields(
+                      labelText: "password",
+                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.4),
+                      controller: controller.newPassController,
+                      validationError: "new password",
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomTextFields(
+                      labelText: 'confirm password',
+                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.4),
+                      controller: controller.newConfirmPassController,
+                      validationError: "confirm password",
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    CustomButton(
+                      borderClr: Colors.transparent,
+                      onTap: () {
+                        if (newPasswordForm.currentState!.validate()) {
+                          if (controller.newPassOTPController.text.length ==
+                              4) {
+                            controller.newPassword();
+                          } else {
+                            bottomToast(text: "Please complete otp fields");
+                          }
                         }
-                      }
-                    },
-                    text: "Next",
-                  ),
-                ],
+                      },
+                      text: "Next",
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

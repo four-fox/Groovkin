@@ -26,6 +26,7 @@ import 'chatRoomModel.dart';
 import 'dbConfig/dbConfig.dart';
 
 /// camera and gallery choose icon model
+
 class ItemModel {
   String title;
   IconData icon;
@@ -76,7 +77,9 @@ class ChatController extends GetxController {
     ItemModel('Delete', Icons.delete),
     ItemModel('Reply', Icons.reply),
   ];
+
   List<Permission> permissionsNeeded = [Permission.camera, Permission.storage];
+
   final CustomPopupMenuController customPopupMenuController =
       CustomPopupMenuController();
 
@@ -142,16 +145,16 @@ class ChatController extends GetxController {
     // connectDisconnect();
     receiveMessage();
   }
-  
+
   ///Data base initialized
   initDatabase() async {
     chatDatabase = await _chatDatabase.getDatabase;
     // getMessageCount();
   }
-  
+
   /// get all user for new chat
   ///
-  
+
   RxBool newUserChatLoader = false.obs;
   ChatNewUserModel? newUserData;
   bool getNewUserWait = false;

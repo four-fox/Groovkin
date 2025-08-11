@@ -24,6 +24,7 @@ import 'package:groovkin/View/GroovkinUser/searchFilterScreen.dart';
 import 'package:groovkin/View/GroovkinUser/survey/surveyLifeStyleScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/authView/email_verify_screen.dart';
 import 'package:groovkin/View/authView/forgotPassword/otpScreen.dart';
 import 'package:groovkin/View/authView/forgotPassword/sendEmailScreen.dart';
 import 'package:groovkin/View/authView/loginScreen.dart';
@@ -138,6 +139,10 @@ class AppPages {
     GetPage(
       name: _Path.sendEmailForOtp,
       page: () => const SendEmailForOtp(),
+    ),
+    GetPage(
+      name: _Path.emailVerifyScreen,
+      page: () => const EmailVerifyScreen(),
     ),
     GetPage(
       name: _Path.newPasswordScreen,

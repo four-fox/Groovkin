@@ -267,27 +267,29 @@ class ChatCenterScreen extends StatelessWidget {
       ),
       bottomNavigationBar: onGoingVal != "ongoing"
           ? const SizedBox.shrink()
-          : Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-              child: CustomButton(
-                heights: 38,
-                style: poppinsRegularStyle(
-                  fontSize: 14,
-                  context: context,
-                  color: theme.primaryColor,
+          : SafeArea(
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                child: CustomButton(
+                  heights: 38,
+                  style: poppinsRegularStyle(
+                    fontSize: 14,
+                    context: context,
+                    color: theme.primaryColor,
+                  ),
+                  onTap: () {
+                    Get.back();
+                  },
+                  backgroundClr: false,
+                  // textClr: theme.scaffoldBackgroundColor,
+                  borderClr: Colors.transparent,
+                  color2: DynamicColor.greenClr,
+                  color1: DynamicColor.greenClr,
+                  text: "Complete",
                 ),
-                onTap: () {
-                  Get.back();
-                },
-                backgroundClr: false,
-                // textClr: theme.scaffoldBackgroundColor,
-                borderClr: Colors.transparent,
-                color2: DynamicColor.greenClr,
-                color1: DynamicColor.greenClr,
-                text: "Complete",
               ),
-            ),
+          ),
     );
   }
 }

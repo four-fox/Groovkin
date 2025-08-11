@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
@@ -45,6 +46,8 @@ class _CreateProfileState extends State<CreateProfile> {
     if (API().sp.read("nameSocial") != null) {
       _controller.displayNameController.text = API().sp.read("nameSocial");
     }
+
+    _controller.getCurrentLocation(true);
   }
 
   @override
@@ -83,7 +86,7 @@ class _CreateProfileState extends State<CreateProfile> {
             ),
           ),
           body: GetBuilder<AuthController>(initState: (v) {
-            for (int a = DateTime.now().year - 10; a >= 1900; a--) {
+            for (int a = DateTime.now().year - 18; a >= 1950; a--) {
               dobYear.add(a);
             }
             _controller.dobController.clear();
@@ -134,17 +137,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                     ),
                     sp.read("role") == "User"
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
-                            child: Text(
-                              "(optional)",
-                              style: poppinsMediumStyle(
-                                context: context,
-                                fontSize: 14,
-                                color: DynamicColor.lightRedClr,
-                              ),
-                            ),
-                          )
+                        ? OptionalWidgetText()
                         : const SizedBox.shrink(),
                     const SizedBox(
                       height: 28,
@@ -172,18 +165,24 @@ class _CreateProfileState extends State<CreateProfile> {
                       readOnly: API().sp.read("nameSocial") != null,
                     ),
                     SizedBox(
-                      height: sp.read('role') == "eventManager" ? 15 : 0,
+                      height: (sp.read('role') == "eventManager" ||
+                              sp.read("role") == "eventOrganizer")
+                          ? 15
+                          : 0,
                     ),
-                    sp.read('role') == "eventManager"
+                    (sp.read('role') == "eventManager" ||
+                            sp.read("role") == "eventOrganizer")
                         ? CustomTextFields(
                             labelText: "Company Name",
                             controller: controller.companyNameController,
                             ignoredValidation: true,
                           )
                         : const SizedBox.shrink(),
+
                     const SizedBox(
                       height: /*sp.read('role') !="User"?*/ 15 /*:0*/,
                     ),
+
                     //  CustomTextFields(
                     //   labelText: "Referral code",
                     //   keyBoardType: true,
@@ -194,6 +193,7 @@ class _CreateProfileState extends State<CreateProfile> {
                     // SizedBox(
                     //   height: 15,
                     // ),
+
                     TextField(
                       keyboardType: TextInputType.none,
                       style: poppinsRegularStyle(
@@ -208,19 +208,19 @@ class _CreateProfileState extends State<CreateProfile> {
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withValues(alpha:0.6)), //<-- SEE HERE
+                                    .withValues(alpha: 0.6)), //<-- SEE HERE
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withValues(alpha:0.6)), //<-- SEE HERE
+                                    .withValues(alpha: 0.6)), //<-- SEE HERE
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withValues(alpha:0.6)), //<-- SEE HERE
+                                    .withValues(alpha: 0.6)), //<-- SEE HERE
                           ),
                           hintText: "Enter Year of birth",
                           label: Padding(
@@ -277,7 +277,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
                                     color: DynamicColor.avatarBgClr
-                                        .withValues(alpha:0.6)),
+                                        .withValues(alpha: 0.6)),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -431,32 +431,89 @@ class _CreateProfileState extends State<CreateProfile> {
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withValues(alpha:0.6)), //<-- SEE HERE
+                                    .withValues(alpha: 0.6)), //<-- SEE HERE
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withValues(alpha:0.6)), //<-- SEE HERE
+                                    .withValues(alpha: 0.6)), //<-- SEE HERE
                           ),
 
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
-                                    .withValues(alpha:0.6)), //<-- SEE HERE
+                                    .withValues(alpha: 0.6)), //<-- SEE HERE
                           ),
                         )),
+
                     // sp.read("role")=="eventOrganizer"? CustomTextFields(
                     //   labelText: "Select State",
                     //   validationError: "select state",
                     //   controller: controller.stateController,
                     // ):SizedBox.shrink(),
+
                     sp.read("role") == "eventOrganizer"
                         ? const SizedBox(
                             height: 15,
                           )
                         : const SizedBox.shrink(),
+
+                    CustomTextFields(
+                      labelText: "Zip Code",
+                      controller: controller.zipController,
+                      validationError: "zip code",
+                      isOptional: true,
+                    ),
+
+                    const SizedBox(
+                      height: 15,
+                    ),
+
+                    CustomTextFields(
+                      labelText: "Instagram (Optional)",
+                      prefixWidget: Icon(
+                        FontAwesomeIcons.instagram,
+                        color: DynamicColor.yellowClr.withValues(alpha: 0.5),
+                      ),
+                      controller: controller.instagramController,
+                      validationError: "Instagram",
+                      isEmail: false,
+                      isOptional: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+
+                    CustomTextFields(
+                      labelText: "Twitter X (Optional)",
+                      prefixWidget: Icon(
+                        FontAwesomeIcons.xTwitter,
+                        color: DynamicColor.yellowClr.withValues(alpha: 0.5),
+                      ),
+                      controller: controller.twitterXController,
+                      validationError: "Twitter X",
+                      isEmail: false,
+                      isOptional: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomTextFields(
+                      labelText: "Youtube (Optional)",
+                      prefixWidget: Icon(
+                        FontAwesomeIcons.youtube,
+                        color: DynamicColor.yellowClr.withValues(alpha: 0.5),
+                      ),
+                      controller: controller.youtubeController,
+                      validationError: "Youtube",
+                      isEmail: false,
+                      isOptional: true,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     CustomTextFields(
                       labelText: "About us",
                       maxLine: 5,
@@ -480,106 +537,131 @@ class _CreateProfileState extends State<CreateProfile> {
               ),
             );
           }),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            child: CustomButton(
-              borderClr: Colors.transparent,
-              onTap: () {
-                if (createProfileForm.currentState!.validate()) {
-                  if (API().sp.read("role") == "eventOrganizer") {
-                    showDialog(
-                        barrierColor: Colors.transparent,
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext context) {
-                          return AlertWidget(
-                              height: kToolbarHeight * 4,
-                              borderColor: Colors.transparent,
-                              container: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12.0),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "Terms and conditions",
-                                      style: poppinsMediumStyle(
-                                        fontSize: 18,
-                                        context: context,
-                                        color: theme.primaryColor,
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              child: CustomButton(
+                borderClr: Colors.transparent,
+                onTap: () {
+                  if (createProfileForm.currentState!.validate()) {
+                    if (API().sp.read("role") == "eventOrganizer") {
+                      showDialog(
+                          barrierColor: Colors.transparent,
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return AlertWidget(
+                                height: kToolbarHeight * 4,
+                                borderColor: Colors.transparent,
+                                container: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        "Terms and conditions",
+                                        style: poppinsMediumStyle(
+                                          fontSize: 18,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
-                                      maxLines: 4,
-                                      style: poppinsRegularStyle(
-                                        fontSize: 10,
-                                        context: context,
-                                        color: theme.primaryColor,
+                                      Text(
+                                        "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
+                                        maxLines: 4,
+                                        style: poppinsRegularStyle(
+                                          fontSize: 10,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 7, vertical: 4),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          CustomButton(
-                                            borderClr: Colors.transparent,
-                                            backgroundClr: false,
-                                            color1: DynamicColor.redClr,
-                                            color2: DynamicColor.redClr,
-                                            widths: Get.width / 3.25,
-                                            heights: 30,
-                                            fontSized: 12,
-                                            onTap: () {
-                                              // Get.offAllNamed(Routes.subscriptionScreen);
-                                              Get.back();
-                                            },
-                                            text: "Decline",
-                                          ),
-                                          CustomButton(
-                                            borderClr: Colors.transparent,
-                                            backgroundClr: false,
-                                            color1: DynamicColor.greenClr,
-                                            color2: DynamicColor.greenClr,
-                                            widths: Get.width / 3.25,
-                                            heights: 30,
-                                            fontSized: 12,
-                                            onTap: () {
-                                              // if(_controller.imageBytes != null){
-                                              _controller.sigUp(context,
-                                                  signUpPlatform: socialType,
-                                                  platformId: accessToken);
-                                              // }else{
-                                              //   bottomToast(text: "Please upload profile image");
-                                              // }
-                                            },
-                                            text: "Accept",
-                                          ),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 7, vertical: 4),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CustomButton(
+                                              borderClr: Colors.transparent,
+                                              backgroundClr: false,
+                                              color1: DynamicColor.redClr,
+                                              color2: DynamicColor.redClr,
+                                              widths: Get.width / 3.25,
+                                              heights: 30,
+                                              fontSized: 12,
+                                              onTap: () {
+                                                // Get.offAllNamed(Routes.subscriptionScreen);
+                                                Get.back();
+                                              },
+                                              text: "Decline",
+                                            ),
+                                            CustomButton(
+                                              borderClr: Colors.transparent,
+                                              backgroundClr: false,
+                                              color1: DynamicColor.greenClr,
+                                              color2: DynamicColor.greenClr,
+                                              widths: Get.width / 3.25,
+                                              heights: 30,
+                                              fontSized: 12,
+                                              onTap: () {
+                                                // if(_controller.imageBytes != null){
+                                                _controller.sigUp(context,
+                                                    signUpPlatform: socialType,
+                                                    platformId: accessToken);
+                                                // }else{
+                                                //   bottomToast(text: "Please upload profile image");
+                                                // }
+                                              },
+                                              text: "Accept",
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ));
-                        });
-                  } else {
-                    // if(_controller.imageBytes != null){
-                    _controller.sigUp(context,
-                        signUpPlatform: socialType, platformId: accessToken);
-                    // }else{
-                    //   bottomToast(text: "Please upload profile image");
-                    // }
+                                    ],
+                                  ),
+                                ));
+                          });
+                    } else {
+                      // if(_controller.imageBytes != null){
+                      _controller.sigUp(context,
+                          signUpPlatform: socialType, platformId: accessToken);
+                      // }else{
+                      //   bottomToast(text: "Please upload profile image");
+                      // }
+                    }
                   }
-                }
-                // Get.offAllNamed(Routes.welComeScreen);
-              },
-              text: "Next",
+                  // Get.offAllNamed(Routes.welComeScreen);
+                },
+                text: "Next",
+              ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class OptionalWidgetText extends StatelessWidget {
+  final double? fontSize;
+  const OptionalWidgetText({
+    super.key,
+    this.fontSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Text(
+        "(optional)",
+        style: poppinsMediumStyle(
+          context: context,
+          fontSize: fontSize ?? 14,
+          color: DynamicColor.lightRedClr,
         ),
       ),
     );

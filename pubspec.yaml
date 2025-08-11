@@ -87,7 +87,8 @@ dependencies:
   reorderables: ^0.6.0
   firebase_messaging: ^15.2.6
   flutter_web_auth_2: ^4.1.0
-
+  font_awesome_flutter: ^10.9.0
+  geolocator: ^9.0.1
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
   collection: ^1.19.0

@@ -22,26 +22,30 @@ class AddLocationScreen extends StatelessWidget {
         text: "Create Event",
       ),
       body: GetBuilder<EventController>(builder: (controller) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
-          child: Column(
-            children: [
-              CustomTextFields(
-                textClr: theme.primaryColor,
-                labelText: "Max Capacity",
-              ),
-            ],
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
+            child: Column(
+              children: [
+                CustomTextFields(
+                  textClr: theme.primaryColor,
+                  labelText: "Max Capacity",
+                ),
+              ],
+            ),
           ),
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-        child: Obx(
-          () => CustomButton(
-            onTap: () {
-              // _controller.filterCondition.value = !_controller.filterCondition.value;
-            },
-            // text:_controller.filterCondition.value? "Search Filter":"Continue",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+          child: Obx(
+            () => CustomButton(
+              onTap: () {
+                // _controller.filterCondition.value = !_controller.filterCondition.value;
+              },
+              // text:_controller.filterCondition.value? "Search Filter":"Continue",
+            ),
           ),
         ),
       ),

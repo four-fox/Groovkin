@@ -881,14 +881,16 @@ class SaveHashTagScreen extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Get.toNamed(Routes.createNewHashTagScreen);
-          },
-          text: "Create new Collection",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Get.toNamed(Routes.createNewHashTagScreen);
+            },
+            text: "Create new Collection",
+          ),
         ),
       ),
     );
@@ -978,14 +980,16 @@ class CreateNewHashTagScreen extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Get.back();
-          },
-          text: "Save",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Get.back();
+            },
+            text: "Save",
+          ),
         ),
       ),
     );

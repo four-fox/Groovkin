@@ -84,9 +84,9 @@ class LoginWithScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            if (API().sp.read("role") == "User")
-              const SocialSignIn(
-                showSpotify: true,
+
+               SocialSignIn(
+                showSpotify: API().sp.read("role") == "User"? true:false,
               ),
           ],
         ),

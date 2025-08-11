@@ -66,15 +66,17 @@ class PaymentMethodScreen extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Get.toNamed(Routes.addCardDetails,
-                arguments: {'paymentMethod': paymentMethodVal});
-          },
-          text: "Add Card",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Get.toNamed(Routes.addCardDetails,
+                  arguments: {'paymentMethod': paymentMethodVal});
+            },
+            text: "Add Card",
+          ),
         ),
       ),
     );
@@ -86,7 +88,7 @@ class PaymentMethodScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
           border: Border.all(
-            color: DynamicColor.whiteClr.withValues(alpha:0.4),
+            color: DynamicColor.whiteClr.withValues(alpha: 0.4),
           ),
           borderRadius: BorderRadius.circular(10),
           image: const DecorationImage(
@@ -159,7 +161,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
   void initState() {
     border = OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.grey.withValues(alpha:0.7),
+        color: Colors.grey.withValues(alpha: 0.7),
         width: 2.0,
       ),
     );
@@ -249,7 +251,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
                         "Today 5 : 30 PM",
                         style: poppinsRegularStyle(
                             fontSize: 14,
-                            color: DynamicColor.grayClr.withValues(alpha:0.8)),
+                            color: DynamicColor.grayClr.withValues(alpha: 0.8)),
                       ),
                       Text(
                         "John",
@@ -274,7 +276,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Divider(
               thickness: 2,
-              color: DynamicColor.grayClr.withValues(alpha:0.7),
+              color: DynamicColor.grayClr.withValues(alpha: 0.7),
             ),
           ),
           const SizedBox(
@@ -295,7 +297,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
                         "Today 6 : 00 PM",
                         style: poppinsRegularStyle(
                             fontSize: 14,
-                            color: DynamicColor.grayClr.withValues(alpha:0.8)),
+                            color: DynamicColor.grayClr.withValues(alpha: 0.8)),
                       ),
                       Text(
                         "John",
@@ -320,7 +322,7 @@ class _ViewPaymentMethodState extends State<ViewPaymentMethod> {
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: Divider(
               thickness: 2,
-              color: DynamicColor.grayClr.withValues(alpha:0.7),
+              color: DynamicColor.grayClr.withValues(alpha: 0.7),
             ),
           ),
         ],

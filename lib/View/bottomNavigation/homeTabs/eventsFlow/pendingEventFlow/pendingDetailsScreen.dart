@@ -156,7 +156,8 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(13),
                             border: Border.all(
-                                color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6)),
                           ),
                           child: Column(
                             children: [
@@ -288,9 +289,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           CustomButton(
                                             heights: 35,
                                             color2: DynamicColor.redClr
-                                                .withValues(alpha:0.8),
+                                                .withValues(alpha: 0.8),
                                             color1: DynamicColor.redClr
-                                                .withValues(alpha:0.8),
+                                                .withValues(alpha: 0.8),
                                             widths: Get.width / 2.4,
                                             backgroundClr: false,
                                             fontSized: 12,
@@ -454,9 +455,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                               Get.back();
                                                                             },
                                                                             color2:
-                                                                                DynamicColor.greenClr.withValues(alpha:0.8),
+                                                                                DynamicColor.greenClr.withValues(alpha: 0.8),
                                                                             color1:
-                                                                                DynamicColor.greenClr.withValues(alpha:0.8),
+                                                                                DynamicColor.greenClr.withValues(alpha: 0.8),
                                                                             widths:
                                                                                 Get.width / 1.4,
                                                                             backgroundClr:
@@ -476,9 +477,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                         Utils.showToast();
                                                       },
                                             color2: DynamicColor.greenClr
-                                                .withValues(alpha:0.8),
+                                                .withValues(alpha: 0.8),
                                             color1: DynamicColor.greenClr
-                                                .withValues(alpha:0.8),
+                                                .withValues(alpha: 0.8),
                                             widths: Get.width / 2.4,
                                             backgroundClr: false,
                                             borderClr: Colors.transparent,
@@ -550,7 +551,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                       .eventDetail!
                                                       .data!
                                                       .venue!
-                                                      .userId; 
+                                                      .userId;
                                                 } else {
                                                   userId = controller
                                                       .eventDetail!
@@ -1395,7 +1396,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withValues(alpha:0.6)),
+                  color: DynamicColor.whiteClr.withValues(alpha: 0.6)),
             ),
           ),
         ),

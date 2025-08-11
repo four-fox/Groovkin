@@ -61,7 +61,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
           body: Form(
             key: editProfileForm,
             child: GetBuilder<AuthController>(initState: (v) {
-              for (int a = DateTime.now().year; a >= 1900; a--) {
+              for (int a = DateTime.now().year - 18; a >= 1950; a--) {
                 dobYear.add(a);
               }
             }, builder: (controller) {
@@ -128,7 +128,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                         width: 70,
                                         decoration: BoxDecoration(
                                             color: DynamicColor.darkGrayClr
-                                                .withValues(alpha:0.9)),
+                                                .withValues(alpha: 0.9)),
                                         child: const Image(
                                           image: AssetImage(
                                               "assets/refreshIcon.png"),
@@ -178,7 +178,8 @@ class _editProfileScreenState extends State<editProfileScreen> {
                             style: poppinsMediumStyle(
                                 context: context,
                                 fontSize: 10,
-                                color: DynamicColor.grayClr.withValues(alpha:0.9)),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.9)),
                           ),
                         ],
                       ),
@@ -292,19 +293,19 @@ class _editProfileScreenState extends State<editProfileScreen> {
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
                                   color: DynamicColor.grayClr
-                                      .withValues(alpha:0.6)), //<-- SEE HERE
+                                      .withValues(alpha: 0.6)), //<-- SEE HERE
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
                                   color: DynamicColor.grayClr
-                                      .withValues(alpha:0.6)), //<-- SEE HERE
+                                      .withValues(alpha: 0.6)), //<-- SEE HERE
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide(
                                   color: DynamicColor.grayClr
-                                      .withValues(alpha:0.6)), //<-- SEE HERE
+                                      .withValues(alpha: 0.6)), //<-- SEE HERE
                             ),
                             hintText: "Enter Date of birth",
                             label: Padding(
@@ -357,7 +358,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(4),
                                       color: DynamicColor.avatarBgClr
-                                          .withValues(alpha:0.6)),
+                                          .withValues(alpha: 0.6)),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -402,20 +403,20 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: BorderSide(
-                                        color: DynamicColor.grayClr
-                                            .withValues(alpha:0.6)), //<-- SEE HERE
+                                        color: DynamicColor.grayClr.withValues(
+                                            alpha: 0.6)), //<-- SEE HERE
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: BorderSide(
-                                        color: DynamicColor.grayClr
-                                            .withValues(alpha:0.6)), //<-- SEE HERE
+                                        color: DynamicColor.grayClr.withValues(
+                                            alpha: 0.6)), //<-- SEE HERE
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
                                     borderSide: BorderSide(
-                                        color: DynamicColor.grayClr
-                                            .withValues(alpha:0.6)), //<-- SEE HERE
+                                        color: DynamicColor.grayClr.withValues(
+                                            alpha: 0.6)), //<-- SEE HERE
                                   ),
                                 )),
                           )

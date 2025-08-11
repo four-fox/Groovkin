@@ -203,22 +203,24 @@ class VenueListScreen extends StatelessWidget {
         bottomNavigationBar: Obx(
           () => _controller.getAllVenuesLoader.value == false
               ? const SizedBox.shrink()
-              : Padding(
-                  padding: const EdgeInsets.only(bottom: 2, left: 12, right: 12),
-                  child: CustomButton(
-                    backgroundClr: false,
-                    onTap: () {
-                      _controller.clearFields();
-                      Get.toNamed(Routes.createCompanyProfileScreen,
-                          arguments: {
-                            "updationCondition": false,
-                            "skipBtnHide": true
-                          });
-                    },
-                    text: "Add new venue",
-                    borderClr: Colors.transparent,
+              : SafeArea(
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 2, left: 12, right: 12),
+                    child: CustomButton(
+                      backgroundClr: false,
+                      onTap: () {
+                        _controller.clearFields();
+                        Get.toNamed(Routes.createCompanyProfileScreen,
+                            arguments: {
+                              "updationCondition": false,
+                              "skipBtnHide": true
+                            });
+                      },
+                      text: "Add new venue",
+                      borderClr: Colors.transparent,
+                    ),
                   ),
-                ),
+              ),
         ),
       ),
     );

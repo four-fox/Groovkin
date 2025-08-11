@@ -74,7 +74,7 @@ class LoginScreen extends StatelessWidget {
                       height: 25,
                     ),
                     CustomTextFields(
-                      borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
+                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.4),
                       controller: controller.loginEmailController,
                       validationError: "email",
                       isEmail: true,
@@ -84,7 +84,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     CustomTextFields(
                       labelText: "Password",
-                      borderClr: DynamicColor.grayClr.withValues(alpha:0.4),
+                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.4),
                       controller: controller.loginPasswordController,
                       validationError: "password",
                       obscureText: controller.loginShowPassword.value,
@@ -99,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                           controller.loginShowPassword.value != true
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: DynamicColor.grayClr.withValues(alpha:0.6),
+                          color: DynamicColor.grayClr.withValues(alpha: 0.6),
                         ),
                       ),
                     ),
@@ -116,7 +116,8 @@ class LoginScreen extends StatelessWidget {
                           "Forgot Password",
                           style: poppinsMediumStyle(
                               fontSize: 15,
-                              color: DynamicColor.lightRedClr.withValues(alpha:0.6),
+                              color: DynamicColor.lightRedClr
+                                  .withValues(alpha: 0.6),
                               context: context),
                         ),
                       ),
@@ -152,10 +153,10 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
-                    if (API().sp.read("role") == "User")
-                      const SocialSignIn(
-                        showSpotify: true,
-                      ),
+                    SocialSignIn(
+                      showSpotify:
+                          API().sp.read("role") == "User" ? true : false,
+                    ),
                     GestureDetector(
                       onTap: () {
                         Get.toNamed(Routes.loginSelection);

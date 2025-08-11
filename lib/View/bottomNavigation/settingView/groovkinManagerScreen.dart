@@ -36,16 +36,18 @@ class GroovkinManagerScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 4),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          color1: DynamicColor.blackClr,
-          color2: DynamicColor.blackClr,
-          onTap: (){
-            Get.toNamed(Routes.sendInvitationScreen);
-          },
-          text: "Send",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 4),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            color1: DynamicColor.blackClr,
+            color2: DynamicColor.blackClr,
+            onTap: (){
+              Get.toNamed(Routes.sendInvitationScreen);
+            },
+            text: "Send",
+          ),
         ),
       ),
     );

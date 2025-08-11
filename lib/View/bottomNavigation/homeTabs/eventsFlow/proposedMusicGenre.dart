@@ -708,14 +708,16 @@ class ProposedMusicScreen extends StatelessWidget {
           ],
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Get.toNamed(Routes.musicChoiceScreen);
-          },
-          text: "Continue",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Get.toNamed(Routes.musicChoiceScreen);
+            },
+            text: "Continue",
+          ),
         ),
       ),
     );

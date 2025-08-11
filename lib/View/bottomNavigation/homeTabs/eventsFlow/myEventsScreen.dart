@@ -54,7 +54,7 @@ class MyEventsScreen extends StatelessWidget {
                   ? noData(context: context, theme: theme)
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: ListView.builder(
+                      child: ListView.builder( 
                           itemCount: controller
                                   .recommendedEventData?.data?.data?.length ??
                               0,
@@ -73,8 +73,8 @@ class MyEventsScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(13),
                                   border: Border.all(
-                                      color:
-                                          DynamicColor.grayClr.withValues(alpha:0.6)),
+                                      color: DynamicColor.grayClr
+                                          .withValues(alpha: 0.6)),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,9 +194,9 @@ class MyEventsScreen extends StatelessWidget {
                                         height: 35,
                                         bgColor: DynamicColor.avatarBgClr,
                                         color2: DynamicColor.avatarBgClr
-                                            .withValues(alpha:0.8),
+                                            .withValues(alpha: 0.8),
                                         color1: DynamicColor.avatarBgClr
-                                            .withValues(alpha:0.8),
+                                            .withValues(alpha: 0.8),
                                         iconValue: false,
                                         style: poppinsRegularStyle(
                                           fontSize: 13,

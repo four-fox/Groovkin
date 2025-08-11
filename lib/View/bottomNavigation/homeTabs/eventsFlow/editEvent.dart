@@ -399,15 +399,17 @@ class EditEventScreen extends StatelessWidget {
           ),
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            _controller.eventPostponed(eventId: eventId);
-            // Get.toNamed(Routes.disclaimerScreen);
-          },
-          text: "Send",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              _controller.eventPostponed(eventId: eventId);
+              // Get.toNamed(Routes.disclaimerScreen);
+            },
+            text: "Send",
+          ),
         ),
       ),
     );

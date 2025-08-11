@@ -535,12 +535,9 @@ class ListOfVenuesScreen extends StatelessWidget {
           ],
         ),
       ),
-   
       body: GetBuilder<EventController>(initState: (v) {
         _controller.getVenuesLatLng();
-      },
-      
-      builder: (controller) {
+      }, builder: (controller) {
         return controller.getVenuesLatLngLoader.value == false
             ? const SizedBox.shrink()
             : Padding(
@@ -681,102 +678,107 @@ class AddLocationScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Add location"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                width: Get.width,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: DynamicColor.avatarBgClr),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Radius in mile",
-                      style: poppinsMediumStyle(
-                        fontSize: 18,
-                        color: theme.primaryColor,
-                        context: context,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: Get.width,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: DynamicColor.avatarBgClr),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Radius in mile",
+                        style: poppinsMediumStyle(
+                          fontSize: 18,
+                          color: theme.primaryColor,
+                          context: context,
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Select Radius",
-                          style: poppinsRegularStyle(
-                            fontSize: 15,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Text(
-                            "Type here",
+                      Row(
+                        children: [
+                          Text(
+                            "Select Radius",
                             style: poppinsRegularStyle(
-                                fontSize: 11,
-                                color:
-                                    DynamicColor.grayClr.withValues(alpha: 0.9),
-                                context: context),
+                              fontSize: 15,
+                              context: context,
+                              color: theme.primaryColor,
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: Get.width / 7,
-                          // height: 30,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: DynamicColor.whiteClr)),
-                          child: TextField(
-                            textAlign: TextAlign.center,
-                            style: poppinsRegularStyle(
-                                fontSize: 12,
-                                color: theme.primaryColor,
-                                context: context),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "00",
-                              hintStyle: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text(
+                              "Type here",
+                              style: poppinsRegularStyle(
+                                  fontSize: 11,
+                                  color: DynamicColor.grayClr
+                                      .withValues(alpha: 0.9),
                                   context: context),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ],
+                          Container(
+                            width: Get.width / 7,
+                            // height: 30,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(color: DynamicColor.whiteClr)),
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              style: poppinsRegularStyle(
+                                  fontSize: 12,
+                                  color: theme.primaryColor,
+                                  context: context),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "00",
+                                hintStyle: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    color: theme.primaryColor,
+                                    context: context),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              CustomTextFields(
-                borderClr: theme.primaryColor,
-                labelText: "Max Capacity",
-              ),
-            ],
+                const SizedBox(
+                  height: 15,
+                ),
+                CustomTextFields(
+                  borderClr: theme.primaryColor,
+                  labelText: "Max Capacity",
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: CustomButton(
-          borderClr: Colors.transparent,
-          onTap: () {
-            Get.back();
-            // Get.toNamed(Routes.confirmationEventScreen);
-          },
-          text: "Search Filter",
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          child: CustomButton(
+            borderClr: Colors.transparent,
+            onTap: () {
+              Get.back();
+              // Get.toNamed(Routes.confirmationEventScreen);
+            },
+            text: "Search Filter",
+          ),
         ),
       ),
     );

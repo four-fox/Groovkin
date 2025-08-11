@@ -1,6 +1,6 @@
 part of 'app_pages.dart';
 
-abstract class Routes{
+abstract class Routes {
   Routes._();
   static const splashScreen = _Path.splashScreen;
   static const introPages = _Path.introPages;
@@ -83,7 +83,8 @@ abstract class Routes{
   static const managerApprovedEventScreen = _Path.managerApprovedEventScreen;
   static const addVenueDetailsScreen = _Path.addVenueDetailsScreen;
   static const venuePermitDetailScreen = _Path.venuePermitDetailScreen;
-  static const houseEventCapabilitiesScreen = _Path.houseEventCapabilitiesScreen;
+  static const houseEventCapabilitiesScreen =
+      _Path.houseEventCapabilitiesScreen;
   static const venueDetailsManagerScreen = _Path.venueDetailsManagerScreen;
   static const paymentConfirmationScreen = _Path.paymentConfirmationScreen;
   static const successPaymentScreen = _Path.successPaymentScreen;
@@ -113,15 +114,17 @@ abstract class Routes{
   static const chatNewUserScreen = _Path.chatNewUserScreen;
   static const chatRoomScreen = _Path.chatRoomScreen;
   static const chatInnerScreen = _Path.chatInnerScreen;
+  static const emailVerifyScreen = _Path.emailVerifyScreen;
 }
 
-abstract class _Path{
+abstract class _Path {
   static const splashScreen = '/SplashScreen';
   static const introPages = "/IntroPages";
   // static const signUpScreen = "/SignUpScreen";
   static const loginSelection = "/LoginSelection";
   static const loginWithScreen = "/LoginWithScreen";
   static const sendEmailScreen = "/SendEmailScreen";
+  static const emailVerifyScreen = "/emailVerifyScreen";
   static const oTPScreen = "/OTPScreen";
   static const loginOrSignUpScreen = "/LoginOrSignUpScreen";
   static const loginScreen = "/LoginScreen";

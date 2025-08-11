@@ -76,6 +76,32 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     _eventController.postEndTime = intialEndTime;
   }
 
+  bool? createEvent({
+    required String? startDate,
+    required String? endDate,
+    required String? startTime,
+    required String? endTime,
+  }) {
+    if ((startDate == null || startDate.isEmpty) ||
+        (endDate == null || endDate.isEmpty) ||
+        (startTime == null || startTime.isEmpty) ||
+        (endTime == null || endTime.isEmpty)) {
+      bottomToast(text: "Field Required!");
+      return null;
+    }
+
+    final dateTimeFormat = DateFormat("yyyy-MM-dd h:mm a");
+    startTime = startTime.replaceAll(RegExp(r'\s+'), ' ').trim();
+    endTime = endTime.replaceAll(RegExp(r'\s+'), ' ').trim();
+
+    DateTime startDateTime = dateTimeFormat.parse("$startDate $startTime");
+    DateTime endDateTime = dateTimeFormat.parse("$endDate $endTime");
+
+    DateTime now = DateTime.now();
+    // API should be called if NOT within event time range
+    return !(now.isAfter(startDateTime) && now.isBefore(endDateTime));
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -133,7 +159,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                                 .eventDetail!
                                                 .data!
                                                 .bannerImage!
-                                                .mediaPath!))
+                                                .mediaPath!),
+                                          )
                                         : null,
                                   ),
                                   child:
@@ -231,24 +258,25 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             initialEntryMode: DatePickerEntryMode.calendarOnly,
                             builder: (context, child) {
                               return Theme(
-                                  data: Theme.of(context).copyWith(
-                                    colorScheme: const ColorScheme.light(
-                                      primary: Colors
-                                          .white, // header background color
-                                      onPrimary: Colors.black,
-                                      onSecondary: Colors.white,
-                                      surface: Colors.black,
-                                      onSurface: Colors.white,
-                                      secondary: Colors.black,
-                                    ),
-                                    textButtonTheme: TextButtonThemeData(
-                                      style: TextButton.styleFrom(
-                                        foregroundColor:
-                                            Colors.white, // button text color
-                                      ),
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: const ColorScheme.light(
+                                    primary:
+                                        Colors.white, // header background color
+                                    onPrimary: Colors.black,
+                                    onSecondary: Colors.white,
+                                    surface: Colors.black,
+                                    onSurface: Colors.white,
+                                    secondary: Colors.black,
+                                  ),
+                                  textButtonTheme: TextButtonThemeData(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor:
+                                          Colors.white, // button text color
                                     ),
                                   ),
-                                  child: child!);
+                                ),
+                                child: child!,
+                              );
                             },
                             context: context,
                             initialDate: DateTime.now(),
@@ -276,7 +304,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
                                     .withValues(alpha: 0.6))),
-                        hintText: "Select meeting date",
+                        hintText: "Select Date",
                         label: Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
@@ -356,7 +384,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             borderSide: BorderSide(
                                 color: DynamicColor.grayClr
                                     .withValues(alpha: 0.6))),
-                        hintText: "Select meeting date",
+                        hintText: "Select Date",
                         label: Padding(
                           padding: const EdgeInsets.only(left: 15.0),
                           child: Text(
@@ -902,7 +930,25 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 controller.paymentSchedule!.value =
                                     controller.otherRateController.text;
                               }
-                              controller.checkingTime();
+                              bool? callApi = createEvent(
+                                startDate: controller.datePost ?? "",
+                                endDate: controller.endDatePost ?? "",
+                                startTime: controller.postTime ?? "",
+                                endTime: controller.postEndTime ?? "",
+                              );
+                              if (callApi != null) {
+                                if (!callApi) {
+                                  controller.checkingTime();
+                                  print("Hit");
+                                } else {
+                                  bottomToast(
+                                      text: "Please Selected Different Date");
+                                }
+                              }
+                              print(controller.datePost);
+                              print(controller.endDatePost);
+                              print(controller.postTime);
+                              print(controller.postEndTime);
                             } else {
                               bottomToast(text: "Please choose event banner");
                             }
