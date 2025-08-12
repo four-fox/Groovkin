@@ -13,9 +13,9 @@ class SocketIoClass {
   factory SocketIoClass() {
     return singleton ??= SocketIoClass._interval();
   }
-
+  
   // Todo Connect Socket
-
+  
   connectSocket() {
     socket = io.io("", <String, dynamic>{
       'transports': ['webscoket'],

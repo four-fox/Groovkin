@@ -155,10 +155,12 @@ class _MyAppState extends State<MyApp> {
     notificationService.firebaseInit(context);
 
     // notificationService.getDeviceToken();
+
     // Todo Firebase Notification End
     // Todo Start the socket server
 
     // SocketClass.singleton.connectSocket();
+
     // initStateNotification();
   }
 

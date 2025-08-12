@@ -19,6 +19,7 @@ class MyEventsScreen extends StatefulWidget {
 }
 
 class _MyEventsScreenState extends State<MyEventsScreen> {
+  
   RxInt tabValue = 0.obs;
   RxInt selectedFilter = 0.obs;
   RxBool showFilter = false.obs;
@@ -28,7 +29,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
     super.initState();
     tabValue.value = 0;
   }
-
+  
   RxBool recommendedVal = false.obs;
 
   @override
@@ -631,7 +632,6 @@ class _HistoryTabState extends State<HistoryTab> {
       );
     });
   }
-
 }
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> upComing
@@ -898,5 +898,3 @@ class _UpcomingEventState extends State<UpcomingEvent> {
 //     });
 //   }
 // }
-
-

@@ -38,11 +38,13 @@ class _CreateProfileState extends State<CreateProfile> {
   @override
   void initState() {
     super.initState();
+
     if (Get.isRegistered<AuthController>()) {
       _controller = Get.find<AuthController>();
     } else {
       _controller = Get.put(AuthController());
     }
+
     if (API().sp.read("nameSocial") != null) {
       _controller.displayNameController.text = API().sp.read("nameSocial");
     }
@@ -85,12 +87,14 @@ class _CreateProfileState extends State<CreateProfile> {
               ),
             ),
           ),
+         
           body: GetBuilder<AuthController>(initState: (v) {
             for (int a = DateTime.now().year - 18; a >= 1950; a--) {
               dobYear.add(a);
             }
             _controller.dobController.clear();
-          }, builder: (controller) {
+          },
+          builder: (controller) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
@@ -110,8 +114,9 @@ class _CreateProfileState extends State<CreateProfile> {
                       child: controller.imageBytes != null
                           ? CircleAvatar(
                               radius: 40,
-                              backgroundImage:
-                                  FileImage(File(controller.imageBytes!)),
+                              backgroundImage: FileImage(
+                                File(controller.imageBytes!),
+                              ),
                             )
                           : CircleAvatar(
                               radius: 40,
@@ -125,6 +130,7 @@ class _CreateProfileState extends State<CreateProfile> {
                               ),
                             ),
                     ),
+
                     const SizedBox(
                       height: 10,
                     ),
@@ -207,20 +213,23 @@ class _CreateProfileState extends State<CreateProfile> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr
-                                    .withValues(alpha: 0.6)), //<-- SEE HERE
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.6),
+                            ), //<-- SEE HERE
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr
-                                    .withValues(alpha: 0.6)), //<-- SEE HERE
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.6),
+                            ), //<-- SEE HERE
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr
-                                    .withValues(alpha: 0.6)), //<-- SEE HERE
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.6),
+                            ), //<-- SEE HERE
                           ),
                           hintText: "Enter Year of birth",
                           label: Padding(
@@ -228,9 +237,10 @@ class _CreateProfileState extends State<CreateProfile> {
                             child: Text(
                               "Year Of Birth",
                               style: poppinsRegularStyle(
-                                  context: context,
-                                  fontSize: 14,
-                                  color: DynamicColor.grayClr),
+                                context: context,
+                                fontSize: 14,
+                                color: DynamicColor.grayClr,
+                              ),
                             ),
                           ),
                           labelStyle: TextStyle(color: DynamicColor.grayClr),
@@ -244,6 +254,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                 height: kToolbarHeight * 3,
                                 child: ListView.builder(
                                     itemCount: dobYear.length,
+                                    physics: BouncingScrollPhysics(),
                                     itemBuilder: (BuildContext context, index) {
                                       return GestureDetector(
                                         onTap: () {
@@ -410,9 +421,11 @@ class _CreateProfileState extends State<CreateProfile> {
                     //     print('On Saved: $number');
                     //   },
                     // ),
+
                     SizedBox(
                       height: sp.read('role') == "eventManager" ? 15 : 0,
                     ),
+
                     const SizedBox(
                       height: 15,
                     ),
@@ -482,6 +495,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       isEmail: false,
                       isOptional: true,
                     ),
+
                     const SizedBox(
                       height: 15,
                     ),

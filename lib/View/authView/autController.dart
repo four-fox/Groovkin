@@ -185,18 +185,15 @@ class AuthController extends GetxController {
               response.data['data']['user_details']['is_event_created']);
 
           Get.offAllNamed(Routes.welComeScreen);
-
         } else {
-          
           Get.offAllNamed(Routes.welComeScreen);
-          
+
           // Get.offAllNamed(Routes.createCompanyProfileScreen,
           //   arguments: {
           //   "updationCondition": false,
           //     "skipBtnHide": false,
           //   }
           // );
-
         }
       } else {
         if (response.data["data"]["user_details"]["is_complete_profile"] == 1) {
@@ -1797,6 +1794,7 @@ class AuthController extends GetxController {
                   if (kDebugMode) {
                     log("Restore Purchased!");
                   }
+
                   final time = DateTime.parse(value.customerInfo.entitlements
                           .all[entitlementID]!.expirationDate!)
                       .toLocal()

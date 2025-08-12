@@ -23,8 +23,7 @@ class NotificationService {
   // ! Todo check the permissions of the notification service
 
   void requestNotificationPermission() async {
-
-    final NotificationSettings notificationSettings = 
+    final NotificationSettings notificationSettings =
         await firebaseMessaging.requestPermission(
       sound: true,
       alert: true,
@@ -32,19 +31,17 @@ class NotificationService {
       badge: true,
       carPlay: true,
     );
-    
+
     if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.authorized) {
       if (kDebugMode) {
         print("Android Notification Permission Active");
       }
-    }
-     else if (notificationSettings.authorizationStatus ==
+    } else if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.provisional) {
       if (kDebugMode) {
         print("IOS Notification Permission Active");
       }
-      
     } else {
       // Todo Send User to setting to open the notification
       await AppSettings.openAppSettings(type: AppSettingsType.notification);
