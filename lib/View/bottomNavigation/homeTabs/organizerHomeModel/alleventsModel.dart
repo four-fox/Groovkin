@@ -42,7 +42,7 @@ class EventsListModel {
 
 class Data {
   int? currentPage;
-  List<EventData>? data;
+  List<EventData> data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
@@ -57,7 +57,7 @@ class Data {
 
   Data({
     this.currentPage,
-    this.data,
+    this.data = const [],
     this.firstPageUrl,
     this.from,
     this.lastPage,

@@ -9,11 +9,13 @@ import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 class InAppPurchased {
+  
   final InAppPurchase inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> purchasedSubscrption;
   late StreamSubscription<List<PurchaseDetails>> subscriptionStream;
   List<ProductDetails> _product = [];
   List<PurchaseDetails> _purchase = [];
+
   final List<String> _identifiers = [];
 
   Future<void> initStore() async {
@@ -98,21 +100,17 @@ class InAppPurchased {
           final bool valid = purchaseDetails.productID == "subscription"
               ? await _verifySubscription(purchaseDetails)
               : await _verifyPurchased(purchaseDetails);
-
           if (valid) {
             unawaited(deleiverProduct(purchaseDetails));
           } else {
             _handleInvalidPurchased();
           }
-
           break;
         } else {
           BotToast.showText(text: "Error buying an item");
           break;
         }
       }
-
-      // Only For Android Subscription
       if (Platform.isAndroid) {
         if (purchaseDetails.productID == "subscription") {
           final InAppPurchaseAndroidPlatformAddition
@@ -163,7 +161,7 @@ class InAppPurchased {
     for (var transaction in skPaymentTransactionWrapper) {
       await skPaymentQueueWrapper.finishTransaction(transaction);
     }
-      
+
     await inAppPurchase
         .buyNonConsumable(
             purchaseParam: PurchaseParam(
@@ -202,5 +200,4 @@ class InAppPurchased {
   Future<void> restorePurchased() async {
     await inAppPurchase.restorePurchases();
   }
-
 }

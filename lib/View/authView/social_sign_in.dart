@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+
+
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -124,6 +125,8 @@ class _SocialSignInState extends State<SocialSignIn> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -184,7 +187,6 @@ class _SocialSignInState extends State<SocialSignIn> {
                   //               clientSecret: clientSecret,
                   //               redirectUri: redirectUri,
                   //             )));
-
                   loginWithSpotify();
                 },
                 text: "Continue with Spotify",

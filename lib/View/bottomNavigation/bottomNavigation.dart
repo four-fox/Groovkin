@@ -32,6 +32,7 @@ class BottomNavigationView extends StatelessWidget {
       print(sp.read("role"));
     }
     var theme = Theme.of(context);
+
     final bodyContent = [
       const HomeScreen(),
       sp.read("role") == "eventManager"
@@ -42,7 +43,7 @@ class BottomNavigationView extends StatelessWidget {
           : const AnalyticPortalScreen(),
       const SettingScreen(),
     ];
-    
+
     return Scaffold(
       extendBody: false,
       body: PopScope(
@@ -57,6 +58,7 @@ class BottomNavigationView extends StatelessWidget {
               onTap: () {
                 SystemNavigator.pop();
               },
+              
             );
           }
         },

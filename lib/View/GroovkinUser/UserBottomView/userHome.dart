@@ -158,7 +158,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                         border: Border.all(
-                            color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                            color: DynamicColor.grayClr.withValues(alpha: 0.6)),
                         borderRadius: BorderRadius.circular(8)),
                     child: ImageIcon(
                       const AssetImage("assets/filterIcon.png"),
@@ -208,7 +208,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           children: [
                             CircleAvatar(
                               backgroundColor:
-                                  DynamicColor.yellowClr.withValues(alpha:0.7),
+                                  DynamicColor.yellowClr.withValues(alpha: 0.7),
                               child: ImageIcon(
                                 const AssetImage("assets/groupIcons.png"),
                                 color: theme.primaryColor,
@@ -218,8 +218,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 30.0),
                               child: CircleAvatar(
-                                backgroundColor:
-                                    DynamicColor.yellowClr.withValues(alpha:0.7),
+                                backgroundColor: DynamicColor.yellowClr
+                                    .withValues(alpha: 0.7),
                                 child: ImageIcon(
                                   const AssetImage("assets/musicIcons.png"),
                                   color: theme.primaryColor,
@@ -228,7 +228,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             ),
                             CircleAvatar(
                               backgroundColor:
-                                  DynamicColor.yellowClr.withValues(alpha:0.7),
+                                  DynamicColor.yellowClr.withValues(alpha: 0.7),
                               child: ImageIcon(
                                 const AssetImage("assets/supportIcon.png"),
                                 color: theme.primaryColor,
@@ -901,129 +901,154 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme, text: "All Events"),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 5,
-          ),
-          searchingShow == true
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SearchTextFields(
-                    controller: _eventController.searchingController,
-                    onChanged: (v) {
-                      if (v != "") {
-                        _onChangeHandler();
-                      } else {
-                        _eventController.searchingController.clear();
-                      }
-                    },
-                  ),
-                )
-              : const SizedBox.shrink(),
-          Expanded(
-            child: GetBuilder<EventController>(initState: (v) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _eventController.searchingController.clear();
-                if (searchingShow == true) {
-                  _eventController.searchingEvent();
-                } else {
-                  _eventController.getAllEvents();
-                }
-              });
-            }, builder: (controller) {
-              return NotificationListener<ScrollNotification>(
-                onNotification: (scroll) {
-                  if (scroll.metrics.pixels == scroll.metrics.maxScrollExtent) {
-                    if (controller.getAllEventWaiting == false) {
-                      controller.getAllEventWaiting = true;
-                      if (controller.allEvents!.data!.nextPageUrl != null) {
-                        if (searchingShow == true) {
-                          _eventController.searchingEvent(
-                              nextUrl: controller.allEvents!.data!.nextPageUrl);
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          if (_eventController.allEvents != null) {
+            _eventController.allEvents!.data!.data.clear();
+            _eventController.update();
+          }
+        } else {
+          if (_eventController.allEvents != null) {
+            _eventController.allEvents!.data!.data.clear();
+            _eventController.update();
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: customAppBar(theme: theme, text: "All Events"),
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 5,
+            ),
+            searchingShow == true
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SearchTextFields(
+                      controller: _eventController.searchingController,
+                      onChanged: (v) {
+                        if (v != "") {
+                          _onChangeHandler();
                         } else {
-                          controller.getAllEvents(
-                              nextUrl: controller.allEvents!.data!.nextPageUrl);
+                          _eventController.searchingController.clear();
                         }
+                      },
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            Expanded(
+              child: GetBuilder<EventController>(initState: (v) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _eventController.searchingController.clear();
+                  if (searchingShow == true) {
+                    _eventController.searchingEvent();
+                  } else {
+                    _eventController.getAllEvents();
+                  }
+                });
+              }, builder: (controller) {
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (scroll) {
+                    if (scroll.metrics.pixels ==
+                        scroll.metrics.maxScrollExtent) {
+                      if (controller.getAllEventWaiting == false) {
+                        controller.getAllEventWaiting = true;
+                        if (controller.allEvents!.data!.nextPageUrl != null) {
+                          if (searchingShow == true) {
+                            _eventController.searchingEvent(
+                                nextUrl:
+                                    controller.allEvents!.data!.nextPageUrl);
+                          } else {
+                            controller.getAllEvents(
+                                nextUrl:
+                                    controller.allEvents!.data!.nextPageUrl);
+                          }
 
-                        return true;
-                      } else {
-                        print("next Url Null");
+                          return true;
+                        } else {
+                          print("next Url Null");
+                        }
                       }
+                      return false;
                     }
                     return false;
-                  }
-                  return false;
-                },
-                child: controller.getAllEventsLoader.value == false
-                    ? const SizedBox.shrink()
-                    : controller.allEvents == null ||
-                            controller.allEvents!.data!.data!.isEmpty
-                        ? noData(context: context, theme: theme)
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.darkGrayClr),
-                              child: ListView.builder(
-                                  itemCount:
-                                      controller.allEvents!.data!.data!.length,
-                                  shrinkWrap: true,
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, index) {
-                                    EventData singleEventDat = controller
-                                        .allEvents!.data!.data![index];
-                                    return userCustomEvent(
-                                        isDelete: singleEventDat
-                                                    .user?.deleteAt ==
-                                                null
-                                            ? false
-                                            : true,
-                                        dayy: DateFormat.MMM().format(
-                                            singleEventDat.startDateTime!),
-                                        datee:
-                                            "${singleEventDat.startDateTime!.day}\n",
-                                        networkImg:
-                                            singleEventDat.bannerImage == null
-                                                ? false
-                                                : true,
-                                        img: singleEventDat.bannerImage == null
-                                            ? null
-                                            : singleEventDat
-                                                .bannerImage!.mediaPath
-                                                .toString(),
-                                        title: singleEventDat.eventTitle
-                                            .toString(),
-                                        location: singleEventDat.location,
-                                        subtitle: singleEventDat.venue == null
-                                            ? ""
-                                            : singleEventDat.venue!.venueName
-                                                .toString(),
-                                        onTap: () {
-                                          Get.toNamed(
-                                              Routes.userEventDetailsScreen,
-                                              arguments: {
-                                                "notify": true,
-                                                "notifyBackBtn": true,
-                                                'appBarTitle': "Event Preview",
-                                                "statusText":
-                                                    singleEventDat.id.toString()
-                                              });
-                                        },
-                                        context: context,
-                                        theme: theme);
-                                  }),
+                  },
+                  child: controller.getAllEventsLoader.value == false
+                      ? const SizedBox.shrink()
+                      : controller.allEvents == null ||
+                              controller.allEvents!.data!.data.isEmpty
+                          ? noData(context: context, theme: theme)
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0, vertical: 8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: DynamicColor.darkGrayClr),
+                                child: ListView.builder(
+                                    itemCount:
+                                        controller.allEvents!.data!.data.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
+                                    itemBuilder: (BuildContext context, index) {
+                                      EventData singleEventDat = controller
+                                          .allEvents!.data!.data[index];
+                                      return userCustomEvent(
+                                          isDelete: singleEventDat
+                                                      .user?.deleteAt ==
+                                                  null
+                                              ? false
+                                              : true,
+                                          dayy: DateFormat
+                                                  .MMM()
+                                              .format(singleEventDat
+                                                  .startDateTime!),
+                                          datee:
+                                              "${singleEventDat.startDateTime!.day}\n",
+                                          networkImg:
+                                              singleEventDat.bannerImage == null
+                                                  ? false
+                                                  : true,
+                                          img: singleEventDat
+                                                      .bannerImage ==
+                                                  null
+                                              ? null
+                                              : singleEventDat
+                                                  .bannerImage!.mediaPath
+                                                  .toString(),
+                                          title: singleEventDat.eventTitle
+                                              .toString(),
+                                          location: singleEventDat.location,
+                                          subtitle: singleEventDat.venue == null
+                                              ? ""
+                                              : singleEventDat.venue!.venueName
+                                                  .toString(),
+                                          onTap: () {
+                                            Get.toNamed(
+                                                Routes.userEventDetailsScreen,
+                                                arguments: {
+                                                  "notify": true,
+                                                  "notifyBackBtn": true,
+                                                  'appBarTitle':
+                                                      "Event Preview",
+                                                  "statusText": singleEventDat
+                                                      .id
+                                                      .toString()
+                                                });
+                                          },
+                                          context: context,
+                                          theme: theme);
+                                    }),
+                              ),
                             ),
-                          ),
-              );
-            }),
-          ),
-        ],
+                );
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

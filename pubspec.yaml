@@ -89,6 +89,7 @@ dependencies:
   flutter_web_auth_2: ^4.1.0
   font_awesome_flutter: ^10.9.0
   geolocator: ^9.0.1
+  flutter_facebook_auth: ^7.1.2
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
   collection: ^1.19.0

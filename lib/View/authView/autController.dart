@@ -42,6 +42,7 @@ import '../../model/switch_model.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 enum ChangeRole { user, organizer, manager }
 
@@ -1506,11 +1507,9 @@ class AuthController extends GetxController {
   }
 
   // Todo Social Sign IN
-
   Future<dynamic> googleSignIn() async {
     try {
       EasyLoading.show();
-
       GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
 
       if (googleSignInAccount == null) {
@@ -1536,7 +1535,6 @@ class AuthController extends GetxController {
         API().sp.write("emailSocial", userCredential.user!.email ?? "");
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
         API().sp.write("accessToken", userCredential.credential!.accessToken);
-
         sigUp(
           Get.context,
           signUpPlatform: "google",
@@ -1549,6 +1547,28 @@ class AuthController extends GetxController {
       EasyLoading.dismiss();
     } finally {
       EasyLoading.dismiss();
+    }
+  }
+
+  // Todo Facebook Sign In
+  Future<void> loginWithFacebook() async {
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    if (loginResult.status == LoginStatus.success) {
+      final AccessToken? accessToken = loginResult.accessToken;
+      if (accessToken != null) {
+        
+        final validCredential = firebase_auth.FacebookAuthProvider.credential(
+          accessToken.tokenString,
+        );
+
+        final firebase_auth.UserCredential userCredential = await firebase_auth
+            .FirebaseAuth.instance
+            .signInWithCredential(validCredential);
+
+        final firebase_auth.User? user = userCredential.user;
+        if (user != null) {}
+      }
     }
   }
 

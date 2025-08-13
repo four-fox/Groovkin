@@ -672,8 +672,8 @@ class EventController extends GetxController {
         getAllEventWaiting = false;
         allEvents = EventsListModel.fromJson(response.data);
       } else {
-        allEvents!.data!.data!
-            .addAll(EventsListModel.fromJson(response.data).data!.data!);
+        allEvents!.data!.data
+            .addAll(EventsListModel.fromJson(response.data).data!.data);
         allEvents!.data!.nextPageUrl =
             EventsListModel.fromJson(response.data).data!.nextPageUrl;
         getAllEventWaiting = false;
@@ -695,8 +695,8 @@ class EventController extends GetxController {
         getAllEventWaiting = false;
         allEvents = EventsListModel.fromJson(response.data);
       } else {
-        allEvents!.data!.data!
-            .addAll(EventsListModel.fromJson(response.data).data!.data!);
+        allEvents!.data!.data
+            .addAll(EventsListModel.fromJson(response.data).data!.data);
         allEvents!.data!.nextPageUrl =
             EventsListModel.fromJson(response.data).data!.nextPageUrl;
         getAllEventWaiting = false;
@@ -712,24 +712,26 @@ class EventController extends GetxController {
   getAllSendingRequest({nextUrl}) async {
     getAllSendingRequestLoader(false);
     var response = await API().getApi(
-        url: "show-requested-events",
-        fullUrl: nextUrl,
-        queryParameters: {
-          "filter": (homeController.showIndexValue == 2 &&
-                  (homeController.selectedFilter == 0))
-              ? "recent"
-              : (homeController.showIndexValue == 2 &&
-                      (homeController.selectedFilter == 1))
-                  ? "past_week"
-                  : "older_than_1_month",
-        });
+      url: "show-requested-events",
+      fullUrl: nextUrl,
+      queryParameters: {
+        "filter": (homeController.showIndexValue == 2 &&
+                (homeController.selectedFilter == 0))
+            ? "recent"
+            : (homeController.showIndexValue == 2 &&
+                    (homeController.selectedFilter == 1))
+                ? "past_week"
+                : "older_than_1_month",
+      },
+    );
+
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         requestEventWaiting = false;
         allEvents = EventsListModel.fromJson(response.data);
       } else {
-        allEvents!.data!.data!
-            .addAll(EventsListModel.fromJson(response.data).data!.data!);
+        allEvents!.data!.data
+            .addAll(EventsListModel.fromJson(response.data).data!.data);
         allEvents!.data!.nextPageUrl =
             EventsListModel.fromJson(response.data).data!.nextPageUrl;
         requestEventWaiting = false;
@@ -956,9 +958,9 @@ class EventController extends GetxController {
       bottomToast(text: response.data["message"].toString());
       if (back == true) {
         if (allEvents != null) {
-          int events = allEvents!.data!.data!
+          int events = allEvents!.data!.data
               .indexWhere((element) => element.id == eventId);
-          allEvents!.data!.data!.remove(allEvents!.data!.data![events]);
+          allEvents!.data!.data.remove(allEvents!.data!.data[events]);
           Get.back();
         }
       } else {

@@ -70,7 +70,8 @@ class PendingScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
-                                  color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                                  color: DynamicColor.grayClr
+                                      .withValues(alpha: 0.6)),
                             ),
                             child: Column(
                               children: [

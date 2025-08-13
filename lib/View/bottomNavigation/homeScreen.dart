@@ -236,6 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     indicator: const BoxDecoration(color: Colors.transparent),
                     indicatorColor: Colors.transparent,
                     onTap: (v) {
+                      if (v == controller.showIndexValue!.value) return;
+                      _eventController.allEvents!.data!.data.clear();
                       controller.selectedFilter.value = 0;
                       controller.showIndexValue!.value = v;
                       controller.showFilter.value = false;

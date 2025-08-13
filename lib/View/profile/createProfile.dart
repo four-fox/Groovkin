@@ -23,13 +23,14 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
+
   final createProfileForm = GlobalKey<FormState>();
 
   PhoneNumber number = PhoneNumber(isoCode: "US");
 
   late final AuthController _controller;
 
-  List<int> dobYear = [];
+  List<int> dobYear = []; 
 
   final String? accessToken = Get.arguments?["accessToken"];
 
@@ -44,7 +45,7 @@ class _CreateProfileState extends State<CreateProfile> {
     } else {
       _controller = Get.put(AuthController());
     }
-
+        
     if (API().sp.read("nameSocial") != null) {
       _controller.displayNameController.text = API().sp.read("nameSocial");
     }
@@ -87,14 +88,12 @@ class _CreateProfileState extends State<CreateProfile> {
               ),
             ),
           ),
-         
           body: GetBuilder<AuthController>(initState: (v) {
             for (int a = DateTime.now().year - 18; a >= 1950; a--) {
               dobYear.add(a);
             }
             _controller.dobController.clear();
-          },
-          builder: (controller) {
+          }, builder: (controller) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
@@ -130,7 +129,6 @@ class _CreateProfileState extends State<CreateProfile> {
                               ),
                             ),
                     ),
-
                     const SizedBox(
                       height: 10,
                     ),
