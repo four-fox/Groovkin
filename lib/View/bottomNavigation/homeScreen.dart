@@ -393,14 +393,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.showFilter.value = false;
                                 controller.update();
 
-                                if (controller.showIndexValue!.value == 1) {
+                                if (controller.showIndexValue!.value == 2) {
                                   controller.completedEvent();
                                 }
-                                if (controller.showIndexValue!.value == 2 &&
+                                if (controller.showIndexValue!.value == 1 &&
                                     sp.read("role") != "eventManager") {
                                   _eventController.getAllSendingRequest();
                                 }
-                                if (controller.showIndexValue!.value == 2 &&
+                                if (controller.showIndexValue!.value == 1 &&
                                     sp.read("role") == "eventManager") {
                                   _managerController.getAllPendingEvents();
                                 }
@@ -432,14 +432,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.selectedFilter.value = 1;
                                 controller.showFilter.value = false;
                                 controller.update();
-                                if (controller.showIndexValue!.value == 1) {
+                                if (controller.showIndexValue!.value == 2) {
                                   controller.completedEvent();
                                 }
-                                if (controller.showIndexValue!.value == 2 &&
+                                if (controller.showIndexValue!.value == 1 &&
                                     sp.read("role") != "eventManager") {
                                   _eventController.getAllSendingRequest();
                                 }
-                                if (controller.showIndexValue!.value == 2 &&
+                                if (controller.showIndexValue!.value == 1 &&
                                     sp.read("role") == "eventManager") {
                                   _managerController.getAllPendingEvents();
                                 }
@@ -470,14 +470,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.selectedFilter.value = 2;
                                 controller.showFilter.value = false;
                                 controller.update();
-                                if (controller.showIndexValue!.value == 1) {
+                                if (controller.showIndexValue!.value == 2) {
                                   controller.completedEvent();
                                 }
-                                if (controller.showIndexValue!.value == 2 &&
+                                if (controller.showIndexValue!.value == 1 &&
                                     sp.read("role") != "eventManager") {
                                   _eventController.getAllSendingRequest();
                                 }
-                                if (controller.showIndexValue!.value == 2 &&
+                                if (controller.showIndexValue!.value == 1 &&
                                     sp.read("role") == "eventManager") {
                                   _managerController.getAllPendingEvents();
                                 }
