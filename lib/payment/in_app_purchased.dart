@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
@@ -9,14 +10,21 @@ import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 class InAppPurchased {
-  
+  static InAppPurchased? _instance;
+
+  InAppPurchased._a();
+
+  factory InAppPurchased() {
+    return _instance ??= InAppPurchased._a();
+  }
+
   final InAppPurchase inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> purchasedSubscrption;
   late StreamSubscription<List<PurchaseDetails>> subscriptionStream;
   List<ProductDetails> _product = [];
   List<PurchaseDetails> _purchase = [];
 
-  final List<String> _identifiers = [];
+  final List<String> _identifiers = ["rc_premium_month", "rc_premium_year"];
 
   Future<void> initStore() async {
     bool isAvailable = await inAppPurchase.isAvailable();
@@ -50,6 +58,8 @@ class InAppPurchased {
     for (var action in productDetailsResponse.productDetails) {
       _product.add(action);
     }
+
+    log(_product.length.toString());
   }
 
   Future<void> purchasedStream() async {
@@ -95,9 +105,10 @@ class InAppPurchased {
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           handleError(purchaseDetails.error!);
+          return;
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
-          final bool valid = purchaseDetails.productID == "subscription"
+          final bool valid = purchaseDetails.productID == "rc_premium_month"
               ? await _verifySubscription(purchaseDetails)
               : await _verifyPurchased(purchaseDetails);
           if (valid) {
@@ -155,18 +166,19 @@ class InAppPurchased {
     final Completer purchaseCompleter = Completer();
     final SKPaymentQueueWrapper skPaymentQueueWrapper = SKPaymentQueueWrapper();
 
-    List<SKPaymentTransactionWrapper> skPaymentTransactionWrapper =
-        await skPaymentQueueWrapper.transactions();
+    try {
+      List<SKPaymentTransactionWrapper> skPaymentTransactionWrapper =
+          await skPaymentQueueWrapper.transactions();
 
-    for (var transaction in skPaymentTransactionWrapper) {
-      await skPaymentQueueWrapper.finishTransaction(transaction);
-    }
-
+      for (var transaction in skPaymentTransactionWrapper) {
+        await skPaymentQueueWrapper.finishTransaction(transaction);
+      }
+    } catch (e) {}
     await inAppPurchase
         .buyNonConsumable(
             purchaseParam: PurchaseParam(
                 productDetails: _product
-                    .singleWhere((data) => _identifiers.contains(data.id))))
+                    .singleWhere((data) => data.id == "rc_premium_month")))
         .then((value) {
       purchaseCompleter.complete();
     });

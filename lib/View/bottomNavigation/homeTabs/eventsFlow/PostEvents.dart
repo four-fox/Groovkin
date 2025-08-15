@@ -27,7 +27,7 @@ class PendingScreen extends StatelessWidget {
     }, builder: (controller) {
       return controller.getAllSendingRequestLoader.value == false
           ? const SizedBox.shrink()
-          : controller.allEvents!.data!.data!.isEmpty
+          : controller.allEvents!.data!.data.isEmpty
               ? Center(
                   child: Text(
                     "No Data",
@@ -57,12 +57,12 @@ class PendingScreen extends StatelessWidget {
                     return false;
                   },
                   child: ListView.builder(
-                      itemCount: controller.allEvents!.data!.data!.length,
+                      itemCount: controller.allEvents!.data!.data.length,
                       shrinkWrap: true,
                       physics: const AlwaysScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, index) {
                         EventData eventData =
-                            controller.allEvents!.data!.data![index];
+                            controller.allEvents!.data!.data[index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 8),
@@ -151,7 +151,7 @@ class PendingScreen extends StatelessWidget {
                                           children: [
                                             Text(
                                               controller.allEvents!.data!
-                                                  .data![index].eventTitle!,
+                                                  .data[index].eventTitle!,
                                               style: poppinsRegularStyle(
                                                   fontSize: 12,
                                                   context: context,

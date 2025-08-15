@@ -86,7 +86,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                         controller.showPassword.value != true
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: DynamicColor.grayClr.withValues(alpha:0.6),
+                        color: DynamicColor.grayClr.withValues(alpha: 0.6),
                       ),
                     ),
                   ),
@@ -109,7 +109,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                         controller.showConfirmPassword.value != true
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: DynamicColor.grayClr.withValues(alpha:0.6),
+                        color: DynamicColor.grayClr.withValues(alpha: 0.6),
                       ),
                     ),
                   ),

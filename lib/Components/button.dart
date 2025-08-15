@@ -57,7 +57,7 @@ class CustomButton extends StatelessWidget {
                     end: Alignment.bottomLeft,
                     colors: [
                       color1 ?? const Color(0xffd8a735),
-                      color2 ?? const Color(0xffb77712).withValues(alpha:0.7),
+                      color2 ?? const Color(0xffb77712).withValues(alpha: 0.7),
                     ],
                   )
                 : null),
@@ -98,6 +98,8 @@ class CustomButtonWithIcon extends StatelessWidget {
     this.iconSize,
     this.bgColor,
     this.gradientClr = false,
+    this.backgroundClr = true,
+    this.bgImage,
   });
 
   final GestureTapCallback? onTap;
@@ -118,7 +120,8 @@ class CustomButtonWithIcon extends StatelessWidget {
   final double? iconSize;
   Color? bgColor;
   bool gradientClr = false;
-
+  bool backgroundClr = true;
+  String? bgImage;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -129,6 +132,11 @@ class CustomButtonWithIcon extends StatelessWidget {
         decoration: BoxDecoration(
             // color: DynamicColor.yellowClr,
             borderRadius: BorderRadius.circular(borderRadius),
+            image: backgroundClr == true
+                ? DecorationImage(
+                    image: AssetImage(bgImage ?? "assets/buttonBg.png"),
+                    fit: BoxFit.fill)
+                : null,
             gradient: gradientClr == false
                 ? null
                 : LinearGradient(
@@ -136,7 +144,7 @@ class CustomButtonWithIcon extends StatelessWidget {
                     end: Alignment.bottomLeft,
                     colors: [
                       color1 ?? const Color(0xffd8a735),
-                      color2 ?? const Color(0xffb77712).withValues(alpha:0.7),
+                      color2 ?? const Color(0xffb77712).withValues(alpha: 0.7),
                     ],
                   ),
             color: bgColor == null

@@ -16,6 +16,7 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
+import 'package:groovkin/payment/in_app_purchased.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -116,7 +117,7 @@ void main() async {
   await GetStorage.init();
   runApp(const MyApp());
 }
-  
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -191,6 +192,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       darkTheme: ThemeData(
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: DynamicColor.yellowClr,
+          selectionColor: DynamicColor.yellowClr,
+          selectionHandleColor: DynamicColor.yellowClr,
+        ),
         brightness: Brightness.dark,
         primaryColor: const Color(0xffFFFFFF),
         // backgroundColor: Color(0xffFFFFFF),

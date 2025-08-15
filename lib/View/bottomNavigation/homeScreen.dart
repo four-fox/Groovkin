@@ -237,10 +237,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     indicatorColor: Colors.transparent,
                     onTap: (v) {
                       if (v == controller.showIndexValue!.value) return;
-                      _eventController.allEvents!.data!.data.clear();
                       controller.selectedFilter.value = 0;
                       controller.showIndexValue!.value = v;
                       controller.showFilter.value = false;
+                      _eventController.allEvents!.data!.data.clear();
                       controller.update();
                     },
                     tabs: [
@@ -249,22 +249,26 @@ class _HomeScreenState extends State<HomeScreen> {
                           () => Container(
                             height: 35,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: controller.showIndexValue!.value == 0
-                                    ? DynamicColor.secondaryClr
-                                    : DynamicColor.lightBlackClr),
+                              borderRadius: BorderRadius.circular(10),
+                              color: controller.showIndexValue!.value == 0
+                                  ? DynamicColor.secondaryClr
+                                  : DynamicColor.lightBlackClr,
+                            ),
                             child: Center(
                               child: Text(
                                 /*sp.read("role") == "eventManager"
                                     ? "Upcoming"
-                                    :*/
+                                    :  
+                                    */
+
                                 "Scheduled",
                                 style: poppinsMediumStyle(
-                                    fontSize: 14,
-                                    context: context,
-                                    color: controller.showIndexValue!.value == 0
-                                        ? theme.primaryColor
-                                        : DynamicColor.lightWhite),
+                                  fontSize: 14,
+                                  context: context,
+                                  color: controller.showIndexValue!.value == 0
+                                      ? theme.primaryColor
+                                      : DynamicColor.lightWhite,
+                                ),
                               ),
                             ),
                           ),
@@ -284,13 +288,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 /*sp.read("role") == "eventManager"
                                     ? "Pending"
                                     :*/
+
                                 "Requests",
                                 style: poppinsMediumStyle(
-                                    fontSize: 14,
-                                    context: context,
-                                    color: controller.showIndexValue!.value == 1
-                                        ? theme.primaryColor
-                                        : DynamicColor.lightWhite),
+                                  fontSize: 14,
+                                  context: context,
+                                  color: controller.showIndexValue!.value == 1
+                                      ? theme.primaryColor
+                                      : DynamicColor.lightWhite,
+                                ),
                               ),
                             ),
                           ),
@@ -322,6 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+
                   // const SizedBox(
                   //   height: 5,
                   // ),

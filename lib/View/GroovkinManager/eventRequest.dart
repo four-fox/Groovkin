@@ -18,6 +18,7 @@ class EventRequests extends StatefulWidget {
 
 class _EventRequestsState extends State<EventRequests> {
   late EventController _eventController;
+
   @override
   void initState() {
     super.initState();
@@ -41,11 +42,11 @@ class _EventRequestsState extends State<EventRequests> {
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: ListView.builder(
-                    itemCount: controller.allEvents!.data!.data!.length,
+                    itemCount: controller.allEvents!.data!.data.length,
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, index) {
-                      final data = controller.allEvents!.data!.data![index];
+                      final data = controller.allEvents!.data!.data[index];
 
                       return GestureDetector(
                         onTap: () {
