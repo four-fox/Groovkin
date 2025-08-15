@@ -76,30 +76,61 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     _eventController.postEndTime = intialEndTime;
   }
 
+  // bool? createEvent({
+  //   required String? startDate,
+  //   required String? endDate,
+  //   required String? startTime,
+  //   required String? endTime,
+  // }) {
+  //   if ((startDate == null || startDate.isEmpty) ||
+  //       (endDate == null || endDate.isEmpty) ||
+  //       (startTime == null || startTime.isEmpty) ||
+  //       (endTime == null || endTime.isEmpty)) {
+  //     bottomToast(text: "Field Required!");
+  //     return null;
+  //   }
+
+  //   final dateTimeFormat = DateFormat("yyyy-MM-dd h:mm a");
+  //   startTime = startTime.replaceAll(RegExp(r'\s+'), ' ').trim();
+  //   endTime = endTime.replaceAll(RegExp(r'\s+'), ' ').trim();
+
+  //   DateTime startDateTime = dateTimeFormat.parse("$startDate $startTime");
+  //   DateTime endDateTime = dateTimeFormat.parse("$endDate $endTime");
+
+  //   DateTime now = DateTime.now();
+  //   // API should be called if NOT within event time range
+  //   return !(now.isAfter(startDateTime) && now.isBefore(endDateTime));
+  // }
   bool? createEvent({
     required String? startDate,
     required String? endDate,
     required String? startTime,
     required String? endTime,
   }) {
-    if ((startDate == null || startDate.isEmpty) ||
-        (endDate == null || endDate.isEmpty) ||
-        (startTime == null || startTime.isEmpty) ||
-        (endTime == null || endTime.isEmpty)) {
+    if ((startDate ?? "").isEmpty ||
+        (endDate ?? "").isEmpty ||
+        (startTime ?? "").isEmpty ||
+        (endTime ?? "").isEmpty) {
       bottomToast(text: "Field Required!");
       return null;
     }
 
     final dateTimeFormat = DateFormat("yyyy-MM-dd h:mm a");
-    startTime = startTime.replaceAll(RegExp(r'\s+'), ' ').trim();
-    endTime = endTime.replaceAll(RegExp(r'\s+'), ' ').trim();
+    startTime = startTime!.replaceAll(RegExp(r'\s+'), ' ').trim();
+    endTime = endTime!.replaceAll(RegExp(r'\s+'), ' ').trim();
 
     DateTime startDateTime = dateTimeFormat.parse("$startDate $startTime");
     DateTime endDateTime = dateTimeFormat.parse("$endDate $endTime");
 
     DateTime now = DateTime.now();
-    // API should be called if NOT within event time range
-    return !(now.isAfter(startDateTime) && now.isBefore(endDateTime));
+
+    // If now is between start and end → not allowed
+    if (now.isAfter(startDateTime) && now.isBefore(endDateTime)) {
+      bottomToast(text: "Event is already running!");
+      return false; // stop process
+    }
+
+    return true; // allow process
   }
 
   @override
@@ -254,6 +285,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         color: DynamicColor.whiteClr,
                       ),
                       onTap: () async {
+                        DateTime now = DateTime.now();
                         DateTime? pickedDate = await showDatePicker(
                             initialEntryMode: DatePickerEntryMode.calendarOnly,
                             builder: (context, child) {
@@ -279,8 +311,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               );
                             },
                             context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
+                            initialDate: now,
+                            firstDate: now,
                             lastDate: DateTime(2201));
                         if (pickedDate != null) {
                           controller.eventDateController.text =
@@ -930,29 +962,40 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                 controller.paymentSchedule!.value =
                                     controller.otherRateController.text;
                               }
-                              bool? callApi = createEvent(
-                                startDate: controller.datePost ?? "",
-                                endDate: controller.endDatePost ?? "",
-                                startTime: controller.postTime ?? "",
-                                endTime: controller.postEndTime ?? "",
-                              );
-                              if (callApi != null) {
-                                if (!callApi) {
-                                  controller.checkingTime();
-                                  print("Hit");
-                                } else {
+                              // bool? callApi = createEvent(
+                              //   startDate: controller.datePost ?? "",
+                              //   endDate: controller.endDatePost ?? "",
+                              //   startTime: controller.postTime ?? "",
+                              //   endTime: controller.postEndTime ?? "",
+                              // );
+                              // if (callApi != null) {
+                              // if (!callApi) {
+
+                              String start =
+                                  controller.eventDateController.text.trim();
+
+                              String end =
+                                  controller.eventEndDateController.text.trim();
+
+                              if (start.isNotEmpty && end.isNotEmpty) {
+                                if (start == end) {
                                   bottomToast(
-                                      text: "Please Selected Different Date");
+                                      text: "Please select a different date");
+                                } else {
+                                  controller.checkingTime();
                                 }
+                              } else {
+                                bottomToast(text: "Please select a date");
                               }
-                              print(controller.datePost);
-                              print(controller.endDatePost);
-                              print(controller.postTime);
-                              print(controller.postEndTime);
-                            } else {
-                              bottomToast(text: "Please choose event banner");
                             }
+                            print(controller.datePost);
+                            print(controller.endDatePost);
+                            print(controller.postTime);
+                            print(controller.postEndTime);
+                          } else {
+                            bottomToast(text: "Please choose event banner");
                           }
+
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(

@@ -707,6 +707,7 @@ class ManagerController extends GetxController {
   RxBool getAllMessagesLoader = true.obs;
   ChatModel? chatData;
   bool chatWaiting = false;
+  
   getAllMessages({userId, sourceId, fullUrl}) async {
     var formData = form.FormData.fromMap({
       "user_id": userId,

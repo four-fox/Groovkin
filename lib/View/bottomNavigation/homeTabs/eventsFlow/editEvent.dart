@@ -391,7 +391,7 @@ class EditEventScreen extends StatelessWidget {
                 CustomTextFieldsHintText(
                   maxLine: 6,
                   controller: controller.rescheduleDescriptionController,
-                  borderClr: DynamicColor.grayClr.withValues(alpha:0.5),
+                  borderClr: DynamicColor.grayClr.withValues(alpha: 0.5),
                   hintText: "write here...",
                 ),
               ],

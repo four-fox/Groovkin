@@ -69,7 +69,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                 child: Text(
                   "Contact Information",
                   style: poppinsRegularStyle(
@@ -81,26 +81,26 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                   theme: theme,
                   text: controller.phoneNumController.text,
                   image: "assets/phoneIcons.png",
-                  iconClr: theme.primaryColor.withValues(alpha:0.7)),
+                  iconClr: theme.primaryColor.withValues(alpha: 0.7)),
               venueService(
                   context: context,
                   theme: theme,
                   text:
                       "${controller.openingHoursController.text} to ${controller.closedHoursController.text}",
-                  iconClr: theme.primaryColor.withValues(alpha:0.7),
+                  iconClr: theme.primaryColor.withValues(alpha: 0.7),
                   image: "assets/clrlessClock.png"),
               venueService(
                   context: context,
                   theme: theme,
                   text: controller.maxSeatingController.text,
                   image: "assets/groupPeopleIcon.png",
-                  iconClr: theme.primaryColor.withValues(alpha:0.7)),
+                  iconClr: theme.primaryColor.withValues(alpha: 0.7)),
               venueService(
                   context: context,
                   theme: theme,
                   text: controller.addressController.text,
                   image: "assets/location.png",
-                  iconClr: theme.primaryColor.withValues(alpha:0.7)),
+                  iconClr: theme.primaryColor.withValues(alpha: 0.7)),
               const SizedBox(
                 height: 10,
               ),
@@ -108,7 +108,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                 child: Text(
                   "Max Occupancy",
                   style: poppinsRegularStyle(
@@ -122,13 +122,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                     theme: theme,
                     text: controller.maxOccupancyController.text,
                     image: "assets/groupPeopleIcon.png",
-                    iconClr: theme.primaryColor.withValues(alpha:0.7)),
+                    iconClr: theme.primaryColor.withValues(alpha: 0.7)),
               ),
               Container(
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                 child: Text(
                   "Max Seating",
                   style: poppinsRegularStyle(
@@ -142,13 +142,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                     theme: theme,
                     text: controller.maxSeatingController.text,
                     image: "assets/groupPeopleIcon.png",
-                    iconClr: theme.primaryColor.withValues(alpha:0.7)),
+                    iconClr: theme.primaryColor.withValues(alpha: 0.7)),
               ),
               Container(
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                 child: Text(
                   "Amenities",
                   style: poppinsRegularStyle(
@@ -195,7 +195,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                 child: Text(
                   "Active Licenses\\Permits",
                   style: poppinsRegularStyle(
@@ -242,7 +242,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                 child: Text(
                   "House Event Capabilites",
                   style: poppinsRegularStyle(
@@ -289,7 +289,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                 width: Get.width,
                 padding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                 child: Text(
                   "Venue Pictures",
                   style: poppinsRegularStyle(
@@ -662,7 +662,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                         },
                         text: _controller.updateAmenities.value == true
                             ? "Updated"
-                            : "Completed",
+                            : "Complete",
                       ),
                     ],
                   ),
