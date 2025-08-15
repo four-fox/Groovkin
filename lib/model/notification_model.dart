@@ -362,9 +362,9 @@ class Sender {
   String? name;
   String? email;
   String? deviceToken;
-  Null referralCode;
-  Null emailVerifiedAt;
-  Null otp;
+  dynamic referralCode;
+  dynamic emailVerifiedAt;
+  dynamic otp;
   String? activeRole;
   String? deletedAt;
   String? createdAt;

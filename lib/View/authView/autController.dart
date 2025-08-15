@@ -176,7 +176,7 @@ class AuthController extends GetxController {
         API().sp.write("currentRole", "eventManager");
       }
       clearTextFields();
-      if (response.data["data"]["user_details"]["signup_platform"] == null) {
+      if (response.data["data"]["user_details"]["signup_platform"] == "app") {
         if (API().sp.read("role") == "User") {
           API().sp.write("isUserCreated",
               response.data['data']['user_details']['is_user_created']);
@@ -401,6 +401,12 @@ class AuthController extends GetxController {
     stateController.clear();
     countryController.clear();
     referralCodeController.clear();
+    companyNameController.clear();
+    zipController.clear();
+    youtubeController.clear();
+    twitterXController.clear();
+    instagramController.clear();
+    aboutController.clear();
   }
 
   /// todo create profile functionality
@@ -470,6 +476,24 @@ class AuthController extends GetxController {
     if (userData!.data!.profile!.country != null) {
       countryController.text = userData!.data!.profile!.country.toString();
     }
+
+    if (userData!.data!.profile!.zipCode != null) {
+      zipController.text = userData!.data!.profile!.zipCode.toString();
+    }
+    if (userData!.data!.socialLink != null) {
+      if (userData!.data!.socialLink!.instagram != null) {
+        instagramController.text =
+            userData!.data!.socialLink!.instagram.toString();
+      }
+      if (userData!.data!.socialLink!.twitter != null) {
+        twitterXController.text =
+            userData!.data!.socialLink!.twitter.toString();
+      }
+      if (userData!.data!.socialLink!.youtube != null) {
+        youtubeController.text = userData!.data!.socialLink!.youtube.toString();
+      }
+    }
+
     Get.toNamed(Routes.profileScreen);
   }
 
@@ -509,7 +533,14 @@ class AuthController extends GetxController {
           countryController.text.isNotEmpty)
         "country": countryController.text,
       // if(API().sp.read("role") == "eventOrganizer") "company_name": "asdf",
-      if (imageList.isNotEmpty) "image[]": imageList
+      if (imageList.isNotEmpty) "image[]": imageList,
+      if (zipController.text.isNotEmpty) "zip_code": zipController.text,
+      if (instagramController.text.isNotEmpty)
+        "instagram_link": instagramController.text,
+      if (twitterXController.text.isNotEmpty)
+        "twitter_link": twitterXController.text,
+      if (youtubeController.text.isNotEmpty)
+        "youtube_link": youtubeController.text,
 
       ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> che kala profile create kege nu da da haghai ftn d
     });
@@ -1557,7 +1588,6 @@ class AuthController extends GetxController {
     if (loginResult.status == LoginStatus.success) {
       final AccessToken? accessToken = loginResult.accessToken;
       if (accessToken != null) {
-        
         final validCredential = firebase_auth.FacebookAuthProvider.credential(
           accessToken.tokenString,
         );

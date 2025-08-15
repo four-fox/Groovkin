@@ -523,7 +523,10 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                         borderClr: Colors.transparent,
                                         color2: DynamicColor.redClr,
                                         color1: DynamicColor.redClr,
-                                        text: "Cancel",
+                                        text: API().sp.read("role") ==
+                                                "eventOrganizer"
+                                            ? "Cancel"
+                                            : "Decline",
                                       ),
                                     ),
                               const SizedBox(

@@ -45,6 +45,7 @@ class Data {
   String? activeRole;
   Profile? profile;
   ProfilePicture? profilePicture;
+  SocialLink? socialLink;
 
   Data({
     this.id,
@@ -58,24 +59,27 @@ class Data {
     this.profile,
     this.profilePicture,
     this.activeRole,
+    this.socialLink,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        id: json["id"],
-        name: json["name"],
-        email: json["email"],
-        deviceToken: json["device_token"],
-        emailVerifiedAt: json["email_verified_at"],
-        otp: json["otp"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        activeRole: json["active_role"],
-        profile:
-            json["profile"] == null ? null : Profile.fromJson(json["profile"]),
-        profilePicture: json["profile_picture"] == null
-            ? null
-            : ProfilePicture.fromJson(json['profile_picture']),
-      );
+      id: json["id"],
+      name: json["name"],
+      email: json["email"],
+      deviceToken: json["device_token"],
+      emailVerifiedAt: json["email_verified_at"],
+      otp: json["otp"],
+      createdAt: json["created_at"],
+      updatedAt: json["updated_at"],
+      activeRole: json["active_role"],
+      profile:
+          json["profile"] == null ? null : Profile.fromJson(json["profile"]),
+      profilePicture: json["profile_picture"] == null
+          ? null
+          : ProfilePicture.fromJson(json['profile_picture']),
+      socialLink: json["social_links"] == null
+          ? null
+          : SocialLink.fromJson(json["social_links"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -105,6 +109,7 @@ class Profile {
   dynamic location;
   dynamic latitude;
   dynamic longitude;
+  String? zipCode;
   int? isInsurance;
   int? userId;
   DateTime? createdAt;
@@ -127,6 +132,7 @@ class Profile {
     this.updatedAt,
     this.about,
     this.country,
+    this.zipCode,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
@@ -146,6 +152,7 @@ class Profile {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"],
         about: json["about"],
+        zipCode: json["zip_code"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -165,6 +172,7 @@ class Profile {
         "user_id": userId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt,
+        "zip_code": zipCode,
       };
 }
 
@@ -198,7 +206,7 @@ class ProfilePicture {
       mediaFor: json['media_for'],
       thumbnail: json['thumbnail'],
       mediaPath: json['media_path'],
-      mediaType:  json['media_type'],
+      mediaType: json['media_type'],
       galleryableType: json['galleryable_type'],
       galleryableId: json['galleryable_id'],
       createdAt: DateTime.parse(json['created_at']),
@@ -219,5 +227,27 @@ class ProfilePicture {
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
     };
+  }
+}
+
+class SocialLink {
+  int? id, userId;
+  String? youtube, instagram, twitter;
+
+  SocialLink({
+    this.id,
+    this.userId,
+    this.youtube,
+    this.instagram,
+    this.twitter,
+  });
+
+  factory SocialLink.fromJson(Map<String, dynamic> json) {
+    return SocialLink(
+        id: json["id"],
+        userId: json["user_id"],
+        youtube: json["youtube"],
+        instagram: json["instagram"],
+        twitter: json["twitter"]);
   }
 }

@@ -23,14 +23,13 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
-
   final createProfileForm = GlobalKey<FormState>();
 
   PhoneNumber number = PhoneNumber(isoCode: "US");
 
   late final AuthController _controller;
 
-  List<int> dobYear = []; 
+  List<int> dobYear = [];
 
   final String? accessToken = Get.arguments?["accessToken"];
 
@@ -45,7 +44,7 @@ class _CreateProfileState extends State<CreateProfile> {
     } else {
       _controller = Get.put(AuthController());
     }
-        
+
     if (API().sp.read("nameSocial") != null) {
       _controller.displayNameController.text = API().sp.read("nameSocial");
     }
@@ -475,7 +474,8 @@ class _CreateProfileState extends State<CreateProfile> {
                       labelText: "Zip Code",
                       controller: controller.zipController,
                       validationError: "zip code",
-                      isOptional: true,
+                      isOptional: false,
+                      keyBoardType: true,
                     ),
 
                     const SizedBox(

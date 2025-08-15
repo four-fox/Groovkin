@@ -240,7 +240,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller.selectedFilter.value = 0;
                       controller.showIndexValue!.value = v;
                       controller.showFilter.value = false;
-                      _eventController.allEvents!.data!.data.clear();
+                      if (_eventController.allEvents != null) {
+                        _eventController.allEvents!.data!.data.clear();
+                      }
                       controller.update();
                     },
                     tabs: [

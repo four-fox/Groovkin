@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textFields.dart';
@@ -159,11 +158,17 @@ class LoginOrSignUpScreen extends StatelessWidget {
             child: CustomButton(
               borderClr: Colors.transparent,
               onTap: () {
-                print(API().sp.read("role"));
                 if (signUpForm.currentState!.validate()) {
                   if (_controller.confirmPasswordController.text ==
                       _controller.passwordController.text) {
-                    Get.toNamed(Routes.createProfile);
+                    if (_controller.confirmPasswordController.text.length >=
+                        6) {
+                      Get.toNamed(Routes.createProfile);
+                    } else {
+                      bottomToast(
+                          text:
+                              "Password length must be at least 6 characters");
+                    }
                   } else {
                     bottomToast(text: "Please make sure your passwords match");
                   }

@@ -663,11 +663,11 @@ class ManagerController extends GetxController {
     getAllPendingEventsLoader(false);
     var response = await API()
         .getApi(url: "show-venue-requested-events", queryParameters: {
-      "filter": (homeController.showIndexValue == 2 &&
+      "filter": (homeController.showIndexValue == 1 &&
               (homeController.selectedFilter == 0))
           ? "recent"
-          : (homeController.showIndexValue == 2 &&
-                  (homeController.selectedFilter == 1))
+          : (homeController.showIndexValue == 1 &&
+                  (homeController.selectedFilter == 2))
               ? "past_week"
               : "older_than_1_month",
     });
@@ -707,7 +707,7 @@ class ManagerController extends GetxController {
   RxBool getAllMessagesLoader = true.obs;
   ChatModel? chatData;
   bool chatWaiting = false;
-  
+
   getAllMessages({userId, sourceId, fullUrl}) async {
     var formData = form.FormData.fromMap({
       "user_id": userId,

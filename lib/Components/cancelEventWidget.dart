@@ -56,7 +56,7 @@ cancelEventWidget({context, theme, final GestureTapCallback? onTap}) {
                         backgroundClr: false,
                         textClr: theme.scaffoldBackgroundColor,
                         borderClr: Colors.transparent,
-                        text: "Cancel",
+                        text: "No",
                       ),
                       CustomButton(
                         heights: 30,
@@ -66,7 +66,7 @@ cancelEventWidget({context, theme, final GestureTapCallback? onTap}) {
                         onTap: onTap,
                         backgroundClr: false,
                         borderClr: Colors.transparent,
-                        text: "Decline",
+                        text: "Yes",
                       ),
                     ],
                   ),

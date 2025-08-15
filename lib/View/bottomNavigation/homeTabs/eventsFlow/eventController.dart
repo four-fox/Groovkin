@@ -715,11 +715,11 @@ class EventController extends GetxController {
       url: "show-requested-events",
       fullUrl: nextUrl,
       queryParameters: {
-        "filter": (homeController.showIndexValue == 2 &&
+        "filter": (homeController.showIndexValue == 1 &&
                 (homeController.selectedFilter == 0))
             ? "recent"
-            : (homeController.showIndexValue == 2 &&
-                    (homeController.selectedFilter == 1))
+            : (homeController.showIndexValue == 1 &&
+                    (homeController.selectedFilter == 2))
                 ? "past_week"
                 : "older_than_1_month",
       },
