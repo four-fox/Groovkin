@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -493,44 +494,103 @@ class ListOfVenuesScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-              child: CustomTextFields(
-                borderClr: theme.primaryColor,
-                iconShow: true,
-                labelText: "Add here",
-                suffixWidget: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.addLocationScreen);
+            GetBuilder<EventController>(builder: (controller) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                child: CustomTextFields(
+                  borderClr: theme.primaryColor,
+                  iconShow: true,
+                  labelText: "Add here",
+                  onChanged: (value) {
+                    controller.searchingList(value);
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: theme.primaryColor,
-                      ),
-                      child: Icon(
-                        Icons.filter_alt,
-                        color: theme.scaffoldBackgroundColor,
-                        size: 18,
+                  suffixWidget: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.addLocationScreen);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          color: theme.primaryColor,
+                        ),
+                        child: Icon(
+                          Icons.filter_alt,
+                          color: theme.scaffoldBackgroundColor,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                "Venue",
-                style: poppinsMediumStyle(
-                  fontSize: 18,
-                  context: context,
-                  color: theme.primaryColor,
+              );
+            }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: Text(
+                    "Venue",
+                    style: poppinsMediumStyle(
+                      fontSize: 18,
+                      context: context,
+                      color: theme.primaryColor,
+                    ),
+                  ),
                 ),
-              ),
+                GetBuilder<EventController>(builder: (controller) {
+                  return Visibility(
+                    visible: controller.isFilterApiHit,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        controller.allVenueList = null;
+                        controller.update();
+                        controller.getVenuesLatLng();
+                      },
+                      child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: 12.0, right: 12.0),
+                          child: Container(
+                            padding: EdgeInsets.only(left: 12, right: 12),
+                            decoration: BoxDecoration(
+                                color: DynamicColor.grayClr,
+                                borderRadius: BorderRadius.circular(30)),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Clear Filter",
+                                  style: poppinsRegularStyle(
+                                    fontSize: 14,
+                                    context: context,
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Icon(
+                                    Icons.clear,
+                                    size: 18,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )),
+                    ),
+                  );
+                })
+              ],
             )
           ],
         ),
@@ -538,131 +598,118 @@ class ListOfVenuesScreen extends StatelessWidget {
       body: GetBuilder<EventController>(initState: (v) {
         _controller.getVenuesLatLng();
       }, builder: (controller) {
-        return controller.getVenuesLatLngLoader.value == false
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: controller.allVenueList!.data!.data!.isEmpty
-                    ? Center(
-                        child: Text(
-                          "No Data",
-                          style: poppinsMediumStyle(
-                            fontSize: 17,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
+        if (controller.getVenuesLatLngLoader.value == false ||
+            controller.getFilterVenueLoader == false) {
+          return SizedBox.shrink();
+        }
+
+        final venues = (controller.allVenueSearchingList != null &&
+                controller.allVenueSearchingList!.data != null &&
+                controller.allVenueSearchingList!.data!.data!.isNotEmpty)
+            ? controller.allVenueSearchingList!.data!.data!
+            : [];
+
+        if (venues.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            child: Center(
+              child: Text(
+                "No Data",
+                style: poppinsMediumStyle(
+                  fontSize: 17,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+              ),
+            ),
+          );
+        }
+
+        return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: ListView.builder(
+                itemCount: venues.length,
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, index) {
+                  final venue = venues[index];
+                  return GestureDetector(
+                    onTap: venue.user!.deleteAt == null
+                        ? () {
+                            controller.venuesDetails = venue;
+                            Get.toNamed(Routes.viewOtherEventsDetails,
+                                arguments: {
+                                  "venueId": venue.id,
+                                  "buttonShow": true,
+                                  "editBtn": false
+                                });
+                            // Get.toNamed(Routes.venueInfoScreen);
+                          }
+                        : () {
+                            Utils.showToast();
+                          },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: venue.user!.deleteAt == null
+                              ? Colors.transparent
+                              : DynamicColor.disabledColor,
+                          image: venue.user!.deleteAt == null
+                              ? const DecorationImage(
+                                  image: AssetImage("assets/grayClor.png"),
+                                  fit: BoxFit.fill)
+                              : null,
                         ),
-                      )
-                    : ListView.builder(
-                        itemCount: controller.allVenueList!.data!.data!.length,
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, index) {
-                          return GestureDetector(
-                            onTap: controller.allVenueList!.data!.data![index]
-                                        .user!.deleteAt ==
-                                    null
-                                ? () {
-                                    controller.venuesDetails = controller
-                                        .allVenueList!.data!.data![index];
-                                    Get.toNamed(Routes.viewOtherEventsDetails,
-                                        arguments: {
-                                          "venueId": controller.allVenueList!
-                                              .data!.data![index].id,
-                                          "buttonShow": true,
-                                          "editBtn": false
-                                        });
-                                    // Get.toNamed(Routes.venueInfoScreen);
-                                  }
-                                : () {
-                                    Utils.showToast();
-                                  },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 6.0),
-                              child: Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: controller.allVenueList!.data!
-                                              .data![index].user!.deleteAt ==
-                                          null
-                                      ? Colors.transparent
-                                      : DynamicColor.disabledColor,
-                                  image: controller.allVenueList!.data!
-                                              .data![index].user!.deleteAt ==
-                                          null
-                                      ? const DecorationImage(
-                                          image:
-                                              AssetImage("assets/grayClor.png"),
-                                          fit: BoxFit.fill)
-                                      : null,
-                                ),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundColor:
-                                          DynamicColor.darkYellowClr,
-                                      child: CircleAvatar(
-                                        radius: 24,
-                                        backgroundImage: NetworkImage(controller
-                                                    .allVenueList!
-                                                    .data!
-                                                    .data![index]
-                                                    .profilePicture![0]
-                                                    .thumbnail ==
-                                                null
-                                            ? Url().imageUrl +
-                                                controller
-                                                    .allVenueList!
-                                                    .data!
-                                                    .data![index]
-                                                    .profilePicture![0]
-                                                    .mediaPath
-                                                    .toString()
-                                            : Url().imageUrl +
-                                                controller
-                                                    .allVenueList!
-                                                    .data!
-                                                    .data![index]
-                                                    .profilePicture![0]
-                                                    .thumbnail
-                                                    .toString()),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 7.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            controller.allVenueList!.data!
-                                                .data![index].venueName
-                                                .toString(),
-                                            style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.primaryColor,
-                                            ),
-                                          ),
-                                          Text(
-                                            "Tap to view detail about property",
-                                            style: poppinsRegularStyle(
-                                                fontSize: 12,
-                                                context: context,
-                                                color: theme.primaryColor
-                                                    .withValues(alpha: 0.5)),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundColor: DynamicColor.darkYellowClr,
+                              child: CircleAvatar(
+                                radius: 24,
+                                backgroundImage: NetworkImage(
+                                    venue.profilePicture![0].thumbnail == null
+                                        ? Url().imageUrl +
+                                            venue.profilePicture![0].mediaPath
+                                                .toString()
+                                        : Url().imageUrl +
+                                            venue.profilePicture![0].thumbnail
+                                                .toString()),
                               ),
                             ),
-                          );
-                        }));
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    venue.venueName.toString(),
+                                    style: poppinsRegularStyle(
+                                      fontSize: 14,
+                                      context: context,
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Tap to view detail about property",
+                                    style: poppinsRegularStyle(
+                                        fontSize: 12,
+                                        context: context,
+                                        color: theme.primaryColor
+                                            .withValues(alpha: 0.5)),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }));
       }),
     );
   }
@@ -670,117 +717,173 @@ class ListOfVenuesScreen extends StatelessWidget {
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Add Location   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-class AddLocationScreen extends StatelessWidget {
+class AddLocationScreen extends StatefulWidget {
   const AddLocationScreen({super.key});
 
   @override
+  State<AddLocationScreen> createState() => _AddLocationScreenState();
+}
+
+class _AddLocationScreenState extends State<AddLocationScreen> {
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme, text: "Add location"),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: Get.width,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: DynamicColor.avatarBgClr),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Radius in mile",
-                        style: poppinsMediumStyle(
-                          fontSize: 18,
-                          color: theme.primaryColor,
-                          context: context,
+    return GetBuilder<EventController>(builder: (controller) {
+      return Scaffold(
+        appBar: customAppBar(theme: theme, text: "Add location"),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: Get.width,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: DynamicColor.avatarBgClr),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Radius in mile",
+                          style: poppinsMediumStyle(
+                            fontSize: 18,
+                            color: theme.primaryColor,
+                            context: context,
+                          ),
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "Select Radius",
-                            style: poppinsRegularStyle(
-                              fontSize: 15,
-                              context: context,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(
-                              "Type here",
+                        Row(
+                          children: [
+                            Text(
+                              "Select Radius",
                               style: poppinsRegularStyle(
-                                  fontSize: 11,
-                                  color: DynamicColor.grayClr
-                                      .withValues(alpha: 0.9),
-                                  context: context),
+                                fontSize: 15,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: Get.width / 7,
-                            // height: 30,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: DynamicColor.whiteClr)),
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              style: poppinsRegularStyle(
-                                  fontSize: 12,
-                                  color: theme.primaryColor,
-                                  context: context),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "00",
-                                hintStyle: poppinsRegularStyle(
-                                    fontSize: 12,
-                                    color: theme.primaryColor,
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                "Type here",
+                                style: poppinsRegularStyle(
+                                    fontSize: 11,
+                                    color: DynamicColor.grayClr
+                                        .withValues(alpha: 0.9),
                                     context: context),
                               ),
                             ),
-                          )
-                        ],
-                      ),
-                    ],
+                            Container(
+                              width: Get.width / 7,
+                              // height: 30,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border:
+                                      Border.all(color: DynamicColor.whiteClr)),
+                              child: TextField(
+                                controller: controller.radiusController,
+                                textAlign: TextAlign.center,
+                                style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    color: theme.primaryColor,
+                                    context: context),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  TextInputFormatter.withFunction(
+                                    (oldValue, newValue) {
+                                      if (newValue.text.isEmpty) {
+                                        return newValue;
+                                      }
+                                      final value = int.tryParse(newValue.text);
+                                      if (value == null ||
+                                          value < 1 ||
+                                          value > 1000) {
+                                        return oldValue; // reject change if not in range
+                                      }
+                                      return newValue;
+                                    },
+                                  )
+                                ],
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "00",
+                                  hintStyle: poppinsRegularStyle(
+                                      fontSize: 12,
+                                      color: theme.primaryColor,
+                                      context: context),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomTextFields(
-                  borderClr: theme.primaryColor,
-                  labelText: "Max Capacity",
-                ),
-              ],
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  // CustomTextFields(
+                  //   borderClr: theme.primaryColor,
+                  //   labelText: "Max Capacity",
+                  // ),
+
+                  RangeSlider(
+                    values:
+                        RangeValues(controller.startMile, controller.endMile),
+                    onChanged: (value) {
+                      setState(() {
+                        controller.startMile = value.start;
+                        controller.endMile = value.end;
+                      });
+                    },
+                    min: 10.0,
+                    max: 1000.0,
+                    activeColor: DynamicColor.yellowClr,
+                    inactiveColor: Colors.grey,
+                  ),
+                  Text(
+                    "Start: " +
+                        controller.startMile.ceil().toString() +
+                        "\nEnd: " +
+                        controller.endMile.ceil().toString(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () {
-              Get.back();
-              // Get.toNamed(Routes.confirmationEventScreen);
-            },
-            text: "Search Filter",
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: CustomButton(
+              borderClr: Colors.transparent,
+              onTap: () async {
+                // Get.back();
+                // Get.toNamed(Routes.confirmationEventScreen);
+                if (controller.radiusController.text.isEmpty ||
+                    (controller.startMile == 0.0 ||
+                        controller.endMile == 0.0)) {
+                  bottomToast(text: "Field Required!");
+                } else {
+                  await controller.getFilterVenueLatLng(
+                      controller.startMile.ceil(), controller.endMile.ceil());
+                }
+              },
+              text: "Search Filter",
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

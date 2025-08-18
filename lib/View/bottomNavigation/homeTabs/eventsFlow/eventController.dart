@@ -15,6 +15,8 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/musicChoiceView/musicChoiceModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/pastEventModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/showVenueByLatLngModel.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/showVenueByLatLngModel.dart'
+    as Data;
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEventsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 import 'package:http_parser/http_parser.dart';
@@ -210,15 +212,65 @@ class EventController extends GetxController {
   ///get list of venues as lat lng
   RxBool getVenuesLatLngLoader = true.obs;
   VenueListModel? allVenueList;
+  VenueListModel? allVenueSearchingList;
   VenueByLatLng? venuesDetails;
   getVenuesLatLng() async {
+    isFilterApiHit = false;
     getVenuesLatLngLoader(false);
     var response = await API().getApi(
         url:
             "show-venues-by-distance?miles=500&latitude=${managerController.lat}&longitude=${managerController.lng}");
     if (response.statusCode == 200) {
+      allVenueList = null;
       allVenueList = VenueListModel.fromJson(response.data);
+      allVenueSearchingList = VenueListModel.fromJson(response.data);
       getVenuesLatLngLoader(true);
+      update();
+    }
+  }
+
+// filter Searching Locally Venues
+
+  Future<void> searchingList(String text) async {
+    if (text.isEmpty) {
+      allVenueSearchingList = allVenueList;
+    } else {
+      final filtered = allVenueList!.data!.data!.where((data) {
+        return data.venueName!.toLowerCase().contains(text.toLowerCase());
+      }).toList();
+      allVenueSearchingList = VenueListModel(data: Data.Data(data: filtered));
+    }
+    update();
+  }
+
+// get list of filter venue
+  TextEditingController radiusController = TextEditingController();
+  VenueListModel? filterVenueModel;
+  double? radius;
+  double startMile = 10.0;
+  double endMile = 1000.0;
+  bool getFilterVenueLoader = true;
+  bool isFilterApiHit = false;
+
+  getFilterVenueLatLng(int startMile, int endMile) async {
+    getFilterVenueLoader = false;
+    isFilterApiHit = false;
+    try {
+      var response = await API().getApi(
+          url:
+              "filter-venues?latitude=${managerController.lat}&longitude=${managerController.lng}&radius=${radius}&max_occupancy_from=${startMile}&max_occupancy_to=${endMile}");
+      if (response.statusCode == 200) {
+        isFilterApiHit = true;
+        getFilterVenueLoader = true;
+        allVenueList = null;
+        allVenueList = VenueListModel.fromJson(response.data);
+        allVenueSearchingList = VenueListModel.fromJson(response.data);
+        Get.back();
+        update();
+      }
+    } catch (e) {
+      isFilterApiHit = false;
+      getFilterVenueLoader = false;
       update();
     }
   }
