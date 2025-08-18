@@ -104,7 +104,7 @@ void main() async {
   } else {
     StoreConfig(apiKey: googleApiKey, store: Store.playStore);
   }
-
+  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -201,7 +201,6 @@ class _MyAppState extends State<MyApp> {
         primaryColor: const Color(0xffFFFFFF),
         // backgroundColor: Color(0xffFFFFFF),
         scaffoldBackgroundColor: Colors.black,
-
         textTheme: const TextTheme(
           labelLarge:
               TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),

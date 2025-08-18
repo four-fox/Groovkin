@@ -168,7 +168,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                     shape: Border(
                                       bottom: BorderSide(
                                           color: theme.primaryColor
-                                              .withValues(alpha:0.7)),
+                                              .withValues(alpha: 0.7)),
                                     ),
                                     leading: CircleAvatar(
                                       radius: 25,

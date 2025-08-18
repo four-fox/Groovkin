@@ -771,7 +771,7 @@ class EventController extends GetxController {
                 (homeController.selectedFilter == 0))
             ? "recent"
             : (homeController.showIndexValue == 1 &&
-                    (homeController.selectedFilter == 2))
+                    (homeController.selectedFilter == 1))
                 ? "past_week"
                 : "older_than_1_month",
       },

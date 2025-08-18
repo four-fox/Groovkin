@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -118,7 +117,8 @@ class MusicChoiceScreen extends StatelessWidget {
                                 child: ListView.builder(
                                     itemCount: controller.tagListPost.length,
                                     shrinkWrap: true,
-                                    physics: const AlwaysScrollableScrollPhysics(),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
@@ -168,7 +168,8 @@ class MusicChoiceScreen extends StatelessWidget {
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   child: Column(
                                     children: [
                                       GestureDetector(
@@ -218,7 +219,8 @@ class MusicChoiceScreen extends StatelessWidget {
                                           visible: controller
                                               .tagList[index].showSubCat!.value,
                                           child: Padding(
-                                            padding: const EdgeInsets.only(top: 4),
+                                            padding:
+                                                const EdgeInsets.only(top: 4),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -239,8 +241,9 @@ class MusicChoiceScreen extends StatelessWidget {
                                                     return Column(
                                                       children: [
                                                         Container(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
                                                                   horizontal:
                                                                       8),
                                                           decoration:
@@ -471,7 +474,8 @@ class ActivityChoiceScreen extends StatelessWidget {
                                     itemCount:
                                         controller.activityListPost.length,
                                     shrinkWrap: true,
-                                    physics: const AlwaysScrollableScrollPhysics(),
+                                    physics:
+                                        const AlwaysScrollableScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (BuildContext context, index) {
                                       return Padding(
@@ -507,7 +511,8 @@ class ActivityChoiceScreen extends StatelessWidget {
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, index) {
                                 return Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   child: Column(
                                     children: [
                                       GestureDetector(
@@ -560,7 +565,8 @@ class ActivityChoiceScreen extends StatelessWidget {
                                               .showSubCat!
                                               .value,
                                           child: Padding(
-                                            padding: const EdgeInsets.only(top: 4),
+                                            padding:
+                                                const EdgeInsets.only(top: 4),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
@@ -581,8 +587,9 @@ class ActivityChoiceScreen extends StatelessWidget {
                                                     return Column(
                                                       children: [
                                                         Container(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
                                                                   horizontal:
                                                                       8),
                                                           decoration:
@@ -669,7 +676,7 @@ class ActivityChoiceScreen extends StatelessWidget {
               );
       }),
       bottomNavigationBar: SafeArea(
-        bottom:  true,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

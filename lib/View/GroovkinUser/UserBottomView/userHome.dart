@@ -65,7 +65,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     } else {
       _eventController = Get.put(EventController());
     }
-
     super.initState();
   }
 
@@ -84,6 +83,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               // color: Colors.amberAccent
+              border: Border.all(
+                color: theme.primaryColor,
+              ),
               color: DynamicColor.darkGrayClr,
               borderRadius: BorderRadius.circular(8)),
           child: Center(

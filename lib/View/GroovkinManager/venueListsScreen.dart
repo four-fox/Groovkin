@@ -119,7 +119,7 @@ class VenueListScreen extends StatelessWidget {
                                                   BorderRadius.circular(12),
                                               image: const DecorationImage(
                                                 image: AssetImage(
-                                                  "assets/grayClor.png",
+                                                "assets/grayClor.png",
                                                 ),
                                                 fit: BoxFit.fill,
                                               )),

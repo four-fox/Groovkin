@@ -40,6 +40,9 @@ class _CreateCompanyProfileScreenState
     super.initState();
     if (editVenue == true) {
       extractNumber(_controller.phoneNumController.text);
+    } else {
+      _controller.mediaClass.clear();
+      _controller.profilePictures.clear();
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.clearController();
@@ -120,7 +123,8 @@ class _CreateCompanyProfileScreenState
                                 horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: DynamicColor.grayClr.withValues(alpha:0.4),
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.4),
                             ),
                             child: Center(
                               child: Text(
@@ -157,7 +161,9 @@ class _CreateCompanyProfileScreenState
                         pictureAlert(
                           context,
                           galleryFtn: () {
-                            controller.pickFile();
+                            // controller.pickFile();
+                            controller.pickMultipleFromCamera(
+                                context, false, true);
                             Get.back();
                           },
                           cameraFtn: () async {
@@ -175,7 +181,7 @@ class _CreateCompanyProfileScreenState
                     child: DottedBorder(
                       borderType: BorderType.RRect,
                       radius: const Radius.circular(20),
-                      color: DynamicColor.whiteClr.withValues(alpha:0.8),
+                      color: DynamicColor.whiteClr.withValues(alpha: 0.8),
                       child: Container(
                         height: kToolbarHeight * 2.8,
                         decoration: BoxDecoration(
@@ -508,14 +514,7 @@ class _CreateCompanyProfileScreenState
                     controller: controller.venueNameController,
                     validationError: "venue name",
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextFields(
-                    labelText: "Street Address",
-                    controller: controller.streetAddressController,
-                    validationError: "street address",
-                  ),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -631,6 +630,8 @@ class _CreateCompanyProfileScreenState
                                   );
                                   controller.addressController.text =
                                       result.formattedAddress!;
+                                  controller.streetAddressController.text =
+                                      result.formattedAddress!;
                                   final data = await controller.getCityAndState(
                                     result.geometry.location.lat,
                                     result.geometry.location.lng,
@@ -662,6 +663,8 @@ class _CreateCompanyProfileScreenState
                                       result.result.geometry!.location.lat,
                                       result.result.geometry!.location.lng);
                                   controller.addressController.text =
+                                      result.result.formattedAddress!;
+                                  controller.streetAddressController.text =
                                       result.result.formattedAddress!;
                                   final data = await controller.getCityAndState(
                                     result.result.geometry!.location.lat,
@@ -731,25 +734,39 @@ class _CreateCompanyProfileScreenState
                         size: 20,
                         color: theme.primaryColor,
                       ),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: DynamicColor.grayClr),
                       ),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: DynamicColor.grayClr),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+
                   controller.lat != "null"
-                      ? ShowCustomMap(
-                          horizontalPadding: 0.0,
-                          lat: double.parse(controller.lat),
-                          lng: double.parse(controller.lng),
+                      ? Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ShowCustomMap(
+                              horizontalPadding: 0.0,
+                              lat: double.parse(controller.lat),
+                              lng: double.parse(controller.lng),
+                            ),
+                          ],
                         )
                       : const SizedBox.shrink(),
-
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFields(
+                    labelText: "Street Address",
+                    controller: controller.streetAddressController,
+                    validationError: "street address",
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -773,6 +790,7 @@ class _CreateCompanyProfileScreenState
                     labelText: "Zip Code",
                     controller: controller.zipController,
                     validationError: "zip code",
+                    keyBoardType: true,
                   ),
 
                   Row(

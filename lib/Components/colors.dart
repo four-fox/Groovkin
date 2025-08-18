@@ -29,7 +29,7 @@ class DynamicColor {
   static Color secondaryClr = const Color(0xffd39e2e);
   static Color dropDownClr = const Color(0xffbb7b17);
   static Color finishedTextClr = const Color(0xff770113);
-  static Color disabledColor = Colors.grey.withValues(alpha:0.6);
+  static Color disabledColor = Colors.grey.withValues(alpha: 0.6);
 }
 
 getformattedTime(TimeOfDay time) {
@@ -73,7 +73,7 @@ getTimeMethod(String dateTime) {
   DateTime b = DateTime.now();
   String? today;
   String? times;
-  DateTime a = DateTime.parse(dateTime);
+  DateTime a = DateTime.parse(dateTime).toLocal();
   var d = DateTime.utc(a.year, a.month, a.day, a.hour, a.minute, a.second);
   var date = DateTime.utc(b.year, b.month, b.day, b.hour, b.minute, b.second);
 

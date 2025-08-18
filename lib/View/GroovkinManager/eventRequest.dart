@@ -4,6 +4,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:intl/intl.dart';
 
@@ -18,6 +19,7 @@ class EventRequests extends StatefulWidget {
 
 class _EventRequestsState extends State<EventRequests> {
   late EventController _eventController;
+  late AuthController _authController;
 
   @override
   void initState() {
@@ -26,6 +28,11 @@ class _EventRequestsState extends State<EventRequests> {
       _eventController = Get.find<EventController>();
     } else {
       _eventController = Get.put(EventController());
+    }
+    if (Get.isRegistered<AuthController>()) {
+      _authController = Get.find<AuthController>();
+    } else {
+      _authController = Get.put(AuthController());
     }
   }
 
@@ -134,14 +141,49 @@ class _EventRequestsState extends State<EventRequests> {
                                   color: DynamicColor.avatarBgClr,
                                 ),
                                 ourGuestWidget(
-                                    isDelete: false,
-                                    context: context,
-                                    theme: theme,
-                                    bgClr: Colors.transparent,
-                                    horizontalPadding: 0,
-                                    iconShow: true,
-                                    verticalPadding: 0,
-                                    followPadding: 6),
+                                  isDelete: data.user!.deleteAt == null
+                                      ? false
+                                      : true,
+                                  horizontalPadding: 12,
+                                  networkImg: groupPlaceholder,
+                                  venueOwner: data.user?.name ?? "",
+                                  context: context,
+                                  theme: theme,
+                                  bgClr: Colors.transparent,
+                                  rowPadding: 0.0,
+                                  avatarPadding: 6,
+                                  rowVerticalPadding: 0.0,
+                                  followText: controller.eventDetail!.data!
+                                              .user!.following ==
+                                          null
+                                      ? "Follow"
+                                      : "Unfollow",
+                                  followBgClr: controller.eventDetail!.data!
+                                              .user!.following !=
+                                          null
+                                      ? theme.primaryColor
+                                      : DynamicColor.avatarBgClr,
+                                  textClr: controller.eventDetail!.data!.user!
+                                              .following ==
+                                          null
+                                      ? theme.primaryColor
+                                      : theme.scaffoldBackgroundColor,
+                                  followOnTap: () {
+                                    if (controller.eventDetail!.data!.user!
+                                            .following ==
+                                        null) {
+                                      _authController.followUser(
+                                          userData: controller
+                                              .eventDetail!.data!.user,
+                                          fromAllUser: false);
+                                    } else {
+                                      _authController.unfollow(
+                                          userData: controller
+                                              .eventDetail!.data!.user,
+                                          fromAllUser: false);
+                                    }
+                                  },
+                                ),
                               ],
                             ),
                           ),

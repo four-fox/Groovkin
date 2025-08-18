@@ -58,7 +58,6 @@ class MessageListWidget extends StatelessWidget {
                           onLongPress: isFromReceiver
                               ? () {
                                   // Only enable if message is from receiver
-
                                   customAlertt(
                                     context: context,
                                     alignment: Alignment.topLeft,

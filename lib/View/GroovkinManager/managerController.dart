@@ -182,8 +182,8 @@ class ManagerController extends GetxController {
 
   ///Upload Venue Photos
 
-  Future<void> pickMultipleFromCamera(
-      BuildContext context, bool? isVideo) async {
+  Future<void> pickMultipleFromCamera(BuildContext context, bool? isVideo,
+      [bool? isPickFromGallery = false]) async {
     try {
       List<XFile> tempFiles = [];
       // Ask user whether to capture an image or a video
@@ -197,7 +197,9 @@ class ManagerController extends GetxController {
               maxDuration: const Duration(seconds: 60),
             )
           : await _picker.pickImage(
-              source: ImageSource.camera,
+              source: isPickFromGallery == true
+                  ? ImageSource.gallery
+                  : ImageSource.camera,
               imageQuality: 50,
               maxHeight: 1920,
               maxWidth: 1080,
@@ -667,7 +669,7 @@ class ManagerController extends GetxController {
               (homeController.selectedFilter == 0))
           ? "recent"
           : (homeController.showIndexValue == 1 &&
-                  (homeController.selectedFilter == 2))
+                  (homeController.selectedFilter == 1))
               ? "past_week"
               : "older_than_1_month",
     });
@@ -750,6 +752,7 @@ class ManagerController extends GetxController {
       "receiver_id": receiverId,
       if (messageController.text.isNotEmpty) "msg": messageController.text,
       "source_id": eventId,
+      "type": "counter_message",
       if (multiPartImg.isNotEmpty) "media[]": multiPartImg
     });
     var response = await API().postApi(formData, "send-message");

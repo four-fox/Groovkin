@@ -138,6 +138,7 @@ class EventData {
   String? status;
   String? createdAt;
   String? updatedAt;
+  
   Venue? venue;
 
   List<ProfilePicture>? profilePicture;

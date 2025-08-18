@@ -55,7 +55,8 @@ class AddVenueDetailsScreen extends StatelessWidget {
             ? const SizedBox.shrink()
             : SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 17),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 1, horizontal: 17),
                   child: LayoutGrid(
                     columnSizes: Responsive.isDesktop(context)
                         ? [1.fr, 1.fr, 1.fr, 1.fr, 1.fr]
@@ -234,7 +235,6 @@ class AddVenueDetailsScreen extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class Amenities {
@@ -314,8 +314,8 @@ class VenuePermitDetailScreen extends StatelessWidget {
                       },
                       child: Container(
                           height: 40,
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: controller.licensesPermitList[index]
@@ -403,7 +403,7 @@ class _HouseEventCapabilitiesScreenState
       curve: Curves.linear,
     );
   }
-
+  
   @override
   void initState() {
     super.initState();

@@ -1093,7 +1093,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                 builder:
                                                     (BuildContext context) {
                                                   return AlertWidget(
-                                                    height: Get.height / 2.5,
+                                                    height: Get.height * .45,
                                                     container: SizedBox(
                                                       width: Get.width,
                                                       child: Padding(
@@ -1130,7 +1130,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                 height: 15,
                                                               ),
                                                               Text(
-                                                                "“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.” “Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”",
+                                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
                                                                 maxLines: 8,
                                                                 overflow:
                                                                     TextOverflow
@@ -1174,21 +1174,27 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .only(
-                                                                        left:
-                                                                            2.0),
-                                                                    child: Text(
-                                                                      'i have read and agree to the terms and\nconditions',
-                                                                      style:
-                                                                          poppinsRegularStyle(
-                                                                        fontSize:
-                                                                            13,
-                                                                        context:
-                                                                            context,
-                                                                        color: theme
-                                                                            .primaryColor,
+                                                                  Flexible(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              2.0),
+                                                                      child:
+                                                                          Text(
+                                                                        'i have read and agree to the terms and conditions',
+                                                                        style:
+                                                                            poppinsRegularStyle(
+                                                                          fontSize:
+                                                                              13,
+                                                                          context:
+                                                                              context,
+                                                                          color:
+                                                                              theme.primaryColor,
+                                                                        ),
+                                                                        maxLines:
+                                                                            2,
                                                                       ),
                                                                     ),
                                                                   )
