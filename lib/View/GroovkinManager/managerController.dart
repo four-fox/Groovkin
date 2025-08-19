@@ -98,13 +98,7 @@ class ManagerController extends GetxController {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
         type: FileType.custom,
-        allowedExtensions: [
-          "mp4",
-          "mov",
-          "png",
-          "jpg",
-          "jpeg",
-        ]);
+        allowedExtensions: ["png", "jpg", "jpeg", "pdf"]);
 
     if (result == null) {
       // User canceled the picker
@@ -159,6 +153,17 @@ class ManagerController extends GetxController {
           fileType: extension,
         ));
 
+        multiPartImg.add(form.MultipartFile.fromFileSync(
+          file.path!,
+          filename: 'Image.${file.path!.split('.').last}',
+          contentType: MediaType('image', file.path!.split('.').last),
+        ));
+      } else if (extension == "pdf") {
+        mediaClass.add(MediaClass(
+          filename: file.path,
+          fileType: extension,
+          id: "pdf"
+        ));
         multiPartImg.add(form.MultipartFile.fromFileSync(
           file.path!,
           filename: 'Image.${file.path!.split('.').last}',

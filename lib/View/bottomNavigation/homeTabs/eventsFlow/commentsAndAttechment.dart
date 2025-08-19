@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
+import 'package:groovkin/Components/mediaModel.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
@@ -13,6 +14,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:map_location_picker/map_location_picker.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../../../Components/Network/Url.dart';
 
 class CommentsAndAttachment extends StatefulWidget {
@@ -177,11 +179,11 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                 if (FocusScope.of(context).hasFocus) {
                                   FocusScope.of(context).unfocus();
                                 }
-                                if (Platform.isAndroid) {
-                                  managerController.pickFile();
-                                } else {
-                                  managerController.pickFileee();
-                                }
+                                // if (Platform.isAndroid) {
+                                //   managerController.pickFile();
+                                // } else {
+                                // }
+                                managerController.pickFileee();
                               },
                               child: Container(
                                 width: 120,
@@ -342,108 +344,85 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
   }
 }
 
-assetImage({eventController, controller, mediaItem, bool closedIcon = true}) {
-  return Stack(
-    alignment: Alignment.center,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: mediaItem!.thumbnail != null
-            ? Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: mediaItem.id == null
-                            ? FileImage(File(mediaItem.thumbnail.toString()))
-                            : NetworkImage(mediaItem.mediaPath.toString())
-                                as ImageProvider)),
-                child: closedIcon == false
-                    ? const SizedBox.shrink()
-                    : GestureDetector(
-                        onTap: () {
-                          if (mediaItem!.thumbnail == null) {
-                            print("tapping123");
-                          } else {
-                            if (mediaItem.id == null) {
-                              print(mediaItem);
-                            }
-                            // controller.mediaClass.remove(mediaItem);
-                          }
-                          // controller.mediaClass.remove(mediaItem);
-                        },
-                        child: const Align(
-                          alignment: Alignment.topRight,
-                          child: CircleAvatar(
-                              radius: 15, child: Icon(Icons.clear)),
-                        ),
-                      ),
-              )
-            : Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: mediaItem.id == null
-                            ? FileImage(File(mediaItem.filename.toString()))
-                            : NetworkImage(mediaItem.mediaPath.toString())
-                                as ImageProvider)),
-                child: GestureDetector(
-                  onTap: () async {
-                    if (mediaItem!.thumbnail == null) {
-                      if (mediaItem.id == null) {
-                        controller.mediaClass.remove(mediaItem);
-                        controller.update();
-                      } else {
-                        eventController.removeImageList.add(mediaItem.id);
-                        await eventController.deleteImage(
-                            id: eventController.eventDetail!.data!.id,
-                            eventImg: true);
-                        eventController.imageListtt.remove(mediaItem);
-                        eventController.update();
-                        controller.update();
-                      }
-                      print("tapping22");
-                    } else {
-                      print("tapping11");
-                    }
-                    // controller.mediaClass.remove(mediaItem);
-                  },
-                  child: closedIcon == false
-                      ? const SizedBox.shrink()
-                      : const Align(
-                          alignment: Alignment.topRight,
-                          child: CircleAvatar(
-                              radius: 15, child: Icon(Icons.clear)),
-                        ),
-                ),
-              ),
+assetImage(
+    {eventController,
+    controller,
+    MediaClass? mediaItem,
+    bool closedIcon = true}) {
+  if (mediaItem == null) return;
+  return Padding(
+    padding: const EdgeInsets.only(right: 10),
+    child: Container(
+      height: 200,
+      width: 200,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: mediaItem.fileType == "pdf"
+            ? null
+            : DecorationImage(
+                fit: BoxFit.fill,
+                image: FileImage(File(mediaItem.filename.toString()))),
       ),
-      mediaItem.thumbnail == null
-          ? const SizedBox.shrink()
-          : closedIcon == false
-              ? const SizedBox.shrink()
-              : GestureDetector(
+      child: GestureDetector(
+          onTap: () async {
+            if (mediaItem.id == null) {
+              controller.mediaClass.remove(mediaItem);
+              controller.update();
+            }
+            //   else {
+            //     eventController.removeImageList.add(mediaItem.id);
+            //     await eventController.deleteImage(
+            //         id: eventController.eventDetail!.data!.id,
+            //         eventImg: true);
+            //     eventController.imageListtt.remove(mediaItem);
+            //     eventController.update();
+            //     controller.update();
+            //   }
+            //   print("tapping22");
+            // } else {
+            //   print("tapping11");
+            // }
+            // controller.mediaClass.remove(mediaItem);
+          },
+          child: Stack(
+            children: [
+              if (mediaItem.fileType == "pdf")
+                GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.videoPlayerClass, arguments: {
-                      'url': mediaItem.filename,
-                      'type': "file" /*controller.mediaClass[index].fileType*/,
-                    });
+                    Get.to(() => Scaffold(
+                          backgroundColor: Colors.transparent,
+                          appBar: AppBar(title: const Text("PDF Viewer")),
+                          body: SfPdfViewer.file(
+                            File(mediaItem.filename.toString()),
+                          ),
+                        ));
                   },
-                  child: CircleAvatar(
-                    backgroundColor: DynamicColor.blackClr,
-                    radius: 15,
-                    child: Icon(
-                      Icons.play_arrow,
-                      color: DynamicColor.whiteClr,
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: DynamicColor.lightGrayClr.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.picture_as_pdf,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ),
-    ],
+              closedIcon == false
+                  ? const SizedBox.shrink()
+                  : const Align(
+                      alignment: Alignment.topRight,
+                      child: CircleAvatar(radius: 15, child: Icon(Icons.clear)),
+                    ),
+            ],
+          )),
+    ),
   );
 }
 
