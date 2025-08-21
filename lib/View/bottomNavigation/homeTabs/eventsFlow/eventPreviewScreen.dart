@@ -65,7 +65,8 @@ class EventPreview extends StatelessWidget {
                             controller: _controller,
                             mediaItem: _managerController.mediaClass.isNotEmpty
                                 ? _managerController.mediaClass[index]
-                                : _controller.imageListtt[index],
+                                : null,
+                            bannerImage: _controller.imageListtt[index],
                           );
                         }),
                   )
@@ -520,7 +521,7 @@ class EventPreview extends StatelessWidget {
             width: Get.width,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
             decoration: BoxDecoration(
-                color: DynamicColor.lightRedClr.withValues(alpha:0.7),
+                color: DynamicColor.lightRedClr.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(12)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -12,6 +12,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -74,50 +75,51 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
               : const SizedBox.shrink()
         ],
       ),
-      body: GetBuilder<ManagerController>(builder: (controller) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Form(
-            key: commentsForm,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Comments to Venue Manager',
-                        textAlign: TextAlign.center,
-                        style: poppinsMediumStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          context: context,
-                          color: theme.primaryColor,
+      body: GetBuilder<EventController>(builder: (eventController) {
+        return GetBuilder<ManagerController>(builder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Form(
+              key: commentsForm,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Comments to Venue Manager',
+                          textAlign: TextAlign.center,
+                          style: poppinsMediumStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: DynamicColor.darkGrayClr,
-                      borderRadius: BorderRadius.circular(10),
+                    const SizedBox(
+                      height: 5,
                     ),
-                    child: CustomTextFieldsHintText(
-                      maxLine: 5,
-                      validation: "comments",
-                      controller: _controller.commentsController,
-                      hintText: "write her..",
-                      borderClr: DynamicColor.grayClr.withValues(alpha: 0.6),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: DynamicColor.darkGrayClr,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: CustomTextFieldsHintText(
+                        maxLine: 5,
+                        validation: "comments",
+                        controller: eventController.commentsController,
+                        hintText: "write her..",
+                        borderClr: DynamicColor.grayClr.withValues(alpha: 0.6),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
                       width: Get.width,
                       decoration: BoxDecoration(
                         color: DynamicColor.darkGrayClr,
@@ -137,8 +139,9 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                               ),
                             ),
                           ),
-                          ((_controller.imageListtt.isNotEmpty) &&
-                                      (_controller.duplicateValue.value ==
+
+                          ((eventController.imageListtt.isNotEmpty) &&
+                                      (eventController.duplicateValue.value ==
                                           false)) ||
                                   controller.mediaClass.isNotEmpty
                               ? SizedBox(
@@ -147,19 +150,21 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                   child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       shrinkWrap: true,
-                                      itemCount:
-                                          ((controller.mediaClass.isNotEmpty))
-                                              ? controller.mediaClass.length
-                                              : _controller.imageListtt.length,
+                                      itemCount: ((controller
+                                              .mediaClass.isNotEmpty))
+                                          ? controller.mediaClass.length
+                                          : eventController.imageListtt.length,
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return assetImage(
-                                          eventController: _controller,
+                                          eventController: eventController,
                                           controller: controller,
-                                          mediaItem: controller
-                                                  .mediaClass.isNotEmpty
-                                              ? controller.mediaClass[index]
-                                              : _controller.imageListtt[index],
+                                          mediaItem:
+                                              controller.mediaClass.isNotEmpty
+                                                  ? controller.mediaClass[index]
+                                                  : null,
+                                          bannerImage: eventController
+                                              .imageListtt[index],
                                         );
                                       }),
                                 )
@@ -172,6 +177,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                     size: 35,
                                   ),
                                 ),
+
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: GestureDetector(
@@ -205,14 +211,16 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
-                      ))
-                ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
+          );
+        });
       }),
       bottomNavigationBar: SafeArea(
         bottom: true,
@@ -222,7 +230,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
             borderClr: Colors.transparent,
             onTap: () {
               if (commentsForm.currentState!.validate()) {
-                // if(managerController.mediaClass.isNotEmpty || ((_controller.imageListtt.isNotEmpty) && (_controller.duplicateValue.value == false))){
+                // if(managerController.mediaClass.isNotEmpty || ((eventController.imageListtt.isNotEmpty) && (eventController.duplicateValue.value == false))){
                 if (_controller.eventDetail != null &&
                     _controller.eventDetail!.data!.location != null &&
                     _controller.draftCondition.value != false) {
@@ -348,82 +356,142 @@ assetImage(
     {eventController,
     controller,
     MediaClass? mediaItem,
+    BannerImage? bannerImage,
     bool closedIcon = true}) {
-  if (mediaItem == null) return;
-  return Padding(
-    padding: const EdgeInsets.only(right: 10),
-    child: Container(
-      height: 200,
-      width: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        image: mediaItem.fileType == "pdf"
-            ? null
-            : DecorationImage(
-                fit: BoxFit.fill,
-                image: FileImage(File(mediaItem.filename.toString()))),
-      ),
-      child: GestureDetector(
-          onTap: () async {
-            if (mediaItem.id == null) {
-              controller.mediaClass.remove(mediaItem);
-              controller.update();
-            }
-            //   else {
-            //     eventController.removeImageList.add(mediaItem.id);
-            //     await eventController.deleteImage(
-            //         id: eventController.eventDetail!.data!.id,
-            //         eventImg: true);
-            //     eventController.imageListtt.remove(mediaItem);
-            //     eventController.update();
-            //     controller.update();
-            //   }
-            //   print("tapping22");
-            // } else {
-            //   print("tapping11");
-            // }
-            // controller.mediaClass.remove(mediaItem);
-          },
-          child: Stack(
-            children: [
-              if (mediaItem.fileType == "pdf")
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => Scaffold(
-                          backgroundColor: Colors.transparent,
-                          appBar: AppBar(title: const Text("PDF Viewer")),
-                          body: SfPdfViewer.file(
-                            File(mediaItem.filename.toString()),
-                          ),
-                        ));
-                  },
-                  child: Container(
-                    width: 200,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: DynamicColor.lightGrayClr.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.picture_as_pdf,
-                        color: Colors.red,
-                      ),
+  {
+    if (mediaItem != null) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Container(
+          height: 200,
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: mediaItem.fileType == "pdf"
+                ? null
+                : DecorationImage(
+                    fit: BoxFit.fill,
+                    image: FileImage(
+                      File(mediaItem.filename.toString()),
                     ),
                   ),
-                ),
-              closedIcon == false
-                  ? const SizedBox.shrink()
-                  : const Align(
-                      alignment: Alignment.topRight,
-                      child: CircleAvatar(radius: 15, child: Icon(Icons.clear)),
+          ),
+          child: GestureDetector(
+              onTap: () async {
+                if (mediaItem.id == null) {
+                  controller.mediaClass.remove(mediaItem);
+                  controller.update();
+                }
+              },
+              child: Stack(
+                children: [
+                  if (mediaItem.fileType == "pdf")
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => Scaffold(
+                              backgroundColor: Colors.transparent,
+                              appBar: AppBar(title: const Text("PDF Viewer")),
+                              body: SfPdfViewer.file(
+                                File(mediaItem.filename.toString()),
+                              ),
+                            ));
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color:
+                              DynamicColor.lightGrayClr.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.picture_as_pdf,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
                     ),
-            ],
-          )),
-    ),
-  );
+                  closedIcon == false
+                      ? const SizedBox.shrink()
+                      : const Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                              radius: 15, child: Icon(Icons.clear)),
+                        ),
+                ],
+              )),
+        ),
+      );
+    }
+    if (bannerImage != null) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Container(
+          height: 200,
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: bannerImage.mediaPath.toString().split(".").last == "pdf"
+                ? null
+                : DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                      bannerImage.mediaPath.toString(),
+                    ),
+                  ),
+          ),
+          child: GestureDetector(
+              onTap: () async {
+                eventController.removeImageList.add(bannerImage.id);
+                await eventController.deleteImage(
+                    id: eventController.eventDetail!.data!.id, eventImg: true);
+                eventController.imageListtt.remove(bannerImage);
+                eventController.update();
+                controller.update();
+              },
+              child: Stack(
+                children: [
+                  if (bannerImage.mediaPath.toString().split(".").last == "pdf")
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => Scaffold(
+                              backgroundColor: Colors.transparent,
+                              appBar: AppBar(title: const Text("PDF Viewer")),
+                              body: SfPdfViewer.network(
+                                bannerImage.mediaPath.toString(),
+                              ),
+                            ));
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color:
+                              DynamicColor.lightGrayClr.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.picture_as_pdf,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ),
+                  closedIcon == false
+                      ? const SizedBox.shrink()
+                      : const Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                              radius: 15, child: Icon(Icons.clear)),
+                        ),
+                ],
+              )),
+        ),
+      );
+    }
+  }
 }
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>> get list of venues

@@ -840,6 +840,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                     }),
                               ),
                             ),
+                            
                             GestureDetector(
                               onTap: () {
                                 controller.paymentSchedule!.value = "75";
@@ -942,12 +943,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     const SizedBox(
                       height: 20,
                     ),
+
                     SafeArea(
                       bottom: true,
                       child: CustomButton(
                         text: "Continue",
                         borderClr: Colors.transparent,
                         onTap: () {
+
                           if (eventForm.currentState!.validate()) {
                             if (_authController.imageBytes != null ||
                                 ((controller.duplicateValue.value == false) &&
@@ -957,11 +960,13 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                         null) &&
                                     (controller.eventDetail!.data!.bannerImage!
                                             .mediaPath !=
-                                        null))) {
+                                        null))) { 
+                                          
                               if (controller.paymentScheduleValue.value == 4) {
                                 controller.paymentSchedule!.value =
                                     controller.otherRateController.text;
                               }
+
                               // bool? callApi = createEvent(
                               //   startDate: controller.datePost ?? "",
                               //   endDate: controller.endDatePost ?? "",
@@ -978,14 +983,24 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                   controller.eventEndDateController.text.trim();
 
                               if (start.isNotEmpty && end.isNotEmpty) {
-                                if (start == end) {
+                                final dateFormat = DateFormat("dd-MM-yyyy");
+                                DateTime now = DateTime.now();
+                                DateTime today =
+                                    DateTime(now.year, now.month, now.day);
+                                DateTime startDate = dateFormat.parse(start);
+                                DateTime endDate = dateFormat.parse(end);
+                                if (startDate.isBefore(today) ||
+                                    endDate.isBefore(today)) {
                                   bottomToast(
-                                      text: "Please select a different date");
+                                      text: "Past dates are not allowed");
+                                } else if (startDate
+                                    .isAtSameMomentAs(endDate)) {
+                                  bottomToast(
+                                      text:
+                                          "Start and End date cannot be the same");
                                 } else {
                                   controller.checkingTime();
                                 }
-                              } else {
-                                bottomToast(text: "Please select a date");
                               }
                             }
                             print(controller.datePost);
@@ -995,7 +1010,6 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           } else {
                             bottomToast(text: "Please choose event banner");
                           }
-
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(

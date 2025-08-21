@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, must_be_immutable
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -16,6 +18,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class UpcomingScreen extends StatefulWidget {
   const UpcomingScreen({super.key});
@@ -25,6 +28,7 @@ class UpcomingScreen extends StatefulWidget {
 }
 
 class _UpcomingScreenState extends State<UpcomingScreen> {
+
   int reportedEventPreview = Get.arguments['reportedEventView'] ?? 1;
 
   int flowBtn = Get.arguments['notInterestedBtn'];
@@ -50,6 +54,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     }
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +97,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
         ),
       ),
       body: GetBuilder<EventController>(initState: (v) {
-        _controller.eventDetails(eventId: eventId);
+      _controller.eventDetails(eventId: eventId);
       }, builder: (controller) {
         return controller.eventDetailsLoader.value == false
             ? const SizedBox.shrink()
@@ -116,6 +121,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           ),
                           child: Column(
                             children: [
+
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -172,6 +178,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                   ),
                                 ],
                               ),
+                    
                               GestureDetector(
                                 onTap: _controller.eventDetail!.data!.user!
                                             .isDelete !=
@@ -256,14 +263,16 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                   ),
                                 ),
                               ),
+               
                               const SizedBox(
                                 height: 15,
                               ),
+                           
                               ((API().sp.read("role") == "eventManager") &&
                                       (appBarTitle == "On Going") &&
                                       controller.eventDetail!.data!
                                               .isEventComplete!.value ==
-                                          0)
+                                          0) 
                                   ? const SizedBox.shrink()
                                   : SizedBox(
                                       child: Column(
@@ -604,21 +613,72 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             border: Border.all(
                                               color: theme.primaryColor,
                                             ),
-                                            image: DecorationImage(
-                                              image: controller
-                                                          .venueImageList[index]
-                                                          .toString()
-                                                          .split(".")
-                                                          .last !=
-                                                      "mp4"
-                                                  ? NetworkImage(controller
-                                                      .venueImageList[index]
-                                                      .toString())
-                                                  : NetworkImage(controller
-                                                      .venueImageList[index]
-                                                      .toString()),
-                                              fit: BoxFit.fill,
-                                            )),
+                                            image:
+                                                controller.venueImageList[index]
+                                                            .toString()
+                                                            .split(".")
+                                                            .last ==
+                                                        "pdf"
+                                                    ? null
+                                                    : DecorationImage(
+                                                        image: controller
+                                                                    .venueImageList[
+                                                                        index]
+                                                                    .toString()
+                                                                    .split(".")
+                                                                    .last !=
+                                                                "mp4"
+                                                            ? NetworkImage(
+                                                                controller
+                                                                    .venueImageList[
+                                                                        index]
+                                                                    .toString())
+                                                            : NetworkImage(controller
+                                                                .venueImageList[
+                                                                    index]
+                                                                .toString()),
+                                                        fit: BoxFit.fill,
+                                                      )),
+                                        child: controller.venueImageList[index]
+                                                    .toString()
+                                                    .split(".")
+                                                    .last ==
+                                                "pdf"
+                                            ? GestureDetector(
+                                                onTap: () {
+                                                  Get.to(() => Scaffold(
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        appBar: AppBar(
+                                                            title: const Text(
+                                                                "PDF Viewer")),
+                                                        body:
+                                                            SfPdfViewer.network(
+                                                          controller
+                                                              .venueImageList[
+                                                                  index]
+                                                              .toString(),
+                                                        ),
+                                                      ));
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: DynamicColor
+                                                        .lightGrayClr
+                                                        .withValues(alpha: 0.2),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                  child: Center(
+                                                    child: Icon(
+                                                      Icons.picture_as_pdf,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : null,
                                       ),
                                     );
                                   }),

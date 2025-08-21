@@ -16,7 +16,6 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
-import 'package:groovkin/payment/in_app_purchased.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
