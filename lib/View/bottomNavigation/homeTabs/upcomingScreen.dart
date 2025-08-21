@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, must_be_immutable
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -28,7 +27,6 @@ class UpcomingScreen extends StatefulWidget {
 }
 
 class _UpcomingScreenState extends State<UpcomingScreen> {
-
   int reportedEventPreview = Get.arguments['reportedEventView'] ?? 1;
 
   int flowBtn = Get.arguments['notInterestedBtn'];
@@ -54,7 +52,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
     }
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +94,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
         ),
       ),
       body: GetBuilder<EventController>(initState: (v) {
-      _controller.eventDetails(eventId: eventId);
+        _controller.eventDetails(eventId: eventId);
       }, builder: (controller) {
         return controller.eventDetailsLoader.value == false
             ? const SizedBox.shrink()
@@ -121,7 +118,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           ),
                           child: Column(
                             children: [
-
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -178,7 +174,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                   ),
                                 ],
                               ),
-                    
                               GestureDetector(
                                 onTap: _controller.eventDetail!.data!.user!
                                             .isDelete !=
@@ -263,16 +258,14 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                   ),
                                 ),
                               ),
-               
                               const SizedBox(
                                 height: 15,
                               ),
-                           
                               ((API().sp.read("role") == "eventManager") &&
                                       (appBarTitle == "On Going") &&
                                       controller.eventDetail!.data!
                                               .isEventComplete!.value ==
-                                          0) 
+                                          0)
                                   ? const SizedBox.shrink()
                                   : SizedBox(
                                       child: Column(
@@ -516,7 +509,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               ? Padding(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 8.0),
+                                                    horizontal: 8.0,
+                                                  ),
                                                   child: CustomButton(
                                                     heights: 33,
                                                     widths: Get.width / 1.15,
@@ -541,7 +535,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                           ),
                                         ],
                                       ),
-                                    )
+                                    ),
                             ],
                           ),
                         ),
@@ -586,10 +580,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       //     text: "Counter",
                       //   ),
                       // ):SizedBox.shrink(),
+
                       ///todo dalta counter button data
                       SizedBox(
                         height: flowBtn == 3 ? 0 : 10,
                       ),
+
                       controller.venueImageList.isEmpty
                           ? const SizedBox.shrink()
                           : SizedBox(
@@ -683,6 +679,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     );
                                   }),
                             ),
+
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -698,9 +695,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           ),
                         ),
                       ),
+
                       const SizedBox(
                         height: 10,
                       ),
+
                       eventDateTime(
                         text:
                             "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
@@ -708,9 +707,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         context: context,
                         iconClr: DynamicColor.yellowClr,
                       ),
+
                       const SizedBox(
                         height: 10,
                       ),
+
                       eventDateTime(
                         theme: theme,
                         context: context,
@@ -719,9 +720,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             controller.eventDetail!.data!.startDateTime!),
                         iconClr: DynamicColor.yellowClr,
                       ),
+
                       const SizedBox(
                         height: 10,
                       ),
+
                       controller.eventDetail!.data!.location == null
                           ? const SizedBox.shrink()
                           : eventDateTime(
@@ -731,6 +734,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                               text: "${controller.eventDetail!.data!.location}",
                               iconClr: DynamicColor.yellowClr,
                             ),
+
                       controller.eventDetail!.data!.comment == null
                           ? const SizedBox.shrink()
                           : customWidget(context, theme,

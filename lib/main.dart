@@ -103,7 +103,7 @@ void main() async {
   } else {
     StoreConfig(apiKey: googleApiKey, store: Store.playStore);
   }
-  
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
