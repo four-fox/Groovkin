@@ -169,7 +169,7 @@ class NotificationService {
   }
 
   // ! Todo when app is background and terminated
-
+  
   Future<void> setUpInteractMessage(BuildContext context) async {
     // ! when app is terminated
     RemoteMessage? message =
@@ -182,10 +182,10 @@ class NotificationService {
         EasyLoading.show(status: 'Loading...');
         Future.delayed(const Duration(seconds: 5), () {
           if (context.mounted) {
-            handleMessage(context, message); 
-            EasyLoading.dismiss(); 
+            handleMessage(context, message);
+            EasyLoading.dismiss();
           }
-        }); 
+        });
       }
     }
 

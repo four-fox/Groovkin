@@ -138,9 +138,7 @@ class EventData {
   String? status;
   String? createdAt;
   String? updatedAt;
-  
   Venue? venue;
-
   List<ProfilePicture>? profilePicture;
   BannerImage? bannerImage;
   DatumUser? user;
@@ -921,7 +919,6 @@ class DatumUser {
         "created_at": createdAt,
         "updated_at": updatedAt,
         "profile": profile?.toJson(),
-        
       };
 }
 
