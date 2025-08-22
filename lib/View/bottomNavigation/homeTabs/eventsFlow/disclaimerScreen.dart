@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/alertmessage.dart';
@@ -141,8 +140,10 @@ class DisclaimerScreen extends StatelessWidget {
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 7, vertical: 4),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 7,
+                                                        vertical: 4),
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -209,7 +210,7 @@ class DisclaimerScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        bottom:  true,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: Row(

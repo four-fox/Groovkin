@@ -1,17 +1,19 @@
 // ignore_for_file: unnecessary_new, prefer_final_fields
 
 import 'dart:io';
+import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
-import 'package:groovkin/Components/showCustomMap.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/profile/editProfileScreen.dart';
+import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
@@ -587,6 +589,128 @@ class _CreateCompanyProfileScreenState
                       print('On Saved: $number');
                     },
                   ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  DateTimeField(
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.6))),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.6))),
+                      // border: InputBorder.none,
+                      label: Text(
+                        'Business Hours',
+                        style: poppinsRegularStyle(
+                            context: context,
+                            fontSize: 14,
+                            color: DynamicColor.grayClr),
+                      ),
+                      labelStyle: TextStyle(
+                        fontSize: 14,
+                        color: DynamicColor.whiteClr,
+                      ),
+                      suffixIcon: const Icon(
+                        Icons.access_time_rounded,
+                        color: Colors.grey,
+                      ),
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: DynamicColor.whiteClr,
+                      ),
+                    ),
+                    controller: controller.businessHourController,
+                    format: controller.format,
+                    style: poppinsRegularStyle(
+                        context: context,
+                        fontSize: 14,
+                        color: DynamicColor.grayClr),
+                    resetIcon: null,
+                    onShowPicker: (context, currentValue) async {
+                      final time = await showTimePicker(
+                        initialEntryMode: TimePickerEntryMode.dial,
+                        builder: (context, child) {
+                          return Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: ColorScheme.light(
+                                  primary: DynamicColor.secondaryClr,
+                                  // <-- SEE HERE
+                                  onPrimary: DynamicColor.whiteClr,
+                                  // <-- SEE HERE
+                                  onSurface: Colors.black, // <-- SEE HERE
+                                ),
+                              ),
+                              child: child!);
+                        },
+                        context: context,
+                        initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                      );
+                      if (time != null) {
+                        DateTime selectedDateTime = DateTime(
+                          DateTime.now().year,
+                          DateTime.now().month,
+                          DateTime.now().day,
+                          time.hour,
+                          time.minute,
+                        );
+                        controller.businessHourController.text =
+                            DateFormat.jm().format(selectedDateTime);
+                      }
+                      return;
+                    },
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  CustomTextFields(
+                    labelText: "Instagram (Optional)",
+                    prefixWidget: Icon(
+                      FontAwesomeIcons.instagram,
+                      color: DynamicColor.yellowClr.withValues(alpha: 0.5),
+                    ),
+                    controller: controller.instagramController1,
+                    validationError: "Instagram",
+                    isEmail: false,
+                    isOptional: true,
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  CustomTextFields(
+                    labelText: "Facebook (Optional)",
+                    prefixWidget: Icon(
+                      FontAwesomeIcons.facebookF,
+                      color: DynamicColor.yellowClr.withValues(alpha: 0.5),
+                    ),
+                    controller: controller.instagramController1,
+                    validationError: "Facebook",
+                    isEmail: false,
+                    isOptional: true,
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextFields(
+                    labelText: "Website (Optional)",
+                    controller: controller.websiteController1,
+                    validationError: "Website",
+                    isEmail: false,
+                    isOptional: true,
+                  ),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -745,20 +869,21 @@ class _CreateCompanyProfileScreenState
                     ),
                   ),
 
-                  controller.lat != "null"
-                      ? Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            ShowCustomMap(
-                              horizontalPadding: 0.0,
-                              lat: double.parse(controller.lat),
-                              lng: double.parse(controller.lng),
-                            ),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
+                  // controller.lat != "null"
+                  //     ? Column(
+                  //         children: [
+                  //           const SizedBox(
+                  //             height: 20,
+                  //           ),
+                  //           ShowCustomMap(
+                  //             horizontalPadding: 0.0,
+                  //             lat: double.parse(controller.lat),
+                  //             lng: double.parse(controller.lng),
+                  //           ),
+                  //         ],
+                  //       )
+                  //     : const SizedBox.shrink(),
+
                   const SizedBox(
                     height: 20,
                   ),

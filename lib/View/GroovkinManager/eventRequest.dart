@@ -140,50 +140,51 @@ class _EventRequestsState extends State<EventRequests> {
                                   thickness: 2,
                                   color: DynamicColor.avatarBgClr,
                                 ),
-                                ourGuestWidget(
-                                  isDelete: data.user!.deleteAt == null
-                                      ? false
-                                      : true,
-                                  horizontalPadding: 12,
-                                  networkImg: groupPlaceholder,
-                                  venueOwner: data.user?.name ?? "",
-                                  context: context,
-                                  theme: theme,
-                                  bgClr: Colors.transparent,
-                                  rowPadding: 0.0,
-                                  avatarPadding: 6,
-                                  rowVerticalPadding: 0.0,
-                                  followText: controller.eventDetail!.data!
-                                              .user!.following ==
-                                          null
-                                      ? "Follow"
-                                      : "Unfollow",
-                                  followBgClr: controller.eventDetail!.data!
-                                              .user!.following !=
-                                          null
-                                      ? theme.primaryColor
-                                      : DynamicColor.avatarBgClr,
-                                  textClr: controller.eventDetail!.data!.user!
-                                              .following ==
-                                          null
-                                      ? theme.primaryColor
-                                      : theme.scaffoldBackgroundColor,
-                                  followOnTap: () {
-                                    if (controller.eventDetail!.data!.user!
-                                            .following ==
-                                        null) {
-                                      _authController.followUser(
-                                          userData: controller
-                                              .eventDetail!.data!.user,
-                                          fromAllUser: false);
-                                    } else {
-                                      _authController.unfollow(
-                                          userData: controller
-                                              .eventDetail!.data!.user,
-                                          fromAllUser: false);
-                                    }
-                                  },
-                                ),
+                                // ourGuestWidget(
+                                //   isDelete: data.user!.deleteAt == null
+                                //       ? false
+                                //       : true,
+                                //   horizontalPadding: 12,
+                                //   networkImg: groupPlaceholder,
+                                //   venueOwner: data.user?.name ?? "",
+                                //   context: context,
+                                //   theme: theme,
+                                //   bgClr: Colors.transparent,
+                                //   rowPadding: 0.0,
+                                //   avatarPadding: 6,
+                                //   rowVerticalPadding: 0.0,
+                                //   followText: controller.eventDetail!.data!
+                                //               .user!.following ==
+                                //           null
+                                //       ? "Follow"
+                                //       : "Unfollow",
+                                //   followBgClr: controller.eventDetail!.data!
+                                //               .user!.following !=
+                                //           null
+                                //       ? theme.primaryColor
+                                //       : DynamicColor.avatarBgClr,
+                                //   textClr: controller.eventDetail!.data!.user!
+                                //               .following ==
+                                //           null
+                                //       ? theme.primaryColor
+                                //       : theme.scaffoldBackgroundColor,
+                                //   followOnTap: () {
+                                //     if (controller.eventDetail!.data!.user!
+                                //             .following ==
+                                //         null) {
+                                //       _authController.followUser(
+                                //           userData: controller
+                                //               .eventDetail!.data!.user,
+                                //           fromAllUser: false);
+                                //     } else {
+                                //       _authController.unfollow(
+                                //           userData: controller
+                                //               .eventDetail!.data!.user,
+                                //           fromAllUser: false);
+                                //     }
+                                //   },
+                                // ),
+                                
                               ],
                             ),
                           ),

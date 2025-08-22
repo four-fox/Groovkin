@@ -109,6 +109,7 @@ abstract class Routes {
   static const viewAllRecommendedScreen = _Path.viewAllRecommendedScreen;
   static const viewAllNearByScreen = _Path.viewAllNearByScreen;
   static const viewAllTopRatingScreen = _Path.viewAllTopRatingScreen;
+  static const settingNotificationScreen = _Path.settingNotificationScreen;
 
   ///chat screen
   static const chatNewUserScreen = _Path.chatNewUserScreen;
@@ -193,6 +194,7 @@ abstract class _Path {
   static const viewCreatedGroup = "/ViewCreatedGroup";
   // static const inviteFriendsInGroups = "/InviteFriendsInGroups";
   static const theSquadScreen = "/TheSquadScreen";
+  static const settingNotificationScreen = "/settingNotificationScreen";
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manger
   static const createCompanyProfileScreen = "/CreateCompanyProfileScreen";

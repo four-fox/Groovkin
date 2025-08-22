@@ -343,6 +343,20 @@ class _SettingScreenState extends State<SettingScreen> {
                         //           Get.toNamed(Routes.userMyGroovkinScreen);
                         //         })
                         //     : const SizedBox.shrink(),
+                        API().sp.read("role") == "eventManager"
+                            ? customWidget(
+                                context: context,
+                                showIconWIdget: true,
+                                iconWidget: Icon(
+                                  Icons.notifications,
+                                  color: Color(0xffebc464),
+                                ),
+                                text: "Notifications",
+                                onTap: () {
+                                  Get.toNamed(Routes.settingNotificationScreen);
+                                })
+                            : SizedBox(),
+
                         API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,
@@ -524,6 +538,8 @@ class _SettingScreenState extends State<SettingScreen> {
       bool toggleCondition = false,
       switchCondition,
       ValueChanged<bool>? onChanged,
+      bool? showIconWIdget,
+      Widget? iconWidget,
       bool iconShow = false}) {
     return GestureDetector(
       onTap: onTap,
@@ -535,19 +551,21 @@ class _SettingScreenState extends State<SettingScreen> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                iconText == false
-                    ? Image(
-                        image: AssetImage(img ?? "assets/profileIcon.png"),
-                      )
-                    : Text(
-                        "#",
-                        style: poppinsMediumStyle(
-                          fontSize: 18,
-                          context: context,
-                          color: DynamicColor.lightYellowClr
-                              .withValues(alpha: 0.8),
-                        ),
-                      ),
+                (showIconWIdget == true && iconWidget != null)
+                    ? iconWidget
+                    : iconText == false
+                        ? Image(
+                            image: AssetImage(img ?? "assets/profileIcon.png"),
+                          )
+                        : Text(
+                            "#",
+                            style: poppinsMediumStyle(
+                              fontSize: 18,
+                              context: context,
+                              color: DynamicColor.lightYellowClr
+                                  .withValues(alpha: 0.8),
+                            ),
+                          ),
                 Padding(
                   padding: const EdgeInsets.only(left: 14.0, top: 4),
                   child: Text(

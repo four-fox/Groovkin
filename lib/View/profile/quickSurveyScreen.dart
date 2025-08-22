@@ -312,7 +312,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
                       if (/*_controller.lifeStyleItemsList.isNotEmpty ||*/ _controller
                           .itemsList.isNotEmpty) {
                         if (_eventController.eventDetail != null) {
-                          await _eventController.getMusicTag(
+                          await _eventController.getHashtagCollectionApi(
                               type: "music_choice");
                         }
                         Get.toNamed(Routes.musicChoiceScreen);

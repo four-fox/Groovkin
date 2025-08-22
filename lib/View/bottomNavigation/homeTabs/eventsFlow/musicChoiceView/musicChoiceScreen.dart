@@ -34,10 +34,10 @@ class MusicChoiceScreen extends StatelessWidget {
         if (_controller.eventDetail != null) {
           _controller.musicChoiceBinding();
         } else {
-          _controller.getMusicTag(type: "music_choice");
+          _controller.getHashtagCollectionApi(type: "music_choice");
         }
       }, builder: (controller) {
-        return controller.getMusicTagLoader.value == false
+        return controller.getMusicHashTagLoader.value == false
             ? const SizedBox.shrink()
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -110,7 +110,7 @@ class MusicChoiceScreen extends StatelessWidget {
                       // ),
                       controller.tagListPost.isEmpty
                           ? const SizedBox.shrink()
-                          : SizedBox(
+                          : SizedBox( 
                               height: kToolbarHeight,
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -689,7 +689,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                   _controller.duplicateValue.value = false;
                   for (var ele
                       in _controller.eventDetail!.data!.profilePicture!) {
-                  _controller.imageListtt.add(ele);
+                    _controller.imageListtt.add(ele);
                   }
                   _controller.update();
                 } else {

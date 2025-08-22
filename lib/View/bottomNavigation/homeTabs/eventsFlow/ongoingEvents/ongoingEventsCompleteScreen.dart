@@ -79,7 +79,7 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
             CustomTextFieldsHintText(
               maxLine: 6,
               controller: _controller.ratingDescriptionController,
-              borderClr: DynamicColor.grayClr.withValues(alpha:0.5),
+              borderClr: DynamicColor.grayClr.withValues(alpha: 0.5),
               hintText: "write here...",
             ),
           ],
@@ -91,7 +91,11 @@ class CompleteOnGoingEventsScreen extends StatelessWidget {
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () {
-              _controller.completeEvent(eventDetails: eventDetails);
+              if (_controller.ratingDescriptionController.text.isEmpty) {
+                bottomToast(text: "Rating description cannot be empty");
+              } else {
+                _controller.completeEvent(eventDetails: eventDetails);
+              }
               // Get.toNamed(Routes.disclaimerScreen);
             },
             text: "Send",

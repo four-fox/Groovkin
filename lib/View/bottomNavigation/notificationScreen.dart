@@ -24,7 +24,6 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-
   late AuthController controller;
   late HomeController _controller;
   late ManagerController _managercontroller;
@@ -53,8 +52,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     DateTime dateTime = DateTime.parse(dateString);
     return DateFormat.jm().format(dateTime); // "1:00 PM"
   }
-  
-  @override 
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(

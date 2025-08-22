@@ -840,7 +840,6 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                     }),
                               ),
                             ),
-                            
                             GestureDetector(
                               onTap: () {
                                 controller.paymentSchedule!.value = "75";
@@ -950,7 +949,6 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                         text: "Continue",
                         borderClr: Colors.transparent,
                         onTap: () {
-
                           if (eventForm.currentState!.validate()) {
                             if (_authController.imageBytes != null ||
                                 ((controller.duplicateValue.value == false) &&
@@ -960,8 +958,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                         null) &&
                                     (controller.eventDetail!.data!.bannerImage!
                                             .mediaPath !=
-                                        null))) { 
-                                          
+                                        null))) {
+
                               if (controller.paymentScheduleValue.value == 4) {
                                 controller.paymentSchedule!.value =
                                     controller.otherRateController.text;
@@ -975,7 +973,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               // );
                               // if (callApi != null) {
                               // if (!callApi) {
-
+            
                               String start =
                                   controller.eventDateController.text.trim();
 
@@ -998,17 +996,21 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                   bottomToast(
                                       text:
                                           "Start and End date cannot be the same");
+                                } else if (endDate.isBefore(startDate)) {
+                                  bottomToast(
+                                      text:
+                                          "End date must be after the start date");
                                 } else {
                                   controller.checkingTime();
                                 }
                               }
+                            } else {
+                              bottomToast(text: "Please choose event banner");
                             }
                             print(controller.datePost);
                             print(controller.endDatePost);
                             print(controller.postTime);
                             print(controller.postEndTime);
-                          } else {
-                            bottomToast(text: "Please choose event banner");
                           }
                           // Navigator.push(
                           //   context,

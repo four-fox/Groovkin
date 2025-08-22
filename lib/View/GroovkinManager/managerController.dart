@@ -159,11 +159,8 @@ class ManagerController extends GetxController {
           contentType: MediaType('image', file.path!.split('.').last),
         ));
       } else if (extension == "pdf") {
-        mediaClass.add(MediaClass(
-          filename: file.path,
-          fileType: extension,
-          id: "pdf"
-        ));
+        mediaClass.add(
+            MediaClass(filename: file.path, fileType: extension, id: "pdf"));
         multiPartImg.add(form.MultipartFile.fromFileSync(
           file.path!,
           filename: 'Image.${file.path!.split('.').last}',
@@ -321,6 +318,10 @@ class ManagerController extends GetxController {
   }
 
   final venueNameController = TextEditingController();
+  final businessHourController = TextEditingController();
+  final instagramController1 = TextEditingController();
+  final websiteController1 = TextEditingController();
+  final facebookController = TextEditingController();
   final streetAddressController = TextEditingController();
   final stateController = TextEditingController();
   final cityController = TextEditingController();

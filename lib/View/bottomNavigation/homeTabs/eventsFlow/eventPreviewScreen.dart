@@ -66,7 +66,9 @@ class EventPreview extends StatelessWidget {
                             mediaItem: _managerController.mediaClass.isNotEmpty
                                 ? _managerController.mediaClass[index]
                                 : null,
-                            bannerImage: _controller.imageListtt[index],
+                            bannerImage: _controller.imageListtt.isNotEmpty
+                                ? _controller.imageListtt[index]
+                                : null,
                           );
                         }),
                   )

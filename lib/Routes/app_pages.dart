@@ -33,6 +33,7 @@ import 'package:groovkin/View/authView/sendEmailForOtpScreen.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/ongoingEvents/ongoingEventsCompleteScreen.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/AllUsersScreen.dart';
+import 'package:groovkin/View/bottomNavigation/settingView/setting_notification_screen.dart';
 import 'package:groovkin/unuses/venueInfoScreen.dart';
 import 'package:groovkin/View/counters/counterScreen.dart';
 import 'package:groovkin/View/paymentMethod/transectionHistoryScreen.dart';
@@ -541,6 +542,11 @@ class AppPages {
     GetPage(
       name: _Path.viewAllTopRatingScreen,
       page: () => const ViewAllTopRatingScreen(),
+    ),
+
+    GetPage(
+      name: _Path.settingNotificationScreen,
+      page: () => const SettingNotificationScreen(),
     ),
 
     ///chat screens

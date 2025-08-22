@@ -164,7 +164,10 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                                   ? controller.mediaClass[index]
                                                   : null,
                                           bannerImage: eventController
-                                              .imageListtt[index],
+                                                  .imageListtt.isNotEmpty
+                                              ? eventController
+                                                  .imageListtt[index]
+                                              : null,
                                         );
                                       }),
                                 )

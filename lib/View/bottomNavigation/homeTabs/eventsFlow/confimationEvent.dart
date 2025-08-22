@@ -219,7 +219,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 theme: theme,
                 context: context,
                 title: "No. hours",
-                value: CalculateHoursFromDate().toString()),
+                value: CalculateHoursFromDate().toStringAsFixed(2)),
             const SizedBox(
               height: 10,
             ),
@@ -228,7 +228,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                 context: context,
                 title: "Subtotal",
                 value:
-                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate())}"),
+                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate()).toStringAsFixed(2)}"),
             const SizedBox(
               height: 10,
             ),

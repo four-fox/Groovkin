@@ -1380,13 +1380,13 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       borderClr: Colors.transparent,
                       onTap: () {
                         if (appBarTitle != "Drafts") {
-                          _controller.duplicateValue.value = true;
-                          _controller.draftValue.value = false;
+                          _controller.duplicateValue.value = true;   
+                          _controller.draftValue.value = false;   
                         } else {
-                          _controller.draftValue.value = false;
-                          _controller.duplicateValue.value = false;
+                          _controller.draftValue.value = false;   
+                          _controller.duplicateValue.value = false;   
                         }
-                        _controller.assignValueForUpdate();
+                        _controller.assignValueForUpdate();   
                       },
                       text: appBarTitle == "Drafts"
                           ? "Submit Draft Event"

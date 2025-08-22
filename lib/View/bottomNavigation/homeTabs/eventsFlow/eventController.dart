@@ -160,6 +160,7 @@ class EventController extends GetxController {
   MusicTagModel? addMusicTag;
   List<TagObject> tagList = [];
   List<TagObject> activityList = [];
+
   getMusicTag({type}) async {
     getMusicTagLoader(false);
     var response = await API().getApi(url: "event-tags?type=$type");
@@ -177,6 +178,98 @@ class EventController extends GetxController {
       getMusicTagLoader(true);
       update();
     }
+  }
+
+  RxBool getMusicHashTagLoader = true.obs;
+  getHashtagCollectionApi({type}) async {
+    try {
+      getMusicHashTagLoader(false);
+      var response = await API().getApi(url: "my-tags-collection?type=$type");
+      if (response.statusCode == 200) {
+        tagListPost.clear();
+        tagList.clear();
+        tagList.addAll(MusicTagModel.fromJson(response.data).data!);
+      }
+    } catch (e) {
+      getMusicHashTagLoader(true);
+    }
+    getMusicHashTagLoader(true);
+    update();
+  }
+
+  RxBool getMyTagCollectionLoader = true.obs;
+
+  MusicTagModel? tagCollectionList;
+  getEventTagCollection({type}) async {
+    try {
+      getMyTagCollectionLoader(false);
+      final response = await API().getApi(url: "event-tags?type=${type}");
+      if (response.statusCode == 200) {
+        tagCollectionList = MusicTagModel.fromJson(response.data);
+      }
+    } catch (e) {
+      getMyTagCollectionLoader(true);
+    }
+    getMyTagCollectionLoader(true);
+    update();
+  }
+
+  MusicTagModel? tagCollectionDetail;
+  RxBool getTagCollectionDetails = true.obs;
+  getEventTagDetail({id}) async {
+    try {
+      getTagCollectionDetails(false);
+      final response = await API().getApi(url: "my-tags-collection-by-id/$id");
+      if (response.statusCode == 200) {
+        tagCollectionDetail = MusicTagModel.fromJson(response.data);
+      }
+    } catch (e) {
+      getTagCollectionDetails(true);
+    }
+    getTagCollectionDetails(true);
+    update();
+  }
+
+  String? id;
+  RxBool addTagCollectionLoading = true.obs;
+  addTagCollection({type}) async {
+    try {
+      addTagCollectionLoading(false);
+
+      final formData = form.FormData();
+
+      formData.fields.add(MapEntry("event_tag_item_ids[]", id!.toString()));
+
+      final response =
+          await API().postApi(formData, "add-tag-collection?type=${type}");
+      if (response.statusCode == 200) {
+        bottomToast(text: "Tag Added!");
+      }
+    } catch (e) {
+      addTagCollectionLoading(true);
+    }
+    addTagCollectionLoading(true);
+    update();
+  }
+
+  RxBool removeTagCollectionLoading = true.obs;
+
+  removeTagCollection() async {
+    try {
+      removeTagCollectionLoading(false);
+
+      final formData = form.FormData();
+
+      formData.fields.add(MapEntry("event_tag_item_ids[]", id!));
+      final response = await API().postApi(formData, "remove-tag-collection");
+      if (response.statusCode == 200) {
+        bottomToast(text: "Tag Removed!");
+      }
+    } catch (e) {
+      removeTagCollectionLoading(true);
+    }
+    removeTagCollectionLoading(true);
+    update();
   }
 
   ///>>>>>>>>>>>>>>>>>>>> tag list fill check box function

@@ -169,7 +169,7 @@ class NotificationService {
   }
 
   // ! Todo when app is background and terminated
-  
+
   Future<void> setUpInteractMessage(BuildContext context) async {
     // ! when app is terminated
     RemoteMessage? message =
@@ -197,7 +197,7 @@ class NotificationService {
         }
         handleMessage(context, event);
       }
-    }); 
+    });
   }
 
   // ! Todo ios notification message
@@ -215,30 +215,31 @@ class NotificationService {
 
   void handleMessage(BuildContext context, RemoteMessage message) {
     if (kDebugMode) {
-      print(message.data); 
-    }
-    var data;
-    if (message.data["type"] == "send_message") {
-      data = jsonDecode(message.data["data"]); 
-    } else {
-      data = message.data; 
+      print(message.data);
     }
 
-    EventController controller = Get.find(); 
-    ManagerController managerController = Get.find(); 
-    HomeController homeController = Get.find(); 
+    var data;
     if (message.data["type"] == "send_message") {
-      controller.eventDetails(eventId: data["source_id"]); 
+      data = jsonDecode(message.data["data"]);
+    } else {
+      data = message.data;
+    }
+
+    EventController controller = Get.find();
+    ManagerController managerController = Get.find();
+    HomeController homeController = Get.find();
+    if (message.data["type"] == "send_message") {
+      controller.eventDetails(eventId: data["source_id"]);
       managerController.getAllMessages(
-          userId: data["sender_id"], sourceId: data["source_id"]); 
+          userId: data["sender_id"], sourceId: data["source_id"]);
       Get.toNamed(Routes.counterScreen, arguments: {
         "userId": data["sender_id"],
         "eventId": data["source_id"],
         "acceptVal": true,
-      }); 
-    } else if (data["type"] == "single_message") { 
-      User? user = User.fromJson(jsonDecode(data['data'])['user']); 
-      Get.toNamed(Routes.chatInnerScreen, arguments: {"userData": user});  
+      });
+    } else if (data["type"] == "single_message") {
+      User? user = User.fromJson(jsonDecode(data['data'])['user']);
+      Get.toNamed(Routes.chatInnerScreen, arguments: {"userData": user});
     } else if (data["type"] == "event_created") {
       Get.toNamed(Routes.pendingEventDetails, arguments: {
         "notInterestedBtn": 1,

@@ -46,7 +46,8 @@ class PostEvents extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
-                                  color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                                  color: DynamicColor.grayClr
+                                      .withValues(alpha: 0.6)),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,8 +314,8 @@ class PostEvents extends StatelessWidget {
                                 children: [
                                   CircleAvatar(
                                     radius: 30,
-                                    backgroundColor:
-                                        DynamicColor.greenClr.withValues(alpha:0.3),
+                                    backgroundColor: DynamicColor.greenClr
+                                        .withValues(alpha: 0.3),
                                     child: CircleAvatar(
                                       radius: 15,
                                       backgroundColor: DynamicColor.greenClr,

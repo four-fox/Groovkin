@@ -155,7 +155,10 @@ class AuthController extends GetxController {
       "youtube_link": youtubeController.text,
       "about": aboutController.text,
     });
+  
     log(formData.toString());
+
+
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
     if (response.statusCode == 200) {
