@@ -534,6 +534,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                           color: theme.scaffoldBackgroundColor),
                     ),
                   ),
+
                   GestureDetector(
                       onTap: () {
                         Get.back();
@@ -541,6 +542,8 @@ class ListOfVenuesScreen extends StatelessWidget {
                       child: const ImageIcon(
                         AssetImage("assets/backArrow.png"),
                       )),
+
+
                 ],
               ),
             ),
@@ -753,7 +756,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
