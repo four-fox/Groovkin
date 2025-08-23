@@ -230,9 +230,10 @@ class _editProfileScreenState extends State<editProfileScreen> {
                         iconShow: false,
                         controller: controller.displayNameController,
                         labelStyling: poppinsRegularStyle(
-                            context: context,
-                            fontSize: 14,
-                            color: DynamicColor.grayClr),
+                          context: context,
+                          fontSize: 14,
+                          color: DynamicColor.grayClr,
+                        ),
                         // readOnly: userName.value,
                       ),
                     ),
@@ -250,9 +251,10 @@ class _editProfileScreenState extends State<editProfileScreen> {
                               ignoredValidation: true,
                               controller: controller.companyNameController,
                               labelStyling: poppinsRegularStyle(
-                                  context: context,
-                                  fontSize: 14,
-                                  color: DynamicColor.grayClr),
+                                context: context,
+                                fontSize: 14,
+                                color: DynamicColor.grayClr,
+                              ),
                               // readOnly: userName.value,
                             ),
                           )
@@ -512,9 +514,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     //     },
                     //     // readOnly: dob.value,
                     //   ),
+
                     const SizedBox(
                       height: 15,
                     ),
+
                     // Padding(
                     //   padding: EdgeInsets.symmetric(horizontal: 12.0),
                     //   child: InternationalPhoneNumberInput(
@@ -619,6 +623,9 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           // readOnly: email.value,
                         ),
                       ),
+                    const SizedBox(
+                      height: 15,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: CustomTextFields(

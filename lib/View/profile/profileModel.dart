@@ -244,10 +244,11 @@ class SocialLink {
 
   factory SocialLink.fromJson(Map<String, dynamic> json) {
     return SocialLink(
-        id: json["id"],
-        userId: json["user_id"],
-        youtube: json["youtube"],
-        instagram: json["instagram"],
-        twitter: json["twitter"]);
+      id: json["id"],
+      userId: json["user_id"],
+      youtube: json["youtube"],
+      instagram: json["instagram"],
+      twitter: json["twitter"],
+    );
   }
 }
