@@ -740,13 +740,13 @@ class EventController extends GetxController {
 
     /// todo activity choice
     print(formData);
-    // var response = await API().postApi(formData, "update-event");
-    // if (response.statusCode == 200) {
-    //   BotToast.showText(text: response.data['message']);
-    //   clearFields();
-    //   Get.offAllNamed(Routes.bottomNavigationView,
-    //       arguments: {"indexValue": 0});
-    // }
+    var response = await API().postApi(formData, "update-event");
+    if (response.statusCode == 200) {
+      BotToast.showText(text: response.data['message']);
+      clearFields();
+      Get.offAllNamed(Routes.bottomNavigationView,
+          arguments: {"indexValue": 0});
+    }
   }
 
   ///delete image

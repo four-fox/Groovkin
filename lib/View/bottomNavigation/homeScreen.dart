@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Get.toNamed(Routes.viewAllEventListScreen,
                                     arguments: {"searchFieldShow": true})!
                                 .then((value) =>
-                                    controller.showIndexValue!.value == 2
+                                    controller.showIndexValue!.value == 1
                                         ? _eventController
                                             .getAllSendingRequest()
                                         : _controller.completedEvent());

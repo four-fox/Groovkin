@@ -686,7 +686,7 @@ class ActivityChoiceScreen extends StatelessWidget {
                 if (_controller.eventDetail != null) {
                   _controller.imageListtt.clear();
                   _controller.removeImageList.clear();
-                  _controller.duplicateValue.value = false;
+                  // _controller.duplicateValue.value = false;
                   for (var ele
                       in _controller.eventDetail!.data!.profilePicture!) {
                     _controller.imageListtt.add(ele);
