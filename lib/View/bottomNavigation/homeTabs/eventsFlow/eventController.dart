@@ -405,7 +405,8 @@ class EventController extends GetxController {
               return AlertWidget(
                 height: kToolbarHeight * 4.4,
                 container: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
