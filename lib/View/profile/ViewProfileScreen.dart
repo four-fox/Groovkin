@@ -393,6 +393,7 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                     Expanded(
                       child: TabBarView(
                         children: [
+                          
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 12.0),

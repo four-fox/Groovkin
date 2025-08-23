@@ -887,12 +887,13 @@ class EventController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get details of event details
-
+  
   UserEventDetailsModel? eventDetail;
   RxBool eventDetailsLoader = true.obs;
   List<String> venueImageList = [];
   RxBool duplicateValue = false.obs;
   RxBool draftValue = false.obs;
+
   eventDetails({eventId}) async {
     eventDetailsLoader(false);
     duplicateValue(false);
@@ -904,12 +905,11 @@ class EventController extends GetxController {
       for (var element in eventDetail!.data!.profilePicture!) {
         venueImageList.add(element.mediaPath!);
       }
-
       eventDetailsLoader(true);
       update();
     }
-  }
-
+  } 
+  
   List imageListtt = [];
   assignValueForUpdate() async {
     eventTitleController.text = eventDetail!.data!.eventTitle.toString();

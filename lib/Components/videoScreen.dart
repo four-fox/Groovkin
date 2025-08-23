@@ -1,6 +1,3 @@
-
-
-
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +20,8 @@ class _VideoPlayerClassState extends State<VideoPlayerClass> {
             ? BetterPlayerDataSourceType.file
             : BetterPlayerDataSourceType.network,
         url);
-    betterPlayerController = BetterPlayerController(const BetterPlayerConfiguration(
+    betterPlayerController =
+        BetterPlayerController(const BetterPlayerConfiguration(
       autoDetectFullscreenDeviceOrientation: true,
     ));
 

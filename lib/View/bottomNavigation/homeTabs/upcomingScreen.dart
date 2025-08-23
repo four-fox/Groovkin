@@ -1115,7 +1115,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                "Live Location",
+                "Location",
                 style: poppinsMediumStyle(
                     fontWeight: FontWeight.w700,
                     color: DynamicColor.lightRedClr,

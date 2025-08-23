@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_final_fields
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -10,7 +9,6 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
-
 
 import '../bottomNavigation/homeController.dart';
 
@@ -114,7 +112,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, index) {
                               return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
                                   child: GestureDetector(
                                     onTap: () {
                                       if (_controller
@@ -260,7 +259,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
               );
       }),
       bottomNavigationBar: SafeArea(
-        bottom: true ,
+        bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(

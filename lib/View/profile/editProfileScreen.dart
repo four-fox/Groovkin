@@ -276,9 +276,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                         // readOnly: email.value,
                       ),
                     ),
+
                     const SizedBox(
                       height: 15,
                     ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: TextField(
