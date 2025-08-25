@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/authView/theme_controller.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
@@ -22,9 +25,11 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  RxBool switchValue = false.obs;
+  // RxBool switchValue = false.obs;
   RxBool switchProfileValue = false.obs;
   late AuthController _authController;
+
+  late ThemeController _themeController = Get.find<ThemeController>();
 
   @override
   void initState() {
@@ -205,17 +210,24 @@ class _SettingScreenState extends State<SettingScreen> {
                         //         }
                         //       }),
                         // ),
-                        // Obx(
-                        //   () => customWidget(
-                        //       context: context,
-                        //       img: "assets/themeIcon.png",
-                        //       text: "Light & Dark Mood",
-                        //       toggleCondition: true,
-                        //       switchCondition: switchValue.value,
-                        //       onChanged: (v) {
-                        //         switchValue.value = v;
-                        //       }),
-                        // ),
+                        if (API().sp.read("currentRole") != "eventManager")
+                          Obx(
+                            () => customWidget(
+                                context: context,
+                                img: "assets/themeIcon.png",
+                                text: "Light & Dark Mood",
+                                toggleCondition: true,
+                                switchCondition:
+                                    _themeController.themeMode.value ==
+                                            ThemeMode.dark
+                                        ? true
+                                        : false,
+                                onChanged: (v) async {
+                                  await Future.delayed(
+                                      Duration(milliseconds: 100));
+                                  _themeController.toggleTheme();
+                                }),
+                          ),
                         if (API().sp.read("currentRole") != "User")
                           customWidget(
                               context: context,
@@ -409,17 +421,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                 iconShow: true,
                                 onTap: () {
                                   Get.toNamed(Routes.transactionScreen);
-                                  // Get.toNamed(Routes.paymentMethodScreen,
-                                  // arguments: {
-                                  //   "paymentMethod": 2
-                                  // }
-                                  // );
                                 }),
+
                         SizedBox(
                           height: API().sp.read("role") == "eventOrganizer"
                               ? 30
                               : 90,
                         ),
+
                         GestureDetector(
                           onTap: () {
                             customAlertt(

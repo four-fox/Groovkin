@@ -1,0 +1,2 @@
+/Users/imac/Documents/GitHub/Groovkin/android/app/.cxx/Debug/5t2x4b3y/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/imac/Documents/GitHub/Groovkin/android/app/.cxx/Debug/5t2x4b3y/armeabi-v7a/CMakeFiles/rebuild_cache.dir

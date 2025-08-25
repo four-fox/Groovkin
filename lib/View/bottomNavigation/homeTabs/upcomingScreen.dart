@@ -1238,7 +1238,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             textClr:
                                 controller.eventDetail!.data!.user!.following ==
                                         null
-                                    ? theme.primaryColor
+                                    ? theme.cardColor
                                     : theme.scaffoldBackgroundColor,
                             followText:
                                 controller.eventDetail!.data!.user!.following ==

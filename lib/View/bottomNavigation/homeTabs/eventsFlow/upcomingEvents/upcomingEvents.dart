@@ -47,7 +47,6 @@ class UpcomingEvents extends StatelessWidget {
               _ongoingMethod(context, theme, controller),
             if (sp.read("role") == "eventManager")
               _upcomingWidget(context, theme, controller),
-              
             const SizedBox(
               height: 10,
             ),
@@ -201,7 +200,7 @@ class UpcomingEvents extends StatelessWidget {
                   style: poppinsMediumStyle(
                     fontSize: 14,
                     context: context,
-                    color: theme.primaryColor,
+                    color: theme.cardColor,
                   ),
                 ),
                 GestureDetector(
@@ -219,7 +218,7 @@ class UpcomingEvents extends StatelessWidget {
                         ? Icons.keyboard_arrow_down
                         : Icons.keyboard_arrow_up_outlined,
                     size: 35,
-                    color: theme.primaryColor,
+                    color: theme.cardColor,
                   ),
                 ),
               ],
@@ -317,7 +316,7 @@ class UpcomingEvents extends StatelessWidget {
                   style: poppinsMediumStyle(
                     fontSize: 14,
                     context: context,
-                    color: theme.primaryColor,
+                    color: theme.cardColor,
                   ),
                 ),
                 GestureDetector(
@@ -335,7 +334,7 @@ class UpcomingEvents extends StatelessWidget {
                         ? Icons.keyboard_arrow_down
                         : Icons.keyboard_arrow_up_outlined,
                     size: 35,
-                    color: theme.primaryColor,
+                    color: theme.cardColor,
                   ),
                 ),
               ],

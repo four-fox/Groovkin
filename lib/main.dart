@@ -12,6 +12,7 @@ import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/authView/theme_controller.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
@@ -80,23 +81,6 @@ checkUserSubscriptionIsActive() async {
   homeController.update();
 }
 
-// logInWithRevenueCat() async {
-//   try {
-//     final loginResult =
-//         await Purchases.logIn(API().sp.read("userId").toString());
-//     // Optionally check if anonymous user was merged
-//     if (loginResult.created) {
-//       print("New user created in RevenueCat");
-//     } else {
-//       print("Existing user logged in");
-//     }
-//   } on PlatformException catch (e) {
-//     BotToast.showText(
-//       text: e.message ?? "Unknown error",
-//     );
-//   }
-// }
-
 void main() async {
   if (Platform.isIOS || Platform.isMacOS) {
     StoreConfig(apiKey: appleApiKey, store: Store.appStore);
@@ -114,6 +98,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   await GetStorage.init();
+  Get.put(ThemeController());
   runApp(const MyApp());
 }
 
@@ -127,6 +112,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   NotificationService notificationService = NotificationService();
   late AuthController authController;
+  ThemeController themeController = Get.find<ThemeController>();
 
   Future<void> fetchSubscription() async {
     await configureSDK();
@@ -137,6 +123,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
+    themeController.setTheme(API().sp.read("apptheme") == ThemeMode.light.name
+        ? ThemeMode.light
+        : ThemeMode.dark);
 
     if (Get.isRegistered<AuthController>()) {
       authController = Get.find<AuthController>();
@@ -155,13 +145,6 @@ class _MyAppState extends State<MyApp> {
     notificationService.firebaseInit(context);
 
     // notificationService.getDeviceToken();
-
-    // Todo Firebase Notification End
-    // Todo Start the socket server
-
-    // SocketClass.singleton.connectSocket();
-
-    // initStateNotification();
   }
 
   @override
@@ -172,52 +155,63 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Groovkin',
-      theme: ThemeData(
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: DynamicColor.yellowClr,
-          selectionColor: DynamicColor.yellowClr,
-          selectionHandleColor: DynamicColor.yellowClr,
+    return Obx(() {
+      return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Groovkin',
+        theme: ThemeData(
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: DynamicColor.yellowClr,
+            selectionColor: DynamicColor.yellowClr,
+            selectionHandleColor: DynamicColor.yellowClr,
+          ),
+          brightness: Brightness.light,
+          primaryColor: const Color(0xff040305),
+          cardColor: Colors.white,
+
+          // primaryColor: Colors.grey,
+
+          scaffoldBackgroundColor: Colors.white,
+          textTheme: const TextTheme(
+            labelLarge:
+                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+          ),
         ),
-        brightness: Brightness.light,
-        primaryColor: const Color(0xff040305),
-        // backgroundColor: Color(0xff040305),
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: const TextTheme(
-          labelLarge:
-              TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+        darkTheme: ThemeData(
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: DynamicColor.yellowClr,
+            selectionColor: DynamicColor.yellowClr,
+            selectionHandleColor: DynamicColor.yellowClr,
+          ),
+          brightness: Brightness.dark,
+          primaryColor: const Color(0xffFFFFFF),
+          cardColor: Colors.white,
+          scaffoldBackgroundColor: Colors.black,
+          textTheme: const TextTheme(
+            labelLarge:
+                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+          ),
         ),
-      ),
-      darkTheme: ThemeData(
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: DynamicColor.yellowClr,
-          selectionColor: DynamicColor.yellowClr,
-          selectionHandleColor: DynamicColor.yellowClr,
-        ),
-        brightness: Brightness.dark,
-        primaryColor: const Color(0xffFFFFFF),
-        // backgroundColor: Color(0xffFFFFFF),
-        scaffoldBackgroundColor: Colors.black,
-        textTheme: const TextTheme(
-          labelLarge:
-              TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
-        ),
-      ),
-      navigatorObservers: [BotToastNavigatorObserver()],
-      builder: (context, child) {
-        child = ScrollConfiguration(
-          behavior: MyBehavior(),
-          child: EasyLoading.init(builder: BotToastInit())(context, child),
-        );
-        // child = SafeArea(top: false, child: child);
-        return child;
-      },
-      themeMode: ThemeMode.dark,
-      initialRoute: AppPages.initial,
-      getPages: AppPages.routes,
-    );
+        navigatorObservers: [BotToastNavigatorObserver()],
+        builder: (context, child) {
+          child = ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: EasyLoading.init(builder: BotToastInit())(context, child),
+          );
+          // child = SafeArea(top: false, child: child);
+          return child;
+        },
+        // themeMode: ThemeMode.light,
+
+        // themeMode: API().sp.read("apptheme") == ThemeMode.light.name
+        //     ? ThemeMode.light
+        //     : ThemeMode.dark,
+        themeMode: themeController.themeMode.value,
+
+        initialRoute: AppPages.initial,
+        getPages: AppPages.routes,
+      );
+    });
   }
 }
 

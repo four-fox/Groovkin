@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: poppinsMediumStyle(
                               fontSize: 14,
                               context: context,
-                              color: theme.primaryColor,
+                              color: theme.cardColor,
                             ),
                           ),
                         ),

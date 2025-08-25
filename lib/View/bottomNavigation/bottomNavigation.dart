@@ -58,7 +58,6 @@ class BottomNavigationView extends StatelessWidget {
               onTap: () {
                 SystemNavigator.pop();
               },
-              
             );
           }
         },

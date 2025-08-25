@@ -119,7 +119,7 @@ eventsTitles({text}) {
   return Container(
     width: Get.width,
     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-    color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+    color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
     child: Text(
       text ?? "Contact Information",
       style: poppinsRegularStyle(fontSize: 16, color: DynamicColor.lightRedClr),
@@ -162,7 +162,7 @@ aboutEventCreator(
               style: poppinsMediumStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
-                color: DynamicColor.lightGrayClr.withValues(alpha:0.5),
+                color: DynamicColor.lightGrayClr.withValues(alpha: 0.5),
               ),
             ),
           ),
@@ -359,7 +359,7 @@ ourGuestWidget(
                       style: poppinsRegularStyle(
                         fontSize: 14,
                         context: context,
-                        color: theme.primaryColor,
+                        color: theme.cardColor,
                       ),
                     ),
                   ],
@@ -390,7 +390,7 @@ ourGuestWidget(
                                 style: poppinsRegularStyle(
                                   fontSize: 14,
                                   context: context,
-                                  color: textClr ?? theme.primaryColor,
+                                  color: textClr ?? theme.cardColor,
                                 ),
                               ),
                             ),
@@ -533,7 +533,7 @@ eventDateWidget({theme, context, Color? bgClr, Color? textClr, date, day}) {
     width: 35,
     decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: bgClr ?? DynamicColor.avatarBgClr.withValues(alpha:0.8),
+        color: bgClr ?? DynamicColor.avatarBgClr.withValues(alpha: 0.8),
         border: Border.all(
           color: theme.primaryColor,
         )),
@@ -591,7 +591,7 @@ myEventCardWidget(
           image: const AssetImage('assets/bluredImg.png'),
           fit: BoxFit.fill,
           colorFilter: ColorFilter.mode(
-            Colors.white.withValues(alpha:0.4),
+            Colors.white.withValues(alpha: 0.4),
             BlendMode.modulate,
           )),
     ),
@@ -724,7 +724,7 @@ venueService(
         CircleAvatar(
             radius: radius ?? 15,
             backgroundColor:
-                bgColor ?? DynamicColor.avatarBgClr.withValues(alpha:0.8),
+                bgColor ?? DynamicColor.avatarBgClr.withValues(alpha: 0.8),
             child: icon == false
                 ? ImageIcon(
                     AssetImage(image ?? "assets/djing.png"),

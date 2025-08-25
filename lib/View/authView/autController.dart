@@ -52,6 +52,7 @@ class AuthController extends GetxController {
   ///intro functionality
   final _index = 0.obs;
   RxInt indexValue = 0.obs;
+  RxBool themeSwitchValue = false.obs;
 
   List<intro> introduction = [
     intro(
@@ -113,7 +114,7 @@ class AuthController extends GetxController {
   /// user register
   sigUp(context, {String? signUpPlatform, String? platformId}) async {
     NotificationService notificationService = NotificationService();
-    String token = await notificationService.getDeviceToken();
+    String? token = await notificationService.getDeviceToken();
     List imageList = [];
 
     if (imageBytes != null) {
@@ -148,16 +149,15 @@ class AuthController extends GetxController {
       "signup_platform": signUpPlatform,
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token": token,
+      "device_token": token ?? "tok-kjsdbcidbc",
       "zip_code": zipController.text,
       "instagram_link": instagramController.text,
       "twitter_link": twitterXController.text,
       "youtube_link": youtubeController.text,
       "about": aboutController.text,
     });
-  
-    log(formData.toString());
 
+    log(formData.toString());
 
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
@@ -1308,7 +1308,7 @@ class AuthController extends GetxController {
     try {
       var formData = form.FormData.fromMap({
         "type": type,
-      "source_id": sourceId,
+        "source_id": sourceId,
         if (message != null) "reason": message,
       });
       final response = await API().postApi(formData, "report");

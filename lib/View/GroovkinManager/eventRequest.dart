@@ -57,13 +57,6 @@ class _EventRequestsState extends State<EventRequests> {
 
                       return GestureDetector(
                         onTap: () {
-                          // Get.toNamed(Routes.pendingEventDetails,
-                          //     arguments: {
-                          //       "notInterestedBtn": 2,
-                          //       "title": "About Event"
-                          //     }
-                          // );
-
                           Get.toNamed(Routes.upcomingScreen, arguments: {
                             "notInterestedBtn": 2,
                             "appBarTitle": "About Event",
@@ -90,7 +83,7 @@ class _EventRequestsState extends State<EventRequests> {
                                     style: poppinsMediumStyle(
                                       fontSize: 16,
                                       context: context,
-                                      color: theme.primaryColor,
+                                      color: theme.cardColor,
                                     ),
                                   ),
                                 ),
@@ -184,7 +177,6 @@ class _EventRequestsState extends State<EventRequests> {
                                 //     }
                                 //   },
                                 // ),
-                                
                               ],
                             ),
                           ),
