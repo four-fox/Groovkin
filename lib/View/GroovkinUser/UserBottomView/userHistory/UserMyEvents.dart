@@ -422,7 +422,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                                     .data!.data![index];
                                             return userCustomEvent(
                                                 isDelete: singleEventData
-                                                            .user?.deleteAt ==
+                                                            .user?.isDelete ==
                                                         null
                                                     ? false
                                                     : true,
@@ -561,7 +561,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                                     .data!.data![index];
                                             return userCustomEvent(
                                                 isDelete: singleEventData
-                                                            .user?.deleteAt ==
+                                                            .user?.isDelete ==
                                                         null
                                                     ? false
                                                     : true,
@@ -704,7 +704,7 @@ class _UpcomingEventState extends State<UpcomingEvent> {
                             EventData singleEventData = controller
                                 .recommendedEventData!.data!.data![index];
                             return userCustomEvent(
-                                isDelete: singleEventData.user?.deleteAt == null
+                                isDelete: singleEventData.user?.isDelete == null
                                     ? false
                                     : true,
                                 dayy: DateFormat.MMM()

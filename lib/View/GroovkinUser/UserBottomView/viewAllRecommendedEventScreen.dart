@@ -96,7 +96,7 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
                                   .recommendedEventData!.data!.data![index];
                               return userCustomEvent(
                                         isDelete:
-                                      singleEventData.user?.deleteAt == null
+                                      singleEventData.user?.isDelete == null
                                           ? false
                                           : true,
                                   dayy: DateFormat.MMM()

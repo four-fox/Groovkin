@@ -557,77 +557,105 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     //   ),
                     // ),
                     if (controller.zipController.text.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: CustomTextFields(
-                          labelText: "Zip Code",
-                          iconShow: false,
-                          readOnly: false,
-                          controller: controller.zipController,
-                          labelStyling: poppinsRegularStyle(
-                              context: context,
-                              fontSize: 14,
-                              color: DynamicColor.grayClr),
-                          // readOnly: email.value,
-                        ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: CustomTextFields(
+                              labelText: "Zip Code",
+                              iconShow: false,
+                              readOnly: false,
+                              controller: controller.zipController,
+                              labelStyling: poppinsRegularStyle(
+                                  context: context,
+                                  fontSize: 14,
+                                  color: DynamicColor.grayClr),
+                              // readOnly: email.value,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
                       ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+
                     if (controller.instagramController.text.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: CustomTextFields(
-                          labelText: "Instagram",
-                          iconShow: false,
-                          readOnly: false,
-                          controller: controller.instagramController,
-                          labelStyling: poppinsRegularStyle(
-                              context: context,
-                              fontSize: 14,
-                              color: DynamicColor.grayClr),
-                          // readOnly: email.value,
-                        ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: CustomTextFields(
+                              labelText: "Instagram",
+                              iconShow: false,
+                              readOnly: false,
+                              controller: controller.instagramController,
+                              labelStyling: poppinsRegularStyle(
+                                  context: context,
+                                  fontSize: 14,
+                                  color: DynamicColor.grayClr),
+                              // readOnly: email.value,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
                       ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+
                     if (controller.twitterXController.text.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: CustomTextFields(
-                          labelText: "Twitter X",
-                          iconShow: false,
-                          readOnly: false,
-                          controller: controller.twitterXController,
-                          labelStyling: poppinsRegularStyle(
-                              context: context,
-                              fontSize: 14,
-                              color: DynamicColor.grayClr),
-                          // readOnly: email.value,
-                        ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: CustomTextFields(
+                              labelText: "Twitter X",
+                              iconShow: false,
+                              readOnly: false,
+                              controller: controller.twitterXController,
+                              labelStyling: poppinsRegularStyle(
+                                  context: context,
+                                  fontSize: 14,
+                                  color: DynamicColor.grayClr),
+                              // readOnly: email.value,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                        ],
                       ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+
                     if (controller.youtubeController.text.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: CustomTextFields(
-                          labelText: "Youtube",
-                          iconShow: false,
-                          readOnly: false,
-                          controller: controller.youtubeController,
-                          labelStyling: poppinsRegularStyle(
-                              context: context,
-                              fontSize: 14,
-                              color: DynamicColor.grayClr),
-                          // readOnly: email.value,
-                        ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: CustomTextFields(
+                              labelText: "Youtube",
+                              iconShow: false,
+                              readOnly: false,
+                              controller: controller.youtubeController,
+                              labelStyling: poppinsRegularStyle(
+                                  context: context,
+                                  fontSize: 14,
+                                  color: DynamicColor.grayClr),
+                              // readOnly: email.value,
+                            ),
+                          ),
+
+
+                          const SizedBox(
+                            height: 15,
+                          ),
+
+
+                        ],
                       ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: CustomTextFields(

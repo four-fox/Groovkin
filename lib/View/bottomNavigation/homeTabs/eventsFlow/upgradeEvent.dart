@@ -959,7 +959,6 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                     (controller.eventDetail!.data!.bannerImage!
                                             .mediaPath !=
                                         null))) {
-
                               if (controller.paymentScheduleValue.value == 4) {
                                 controller.paymentSchedule!.value =
                                     controller.otherRateController.text;
@@ -973,7 +972,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               // );
                               // if (callApi != null) {
                               // if (!callApi) {
-            
+
                               String start =
                                   controller.eventDateController.text.trim();
 

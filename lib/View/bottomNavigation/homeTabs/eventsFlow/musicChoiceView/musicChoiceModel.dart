@@ -92,6 +92,7 @@ class CategoryItem {
   String? createdAt;
   String? updatedAt;
   dynamic userEventTagItems;
+  int? status;
   RxBool? selected = false.obs;
 
   CategoryItem({
@@ -102,6 +103,7 @@ class CategoryItem {
     this.type,
     this.createdAt,
     this.updatedAt,
+    this.status,
     this.userEventTagItems,
   });
 
@@ -113,6 +115,7 @@ class CategoryItem {
         type: json["type"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        status: json["status"] ?? 0,
         userEventTagItems: json["user_event_tag_items"],
       );
 

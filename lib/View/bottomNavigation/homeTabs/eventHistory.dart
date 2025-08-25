@@ -65,7 +65,7 @@ class PostEvents extends StatelessWidget {
                                     ),
                                     Row(
                                       children: [
-                                        if (singleEvent.user!.deleteAt != null)
+                                        if (singleEvent.user!.isDelete != null)
                                           Utils.accountDelete(context),
                                         const SizedBox(
                                           width: 10,
@@ -173,7 +173,7 @@ class PostEvents extends StatelessWidget {
                                       context: context,
                                       color: theme.primaryColor,
                                     ),
-                                    onTap: singleEvent.user!.deleteAt == null
+                                    onTap: singleEvent.user!.isDelete == null
                                         ? () {
                                             Get.toNamed(Routes.upcomingScreen,
                                                     arguments: {

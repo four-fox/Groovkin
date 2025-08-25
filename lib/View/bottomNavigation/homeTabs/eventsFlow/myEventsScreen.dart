@@ -93,7 +93,7 @@ class MyEventsScreen extends StatelessWidget {
                                         Row(
                                           children: [
                                             if (singleEventData
-                                                    .user!.deleteAt !=
+                                                    .user!.isDelete !=
                                                 null)
                                               Utils.accountDelete(context),
                                             const SizedBox(
@@ -203,7 +203,7 @@ class MyEventsScreen extends StatelessWidget {
                                           context: context,
                                           color: theme.primaryColor,
                                         ),
-                                        onTap: singleEventData.user!.deleteAt ==
+                                        onTap: singleEventData.user!.isDelete ==
                                                 null
                                             ? () {
                                                 Get.toNamed(

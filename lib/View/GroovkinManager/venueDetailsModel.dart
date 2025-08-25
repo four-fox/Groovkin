@@ -167,6 +167,7 @@ class User {
   ProfilePicture? profilePicture;
   RxBool? isFollow = false.obs;
   String? role;
+  List<String>? roles;
   Following? follower;
   Following? following;
   String? isDelete;
@@ -187,6 +188,7 @@ class User {
     this.follower,
     this.following,
     this.isDelete,
+    this.roles,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -212,6 +214,11 @@ class User {
             ? null
             : Following.fromJson(json["following"]),
         isDelete: json["deleted_at"],
+        roles: json["roles"] == null
+            ? []
+            : List<String>.from(
+                json["roles"].map((role) => role["name"].toString()),
+              ),
       );
 
   Map<String, dynamic> toJson() => {

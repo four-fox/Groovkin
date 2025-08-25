@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:groovkin/model/spotify_artist_genre_model.dart';
+
 import '../../../../Components/Network/API.dart';
 import '../../../../Components/Network/Url.dart';
 import '../../../../links.dart';
@@ -94,9 +96,8 @@ class Data {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data":
+            data == null ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -141,7 +142,8 @@ class EventData {
   Venue? venue;
   List<ProfilePicture>? profilePicture;
   BannerImage? bannerImage;
-  DatumUser? user;
+  // DatumUser? user;
+  User? user;
   List<Service>? services;
   List<HardwareProvide>? hardwareProvide;
   List<MusicGenre>? musicGenre;
@@ -219,7 +221,7 @@ class EventData {
         bannerImage: json["banner_image"] == null
             ? null
             : BannerImage.fromJson(json["banner_image"]),
-        user: json["user"] == null ? null : DatumUser.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         services: json["services"] == null
             ? []
             : List<Service>.from(
@@ -880,7 +882,9 @@ class DatumUser {
   String? updatedAt;
   String? deleteAt;
   PurpleProfile? profile;
-
+  Following? following;
+  Following? followers;
+  ProfilePicture? profilePicture;
   DatumUser({
     this.id,
     this.name,
@@ -892,6 +896,9 @@ class DatumUser {
     this.updatedAt,
     this.profile,
     this.deleteAt,
+    this.following,
+    this.followers,
+    this.profilePicture,
   });
 
   factory DatumUser.fromJson(Map<String, dynamic> json) => DatumUser(
@@ -904,6 +911,15 @@ class DatumUser {
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
         deleteAt: json["deleted_at"],
+        following: json["following"] == null
+            ? null
+            : Following.fromJson(json["following"]),
+        followers: json["follower"] == null
+            ? null
+            : Following.fromJson(json["follower"]),
+        profilePicture: json["profile_picture"] == null
+            ? null
+            : ProfilePicture.fromJson(json["profile_picture"]),
         profile: json["profile"] == null
             ? null
             : PurpleProfile.fromJson(json["profile"]),

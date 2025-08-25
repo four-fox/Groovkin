@@ -1,13 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, must_be_immutable
 
 import 'dart:io';
-import 'dart:math';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
@@ -23,7 +19,6 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -46,6 +41,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   RxBool organizerGuestVal = false.obs;
 
   int eventId = Get.arguments['eventId'] ?? 1;
+
+  bool isFromEventRequestPage =
+      Get.arguments["isFromEventRequestPage"] ?? false;
 
   bool isComingFromNotifcation =
       Get.arguments["isComingFromNotification"] ?? false;
@@ -76,9 +74,18 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 ),
         child: Container(
           decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill)),
+            image: DecorationImage(
+                image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+          ),
           child: customAppBar(
+            onTap: () async {
+              if (isFromEventRequestPage) {
+                await _controller.getAllEvents();
+                Get.back();
+              } else {
+                Get.back();
+              }
+            },
             theme: theme,
             text: appBarTitle,
             actions: [
@@ -110,7 +117,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             ? const SizedBox.shrink()
             : upcomingWidget(theme, context, controller);
       }),
-      bottomNavigationBar: API().sp.read("role") == "eventManager"
+      bottomNavigationBar: (API().sp.read("role") == "eventManager" &&
+              appBarTitle == "Completed")
           ? GetBuilder<EventController>(builder: (controller) {
               return SafeArea(
                   child: Padding(
@@ -131,7 +139,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   : SafeArea(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 4.0, vertical: 3),
+                          horizontal: 4.0,
+                          vertical: 3,
+                        ),
                         child: CustomButton(
                           borderClr: Colors.transparent,
                           onTap: () {
@@ -1245,20 +1255,21 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                         null
                                     ? "Follow"
                                     : "Unfollow",
-                            followOnTap: () {
+                            followOnTap: () async {
                               if (controller
                                       .eventDetail!.data!.user!.following ==
                                   null) {
-                                _authController.followUser(
-                                    userData:
-                                        controller.eventDetail!.data!.user,
-                                    fromAllUser: false);
+                                await _authController.followUser(
+                                  userData: controller.eventDetail!.data!.user,
+                                  fromAllUser: false,
+                                );
                               } else {
-                                _authController.unfollow(
+                                await _authController.unfollow(
                                     userData:
                                         controller.eventDetail!.data!.user,
                                     fromAllUser: false);
                               }
+                              await _controller.getAllEvents(loader: false);
                               controller.update();
                             },
                             onTap: () {}),

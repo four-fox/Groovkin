@@ -908,6 +908,7 @@ class ManagerPendingView extends StatefulWidget {
 
 class _ManagerPendingViewState extends State<ManagerPendingView> {
   late ManagerController _controller;
+  late HomeController _homeController;
 
   @override
   void initState() {
@@ -916,6 +917,10 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
       _controller = Get.find<ManagerController>();
     } else {
       _controller = Get.put(ManagerController());
+    }
+
+    if (Get.isRegistered<HomeController>()) {
+      _homeController = Get.find<HomeController>();
     }
   }
 
@@ -961,7 +966,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 ),
                                 Row(
                                   children: [
-                                    if (eventData.user!.deleteAt != null)
+                                    if (eventData.user!.isDelete != null)
                                       Utils.accountDelete(context),
                                     const SizedBox(
                                       width: 5,
@@ -1041,11 +1046,11 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 children: [
                                   CustomButton(
                                     heights: 35,
-                                    color2: eventData.user!.deleteAt == null
+                                    color2: eventData.user!.isDelete == null
                                         ? DynamicColor.redClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
-                                    color1: eventData.user!.deleteAt == null
+                                    color1: eventData.user!.isDelete == null
                                         ? DynamicColor.redClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
@@ -1053,7 +1058,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                     backgroundClr: false,
                                     fontSized: 12,
                                     text: "Not interested/decline",
-                                    onTap: eventData.user!.deleteAt == null
+                                    onTap: eventData.user!.isDelete == null
                                         ? () {
                                             cancelEventWidget(
                                                 context: context,
@@ -1081,7 +1086,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                     heights: 35,
                                     text: "Accept",
                                     fontSized: 12,
-                                    onTap: eventData.user!.deleteAt == null
+                                    onTap: eventData.user!.isDelete == null
                                         ? () {
                                             controller.checkBoxValue.value =
                                                 false;
@@ -1249,11 +1254,11 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                         : () {
                                             Utils.showToast();
                                           },
-                                    color2: eventData.user!.deleteAt == null
+                                    color2: eventData.user!.isDelete == null
                                         ? DynamicColor.greenClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
-                                    color1: eventData.user!.deleteAt == null
+                                    color1: eventData.user!.isDelete == null
                                         ? DynamicColor.greenClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
@@ -1272,7 +1277,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 color2: DynamicColor.secondaryClr,
                                 color1: DynamicColor.secondaryClr,
                                 backgroundClr: false,
-                                onTap: eventData.user!.deleteAt == null
+                                onTap: eventData.user!.isDelete == null
                                     ? () {
                                         Get.toNamed(Routes.pendingEventDetails,
                                                 arguments: {

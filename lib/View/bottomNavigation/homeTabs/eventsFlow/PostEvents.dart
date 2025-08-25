@@ -89,7 +89,7 @@ class PendingScreen extends StatelessWidget {
                                     ),
                                     Row(
                                       children: [
-                                        if (eventData.user!.deleteAt != null)
+                                        if (eventData.user!.isDelete != null)
                                           Utils.accountDelete(context),
                                         Container(
                                           padding: const EdgeInsets.symmetric(
@@ -183,7 +183,7 @@ class PendingScreen extends StatelessWidget {
                                     borderClr: Colors.transparent,
                                     heights: 35,
                                     fontSized: 13,
-                                    onTap: eventData.user!.deleteAt == null
+                                    onTap: eventData.user!.isDelete == null
                                         ? () {
                                             Get.toNamed(
                                                     Routes.pendingEventDetails,
@@ -215,7 +215,7 @@ class PendingScreen extends StatelessWidget {
                                     borderClr: Colors.transparent,
                                     heights: 35,
                                     fontSized: 13,
-                                    onTap: eventData.user!.deleteAt == null
+                                    onTap: eventData.user!.isDelete == null
                                         ? () {
                                             cancelEventWidget(
                                                 context: context,
@@ -233,10 +233,10 @@ class PendingScreen extends StatelessWidget {
                                         : () {
                                             Utils.showToast();
                                           },
-                                    color2: eventData.user!.deleteAt == null
+                                    color2: eventData.user!.isDelete == null
                                         ? DynamicColor.redClr
                                         : DynamicColor.disabledColor,
-                                    color1: eventData.user!.deleteAt == null
+                                    color1: eventData.user!.isDelete == null
                                         ? DynamicColor.redClr
                                         : DynamicColor.disabledColor,
                                     text: "Cancel",

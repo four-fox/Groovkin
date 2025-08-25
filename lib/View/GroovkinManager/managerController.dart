@@ -697,6 +697,7 @@ class ManagerController extends GetxController {
     var formData = form.FormData.fromMap({
       "event_id": event!.id,
       "status": status,
+      // "card_id":"19"
     });
     var response = await API().postApi(formData, "accept-event-request");
     if (response.statusCode == 200) {

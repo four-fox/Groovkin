@@ -323,7 +323,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                       .data![index];
                                               return userCustomEvent(
                                                   isDelete: singleEventData
-                                                              .user?.deleteAt ==
+                                                              .user?.isDelete ==
                                                           null
                                                       ? false
                                                       : true,
@@ -467,7 +467,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data![index];
                                               return userCustomEvent(
                                                   isDelete: singleEvent
-                                                              .user?.deleteAt ==
+                                                              .user?.isDelete ==
                                                           null
                                                       ? false
                                                       : true,
@@ -607,7 +607,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data![index];
                                               return userCustomEvent(
                                                   isDelete: singleEvent
-                                                              .user?.deleteAt ==
+                                                              .user?.isDelete ==
                                                           null
                                                       ? false
                                                       : true,
@@ -750,7 +750,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                   .data![index];
                                               return userCustomEvent(
                                                   isDelete: singleEvent
-                                                              .user?.deleteAt ==
+                                                              .user?.isDelete ==
                                                           null
                                                       ? false
                                                       : true,
@@ -1000,7 +1000,7 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                           .allEvents!.data!.data[index];
                                       return userCustomEvent(
                                           isDelete: singleEventDat
-                                                      .user?.deleteAt ==
+                                                      .user?.isDelete ==
                                                   null
                                               ? false
                                               : true,

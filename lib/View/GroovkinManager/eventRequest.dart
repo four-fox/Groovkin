@@ -68,6 +68,7 @@ class _EventRequestsState extends State<EventRequests> {
                             "notInterestedBtn": 2,
                             "appBarTitle": "About Event",
                             "eventId": data.id ?? 1,
+                            // "isFromEventRequestPage": true,
                             // "reportedEventView": 1
                           });
                         },
@@ -112,16 +113,17 @@ class _EventRequestsState extends State<EventRequests> {
                                 ),
                                 if (data.startDateTime != null)
                                   eventDateTime(
-                                      context: context,
-                                      iconBgClr: DynamicColor.darkGrayClr,
-                                      theme: theme,
-                                      iconClr: DynamicColor.darkYellowClr,
-                                      img: "assets/calender.png",
-                                      iconSize: 17,
-                                      text: DateFormat.yMMMMEEEEd()
-                                          .format(data.startDateTime!),
-                                      textClr: DynamicColor.lightRedClr,
-                                      widths: Get.width / 1.4),
+                                    context: context,
+                                    iconBgClr: DynamicColor.darkGrayClr,
+                                    theme: theme,
+                                    iconClr: DynamicColor.darkYellowClr,
+                                    img: "assets/calender.png",
+                                    iconSize: 17,
+                                    text: DateFormat.yMMMMEEEEd()
+                                        .format(data.startDateTime!),
+                                    textClr: DynamicColor.lightRedClr,
+                                    widths: Get.width / 1.4,
+                                  ),
                                 const SizedBox(
                                   height: 4,
                                 ),
@@ -140,51 +142,55 @@ class _EventRequestsState extends State<EventRequests> {
                                   thickness: 2,
                                   color: DynamicColor.avatarBgClr,
                                 ),
-                                // ourGuestWidget(
-                                //   isDelete: data.user!.deleteAt == null
-                                //       ? false
-                                //       : true,
-                                //   horizontalPadding: 12,
-                                //   networkImg: groupPlaceholder,
-                                //   venueOwner: data.user?.name ?? "",
-                                //   context: context,
-                                //   theme: theme,
-                                //   bgClr: Colors.transparent,
-                                //   rowPadding: 0.0,
-                                //   avatarPadding: 6,
-                                //   rowVerticalPadding: 0.0,
-                                //   followText: controller.eventDetail!.data!
-                                //               .user!.following ==
-                                //           null
-                                //       ? "Follow"
-                                //       : "Unfollow",
-                                //   followBgClr: controller.eventDetail!.data!
-                                //               .user!.following !=
-                                //           null
-                                //       ? theme.primaryColor
-                                //       : DynamicColor.avatarBgClr,
-                                //   textClr: controller.eventDetail!.data!.user!
-                                //               .following ==
-                                //           null
-                                //       ? theme.primaryColor
-                                //       : theme.scaffoldBackgroundColor,
-                                //   followOnTap: () {
-                                //     if (controller.eventDetail!.data!.user!
-                                //             .following ==
-                                //         null) {
-                                //       _authController.followUser(
-                                //           userData: controller
-                                //               .eventDetail!.data!.user,
-                                //           fromAllUser: false);
-                                //     } else {
-                                //       _authController.unfollow(
-                                //           userData: controller
-                                //               .eventDetail!.data!.user,
-                                //           fromAllUser: false);
-                                //     }
-                                //   },
-                                // ),
-                                
+                                GetBuilder<AuthController>(builder: (contr) {
+                                  return ourGuestWidget(
+                                    isDelete: data.user!.isDelete == null
+                                        ? false
+                                        : true,
+                                    horizontalPadding: 12,
+                                    networkImg: data.user!.profilePicture ==
+                                            null
+                                        ? groupPlaceholder
+                                        : data.user!.profilePicture!.mediaPath,
+                                    venueOwner: data.user?.name ?? "",
+                                    context: context,
+                                    theme: theme,
+                                    bgClr: Colors.transparent,
+                                    rowPadding: 0.0,
+                                    avatarPadding: 6,
+                                    rowVerticalPadding: 0.0,
+                                    followBgClr: data.user!.following != null
+                                        ? theme.primaryColor
+                                        : DynamicColor.avatarBgClr,
+                                    followText: data.user!.following == null
+                                        ? "Follow"
+                                        : "Unfollow",
+                                    textClr: data.user!.following == null
+                                        ? theme.primaryColor
+                                        : theme.scaffoldBackgroundColor,
+                                    followOnTap: () {
+                                      if (data.user!.following == null) {
+                                        _authController.followUser(
+                                          userData: data.user,
+                                          fromAllUser: false,
+                                          fromRequestEvent: true,
+                                          eventListModel: controller.allEvents,
+                                        );
+                                        // _eventController.getAllEvents();
+                                      } else {
+                                        _authController.unfollow(
+                                          userData: data.user,
+                                          fromAllUser: false,
+                                          fromRequestEvent: true,
+                                          eventListModel: controller.allEvents,
+                                        );
+                                        // _eventController.getAllEvents();
+                                      }
+                                      _authController.update();
+                                      controller.update();
+                                    },
+                                  );
+                                })
                               ],
                             ),
                           ),

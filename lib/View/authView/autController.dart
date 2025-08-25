@@ -44,6 +44,8 @@ import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
+import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+
 enum ChangeRole { user, organizer, manager }
 
 class AuthController extends GetxController {
@@ -155,9 +157,8 @@ class AuthController extends GetxController {
       "youtube_link": youtubeController.text,
       "about": aboutController.text,
     });
-  
-    log(formData.toString());
 
+    log(formData.toString());
 
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
@@ -1308,7 +1309,7 @@ class AuthController extends GetxController {
     try {
       var formData = form.FormData.fromMap({
         "type": type,
-      "source_id": sourceId,
+        "source_id": sourceId,
         if (message != null) "reason": message,
       });
       final response = await API().postApi(formData, "report");
@@ -1409,26 +1410,46 @@ class AuthController extends GetxController {
 
   ///follow user
   RxBool followingLoader = true.obs;
-  followUser({User? userData, bool fromAllUser = true}) async {
+  followUser(
+      {User? userData,
+      bool fromAllUser = true,
+      bool fromRequestEvent = false,
+      EventsListModel? eventListModel}) async {
     followingLoader(false);
     var formData = form.FormData.fromMap({
       "follower_id": userData!.id,
-      "type": userData.role.toString(),
+      "type": userData.role ?? userData.roles!.first,
     });
     var response = await API().postApi(formData, "follow");
     if (response.statusCode == 200) {
       if (fromAllUser == true) {
         allUnFollower!.data!.data!.remove(userData);
       } else {
-        userData.following = Following(
-          id: -12,
-          userId: -2,
-          followerId: -12,
-          type: "",
-          status: "",
-          createdAt: "",
-          updatedAt: "",
-        );
+        if (fromRequestEvent && eventListModel != null) {
+          for (var event in eventListModel.data!.data) {
+            if (event.user?.id == userData.id) {
+              event.user!.following = Following(
+                id: -12,
+                userId: -2,
+                followerId: -12,
+                type: "",
+                status: "",
+                createdAt: "",
+                updatedAt: "",
+              );
+            }
+          }
+        } else {
+          userData.following = Following(
+            id: -12,
+            userId: -2,
+            followerId: -12,
+            type: "",
+            status: "",
+            createdAt: "",
+            updatedAt: "",
+          );
+        }
       }
       followingLoader(true);
       update();
@@ -1436,7 +1457,11 @@ class AuthController extends GetxController {
   }
 
   /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> unfollow
-  unfollow({User? userData, bool fromAllUser = true}) async {
+  unfollow(
+      {User? userData,
+      bool fromAllUser = true,
+      bool fromRequestEvent = false,
+      EventsListModel? eventListModel}) async {
     followingLoader(false);
     var formData = form.FormData.fromMap({"follower_id": userData!.id});
     var response = await API().postApi(formData, "unfollow");
@@ -1444,7 +1469,15 @@ class AuthController extends GetxController {
       if (fromAllUser == true) {
         allUnFollower!.data!.data!.remove(userData);
       } else {
-        userData.following = null;
+        if (fromRequestEvent && eventListModel != null) {
+          for (var event in eventListModel.data!.data) {
+            if (event.user!.id == userData.id) {
+              event.user!.following = null;
+            }
+          }
+        } else {
+          userData.following = null;
+        }
       }
       followingLoader(true);
       update();

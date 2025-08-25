@@ -199,6 +199,9 @@ class EventController extends GetxController {
 
   RxBool getMyTagCollectionLoader = true.obs;
 
+  List<String> selectedTagIds = [];
+  List<String> addedTagIds = [];
+  List<String> deletedTagIds = [];
   MusicTagModel? tagCollectionList;
   getEventTagCollection({type}) async {
     try {
@@ -206,6 +209,18 @@ class EventController extends GetxController {
       final response = await API().getApi(url: "event-tags?type=${type}");
       if (response.statusCode == 200) {
         tagCollectionList = MusicTagModel.fromJson(response.data);
+      }
+      selectedTagIds.clear();
+
+      for (var collection in tagCollectionList!.data!) {
+        for (var item in collection.categoryItems ?? []) {
+          if (item.status == 1) {
+            selectedTagIds.add(item.id.toString());
+            item.selected?.value = true;
+          } else {
+            item.selected?.value = false;
+          }
+        }
       }
     } catch (e) {
       getMyTagCollectionLoader(true);
@@ -230,7 +245,6 @@ class EventController extends GetxController {
     update();
   }
 
-  String? id;
   RxBool addTagCollectionLoading = true.obs;
   addTagCollection({type}) async {
     try {
@@ -238,12 +252,15 @@ class EventController extends GetxController {
 
       final formData = form.FormData();
 
-      formData.fields.add(MapEntry("event_tag_item_ids[]", id!.toString()));
+      for (var tagIds in addedTagIds) {
+        formData.fields
+            .add(MapEntry("event_tag_item_ids[]", tagIds.toString()));
+      }
 
       final response =
           await API().postApi(formData, "add-tag-collection?type=${type}");
       if (response.statusCode == 200) {
-        bottomToast(text: "Tag Added!");
+        // bottomToast(text: "Tag Added!");
       }
     } catch (e) {
       addTagCollectionLoading(true);
@@ -257,13 +274,13 @@ class EventController extends GetxController {
   removeTagCollection() async {
     try {
       removeTagCollectionLoading(false);
-
       final formData = form.FormData();
-
-      formData.fields.add(MapEntry("event_tag_item_ids[]", id!));
+      for (var tagIds in deletedTagIds) {
+        formData.fields.add(MapEntry("event_tag_item_ids[]", tagIds));
+      }
       final response = await API().postApi(formData, "remove-tag-collection");
       if (response.statusCode == 200) {
-        bottomToast(text: "Tag Removed!");
+        // bottomToast(text: "Tag Removed!");
       }
     } catch (e) {
       removeTagCollectionLoading(true);
@@ -809,9 +826,10 @@ class EventController extends GetxController {
   RxBool getAllEventsLoader = true.obs;
   bool getAllEventWaiting = false;
 
-  getAllEvents({nextUrl}) async {
+  getAllEvents({nextUrl, loader = true}) async {
     getAllEventsLoader(false);
-    var response = await API().getApi(url: "show-events", fullUrl: nextUrl);
+    var response = await API()
+        .getApi(url: "show-events", fullUrl: nextUrl, isLoader: loader);
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         getAllEventWaiting = false;
@@ -913,11 +931,11 @@ class EventController extends GetxController {
   List imageListtt = [];
 
   assignValueForUpdate() async {
-    eventTitleController.text = eventDetail!.data!.eventTitle.toString(); 
-    featuringController.text = eventDetail!.data!.featuring.toString(); 
-    aboutController.text = eventDetail!.data!.about.toString(); 
-    themeOfEventController.text = eventDetail!.data!.themeOfEvent.toString(); 
-    maxCapacityController.text = eventDetail!.data!.maxCapacity.toString(); 
+    eventTitleController.text = eventDetail!.data!.eventTitle.toString();
+    featuringController.text = eventDetail!.data!.featuring.toString();
+    aboutController.text = eventDetail!.data!.about.toString();
+    themeOfEventController.text = eventDetail!.data!.themeOfEvent.toString();
+    maxCapacityController.text = eventDetail!.data!.maxCapacity.toString();
     eventDateController.text =
         DateFormat('dd-MM-yyyy').format(eventDetail!.data!.startDateTime!);
     eventEndDateController.text =
