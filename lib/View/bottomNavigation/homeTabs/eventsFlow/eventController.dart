@@ -887,7 +887,7 @@ class EventController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get details of event details
-  
+
   UserEventDetailsModel? eventDetail;
   RxBool eventDetailsLoader = true.obs;
   List<String> venueImageList = [];
@@ -908,15 +908,16 @@ class EventController extends GetxController {
       eventDetailsLoader(true);
       update();
     }
-  } 
-  
+  }
+
   List imageListtt = [];
+
   assignValueForUpdate() async {
-    eventTitleController.text = eventDetail!.data!.eventTitle.toString();
-    featuringController.text = eventDetail!.data!.featuring.toString();
-    aboutController.text = eventDetail!.data!.about.toString();
-    themeOfEventController.text = eventDetail!.data!.themeOfEvent.toString();
-    maxCapacityController.text = eventDetail!.data!.maxCapacity.toString();
+    eventTitleController.text = eventDetail!.data!.eventTitle.toString(); 
+    featuringController.text = eventDetail!.data!.featuring.toString(); 
+    aboutController.text = eventDetail!.data!.about.toString(); 
+    themeOfEventController.text = eventDetail!.data!.themeOfEvent.toString(); 
+    maxCapacityController.text = eventDetail!.data!.maxCapacity.toString(); 
     eventDateController.text =
         DateFormat('dd-MM-yyyy').format(eventDetail!.data!.startDateTime!);
     eventEndDateController.text =

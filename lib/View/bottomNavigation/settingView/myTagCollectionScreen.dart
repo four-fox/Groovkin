@@ -247,7 +247,18 @@ class _CreateNewTagState extends State<CreateNewTag> {
           initState: (state) {},
           builder: (controller) {
             return Scaffold(
-              appBar: customAppBar(theme: theme, text: "My Collection"),
+              appBar: customAppBar(
+                theme: theme,
+                text: "My Collection",
+                onTap: () {
+                  if (isFromTagCollectionScreen) {
+                    Get.back();
+                  } else {
+                    Get.back();
+                    Get.back();
+                  }
+                },
+              ),
               body: (controller.tagCollectionList == null ||
                       controller.tagCollectionList!.data == null ||
                       controller.tagCollectionList!.data!.isEmpty)

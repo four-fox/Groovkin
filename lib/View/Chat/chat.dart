@@ -50,7 +50,7 @@ class ChatCenterScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(13),
                       border: Border.all(
-                          color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                          color: DynamicColor.grayClr.withValues(alpha: 0.6)),
                     ),
                     child: Column(
                       children: [
@@ -268,7 +268,7 @@ class ChatCenterScreen extends StatelessWidget {
       bottomNavigationBar: onGoingVal != "ongoing"
           ? const SizedBox.shrink()
           : SafeArea(
-            child: Padding(
+              child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
                 child: CustomButton(
@@ -289,7 +289,7 @@ class ChatCenterScreen extends StatelessWidget {
                   text: "Complete",
                 ),
               ),
-          ),
+            ),
     );
   }
 }
