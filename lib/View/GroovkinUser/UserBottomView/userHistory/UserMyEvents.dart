@@ -19,7 +19,6 @@ class MyEventsScreen extends StatefulWidget {
 }
 
 class _MyEventsScreenState extends State<MyEventsScreen> {
-  
   RxInt tabValue = 0.obs;
   RxInt selectedFilter = 0.obs;
   RxBool showFilter = false.obs;
@@ -29,7 +28,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
     super.initState();
     tabValue.value = 0;
   }
-  
+
   RxBool recommendedVal = false.obs;
 
   @override
@@ -81,10 +80,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     child: Obx(
                       () => CustomButton(
                         borderClr: Colors.transparent,
-                        backgroundClr: tabValue.value == 0 ? true : false,
                         color2: DynamicColor.lightBlackClr,
                         color1: DynamicColor.lightBlackClr,
-                        text: "History",
+                        backgroundClr: tabValue.value == 0 ? true : false,
+                        text: "Upcoming",
                       ),
                     ),
                   ),
@@ -92,10 +91,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     child: Obx(
                       () => CustomButton(
                         borderClr: Colors.transparent,
+                        backgroundClr: tabValue.value == 1 ? true : false,
                         color2: DynamicColor.lightBlackClr,
                         color1: DynamicColor.lightBlackClr,
-                        backgroundClr: tabValue.value == 1 ? true : false,
-                        text: "Upcoming",
+                        text: "History",
                       ),
                     ),
                   ),
@@ -131,11 +130,11 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               const TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  HistoryTab(),
                   // UpComingEventView(historyVal: true,selectedValue: selectedFilter.value,),
                   // PastEventView(),
                   // UpComingEventView(historyVal: false, selectedValue: 0,),
                   UpcomingEvent(),
+                  HistoryTab(),
                 ],
               ),
               Obx(

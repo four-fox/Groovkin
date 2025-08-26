@@ -14,6 +14,8 @@ import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
 
+import '../../paymentMethod/showSelectedBottomSheetCard.dart';
+
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
@@ -409,6 +411,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 iconShow: true,
                                 onTap: () {
                                   Get.toNamed(Routes.transactionScreen);
+                                  // showBottomSelectedCardSheet(context);
                                   // Get.toNamed(Routes.paymentMethodScreen,
                                   // arguments: {
                                   //   "paymentMethod": 2

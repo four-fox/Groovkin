@@ -17,6 +17,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/PostEvents.da
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
+import 'package:groovkin/View/paymentMethod/showSelectedBottomSheetCard.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 
@@ -1209,16 +1210,39 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                 heights: 35,
                                                                 text: "Accept",
                                                                 fontSized: 12,
-                                                                onTap: () {
+                                                                onTap:
+                                                                    () async {
                                                                   if (controller
                                                                       .checkBoxValue
                                                                       .value) {
-                                                                    controller.eventAcceptDeclineFtn(
-                                                                        event: controller
-                                                                            .managerPendingEvents!
-                                                                            .data!
-                                                                            .data![index],
-                                                                        status: "accepted");
+                                                                    await _homeController
+                                                                        .getAllCards()
+                                                                        .then(
+                                                                            (_) async {
+                                                                      if (_homeController
+                                                                          .transactionData
+                                                                          .isEmpty) {
+                                                                        bottomToast(
+                                                                            text:
+                                                                                "Please Add At Least One Card To Accept Event");
+                                                                      } else {
+                                                                        final isCardSelected =
+                                                                            await showBottomSelectedCardSheet(context);
+                                                                        if (isCardSelected ==
+                                                                            true) {
+                                                                          controller
+                                                                              .eventAcceptDeclineFtn(
+                                                                            event:
+                                                                                controller.managerPendingEvents!.data!.data![index],
+                                                                            status:
+                                                                                "accepted",
+                                                                          );
+                                                                        } else {
+                                                                          bottomToast(
+                                                                              text: "You didn't select any card");
+                                                                        }
+                                                                      }
+                                                                    });
                                                                   } else {
                                                                     bottomToast(
                                                                         text:

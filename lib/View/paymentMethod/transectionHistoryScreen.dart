@@ -110,8 +110,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomButton(
-                  color2: DynamicColor.lightWhite.withValues(alpha:0.5),
-                  color1: DynamicColor.lightWhite.withValues(alpha:0.5),
+                  color2: DynamicColor.lightWhite.withValues(alpha: 0.5),
+                  color1: DynamicColor.lightWhite.withValues(alpha: 0.5),
                   // bgImage: ,
                   widths: 80,
                   heights: 35,
@@ -146,74 +146,74 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 color: theme.primaryColor,
               ),
             ),
-            GetBuilder<HomeController>(builder: (homecontroller) {
-              return Expanded(
-                child: ListView.builder(
-                    itemCount: homecontroller.transactionData.length,
-                    itemBuilder: (BuildContext context, index) {
-                      final transactionData =
-                          homecontroller.transactionData[index];
-                      return GestureDetector(
-                        onTap: () {
-                          // Get.toNamed(Routes.confirmationEventScreen);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4.0, horizontal: 9),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: DynamicColor.darkGrayClr),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "# ${transactionData.customerId}",
-                                      style: poppinsRegularStyle(
-                                          fontSize: 12,
-                                          context: context,
-                                          color: DynamicColor.lightWhite),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      transactionData.cardholderName ?? "",
-                                      style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${Utils.dateFormat(transactionData.createdAt!)}  ${Utils.timeFormat(transactionData.createdAt!)}",
-                                      style: poppinsRegularStyle(
-                                          fontSize: 12,
-                                          context: context,
-                                          color: DynamicColor.lightWhite),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  "\$1000",
-                                  style: poppinsMediumStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    context: context,
-                                    color: theme.primaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              );
-            })
+            // GetBuilder<HomeController>(builder: (homecontroller) {
+            //   return Expanded(
+            //     child: ListView.builder(
+            //         itemCount: homecontroller.transactionData.length,
+            //         itemBuilder: (BuildContext context, index) {
+            //           final transactionData =
+            //               homecontroller.transactionData[index];
+            //           return GestureDetector(
+            //             onTap: () {
+            //               // Get.toNamed(Routes.confirmationEventScreen);
+            //             },
+            //             child: Padding(
+            //               padding: const EdgeInsets.symmetric(vertical: 4.0),
+            //               child: Container(
+            //                 padding: const EdgeInsets.symmetric(
+            //                     vertical: 4.0, horizontal: 9),
+            //                 decoration: BoxDecoration(
+            //                     borderRadius: BorderRadius.circular(10),
+            //                     color: DynamicColor.darkGrayClr),
+            //                 child: Row(
+            //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                   children: [
+            //                     Column(
+            //                       crossAxisAlignment: CrossAxisAlignment.start,
+            //                       children: [
+            //                         Text(
+            //                           "# ${transactionData.customerId}",
+            //                           style: poppinsRegularStyle(
+            //                               fontSize: 12,
+            //                               context: context,
+            //                               color: DynamicColor.lightWhite),
+            //                           maxLines: 1,
+            //                           overflow: TextOverflow.ellipsis,
+            //                         ),
+            //                         Text(
+            //                           transactionData.cardholderName ?? "",
+            //                           style: poppinsMediumStyle(
+            //                             fontSize: 14,
+            //                             context: context,
+            //                             color: theme.primaryColor,
+            //                           ),
+            //                         ),
+            //                         Text(
+            //                           "${Utils.dateFormat(transactionData.createdAt!)}  ${Utils.timeFormat(transactionData.createdAt!)}",
+            //                           style: poppinsRegularStyle(
+            //                               fontSize: 12,
+            //                               context: context,
+            //                               color: DynamicColor.lightWhite),
+            //                         ),
+            //                       ],
+            //                     ),
+            //                     Text(
+            //                       "\$1000",
+            //                       style: poppinsMediumStyle(
+            //                         fontSize: 14,
+            //                         fontWeight: FontWeight.w700,
+            //                         context: context,
+            //                         color: theme.primaryColor,
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //             ),
+            //           );
+            //         }),
+            //   );
+            // })
           ],
         ),
       ),
@@ -389,7 +389,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                   onTap: () {
                     showDialog(
                       context: context,
-                      barrierColor: Colors.black.withValues(alpha:0.7),
+                      barrierColor: Colors.black.withValues(alpha: 0.7),
                       barrierDismissible: false,
                       builder: (context) {
                         return AlertDialog(

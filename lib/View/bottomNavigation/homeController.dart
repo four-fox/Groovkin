@@ -34,7 +34,7 @@ class HomeController extends GetxController {
     }
     update();
   }
-  
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> git completed events
   RxBool completedEventLoader = true.obs;
   EventHistoryModel? eventHistory;

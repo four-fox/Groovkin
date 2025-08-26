@@ -1296,6 +1296,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     ],
                   )
                 : const SizedBox.shrink(),
+
             const SizedBox(
               height: 20,
             ),
@@ -1309,7 +1310,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TSectionHeading(
-                      title: "Reviews(120)",
+                      title:
+                          "Reviews (${controller.eventDetail!.data!.rating!.length})",
                       showActionButton: false,
                       onPressed: () {},
                     ),

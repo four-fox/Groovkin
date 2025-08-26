@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/View/GroovkinUser/UserBottomView/myUserGroovkinScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/UserMyEvents.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
@@ -34,6 +35,7 @@ class UserBottomNavigationNav extends StatelessWidget {
     var theme = Theme.of(context);
     final bodyContent = [
       const UserHomeScreen(),
+      const MyUsergroovkinscreen(),
       const MyEventsScreen(),
       // GroupScreen(),
       const SettingScreen(),
@@ -82,6 +84,23 @@ class UserBottomNavigationNav extends StatelessWidget {
                 color: DynamicColor.yellowClr,
                 items: [
                   BottomBarItem(
+                    label: "Home",
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        AssetImage("assets/userHomeIcon.png"),
+                        // const AssetImage("assets/groovkin.png"),
+                        color: selectUserIndexxx.value == 0
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
+                      ),
+                    ),
+                  ),
+                  BottomBarItem(
                     label: "My Groovkin",
                     labelTextStyle: poppinsMediumStyle(
                         fontSize: 12,
@@ -90,9 +109,8 @@ class UserBottomNavigationNav extends StatelessWidget {
                     iconBuilder: Padding(
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(
-                        // AssetImage("assets/userHomeIcon.png"),
                         const AssetImage("assets/groovkin.png"),
-                        color: selectUserIndexxx.value == 0
+                        color: selectUserIndexxx.value == 1
                             ? DynamicColor.yellowClr
                             : DynamicColor.grayClr,
                       ),
@@ -108,7 +126,7 @@ class UserBottomNavigationNav extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(
                         const AssetImage("assets/userMyEvents.png"),
-                        color: selectUserIndexxx.value == 1
+                        color: selectUserIndexxx.value == 2
                             ? DynamicColor.yellowClr
                             : DynamicColor.grayClr,
                       ),

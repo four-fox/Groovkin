@@ -55,7 +55,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
   void initState() {
     border = OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.grey.withValues(alpha:0.7),
+        color: Colors.grey.withValues(alpha: 0.7),
         width: 2.0,
       ),
     );
@@ -66,7 +66,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () {
@@ -88,7 +88,6 @@ class _AddCardDetailsState extends State<AddCardDetails> {
             expiryDate: expiryDate,
             cardHolderName: cardHolderName,
             cvvCode: cvvCode,
-
             // bankName: 'Axis Bank',
             frontCardBorder:
                 !useGlassMorphism ? Border.all(color: Colors.grey) : null,

@@ -8,28 +8,42 @@ import 'package:iconsax/iconsax.dart';
 import 'package:readmore/readmore.dart';
 
 class UserRating extends StatelessWidget {
-  const UserRating({super.key});
+  final String image, description, date, name;
+  final double ratingNum;
+  const UserRating({
+    super.key,
+    required this.image,
+    required this.description,
+    required this.date,
+    required this.name,
+    required this.ratingNum,
+  });
 
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // ! profile of rating user
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Row(
+            Row(
               children: [
-                // CircleAvatar(
-                //   backgroundImage: AssetImage(TImageString.userImage),
-                // ),
+                CircleAvatar(
+                  backgroundImage: NetworkImage(image),
+                ),
                 SizedBox(
                   width: 16,
                 ),
+                // Text(
+                //   name,
+                //   style: Theme.of(context).textTheme.bodyMedium,
+                // ),
               ],
             ),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+            // IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
           ],
         ),
         const SizedBox(
@@ -40,7 +54,7 @@ class UserRating extends StatelessWidget {
           children: [
             RatingBarIndicator(
               itemSize: 20,
-              rating: 4,
+              rating: ratingNum,
               itemBuilder: (context, index) {
                 return Icon(
                   Iconsax.star1,
@@ -52,7 +66,7 @@ class UserRating extends StatelessWidget {
               width: 16,
             ),
             Text(
-              "03 March, 2024",
+              date,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -62,7 +76,7 @@ class UserRating extends StatelessWidget {
           height: 16,
         ),
         ReadMoreText(
-          "The user inteface of the app is quite intuitive. I was able to navigate and make purchases seamlessly. Great Job!",
+          description,
           trimLines: 2,
           trimMode: TrimMode.Line,
           trimExpandedText: " show less",
@@ -84,16 +98,17 @@ class UserRating extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Shahzain Store",
+                      name,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Text(
-                      "03 March 2024",
+                      date,
                       style: Theme.of(context).textTheme.bodyMedium,
                     )
                   ],
@@ -102,7 +117,7 @@ class UserRating extends StatelessWidget {
                   height: 16,
                 ),
                 ReadMoreText(
-                  "The user inteface of the app is quite intuitive. I was able to navigate and make purchases seamlessly. Great Job!",
+                  description,
                   trimLines: 2,
                   trimMode: TrimMode.Line,
                   trimExpandedText: " show less",

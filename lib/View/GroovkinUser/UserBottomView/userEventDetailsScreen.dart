@@ -126,101 +126,101 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       );
                                     }),
                               ),
-                        notifyBtnShow == true
-                            ? Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8, left: 8, bottom: 8),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    controller.eventDetail!.data!.status ==
-                                            "completed"
-                                        ? const SizedBox.shrink()
-                                        : Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: CustomButton(
-                                              text: "Notify",
-                                              heights: 30,
-                                              borderRadius: 4,
-                                              borderClr: Colors.transparent,
-                                              widths: 80,
-                                              onTap: () {
-                                                if (sp.read("role") == 'User') {
-                                                  if (notifyBackBtn == true) {
-                                                    Get.toNamed(
-                                                        Routes.notifyScreen);
-                                                    // selectUserIndexxx.value = 2;
-                                                    // Get.back();
-                                                  } else {
-                                                    Get.back();
-                                                    Get.back();
-                                                    // Get.toNamed(Routes.groupScreen);
-                                                  }
-                                                } else {
-                                                  Get.offAllNamed(Routes
-                                                      .userBottomNavigationNav);
-                                                }
-                                              },
-                                            ),
-                                          ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    CustomButtonWithIcon(
-                                      width: 130,
-                                      height: 30,
-                                      borderRadius: 6,
-                                      iconss: Icons.share,
-                                      iconsClr: DynamicColor.whiteClr,
-                                      iconValue: false,
-                                      iconRightSide: true,
-                                      bgColor: DynamicColor.secondaryClr,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 8, left: 8, bottom: 8),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CustomButton(
-                                      text: statusVal,
-                                      heights: 25,
-                                      borderRadius: 4,
-                                      backgroundClr: false,
-                                      borderClr: Colors.transparent,
-                                      color2: DynamicColor.finishedTextClr,
-                                      color1: DynamicColor.finishedTextClr,
-                                      style: poppinsRegularStyle(
-                                        fontSize: 12,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
-                                      widths: 80,
-                                      onTap: () {},
-                                    ),
-                                    CustomButtonWithIcon(
-                                      width: 130,
-                                      height: 25,
-                                      borderRadius: 6,
-                                      iconss: Icons.share,
-                                      iconsClr: DynamicColor.whiteClr,
-                                      iconValue: false,
-                                      iconRightSide: true,
-                                      bgColor: DynamicColor.secondaryClr,
-                                      iconSize: 15,
-                                      style: poppinsRegularStyle(
-                                        fontSize: 12,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                        // notifyBtnShow == true
+                        //     ? Padding(
+                        //         padding: const EdgeInsets.only(
+                        //             right: 8, left: 8, bottom: 8),
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.end,
+                        //           children: [
+                        //             controller.eventDetail!.data!.status ==
+                        //                     "completed"
+                        //                 ? const SizedBox.shrink()
+                        //                 : Align(
+                        //                     alignment: Alignment.bottomRight,
+                        //                     child: CustomButton(
+                        //                       text: "Notify",
+                        //                       heights: 30,
+                        //                       borderRadius: 4,
+                        //                       borderClr: Colors.transparent,
+                        //                       widths: 80,
+                        //                       onTap: () {
+                        //                         if (sp.read("role") == 'User') {
+                        //                           if (notifyBackBtn == true) {
+                        //                             Get.toNamed(
+                        //                                 Routes.notifyScreen);
+                        //                             // selectUserIndexxx.value = 2;
+                        //                             // Get.back();
+                        //                           } else {
+                        //                             Get.back();
+                        //                             Get.back();
+                        //                             // Get.toNamed(Routes.groupScreen);
+                        //                           }
+                        //                         } else {
+                        //                           Get.offAllNamed(Routes
+                        //                               .userBottomNavigationNav);
+                        //                         }
+                        //                       },
+                        //                     ),
+                        //                   ),
+                        //             const SizedBox(
+                        //               width: 10,
+                        //             ),
+                        //             CustomButtonWithIcon(
+                        //               width: 130,
+                        //               height: 30,
+                        //               borderRadius: 6,
+                        //               iconss: Icons.share,
+                        //               iconsClr: DynamicColor.whiteClr,
+                        //               iconValue: false,
+                        //               iconRightSide: true,
+                        //               bgColor: DynamicColor.secondaryClr,
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       )
+                        //     : Padding(
+                        //         padding: const EdgeInsets.only(
+                        //             right: 8, left: 8, bottom: 8),
+                        //         child: Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             CustomButton(
+                        //               text: statusVal,
+                        //               heights: 25,
+                        //               borderRadius: 4,
+                        //               backgroundClr: false,
+                        //               borderClr: Colors.transparent,
+                        //               color2: DynamicColor.finishedTextClr,
+                        //               color1: DynamicColor.finishedTextClr,
+                        //               style: poppinsRegularStyle(
+                        //                 fontSize: 12,
+                        //                 context: context,
+                        //                 color: theme.primaryColor,
+                        //               ),
+                        //               widths: 80,
+                        //               onTap: () {},
+                        //             ),
+                        //             CustomButtonWithIcon(
+                        //               width: 130,
+                        //               height: 25,
+                        //               borderRadius: 6,
+                        //               iconss: Icons.share,
+                        //               iconsClr: DynamicColor.whiteClr,
+                        //               iconValue: false,
+                        //               iconRightSide: true,
+                        //               bgColor: DynamicColor.secondaryClr,
+                        //               iconSize: 15,
+                        //               style: poppinsRegularStyle(
+                        //                 fontSize: 12,
+                        //                 context: context,
+                        //                 color: theme.primaryColor,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
                       ],
                     ),
                     Align(
@@ -835,6 +835,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                     SizedBox(
                       height: notifyBtnShow == false ? 0 : 10,
                     ),
+
                     API().sp.read("role") != "User"
                         ? const SizedBox.shrink()
                         : controller.eventDetail!.data!.eventGoingOrInterested!
@@ -853,8 +854,9 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                           heights: 45,
                                           onTap: () {
                                             controller.userCancelEvents(
-                                                eventId: controller
-                                                    .eventDetail!.data!.id);
+                                              eventId: controller
+                                                  .eventDetail!.data!.id,
+                                            );
                                           },
                                           text: "Cancel",
                                           // appBarTitle == "Past Event"?
@@ -942,7 +944,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withValues(alpha:0.6)),
+                  color: DynamicColor.whiteClr.withValues(alpha: 0.6)),
             ),
           ),
         ),

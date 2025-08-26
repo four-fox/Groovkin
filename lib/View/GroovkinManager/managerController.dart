@@ -692,13 +692,16 @@ class ManagerController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>> venue manager decline or accept event function
+
+  int? selectedCardId;
   RxBool checkBoxValue = false.obs;
   eventAcceptDeclineFtn({status, EventData? event}) async {
-    var formData = form.FormData.fromMap({
-      "event_id": event!.id,
-      "status": status,
-      // "card_id":"19"
-    });
+
+
+
+
+    var formData = form.FormData.fromMap(
+        {"event_id": event!.id, "status": status, "card_id": selectedCardId});
     var response = await API().postApi(formData, "accept-event-request");
     if (response.statusCode == 200) {
       managerPendingEvents!.data!.data!.remove(event);
