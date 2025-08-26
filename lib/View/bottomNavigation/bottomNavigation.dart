@@ -90,9 +90,10 @@ class BottomNavigationView extends StatelessWidget {
                 items: [
                   BottomBarItem(
                     labelTextStyle: poppinsMediumStyle(
-                        fontSize: 12,
-                        context: context,
-                        color: theme.scaffoldBackgroundColor),
+                      fontSize: 12,
+                      context: context,
+                      color: theme.scaffoldBackgroundColor,
+                    ),
                     iconBuilder: Padding(
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(

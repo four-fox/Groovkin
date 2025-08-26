@@ -423,6 +423,7 @@ class ManagerController extends GetxController {
     for (var element in selectedHouseEventPermit) {
       houseEvent.add(element.id);
     }
+
     var formData = form.FormData.fromMap({
       "venue_name": venueNameController.text,
       "street_address": streetAddressController.text,
@@ -510,7 +511,7 @@ class ManagerController extends GetxController {
       });
     }
   }
-
+  
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  edit venue
 
   editVenue() async {
