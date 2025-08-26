@@ -18,11 +18,14 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/utils/utils.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
+
+import '../../../Components/t_section_button.dart';
 
 class UpcomingScreen extends StatefulWidget {
   const UpcomingScreen({super.key});
@@ -1294,7 +1297,34 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   )
                 : const SizedBox.shrink(),
             const SizedBox(
-              height: 30,
+              height: 20,
+            ),
+
+            if (controller.eventDetail!.data!.rating != null &&
+                controller.eventDetail!.data!.rating!.isNotEmpty &&
+                API().sp.read("role") == "eventManager")
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TSectionHeading(
+                      title: "Reviews(120)",
+                      showActionButton: false,
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.ratingScreen);
+                        },
+                        icon: const Icon(
+                          Iconsax.arrow_right_3,
+                        ))
+                  ],
+                ),
+              ),
+            const SizedBox(
+              height: 10,
             ),
           ],
         ),

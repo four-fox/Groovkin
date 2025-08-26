@@ -116,6 +116,7 @@ abstract class Routes {
   static const chatRoomScreen = _Path.chatRoomScreen;
   static const chatInnerScreen = _Path.chatInnerScreen;
   static const emailVerifyScreen = _Path.emailVerifyScreen;
+  static const ratingScreen = _Path.ratingScreen;
 }
 
 abstract class _Path {
@@ -232,4 +233,6 @@ abstract class _Path {
   static const chatNewUserScreen = "/ChatNewUserScreen";
   static const chatRoomScreen = "/ChatRoomScreen";
   static const chatInnerScreen = "/ChatInnerScreen";
+
+  static const ratingScreen = "/rating_screen";
 }
