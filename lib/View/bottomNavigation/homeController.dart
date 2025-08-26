@@ -115,7 +115,6 @@ class HomeController extends GetxController {
       if (fullUrl == null) {
         userPastHistory = UserPastEventHistoryModel.fromJson(response.data);
       }
-
       getUserHistoryLoader(true);
       update();
     }
@@ -187,7 +186,7 @@ class HomeController extends GetxController {
       }
     }
   }
-
+  
   String cardNumber = "";
   String cardHolderName = '';
 

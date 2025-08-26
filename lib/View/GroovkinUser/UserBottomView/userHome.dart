@@ -178,74 +178,76 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.userMyGroovkinScreen);
-                },
-                child: Container(
-                  height: kToolbarHeight * 2,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                    image: AssetImage("assets/myGroovkin.png"),
-                    fit: BoxFit.fill,
-                  )),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "My Groovkin",
-                        style: poppinsMediumStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          context: context,
-                          latterSpacing: 1.1,
-                          color: theme.primaryColor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor:
-                                  DynamicColor.yellowClr.withValues(alpha: 0.7),
-                              child: ImageIcon(
-                                const AssetImage("assets/groupIcons.png"),
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 30.0),
-                              child: CircleAvatar(
-                                backgroundColor: DynamicColor.yellowClr
-                                    .withValues(alpha: 0.7),
-                                child: ImageIcon(
-                                  const AssetImage("assets/musicIcons.png"),
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ),
-                            CircleAvatar(
-                              backgroundColor:
-                                  DynamicColor.yellowClr.withValues(alpha: 0.7),
-                              child: ImageIcon(
-                                const AssetImage("assets/supportIcon.png"),
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () {
+              //     Get.toNamed(Routes.userMyGroovkinScreen);
+              //   },
+              //   child: Container(
+              //     height: kToolbarHeight * 2,
+              //     width: double.infinity,
+              //     decoration: const BoxDecoration(
+              //         image: DecorationImage(
+              //       image: AssetImage("assets/myGroovkin.png"),
+              //       fit: BoxFit.fill,
+              //     )),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         Text(
+              //           "My Groovkin",
+              //           style: poppinsMediumStyle(
+              //             fontSize: 17,
+              //             fontWeight: FontWeight.w700,
+              //             context: context,
+              //             latterSpacing: 1.1,
+              //             color: theme.primaryColor,
+              //           ),
+              //         ),
+              //         Padding(
+              //           padding: const EdgeInsets.only(top: 12.0),
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               CircleAvatar(
+              //                 backgroundColor:
+              //                     DynamicColor.yellowClr.withValues(alpha: 0.7),
+              //                 child: ImageIcon(
+              //                   const AssetImage("assets/groupIcons.png"),
+              //                   color: theme.primaryColor,
+              //                 ),
+              //               ),
+              //               Padding(
+              //                 padding:
+              //                     const EdgeInsets.symmetric(horizontal: 30.0),
+              //                 child: CircleAvatar(
+              //                   backgroundColor: DynamicColor.yellowClr
+              //                       .withValues(alpha: 0.7),
+              //                   child: ImageIcon(
+              //                     const AssetImage("assets/musicIcons.png"),
+              //                     color: theme.primaryColor,
+              //                   ),
+              //                 ),
+              //               ),
+              //               CircleAvatar(
+              //                 backgroundColor:
+              //                     DynamicColor.yellowClr.withValues(alpha: 0.7),
+              //                 child: ImageIcon(
+              //                   const AssetImage("assets/supportIcon.png"),
+              //                   color: theme.primaryColor,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // ),
+
               const SizedBox(
                 height: 10,
               ),
+// Recommended Event
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
@@ -394,9 +396,152 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
+
+              const SizedBox(
+                height: 10,
+              ), // Happening Now Event
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: DynamicColor.darkGrayClr),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            // "Ongoing Events",
+                            "Happening Now",
+                            style: poppinsMediumStyle(
+                              fontSize: 14,
+                              context: context,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              if (ongoingVal.value == false) {
+                                controller.getOngoingEventUser();
+                                ongoingVal.value = true;
+                              } else {
+                                ongoingVal.value = false;
+                                controller.update();
+                              }
+                            },
+                            child: Icon(
+                              ongoingVal.value == false
+                                  ? Icons.keyboard_arrow_down
+                                  : Icons.keyboard_arrow_up_outlined,
+                              size: 35,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      controller.userOngoingLoader.value == false
+                          ? const SizedBox.shrink()
+                          : Visibility(
+                              visible: ongoingVal.value,
+                              child: controller.userOngoing == null ||
+                                      controller
+                                          .userOngoing!.data!.data!.isEmpty
+                                  ? noData(theme: theme, context: context)
+                                  : Column(
+                                      children: [
+                                        ListView.builder(
+                                            itemCount: controller.userOngoing!
+                                                        .data!.data!.length >
+                                                    4
+                                                ? 4
+                                                : controller.userOngoing!.data!
+                                                    .data!.length,
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.zero,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemBuilder:
+                                                (BuildContext context, index) {
+                                              EventData singleEvent = controller
+                                                  .userOngoing!
+                                                  .data!
+                                                  .data![index];
+                                              return userCustomEvent(
+                                                  isDelete: singleEvent
+                                                              .user?.isDelete ==
+                                                          null
+                                                      ? false
+                                                      : true,
+                                                  dayy: DateFormat
+                                                          .MMM()
+                                                      .format(
+                                                          singleEvent
+                                                              .startDateTime!),
+                                                  datee:
+                                                      "${singleEvent.startDateTime!.day}\n",
+                                                  networkImg: singleEvent
+                                                              .bannerImage ==
+                                                          null
+                                                      ? false
+                                                      : true,
+                                                  img: singleEvent
+                                                              .bannerImage ==
+                                                          null
+                                                      ? null
+                                                      : singleEvent.bannerImage!
+                                                          .mediaPath
+                                                          .toString(),
+                                                  title: singleEvent.eventTitle
+                                                      .toString(),
+                                                  location:
+                                                      singleEvent.location,
+                                                  subtitle: singleEvent
+                                                      .venue!.venueName
+                                                      .toString(),
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                        Routes
+                                                            .userEventDetailsScreen,
+                                                        arguments: {
+                                                          "notify": true,
+                                                          "notifyBackBtn": true,
+                                                          'appBarTitle':
+                                                              "Event Preview",
+                                                          "statusText":
+                                                              singleEvent.id
+                                                                  .toString()
+                                                        });
+                                                  },
+                                                  context: context,
+                                                  theme: theme);
+                                            }),
+                                        CustomButton(
+                                          onTap: () {
+                                            Get.toNamed(
+                                                Routes.viewAllRecommendedScreen,
+                                                arguments: {
+                                                  "urlText":
+                                                      "user-interested-on-going-list",
+                                                  "appBarText": "OnGoing Events"
+                                                });
+                                          },
+                                          borderClr: Colors.transparent,
+                                          text: "View All ",
+                                        ),
+                                      ],
+                                    ),
+                            ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),
+              // Nearby Event
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
@@ -534,9 +679,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
+
               const SizedBox(
                 height: 10,
               ),
+              // Top Rated Event
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
@@ -674,149 +821,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
+
               const SizedBox(
                 height: 10,
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Ongoing Events",
-                            style: poppinsMediumStyle(
-                              fontSize: 14,
-                              context: context,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (ongoingVal.value == false) {
-                                controller.getOngoingEventUser();
-                                ongoingVal.value = true;
-                              } else {
-                                ongoingVal.value = false;
-                                controller.update();
-                              }
-                            },
-                            child: Icon(
-                              ongoingVal.value == false
-                                  ? Icons.keyboard_arrow_down
-                                  : Icons.keyboard_arrow_up_outlined,
-                              size: 35,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      controller.userOngoingLoader.value == false
-                          ? const SizedBox.shrink()
-                          : Visibility(
-                              visible: ongoingVal.value,
-                              child: controller.userOngoing == null ||
-                                      controller
-                                          .userOngoing!.data!.data!.isEmpty
-                                  ? noData(theme: theme, context: context)
-                                  : Column(
-                                      children: [
-                                        ListView.builder(
-                                            itemCount: controller.userOngoing!
-                                                        .data!.data!.length >
-                                                    4
-                                                ? 4
-                                                : controller.userOngoing!.data!
-                                                    .data!.length,
-                                            shrinkWrap: true,
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder:
-                                                (BuildContext context, index) {
-                                              EventData singleEvent = controller
-                                                  .userOngoing!
-                                                  .data!
-                                                  .data![index];
-                                              return userCustomEvent(
-                                                  isDelete: singleEvent
-                                                              .user?.isDelete ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  dayy: DateFormat
-                                                          .MMM()
-                                                      .format(
-                                                          singleEvent
-                                                              .startDateTime!),
-                                                  datee:
-                                                      "${singleEvent.startDateTime!.day}\n",
-                                                  networkImg: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  img: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? null
-                                                      : singleEvent.bannerImage!
-                                                          .mediaPath
-                                                          .toString(),
-                                                  title: singleEvent.eventTitle
-                                                      .toString(),
-                                                  location:
-                                                      singleEvent.location,
-                                                  subtitle: singleEvent
-                                                      .venue!.venueName
-                                                      .toString(),
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                        Routes
-                                                            .userEventDetailsScreen,
-                                                        arguments: {
-                                                          "notify": true,
-                                                          "notifyBackBtn": true,
-                                                          'appBarTitle':
-                                                              "Event Preview",
-                                                          "statusText":
-                                                              singleEvent.id
-                                                                  .toString()
-                                                        });
-                                                  },
-                                                  context: context,
-                                                  theme: theme);
-                                            }),
-                                        CustomButton(
-                                          onTap: () {
-                                            Get.toNamed(
-                                                Routes.viewAllRecommendedScreen,
-                                                arguments: {
-                                                  "urlText":
-                                                      "user-interested-on-going-list",
-                                                  "appBarText": "OnGoing Events"
-                                                });
-                                          },
-                                          borderClr: Colors.transparent,
-                                          text: "View All ",
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                    ],
-                  ),
-                ),
-              ),
+
               const SizedBox(
                 height: kToolbarHeight * 1.3,
               ),

@@ -443,6 +443,12 @@ class ManagerController extends GetxController {
       "house_event_items[]": houseEvent,
       "image[]": multiPartImg,
       "city": cityController.text,
+      if (instagramController1.text.isNotEmpty)
+        "instagram_link": instagramController1.text,
+      if (facebookController.text.isNotEmpty)
+        "facebook_link": facebookController.text,
+      if (websiteController1.text.isNotEmpty)
+        "website": websiteController1.text,
     });
     print(formData);
     var response = await API().postApi(formData, "add-venue", multiPart: true);
@@ -542,7 +548,13 @@ class ManagerController extends GetxController {
       "licenses_and_permit_items[]": permitList,
       "house_event_items[]": houseEvent,
       if (multiPartImg.isNotEmpty) "image[]": multiPartImg,
-      "city": cityController.text
+      "city": cityController.text,
+      if (instagramController1.text.isNotEmpty)
+        "instagram_link": instagramController1.text,
+      if (facebookController.text.isNotEmpty)
+        "facebook_link": facebookController.text,
+      if (websiteController1.text.isNotEmpty)
+        "website": websiteController1.text,
     });
     print(formData);
     var response =
@@ -618,6 +630,7 @@ class ManagerController extends GetxController {
     cityController.text = venueDetails!.data!.city.toString();
     stateController.text = venueDetails!.data!.state!;
     zipController.text = venueDetails!.data!.zipCode!;
+
     lat = venueDetails!.data!.latitude!;
     lng = venueDetails!.data!.longitude!;
     address = venueDetails!.data!.location!;
@@ -628,9 +641,27 @@ class ManagerController extends GetxController {
     maxOccupancyController.text =
         venueDetails!.data!.venueProperty!.maxOccupancy!;
     maxSeatingController.text = venueDetails!.data!.venueProperty!.maxSeating!;
+    if (venueDetails?.data?.socialLinks != null &&
+        venueDetails!.data!.socialLinks!.isNotEmpty &&
+        venueDetails!.data!.socialLinks!.first.instagram != null) {
+      instagramController1.text =
+          venueDetails!.data!.socialLinks!.first.instagram!;
+    }
+
+    if (venueDetails?.data?.socialLinks != null &&
+        venueDetails!.data!.socialLinks!.isNotEmpty &&
+        venueDetails!.data!.socialLinks!.first.facebook != null) {
+      facebookController.text =
+          venueDetails!.data!.socialLinks!.first.facebook!;
+    }
+    if (venueDetails!.data!.website != null) {
+      websiteController1.text = venueDetails!.data!.website!;
+    }
+
     if (venueDetails!.data!.venueProperty!.maxHour != null) {
       maxHourController.text = venueDetails!.data!.venueProperty!.maxHour!;
     }
+
     openingHoursController.text =
         venueDetails!.data!.venueProperty!.openingHours!;
     closedHoursController.text =
@@ -660,6 +691,9 @@ class ManagerController extends GetxController {
     maxHourController.clear();
     openingHoursController.clear();
     closedHoursController.clear();
+    instagramController1.clear();
+    facebookController.clear();
+    websiteController1.clear();
     venueDetails = null;
     update();
   }
@@ -696,10 +730,6 @@ class ManagerController extends GetxController {
   int? selectedCardId;
   RxBool checkBoxValue = false.obs;
   eventAcceptDeclineFtn({status, EventData? event}) async {
-
-
-
-
     var formData = form.FormData.fromMap(
         {"event_id": event!.id, "status": status, "card_id": selectedCardId});
     var response = await API().postApi(formData, "accept-event-request");

@@ -14,7 +14,6 @@ import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
 
-import '../../paymentMethod/showSelectedBottomSheetCard.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -336,15 +335,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.groovkinInviteScreen);
                                 })
                             : const SizedBox.shrink(),
-                        // API().sp.read("role") == "User"
-                        //     ? customWidget(
-                        //         context: context,
-                        //         img: "assets/groovkin.png",
-                        //         text: "My Groovkin",
-                        //         onTap: () {
-                        //           Get.toNamed(Routes.userMyGroovkinScreen);
-                        //         })
-                        //     : const SizedBox.shrink(),
+                        API().sp.read("role") == "User"
+                            ? customWidget(
+                                context: context,
+                                img: "assets/groovkin.png",
+                                text: "My Groovkin",
+                                onTap: () {
+                                  Get.toNamed(Routes.userMyGroovkinScreen);
+                                })
+                            : const SizedBox.shrink(),
                         API().sp.read("role") == "eventManager"
                             ? customWidget(
                                 context: context,

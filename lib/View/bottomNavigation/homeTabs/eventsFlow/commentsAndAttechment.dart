@@ -249,6 +249,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                             print(managerController.lat);
                             print(managerController.lng);
                             Get.toNamed(Routes.listOfVenuesScreen);
+                            
                           },
                           // onTapShow: true,
                           // hideLocation: true,

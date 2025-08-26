@@ -62,7 +62,7 @@ dependencies:
   http: ^1.2.1
   collection: ^1.19.0
   datetime_picker_formfield_new: ^2.1.0
-  image_cropper_platform_interface: ^7.0.0
+  image_cropper_platform_interface: ^7.0.0  
   form_builder_extra_fields: ^10.2.0
   better_player_plus: 1.0.6
   in_app_purchase: ^3.2.1

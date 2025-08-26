@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userEventDetailsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
-import 'package:groovkin/View/rating/over_all_rating.dart';
 import 'package:groovkin/View/rating/t_user_rating.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 
 class EventRating extends StatefulWidget {
@@ -69,11 +65,12 @@ class _EventRatingState extends State<EventRating> {
                     String date = DateFormat("dd MM, yyyy")
                         .format(DateTime.parse(rating.createdAt!));
                     return UserRating(
-                      image: dummyProfile,
-                      description: rating.ratingText ?? "",
+                      image: dummyProfile, 
+                      description: rating.ratingText ?? "", 
                       date: date,
                       name: rating.user?.name ?? "",
                       ratingNum: double.parse(rating.rateNum.toString()),
+                      
                     );
                   },
                   itemCount: controller.eventDetail!.data!.rating?.length ?? 0,

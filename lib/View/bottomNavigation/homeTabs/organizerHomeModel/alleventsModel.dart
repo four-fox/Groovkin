@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:groovkin/model/spotify_artist_genre_model.dart';
 
 import '../../../../Components/Network/API.dart';
 import '../../../../Components/Network/Url.dart';
