@@ -231,13 +231,13 @@ class EventOrganizerScreen extends StatelessWidget {
                         maxLines: 3,
                         style: poppinsRegularStyle(
                           fontSize: 12,
-                          color: theme.primaryColor.withValues(alpha:0.7),
+                          color: theme.primaryColor.withValues(alpha: 0.7),
                         ),
                       ),
                     ),
               Divider(
                 height: 9,
-                color: DynamicColor.lightWhite.withValues(alpha:0.5),
+                color: DynamicColor.lightWhite.withValues(alpha: 0.5),
               ),
               eventOrganizerVal != 1
                   ? Padding(
@@ -258,7 +258,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                 style: poppinsRegularStyle(
                                   fontSize: 12,
                                   context: context,
-                                  color: theme.primaryColor,
+                                  color: theme.cardColor,
                                 ),
                               ),
                             ),
@@ -280,7 +280,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                   style: poppinsRegularStyle(
                                     fontSize: 12,
                                     context: context,
-                                    color: theme.primaryColor,
+                                    color: theme.cardColor,
                                   ),
                                 ),
                               ),
@@ -331,6 +331,8 @@ class EventOrganizerScreen extends StatelessWidget {
                       labelPadding: const EdgeInsets.all(6),
                       indicatorPadding: const EdgeInsets.all(10),
                       indicatorColor: theme.primaryColor,
+                      labelColor: theme.primaryColor,
+                      unselectedLabelColor: theme.primaryColor,
                       tabs: [
                         const Tab(text: "Organized event"),
                         Tab(
@@ -373,7 +375,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                       style: poppinsMediumStyle(
                                         fontSize: 14,
                                         context: context,
-                                        color: theme.primaryColor,
+                                        color: theme.cardColor,
                                       ),
                                     ),
                                     Obx(
@@ -388,7 +390,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                               : Icons
                                                   .keyboard_arrow_up_outlined,
                                           size: 35,
-                                          color: theme.primaryColor,
+                                          color: theme.cardColor,
                                         ),
                                       ),
                                     )
@@ -445,7 +447,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                       style: poppinsMediumStyle(
                                         fontSize: 14,
                                         context: context,
-                                        color: theme.primaryColor,
+                                        color: theme.cardColor,
                                       ),
                                     ),
                                     Obx(
@@ -460,7 +462,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                               : Icons
                                                   .keyboard_arrow_up_outlined,
                                           size: 35,
-                                          color: theme.primaryColor,
+                                          color: theme.cardColor,
                                         ),
                                       ),
                                     )
@@ -517,7 +519,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                       style: poppinsMediumStyle(
                                         fontSize: 14,
                                         context: context,
-                                        color: theme.primaryColor,
+                                        color: theme.cardColor,
                                       ),
                                     ),
                                     Obx(
@@ -531,7 +533,7 @@ class EventOrganizerScreen extends StatelessWidget {
                                               : Icons
                                                   .keyboard_arrow_up_outlined,
                                           size: 35,
-                                          color: theme.primaryColor,
+                                          color: theme.cardColor,
                                         ),
                                       ),
                                     )

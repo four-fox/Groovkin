@@ -1,7 +1,4 @@
-// ignore_for_file: prefer_final_fields, unnecessary_string_interpolations
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -302,7 +299,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                   fontWeight: FontWeight.w600,
                                   context: context,
                                   underline: true,
-                                  color: theme.primaryColor,
+                                  color: theme.cardColor,
                                 ),
                               ),
                             ),
@@ -334,7 +331,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                             style: poppinsRegularStyle(
                                               fontSize: 14,
                                               context: context,
-                                              color: theme.primaryColor,
+                                              color: theme.cardColor,
                                             ),
                                           ),
                                         ),
@@ -354,7 +351,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                   fontWeight: FontWeight.w600,
                                   context: context,
                                   underline: true,
-                                  color: theme.primaryColor,
+                                  color: theme.cardColor,
                                 ),
                               ),
                             ),
@@ -391,34 +388,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                             style: poppinsRegularStyle(
                                               fontSize: 14,
                                               context: context,
-                                              color: theme.primaryColor,
+                                              color: theme.cardColor,
                                             ),
                                           ),
                                         ),
                                       );
-                                      // return ListView.builder(
-                                      //   shrinkWrap: true,
-                                      //     scrollDirection: Axis.horizontal,
-                                      //     physics: NeverScrollableScrollPhysics(),
-                                      //     itemCount: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems!.length,
-                                      //     itemBuilder: (BuildContext context,indx){
-                                      //       return Padding(
-                                      //         padding: EdgeInsets.symmetric(horizontal: 6),
-                                      //         child: Chip(
-                                      //           backgroundColor: DynamicColor.lightBlackClr,
-                                      //           shape: RoundedRectangleBorder(
-                                      //             borderRadius: BorderRadius.circular(8),
-                                      //           ),
-                                      //           label: Text(controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString(),
-                                      //             style: poppinsRegularStyle(
-                                      //                 fontSize: 14,
-                                      //                 context: context,
-                                      //                 color: theme.primaryColor,
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //       );
-                                      // });
                                     }),
                               ),
                             ),
@@ -431,7 +405,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                   fontWeight: FontWeight.w600,
                                   context: context,
                                   underline: true,
-                                  color: theme.primaryColor,
+                                  color: theme.cardColor,
                                 ),
                               ),
                             ),
@@ -463,7 +437,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                             style: poppinsRegularStyle(
                                               fontSize: 14,
                                               context: context,
-                                              color: theme.primaryColor,
+                                              color: theme.cardColor,
                                             ),
                                           ),
                                         ),
@@ -480,7 +454,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                   fontWeight: FontWeight.w600,
                                   context: context,
                                   underline: true,
-                                  color: theme.primaryColor,
+                                  color: theme.cardColor,
                                 ),
                               ),
                             ),
@@ -517,34 +491,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                             style: poppinsRegularStyle(
                                               fontSize: 14,
                                               context: context,
-                                              color: theme.primaryColor,
+                                              color: theme.cardColor,
                                             ),
                                           ),
                                         ),
                                       );
-                                      /*return ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                  itemBuilder: (BuildContext context,indx){
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 6),
-                                      child: Chip(
-                                        backgroundColor: DynamicColor.lightBlackClr,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
-                                        label: Text(controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
-                                          style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.primaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  });*/
                                     }),
                               ),
                             ),
@@ -557,7 +508,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                   fontWeight: FontWeight.w600,
                                   context: context,
                                   underline: true,
-                                  color: theme.primaryColor,
+                                  color: theme.cardColor,
                                 ),
                               ),
                             ),
@@ -594,7 +545,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                             style: poppinsRegularStyle(
                                               fontSize: 14,
                                               context: context,
-                                              color: theme.primaryColor,
+                                              color: theme.cardColor,
                                             ),
                                           ),
                                         ),
@@ -942,7 +893,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withValues(alpha:0.6)),
+                  color: DynamicColor.whiteClr.withValues(alpha: 0.6)),
             ),
           ),
         ),

@@ -889,6 +889,7 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
   DateTime pre_backpress = DateTime.now();
 
   Timer? onStoppedTyping;
+
   _onChangeHandler() {
     const duration = Duration(
         milliseconds:

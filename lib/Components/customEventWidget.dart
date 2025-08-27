@@ -54,7 +54,7 @@ userCustomEvent(
                       style: poppinsRegularStyle(
                         fontSize: 12,
                         context: context,
-                        color: theme.primaryColor,
+                        color: theme.cardColor,
                       ),
                     ),
                     Text(
@@ -82,7 +82,7 @@ userCustomEvent(
                               style: poppinsRegularStyle(
                                 fontSize: 12,
                                 context: context,
-                                color: theme.primaryColor,
+                                color: theme.cardColor,
                               ),
                             ),
                           ),

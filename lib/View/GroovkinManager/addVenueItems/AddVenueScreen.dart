@@ -81,11 +81,13 @@ class AddVenueScreen extends StatelessWidget {
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withValues(alpha:0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withValues(alpha:0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         // border: InputBorder.none,
                         label: Text(
                           'Opening hours',
@@ -155,11 +157,13 @@ class AddVenueScreen extends StatelessWidget {
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withValues(alpha:0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
-                                color: DynamicColor.grayClr.withValues(alpha:0.6))),
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.6))),
                         // border: InputBorder.none,
                         label: Text(
                           'Closing hours',
@@ -275,7 +279,7 @@ class AddVenueScreen extends StatelessWidget {
                                       style: poppinsRegularStyle(
                                           context: context,
                                           fontSize: 12,
-                                          color: DynamicColor.whiteClr),
+                                          color: theme.primaryColor),
                                     ),
                                   ],
                                 ),

@@ -59,7 +59,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               style: poppinsMediumStyle(
                 fontSize: 14,
                 context: context,
-                color: theme.primaryColor,
+                color: theme.cardColor,
               ),
             ),
           ),

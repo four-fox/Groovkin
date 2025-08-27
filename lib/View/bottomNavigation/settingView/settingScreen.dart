@@ -210,7 +210,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         //         }
                         //       }),
                         // ),
-                        if (API().sp.read("currentRole") != "eventManager")
+                        if (API().sp.read("role") == "eventManager")
                           Obx(
                             () => customWidget(
                                 context: context,
