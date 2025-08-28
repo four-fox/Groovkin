@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
-import 'package:groovkin/View/GroovkinUser/UserBottomView/myUserGroovkinScreen.dart';
+import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroovkinScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/UserMyEvents.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';

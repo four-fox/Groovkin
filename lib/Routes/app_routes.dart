@@ -110,6 +110,8 @@ abstract class Routes {
   static const viewAllNearByScreen = _Path.viewAllNearByScreen;
   static const viewAllTopRatingScreen = _Path.viewAllTopRatingScreen;
   static const settingNotificationScreen = _Path.settingNotificationScreen;
+  static const calenderView = _Path.calenderView;
+  static const editUserLifeStyleScreen = _Path.editUserLifeStyleScreen;
 
   ///chat screen
   static const chatNewUserScreen = _Path.chatNewUserScreen;
@@ -192,10 +194,12 @@ abstract class _Path {
   static const eventOrganizerScreen = "/EventOrganizerScreen";
   static const searchFilterScreen = "/SearchFilterScreen";
   static const createNewGroup = "/CreateNewGroup";
+  static const calenderView = "/calenderView";
   static const viewCreatedGroup = "/ViewCreatedGroup";
   // static const inviteFriendsInGroups = "/InviteFriendsInGroups";
   static const theSquadScreen = "/TheSquadScreen";
   static const settingNotificationScreen = "/settingNotificationScreen";
+  static const editUserLifeStyleScreen = "/editUserLifeStyleScreen";
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manger
   static const createCompanyProfileScreen = "/CreateCompanyProfileScreen";

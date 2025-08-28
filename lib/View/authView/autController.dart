@@ -308,6 +308,7 @@ class AuthController extends GetxController {
 
   /// todo forgot password functionality
   final forgotPassEmailController = TextEditingController();
+
   forgotPassword() async {
     var formData = form.FormData.fromMap({
       "email": forgotPassEmailController.text,
@@ -323,6 +324,7 @@ class AuthController extends GetxController {
   final newPassController = TextEditingController();
   final newConfirmPassController = TextEditingController();
   final newPassOTPController = TextEditingController();
+
   newPassword() async {
     var formData = form.FormData.fromMap({
       "email": forgotPassEmailController.text,
@@ -341,6 +343,7 @@ class AuthController extends GetxController {
   final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final newConfirmPasswordController = TextEditingController();
+
   changePassword(context, theme) async {
     var formData = form.FormData.fromMap({
       "old_password": oldPasswordController.text,
@@ -454,6 +457,7 @@ class AuthController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get profile
   ProfileModel? userData;
   RxBool getProfileLoader = true.obs;
+
   getProfile({userId}) async {
     getProfileLoader(false);
     var response = await API().getApi(url: "user-profile/$userId");
@@ -501,7 +505,7 @@ class AuthController extends GetxController {
     Get.toNamed(Routes.profileScreen);
   }
 
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>toDo create profile functionality
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo create profile functionality
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -1770,6 +1774,7 @@ class AuthController extends GetxController {
           //   "indexValue": 0
           // }
         );
+
         BotToast.showText(
           text: "Genre Add Succesfully!",
           contentColor: Colors.black,

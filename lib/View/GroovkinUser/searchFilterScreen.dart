@@ -7,6 +7,8 @@ import 'package:groovkin/Components/dropDown.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/showCustomMap.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
 import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';
@@ -19,21 +21,37 @@ class SearchFilterScreen extends StatefulWidget {
 }
 
 class _SearchFilterScreenState extends State<SearchFilterScreen> {
-  double _currentSliderValue = 20;
+  late HomeController homeController;
+  late CleanCalendarController calendarController;
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      homeController = Get.find<HomeController>();
+    } else {
+      homeController = Get.put(HomeController());
+    }
+    calendarController = CleanCalendarController(
+      minDate: DateTime.now(),
+      maxDate: DateTime.now().add(const Duration(days: 365)),
+      initialDateSelected: homeController.firstDate,
+      endDateSelected: homeController.secondDate,
+      onRangeSelected: (firstDate, secondDate) {
+        homeController.firstDate = firstDate;
+        homeController.secondDate = secondDate;
+      },
+      onDayTapped: (date) {},
+      // readOnly: true,
+      onPreviousMinDateTapped: (date) {},
+      onAfterMaxDateTapped: (date) {},
+      weekdayStart: DateTime.monday,
+      // initialFocusDate: DateTime(2023, 5),
+      // initialDateSelected: DateTime(2022, 3, 15),
+      // endDateSelected: DateTime(2022, 3, 20),
+    );
+  }
 
-  final calendarController = CleanCalendarController(
-    minDate: DateTime.now(),
-    maxDate: DateTime.now().add(const Duration(days: 365)),
-    onRangeSelected: (firstDate, secondDate) {},
-    onDayTapped: (date) {},
-    // readOnly: true,
-    onPreviousMinDateTapped: (date) {},
-    onAfterMaxDateTapped: (date) {},
-    weekdayStart: DateTime.monday,
-    // initialFocusDate: DateTime(2023, 5),
-    // initialDateSelected: DateTime(2022, 3, 15),
-    // endDateSelected: DateTime(2022, 3, 20),
-  );
+  double _currentSliderValue = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -87,39 +105,45 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      image: const DecorationImage(
-                        image: AssetImage("assets/lightBg.png"),
-                        fit: BoxFit.fill,
-                      ),
-                      border: Border.all(
-                          color: DynamicColor.grayClr.withValues(alpha:0.7))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "DD/MM/YYYY",
-                        style: poppinsRegularStyle(
-                          fontSize: 15,
-                          context: context,
-                          color: theme.primaryColor,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.calenderView);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        image: const DecorationImage(
+                          image: AssetImage("assets/lightBg.png"),
+                          fit: BoxFit.fill,
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(calenderView());
-                        },
-                        child: Icon(
-                          Icons.calendar_month,
-                          size: 28,
-                          color: theme.primaryColor,
+                        border: Border.all(
+                            color:
+                                DynamicColor.grayClr.withValues(alpha: 0.7))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "DD/MM/YYYY",
+                          style: poppinsRegularStyle(
+                            fontSize: 15,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
                         ),
-                      )
-                    ],
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.calenderView);
+                          },
+                          child: Icon(
+                            Icons.calendar_month,
+                            size: 28,
+                            color: theme.primaryColor,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -219,47 +243,99 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
   }
 }
 
-class calenderView extends StatelessWidget {
-  final calendarController = CleanCalendarController(
-    minDate: DateTime.now(),
-    maxDate: DateTime.now().add(const Duration(days: 365)),
-    onRangeSelected: (firstDate, secondDate) {},
-    onDayTapped: (date) {},
-    // readOnly: true,
-    onPreviousMinDateTapped: (date) {},
-    onAfterMaxDateTapped: (date) {},
-    weekdayStart: DateTime.monday,
-    // initialFocusDate: DateTime(2023, 5),
-    // initialDateSelected: DateTime(2022, 3, 15),
-    // endDateSelected: DateTime(2022, 3, 20),
-  );
-
+class calenderView extends StatefulWidget {
   calenderView({super.key});
+
+  @override
+  State<calenderView> createState() => _calenderViewState();
+}
+
+class _calenderViewState extends State<calenderView> {
+  late HomeController homeController;
+  late CleanCalendarController calendarController;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      homeController = Get.find<HomeController>();
+    } else {
+      homeController = Get.put(HomeController());
+    }
+
+    calendarController = CleanCalendarController(
+      minDate: DateTime.now(),
+      initialDateSelected: homeController.firstDate,
+      endDateSelected: homeController.secondDate,
+      maxDate: DateTime.now().add(const Duration(days: 365)),
+      onRangeSelected: (firstDate, secondDate) {
+        if (firstDate == secondDate) {
+          bottomToast(text: "Same Date not acceptale");
+          return;
+        }
+        homeController.firstDate = firstDate;
+        homeController.secondDate = secondDate;
+        homeController.update();
+      },
+      onDayTapped: (date) {},
+      // readOnly: true,
+      onPreviousMinDateTapped: (date) {},
+      onAfterMaxDateTapped: (date) {},
+      weekdayStart: DateTime.monday,
+
+      // initialFocusDate: DateTime(2023, 5),
+      // initialDateSelected: DateTime(2022, 3, 15),
+      // endDateSelected: DateTime(2022, 3, 20),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      // backgroundColor: theme.primaryColor,
-      backgroundColor: Colors.transparent,
-      appBar: customAppBar(theme: theme, text: "Select Date Range", actions: [
-        IconButton(
-          onPressed: () {
-            calendarController.clearSelectedDates();
-          },
-          icon: const Icon(Icons.clear),
-        )
-      ]),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.arrow_downward),
-        onPressed: () {
-          calendarController.jumpToMonth(date: DateTime(2022, 8));
-        },
-      ),
-      body: ScrollableCleanCalendar(
-        calendarController: calendarController,
-        layout: Layout.BEAUTY,
-        calendarCrossAxisSpacing: 0,
+    return GetBuilder<HomeController>(
+      builder: (controller) => Scaffold(
+        // backgroundColor: theme.primaryColor,
+        backgroundColor: Colors.transparent,
+        appBar: customAppBar(theme: theme, text: "Select Date Range", actions: [
+          IconButton(
+            onPressed: () {
+              calendarController.clearSelectedDates();
+              controller.firstDate = null;
+              controller.secondDate = null;
+              controller.update();
+            },
+            icon: const Icon(Icons.clear),
+          )
+        ]),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (controller.firstDate != null && controller.secondDate != null)
+              FloatingActionButton(
+                heroTag: UniqueKey(),
+                child: const Icon(Icons.check),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+            SizedBox(
+              width: 10,
+            ),
+            FloatingActionButton(
+              heroTag: UniqueKey(),
+              child: const Icon(Icons.arrow_downward),
+              onPressed: () {
+                calendarController.jumpToMonth(
+                    date: DateTime.now().add(const Duration(days: 365)));
+              },
+            ),
+          ],
+        ),
+        body: ScrollableCleanCalendar(
+          calendarController: calendarController,
+          layout: Layout.BEAUTY,
+          calendarCrossAxisSpacing: 0,
+        ),
       ),
     );
   }

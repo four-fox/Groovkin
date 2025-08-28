@@ -113,6 +113,7 @@ class EventPreview extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
+
             eventDateTime(
               context: context,
               iconBgClr: DynamicColor.darkGrayClr,
@@ -139,9 +140,11 @@ class EventPreview extends StatelessWidget {
             //       organizerFollowerVal.value = !organizerFollowerVal.value;
             //     }
             // ),),
+
             const SizedBox(
               height: 12,
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
               child: Align(
@@ -157,6 +160,7 @@ class EventPreview extends StatelessWidget {
                 ),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
               child: Align(
@@ -174,6 +178,7 @@ class EventPreview extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
+
             ShowCustomMap(
               lat: double.parse(((_controller.eventDetail != null) &&
                       (_controller.eventDetail!.data!.venue != null))

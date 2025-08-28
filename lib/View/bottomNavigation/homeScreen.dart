@@ -91,12 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 90,
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
-                            // color: Colors.amberAccent
-                            color: DynamicColor.darkGrayClr,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: theme.primaryColor,
-                            )),
+                          // color: Colors.amberAccent
+                          color: DynamicColor.darkGrayClr,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: theme.primaryColor,
+                          ),
+                        ),
                         child: Center(
                           child: Text(
                             "View All",

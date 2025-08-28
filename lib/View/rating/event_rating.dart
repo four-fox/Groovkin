@@ -65,12 +65,11 @@ class _EventRatingState extends State<EventRating> {
                     String date = DateFormat("dd MM, yyyy")
                         .format(DateTime.parse(rating.createdAt!));
                     return UserRating(
-                      image: dummyProfile, 
-                      description: rating.ratingText ?? "", 
+                      image: dummyProfile,
+                      description: rating.ratingText ?? "",
                       date: date,
                       name: rating.user?.name ?? "",
                       ratingNum: double.parse(rating.rateNum.toString()),
-                      
                     );
                   },
                   itemCount: controller.eventDetail!.data!.rating?.length ?? 0,

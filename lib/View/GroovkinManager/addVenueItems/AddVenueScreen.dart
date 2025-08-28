@@ -18,7 +18,6 @@ class AddVenueScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    final DateFormat timeFormat = DateFormat('hh:mm a');
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Add Venue"),
       body: GetBuilder<ManagerController>(builder: (controller) {

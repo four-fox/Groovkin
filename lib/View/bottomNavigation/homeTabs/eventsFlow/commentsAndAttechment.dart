@@ -249,7 +249,6 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                             print(managerController.lat);
                             print(managerController.lng);
                             Get.toNamed(Routes.listOfVenuesScreen);
-                            
                           },
                           // onTapShow: true,
                           // hideLocation: true,
@@ -535,7 +534,6 @@ class ListOfVenuesScreen extends StatelessWidget {
                           color: theme.scaffoldBackgroundColor),
                     ),
                   ),
-
                   GestureDetector(
                       onTap: () {
                         Get.back();
@@ -543,8 +541,6 @@ class ListOfVenuesScreen extends StatelessWidget {
                       child: const ImageIcon(
                         AssetImage("assets/backArrow.png"),
                       )),
-
-
                 ],
               ),
             ),

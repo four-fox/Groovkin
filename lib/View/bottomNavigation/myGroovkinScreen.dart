@@ -64,7 +64,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 18),
-                        color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                        color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -149,7 +149,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 18),
-                        color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                        color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -265,7 +265,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 12, horizontal: 18),
-                        color: DynamicColor.avatarBgClr.withValues(alpha:0.44),
+                        color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -360,7 +360,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
         children: [
           CircleAvatar(
               radius: 15,
-              backgroundColor: DynamicColor.avatarBgClr.withValues(alpha:0.8),
+              backgroundColor: DynamicColor.avatarBgClr.withValues(alpha: 0.8),
               child: ImageIcon(
                 isNetworkImage != null && isNetworkImage == true
                     ? NetworkImage(image)
@@ -399,7 +399,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                 image: const AssetImage('assets/venue1.png'),
                 fit: BoxFit.fill,
                 colorFilter: ColorFilter.mode(
-                  DynamicColor.grayClr.withValues(alpha:0.3),
+                  DynamicColor.grayClr.withValues(alpha: 0.3),
                   BlendMode.modulate,
                 ))),
         child: Center(

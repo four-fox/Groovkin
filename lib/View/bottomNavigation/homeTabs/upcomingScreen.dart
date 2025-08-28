@@ -1125,28 +1125,35 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             const SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Text(
-                "Location",
-                style: poppinsMediumStyle(
-                    fontWeight: FontWeight.w700,
-                    color: DynamicColor.lightRedClr,
-                    context: context,
-                    fontSize: 17),
-              ),
-            ),
+
             controller.eventDetail!.data!.location == null
                 ? const SizedBox.shrink()
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Text(
-                      controller.eventDetail!.data!.location.toString(),
-                      style: poppinsMediumStyle(
-                          color: theme.primaryColor,
-                          context: context,
-                          fontSize: 16),
-                    ),
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Text(
+                          "Location",
+                          style: poppinsMediumStyle(
+                              fontWeight: FontWeight.w700,
+                              color: DynamicColor.lightRedClr,
+                              context: context,
+                              fontSize: 17),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Text(
+                          controller.eventDetail!.data!.location.toString(),
+                          style: poppinsMediumStyle(
+                            color: theme.primaryColor,
+                            context: context,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
             const SizedBox(
               height: 6,

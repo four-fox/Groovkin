@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,7 +14,6 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
-
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -543,6 +543,7 @@ class _SettingScreenState extends State<SettingScreen> {
       bool? showIconWIdget,
       Widget? iconWidget,
       bool iconShow = false}) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -587,15 +588,18 @@ class _SettingScreenState extends State<SettingScreen> {
                             Icons.arrow_forward_ios,
                             color: DynamicColor.grayClr.withValues(alpha: 0.7),
                           )
-                    : SizedBox(
-                        height: 30,
-                        child: Switch(
+                    : Transform.scale(
+                        scale: 1.0,
+                        child: SizedBox(
+                          height: 10,
+                          child: CupertinoSwitch(
                             inactiveThumbColor: DynamicColor.yellowClr,
-                            activeColor: DynamicColor.yellowClr,
-                            inactiveTrackColor: DynamicColor.whiteClr,
-                            activeTrackColor: DynamicColor.whiteClr,
+                            inactiveTrackColor: theme.primaryColor,
+                            activeTrackColor: DynamicColor.yellowClr,
                             value: switchCondition,
-                            onChanged: onChanged),
+                            onChanged: onChanged,
+                          ),
+                        ),
                       )
               ],
             ),

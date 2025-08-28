@@ -5,6 +5,7 @@ import 'package:groovkin/View/GroovkinUser/UserBottomView/eventsNearByMeUserMode
 import 'package:groovkin/View/GroovkinUser/UserBottomView/topRatedEventUserModel.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/userPastEventHistory.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userOngoingEventsModel.dart';
+import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistoryModel.dart';
 import 'package:dio/dio.dart' as form;
 import 'package:groovkin/model/analytic_list_model.dart';
@@ -13,7 +14,7 @@ import 'package:groovkin/model/transaction_history_model.dart'
     as transaction_history_model;
 import 'package:groovkin/utils/utils.dart';
 
-import '../../model/my_groovkin_model.dart';
+import '../../model/my_groovkin_model.dart' as groovkin_model;
 
 class HomeController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> home functionality
@@ -79,6 +80,8 @@ class HomeController extends GetxController {
   }
 
   /// >>>>>>>>>>>>>>>>>>>>> get event near by me
+  DateTime? firstDate, secondDate;
+
   NearByEventsModel? eventNearByMe;
   RxBool getEventNearByMeLoader = true.obs;
   getEventNearByMe() async {
@@ -186,7 +189,7 @@ class HomeController extends GetxController {
       }
     }
   }
-  
+
   String cardNumber = "";
   String cardHolderName = '';
 
@@ -249,12 +252,12 @@ class HomeController extends GetxController {
     update();
   }
 
-  MyGroovkinModel? myGroovkinModel;
+  groovkin_model.MyGroovkinModel? myGroovkinModel;
 
   Future<void> getMyGroovkinData() async {
     final response = await API().getApi(url: "my-groovkin");
     if (response.statusCode == 200) {
-      myGroovkinModel = MyGroovkinModel.fromJson(response.data);
+      myGroovkinModel = groovkin_model.MyGroovkinModel.fromJson(response.data);
     }
     update();
   }
@@ -280,6 +283,50 @@ class HomeController extends GetxController {
     final response = await API().getApi(url: "show-analytics-list");
     if (response.statusCode == 200) {
       analyticsListModel = AnalyticsListModel.fromJson(response.data);
+    }
+    update();
+  }
+
+// life Style Fetch
+  RxBool getSurveyLifeStyleLoader = true.obs;
+  SurveyModel? surveyLifyStyleData;
+  List<CategoryItem> musicGenre = [];
+  Future<void> fetchLifeSyle() async {
+    getSurveyLifeStyleLoader(false);
+    try {
+      final response =
+          await API().getApi(url: "show-category-with-items?type=life_style");
+      if (response.statusCode == 200) {
+        surveyLifyStyleData = SurveyModel.fromJson(response.data);
+      
+        
+      
+      }
+
+      getSurveyLifeStyleLoader(true);
+    } catch (e) {
+      getSurveyLifeStyleLoader(true);
+      rethrow;
+    }
+    update();
+  }
+
+// Music Genre Fetch
+  RxBool getSurveyMusicGenreLoader = true.obs;
+  SurveyModel? surveyMusicGenreData;
+  Future<void> fetchMusicGenre() async {
+    getSurveyMusicGenreLoader(false);
+    try {
+      final response = await API().getApi(
+        url: "show-category-with-items?type=music_genre",
+      );
+      if (response.statusCode == 200) {
+        surveyMusicGenreData = SurveyModel.fromJson(response.data);
+        getSurveyMusicGenreLoader(true);
+      }
+    } catch (e) {
+      getSurveyMusicGenreLoader(true);
+      rethrow;
     }
     update();
   }
