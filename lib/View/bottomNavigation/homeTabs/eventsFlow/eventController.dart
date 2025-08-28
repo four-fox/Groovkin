@@ -1131,16 +1131,18 @@ class EventController extends GetxController {
         if (managerController.managerPendingEvents != null) {
           int index = managerController.managerPendingEvents!.data!.data!
               .indexWhere((test) => test.id == eventId);
-          managerController.managerPendingEvents!.data!.data!.remove(
-              managerController.managerPendingEvents!.data!.data![index]);
+          if (index != -1) {
+            managerController.managerPendingEvents!.data!.data!.remove(
+                managerController.managerPendingEvents!.data!.data![index]);
+          }
         }
       }
       cancellationController.clear();
       update();
       Get.back();
     }
-  }
-
+  } 
+  
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get upcoming events
   UpcomingEventsModel? upcomingEventData;
   RxBool getUpcomingEventsLoader = true.obs;

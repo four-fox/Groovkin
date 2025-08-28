@@ -668,7 +668,6 @@ class AuthController extends GetxController {
     } else {
       itemsList.remove(items);
     }
-
     update();
   }
 
@@ -984,6 +983,7 @@ class AuthController extends GetxController {
               musicCategory[i].categoryId.toString()));
         }
       }
+
       if (musicCategory[i].selectedItem!.value == true) {
         id = musicCategory[i].categoryId;
         data.fields.add(MapEntry('music_genre[$index][music_genre_item_ids][]',

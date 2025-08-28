@@ -22,6 +22,8 @@ class HomeController extends GetxController {
   RxInt selectedFilter = 0.obs;
   RxInt? showIndexValue = 0.obs;
   RxString? eventStatus = "Completed".obs;
+  RxInt selectedFilters = 0.obs;
+
 
   ///history have selection of cancel & complete
   historyStatus() async {
@@ -61,9 +63,19 @@ class HomeController extends GetxController {
   RxBool getRecommendedLoader = true.obs;
   bool newsFeedWait = false;
 
-  getRecommended({fullUrl, String url = 'recommended-for-you-events'}) async {
+  getRecommended(
+      {fullUrl,
+      String url = 'recommended-for-you-events',
+      String? filter}) async {
     getRecommendedLoader(false);
-    var response = await API().getApi(url: url, fullUrl: fullUrl);
+    var response = await API().getApi(
+        url: url,
+        fullUrl: fullUrl,
+        queryParameters: filter != null
+            ? {
+                "filter": filter,
+              }
+            : null);
     if (response.statusCode == 200) {
       if (fullUrl == null) {
         recommendedEventData = RecommendedEventsModel.fromJson(response.data);
@@ -108,12 +120,17 @@ class HomeController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo get user history functionality
+  RxBool recommendedVal = false.obs;
+  RxBool cancelledVal = false.obs;
   RxBool getUserHistoryLoader = true.obs;
   UserPastEventHistoryModel? userPastHistory;
-  userPastEventHistory({fullUrl}) async {
+  userPastEventHistory({fullUrl, String? filter}) async {
     getUserHistoryLoader(false);
     recommendedEventData = null;
-    var response = await API().getApi(url: "past-events", fullUrl: fullUrl);
+    var response = await API().getApi(
+        url: "past-events",
+        fullUrl: fullUrl,
+        queryParameters: filter != null ? {"filter": filter} : null);
     if (response.statusCode == 200) {
       if (fullUrl == null) {
         userPastHistory = UserPastEventHistoryModel.fromJson(response.data);
@@ -123,13 +140,15 @@ class HomeController extends GetxController {
     }
   }
 
+  
+
   /// cancelled events in user history
   RxBool cancelEventUserHistoryLoader = true.obs;
-  cancelEventUserHistory() async {
+  cancelEventUserHistory({String? filter}) async {
     cancelEventUserHistoryLoader(false);
     var response = await API().getApi(
-      url: "cancelled-events",
-    );
+        url: "cancelled-events",
+        queryParameters: filter != null ? {"filter": filter} : null);
     if (response.statusCode == 200) {
       recommendedEventData = RecommendedEventsModel.fromJson(response.data);
       cancelEventUserHistoryLoader(true);
@@ -290,17 +309,32 @@ class HomeController extends GetxController {
 // life Style Fetch
   RxBool getSurveyLifeStyleLoader = true.obs;
   SurveyModel? surveyLifyStyleData;
-  List<CategoryItem> musicGenre = [];
+  List<String> surveyLifemusicGenreId = [];
+  List<CategoryItem> surveyLifeCategoryItem = [];
   Future<void> fetchLifeSyle() async {
+    surveyLifeCategoryItem.clear();
     getSurveyLifeStyleLoader(false);
     try {
       final response =
           await API().getApi(url: "show-category-with-items?type=life_style");
       if (response.statusCode == 200) {
         surveyLifyStyleData = SurveyModel.fromJson(response.data);
-      
-        
-      
+
+        for (var category in surveyLifyStyleData!.data!) {
+          final filteredItems = category.categoryItems
+                  ?.where((item) => item.userCategoryItems != null)
+                  .toList() ??
+              [];
+          surveyLifeCategoryItem.addAll(filteredItems);
+          // add only ids
+          surveyLifemusicGenreId.addAll(
+            filteredItems.map((item) {
+              category.showItems!.value = true;
+              item.selectedItem!.value = true;
+              return item.id.toString();
+            }),
+          );
+        }
       }
 
       getSurveyLifeStyleLoader(true);
@@ -311,24 +345,225 @@ class HomeController extends GetxController {
     update();
   }
 
+  Future<void> surveyLifeStyleAddFtn(
+      {CategoryItem? items, value, SurveyObject? surveyObj}) async {
+    items!.selectedItem!.value = value;
+    if (items.selectedItem!.value == true) {
+      surveyLifeCategoryItem.add(items);
+    } else {
+      surveyLifeCategoryItem.removeWhere((data) => data.id == items.id);
+    }
+    update();
+  }
+
 // Music Genre Fetch
   RxBool getSurveyMusicGenreLoader = true.obs;
   SurveyModel? surveyMusicGenreData;
+  List<CategoryItem> surveyMusicGenreItem = [];
+  List<String> surveyMusicGenreItemId = [];
+
   Future<void> fetchMusicGenre() async {
     getSurveyMusicGenreLoader(false);
+    surveyMusicGenreItem.clear();
     try {
       final response = await API().getApi(
         url: "show-category-with-items?type=music_genre",
       );
       if (response.statusCode == 200) {
         surveyMusicGenreData = SurveyModel.fromJson(response.data);
-        getSurveyMusicGenreLoader(true);
+        for (var data in surveyMusicGenreData!.data!) {
+          final filteredItem = data.categoryItems
+                  ?.where((data) => data.userCategoryItems != null)
+                  .toList() ??
+              [];
+          surveyMusicGenreItem.addAll(filteredItem);
+          surveyMusicGenreItemId.addAll(filteredItem.map((item) {
+            data.showItems!.value = true;
+            item.selectedItem!.value = true;
+            return item.id.toString();
+          }));
+        }
       }
+
+      getSurveyMusicGenreLoader(true);
     } catch (e) {
       getSurveyMusicGenreLoader(true);
       rethrow;
     }
     update();
+  }
+
+  Future<void> surveyMusicGenreAddFtn(
+      {CategoryItem? items, value, SurveyObject? surveyObj}) async {
+    items!.selectedItem!.value = value;
+    if (value == true) {
+      surveyMusicGenreItem.add(items);
+    } else {
+      surveyMusicGenreItem.removeWhere((data) => data.id == items.id);
+    }
+    update();
+  }
+
+  Future<void> updateSurvey(
+      {bool isFromLifeStyle = false, bool isFromMusicGenre = false}) async {
+    try {
+      form.FormData formData = form.FormData();
+
+      // if (isFromMusicGenre == true) {
+      //   int? indexVal = -1;
+      //   for (var i = 0; i <= surveyMusicGenreItem.length; i++) {
+      //     if (i != surveyMusicGenreItem.length) {
+      //       formData.fields.add(MapEntry("categories[$i][category_id]",
+      //           surveyMusicGenreItem[i].categoryId.toString()));
+      //     }
+      //   }
+
+      //   for (var element in surveyMusicGenreData!.data!) {
+      //     for (var i = 0; i < element.categoryItems!.length; i++) {
+      //       if (surveyMusicGenreItem.contains(element.categoryItems![i])) {
+      //         indexVal = indexVal! + 1;
+      //       }
+      //       if (i != element.categoryItems!.length) {
+      //         if (element.categoryItems![i].selectedItem!.value == true) {
+      //           formData.fields.add(MapEntry(
+      //               'categories[$indexVal][item_ids][]',
+      //               element.categoryItems![i].id.toString()));
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+
+      if (isFromLifeStyle == true) {
+        int indexVal2 = -1;
+        int? id = -1;
+        for (var i = 0; i < surveyLifeCategoryItem.length; i++) {
+          if (i != surveyLifeCategoryItem.length) {
+            if (id != surveyLifeCategoryItem[i].categoryId) {
+              indexVal2 += 1;
+              formData.fields.add(MapEntry(
+                  "categories[$indexVal2][category_id]",
+                  surveyLifeCategoryItem[i].categoryId.toString()));
+            }
+          }
+
+          if (surveyLifeCategoryItem[i].selectedItem!.value == true) {
+            id = surveyLifeCategoryItem[i].categoryId;
+            formData.fields.add(MapEntry("categories[$indexVal2][item_ids][]",
+                surveyLifeCategoryItem[i].id.toString()));
+          }
+        }
+      }
+
+      if (isFromMusicGenre == true) {
+        int categoryIndex = -1;
+        int? id = -1;
+        for (var i = 0; i < surveyMusicGenreItem.length; i++) {
+          if (i != surveyMusicGenreItem.length) {
+            if (id != surveyMusicGenreItem[i].categoryId) {
+              categoryIndex += 1;
+              formData.fields.add(MapEntry(
+                  "categories[$categoryIndex][category_id]",
+                  surveyMusicGenreItem[i].categoryId.toString()));
+            }
+          }
+
+          if (surveyMusicGenreItem[i].selectedItem!.value == true) {
+            id = surveyMusicGenreItem[i].categoryId;
+            formData.fields.add(MapEntry(
+                "categories[$categoryIndex][item_ids][]",
+                surveyMusicGenreItem[i].id.toString()));
+          }
+        }
+      }
+
+      final response = await API().postApi(formData, "update-quick-survey");
+      if (response.statusCode == 200) {
+        if (isFromMusicGenre == true) {
+          await fetchMusicGenre();
+        }
+        if (isFromLifeStyle == true) {
+          await fetchLifeSyle();
+        }
+        update();
+        Get.back();
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    // if (isFromMusicGenre == true) {
+    //   int categoryIndex = -1;
+
+    //   for (var element in surveyMusicGenreData!.data!) {
+    //     // get only the selected items for this category
+    //     final selectedItems = element.categoryItems!
+    //         .where((item) => item.selectedItem?.value == true)
+    //         .toList();
+
+    //     if (selectedItems.isNotEmpty) {
+    //       categoryIndex++;
+
+    //       // Add category_id
+    //       formData.fields.add(MapEntry(
+    //         "categories[$categoryIndex][category_id]",
+    //         element.id.toString(),
+    //       ));
+
+    //       // Add selected items under this category
+    //       for (var item in selectedItems) {
+    //         formData.fields.add(MapEntry(
+    //           "categories[$categoryIndex][item_ids][]",
+    //           item.id.toString(),
+    //         ));
+    //       }
+    //     }
+    //   }
+    // }
+
+    //   for (var element in surveyLifyStyleData!.data!) {
+    //     for (var i = 0; i < element.categoryItems!.length; i++) {
+    //       if (surveyLifeCategoryItem.contains(element.categoryItems![i])) {
+    //         indexVal2 = indexVal2! + 1;
+    //       }
+    //       if (i != element.categoryItems!.length) {
+    //         if (element.categoryItems![i].selectedItem!.value == true) {
+    //           formData.fields.add(MapEntry(
+    //               'categories[$indexVal2][item_ids][]',
+    //               element.categoryItems![i].id.toString()));
+    //         }
+    //       }
+    //     }
+    //   }
+
+    // if (isFromLifeStyle == true) {
+    //   int categoryIndex = -1;
+
+    //   for (var element in surveyLifyStyleData!.data!) {
+    //     // only include if this category has selected items
+    //     final selectedItems = element.categoryItems!
+    //         .where((item) => item.selectedItem?.value == true)
+    //         .toList();
+
+    //     if (selectedItems.isNotEmpty) {
+    //       categoryIndex++;
+
+    //       // Add category_id
+    //       formData.fields.add(MapEntry(
+    //         "categories[$categoryIndex][category_id]",
+    //         element.id.toString(),
+    //       ));
+
+    //       // Add selected items for this category
+    //       for (var item in selectedItems) {
+    //         formData.fields.add(MapEntry(
+    //           "categories[$categoryIndex][item_ids][]",
+    //           item.id.toString(),
+    //         ));
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 

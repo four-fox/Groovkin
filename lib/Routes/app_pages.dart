@@ -11,6 +11,7 @@ import 'package:groovkin/View/GroovkinManager/paymentConfirmationScreen.dart';
 import 'package:groovkin/View/GroovkinManager/venueDetailsManagerFlow.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/groupScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/theSquadScreen.dart';
+import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroonvkinMusicGenreScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroovkinLifeStyleScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userEventDetailsScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
@@ -411,6 +412,9 @@ class AppPages {
     GetPage(
         name: _Path.editUserLifeStyleScreen,
         page: () => Myusergroovkinlifestylescreen()),
+            GetPage(
+        name: _Path.myusergroonvkinmusicgenrescreen,
+        page: () => Myusergroonvkinmusicgenrescreen()),
     GetPage(
       name: _Path.calenderView,
       page: () => calenderView(),

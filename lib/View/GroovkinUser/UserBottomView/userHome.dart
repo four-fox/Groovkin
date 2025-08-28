@@ -857,7 +857,7 @@ class ViewAllEventListScreen extends StatefulWidget {
 
 class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
   // EventController _eventController = Get.find<EventController>();
-
+  
   late HomeController _controller;
   late EventController _eventController;
   late AuthController _authController;

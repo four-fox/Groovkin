@@ -168,7 +168,7 @@ class CategoryItem {
         selectedItem: json["selectedItem"] ?? false.obs,
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-        userCategoryItems: json["user_category_items"],
+        userCategoryItems: json["user_selected_item"],
       );
 
   Map<String, dynamic> toJson() => {

@@ -49,6 +49,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                     const SizedBox(
                       height: 10,
                     ),
+
                     // Life Style
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -74,8 +75,10 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                         ],
                       ),
                     ),
+
                     ListView.builder(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final data =
                             controller.surveyLifyStyleData!.data![index];
@@ -88,7 +91,6 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                         if (filteredItems.isEmpty) {
                           return const SizedBox.shrink();
                         }
-
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -106,6 +108,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                             ),
                             ListView.builder(
                               shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 final filteredItems = data.categoryItems
                                         ?.where((item) =>
@@ -150,9 +153,11 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                       },
                       itemCount: controller.surveyLifyStyleData!.data!.length,
                     ),
+
                     const SizedBox(
                       height: 10,
                     ),
+
                     // Music Genre
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -169,15 +174,20 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Get.toNamed(
+                                  Routes.myusergroonvkinmusicgenrescreen);
+                            },
                             child:
                                 Icon(Icons.edit, color: DynamicColor.yellowClr),
-                          )
+                          ),
                         ],
                       ),
                     ),
+
                     ListView.builder(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final data =
                             controller.surveyMusicGenreData!.data![index];

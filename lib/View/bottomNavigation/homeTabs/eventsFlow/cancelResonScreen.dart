@@ -25,70 +25,72 @@ class CancelReason extends StatelessWidget {
       body: GetBuilder<EventController>(builder: (controller) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: Text(
-                  "Reason for cancellation",
-                  style: poppinsRegularStyle(
-                    fontSize: 18,
-                    context: context,
-                    color: theme.primaryColor,
+          child: Form(
+            key: cancellationForm,
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: Text(
+                    "Reason for cancellation",
+                    style: poppinsRegularStyle(
+                      fontSize: 18,
+                      context: context,
+                      color: theme.primaryColor,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                color: DynamicColor.avatarBgClr.withValues(alpha: 0.4),
-                child: TextFormField(
-                  key: cancellationForm,
-                  maxLines: 6,
-                  controller: controller.cancellationController,
-                  style: poppinsRegularStyle(
-                      context: context,
-                      fontSize: 14,
-                      color: DynamicColor.whiteClr),
-                  textInputAction: TextInputAction.done,
-                  validator: (value) {
-                    if (value == null) {
-                      return null;
-                    } else {
-                      return "Please enter cancellation reason";
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintText: "write here",
-                    hintStyle: poppinsRegularStyle(
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  color: DynamicColor.avatarBgClr.withValues(alpha: 0.4),
+                  child: TextFormField(
+                    maxLines: 6,
+                    controller: controller.cancellationController,
+                    style: poppinsRegularStyle(
                         context: context,
                         fontSize: 14,
-                        color: DynamicColor.grayClr.withValues(alpha: 0.7)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                          color: DynamicColor.grayClr
-                              .withValues(alpha: 0.5)), //<-- SEE HERE
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                          color: DynamicColor.grayClr
-                              .withValues(alpha: 0.5)), //<-- SEE HERE
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(
-                          color: DynamicColor.grayClr
-                              .withValues(alpha: 0.5)), //<-- SEE HERE
+                        color: DynamicColor.whiteClr),
+                    textInputAction: TextInputAction.done,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter cancellation reason";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: "write here",
+                      hintStyle: poppinsRegularStyle(
+                          context: context,
+                          fontSize: 14,
+                          color: DynamicColor.grayClr.withValues(alpha: 0.7)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: DynamicColor.grayClr
+                                .withValues(alpha: 0.5)), //<-- SEE HERE
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: DynamicColor.grayClr
+                                .withValues(alpha: 0.5)), //<-- SEE HERE
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: DynamicColor.grayClr
+                                .withValues(alpha: 0.5)), //<-- SEE HERE
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       }),

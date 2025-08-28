@@ -292,7 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 /*sp.read("role") == "eventManager"
                                     ? "Pending"
                                     :*/
-
                                 "Requests",
                                 style: poppinsMediumStyle(
                                   fontSize: 14,

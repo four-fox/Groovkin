@@ -112,6 +112,8 @@ abstract class Routes {
   static const settingNotificationScreen = _Path.settingNotificationScreen;
   static const calenderView = _Path.calenderView;
   static const editUserLifeStyleScreen = _Path.editUserLifeStyleScreen;
+  static const myusergroonvkinmusicgenrescreen =
+      _Path.myusergroonvkinmusicgenrescreen;
 
   ///chat screen
   static const chatNewUserScreen = _Path.chatNewUserScreen;
@@ -146,6 +148,8 @@ abstract class _Path {
   static const quickSurveyScreen = "/QuickSurveyScreen";
   // static const homeScreen = "/HomeScreen";
   static const upcomingScreen = "/UpcomingScreen";
+  static const myusergroonvkinmusicgenrescreen =
+      "/Myusergroonvkinmusicgenrescreen";
   static const upGradeEvents = "/UpGradeEvents";
   static const hardwareProvidedScreen = "/HardwareProvidedScreen";
   static const proposedMusicScreen = "/ProposedMusicScreen";
