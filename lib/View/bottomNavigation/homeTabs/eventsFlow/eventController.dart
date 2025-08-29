@@ -606,7 +606,7 @@ class EventController extends GetxController {
             arguments: {"indexValue": 0});
       }
     }
-  } 
+  }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
   editEventFunction() async {
@@ -995,7 +995,9 @@ class EventController extends GetxController {
       {survey.SurveyObject? items, value, CategoryItem? serviceObj}) async {
     List<String> temp = [];
     eventDetail!.data!.hardwareProvide?.forEach((element) {
-      temp.add(element.hardwareItems!.id.toString());
+      element.hardwareItems!.map((data) {
+        temp.add(data.id.toString());
+      });
     });
     for (var action in _authController.hardwareListing) {
       if (temp.contains(action.name)) {
@@ -1018,7 +1020,9 @@ class EventController extends GetxController {
   surveyDataBind() async {
     List musicGenreId = [];
     for (var action in eventDetail!.data!.musicGenre!) {
-      musicGenreId.add(action.itemId);
+      action.musicGenreItems!.map((data) {
+        musicGenreId.add(data.id);
+      });
     }
     for (var element in _authController.surveyData!.data!) {
       for (var ele in element.categoryItems!) {

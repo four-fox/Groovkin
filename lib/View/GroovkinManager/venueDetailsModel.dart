@@ -290,10 +290,12 @@ class Profile {
   dynamic birthYear;
   String? phoneNumber;
   dynamic companyName;
-  dynamic selectState;
+  String? country;
+  String? selectState;
   dynamic location;
   dynamic latitude;
   dynamic longitude;
+  int? zipCode;
   int? isInsurance;
   String? about;
   int? userId;
@@ -307,6 +309,7 @@ class Profile {
     this.birthYear,
     this.phoneNumber,
     this.companyName,
+    this.country,
     this.selectState,
     this.about,
     this.location,
@@ -316,6 +319,7 @@ class Profile {
     this.userId,
     this.createdAt,
     this.updatedAt,
+    this.zipCode,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
@@ -323,6 +327,8 @@ class Profile {
         firstName: json["first_name"],
         lastName: json["last_name"],
         about: json["about"],
+        country: json["country"],
+        zipCode: json["zip_code"],
         birthYear: json["birth_year"],
         phoneNumber: json["phone_number"],
         companyName: json["company_name"],

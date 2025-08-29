@@ -386,7 +386,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                 .data!
                                                 .hardwareProvide![index]
                                                 .hardwareItems!
-                                                .name
+                                                
                                                 .toString(),
                                             style: poppinsRegularStyle(
                                               fontSize: 14,

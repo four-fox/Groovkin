@@ -963,37 +963,37 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: kToolbarHeight,
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: ListView.builder(
-                                      itemCount: controller.eventDetail!.data!
-                                          .hardwareProvide!.length,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics:
-                                          const AlwaysScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, index) {
-                                        return controller
-                                                    .eventDetail!
-                                                    .data!
-                                                    .hardwareProvide![index]
-                                                    .hardwareItems!
-                                                    .name ==
-                                                null
-                                            ? const SizedBox.shrink()
-                                            : customList(
-                                                context: context,
-                                                theme: theme,
-                                                name: controller
-                                                    .eventDetail!
-                                                    .data!
-                                                    .hardwareProvide![index]
-                                                    .hardwareItems!
-                                                    .name
-                                                    .toString());
+                              // SizedBox(
+                              //   height: kToolbarHeight,
+                              //   child: Align(
+                              //     alignment: Alignment.topLeft,
+                              //     child: ListView.builder(
+                              //         itemCount: controller.eventDetail!.data!
+                              //             .hardwareProvide!.length,
+                              //         shrinkWrap: true,
+                              //         scrollDirection: Axis.horizontal,
+                              //         physics:
+                              //             const AlwaysScrollableScrollPhysics(),
+                              //         itemBuilder:
+                              //             (BuildContext context, index) {
+                              //           return controller
+                              //                       .eventDetail!
+                              //                       .data!
+                              //                       .hardwareProvide![index]
+                              //                       .hardwareItems!
+                              //                       .name ==
+                              //                   null
+                              //               ? const SizedBox.shrink()
+                              //               : customList(
+                              //                   context: context,
+                              //                   theme: theme,
+                              //                   name: controller
+                              //                       .eventDetail!
+                              //                       .data!
+                              //                       .hardwareProvide![index]
+                              //                       .hardwareItems!
+                              //                       .name
+                              //                       .toString());
                                         // return ListView.builder(
                                         //     shrinkWrap: true,
                                         //     scrollDirection: Axis.horizontal,
@@ -1002,9 +1002,9 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                         //     itemBuilder: (BuildContext context,indx){
                                         //       return controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].userEventSubItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString());
                                         //     });
-                                      }),
-                                ),
-                              ),
+                                      // }),
+                                // ),
+                              // ),
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -1018,48 +1018,48 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: kToolbarHeight,
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!
-                                          .musicGenre!.length,
-                                      itemBuilder:
-                                          (BuildContext context, indx) {
-                                        return controller
-                                                    .eventDetail!
-                                                    .data!
-                                                    .musicGenre![indx]
-                                                    .musicGenreItems!
-                                                    .name ==
-                                                null
-                                            ? const SizedBox.shrink()
-                                            : customList(
-                                                context: context,
-                                                theme: theme,
-                                                name: controller
-                                                    .eventDetail!
-                                                    .data!
-                                                    .musicGenre![indx]
-                                                    .musicGenreItems!
-                                                    .name
-                                                    .toString());
-                                        // return ListView.builder(
-                                        //     shrinkWrap: true,
-                                        //     scrollDirection: Axis.horizontal,
-                                        //     physics: NeverScrollableScrollPhysics(),
-                                        //     itemCount: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems!.length,
-                                        //     itemBuilder: (BuildContext context,indxess){
-                                        //       return controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].userCategoryItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].name.toString());
-                                        //     });
-                                      }),
-                                ),
-                              ),
+                              // SizedBox(
+                              //   height: kToolbarHeight,
+                              //   child: Align(
+                              //     alignment: Alignment.topLeft,
+                              //     child: ListView.builder(
+                              //         shrinkWrap: true,
+                              //         scrollDirection: Axis.horizontal,
+                              //         physics:
+                              //             const NeverScrollableScrollPhysics(),
+                              //         itemCount: controller.eventDetail!.data!
+                              //             .musicGenre!.length,
+                              //         itemBuilder:
+                              //             (BuildContext context, indx) {
+                              //           return controller
+                              //                       .eventDetail!
+                              //                       .data!
+                              //                       .musicGenre![indx]
+                              //                       .musicGenreItems!
+                              //                       .name ==
+                              //                   null
+                              //               ? const SizedBox.shrink()
+                              //               : customList(
+                              //                   context: context,
+                              //                   theme: theme,
+                              //                   name: controller
+                              //                       .eventDetail!
+                              //                       .data!
+                              //                       .musicGenre![indx]
+                              //                       .musicGenreItems!
+                              //                       .name
+                              //                       .toString());
+                              //           // return ListView.builder(
+                              //           //     shrinkWrap: true,
+                              //           //     scrollDirection: Axis.horizontal,
+                              //           //     physics: NeverScrollableScrollPhysics(),
+                              //           //     itemCount: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems!.length,
+                              //           //     itemBuilder: (BuildContext context,indxess){
+                              //           //       return controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].userCategoryItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].name.toString());
+                              //           //     });
+                              //         }),
+                              //   ),
+                              // ),
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
