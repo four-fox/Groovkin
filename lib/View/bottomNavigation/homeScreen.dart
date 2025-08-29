@@ -249,82 +249,76 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     tabs: [
                       Tab(
-                        child: Obx(
-                          () => Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: controller.showIndexValue!.value == 0
-                                  ? DynamicColor.secondaryClr
-                                  : DynamicColor.lightBlackClr,
-                            ),
-                            child: Center(
-                              child: Text(
-                                /*sp.read("role") == "eventManager"
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: controller.showIndexValue!.value == 0
+                                ? DynamicColor.secondaryClr
+                                : DynamicColor.lightBlackClr,
+                          ),
+                          child: Center(
+                            child: Text(
+                              /*sp.read("role") == "eventManager"
                                     ? "Upcoming"
                                     :  
                                     */
 
-                                "Scheduled",
-                                style: poppinsMediumStyle(
-                                  fontSize: 14,
-                                  context: context,
-                                  color: controller.showIndexValue!.value == 0
-                                      ? theme.primaryColor
-                                      : DynamicColor.lightWhite,
-                                ),
+                              "Scheduled",
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: controller.showIndexValue!.value == 0
+                                    ? theme.primaryColor
+                                    : DynamicColor.lightWhite,
                               ),
                             ),
                           ),
                         ),
                       ),
                       Tab(
-                        child: Obx(
-                          () => Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: controller.showIndexValue!.value == 1
-                                    ? DynamicColor.secondaryClr
-                                    : DynamicColor.lightBlackClr),
-                            child: Center(
-                              child: Text(
-                                /*sp.read("role") == "eventManager"
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: controller.showIndexValue!.value == 1
+                                  ? DynamicColor.secondaryClr
+                                  : DynamicColor.lightBlackClr),
+                          child: Center(
+                            child: Text(
+                              /*sp.read("role") == "eventManager"
                                     ? "Pending"
                                     :*/
-                                "Requests",
-                                style: poppinsMediumStyle(
-                                  fontSize: 14,
-                                  context: context,
-                                  color: controller.showIndexValue!.value == 1
-                                      ? theme.primaryColor
-                                      : DynamicColor.lightWhite,
-                                ),
+                              "Requests",
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: controller.showIndexValue!.value == 1
+                                    ? theme.primaryColor
+                                    : DynamicColor.lightWhite,
                               ),
                             ),
                           ),
                         ),
                       ),
                       Tab(
-                        child: Obx(
-                          () => Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: controller.showIndexValue!.value == 2
-                                  ? DynamicColor.secondaryClr
-                                  : DynamicColor.lightBlackClr,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "History",
-                                style: poppinsMediumStyle(
-                                    fontSize: 14,
-                                    context: context,
-                                    color: controller.showIndexValue!.value == 2
-                                        ? theme.primaryColor
-                                        : DynamicColor.lightWhite),
-                              ),
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: controller.showIndexValue!.value == 2
+                                ? DynamicColor.secondaryClr
+                                : DynamicColor.lightBlackClr,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "History",
+                              style: poppinsMediumStyle(
+                                  fontSize: 14,
+                                  context: context,
+                                  color: controller.showIndexValue!.value == 2
+                                      ? theme.primaryColor
+                                      : DynamicColor.lightWhite),
                             ),
                           ),
                         ),
@@ -341,6 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         controller.showFilter.value =
                             !controller.showFilter.value;
+                        controller.update();
                       },
                       child: Align(
                         alignment: Alignment.topRight,
@@ -370,214 +365,212 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Shahzain
 
-                Obx(
-                  () => Visibility(
-                    visible: controller.showFilter.value,
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.selectedFilter.value = 0;
-                      },
-                      child: Container(
-                        height:
-                            controller.showIndexValue!.value == 0 ? 100 : 130,
-                        width: Get.width / 2,
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: DynamicColor.whiteClr,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                controller.selectedFilter.value = 0;
-                                controller.showFilter.value = false;
-                                controller.update();
+                Visibility(
+                  visible: controller.showFilter.value,
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.selectedFilter.value = 0;
+                      controller.update();
+                    },
+                    child: Container(
+                      height: controller.showIndexValue!.value == 0 ? 100 : 130,
+                      width: Get.width / 2,
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: DynamicColor.whiteClr,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              controller.selectedFilter.value = 0;
+                              controller.showFilter.value = false;
+                              controller.update();
 
-                                if (controller.showIndexValue!.value == 2) {
-                                  controller.completedEvent();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") != "eventManager") {
-                                  _eventController.getAllSendingRequest();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") == "eventManager") {
-                                  _managerController.getAllPendingEvents();
-                                }
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
+                              if (controller.showIndexValue!.value == 2) {
+                                controller.completedEvent();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") != "eventManager") {
+                                _eventController.getAllSendingRequest();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") == "eventManager") {
+                                _managerController.getAllPendingEvents();
+                              }
+                            },
+                            child: Container(
+                              width: Get.width,
+                              height: 35,
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: controller.selectedFilter.value != 0
+                                    ? Colors.transparent
+                                    : DynamicColor.yellowClr,
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Recent",
+                                  style: poppinsMediumStyle(
+                                      fontSize: 14,
+                                      color: theme.scaffoldBackgroundColor,
+                                      context: context),
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              controller.selectedFilter.value = 1;
+                              controller.showFilter.value = false;
+                              controller.update();
+                              if (controller.showIndexValue!.value == 2) {
+                                controller.completedEvent();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") != "eventManager") {
+                                _eventController.getAllSendingRequest();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") == "eventManager") {
+                                _managerController.getAllPendingEvents();
+                              }
+                            },
+                            child: Container(
+                              width: Get.width,
+                              height: 35,
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: controller.selectedFilter.value != 0
+                                  color: controller.selectedFilter.value != 1
                                       ? Colors.transparent
-                                      : DynamicColor.yellowClr,
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Recent",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
+                                      : DynamicColor.yellowClr),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Past Week",
+                                  style: poppinsMediumStyle(
+                                      fontSize: 14,
+                                      color: theme.scaffoldBackgroundColor,
+                                      context: context),
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                controller.selectedFilter.value = 1;
-                                controller.showFilter.value = false;
-                                controller.update();
-                                if (controller.showIndexValue!.value == 2) {
-                                  controller.completedEvent();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") != "eventManager") {
-                                  _eventController.getAllSendingRequest();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") == "eventManager") {
-                                  _managerController.getAllPendingEvents();
-                                }
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: controller.selectedFilter.value != 1
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Past Week",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              controller.selectedFilter.value = 2;
+                              controller.showFilter.value = false;
+                              controller.update();
+                              if (controller.showIndexValue!.value == 2) {
+                                controller.completedEvent();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") != "eventManager") {
+                                _eventController.getAllSendingRequest();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") == "eventManager") {
+                                _managerController.getAllPendingEvents();
+                              }
+                            },
+                            child: Container(
+                              width: Get.width,
+                              height: 35,
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: controller.selectedFilter.value != 2
+                                      ? Colors.transparent
+                                      : DynamicColor.yellowClr),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Older then 1 month",
+                                  style: poppinsMediumStyle(
+                                      fontSize: 14,
+                                      color: theme.scaffoldBackgroundColor,
+                                      context: context),
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                controller.selectedFilter.value = 2;
-                                controller.showFilter.value = false;
-                                controller.update();
-                                if (controller.showIndexValue!.value == 2) {
-                                  controller.completedEvent();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") != "eventManager") {
-                                  _eventController.getAllSendingRequest();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") == "eventManager") {
-                                  _managerController.getAllPendingEvents();
-                                }
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: controller.selectedFilter.value != 2
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Older then 1 month",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // controller.showIndexValue!.value == 0
-                            //     ? SizedBox.shrink()
-                            //     : GestureDetector(
-                            //         onTap: () {
-                            //           controller.selectedFilter.value = 3;
-                            //           controller.showFilter.value = false;
-                            //           controller.historyStatus();
-                            //         },
-                            //         child: Container(
-                            //           width: Get.width,
-                            //           height: 35,
-                            //           padding: EdgeInsets.only(left: 10),
-                            //           decoration: BoxDecoration(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10),
-                            //               color:
-                            //                   controller.selectedFilter.value !=
-                            //                           3
-                            //                       ? Colors.transparent
-                            //                       : DynamicColor.yellowClr),
-                            //           child: Align(
-                            //             alignment: Alignment.centerLeft,
-                            //             child: Text(
-                            //               controller.showIndexValue!.value == 2
-                            //                   ? "Requested"
-                            //                   : "Completed",
-                            //               style: poppinsMediumStyle(
-                            //                   fontSize: 14,
-                            //                   color:
-                            //                       theme.scaffoldBackgroundColor,
-                            //                   context: context),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ),
-                            // controller.showIndexValue!.value == 0
-                            //     ? SizedBox.shrink()
-                            //     : GestureDetector(
-                            //         onTap: () {
-                            //           controller.selectedFilter.value = 4;
-                            //           controller.showFilter.value = false;
-                            //           controller.historyStatus();
-                            //         },
-                            //         child: Container(
-                            //           width: Get.width,
-                            //           height: 35,
-                            //           padding: EdgeInsets.only(left: 10),
-                            //           decoration: BoxDecoration(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10),
-                            //               color:
-                            //                   controller.selectedFilter.value !=
-                            //                           4
-                            //                       ? Colors.transparent
-                            //                       : DynamicColor.yellowClr),
-                            //           child: Align(
-                            //             alignment: Alignment.centerLeft,
-                            //             child: Text(
-                            //               controller.showIndexValue!.value == 2
-                            //                   ? "Pending"
-                            //                   : "Cancelled",
-                            //               style: poppinsMediumStyle(
-                            //                   fontSize: 14,
-                            //                   color:
-                            //                       theme.scaffoldBackgroundColor,
-                            //                   context: context),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ),
-                          ],
-                        ),
+                          ),
+                          // controller.showIndexValue!.value == 0
+                          //     ? SizedBox.shrink()
+                          //     : GestureDetector(
+                          //         onTap: () {
+                          //           controller.selectedFilter.value = 3;
+                          //           controller.showFilter.value = false;
+                          //           controller.historyStatus();
+                          //         },
+                          //         child: Container(
+                          //           width: Get.width,
+                          //           height: 35,
+                          //           padding: EdgeInsets.only(left: 10),
+                          //           decoration: BoxDecoration(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(10),
+                          //               color:
+                          //                   controller.selectedFilter.value !=
+                          //                           3
+                          //                       ? Colors.transparent
+                          //                       : DynamicColor.yellowClr),
+                          //           child: Align(
+                          //             alignment: Alignment.centerLeft,
+                          //             child: Text(
+                          //               controller.showIndexValue!.value == 2
+                          //                   ? "Requested"
+                          //                   : "Completed",
+                          //               style: poppinsMediumStyle(
+                          //                   fontSize: 14,
+                          //                   color:
+                          //                       theme.scaffoldBackgroundColor,
+                          //                   context: context),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+                          // controller.showIndexValue!.value == 0
+                          //     ? SizedBox.shrink()
+                          //     : GestureDetector(
+                          //         onTap: () {
+                          //           controller.selectedFilter.value = 4;
+                          //           controller.showFilter.value = false;
+                          //           controller.historyStatus();
+                          //         },
+                          //         child: Container(
+                          //           width: Get.width,
+                          //           height: 35,
+                          //           padding: EdgeInsets.only(left: 10),
+                          //           decoration: BoxDecoration(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(10),
+                          //               color:
+                          //                   controller.selectedFilter.value !=
+                          //                           4
+                          //                       ? Colors.transparent
+                          //                       : DynamicColor.yellowClr),
+                          //           child: Align(
+                          //             alignment: Alignment.centerLeft,
+                          //             child: Text(
+                          //               controller.showIndexValue!.value == 2
+                          //                   ? "Pending"
+                          //                   : "Cancelled",
+                          //               style: poppinsMediumStyle(
+                          //                   fontSize: 14,
+                          //                   color:
+                          //                       theme.scaffoldBackgroundColor,
+                          //                   context: context),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+                        ],
                       ),
                     ),
                   ),

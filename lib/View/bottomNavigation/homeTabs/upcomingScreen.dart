@@ -740,10 +740,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             customWidget(context, theme,
                 title: "Event About",
                 value: controller.eventDetail!.data!.about.toString()),
-
-            customWidget(context, theme,
-                title: "Event theme",
-                value: controller.eventDetail!.data!.themeOfEvent.toString()),
+            if (controller.eventDetail!.data!.themeOfEvent != null)
+              customWidget(context, theme,
+                  title: "Event theme",
+                  value: controller.eventDetail!.data!.themeOfEvent.toString()),
             customWidget(context, theme,
                 title: "Featuring",
                 value: controller.eventDetail!.data!.featuring.toString()),

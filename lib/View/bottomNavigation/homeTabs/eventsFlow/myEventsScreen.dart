@@ -266,6 +266,7 @@ class MyEventsScreen extends StatelessWidget {
               EventController eventController = Get.find();
               eventController.eventDetail = null;
               eventController.clearFields();
+              eventController.draftCondition(true);
               Get.toNamed(Routes.upGradeEvents);
             },
             borderClr: Colors.transparent,

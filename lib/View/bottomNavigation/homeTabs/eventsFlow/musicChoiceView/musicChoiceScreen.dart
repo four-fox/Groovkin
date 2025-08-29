@@ -681,7 +681,7 @@ class ActivityChoiceScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
-            onTap: () {
+            onTap: () { 
               if (_controller.activityListPost.isNotEmpty) {
                 if (_controller.eventDetail != null) {
                   _controller.imageListtt.clear();

@@ -606,7 +606,7 @@ class EventController extends GetxController {
             arguments: {"indexValue": 0});
       }
     }
-  }
+  } 
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
   editEventFunction() async {
@@ -793,7 +793,8 @@ class EventController extends GetxController {
   /// clear fields
   RxBool draftCondition = false.obs;
   clearFields() async {
-    draftCondition(true);
+    // draftCondition(true);
+
     duplicateValue(true);
     draftValue(true);
     _authController.imageBytes = null;
@@ -813,6 +814,7 @@ class EventController extends GetxController {
     _authController.serviceList.clear();
     _authController.eventItemsList.clear();
     _authController.lifeStyleItemsList.clear();
+    _authController.itemsList.clear();
     activityListPost.clear();
     eventDateController.clear();
     eventEndDateController.clear();
@@ -1141,8 +1143,8 @@ class EventController extends GetxController {
       update();
       Get.back();
     }
-  } 
-  
+  }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get upcoming events
   UpcomingEventsModel? upcomingEventData;
   RxBool getUpcomingEventsLoader = true.obs;
