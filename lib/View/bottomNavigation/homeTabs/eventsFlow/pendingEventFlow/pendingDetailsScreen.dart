@@ -932,6 +932,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                 child: Align(
                                   alignment: Alignment.topLeft,
                                   child: ListView.builder(
+                                            padding: EdgeInsets.zero,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: controller
@@ -963,103 +964,150 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   ),
                                 ),
                               ),
-                              // SizedBox(
-                              //   height: kToolbarHeight,
-                              //   child: Align(
-                              //     alignment: Alignment.topLeft,
-                              //     child: ListView.builder(
-                              //         itemCount: controller.eventDetail!.data!
-                              //             .hardwareProvide!.length,
-                              //         shrinkWrap: true,
-                              //         scrollDirection: Axis.horizontal,
-                              //         physics:
-                              //             const AlwaysScrollableScrollPhysics(),
-                              //         itemBuilder:
-                              //             (BuildContext context, index) {
-                              //           return controller
-                              //                       .eventDetail!
-                              //                       .data!
-                              //                       .hardwareProvide![index]
-                              //                       .hardwareItems!
-                              //                       .name ==
-                              //                   null
-                              //               ? const SizedBox.shrink()
-                              //               : customList(
-                              //                   context: context,
-                              //                   theme: theme,
-                              //                   name: controller
-                              //                       .eventDetail!
-                              //                       .data!
-                              //                       .hardwareProvide![index]
-                              //                       .hardwareItems!
-                              //                       .name
-                              //                       .toString());
-                                        // return ListView.builder(
-                                        //     shrinkWrap: true,
-                                        //     scrollDirection: Axis.horizontal,
-                                        //     physics: NeverScrollableScrollPhysics(),
-                                        //     itemCount: controller.eventDetail!.data!.hardwareProvide![index].hardwareItems!.categoryItems!.length,
-                                        //     itemBuilder: (BuildContext context,indx){
-                                        //       return controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].userEventSubItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString());
-                                        //     });
-                                      // }),
-                                // ),
-                              // ),
                               Align(
                                 alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Music Genre",
-                                  style: poppinsRegularStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    context: context,
-                                    underline: true,
-                                    color: theme.primaryColor,
+                                child: ListView.builder(
+                                          padding: EdgeInsets.zero,
+                                    itemCount: controller.eventDetail!.data!
+                                        .hardwareProvide!.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (BuildContext context, index) {
+                                      final filterItem = controller
+                                          .eventDetail!
+                                          .data!
+                                          .hardwareProvide![index]
+                                          .hardwareItems!
+                                          .where(
+                                              (data) => data.selected == true)
+                                          .toList();
+                                      if (filterItem.isEmpty) return SizedBox();
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text("${"• "}",
+                                                  style:
+                                                      TextStyle(fontSize: 20)),
+                                              Text(
+                                                controller
+                                                    .eventDetail!
+                                                    .data!
+                                                    .hardwareProvide![index]
+                                                    .name
+                                                    .toString(),
+                                                style: poppinsRegularStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  context: context,
+                                                  underline: true,
+                                                  color: theme.primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: kToolbarHeight,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              shrinkWrap: true,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index1) {
+                                                return customList(
+                                                    context: context,
+                                                    theme: theme,
+                                                    name: filterItem[index1]
+                                                        .name
+                                                        .toString());
+                                              },
+                                              itemCount: filterItem.length,
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }),
+                              ),
+                              if (controller.eventDetail!.data!.musicGenre!.any(
+                                  (genre) =>
+                                      genre.musicGenreItems?.any(
+                                          (item) => item.selected == true) ??
+                                      false))
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Music Genre",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      context: context,
+                                      underline: true,
+                                      color: theme.primaryColor,
+                                    ),
                                   ),
                                 ),
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: ListView.builder(
+                                          padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: controller
+                                        .eventDetail!.data!.musicGenre!.length,
+                                    itemBuilder: (BuildContext context, index) {
+                                      final filterItem = controller
+                                          .eventDetail!
+                                          .data!
+                                          .musicGenre![index]
+                                          .musicGenreItems!
+                                          .where(
+                                              (data) => data.selected == true)
+                                          .toList();
+                                      if (filterItem.isEmpty) return SizedBox();
+                                      return Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text("${"• "}",
+                                                  style:
+                                                      TextStyle(fontSize: 20)),
+                                              Text(
+                                                controller.eventDetail!.data!
+                                                    .musicGenre![index].name
+                                                    .toString(),
+                                                style: poppinsRegularStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  context: context,
+                                                  underline: true,
+                                                  color: theme.primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: kToolbarHeight,
+                                            child: ListView.builder(
+                                                      padding: EdgeInsets.zero,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index1) {
+                                                return customList(
+                                                    context: context,
+                                                    theme: theme,
+                                                    name: filterItem[index1]
+                                                        .name
+                                                        .toString());
+                                              },
+                                              itemCount: filterItem.length,
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }),
                               ),
-                              // SizedBox(
-                              //   height: kToolbarHeight,
-                              //   child: Align(
-                              //     alignment: Alignment.topLeft,
-                              //     child: ListView.builder(
-                              //         shrinkWrap: true,
-                              //         scrollDirection: Axis.horizontal,
-                              //         physics:
-                              //             const NeverScrollableScrollPhysics(),
-                              //         itemCount: controller.eventDetail!.data!
-                              //             .musicGenre!.length,
-                              //         itemBuilder:
-                              //             (BuildContext context, indx) {
-                              //           return controller
-                              //                       .eventDetail!
-                              //                       .data!
-                              //                       .musicGenre![indx]
-                              //                       .musicGenreItems!
-                              //                       .name ==
-                              //                   null
-                              //               ? const SizedBox.shrink()
-                              //               : customList(
-                              //                   context: context,
-                              //                   theme: theme,
-                              //                   name: controller
-                              //                       .eventDetail!
-                              //                       .data!
-                              //                       .musicGenre![indx]
-                              //                       .musicGenreItems!
-                              //                       .name
-                              //                       .toString());
-                              //           // return ListView.builder(
-                              //           //     shrinkWrap: true,
-                              //           //     scrollDirection: Axis.horizontal,
-                              //           //     physics: NeverScrollableScrollPhysics(),
-                              //           //     itemCount: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems!.length,
-                              //           //     itemBuilder: (BuildContext context,indxess){
-                              //           //       return controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].userCategoryItems ==null?SizedBox.shrink(): customList(context: context, theme: theme,name: controller.eventDetail!.data!.musicGenre![indx].eventItem!.categoryItems![indxess].name.toString());
-                              //           //     });
-                              //         }),
-                              //   ),
-                              // ),
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -1073,41 +1121,73 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: kToolbarHeight,
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: ListView.builder(
-                                      itemCount: controller.eventDetail!.data!
-                                          .eventMusicChoiceTags!.length,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics:
-                                          const AlwaysScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, index) {
-                                        return controller
-                                                    .eventDetail!
-                                                    .data!
-                                                    .eventMusicChoiceTags![
-                                                        index]
-                                                    .musicChoiceItems!
-                                                    .name ==
-                                                null
-                                            ? const SizedBox.shrink()
-                                            : customList(
-                                                context: context,
-                                                theme: theme,
-                                                name: controller
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: ListView.builder(
+                                          padding: EdgeInsets.zero,
+                                    itemCount: controller.eventDetail!.data!
+                                        .eventMusicChoiceTags!.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (BuildContext context, index) {
+                                      final filterItem = controller
+                                          .eventDetail!
+                                          .data!
+                                          .eventMusicChoiceTags![index]
+                                          .musicChoiceItems!
+                                          .categoryItems!
+                                          .where((data) =>
+                                              data.userSelection == true)
+                                          .toList();
+                                      if (filterItem.isEmpty) return SizedBox();
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text("${"• "}",
+                                                  style:
+                                                      TextStyle(fontSize: 20)),
+                                              Text(
+                                                controller
                                                     .eventDetail!
                                                     .data!
                                                     .eventMusicChoiceTags![
                                                         index]
                                                     .musicChoiceItems!
                                                     .name
-                                                    .toString());
-                                      }),
-                                ),
+                                                    .toString(),
+                                                style: poppinsRegularStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  context: context,
+                                                  underline: true,
+                                                  color: theme.primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: kToolbarHeight,
+                                            child: ListView.builder(
+                                                      padding: EdgeInsets.zero,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index1) {
+                                                return customList(
+                                                    context: context,
+                                                    theme: theme,
+                                                    name: filterItem[index1]
+                                                        .name
+                                                        .toString());
+                                              },
+                                              itemCount: filterItem.length,
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }),
                               ),
                               Align(
                                 alignment: Alignment.topLeft,
@@ -1122,51 +1202,71 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: kToolbarHeight,
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: ListView.builder(
-                                      itemCount: controller.eventDetail!.data!
-                                          .eventActivityChoiceTags!.length,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics:
-                                          const AlwaysScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, index) {
-                                        return controller
-                                                    .eventDetail!
-                                                    .data!
-                                                    .eventActivityChoiceTags![
-                                                        index]
-                                                    .activityChoiceItems!
-                                                    .name ==
-                                                null
-                                            ? const SizedBox.shrink()
-                                            : customList(
-                                                context: context,
-                                                theme: theme,
-                                                name: controller
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: ListView.builder(
+                                          padding: EdgeInsets.zero,
+                                    itemCount: controller.eventDetail!.data!
+                                        .eventActivityChoiceTags!.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (BuildContext context, index) {
+                                      final filterItem = controller
+                                          .eventDetail!
+                                          .data!
+                                          .eventActivityChoiceTags![index]
+                                          .activityChoiceItems!
+                                          .categoryItems!
+                                          .where((data) =>
+                                              data.userSelection == true)
+                                          .toList();
+                                      if (filterItem.isEmpty) return SizedBox();
+                                      return Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text("${"• "}",
+                                                  style:
+                                                      TextStyle(fontSize: 20)),
+                                              Text(
+                                                controller
                                                     .eventDetail!
                                                     .data!
                                                     .eventActivityChoiceTags![
                                                         index]
                                                     .activityChoiceItems!
                                                     .name
-                                                    .toString());
-                                        // return ListView.builder(
-                                        //     shrinkWrap: true,
-                                        //     scrollDirection: Axis.horizontal,
-                                        //     physics: NeverScrollableScrollPhysics(),
-                                        //     itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                        //     itemBuilder: (BuildContext context,indx){
-                                        //       return
-                                        //         controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].userEventTagItems == null?SizedBox.shrink():
-                                        //         customList(context: context, theme: theme,name: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString());
-                                        //     });
-                                      }),
-                                ),
+                                                    .toString(),
+                                                style: poppinsRegularStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w600,
+                                                  context: context,
+                                                  underline: true,
+                                                  color: theme.primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: kToolbarHeight,
+                                            child: ListView.builder(
+                                                      padding: EdgeInsets.zero,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index1) {
+                                                return customList(
+                                                    context: context,
+                                                    theme: theme,
+                                                    name: filterItem[index1]
+                                                        .name
+                                                        .toString());
+                                              },
+                                              itemCount: filterItem.length,
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }),
                               ),
                             ],
                           ),

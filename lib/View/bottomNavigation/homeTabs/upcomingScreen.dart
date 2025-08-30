@@ -781,6 +781,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: ListView.builder(
+                                  padding: EdgeInsets.zero,
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   // physics: NeverScrollableScrollPhysics(),
@@ -835,6 +836,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         : Align(
                             alignment: Alignment.topLeft,
                             child: ListView.builder(
+                                padding: EdgeInsets.zero,
                                 itemCount: controller
                                     .eventDetail!.data!.hardwareProvide!.length,
                                 shrinkWrap: true,
@@ -855,9 +857,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
-                                              "${(index + 1).toString()} - ",
-                                            ),
+                                            Text("${"• "}",
+                                                style: TextStyle(fontSize: 20)),
                                             Text(
                                               controller.eventDetail!.data!
                                                   .hardwareProvide![index].name
@@ -878,6 +879,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                         SizedBox(
                                           height: kToolbarHeight,
                                           child: ListView.builder(
+                                            padding: EdgeInsets.zero,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index1) {
                                               return Padding(
@@ -933,6 +935,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         : Align(
                             alignment: Alignment.topLeft,
                             child: ListView.builder(
+                                padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: controller
@@ -951,9 +954,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       children: [
                                         Row(
                                           children: [
-                                            Text(
-                                              "${(index + 1).toString()} - ",
-                                            ),
+                                            Text("${"• "}",
+                                                style: TextStyle(fontSize: 20)),
                                             Text(
                                               controller.eventDetail!.data!
                                                   .musicGenre![index].name
@@ -974,6 +976,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                         SizedBox(
                                           height: kToolbarHeight,
                                           child: ListView.builder(
+                                              padding: EdgeInsets.zero,
                                               scrollDirection: Axis.horizontal,
                                               itemCount: filteredItem.length,
                                               itemBuilder: (context, index1) {
@@ -1024,6 +1027,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: ListView.builder(
+                                  padding: EdgeInsets.zero,
                                   itemCount: controller.eventDetail!.data!
                                       .eventMusicChoiceTags!.length,
                                   shrinkWrap: true,
@@ -1048,9 +1052,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                           children: [
                                             Row(
                                               children: [
-                                                Text(
-                                                  "${(index + 1).toString()} - ",
-                                                ),
+                                                Text("${"• "}",
+                                                    style: TextStyle(
+                                                        fontSize: 20)),
                                                 Text(
                                                   controller
                                                       .eventDetail!
@@ -1076,6 +1080,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                             SizedBox(
                                               height: kToolbarHeight,
                                               child: ListView.builder(
+                                                padding: EdgeInsets.zero,
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 shrinkWrap: true,
@@ -1163,6 +1168,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         : Align(
                             alignment: Alignment.topLeft,
                             child: ListView.builder(
+                                padding: EdgeInsets.zero,
                                 itemCount: controller.eventDetail!.data!
                                     .eventActivityChoiceTags!.length,
                                 shrinkWrap: true,
@@ -1182,9 +1188,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text(
-                                            "${(index + 1).toString()} - ",
-                                          ),
+                                          Text("${"• "}",
+                                              style: TextStyle(fontSize: 20)),
                                           Text(
                                             controller
                                                 .eventDetail!
@@ -1206,6 +1211,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       SizedBox(
                                           height: kToolbarHeight,
                                           child: ListView.builder(
+                                            padding: EdgeInsets.zero,
                                             scrollDirection: Axis.horizontal,
                                             itemBuilder: (context, index1) {
                                               return Padding(
