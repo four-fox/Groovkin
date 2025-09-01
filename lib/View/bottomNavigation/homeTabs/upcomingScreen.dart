@@ -67,102 +67,116 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
-                //     :flowBtn==3?
-                // kToolbarHeight*1.3
-                //     :kToolbarHeight*4.9
-                ),
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
-          ),
-          child: customAppBar(
-            onTap: () async {
-              if (isFromEventRequestPage) {
-                await _controller.getAllEvents();
-                Get.back();
-              } else {
-                Get.back();
-              }
-            },
-            theme: theme,
-            text: appBarTitle,
-            actions: [
-              reportedEventPreview == 3
-                  ? const SizedBox.shrink()
-                  : Padding(
-                      padding: const EdgeInsets.only(right: 7.0),
-                      child: GestureDetector(
-                          onTap: () {
-                            if ((API().sp.read("role") == "eventOrganizer") &&
-                                (appBarTitle == "Pending")) {
-                              _controller.assignValueForUpdate();
-                            }
-                          },
-                          child: ((API().sp.read("role") == "eventOrganizer") &&
-                                  (appBarTitle == "Pending"))
-                              ? const Icon(Icons.edit_calendar)
-                              : const SizedBox.shrink()),
-                    )
-            ],
-            imagee: false,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _controller.duplicateValue.value = false;
+          _controller.update();
+          Get.back();
+        }
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize:
+              const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
+                  //     :flowBtn==3?
+                  // kToolbarHeight*1.3
+                  //     :kToolbarHeight*4.9
+                  ),
+          child: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+            ),
+            child: customAppBar(
+              onTap: () async {
+                _controller.duplicateValue.value = false;
+                _controller.update();
+                if (isFromEventRequestPage) {
+                  await _controller.getAllEvents();
+
+                  Get.back();
+                } else {
+                  Get.back();
+                }
+              },
+              theme: theme,
+              text: appBarTitle,
+              actions: [
+                reportedEventPreview == 3
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.only(right: 7.0),
+                        child: GestureDetector(
+                            onTap: () {
+                              if ((API().sp.read("role") == "eventOrganizer") &&
+                                  (appBarTitle == "Pending")) {
+                                _controller.assignValueForUpdate();
+                              }
+                            },
+                            child:
+                                ((API().sp.read("role") == "eventOrganizer") &&
+                                        (appBarTitle == "Pending"))
+                                    ? const Icon(Icons.edit_calendar)
+                                    : const SizedBox.shrink()),
+                      )
+              ],
+              imagee: false,
+            ),
           ),
         ),
-      ),
-      body: GetBuilder<EventController>(initState: (v) {
-        _controller.eventDetails(eventId: eventId);
-      }, builder: (controller) {
-        return controller.eventDetailsLoader.value == false
-            ? const SizedBox.shrink()
-            : upcomingWidget(theme, context, controller);
-      }),
-      bottomNavigationBar: (API().sp.read("role") == "eventManager" &&
-              appBarTitle == "Completed")
-          ? GetBuilder<EventController>(builder: (controller) {
-              return SafeArea(
-                  child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3),
-                child: CustomButton(
-                  text: "Download Event Details",
-                  onTap: () {
-                    downloadEventDetails(theme, context, controller);
-                  },
-                ),
-              ));
-            })
-          : isComingFromNotifcation == true
-              ? null
-              : API().sp.read("role") != "eventOrganizer"
-                  ? const SizedBox.shrink()
-                  : SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4.0,
-                          vertical: 3,
-                        ),
-                        child: CustomButton(
-                          borderClr: Colors.transparent,
-                          onTap: () {
-                            if (appBarTitle != "Drafts") {
-                              _controller.duplicateValue.value = true;
-                              _controller.draftValue.value = false;
-                            } else {
-                              _controller.draftValue.value = false;
-                              _controller.duplicateValue.value = false;
-                            }
-                            _controller.assignValueForUpdate();
-                          },
-                          text: appBarTitle == "Drafts"
-                              ? "Submit Draft Event"
-                              : "Duplicate",
+        body: GetBuilder<EventController>(initState: (v) {
+          _controller.eventDetails(eventId: eventId);
+        }, builder: (controller) {
+          return controller.eventDetailsLoader.value == false
+              ? const SizedBox.shrink()
+              : upcomingWidget(theme, context, controller);
+        }),
+        bottomNavigationBar: (API().sp.read("role") == "eventManager" &&
+                appBarTitle == "Completed")
+            ? GetBuilder<EventController>(builder: (controller) {
+                return SafeArea(
+                    child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3),
+                  child: CustomButton(
+                    text: "Download Event Details",
+                    onTap: () {
+                      downloadEventDetails(theme, context, controller);
+                    },
+                  ),
+                ));
+              })
+            : isComingFromNotifcation == true
+                ? null
+                : API().sp.read("role") != "eventOrganizer"
+                    ? const SizedBox.shrink()
+                    : SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4.0,
+                            vertical: 3,
+                          ),
+                          child: CustomButton(
+                            borderClr: Colors.transparent,
+                            onTap: () {
+                              if (appBarTitle != "Drafts") {
+                                _controller.duplicateValue.value = true;
+                                _controller.draftValue.value = false;
+                              } else {
+                                _controller.draftValue.value = false;
+                                _controller.duplicateValue.value = false;
+                              }
+                              _controller.assignValueForUpdate();
+                            },
+                            text: appBarTitle == "Drafts"
+                                ? "Submit Draft Event"
+                                : "Duplicate",
+                          ),
                         ),
                       ),
-                    ),
+      ),
     );
   }
 
@@ -980,22 +994,30 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               scrollDirection: Axis.horizontal,
                                               itemCount: filteredItem.length,
                                               itemBuilder: (context, index1) {
-                                                return Chip(
-                                                  backgroundColor: DynamicColor
-                                                      .lightBlackClr,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                  ),
-                                                  label: Text(
-                                                    filteredItem[index1]
-                                                        .name
-                                                        .toString(),
-                                                    style: poppinsRegularStyle(
-                                                      fontSize: 14,
-                                                      context: context,
-                                                      color: theme.primaryColor,
+                                                return Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 6),
+                                                  child: Chip(
+                                                    backgroundColor:
+                                                        DynamicColor
+                                                            .lightBlackClr,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
+                                                    label: Text(
+                                                      filteredItem[index1]
+                                                          .name
+                                                          .toString(),
+                                                      style:
+                                                          poppinsRegularStyle(
+                                                        fontSize: 14,
+                                                        context: context,
+                                                        color:
+                                                            theme.primaryColor,
+                                                      ),
                                                     ),
                                                   ),
                                                 );

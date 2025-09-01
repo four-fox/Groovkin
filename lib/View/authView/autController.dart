@@ -600,8 +600,13 @@ class AuthController extends GetxController {
         List musicGenreId = [];
 
         for (var action in eventController.eventDetail!.data!.musicGenre!) {
-          action.musicGenreItems!.map((data) => musicGenreId.add(data.id));
+          for (var data in action.musicGenreItems!) {
+            if (data.selected == true) {
+              musicGenreId.add(data.id);
+            }
+          }
         }
+        print(musicGenreId.length);
         for (var element in surveyData!.data!) {
           for (var ele in element.categoryItems!) {
             if (musicGenreId.contains(ele.id)) {
@@ -613,12 +618,16 @@ class AuthController extends GetxController {
             }
           }
         }
+
+        update();
+        print(surveyData!.data);
       }
       if (mygrookinHit != true) {
         getLifeStyleLoader(true);
         update();
       }
-      myGroovkinLifeStyle(myGroockingMusicListing);
+
+      // myGroovkinLifeStyle(myGroockingMusicListing);
     }
   }
 
@@ -654,6 +663,7 @@ class AuthController extends GetxController {
             : actions.selectedItem!.value = false;
       }
     }
+    print(surveyData!.data);
 
     getLifeStyleLoader(true);
     update();
@@ -777,14 +787,16 @@ class AuthController extends GetxController {
         final EventController eventController = Get.find();
         if (eventController.eventDetail != null) {
           List<String> temp = [];
-          eventController.eventDetail!.data!.hardwareProvide
-              ?.forEach((element) {
+          eventController.eventDetail!.data!.hardwareProvide!
+              .forEach((element) {
             element.hardwareItems!.map((data) {
-              temp.add(data.id.toString());
+              if (data.selected == true) {
+                temp.add(data.id.toString());
+              }
             });
           });
           for (var action in hardwareListing) {
-            if (temp.contains(action.name)) {
+            if (temp.contains(action.id.toString())) {
               action.showItems!.value = true;
             } else {
               action.showItems!.value = false;
@@ -993,6 +1005,7 @@ class AuthController extends GetxController {
             musicCategory[i].id.toString()));
       }
     }
+    print(data);
     final response = await API().postApi(data, "edit-music-genre");
 
     if (response.statusCode == 200) {}
@@ -1006,11 +1019,11 @@ class AuthController extends GetxController {
       hardwareCategory.add(
         groovkin.CategoryItem(
           categoryId: serviceObj.categoryId,
-          eventId: serviceObj.eventId,
           selectedItem: RxBool(value),
           id: serviceObj.id!,
           name: serviceObj.name ?? "",
           type: serviceObj.type ?? "",
+          eventId: serviceObj.eventId,
           createdAt: serviceObj.createdAt ?? "",
           updatedAt: serviceObj.updatedAt ?? "",
         ),

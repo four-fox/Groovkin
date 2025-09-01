@@ -206,7 +206,6 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                   ),
                                 ),
                               ),
-
                               SizedBox(
                                 height: 5,
                               ),
@@ -255,7 +254,6 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                   ),
                                 ),
                               ),
-
                               SizedBox(
                                 height: 5,
                               ),
@@ -302,71 +300,6 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                   ),
                                 ),
                               ),
-
-                              // tabValue.value != 0
-                              //     ? const SizedBox.shrink()
-                              //     : Obx(
-                              //         () => GestureDetector(
-                              //           onTap: () {
-                              //             homeController.selectedFilters.value = 3;
-                              //             showFilter.value = false;
-                              //           },
-                              //           child: Container(
-                              //             width: Get.width,
-                              //             height: 35,
-                              //             padding: const EdgeInsets.only(left: 10),
-                              //             decoration: BoxDecoration(
-                              //                 borderRadius:
-                              //                     BorderRadius.circular(10),
-                              //                 color: homeController.selectedFilters.value != 3
-                              //                     ? Colors.transparent
-                              //                     : DynamicColor.yellowClr),
-                              //             child: Align(
-                              //               alignment: Alignment.centerLeft,
-                              //               child: Text(
-                              //                 "Finished",
-                              //                 style: poppinsMediumStyle(
-                              //                     fontSize: 14,
-                              //                     color:
-                              //                         theme.scaffoldBackgroundColor,
-                              //                     context: context),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //         ),
-                              //       ),
-                              // tabValue.value != 0
-                              //     ? const SizedBox.shrink()
-                              //     : Obx(
-                              //         () => GestureDetector(
-                              //           onTap: () {
-                              //             homeController.selectedFilters.value = 4;
-                              //             showFilter.value = false;
-                              //           },
-                              //           child: Container(
-                              //             width: Get.width,
-                              //             height: 35,
-                              //             padding: const EdgeInsets.only(left: 10),
-                              //             decoration: BoxDecoration(
-                              //                 borderRadius:
-                              //                     BorderRadius.circular(10),
-                              //                 color: homeController.selectedFilters.value != 4
-                              //                     ? Colors.transparent
-                              //                     : DynamicColor.yellowClr),
-                              //             child: Align(
-                              //               alignment: Alignment.centerLeft,
-                              //               child: Text(
-                              //                 "Cancelled",
-                              //                 style: poppinsMediumStyle(
-                              //                     fontSize: 14,
-                              //                     color:
-                              //                         theme.scaffoldBackgroundColor,
-                              //                     context: context),
-                              //               ),
-                              //             ),
-                              //           ),
-                              //         ),
-                              //       ),
                             ],
                           ),
                         ),
@@ -435,7 +368,7 @@ class _HistoryTabState extends State<HistoryTab> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            controller.selectedFilter.value = 0;
+                            controller.selectedFilters.value = 0;
                             if (controller.recommendedVal.value == false) {
                               controller.userPastEventHistory();
                               controller.recommendedVal.value = true;
@@ -573,7 +506,7 @@ class _HistoryTabState extends State<HistoryTab> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            controller.selectedFilter.value = 0;
+                            controller.selectedFilters.value = 0;
                             if (controller.cancelledVal.value == false) {
                               controller.cancelEventUserHistory();
                               controller.cancelledVal.value = true;

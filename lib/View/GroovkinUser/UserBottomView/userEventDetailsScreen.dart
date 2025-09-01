@@ -260,11 +260,13 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                     const SizedBox(
                       height: 10,
                     ),
+
                     eventDateTime(
                         theme: theme,
                         context: context,
                         icon: true,
-                        text: "${controller.eventDetail!.data!.location}",
+                        text:
+                            "${controller.eventDetail!.data!.location ?? "N/N"}",
                         iconClr: DynamicColor.yellowClr),
                     customWidget(context, theme,
                         title: "Event Comments",
@@ -273,10 +275,14 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                     customWidget(context, theme,
                         title: "Event About",
                         value: controller.eventDetail!.data!.about.toString()),
-                    customWidget(context, theme,
-                        title: "Event theme",
-                        value: controller.eventDetail!.data!.themeOfEvent
-                            .toString()),
+                    if (controller.eventDetail!.data!.themeOfEvent
+                            .toString()
+                            .toLowerCase() !=
+                        "null")
+                      customWidget(context, theme,
+                          title: "Event theme",
+                          value: controller.eventDetail!.data!.themeOfEvent
+                              .toString()),
                     customWidget(context, theme,
                         title: "Featuring",
                         value:
@@ -298,10 +304,9 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                               child: Text(
                                 "Service",
                                 style: poppinsRegularStyle(
-                                  fontSize: 13,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   context: context,
-                                  underline: true,
                                   color: theme.primaryColor,
                                 ),
                               ),
@@ -350,280 +355,372 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                               child: Text(
                                 "Hardware Provided",
                                 style: poppinsRegularStyle(
-                                  fontSize: 13,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   context: context,
-                                  underline: true,
                                   color: theme.primaryColor,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: kToolbarHeight,
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: ListView.builder(
-                                    itemCount: controller.eventDetail!.data!
-                                        .hardwareProvide!.length,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    itemBuilder: (BuildContext context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6),
-                                        child: Chip(
-                                          backgroundColor:
-                                              DynamicColor.lightBlackClr,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          label: Text(
-                                            controller
-                                                .eventDetail!
-                                                .data!
-                                                .hardwareProvide![index]
-                                                .hardwareItems!
-                                                
-                                                .toString(),
-                                            style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.primaryColor,
-                                            ),
-                                          ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: controller.eventDetail!.data!
+                                      .hardwareProvide!.length,
+                                  padding: EdgeInsets.zero,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (BuildContext context, index) {
+                                    final filterdItem = controller
+                                        .eventDetail!
+                                        .data!
+                                        .hardwareProvide![index]
+                                        .hardwareItems!
+                                        .where((data) => data.selected == true)
+                                        .toList();
+                                    if (filterdItem.isEmpty) return SizedBox();
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("${"• "}",
+                                                style: TextStyle(fontSize: 20)),
+                                            Text(
+                                              controller.eventDetail!.data!
+                                                  .hardwareProvide![index].name
+                                                  .toString(),
+                                              style: poppinsRegularStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                context: context,
+                                                underline: true,
+                                                color: theme.primaryColor,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      );
-                                      // return ListView.builder(
-                                      //   shrinkWrap: true,
-                                      //     scrollDirection: Axis.horizontal,
-                                      //     physics: NeverScrollableScrollPhysics(),
-                                      //     itemCount: controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems!.length,
-                                      //     itemBuilder: (BuildContext context,indx){
-                                      //       return Padding(
-                                      //         padding: EdgeInsets.symmetric(horizontal: 6),
-                                      //         child: Chip(
-                                      //           backgroundColor: DynamicColor.lightBlackClr,
-                                      //           shape: RoundedRectangleBorder(
-                                      //             borderRadius: BorderRadius.circular(8),
-                                      //           ),
-                                      //           label: Text(controller.eventDetail!.data!.hardwareProvide![index].eventItem!.categoryItems![indx].name.toString(),
-                                      //             style: poppinsRegularStyle(
-                                      //                 fontSize: 14,
-                                      //                 context: context,
-                                      //                 color: theme.primaryColor,
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //       );
-                                      // });
-                                    }),
-                              ),
+                                        SizedBox(
+                                          height: kToolbarHeight,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
+                                                child: Chip(
+                                                  backgroundColor: DynamicColor
+                                                      .lightBlackClr,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  label: Text(
+                                                    filterdItem[index1]
+                                                        .name
+                                                        .toString(),
+                                                    style: poppinsRegularStyle(
+                                                      fontSize: 14,
+                                                      context: context,
+                                                      color: theme.primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            itemCount: filterdItem.length,
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }),
                             ),
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
                                 "Music Genre",
                                 style: poppinsRegularStyle(
-                                  fontSize: 13,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   context: context,
-                                  underline: true,
                                   color: theme.primaryColor,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: kToolbarHeight,
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    // physics: NeverScrollableScrollPhysics(),
-                                    itemCount: controller
-                                        .eventDetail!.data!.services!.length,
-                                    itemBuilder: (BuildContext context, indx) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6),
-                                        child: Chip(
-                                          backgroundColor:
-                                              DynamicColor.lightBlackClr,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          label: Text(
-                                            controller.eventDetail!.data!
-                                                .services![indx].eventItem!.name
-                                                .toString(),
-                                            style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.primaryColor,
-                                            ),
-                                          ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: controller
+                                      .eventDetail!.data!.musicGenre!.length,
+                                  itemBuilder: (BuildContext context, index) {
+                                    final filterdItem = controller
+                                        .eventDetail!
+                                        .data!
+                                        .musicGenre![index]
+                                        .musicGenreItems!
+                                        .where((data) => data.selected == true)
+                                        .toList();
+                                    if (filterdItem.isEmpty) return SizedBox();
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("${"• "}",
+                                                style: TextStyle(fontSize: 20)),
+                                            Text(
+                                              controller.eventDetail!.data!
+                                                  .musicGenre![index].name!
+                                                  .toString(),
+                                              style: poppinsRegularStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                context: context,
+                                                underline: true,
+                                                color: theme.primaryColor,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                      );
-                                    }),
-                              ),
+                                        SizedBox(
+                                          height: kToolbarHeight,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
+                                                child: Chip(
+                                                  backgroundColor: DynamicColor
+                                                      .lightBlackClr,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  label: Text(
+                                                    filterdItem[index1]
+                                                        .name
+                                                        .toString(),
+                                                    style: poppinsRegularStyle(
+                                                      fontSize: 14,
+                                                      context: context,
+                                                      color: theme.primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            itemCount: filterdItem.length,
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }),
                             ),
+
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
                                 "Music Choice",
                                 style: poppinsRegularStyle(
-                                  fontSize: 13,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   context: context,
-                                  underline: true,
                                   color: theme.primaryColor,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: kToolbarHeight,
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: ListView.builder(
-                                    itemCount: controller.eventDetail!.data!
-                                        .eventMusicChoiceTags!.length,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    itemBuilder: (BuildContext context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6),
-                                        child: Chip(
-                                          backgroundColor:
-                                              DynamicColor.lightBlackClr,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          label: Text(
-                                            controller
-                                                .eventDetail!
-                                                .data!
-                                                .eventMusicChoiceTags![index]
-                                                .musicChoiceItems!
-                                                .name
-                                                .toString(),
-                                            style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.primaryColor,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                      /*return ListView.builder(
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: controller.eventDetail!.data!
+                                      .eventMusicChoiceTags!.length,
                                   shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                  itemBuilder: (BuildContext context,indx){
-                                    return Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 6),
-                                      child: Chip(
-                                        backgroundColor: DynamicColor.lightBlackClr,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (BuildContext context, index) {
+                                    final filterdItem = controller
+                                        .eventDetail!
+                                        .data!
+                                        .eventMusicChoiceTags![index]
+                                        .musicChoiceItems!
+                                        .categoryItems!
+                                        .where((data) =>
+                                            data.userSelection == true)
+                                        .toList();
+                                    if (filterdItem.isEmpty) return SizedBox();
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("${"• "}",
+                                                style: TextStyle(fontSize: 20)),
+                                            Text(
+                                              controller
+                                                  .eventDetail!
+                                                  .data!
+                                                  .eventMusicChoiceTags![index]
+                                                  .musicChoiceItems!
+                                                  .name
+                                                  .toString(),
+                                              style: poppinsRegularStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                context: context,
+                                                underline: true,
+                                                color: theme.primaryColor,
+                                              ),
+                                            )
+                                          ],
                                         ),
-                                        label: Text(controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
-                                          style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.primaryColor,
+                                        SizedBox(
+                                          height: kToolbarHeight,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
+                                                child: Chip(
+                                                  backgroundColor: DynamicColor
+                                                      .lightBlackClr,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  label: Text(
+                                                    filterdItem[index1]
+                                                        .name
+                                                        .toString(),
+                                                    style: poppinsRegularStyle(
+                                                      fontSize: 14,
+                                                      context: context,
+                                                      color: theme.primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            itemCount: filterdItem.length,
                                           ),
-                                        ),
-                                      ),
+                                        )
+                                      ],
                                     );
-                                  });*/
-                                    }),
-                              ),
+                                  }),
                             ),
+
+                            // Todo Activity Choice
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
                                 "Activity Choice",
                                 style: poppinsRegularStyle(
-                                  fontSize: 13,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   context: context,
-                                  underline: true,
                                   color: theme.primaryColor,
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: kToolbarHeight,
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: ListView.builder(
-                                    itemCount: controller.eventDetail!.data!
-                                        .eventActivityChoiceTags!.length,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    itemBuilder: (BuildContext context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6),
-                                        child: Chip(
-                                          backgroundColor:
-                                              DynamicColor.lightBlackClr,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          label: Text(
-                                            controller
-                                                .eventDetail!
-                                                .data!
-                                                .eventActivityChoiceTags![index]
-                                                .activityChoiceItems!
-                                                .name
-                                                .toString(),
-                                            style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.primaryColor,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  itemCount: controller.eventDetail!.data!
+                                      .eventActivityChoiceTags!.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (BuildContext context, index) {
+                                    final filterdItem = controller
+                                        .eventDetail!
+                                        .data!
+                                        .eventActivityChoiceTags![index]
+                                        .activityChoiceItems!
+                                        .categoryItems!
+                                        .where((data) =>
+                                            data.userSelection == true)
+                                        .toList();
+                                    if (filterdItem.isEmpty) return SizedBox();
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("${"• "}",
+                                                style: TextStyle(fontSize: 20)),
+                                            Text(
+                                              controller
+                                                  .eventDetail!
+                                                  .data!
+                                                  .eventActivityChoiceTags![
+                                                      index]
+                                                  .activityChoiceItems!
+                                                  .name
+                                                  .toString(),
+                                              style: poppinsRegularStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                context: context,
+                                                underline: true,
+                                                color: theme.primaryColor,
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      );
-                                      // return ListView.builder(
-                                      //     shrinkWrap: true,
-                                      //     scrollDirection: Axis.horizontal,
-                                      //     physics: NeverScrollableScrollPhysics(),
-                                      //     itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                      //     itemBuilder: (BuildContext context,indx){
-                                      //       return Padding(
-                                      //         padding: EdgeInsets.symmetric(horizontal: 6),
-                                      //         child: Chip(
-                                      //           backgroundColor: DynamicColor.lightBlackClr,
-                                      //           shape: RoundedRectangleBorder(
-                                      //             borderRadius: BorderRadius.circular(8),
-                                      //           ),
-                                      //           label: Text(controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
-                                      //             style: poppinsRegularStyle(
-                                      //                 fontSize: 14,
-                                      //                 context: context,
-                                      //                 color: theme.primaryColor,
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //       );
-                                      //     });
-                                    }),
-                              ),
+                                        SizedBox(
+                                          height: kToolbarHeight,
+                                          child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
+                                                child: Chip(
+                                                  backgroundColor: DynamicColor
+                                                      .lightBlackClr,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  label: Text(
+                                                    filterdItem[index1]
+                                                        .name
+                                                        .toString(),
+                                                    style: poppinsRegularStyle(
+                                                      fontSize: 14,
+                                                      context: context,
+                                                      color: theme.primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            itemCount: filterdItem.length,
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }),
                             ),
                           ],
                         ),
@@ -632,39 +729,45 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Text(
-                        "Live Location",
-                        style: poppinsMediumStyle(
-                            fontWeight: FontWeight.w700,
-                            color: DynamicColor.lightRedClr,
-                            context: context,
-                            fontSize: 17),
+                    if (controller.eventDetail!.data!.location != null) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Text(
+                          "Live Location",
+                          style: poppinsMediumStyle(
+                              fontWeight: FontWeight.w700,
+                              color: DynamicColor.lightRedClr,
+                              context: context,
+                              fontSize: 17),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Text(
-                        controller.eventDetail!.data!.location.toString(),
-                        style: poppinsMediumStyle(
-                            color: theme.primaryColor,
-                            context: context,
-                            fontSize: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Text(
+                          controller.eventDetail!.data!.location.toString(),
+                          style: poppinsMediumStyle(
+                              color: theme.primaryColor,
+                              context: context,
+                              fontSize: 16),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    ShowCustomMap(
-                      lat:
-                          double.parse(controller.eventDetail!.data!.latitude!),
-                      lng: double.parse(
-                          controller.eventDetail!.data!.longitude!),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                      const SizedBox(
+                        height: 6,
+                      ),
+                    ],
+
+                    if (controller.eventDetail!.data!.latitude != null &&
+                        controller.eventDetail!.data!.longitude != null) ...[
+                      ShowCustomMap(
+                        lat: double.parse(
+                            controller.eventDetail!.data!.latitude!),
+                        lng: double.parse(
+                            controller.eventDetail!.data!.longitude!),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
 
                     // Todo Event & Venu Ended
 
@@ -673,127 +776,151 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                         : Obx(
                             () => _authController.followingLoader.value == false
                                 ? const SizedBox.shrink()
-                                : aboutEventCreator(
-                                    isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
-                                        ? false
-                                        : true,
-                                    rowOnTap: () {
-                                      Get.toNamed(Routes.viewProfileScreen,
-                                          arguments: {
-                                            "venueDetails":
-                                                controller.eventDetail!.data!,
-                                            "venueId": controller.eventDetail!
-                                                .data!.venue!.userId,
-                                          });
-                                    },
-                                    // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
-                                    horizontalPadding: 12,
-                                    theme: theme,
-                                    context: context,
-                                    image: controller.eventDetail!.data!.venue!.user!.profilePicture == null
-                                        ? groupPlaceholder
-                                        : controller.eventDetail!.data!.venue!
-                                            .user!.profilePicture!.mediaPath,
-                                    organizerName: controller
-                                        .eventDetail!.data!.venue!.venueName
-                                        .toString(),
-                                    icons: controller.eventDetail!.data!.venue!.user!.following == null
-                                        ? Icons.check
-                                        : Icons.add,
-                                    followBg: controller.eventDetail!.data!.venue!.user!.following == null
-                                        ? DynamicColor.avatarBgClr
-                                        : DynamicColor.grayClr,
-                                    textClr: controller.eventDetail!.data!.venue!.user!.following != null
-                                        ? theme.scaffoldBackgroundColor
-                                        : theme.primaryColor,
-                                    followText: controller.eventDetail!.data!
-                                                .venue!.user!.following ==
-                                            null
-                                        ? "Follow"
-                                        : "Unfollow",
-                                    onTap: () {
-                                      if (controller.eventDetail!.data!.venue!
-                                              .user!.following ==
-                                          null) {
-                                        _authController.followUser(
-                                            userData: controller
-                                                .eventDetail!.data!.venue!.user,
-                                            fromAllUser: false);
-                                      } else {
-                                        _authController.unfollow(
-                                            userData: controller
-                                                .eventDetail!.data!.venue!.user,
-                                            fromAllUser: false);
-                                      }
-                                    }),
+                                : controller.eventDetail!.data!.venue == null
+                                    ? SizedBox()
+                                    : aboutEventCreator(
+                                        isDelete:
+                                            controller.eventDetail!.data!.venue!.user!.isDelete == null
+                                                ? false
+                                                : true,
+                                        rowOnTap: () {
+                                          Get.toNamed(Routes.viewProfileScreen,
+                                              arguments: {
+                                                "venueDetails": controller
+                                                    .eventDetail!.data!,
+                                                "venueId": controller
+                                                    .eventDetail!
+                                                    .data!
+                                                    .venue!
+                                                    .userId,
+                                              });
+                                        },
+                                        // text: controller.eventDetail!.data!.venue!.streetAddress.toString(),
+                                        horizontalPadding: 12,
+                                        theme: theme,
+                                        context: context,
+                                        image: controller.eventDetail!.data!.venue!.user!.profilePicture == null
+                                            ? groupPlaceholder
+                                            : controller
+                                                .eventDetail!
+                                                .data!
+                                                .venue!
+                                                .user!
+                                                .profilePicture!
+                                                .mediaPath,
+                                        organizerName: controller
+                                            .eventDetail!.data!.venue!.venueName
+                                            .toString(),
+                                        icons: controller.eventDetail!.data!.venue!.user!.following == null
+                                            ? Icons.check
+                                            : Icons.add,
+                                        followBg:
+                                            controller.eventDetail!.data!.venue!.user!.following == null
+                                                ? DynamicColor.avatarBgClr
+                                                : DynamicColor.grayClr,
+                                        textClr: controller.eventDetail!.data!.venue!.user!.following != null
+                                            ? theme.scaffoldBackgroundColor
+                                            : theme.primaryColor,
+                                        followText:
+                                            controller.eventDetail!.data!.venue!.user!.following == null
+                                                ? "Follow"
+                                                : "Unfollow",
+                                        onTap: () {
+                                          if (controller.eventDetail!.data!
+                                                  .venue!.user!.following ==
+                                              null) {
+                                            _authController.followUser(
+                                                userData: controller
+                                                    .eventDetail!
+                                                    .data!
+                                                    .venue!
+                                                    .user,
+                                                fromAllUser: false);
+                                          } else {
+                                            _authController.unfollow(
+                                                userData: controller
+                                                    .eventDetail!
+                                                    .data!
+                                                    .venue!
+                                                    .user,
+                                                fromAllUser: false);
+                                          }
+                                        }),
                           ),
                     sp.read('role') == "eventOrganizer"
                         ? const SizedBox.shrink()
                         : Obx(
                             () => _authController.followingLoader.value == false
                                 ? const SizedBox.shrink()
-                                : ourGuestWidget(
-                                    isDelete:
-                                        controller.eventDetail!.data!.user!.isDelete == null
-                                            ? false
-                                            : true,
-                                    onTap: () {
-                                      Get.toNamed(Routes.viewProfileScreen,
-                                          arguments: {
-                                            "eventDetails":
-                                                controller.eventDetail!.data!,
-                                            "eventId": controller
-                                                .eventDetail!.data!.id,
-                                          });
-                                    },
-                                    horizontalPadding: 12,
-                                    networkImg: controller.eventDetail!.data!
-                                                .user!.profilePicture ==
-                                            null
-                                        ? groupPlaceholder
-                                        : controller.eventDetail!.data!.user!
-                                            .profilePicture!.mediaPath,
-                                    venueOwner: controller
-                                        .eventDetail!.data!.user!.name
-                                        .toString(),
-                                    theme: theme,
-                                    context: context,
-                                    rowPadding: 0.0,
-                                    avatarPadding: 6,
-                                    rowVerticalPadding: 0.0,
-                                    followBgClr: controller.eventDetail!.data!
-                                                .user!.following !=
-                                            null
-                                        ? DynamicColor.grayClr
-                                        : DynamicColor.avatarBgClr,
-                                    textClr: controller.eventDetail!.data!.user!
-                                                .following ==
-                                            null
-                                        ? theme.primaryColor
-                                        : theme.scaffoldBackgroundColor,
-                                    followText:
-                                        controller.eventDetail!.data!.user!.following == null
-                                            ? "Follow"
-                                            : "Unfollow",
-                                    followOnTap: () {
-                                      if (controller.eventDetail!.data!.user!
-                                              .following ==
-                                          null) {
-                                        _authController.followUser(
-                                            userData: controller
-                                                .eventDetail!.data!.user,
-                                            fromAllUser: false);
-                                      } else {
-                                        _authController.unfollow(
-                                            userData: controller
-                                                .eventDetail!.data!.user,
-                                            fromAllUser: false);
-                                      }
-                                    }
-                                    // onTap: (){
-                                    //   followBgClr.value = !followBgClr.value;
-                                    // }
-                                    ),
+                                : controller.eventDetail!.data!.user == null
+                                    ? SizedBox()
+                                    : ourGuestWidget(
+                                        isDelete:
+                                            controller.eventDetail!.data!.user!.isDelete == null
+                                                ? false
+                                                : true,
+                                        onTap: () {
+                                          Get.toNamed(Routes.viewProfileScreen,
+                                              arguments: {
+                                                "eventDetails": controller
+                                                    .eventDetail!.data!,
+                                                "eventId": controller
+                                                    .eventDetail!.data!.id,
+                                              });
+                                        },
+                                        horizontalPadding: 12,
+                                        networkImg: controller
+                                                    .eventDetail!
+                                                    .data!
+                                                    .user!
+                                                    .profilePicture ==
+                                                null
+                                            ? groupPlaceholder
+                                            : controller
+                                                .eventDetail!
+                                                .data!
+                                                .user!
+                                                .profilePicture!
+                                                .mediaPath,
+                                        venueOwner: controller
+                                            .eventDetail!.data!.user!.name
+                                            .toString(),
+                                        theme: theme,
+                                        context: context,
+                                        rowPadding: 0.0,
+                                        avatarPadding: 6,
+                                        rowVerticalPadding: 0.0,
+                                        followBgClr: controller.eventDetail!
+                                                    .data!.user!.following !=
+                                                null
+                                            ? DynamicColor.grayClr
+                                            : DynamicColor.avatarBgClr,
+                                        textClr: controller.eventDetail!.data!.user!.following == null
+                                            ? theme.primaryColor
+                                            : theme.scaffoldBackgroundColor,
+                                        followText:
+                                            controller.eventDetail!.data!.user!.following == null
+                                                ? "Follow"
+                                                : "Unfollow",
+                                        followOnTap: () {
+                                          if (controller.eventDetail!.data!
+                                                  .user!.following ==
+                                              null) {
+                                            _authController.followUser(
+                                                userData: controller
+                                                    .eventDetail!.data!.user,
+                                                fromAllUser: false);
+                                          } else {
+                                            _authController.unfollow(
+                                                userData: controller
+                                                    .eventDetail!.data!.user,
+                                                fromAllUser: false);
+                                          }
+                                        }
+                                        // onTap: (){
+                                        //   followBgClr.value = !followBgClr.value;
+                                        // }
+                                        ),
                           ),
 
                     // Todo Event & Venu Ended

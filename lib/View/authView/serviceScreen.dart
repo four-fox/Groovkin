@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
@@ -168,8 +169,16 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                             //                 .img
                                             //                 .toString()),
                                             //       ),
-                                            child:
-                                                Image.asset("assets/djing.png"),
+                                            child: controller
+                                                        .serviceListing[index]
+                                                        .image !=
+                                                    null
+                                                ? Image.network(Url().imageUrl +
+                                                    controller
+                                                        .serviceListing[index]
+                                                        .image!)
+                                                : Image.asset(
+                                                    "assets/djing.png"),
                                           ),
                                           const SizedBox(
                                             width: 5,

@@ -252,7 +252,7 @@ class EventPreview extends StatelessWidget {
               height: kToolbarHeight / 2,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: ListView.builder(
+                child: _authController.serviceList.isEmpty?noData(theme: theme): ListView.builder(
                     itemCount: _authController.serviceList.length,
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -305,7 +305,9 @@ class EventPreview extends StatelessWidget {
               height: kToolbarHeight / 2,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: ListView.builder(
+                child: _authController.eventItemsList.isEmpty
+                    ? noData(theme: theme)
+                    :  ListView.builder(
                     itemCount: _authController.eventItemsList.length,
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -358,32 +360,36 @@ class EventPreview extends StatelessWidget {
               height: kToolbarHeight / 2,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: ListView.builder(
-                    itemCount: _authController.itemsList.length,
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              color: DynamicColor.lightRedClr,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              _authController.itemsList[index].name.toString(),
-                              style: poppinsRegularStyle(
-                                fontSize: 12,
-                                context: context,
-                                color: theme.scaffoldBackgroundColor,
+                child: _authController.itemsList.isEmpty
+                    ? noData(theme: theme)
+                    : ListView.builder(
+                        itemCount: _authController.itemsList.length,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: DynamicColor.lightRedClr,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                child: Text(
+                                  _authController.itemsList[index].name
+                                      .toString(),
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    context: context,
+                                    color: theme.scaffoldBackgroundColor,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        }),
               ),
             ),
             const SizedBox(
@@ -410,32 +416,36 @@ class EventPreview extends StatelessWidget {
               height: kToolbarHeight / 2,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: ListView.builder(
-                    itemCount: _controller.tagListPost.length,
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              color: DynamicColor.lightRedClr,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              _controller.tagListPost[index].name.toString(),
-                              style: poppinsRegularStyle(
-                                fontSize: 12,
-                                context: context,
-                                color: theme.scaffoldBackgroundColor,
+                child: _controller.tagListPost.isEmpty
+                    ? noData(theme: theme)
+                    : ListView.builder(
+                        itemCount: _controller.tagListPost.length,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: DynamicColor.lightRedClr,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                child: Text(
+                                  _controller.tagListPost[index].name
+                                      .toString(),
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    context: context,
+                                    color: theme.scaffoldBackgroundColor,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        }),
               ),
             ),
             const SizedBox(
@@ -462,33 +472,36 @@ class EventPreview extends StatelessWidget {
               height: kToolbarHeight / 2,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: ListView.builder(
-                    itemCount: _controller.activityListPost.length,
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              color: DynamicColor.lightRedClr,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              _controller.activityListPost[index].name
-                                  .toString(),
-                              style: poppinsRegularStyle(
-                                fontSize: 12,
-                                context: context,
-                                color: theme.scaffoldBackgroundColor,
+                child: _controller.activityListPost.isEmpty
+                    ? noData(theme: theme)
+                    : ListView.builder(
+                        itemCount: _controller.activityListPost.length,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: DynamicColor.lightRedClr,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                child: Text(
+                                  _controller.activityListPost[index].name
+                                      .toString(),
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    context: context,
+                                    color: theme.scaffoldBackgroundColor,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        }),
               ),
             ),
             const SizedBox(

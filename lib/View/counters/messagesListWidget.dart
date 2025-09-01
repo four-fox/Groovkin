@@ -52,80 +52,87 @@ class MessageListWidget extends StatelessWidget {
                       bool isFromReceiver =
                           messageObject.senderId != currentUserId;
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: GestureDetector(
-                          onLongPress: isFromReceiver
-                              ? () {
-                                  // Only enable if message is from receiver
-                                  customAlertt(
-                                    context: context,
-                                    alignment: Alignment.topLeft,
-                                    title: 'Report this user',
-                                    text:
-                                        'Are you sure you want to report user?',
-                                    cancelAlert: 'No',
-                                    btnSuccess: 'Yes',
-                                    onTap: () {
-                                      Get.back();
-                                      controller.reportCounter(
-                                          messageObject.id!, index);
-                                    },
-                                  );
-                                }
-                              : null, // Disable long press if the message is from the current user
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      isFromReceiver
-                                          ? messageObject.user!.name!
-                                          : "Message by you",
-                                      style: poppinsRegularStyle(
-                                        context: context,
-                                        fontSize: 12,
-                                        color: DynamicColor.lightYellowClr,
+                      return messageObject.msg == null
+                          ? SizedBox()
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: GestureDetector(
+                                onLongPress: isFromReceiver
+                                    ? () {
+                                        // Only enable if message is from receiver
+                                        customAlertt(
+                                          context: context,
+                                          alignment: Alignment.topLeft,
+                                          title: 'Report this user',
+                                          text:
+                                              'Are you sure you want to report user?',
+                                          cancelAlert: 'No',
+                                          btnSuccess: 'Yes',
+                                          onTap: () {
+                                            Get.back();
+                                            controller.reportCounter(
+                                                messageObject.id!, index);
+                                          },
+                                        );
+                                      }
+                                    : null, // Disable long press if the message is from the current user
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            isFromReceiver
+                                                ? messageObject.user!.name!
+                                                : "Message by you",
+                                            style: poppinsRegularStyle(
+                                              context: context,
+                                              fontSize: 12,
+                                              color:
+                                                  DynamicColor.lightYellowClr,
+                                            ),
+                                          ),
+                                          Text(
+                                            getTimeMethod(
+                                                messageObject.createdAt!),
+                                            style: poppinsRegularStyle(
+                                                context: context,
+                                                fontSize: 12,
+                                                color:
+                                                    DynamicColor.lightRedClr),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Text(
-                                      getTimeMethod(messageObject.createdAt!),
-                                      style: poppinsRegularStyle(
-                                          context: context,
-                                          fontSize: 12,
-                                          color: DynamicColor.lightRedClr),
-                                    ),
-                                  ],
+
+                                      /// da d image widgets d
+                                      messageObject.media!.isNotEmpty
+                                          ? imageWidgets(items: messageObject)
+                                          : const SizedBox.shrink(),
+
+                                      ///da landy da message widget d
+                                      messageObject.msg != null
+                                          ? Text(
+                                              messageObject.msg!,
+                                              style: poppinsRegularStyle(
+                                                context: context,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: theme.primaryColor,
+                                              ),
+                                            )
+                                          : const SizedBox.shrink(),
+                                      const Divider(),
+                                    ],
+                                  ),
                                 ),
-
-                                /// da d image widgets d
-                                messageObject.media!.isNotEmpty
-                                    ? imageWidgets(items: messageObject)
-                                    : const SizedBox.shrink(),
-
-                                ///da landy da message widget d
-                                messageObject.msg != null
-                                    ? Text(
-                                        messageObject.msg!,
-                                        style: poppinsRegularStyle(
-                                          context: context,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: theme.primaryColor,
-                                        ),
-                                      )
-                                    : const SizedBox.shrink(),
-                                const Divider(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                              ),
+                            );
                     }),
               );
       }),

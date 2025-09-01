@@ -83,8 +83,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                         final data =
                             controller.surveyLifyStyleData!.data![index];
                         final filteredItems = data.categoryItems
-                                ?.where(
-                                    (item) => item.userCategoryItems != null)
+                                ?.where((item) => item.selectedItem!.value == true)
                                 .toList() ??
                             [];
                         // If no valid items, skip showing this category
@@ -112,7 +111,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                               itemBuilder: (context, index) {
                                 final filteredItems = data.categoryItems
                                         ?.where((item) =>
-                                            item.userCategoryItems != null)
+                                            item.selectedItem!.value == true)
                                         .toList() ??
                                     [];
                                 final lifeStyle = filteredItems[index];
@@ -143,7 +142,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                               },
                               itemCount: data.categoryItems
                                       ?.where((item) =>
-                                          item.userCategoryItems != null)
+                                          item.selectedItem!.value == true)
                                       .toList()
                                       .length ??
                                   0,
@@ -193,7 +192,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                             controller.surveyMusicGenreData!.data![index];
                         final filteredItems = data.categoryItems
                                 ?.where(
-                                    (item) => item.userCategoryItems != null)
+                                    (item) => item.selectedItem!.value == true)
                                 .toList() ??
                             [];
                         // If no valid items, skip showing this category
@@ -221,7 +220,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                               itemBuilder: (context, index) {
                                 final filteredItems = data.categoryItems
                                         ?.where((item) =>
-                                            item.userCategoryItems != null)
+                                            item.selectedItem!.value == true)
                                         .toList() ??
                                     [];
                                 final lifeStyle = filteredItems[index];
@@ -252,7 +251,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                               },
                               itemCount: data.categoryItems
                                       ?.where((item) =>
-                                          item.userCategoryItems != null)
+                                          item.selectedItem!.value == true)
                                       .toList()
                                       .length ??
                                   0,

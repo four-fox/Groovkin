@@ -74,7 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         color: theme.scaffoldBackgroundColor,
         child: GetBuilder<HomeController>(initState: (v) {
-          _controller.showIndexValue!.value = 0;
+          if (mounted) {
+            _controller.showIndexValue!.value = 0;
+          }
         }, builder: (controller) {
           return Scaffold(
             backgroundColor: Colors.transparent,

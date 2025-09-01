@@ -109,8 +109,8 @@ class MusicChoiceScreen extends StatelessWidget {
                       //   ],
                       // ),
                       controller.tagListPost.isEmpty
-                          ? const SizedBox.shrink()
-                          : SizedBox( 
+                          ? noData(theme: theme)
+                          : SizedBox(
                               height: kToolbarHeight,
                               child: Align(
                                 alignment: Alignment.centerLeft,
@@ -148,6 +148,7 @@ class MusicChoiceScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
+                     
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -162,7 +163,7 @@ class MusicChoiceScreen extends StatelessWidget {
                       ),
                       Container(
                           padding: const EdgeInsets.only(top: 8),
-                          child: ListView.builder(
+                          child: controller.tagList.isEmpty? noData(theme: theme): ListView.builder(
                               itemCount: controller.tagList.length,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -336,14 +337,14 @@ class MusicChoiceScreen extends StatelessWidget {
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
-              if (_controller.tagListPost.isNotEmpty) {
+              // if (_controller.tagListPost.isNotEmpty) {
                 if (_controller.eventDetail != null) {
                   await _controller.getMusicTag(type: "activity_choice");
                 }
                 Get.toNamed(Routes.activityChoiceScreen);
-              } else {
-                bottomToast(text: "Please add music event");
-              }
+              // } else {
+              //   bottomToast(text: "Please add music event");
+              // }
               // Get.toNamed(Routes.eventPreview,
               // arguments: {
               //   "viewDetails": 1
@@ -681,7 +682,7 @@ class ActivityChoiceScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
-            onTap: () { 
+            onTap: () {
               if (_controller.activityListPost.isNotEmpty) {
                 if (_controller.eventDetail != null) {
                   _controller.imageListtt.clear();

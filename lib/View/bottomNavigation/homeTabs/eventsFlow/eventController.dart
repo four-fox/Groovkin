@@ -468,14 +468,14 @@ class EventController extends GetxController {
     print(authController.eventItemsList.length);
     for (var a = 0; a <= authController.eventItemsList.length; a++) {
       if (a != authController.eventItemsList.length) {
-        if (iiid != authController.eventItemsList[a].eventId) {
+        if (iiid != authController.eventItemsList[a].categoryId) {
           indexVal = indexVal! + 1;
           formData.fields.add(MapEntry(
               'hardware_provides[$indexVal][hardware_provide_id]',
-              authController.eventItemsList[a].eventId.toString()));
+              authController.eventItemsList[a].categoryId.toString()));
         }
         if (authController.eventItemsList[a].selectedItem!.value == true) {
-          iiid = authController.eventItemsList[a].eventId;
+          iiid = authController.eventItemsList[a].categoryId;
           formData.fields.add(MapEntry(
               'hardware_provides[$indexVal][hardware_item_ids][]',
               authController.eventItemsList[a].id.toString()));
@@ -683,7 +683,6 @@ class EventController extends GetxController {
     }
 
     /// todo hardware params
-
     /// todo life Style params
     int? indexVaal = -1;
     int? iiad = -1;
@@ -756,7 +755,6 @@ class EventController extends GetxController {
     }
 
     /// todo activity choice
-    print(formData);
     var response = await API().postApi(formData, "update-event");
     if (response.statusCode == 200) {
       BotToast.showText(text: response.data['message']);
@@ -952,6 +950,7 @@ class EventController extends GetxController {
         DateFormat('yyyy-MM-dd').format(eventDetail!.data!.endDateTime!);
     datePost =
         DateFormat('yyyy-MM-dd').format(eventDetail!.data!.startDateTime!);
+
     if (eventDetail!.data!.rateType == "hourly") {
       eventRateHourly.value = 0;
     } else {

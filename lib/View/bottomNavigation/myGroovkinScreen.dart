@@ -60,48 +60,49 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (data.services.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 18),
-                        color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Given Services",
-                              style: poppinsRegularStyle(
-                                fontSize: 16,
-                                color: DynamicColor.lightRedClr,
-                              ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 18),
+                      color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Given Services",
+                            style: poppinsRegularStyle(
+                              fontSize: 16,
+                              color: DynamicColor.lightRedClr,
                             ),
-                            widget.appBar == true
-                                ? const SizedBox.shrink()
-                                : GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed(Routes.serviceScreen,
-                                          arguments: {
-                                            "addMoreService": 2,
-                                            "isComingFromMyGroovkin": true,
-                                            "isService": data.services,
-                                          });
-                                    },
-                                    child: Icon(Icons.edit,
-                                        color: DynamicColor.yellowClr),
-                                  )
-                          ],
-                        ),
+                          ),
+                          widget.appBar == true
+                              ? const SizedBox.shrink()
+                              : GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.serviceScreen,
+                                        arguments: {
+                                          "addMoreService": 2,
+                                          "isComingFromMyGroovkin": true,
+                                          "isService": data.services,
+                                        });
+                                  },
+                                  child: Icon(Icons.edit,
+                                      color: DynamicColor.yellowClr),
+                                )
+                        ],
                       ),
-                    ...data.services.map((data) {
-                      return serviceWidget(
-                        context: context,
-                        theme: theme,
-                        text: data.eventItem.name.toString(),
-                        image: Url().imageUrl + data.eventItem.image.toString(),
-                        isNetworkImage:
-                            data.eventItem.image?.isNotEmpty ?? false,
-                      );
-                    }),
+                    ),
+                    if (data.services.isNotEmpty)
+                      ...data.services.map((data) {
+                        return serviceWidget(
+                          context: context,
+                          theme: theme,
+                          text: data.eventItem.name.toString(),
+                          image:
+                              Url().imageUrl + data.eventItem.image.toString(),
+                          isNetworkImage:
+                              data.eventItem.image?.isNotEmpty ?? false,
+                        );
+                      }),
                     const SizedBox(
                       height: 10,
                     ),
@@ -145,38 +146,37 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                               : "Insurance can be provided",
                           image: "assets/insurance.png"),
                     ),
-                    if (data.hardwareProvides.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 18),
-                        color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Hardware",
-                              style: poppinsRegularStyle(
-                                fontSize: 16,
-                                color: DynamicColor.lightRedClr,
-                              ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 18),
+                      color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Hardware",
+                            style: poppinsRegularStyle(
+                              fontSize: 16,
+                              color: DynamicColor.lightRedClr,
                             ),
-                            widget.appBar == true
-                                ? const SizedBox.shrink()
-                                : GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed(Routes.hardwareScreen,
-                                          arguments: {
-                                            "createEvent": false,
-                                            "isFromGroovkin": true,
-                                            "isHardware": data.hardwareProvides
-                                          });
-                                    },
-                                    child: Icon(Icons.edit,
-                                        color: DynamicColor.yellowClr),
-                                  ),
-                          ],
-                        ),
+                          ),
+                          widget.appBar == true
+                              ? const SizedBox.shrink()
+                              : GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.hardwareScreen,
+                                        arguments: {
+                                          "createEvent": false,
+                                          "isFromGroovkin": true,
+                                          "isHardware": data.hardwareProvides
+                                        });
+                                  },
+                                  child: Icon(Icons.edit,
+                                      color: DynamicColor.yellowClr),
+                                ),
+                        ],
                       ),
+                    ),
                     if (data.hardwareProvides.isNotEmpty)
                       ListView.builder(
                           itemCount: data.hardwareProvides.length,
@@ -261,81 +261,79 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (data.musicGenre.isNotEmpty)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 18),
-                        color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Music Genre",
-                              style: poppinsRegularStyle(
-                                  fontSize: 16,
-                                  color: DynamicColor.lightRedClr),
-                            ),
-                            widget.appBar == true
-                                ? const SizedBox.shrink()
-                                : GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed(Routes.quickSurveyScreen,
-                                          arguments: {
-                                            "addMoreService": 2,
-                                            "isFromGroovkin": true,
-                                            "isMusic": data.musicGenre,
-                                          });
-                                    },
-                                    child: Icon(Icons.edit,
-                                        color: DynamicColor.yellowClr),
-                                  )
-                          ],
-                        ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 18),
+                      color: DynamicColor.avatarBgClr.withValues(alpha: 0.44),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Music Genre",
+                            style: poppinsRegularStyle(
+                                fontSize: 16, color: DynamicColor.lightRedClr),
+                          ),
+                          widget.appBar == true
+                              ? const SizedBox.shrink()
+                              : GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(Routes.quickSurveyScreen,
+                                        arguments: {
+                                          "addMoreService": 2,
+                                          "isFromGroovkin": true,
+                                          "isMusic": data.musicGenre,
+                                        });
+                                  },
+                                  child: Icon(Icons.edit,
+                                      color: DynamicColor.yellowClr),
+                                )
+                        ],
                       ),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
-                    // if (data.musicGenre.isNotEmpty)
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: Text(
-                                data.musicGenre[index].name,
-                                style: poppinsRegularStyle(
-                                    fontSize: 16,
-                                    color: DynamicColor.lightRedClr),
+                    if (data.musicGenre.isNotEmpty)
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  data.musicGenre[index].name,
+                                  style: poppinsRegularStyle(
+                                      fontSize: 16,
+                                      color: DynamicColor.lightRedClr),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 70,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: data.musicGenre[index]
-                                          .categoryItems?.length ??
-                                      0,
-                                  itemBuilder: (context, index2) {
-                                    return musicGenre(
-                                        theme: theme,
-                                        context: context,
-                                        title: data.musicGenre[index]
-                                            .categoryItems?[index2].name);
-                                  }),
-                            ),
-                          ],
-                        );
-                      },
-                      itemCount: data.musicGenre.isNotEmpty
-                          ? data.musicGenre.length
-                          : 0,
-                    ),
+                              SizedBox(
+                                height: 70,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: data.musicGenre[index]
+                                            .categoryItems?.length ??
+                                        0,
+                                    itemBuilder: (context, index2) {
+                                      return musicGenre(
+                                          theme: theme,
+                                          context: context,
+                                          title: data.musicGenre[index]
+                                              .categoryItems?[index2].name);
+                                    }),
+                              ),
+                            ],
+                          );
+                        },
+                        itemCount: data.musicGenre.isNotEmpty
+                            ? data.musicGenre.length
+                            : 0,
+                      ),
                     const SizedBox(
                       height: kToolbarHeight * 1.5,
                     ),

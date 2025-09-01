@@ -24,7 +24,6 @@ class HomeController extends GetxController {
   RxString? eventStatus = "Completed".obs;
   RxInt selectedFilters = 0.obs;
 
-
   ///history have selection of cancel & complete
   historyStatus() async {
     switch (selectedFilter.value) {
@@ -139,8 +138,6 @@ class HomeController extends GetxController {
       update();
     }
   }
-
-  
 
   /// cancelled events in user history
   RxBool cancelEventUserHistoryLoader = true.obs;
@@ -322,7 +319,7 @@ class HomeController extends GetxController {
 
         for (var category in surveyLifyStyleData!.data!) {
           final filteredItems = category.categoryItems
-                  ?.where((item) => item.userCategoryItems != null)
+                  ?.where((item) => item.selectedItem!.value == true)
                   .toList() ??
               [];
           surveyLifeCategoryItem.addAll(filteredItems);
@@ -373,7 +370,7 @@ class HomeController extends GetxController {
         surveyMusicGenreData = SurveyModel.fromJson(response.data);
         for (var data in surveyMusicGenreData!.data!) {
           final filteredItem = data.categoryItems
-                  ?.where((data) => data.userCategoryItems != null)
+                  ?.where((data) => data.selectedItem!.value == true)
                   .toList() ??
               [];
           surveyMusicGenreItem.addAll(filteredItem);

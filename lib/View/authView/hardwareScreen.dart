@@ -143,7 +143,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                               BorderRadius.circular(8),
                                           border: Border.all(
                                             color: DynamicColor.whiteClr
-                                                .withValues(alpha:0.5),
+                                                .withValues(alpha: 0.5),
                                           )),
                                       child: ListView.builder(
                                           itemCount: controller
@@ -224,7 +224,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                                   thickness: 1,
                                                   height: 1,
                                                   color: DynamicColor.grayClr
-                                                      .withValues(alpha:0.3),
+                                                      .withValues(alpha: 0.3),
                                                 ),
                                               ],
                                             );
