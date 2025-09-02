@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/RecommendedForUserModel.dart';
@@ -13,6 +14,7 @@ import 'package:groovkin/model/analytic_model.dart';
 import 'package:groovkin/model/transaction_history_model.dart'
     as transaction_history_model;
 import 'package:groovkin/utils/utils.dart';
+import 'package:intl/intl.dart';
 
 import '../../model/my_groovkin_model.dart' as groovkin_model;
 
@@ -92,12 +94,20 @@ class HomeController extends GetxController {
 
   /// >>>>>>>>>>>>>>>>>>>>> get event near by me
   DateTime? firstDate, secondDate;
+  TextEditingController locationController = TextEditingController();
+
+  String changeApiDateFormat(DateTime dateTime) {
+    return DateFormat("yyyy-MM-dd").format(dateTime);
+  }
 
   NearByEventsModel? eventNearByMe;
   RxBool getEventNearByMeLoader = true.obs;
   getEventNearByMe() async {
     getEventNearByMeLoader(false);
-    var response = await API().getApi(url: "near-by-events");
+    var response = await API().getApi(url: "near-by-events", queryParameters: {
+      "from_date": changeApiDateFormat(firstDate!),
+      "to_date": changeApiDateFormat(secondDate!),
+    });
     if (response.statusCode == 200) {
       eventNearByMe = NearByEventsModel.fromJson(response.data);
       getEventNearByMeLoader(true);
@@ -487,7 +497,6 @@ class HomeController extends GetxController {
         update();
         Get.back();
       }
-      
     } catch (e) {
       print(e);
     }

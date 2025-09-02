@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/dropDown.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
@@ -38,6 +39,10 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
       initialDateSelected: homeController.firstDate,
       endDateSelected: homeController.secondDate,
       onRangeSelected: (firstDate, secondDate) {
+        if (firstDate == secondDate) {
+          bottomToast(text: "Same Date not acceptale");
+          return;
+        }
         homeController.firstDate = firstDate;
         homeController.secondDate = secondDate;
         print(firstDate);
@@ -60,6 +65,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
     return DateFormat("dd/MM/yyyy").format(dateTime);
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -72,195 +79,228 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                 context.height - kBottomNavigationBarHeight - kToolbarHeight,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Genre",
-                    style: poppinsRegularStyle(
-                      fontSize: 16,
-                      context: context,
-                      color: theme.primaryColor,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Text(
+                    //   "Genre",
+                    //   style: poppinsRegularStyle(
+                    //     fontSize: 16,
+                    //     context: context,
+                    //     color: theme.primaryColor,
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 8,
+                    // ),
+                    // const DropDownClass(
+                    //   hint: "Select your music type",
+                    //   // ignore: prefer_const_literals_to_create_immutables
+                    //   list: [
+                    //     "60 Rock",
+                    //     "70 Rock",
+                    //     "80 Rock",
+                    //     "90 Rock",
+                    //     "Blues",
+                    //   ],
+                    // ),
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  const DropDownClass(
-                    hint: "Select your music type",
-                    // ignore: prefer_const_literals_to_create_immutables
-                    list: [
-                      "60 Rock",
-                      "70 Rock",
-                      "80 Rock",
-                      "90 Rock",
-                      "Blues",
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Date",
-                    style: poppinsRegularStyle(
-                      fontSize: 16,
-                      context: context,
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.calenderView);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: const DecorationImage(
-                            image: AssetImage("assets/lightBg.png"),
-                            fit: BoxFit.fill,
-                          ),
-                          border: Border.all(
-                              color:
-                                  DynamicColor.grayClr.withValues(alpha: 0.7))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          if (homeController.firstDate == null &&
-                              homeController.secondDate == null)
-                            Text(
-                              "DD/MM/YYYY",
-                              style: poppinsRegularStyle(
-                                fontSize: 15,
-                                context: context,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                          if (homeController.firstDate != null &&
-                              homeController.secondDate != null)
-                            Text(
-                              "${changeDateFormat(homeController.firstDate!)} - ${changeDateFormat(homeController.secondDate!)} ",
-                              style: poppinsRegularStyle(
-                                fontSize: 15,
-                                context: context,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(Routes.calenderView);
-                            },
-                            child: Icon(
-                              Icons.calendar_month,
-                              size: 28,
-                              color: theme.primaryColor,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  TextField(
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: "Location",
-                      labelStyle: poppinsRegularStyle(
-                        fontSize: 15,
-                        color: theme.primaryColor,
+                    Text(
+                      "Date",
+                      style: poppinsRegularStyle(
+                        fontSize: 16,
                         context: context,
-                      ),
-                      suffixIcon: Icon(
-                        Icons.location_searching,
-                        size: 20,
                         color: theme.primaryColor,
                       ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: DynamicColor.grayClr),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: DynamicColor.grayClr),
-                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    "Distance radius",
-                    style: poppinsRegularStyle(
-                      fontSize: 16,
-                      context: context,
-                      color: theme.primaryColor,
+                    const SizedBox(
+                      height: 8,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 20,
-                    child: Slider(
-                      value: _currentSliderValue,
-                      activeColor: DynamicColor.lightRedClr,
-                      secondaryActiveColor: DynamicColor.grayClr,
-                      thumbColor: theme.primaryColor,
-                      max: 100,
-                      divisions: 5,
-                      label: _currentSliderValue.round().toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _currentSliderValue = value;
-                        });
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.calenderView);
                       },
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "1 mile",
-                        style: poppinsRegularStyle(
-                          fontSize: 10,
-                          context: context,
-                          color: theme.primaryColor,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: const DecorationImage(
+                              image: AssetImage("assets/lightBg.png"),
+                              fit: BoxFit.fill,
+                            ),
+                            border: Border.all(
+                                color: DynamicColor.grayClr
+                                    .withValues(alpha: 0.7))),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (homeController.firstDate == null &&
+                                homeController.secondDate == null)
+                              Text(
+                                "DD/MM/YYYY",
+                                style: poppinsRegularStyle(
+                                  fontSize: 15,
+                                  context: context,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            if (homeController.firstDate != null &&
+                                homeController.secondDate != null)
+                              Text(
+                                "${changeDateFormat(homeController.firstDate!)} - ${changeDateFormat(homeController.secondDate!)} ",
+                                style: poppinsRegularStyle(
+                                  fontSize: 15,
+                                  context: context,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.toNamed(Routes.calenderView);
+                              },
+                              child: Icon(
+                                Icons.calendar_month,
+                                size: 28,
+                                color: theme.primaryColor,
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      Text(
-                        "100 mile",
-                        style: poppinsRegularStyle(
-                          fontSize: 10,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      readOnly: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Location Required";
+                        }
+                        return null;
+                      },
+                      controller: controller.locationController,
+                      decoration: InputDecoration(
+                        labelText: "Location",
+                        labelStyle: poppinsRegularStyle(
+                          fontSize: 15,
+                          color: theme.primaryColor,
                           context: context,
+                        ),
+                        suffixIcon: Icon(
+                          Icons.location_searching,
+                          size: 20,
                           color: theme.primaryColor,
                         ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: DynamicColor.grayClr),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: DynamicColor.grayClr),
+                        ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  const Spacer(),
-                  SafeArea(
-                    bottom: true,
-                    child: ShowCustomMap(
-                      horizontalPadding: 0.0,
-                      circle: true,
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Distance radius",
+                      style: poppinsRegularStyle(
+                        fontSize: 16,
+                        context: context,
+                        color: theme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 20,
+                      child: Slider(
+                        value: _currentSliderValue,
+                        activeColor: DynamicColor.lightRedClr,
+                        secondaryActiveColor: DynamicColor.grayClr,
+                        thumbColor: theme.primaryColor,
+                        max: 100,
+                        min: 1,
+                        divisions: 5,
+                        label: _currentSliderValue.round().toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _currentSliderValue = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${_currentSliderValue.round().toInt()} mile",
+                          style: poppinsRegularStyle(
+                            fontSize: 10,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                        Text(
+                          "${_currentSliderValue.round().toInt()} mile",
+                          style: poppinsRegularStyle(
+                            fontSize: 10,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    // const Spacer(),
+                    // SafeArea(
+                    //   bottom: true,
+                    //   child: ShowCustomMap(
+                    //     horizontalPadding: 0.0,
+                    //     circle: true,
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),
         );
       }),
+      bottomNavigationBar: SafeArea(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        child: CustomButton(
+          borderClr: Colors.transparent,
+          onTap: () {
+            final validate = _formKey.currentState!.validate();
+            if (!validate) {
+              return;
+            }
+            if (homeController.firstDate == null ||
+                homeController.secondDate == null) {
+              bottomToast(text: "Selected First and Last Date");
+            } else if (_currentSliderValue <= 0) {
+              bottomToast(text: "Selected At Least Mile");
+            }else{
+              // hit api
+            }
+          },
+          text: "Search",
+        ),
+      )),
     );
   }
 }
