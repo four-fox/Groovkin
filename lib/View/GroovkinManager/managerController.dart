@@ -411,107 +411,112 @@ class ManagerController extends GetxController {
   List<AmenitiesItem> selectedLicensesPermit = [];
   List<AmenitiesItem> selectedHouseEventPermit = [];
   createVenue(context, theme) async {
-    List amenities = [];
-    List permitList = [];
-    List houseEvent = [];
-    for (var element in selectedAmenities) {
-      amenities.add(element.id);
-    }
-    for (var element in selectedLicensesPermit) {
-      permitList.add(element.id);
-    }
-    for (var element in selectedHouseEventPermit) {
-      houseEvent.add(element.id);
-    }
+    try {
+      List amenities = [];
+      List permitList = [];
+      List houseEvent = [];
+      for (var element in selectedAmenities) {
+        amenities.add(element.id);
+      }
+      for (var element in selectedLicensesPermit) {
+        permitList.add(element.id);
+      }
+      for (var element in selectedHouseEventPermit) {
+        houseEvent.add(element.id);
+      }
 
-    var formData = form.FormData.fromMap({
-      "venue_name": venueNameController.text,
-      "street_address": streetAddressController.text,
-      "state": stateController.text,
-      "zip_code": zipController.text,
-      "location": addressController.text,
-      "phone_number": phoneNumController.text,
-      "latitude": double.parse(lat),
-      "longitude": double.parse(lng),
-      "max_occupancy": int.parse(maxOccupancyController.text),
-      "max_seating": int.parse(maxSeatingController.text),
-      if (maxHourController.text.isNotEmpty)
-        "max_hour": int.parse(maxHourController.text),
-      "opening_hours": openingHoursController.text,
-      "closing_hours": closedHoursController.text,
-      "amenities[]": amenities,
-      "licenses_and_permit_items[]": permitList,
-      "house_event_items[]": houseEvent,
-      "image[]": multiPartImg,
-      "city": cityController.text,
-      if (instagramController1.text.isNotEmpty)
-        "instagram_link": instagramController1.text,
-      if (facebookController.text.isNotEmpty)
-        "facebook_link": facebookController.text,
-      if (websiteController1.text.isNotEmpty)
-        "website": websiteController1.text,
-    });
-    print(formData);
-    var response = await API().postApi(formData, "add-venue", multiPart: true);
-    if (response.statusCode == 200) {
-      showDialog(
-          barrierColor: Colors.transparent,
-          context: context,
-          barrierDismissible: true,
-          builder: (BuildContext context) {
-            return AlertWidget(
-              height: kToolbarHeight * 5,
-              container: SizedBox(
-                width: Get.width,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Congratulation!',
-                        textAlign: TextAlign.center,
-                        style: poppinsRegularStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                          context: context,
-                          color: theme.primaryColor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          "Your profile has been created",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 5,
+      var formData = form.FormData.fromMap({
+        "venue_name": venueNameController.text,
+        "street_address": streetAddressController.text,
+        "state": stateController.text,
+        "zip_code": zipController.text,
+        "location": addressController.text,
+        "phone_number": phoneNumController.text,
+        "latitude": double.parse(lat),
+        "longitude": double.parse(lng),
+        "max_occupancy": int.parse(maxOccupancyController.text),
+        "max_seating": int.parse(maxSeatingController.text),
+        if (maxHourController.text.isNotEmpty)
+          "max_hour": int.parse(maxHourController.text),
+        "opening_hours": openingHoursController.text,
+        "closing_hours": closedHoursController.text,
+        "amenities[]": amenities,
+        "licenses_and_permit_items[]": permitList,
+        "house_event_items[]": houseEvent,
+        "image[]": multiPartImg,
+        "city": cityController.text,
+        if (instagramController1.text.isNotEmpty)
+          "instagram_link": instagramController1.text,
+        if (facebookController.text.isNotEmpty)
+          "facebook_link": facebookController.text,
+        if (websiteController1.text.isNotEmpty)
+          "website": websiteController1.text,
+      });
+      print(formData);
+      var response =
+          await API().postApi(formData, "add-venue", multiPart: true);
+      if (response.statusCode == 200) {
+        showDialog(
+            barrierColor: Colors.transparent,
+            context: context,
+            barrierDismissible: true,
+            builder: (BuildContext context) {
+              return AlertWidget(
+                height: kToolbarHeight * 5,
+                container: SizedBox(
+                  width: Get.width,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Congratulation!',
+                          textAlign: TextAlign.center,
                           style: poppinsRegularStyle(
-                            fontSize: 13,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
                             context: context,
                             color: theme.primaryColor,
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                          height: 120,
-                          child:
-                              Image(image: AssetImage("assets/handshake.png"))),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            "Your profile has been created",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                            style: poppinsRegularStyle(
+                              fontSize: 13,
+                              context: context,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                            height: 120,
+                            child: Image(
+                                image: AssetImage("assets/handshake.png"))),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          });
-      Future.delayed(const Duration(seconds: 2), () {
-        Get.back();
-        selectIndexxx.value = 0;
-        Get.offAllNamed(Routes.bottomNavigationView,
-            arguments: {"indexValue": 1});
-      });
+              );
+            });
+        Future.delayed(const Duration(seconds: 2), () {
+          Get.back();
+          selectIndexxx.value = 0;
+          Get.offAllNamed(Routes.bottomNavigationView,
+              arguments: {"indexValue": 1});
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
-  
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  edit venue
 
   editVenue() async {

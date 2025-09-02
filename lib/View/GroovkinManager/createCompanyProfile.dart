@@ -703,11 +703,11 @@ class _CreateCompanyProfileScreenState
                   ),
 
                   CustomTextFields(
-                    labelText: "Website (Optional)",
+                    labelText: "Website",
                     controller: controller.websiteController1,
                     validationError: "Website",
                     isEmail: false,
-                    isOptional: true,
+                    isOptional: false,
                   ),
 
                   const SizedBox(

@@ -21,8 +21,6 @@ class AddVenueScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Add Venue"),
       body: GetBuilder<ManagerController>(builder: (controller) {
-        print(
-            controller.venueDetails!.data!.venueProperty!.closingHours!.trim());
         return Form(
             key: venueForm,
             child: Padding(
@@ -86,8 +84,11 @@ class AddVenueScreen extends StatelessWidget {
                         }
                         return null;
                       },
-                      initialValue: DateFormat('hh:mm')
-                          .parse(controller.openingHoursController.text),
+                      initialValue: controller
+                              .openingHoursController.text.isEmpty
+                          ? null
+                          : DateFormat('hh:mm')
+                              .parse(controller.openingHoursController.text),
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -171,8 +172,11 @@ class AddVenueScreen extends StatelessWidget {
                         return null;
                       },
                       // initialValue: DateTime.now(),
-                      initialValue: DateFormat('hh:mm')
-                          .parse(controller.closedHoursController.text),
+                      initialValue:
+                          controller.closedHoursController.text.isEmpty
+                              ? null
+                              : DateFormat('hh:mm')
+                                  .parse(controller.closedHoursController.text),
                       // controller.closedHoursController.text.isNotEmpty
                       //     ? timeFormat.parse(
                       //         controller.closedHoursController.toString())

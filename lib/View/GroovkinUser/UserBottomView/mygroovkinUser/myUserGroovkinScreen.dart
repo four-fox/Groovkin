@@ -83,7 +83,8 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                         final data =
                             controller.surveyLifyStyleData!.data![index];
                         final filteredItems = data.categoryItems
-                                ?.where((item) => item.selectedItem!.value == true)
+                                ?.where(
+                                    (item) => item.selectedItem!.value == true)
                                 .toList() ??
                             [];
                         // If no valid items, skip showing this category
@@ -216,6 +217,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                               ),
                             ),
                             ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 final filteredItems = data.categoryItems

@@ -59,10 +59,13 @@ class _HardwareScreenState extends State<HardwareScreen> {
       ]),
       body: GetBuilder<AuthController>(initState: (v) {
         _controller.getAllService(
-          type: "hardware_provided",
-          mygrookinHit:
-              _controller.myGroovkingHardwareListing.isNotEmpty ? true : false,
-        );
+            type: "hardware_provided",
+            // mygrookinHit:
+            //     _controller.myGroovkingHardwareListing.isNotEmpty ? true : false,
+            mygrookinHit: isFromGroovkin);
+        if (_controller.myGroovkingHardwareListing.isEmpty) {
+          _controller.hardwareCategoryId.clear();
+        }
       }, builder: (controller) {
         return controller.getAllServiceLoader.value == false
             ? const SizedBox.shrink()
@@ -196,9 +199,10 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                                                 .selectedItem!
                                                                 .value,
                                                             onChanged: (v) {
-                                                              if (_controller
-                                                                  .hardwareCategoryId
-                                                                  .isEmpty) {
+                                                              if (isFromGroovkin==false &&
+                                                                  _controller
+                                                                      .hardwareCategoryId
+                                                                      .isEmpty) {
                                                                 controller.hardwareFunction(
                                                                     serviceObj: controller
                                                                         .hardwareListing[

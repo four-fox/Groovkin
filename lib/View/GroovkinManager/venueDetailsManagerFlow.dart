@@ -141,14 +141,15 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                 Column(
                   children: [
                     eventDateTime(
-                        theme: theme,
-                        context: context,
-                        iconBgClr:
-                            DynamicColor.avatarBgClr.withValues(alpha: 0.8),
-                        iconClr: theme.primaryColor.withValues(alpha: 0.7),
-                        icon: true,
-                        text: controller.instagramController1.text.toString(),
-                        Iconss: FontAwesomeIcons.instagram),
+                      theme: theme,
+                      context: context,
+                      iconBgClr:
+                          DynamicColor.avatarBgClr.withValues(alpha: 0.8),
+                      iconClr: theme.primaryColor.withValues(alpha: 0.7),
+                      icon: true,
+                      text: controller.instagramController1.text.toString(),
+                      Iconss: FontAwesomeIcons.instagram,
+                    ),
                     SizedBox(
                       height: 5,
                     ),

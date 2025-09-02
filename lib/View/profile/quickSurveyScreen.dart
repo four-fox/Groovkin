@@ -33,22 +33,25 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
   void initState() {
     super.initState();
     _controller.myGroockingMusicListing = Get.arguments?["isMusic"] ?? [];
-
+    
     if (Get.arguments['addMoreService'] == 1) {
       createEvent = Get.arguments['createEvent'];
     }
+
     if (Get.isRegistered<EventController>()) {
       _eventController = Get.find<EventController>();
     } else {
       _eventController = Get.put(EventController());
     }
+
     if (Get.isRegistered<HomeController>()) {
       _homeController = Get.find<HomeController>();
     } else {
       _homeController = Get.put(HomeController());
-    }
-  }
+    } 
 
+  }
+    
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -86,8 +89,9 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
         // }else{
         _controller.getLifeStyle(
             surveyType: "music_genre",
-            mygrookinHit:
-                _controller.myGroockingMusicListing.isNotEmpty ? true : false);
+            // mygrookinHit:
+            //     _controller.myGroockingMusicListing.isNotEmpty ? true : false,
+            mygrookinHit: isFromGroovkin);
         // }
       }, builder: (controller) {
         return ((controller.getLifeStyleLoader.value == false) ||

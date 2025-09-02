@@ -67,116 +67,107 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) {
-          _controller.duplicateValue.value = false;
-          _controller.update();
-          Get.back();
-        }
-      },
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
-                  //     :flowBtn==3?
-                  // kToolbarHeight*1.3
-                  //     :kToolbarHeight*4.9
-                  ),
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
-            ),
-            child: customAppBar(
-              onTap: () async {
-                _controller.duplicateValue.value = false;
-                _controller.update();
-                if (isFromEventRequestPage) {
-                  await _controller.getAllEvents();
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize:
+            const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
+                //     :flowBtn==3?
+                // kToolbarHeight*1.3
+                //     :kToolbarHeight*4.9
+                ),
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+          ),
+          child: customAppBar(
+            onTap: () async {
+              _controller.duplicateValue.value = false;
+              _controller.update();
+              if (isFromEventRequestPage) {
+                await _controller.getAllEvents();
 
-                  Get.back();
-                } else {
-                  Get.back();
-                }
-              },
-              theme: theme,
-              text: appBarTitle,
-              actions: [
-                reportedEventPreview == 3
-                    ? const SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: GestureDetector(
-                            onTap: () {
-                              if ((API().sp.read("role") == "eventOrganizer") &&
-                                  (appBarTitle == "Pending")) {
-                                _controller.assignValueForUpdate();
-                              }
-                            },
-                            child:
-                                ((API().sp.read("role") == "eventOrganizer") &&
-                                        (appBarTitle == "Pending"))
-                                    ? const Icon(Icons.edit_calendar)
-                                    : const SizedBox.shrink()),
-                      )
-              ],
-              imagee: false,
-            ),
+                Get.back();
+              } else {
+                Get.back();
+              }
+            },
+            theme: theme,
+            text: appBarTitle,
+            actions: [
+              reportedEventPreview == 3
+                  ? const SizedBox.shrink()
+                  : Padding(
+                      padding: const EdgeInsets.only(right: 7.0),
+                      child: GestureDetector(
+                          onTap: () {
+                            if ((API().sp.read("role") == "eventOrganizer") &&
+                                (appBarTitle == "Pending")) {
+                              _controller.assignValueForUpdate();
+                              _controller.showEditPreviewScreen.value = true;
+                              _controller.update();
+                            }
+                          },
+                          child: ((API().sp.read("role") == "eventOrganizer") &&
+                                  (appBarTitle == "Pending"))
+                              ? const Icon(Icons.edit_calendar)
+                              : const SizedBox.shrink()),
+                    )
+            ],
+            imagee: false,
           ),
         ),
-        body: GetBuilder<EventController>(initState: (v) {
-          _controller.eventDetails(eventId: eventId);
-        }, builder: (controller) {
-          return controller.eventDetailsLoader.value == false
-              ? const SizedBox.shrink()
-              : upcomingWidget(theme, context, controller);
-        }),
-        bottomNavigationBar: (API().sp.read("role") == "eventManager" &&
-                appBarTitle == "Completed")
-            ? GetBuilder<EventController>(builder: (controller) {
-                return SafeArea(
-                    child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3),
-                  child: CustomButton(
-                    text: "Download Event Details",
-                    onTap: () {
-                      downloadEventDetails(theme, context, controller);
-                    },
-                  ),
-                ));
-              })
-            : isComingFromNotifcation == true
-                ? null
-                : API().sp.read("role") != "eventOrganizer"
-                    ? const SizedBox.shrink()
-                    : SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4.0,
-                            vertical: 3,
-                          ),
-                          child: CustomButton(
-                            borderClr: Colors.transparent,
-                            onTap: () {
-                              if (appBarTitle != "Drafts") {
-                                _controller.duplicateValue.value = true;
-                                _controller.draftValue.value = false;
-                              } else {
-                                _controller.draftValue.value = false;
-                                _controller.duplicateValue.value = false;
-                              }
-                              _controller.assignValueForUpdate();
-                            },
-                            text: appBarTitle == "Drafts"
-                                ? "Submit Draft Event"
-                                : "Duplicate",
-                          ),
+      ),
+      body: GetBuilder<EventController>(initState: (v) {
+        _controller.eventDetails(eventId: eventId);
+      }, builder: (controller) {
+        return controller.eventDetailsLoader.value == false
+            ? const SizedBox.shrink()
+            : upcomingWidget(theme, context, controller);
+      }),
+      bottomNavigationBar: (API().sp.read("role") == "eventManager" &&
+              appBarTitle == "Completed")
+          ? GetBuilder<EventController>(builder: (controller) {
+              return SafeArea(
+                  child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3),
+                child: CustomButton(
+                  text: "Download Event Details",
+                  onTap: () {
+                    downloadEventDetails(theme, context, controller);
+                  },
+                ),
+              ));
+            })
+          : isComingFromNotifcation == true
+              ? null
+              : API().sp.read("role") != "eventOrganizer"
+                  ? const SizedBox.shrink()
+                  : SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4.0,
+                          vertical: 3,
+                        ),
+                        child: CustomButton(
+                          borderClr: Colors.transparent,
+                          onTap: () {
+                            if (appBarTitle != "Drafts") {
+                              _controller.duplicateValue.value = true;
+                              _controller.draftValue.value = false;
+                            } else {
+                              _controller.draftValue.value = false;
+                              _controller.duplicateValue.value = false;
+                            }
+                            _controller.assignValueForUpdate();
+                          },
+                          text: appBarTitle == "Drafts"
+                              ? "Submit Draft Event"
+                              : "Duplicate",
                         ),
                       ),
-      ),
+                    ),
     );
   }
 
@@ -250,21 +241,21 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: _controller.eventDetail!.data!.user!.isDelete !=
-                              null
-                          ? () {
-                              Utils.showToast();
-                            }
-                          : () {
-                              Get.toNamed(Routes.eventOrganizerScreen,
-                                  arguments: {
-                                    "eventOrganizerValue": 3,
-                                    'profileImg': "assets/eventOrganizer.png",
-                                    "manager": sp.read("role"),
-                                    "propertyView": true,
-                                    "user": _controller.eventDetail?.data?.user
-                                  });
-                            },
+                      onTap:
+                          _controller.eventDetail!.data!.user!.isDelete != null
+                              ? () {
+                                  Utils.showToast();
+                                }
+                              : () {
+                                  // Get.toNamed(Routes.eventOrganizerScreen,
+                                  //     arguments: {
+                                  //       "eventOrganizerValue": 3,
+                                  //       'profileImg': "assets/eventOrganizer.png",
+                                  //       "manager": sp.read("role"),
+                                  //       "propertyView": true,
+                                  //       "user": _controller.eventDetail?.data?.user
+                                  //     });
+                                },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,

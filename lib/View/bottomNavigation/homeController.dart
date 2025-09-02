@@ -474,6 +474,8 @@ class HomeController extends GetxController {
         }
       }
 
+      print(formData);
+
       final response = await API().postApi(formData, "update-quick-survey");
       if (response.statusCode == 200) {
         if (isFromMusicGenre == true) {
@@ -485,6 +487,7 @@ class HomeController extends GetxController {
         update();
         Get.back();
       }
+      
     } catch (e) {
       print(e);
     }

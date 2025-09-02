@@ -757,6 +757,8 @@ class EventController extends GetxController {
     /// todo activity choice
     var response = await API().postApi(formData, "update-event");
     if (response.statusCode == 200) {
+      showEditPreviewScreen.value = false;
+      update();
       BotToast.showText(text: response.data['message']);
       clearFields();
       Get.offAllNamed(Routes.bottomNavigationView,
@@ -911,6 +913,7 @@ class EventController extends GetxController {
   List<String> venueImageList = [];
   RxBool duplicateValue = false.obs;
   RxBool draftValue = false.obs;
+  RxBool showEditPreviewScreen = false.obs;
 
   eventDetails({eventId}) async {
     eventDetailsLoader(false);

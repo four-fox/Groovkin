@@ -46,10 +46,10 @@ class _SettingScreenState extends State<SettingScreen> {
             ? "Switch Role to Event Organizer"
             : (API().sp.read("role") == "eventManager" &&
                     API().sp.read("currentRole") == "eventManager")
-                ? "Switch  Role to User"
+                ? "Switch Role to User"
                 : (API().sp.read("role") == "User" &&
                         API().sp.read("currentRole") == "eventManager")
-                    ? "Switch  Role to Event Organizer"
+                    ? "Switch Role to Venue Manager"
                     : "Switch Role";
     return title;
   }
@@ -251,7 +251,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "eventManager") {
                                   controller.changeRoles(ChangeRole.manager);
                                   BotToast.showText(
-                                      text: "Change Role to Event Organizer");
+                                      text: "Change Role to Venue Manager");
                                 }
 
                                 // showModalBottomSheet(

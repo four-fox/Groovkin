@@ -595,6 +595,11 @@ class AuthController extends GetxController {
       clearLists();
       surveyData = SurveyModel.fromJson(response.data);
 
+      if (mygrookinHit == true) {
+        myGroovkinLifeStyle(myGroockingMusicListing);
+        return;
+      }
+
       final EventController eventController = Get.find();
       if (eventController.eventDetail != null) {
         List musicGenreId = [];
@@ -626,8 +631,6 @@ class AuthController extends GetxController {
         getLifeStyleLoader(true);
         update();
       }
-
-      // myGroovkinLifeStyle(myGroockingMusicListing);
     }
   }
 
@@ -782,27 +785,30 @@ class AuthController extends GetxController {
         }
         if (mygrookinHit == true) {
           myGroovkinHardwareListFtn(myGroovkingHardwareListing);
+          return;
         }
 
         final EventController eventController = Get.find();
         if (eventController.eventDetail != null) {
           List<String> temp = [];
-          eventController.eventDetail!.data!.hardwareProvide!
-              .forEach((element) {
-            element.hardwareItems!.map((data) {
+          for (var element
+              in eventController.eventDetail!.data!.hardwareProvide!) {
+            print("object");
+            for (var data in element.hardwareItems!) {
               if (data.selected == true) {
                 temp.add(data.id.toString());
               }
-            });
-          });
-          for (var action in hardwareListing) {
-            if (temp.contains(action.id.toString())) {
-              action.showItems!.value = true;
-            } else {
-              action.showItems!.value = false;
             }
+          }
+          for (var action in hardwareListing) {
+            // if (temp2.contains(action.id.toString())) {
+            //   action.showItems!.value = true;
+            // } else {
+            //   action.showItems!.value = false;
+            // }
             for (var items in action.categoryItems!) {
               if (temp.contains(items.id.toString())) {
+                action.showItems!.value = true;
                 items.selectedItem!.value = true;
                 eventItemsList.add(items);
               } else {
@@ -985,26 +991,57 @@ class AuthController extends GetxController {
     update();
   }
 
+  // Future myGroovkinMusicGenreUpdate() async {
+  //   form.FormData data = form.FormData();
+  //   int? id = -1;
+  //   int index = -1;
+
+  //   for (var i = 0; i < musicCategory.length; i++) {
+  //     if (i != musicCategory.length) {
+  //       if (id != musicCategory[i].categoryId) {
+  //         index += 1;
+  //         data.fields.add(MapEntry('music_genre[$index][music_genre_id]',
+  //             musicCategory[i].categoryId.toString()));
+  //       }
+  //     }
+
+  //     if (musicCategory[i].selectedItem!.value == true) {
+  //       id = musicCategory[i].categoryId;
+  //       data.fields.add(MapEntry('music_genre[$index][music_genre_item_ids][]',
+  //           musicCategory[i].id.toString()));
+  //     }
+  //   }
+  //   print(data);
+  //   final response = await API().postApi(data, "edit-music-genre");
+
+  //   if (response.statusCode == 200) {}
+  // }
+
   Future myGroovkinMusicGenreUpdate() async {
     form.FormData data = form.FormData();
-    int? id = -1;
-    int index = -1;
 
-    for (var i = 0; i < musicCategory.length; i++) {
-      if (i != musicCategory.length) {
-        if (id != musicCategory[i].categoryId) {
-          index += 1;
-          data.fields.add(MapEntry('music_genre[$index][music_genre_id]',
-              musicCategory[i].categoryId.toString()));
-        }
-      }
+    Map<int, List<groovkin.CategoryItem>> grouped = {};
 
-      if (musicCategory[i].selectedItem!.value == true) {
-        id = musicCategory[i].categoryId;
-        data.fields.add(MapEntry('music_genre[$index][music_genre_item_ids][]',
-            musicCategory[i].id.toString()));
+    for (var item in musicCategory) {
+      if (item.selectedItem?.value == true) {
+        grouped.putIfAbsent(item.categoryId!, () => []);
+        grouped[item.categoryId]!.add(item);
       }
     }
+
+    int index = 0;
+
+    grouped.forEach((categoryId, items) {
+      data.fields.add(MapEntry(
+          'music_genre[$index][music_genre_id]', categoryId.toString()));
+
+      for (var item in items) {
+        data.fields.add(MapEntry(
+            'music_genre[$index][music_genre_item_ids][]', item.id.toString()));
+      }
+      index++;
+    });
+
     print(data);
     final response = await API().postApi(data, "edit-music-genre");
 
@@ -1042,32 +1079,68 @@ class AuthController extends GetxController {
     update();
   }
 
+  // Future updateGroovkinghardware() async {
+  //   form.FormData data = form.FormData();
+  //   int? id = -1;
+  //   int index = -1;
+
+  //   for (var i = 0; i < hardwareCategory.length; i++) {
+  //     if (i != hardwareCategory.length) {
+  //       if (id != hardwareCategory[i].eventId) {
+  //         index += 1;
+  //         data.fields.add(MapEntry('events[$index][event_id]',
+  //             hardwareCategory[i].eventId.toString()));
+  //       }
+  //     }
+
+  //     if (hardwareCategory[i].selectedItem!.value == true) {
+  //       id = hardwareCategory[i].eventId;
+  //       data.fields.add(MapEntry(
+  //           'events[$index][item_ids][]', hardwareCategory[i].id.toString()));
+  //     }
+  //   }
+
+  //   print(data);
+
+  //   final response = await API().postApi(data, "edit-hardware-provides");
+
+  //   if (response.statusCode == 200) {}
+  // }
+  
   Future updateGroovkinghardware() async {
     form.FormData data = form.FormData();
-    int? id = -1;
-    int index = -1;
 
-    for (var i = 0; i < hardwareCategory.length; i++) {
-      if (i != hardwareCategory.length) {
-        if (id != hardwareCategory[i].eventId) {
-          index += 1;
-          data.fields.add(MapEntry('events[$index][event_id]',
-              hardwareCategory[i].eventId.toString()));
-        }
-      }
+    // Group by eventId
+    Map<int, List<groovkin.CategoryItem>> grouped = {};
 
-      if (hardwareCategory[i].selectedItem!.value == true) {
-        id = hardwareCategory[i].eventId;
-        data.fields.add(MapEntry(
-            'events[$index][item_ids][]', hardwareCategory[i].id.toString()));
+    for (var item in hardwareCategory) {
+      if (item.selectedItem?.value == true) {
+        grouped.putIfAbsent(item.eventId!, () => []);
+        grouped[item.eventId]!.add(item);
       }
     }
 
-    print(data);
+    int index = 0;
+    grouped.forEach((eventId, items) {
+      // add event_id once
+      data.fields.add(MapEntry('events[$index][event_id]', eventId.toString()));
+
+      // add all item_ids under same index
+      for (var item in items) {
+        data.fields.add(
+          MapEntry('events[$index][item_ids][]', item.id.toString()),
+        );
+      }
+      index++;
+    });
+
+    print(data.fields);
 
     final response = await API().postApi(data, "edit-hardware-provides");
 
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      print("Hardware updated ✅");
+    }
   }
 
   ///organizer add life style provided by you
