@@ -30,7 +30,8 @@ class _LoginSelectionState extends State<LoginSelection> {
             customAlertt(
               context: context,
               title: "Exit Application",
-              text: "Are You Sure?",              btnSuccess: "Yes",
+              text: "Are You Sure?",
+              btnSuccess: "Yes",
               onTap: () {
                 SystemNavigator.pop();
               },

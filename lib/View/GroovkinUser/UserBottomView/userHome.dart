@@ -29,8 +29,6 @@ class UserHomeScreen extends StatefulWidget {
 class _UserHomeScreenState extends State<UserHomeScreen> {
   RxBool recommendedVal = false.obs;
 
-  RxBool nearbyVal = false.obs;
-
   RxBool topRatedVal = false.obs;
 
   RxBool ongoingVal = false.obs;
@@ -44,6 +42,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   void initState() {
     if (Get.isRegistered<HomeController>()) {
       _controller = Get.find<HomeController>();
+      _controller.nearbyVal.value = false;
+      _controller.update();
     } else {
       _controller = Get.put(HomeController());
     }
@@ -565,16 +565,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              if (nearbyVal.value == false) {
+                              if (controller.nearbyVal.value == false) {
                                 controller.getEventNearByMe();
-                                nearbyVal.value = true;
+                                controller.nearbyVal.value = true;
                               } else {
-                                nearbyVal.value = false;
+                                controller.nearbyVal.value = false;
                                 controller.update();
                               }
                             },
                             child: Icon(
-                              nearbyVal.value == false
+                              controller.nearbyVal.value == false
                                   ? Icons.keyboard_arrow_down
                                   : Icons.keyboard_arrow_up_outlined,
                               size: 35,
@@ -586,7 +586,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       controller.getEventNearByMeLoader.value == false
                           ? const SizedBox.shrink()
                           : Visibility(
-                              visible: nearbyVal.value,
+                              visible: controller.nearbyVal.value,
                               child: controller.eventNearByMe == null ||
                                       controller
                                           .eventNearByMe!.data!.data!.isEmpty
@@ -857,7 +857,7 @@ class ViewAllEventListScreen extends StatefulWidget {
 
 class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
   // EventController _eventController = Get.find<EventController>();
-  
+
   late HomeController _controller;
   late EventController _eventController;
   late AuthController _authController;

@@ -15,6 +15,7 @@ import 'package:groovkin/model/transaction_history_model.dart'
     as transaction_history_model;
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 
 import '../../model/my_groovkin_model.dart' as groovkin_model;
 
@@ -94,7 +95,9 @@ class HomeController extends GetxController {
 
   /// >>>>>>>>>>>>>>>>>>>>> get event near by me
   DateTime? firstDate, secondDate;
+  LatLng? locationLatLng;
   TextEditingController locationController = TextEditingController();
+  double currentSliderValue = 20;
 
   String changeApiDateFormat(DateTime dateTime) {
     return DateFormat("yyyy-MM-dd").format(dateTime);
@@ -102,12 +105,34 @@ class HomeController extends GetxController {
 
   NearByEventsModel? eventNearByMe;
   RxBool getEventNearByMeLoader = true.obs;
-  getEventNearByMe() async {
+  RxBool nearbyVal = false.obs;
+  bool isFiltered = false;
+  Future<void> getEventNearByMe() async {
     getEventNearByMeLoader(false);
-    var response = await API().getApi(url: "near-by-events", queryParameters: {
-      "from_date": changeApiDateFormat(firstDate!),
-      "to_date": changeApiDateFormat(secondDate!),
-    });
+
+    Map<String, dynamic> query = {};
+
+    if (firstDate != null) {
+      query["from_date"] = changeApiDateFormat(firstDate!);
+    }
+
+    if (secondDate != null) {
+      query["to_date"] = changeApiDateFormat(secondDate!);
+    }
+
+    if (locationLatLng != null) {
+      query["latitude"] = locationLatLng!.latitude;
+      query["longitude"] = locationLatLng!.longitude;
+    }
+
+    if (currentSliderValue > 0) {
+      query["miles"] = currentSliderValue;
+    }
+
+    var response = await API().getApi(
+      url: "near-by-events",
+      queryParameters: query,
+    );
     if (response.statusCode == 200) {
       eventNearByMe = NearByEventsModel.fromJson(response.data);
       getEventNearByMeLoader(true);
@@ -149,6 +174,8 @@ class HomeController extends GetxController {
     }
   }
 
+  RecommendedEventsModel? cancelEventData;
+
   /// cancelled events in user history
   RxBool cancelEventUserHistoryLoader = true.obs;
   cancelEventUserHistory({String? filter}) async {
@@ -157,7 +184,7 @@ class HomeController extends GetxController {
         url: "cancelled-events",
         queryParameters: filter != null ? {"filter": filter} : null);
     if (response.statusCode == 200) {
-      recommendedEventData = RecommendedEventsModel.fromJson(response.data);
+      cancelEventData = RecommendedEventsModel.fromJson(response.data);
       cancelEventUserHistoryLoader(true);
       update();
     }

@@ -176,7 +176,7 @@ class _MyCollectionDetailsScreenState extends State<MyCollectionDetailsScreen> {
                                   children: controller
                                       .tagCollectionDetail!.data!
                                       .expand((tag) => tag.categoryItems ?? [])
-                                      .map((data) {
+                                      .map((data) { 
                                     return Chip(
                                       backgroundColor: theme.primaryColor,
                                       shape: RoundedRectangleBorder(

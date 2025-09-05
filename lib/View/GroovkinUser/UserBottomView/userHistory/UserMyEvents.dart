@@ -167,6 +167,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                   showFilter.value = false;
                                   if (tabValue.value == 0) {
                                     await controller.getRecommended(
+                                        url: "user-upcoming-events",
                                         filter: "this_week");
                                   }
 
@@ -215,6 +216,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                   showFilter.value = false;
                                   if (tabValue.value == 0) {
                                     await controller.getRecommended(
+                                        url: "user-upcoming-events",
                                         filter: "next_7_days");
                                   }
 
@@ -263,6 +265,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                                   showFilter.value = false;
                                   if (tabValue.value == 0) {
                                     await controller.getRecommended(
+                                        url: "user-upcoming-events",
                                         filter: "one_month_plus");
                                   }
                                   if (tabValue.value == 1 &&
@@ -370,7 +373,7 @@ class _HistoryTabState extends State<HistoryTab> {
                           onTap: () {
                             controller.selectedFilters.value = 0;
                             if (controller.recommendedVal.value == false) {
-                              controller.userPastEventHistory();
+                              controller.userPastEventHistory(filter: "recent");
                               controller.recommendedVal.value = true;
                             } else {
                               controller.recommendedVal.value = false;
@@ -508,7 +511,7 @@ class _HistoryTabState extends State<HistoryTab> {
                           onTap: () {
                             controller.selectedFilters.value = 0;
                             if (controller.cancelledVal.value == false) {
-                              controller.cancelEventUserHistory();
+                              controller.cancelEventUserHistory(filter: "recent");
                               controller.cancelledVal.value = true;
                             } else {
                               controller.cancelledVal.value = false;
@@ -530,21 +533,18 @@ class _HistoryTabState extends State<HistoryTab> {
                         ? const SizedBox.shrink()
                         : Visibility(
                             visible: controller.cancelledVal.value,
-                            child: controller.recommendedEventData == null ||
-                                    controller.recommendedEventData!.data!.data!
-                                        .isEmpty
+                            child: controller.cancelEventData == null ||
+                                    controller
+                                        .cancelEventData!.data!.data!.isEmpty
                                 ? noData(theme: theme, context: context)
                                 : Column(
                                     children: [
                                       ListView.builder(
-                                          itemCount: controller
-                                                      .recommendedEventData!
-                                                      .data!
-                                                      .data!
-                                                      .length >
+                                          itemCount: controller.cancelEventData!
+                                                      .data!.data!.length >
                                                   4
                                               ? 4
-                                              : controller.recommendedEventData!
+                                              : controller.cancelEventData!
                                                   .data!.data!.length,
                                           shrinkWrap: true,
                                           padding: EdgeInsets.zero,
@@ -553,7 +553,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                           itemBuilder:
                                               (BuildContext context, index) {
                                             EventData singleEventData =
-                                                controller.recommendedEventData!
+                                                controller.cancelEventData!
                                                     .data!.data![index];
                                             return userCustomEvent(
                                                 isDelete: singleEventData
@@ -677,7 +677,8 @@ class _UpcomingEventState extends State<UpcomingEvent> {
         return false;
       },
       child: GetBuilder<HomeController>(initState: (v) {
-        _controller.getRecommended(url: "user-upcoming-events");
+        _controller.getRecommended(
+            url: "user-upcoming-events", filter: "this_week");
       }, builder: (controller) {
         return controller.getRecommendedLoader.value == false
             ? const SizedBox.shrink()

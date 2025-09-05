@@ -31,6 +31,7 @@ import 'package:groovkin/View/authView/forgotPassword/otpScreen.dart';
 import 'package:groovkin/View/authView/forgotPassword/sendEmailScreen.dart';
 import 'package:groovkin/View/authView/loginScreen.dart';
 import 'package:groovkin/View/authView/newPasswordScreen.dart';
+import 'package:groovkin/View/authView/otp_screen.dart';
 import 'package:groovkin/View/authView/sendEmailForOtpScreen.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/ongoingEvents/ongoingEventsCompleteScreen.dart';
@@ -387,6 +388,10 @@ class AppPages {
       binding: UserHomeBinding(),
     ),
     GetPage(
+      name: _Path.emailVerifiedOtpScreen,
+      page: () => OtpVerification(),
+    ),
+    GetPage(
         name: _Path.userEventDetailsScreen,
         page: () => const UserEventDetailsScreen(),
         bindings: [
@@ -412,7 +417,7 @@ class AppPages {
     GetPage(
         name: _Path.editUserLifeStyleScreen,
         page: () => Myusergroovkinlifestylescreen()),
-            GetPage(
+    GetPage(
         name: _Path.myusergroonvkinmusicgenrescreen,
         page: () => Myusergroonvkinmusicgenrescreen()),
     GetPage(

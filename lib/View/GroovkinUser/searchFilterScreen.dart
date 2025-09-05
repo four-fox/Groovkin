@@ -1,16 +1,18 @@
 // ignore_for_file: prefer_collection_literals
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
-import 'package:groovkin/Components/dropDown.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
-import 'package:groovkin/Components/showCustomMap.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:intl/intl.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
 import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
 import 'package:scrollable_clean_calendar/utils/enums.dart';
@@ -58,8 +60,6 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
       // endDateSelected: DateTime(2022, 3, 20),
     );
   }
-
-  double _currentSliderValue = 20;
 
   String changeDateFormat(DateTime dateTime) {
     return DateFormat("dd/MM/yyyy").format(dateTime);
@@ -181,6 +181,63 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     ),
                     TextFormField(
                       readOnly: true,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MapLocationPicker(
+                                onTappp: () {},
+                                // onTapShow: true,
+                                // hideLocation: true,
+                                // lat: double.parse(eventData.latitude.toString()),
+                                // long: double.parse(eventData.longitude.toString()),
+                                minMaxZoomPreference:
+                                    const MinMaxZoomPreference(0, 15),
+                                apiKey:
+                                    "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                                canPopOnNextButtonTaped: true,
+                                searchHintText:
+                                    homeController.locationController.text !=
+                                            "null"
+                                        ? homeController.locationController.text
+                                        : "Start typing to search",
+                                // canPopOnNextButtonTaped: true,
+                                latLng: homeController.locationLatLng,
+                                initAddress:
+                                    homeController.locationController.text,
+                                nextPage: () {},
+                                onNext: (GeocodingResult? result) async {
+                                  if (result != null) {
+                                    if (result.formattedAddress != null) {
+                                      homeController.locationController.text =
+                                          result.formattedAddress!;
+                                      List<geo.Location> locations = await geo
+                                          .locationFromAddress(homeController
+                                              .locationController.text);
+
+                                      double latitude = locations[0].latitude;
+                                      double longitude = locations[0].longitude;
+
+                                      LatLng latLng =
+                                          LatLng(latitude, longitude);
+
+                                      homeController.locationLatLng = latLng;
+
+                                      homeController.update();
+                                      Get.back();
+                                    }
+                                  }
+                                },
+                                onSuggestionSelected:
+                                    (PlacesDetailsResponse? result) {
+                                  if (result != null) {}
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Location Required";
@@ -225,18 +282,19 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     SizedBox(
                       height: 20,
                       child: Slider(
-                        value: _currentSliderValue,
+                        value: homeController.currentSliderValue,
                         activeColor: DynamicColor.lightRedClr,
                         secondaryActiveColor: DynamicColor.grayClr,
                         thumbColor: theme.primaryColor,
                         max: 100,
                         min: 1,
                         divisions: 5,
-                        label: _currentSliderValue.round().toString(),
+                        label: homeController.currentSliderValue
+                            .round()
+                            .toString(),
                         onChanged: (double value) {
-                          setState(() {
-                            _currentSliderValue = value;
-                          });
+                          homeController.currentSliderValue = value;
+                          homeController.update();
                         },
                       ),
                     ),
@@ -244,7 +302,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${_currentSliderValue.round().toInt()} mile",
+                          "${homeController.currentSliderValue.round().toInt()} mile",
                           style: poppinsRegularStyle(
                             fontSize: 10,
                             context: context,
@@ -252,7 +310,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                           ),
                         ),
                         Text(
-                          "${_currentSliderValue.round().toInt()} mile",
+                          "${homeController.currentSliderValue.round().toInt()} mile",
                           style: poppinsRegularStyle(
                             fontSize: 10,
                             context: context,
@@ -284,21 +342,43 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: CustomButton(
           borderClr: Colors.transparent,
-          onTap: () {
-            final validate = _formKey.currentState!.validate();
-            if (!validate) {
+          onTap: () async {
+            if (homeController.isFiltered == true) {
+              homeController.firstDate = null;
+              homeController.secondDate = null;
+              homeController.locationLatLng = null;
+              homeController.currentSliderValue = 20;
+              homeController.isFiltered = false;
+              homeController.locationController.clear();
+              homeController.update();
+              await homeController.getEventNearByMe().then((_) {
+                homeController.nearbyVal.value = true;
+                homeController.update();
+                Get.back();
+              });
               return;
-            }
-            if (homeController.firstDate == null ||
-                homeController.secondDate == null) {
-              bottomToast(text: "Selected First and Last Date");
-            } else if (_currentSliderValue <= 0) {
-              bottomToast(text: "Selected At Least Mile");
-            }else{
-              // hit api
+            } else {
+              final validate = _formKey.currentState!.validate();
+              if (!validate) {
+                return;
+              }
+              if (homeController.firstDate == null ||
+                  homeController.secondDate == null) {
+                bottomToast(text: "Selected First and Last Date");
+              } else if (homeController.currentSliderValue <= 0) {
+                bottomToast(text: "Selected At Least Mile");
+              } else {
+                // hit api
+                await homeController.getEventNearByMe().then((_) {
+                  homeController.nearbyVal.value = true;
+                  homeController.isFiltered = true;
+                  homeController.update();
+                  Get.back();
+                });
+              }
             }
           },
-          text: "Search",
+          text: homeController.isFiltered ? "Clear Filter" : "Search",
         ),
       )),
     );

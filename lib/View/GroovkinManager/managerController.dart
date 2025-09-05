@@ -635,7 +635,7 @@ class ManagerController extends GetxController {
     streetAddressController.text = venueDetails!.data!.streetAddress!;
     cityController.text = venueDetails!.data!.city.toString();
     stateController.text = venueDetails!.data!.state!;
-    zipController.text = venueDetails!.data!.zipCode!;
+    zipController.text = venueDetails!.data!.zipCode!.toString();
 
     lat = venueDetails!.data!.latitude!;
     lng = venueDetails!.data!.longitude!;

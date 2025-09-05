@@ -159,48 +159,53 @@ class AuthController extends GetxController {
     });
 
     log(formData.toString());
-
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
+
     if (response.statusCode == 200) {
-      API().sp.write("socialType", signUpPlatform);
-      API().sp.write("token", response.data['data']['token']);
-      API().sp.write("userId", response.data['data']['user_details']['id']);
-      API().sp.write("isCompleteProfile",
-          response.data['data']['user_details']['is_complete_profile']);
-      API().sp.write("signupPlatform",
-          response.data['data']['user_details']['signup_platform']);
-      configureSDK();
-      if (response.data["data"]["user_details"]["current_role"] == "user") {
-        API().sp.write("currentRole", "User");
-      } else if (response.data["data"]["user_details"]["current_role"] ==
-          "event_owner") {
-        API().sp.write("currentRole", "eventOrganizer");
-      } else {
-        API().sp.write("currentRole", "eventManager");
-      }
-      clearTextFields();
       if (response.data["data"]["user_details"]["signup_platform"] == "app") {
-        if (API().sp.read("role") == "User") {
-          API().sp.write("isUserCreated",
-              response.data['data']['user_details']['is_user_created']);
-          Get.offAllNamed(Routes.welComeScreen);
-        } else if (API().sp.read("role") == "eventOrganizer") {
-          API().sp.write("isEventCreated",
-              response.data['data']['user_details']['is_event_created']);
-
-          Get.offAllNamed(Routes.welComeScreen);
-        } else {
-          Get.offAllNamed(Routes.welComeScreen);
-
-          // Get.offAllNamed(Routes.createCompanyProfileScreen,
-          //   arguments: {
-          //   "updationCondition": false,
-          //     "skipBtnHide": false,
-          //   }
-          // );
+        if (response.data["data"]["user_details"]["otp_status"] == 0) {
+          API().sp.write("email", emailController.text);
+          Get.offAllNamed(Routes.emailVerifiedOtpScreen);
         }
+
+        // if (API().sp.read("role") == "User") {
+        //   API().sp.write("isUserCreated",
+        //       response.data['data']['user_details']['is_user_created']);
+        //   Get.offAllNamed(Routes.welComeScreen);
+        // } else if (API().sp.read("role") == "eventOrganizer") {
+        //   API().sp.write("isEventCreated",
+        //       response.data['data']['user_details']['is_event_created']);
+
+        //   Get.offAllNamed(Routes.welComeScreen);
+        // } else {
+        //   Get.offAllNamed(Routes.welComeScreen);
+
+        //   // Get.offAllNamed(Routes.createCompanyProfileScreen,
+        //   //   arguments: {
+        //   //   "updationCondition": false,
+        //   //     "skipBtnHide": false,
+        //   //   }
+        //   // );
+        // }
       } else {
+        API().sp.write("socialType", signUpPlatform);
+        API().sp.write("token", response.data['data']['token']);
+        API().sp.write("userId", response.data['data']['user_details']['id']);
+        API().sp.write("isCompleteProfile",
+            response.data['data']['user_details']['is_complete_profile']);
+        API().sp.write("signupPlatform",
+            response.data['data']['user_details']['signup_platform']);
+        configureSDK();
+        if (response.data["data"]["user_details"]["current_role"] == "user") {
+          API().sp.write("currentRole", "User");
+        } else if (response.data["data"]["user_details"]["current_role"] ==
+            "event_owner") {
+          API().sp.write("currentRole", "eventOrganizer");
+        } else {
+          API().sp.write("currentRole", "eventManager");
+        }
+        clearTextFields();
         if (response.data["data"]["user_details"]["is_complete_profile"] == 1) {
           if (API().sp.read("role") == "User") {
             API().sp.write("isUserCreated",
@@ -238,6 +243,62 @@ class AuthController extends GetxController {
     }
   }
 
+  verifyEmailOtp(String otp) async {
+    try {
+      String email = API().sp.read("email");
+      var formData = {
+        "email": email,
+        "otp": otp,
+      };
+
+      var response = await API().postApi(
+        formData,
+        "verify-otp",
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data["data"]["user_details"]["signup_platform"] == "app") {
+          API().sp.write("token", response.data['data']['token']);
+          API().sp.write("userId", response.data['data']['user_details']['id']);
+          API().sp.write("isCompleteProfile",
+              response.data['data']['user_details']['is_complete_profile']);
+          API().sp.write("signupPlatform",
+              response.data['data']['user_details']['signup_platform']);
+          configureSDK();
+          if (response.data["data"]["user_details"]["current_role"] == "user") {
+            API().sp.write("currentRole", "User");
+          } else if (response.data["data"]["user_details"]["current_role"] ==
+              "event_owner") {
+            API().sp.write("currentRole", "eventOrganizer");
+          } else {
+            API().sp.write("currentRole", "eventManager");
+          }
+          clearTextFields();
+
+          if (API().sp.read("role") == "User") {
+            API().sp.write("isUserCreated",
+                response.data['data']['user_details']['is_user_created']);
+            Get.offAllNamed(Routes.welComeScreen);
+          } else if (API().sp.read("role") == "eventOrganizer") {
+            API().sp.write("isEventCreated",
+                response.data['data']['user_details']['is_event_created']);
+
+            Get.offAllNamed(Routes.welComeScreen);
+          } else {
+            Get.offAllNamed(Routes.welComeScreen);
+
+            // Get.offAllNamed(Routes.createCompanyProfileScreen,
+            //   arguments: {
+            //   "updationCondition": false,
+            //     "skipBtnHide": false,
+            //   }
+            // );
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
   /// login function
   final loginEmailController = TextEditingController();
   final loginPasswordController = TextEditingController();
@@ -254,6 +315,12 @@ class AuthController extends GetxController {
     var response = await API().postApi(formData, "login");
 
     if (response.statusCode == 200) {
+      if (response.data["message"] ==
+          "OTP has been sent to your email address.") {
+        API().sp.write("email", loginEmailController.text);
+        Get.offAllNamed(Routes.emailVerifiedOtpScreen);
+        return;
+      }
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
       API().sp.remove("currentRole");
@@ -1106,7 +1173,7 @@ class AuthController extends GetxController {
 
   //   if (response.statusCode == 200) {}
   // }
-  
+
   Future updateGroovkinghardware() async {
     form.FormData data = form.FormData();
 

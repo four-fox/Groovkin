@@ -42,14 +42,15 @@ class _WelComeScreenState extends State<WelComeScreen> {
           canPop: false,
           onPopInvokedWithResult: (didPop, result) {
             if (!didPop) {
-                customAlertt(
-              context: context,
-              title: "Exit Application",
-              text: "Are You Sure?",              btnSuccess: "Yes",
-              onTap: () {
-                SystemNavigator.pop();
-              },
-            );
+              customAlertt(
+                context: context,
+                title: "Exit Application",
+                text: "Are You Sure?",
+                btnSuccess: "Yes",
+                onTap: () {
+                  SystemNavigator.pop();
+                },
+              );
             }
           },
           child: Column(
@@ -108,10 +109,11 @@ class _WelComeScreenState extends State<WelComeScreen> {
                 } else if (API().sp.read("role") == "eventOrganizer") {
                   Get.offAllNamed(Routes.subscriptionScreen);
                 } else {
-                  Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
-                    "updationCondition": false,
-                    "skipBtnHide": false,
-                  });
+                  Get.offAllNamed(Routes.createCompanyProfileScreen,
+                      arguments: {
+                        "updationCondition": false,
+                        "skipBtnHide": false,
+                      });
                 }
                 // Get.toNamed(Routes.loginWithScreen);
               },

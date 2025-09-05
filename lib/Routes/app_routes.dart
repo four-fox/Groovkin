@@ -76,6 +76,7 @@ abstract class Routes {
   static const viewCreatedGroup = _Path.viewCreatedGroup;
   // static const inviteFriendsInGroups = _Path.inviteFriendsInGroups;
   static const theSquadScreen = _Path.theSquadScreen;
+  static const emailVerifiedOtpScreen = _Path.emailVerifiedOtpScreen;
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manger
   static const createCompanyProfileScreen = _Path.createCompanyProfileScreen;
@@ -204,6 +205,7 @@ abstract class _Path {
   static const theSquadScreen = "/TheSquadScreen";
   static const settingNotificationScreen = "/settingNotificationScreen";
   static const editUserLifeStyleScreen = "/editUserLifeStyleScreen";
+  static const emailVerifiedOtpScreen = "/emailVerifiedOtpScreen";
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manger
   static const createCompanyProfileScreen = "/CreateCompanyProfileScreen";

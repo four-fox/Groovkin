@@ -295,7 +295,7 @@ class Profile {
   dynamic location;
   dynamic latitude;
   dynamic longitude;
-  int? zipCode;
+  String? zipCode;
   int? isInsurance;
   String? about;
   int? userId;

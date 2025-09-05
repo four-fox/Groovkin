@@ -559,6 +559,7 @@ class EventController extends GetxController {
           Get.offAllNamed(Routes.bottomNavigationView,
               arguments: {"indexValue": 0});
         });
+        
         showDialog(
             barrierColor: Colors.transparent,
             context: context,
