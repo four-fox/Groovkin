@@ -139,7 +139,7 @@ class HomeController extends GetxController {
       update();
     }
   }
-
+  
   ///>>>>>>>>>>>>>>>>>>> get top rated events
   TopRatedEventModel? topRatingData;
   RxBool getTopRatedEventLoader = true.obs;

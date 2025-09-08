@@ -362,6 +362,15 @@ class AuthController extends GetxController {
             selectUserIndexxx.value = 0;
             Get.offAllNamed(Routes.userBottomNavigationNav);
           }
+        } else if (sp.read("role") == "eventOrganizer") {
+          if (response.data['data']['user_details']['isEventCreated'] == 0) {
+            Get.offAllNamed(Routes.serviceScreen,
+                arguments: {"addMoreService": 1});
+          } else {
+            selectIndexxx.value = 0;
+            Get.offAllNamed(Routes.bottomNavigationView,
+                arguments: {"indexValue": 0});
+          }
         } else {
           selectIndexxx.value = 0;
           Get.offAllNamed(Routes.bottomNavigationView,

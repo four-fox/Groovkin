@@ -69,7 +69,7 @@ class _LoginWithScreenState extends State<LoginWithScreen> {
                 context: context,
                 color: theme.primaryColor,
               ),
-            ),
+            ), 
             const SizedBox(
               height: kToolbarHeight * 1.4,
             ),
@@ -80,7 +80,6 @@ class _LoginWithScreenState extends State<LoginWithScreen> {
                 // } else{
                 authController.emailController.clear();
                 API().sp.write("emailSocial", null);
-
                 Get.toNamed(Routes.loginOrSignUpScreen);
                 // }
               },
