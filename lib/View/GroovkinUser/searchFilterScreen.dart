@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_collection_literals
 
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geo;
