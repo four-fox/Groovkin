@@ -56,13 +56,14 @@ class VenueDetailsData {
   String? createdAt;
   String? updatedAt;
   User? user;
+  String? website;
   String? city;
   VenueProperty? venueProperty;
   List<ProfilePicture>? profilePicture;
   List<Amenity>? amenities;
   List<Amenity>? licensesAndPermit;
   List<Amenity>? houseEventCapabilities;
-
+  List<SocialLinks>? socialLinks;
   VenueDetailsData({
     this.id,
     this.location,
@@ -83,44 +84,50 @@ class VenueDetailsData {
     this.amenities,
     this.licensesAndPermit,
     this.houseEventCapabilities,
+    this.socialLinks,
+    this.website,
   });
 
   factory VenueDetailsData.fromJson(Map<String, dynamic> json) =>
       VenueDetailsData(
-        id: json["id"],
-        location: json["location"],
-        venueName: json["venue_name"],
-        streetAddress: json["street_address"],
-        state: json["state"],
-        city: json["city"],
-        zipCode: json["zip_code"],
-        phoneNumber: json["phone_number"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
-        userId: json["user_id"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-        venueProperty: json["venue_property"] == null
-            ? null
-            : VenueProperty.fromJson(json["venue_property"]),
-        profilePicture: json["profile_picture"] == null
-            ? []
-            : List<ProfilePicture>.from(json["profile_picture"]!
-                .map((x) => ProfilePicture.fromJson(x))),
-        amenities: json["amenities"] == null
-            ? []
-            : List<Amenity>.from(
-                json["amenities"]!.map((x) => Amenity.fromJson(x))),
-        licensesAndPermit: json["licenses_and_permit"] == null
-            ? []
-            : List<Amenity>.from(
-                json["licenses_and_permit"]!.map((x) => Amenity.fromJson(x))),
-        houseEventCapabilities: json["house_event_capabilities"] == null
-            ? []
-            : List<Amenity>.from(json["house_event_capabilities"]!
-                .map((x) => Amenity.fromJson(x))),
-      );
+          id: json["id"],
+          location: json["location"],
+          website: json["website"],
+          venueName: json["venue_name"],
+          streetAddress: json["street_address"],
+          state: json["state"],
+          city: json["city"],
+          zipCode: json["zip_code"],
+          phoneNumber: json["phone_number"],
+          latitude: json["latitude"],
+          longitude: json["longitude"],
+          userId: json["user_id"],
+          createdAt: json["created_at"],
+          updatedAt: json["updated_at"],
+          user: json["user"] == null ? null : User.fromJson(json["user"]),
+          venueProperty: json["venue_property"] == null
+              ? null
+              : VenueProperty.fromJson(json["venue_property"]),
+          profilePicture: json["profile_picture"] == null
+              ? []
+              : List<ProfilePicture>.from(json["profile_picture"]!
+                  .map((x) => ProfilePicture.fromJson(x))),
+          amenities: json["amenities"] == null
+              ? []
+              : List<Amenity>.from(
+                  json["amenities"]!.map((x) => Amenity.fromJson(x))),
+          licensesAndPermit: json["licenses_and_permit"] == null
+              ? []
+              : List<Amenity>.from(
+                  json["licenses_and_permit"]!.map((x) => Amenity.fromJson(x))),
+          houseEventCapabilities: json["house_event_capabilities"] == null
+              ? []
+              : List<Amenity>.from(json["house_event_capabilities"]!
+                  .map((x) => Amenity.fromJson(x))),
+          socialLinks: json["social_links"] == null
+              ? []
+              : List<SocialLinks>.from(
+                  json["social_links"]!.map((x) => SocialLinks.fromJson(x))));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -167,6 +174,7 @@ class User {
   ProfilePicture? profilePicture;
   RxBool? isFollow = false.obs;
   String? role;
+  List<String>? roles;
   Following? follower;
   Following? following;
   String? isDelete;
@@ -187,6 +195,7 @@ class User {
     this.follower,
     this.following,
     this.isDelete,
+    this.roles,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -212,6 +221,11 @@ class User {
             ? null
             : Following.fromJson(json["following"]),
         isDelete: json["deleted_at"],
+        roles: json["roles"] == null
+            ? []
+            : List<String>.from(
+                json["roles"].map((role) => role["name"].toString()),
+              ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -276,10 +290,12 @@ class Profile {
   dynamic birthYear;
   String? phoneNumber;
   dynamic companyName;
-  dynamic selectState;
+  String? country;
+  String? selectState;
   dynamic location;
   dynamic latitude;
   dynamic longitude;
+  String? zipCode;
   int? isInsurance;
   String? about;
   int? userId;
@@ -293,6 +309,7 @@ class Profile {
     this.birthYear,
     this.phoneNumber,
     this.companyName,
+    this.country,
     this.selectState,
     this.about,
     this.location,
@@ -302,6 +319,7 @@ class Profile {
     this.userId,
     this.createdAt,
     this.updatedAt,
+    this.zipCode,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
@@ -309,6 +327,8 @@ class Profile {
         firstName: json["first_name"],
         lastName: json["last_name"],
         about: json["about"],
+        country: json["country"],
+        zipCode: json["zip_code"],
         birthYear: json["birth_year"],
         phoneNumber: json["phone_number"],
         companyName: json["company_name"],
@@ -575,4 +595,31 @@ class VenueProperty {
         "created_at": createdAt,
         "updated_at": updatedAt,
       };
+}
+
+class SocialLinks {
+  int? id, userId, venueId;
+  String? facebook, instagram, twitter, youtube;
+
+  SocialLinks({
+    this.id,
+    this.userId,
+    this.venueId,
+    this.facebook,
+    this.instagram,
+    this.twitter,
+    this.youtube,
+  });
+
+  factory SocialLinks.fromJson(Map<String, dynamic> json) {
+    return SocialLinks(
+      id: json["id"],
+      facebook: json["facebook"],
+      instagram: json["instagram"],
+      twitter: json["twitter"],
+      userId: json["user_id"],
+      venueId: json["venue_id"],
+      youtube: json["youtube"],
+    );
+  }
 }

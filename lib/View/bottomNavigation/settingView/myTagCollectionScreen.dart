@@ -176,7 +176,7 @@ class _MyCollectionDetailsScreenState extends State<MyCollectionDetailsScreen> {
                                   children: controller
                                       .tagCollectionDetail!.data!
                                       .expand((tag) => tag.categoryItems ?? [])
-                                      .map((data) {
+                                      .map((data) { 
                                     return Chip(
                                       backgroundColor: theme.primaryColor,
                                       shape: RoundedRectangleBorder(
@@ -295,18 +295,23 @@ class _CreateNewTagState extends State<CreateNewTag> {
                                         backgroundColor: theme.primaryColor,
                                         onSelected: (value) {
                                           if (cat.selected != null) {
-                                            if (cat.selected == false) {
-                                              cat.selected!.value = value;
-                                              controller.id = cat.id.toString();
-                                              controller.addTagCollection(
-                                                  type: "music_choice");
-                                              controller.update();
+                                            cat.selected!.value = value;
+
+                                            if (value) {
+                                              controller.selectedTagIds
+                                                  .add(cat.id.toString());
+                                              controller.addedTagIds
+                                                  .add(cat.id.toString());
+                                              // controller.addTagCollection(
+                                              //     type: "music_choice");
                                             } else {
-                                              controller.id = cat.id.toString();
-                                              cat.selected!.value = value;
-                                              controller.removeTagCollection();
-                                              controller.update();
+                                              controller.selectedTagIds
+                                                  .remove(cat.id.toString());
+                                              controller.deletedTagIds
+                                                  .add(cat.id.toString());
+                                              // controller.removeTagCollection();
                                             }
+                                            controller.update();
                                           }
                                         },
                                         selectedColor: DynamicColor.yellowClr,
@@ -339,7 +344,21 @@ class _CreateNewTagState extends State<CreateNewTag> {
                     borderClr: Colors.transparent,
                     color1: DynamicColor.blackClr,
                     color2: DynamicColor.blackClr,
-                    onTap: () {
+                    onTap: () async {
+                      // Hit add API only if we have new additions
+                      if (controller.addedTagIds.isNotEmpty) {
+                        await controller.addTagCollection(type: "music_choice");
+                      }
+
+                      // Hit remove API only if we have removals
+                      if (controller.deletedTagIds.isNotEmpty) {
+                        await controller.removeTagCollection();
+                      }
+
+                      // After saving, clear temp lists
+                      controller.addedTagIds.clear();
+                      controller.deletedTagIds.clear();
+
                       if (isFromTagCollectionScreen) {
                         Get.back();
                       } else {

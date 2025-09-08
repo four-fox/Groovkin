@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/customEventWidget.dart';
@@ -19,9 +20,8 @@ class MyEventsScreen extends StatefulWidget {
 }
 
 class _MyEventsScreenState extends State<MyEventsScreen> {
-  
   RxInt tabValue = 0.obs;
-  RxInt selectedFilter = 0.obs;
+
   RxBool showFilter = false.obs;
 
   @override
@@ -29,8 +29,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
     super.initState();
     tabValue.value = 0;
   }
-  
+
   RxBool recommendedVal = false.obs;
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,9 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 indicatorColor: Colors.transparent,
                 indicator: const BoxDecoration(color: Colors.white),
                 onTap: (v) {
+                  homeController.selectedFilters.value = 0;
                   tabValue.value = v;
+                  showFilter.value = false;
                 },
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 tabs: [
@@ -81,10 +84,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     child: Obx(
                       () => CustomButton(
                         borderClr: Colors.transparent,
-                        backgroundClr: tabValue.value == 0 ? true : false,
                         color2: DynamicColor.lightBlackClr,
                         color1: DynamicColor.lightBlackClr,
-                        text: "History",
+                        backgroundClr: tabValue.value == 0 ? true : false,
+                        text: "Upcoming",
                       ),
                     ),
                   ),
@@ -92,10 +95,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                     child: Obx(
                       () => CustomButton(
                         borderClr: Colors.transparent,
+                        backgroundClr: tabValue.value == 1 ? true : false,
                         color2: DynamicColor.lightBlackClr,
                         color1: DynamicColor.lightBlackClr,
-                        backgroundClr: tabValue.value == 1 ? true : false,
-                        text: "Upcoming",
+                        text: "History",
                       ),
                     ),
                   ),
@@ -131,185 +134,181 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
               const TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  HistoryTab(),
-                  // UpComingEventView(historyVal: true,selectedValue: selectedFilter.value,),
+                  // UpComingEventView(historyVal: true,selectedValue: homeController.selectedFilters.value,),
                   // PastEventView(),
                   // UpComingEventView(historyVal: false, selectedValue: 0,),
                   UpcomingEvent(),
+                  HistoryTab(),
                 ],
               ),
-              Obx(
-                () => Visibility(
-                  visible: showFilter.value,
-                  child: GestureDetector(
-                    onTap: () {
-                      selectedFilter.value = 0;
-                    },
-                    child: Container(
-                      height: tabValue.value == 0 ? 220 : 150,
-                      width: Get.width / 2,
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: DynamicColor.whiteClr),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Obx(
-                            () => GestureDetector(
-                              onTap: () {
-                                selectedFilter.value = 0;
-                                showFilter.value = false;
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: selectedFilter.value != 0
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Recent",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Obx(
-                            () => GestureDetector(
-                              onTap: () {
-                                selectedFilter.value = 1;
-                                showFilter.value = false;
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: selectedFilter.value != 1
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Past Week",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Obx(
-                            () => GestureDetector(
-                              onTap: () {
-                                selectedFilter.value = 2;
-                                showFilter.value = false;
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: selectedFilter.value != 2
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Older then 1 month",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          tabValue.value != 0
-                              ? const SizedBox.shrink()
-                              : Obx(
-                                  () => GestureDetector(
-                                    onTap: () {
-                                      selectedFilter.value = 3;
-                                      showFilter.value = false;
-                                    },
-                                    child: Container(
-                                      width: Get.width,
-                                      height: 35,
-                                      padding: const EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: selectedFilter.value != 3
+              GetBuilder<HomeController>(builder: (controller) {
+                return Obx(() => Visibility(
+                      visible: showFilter.value,
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.selectedFilters.value = 0;
+                        },
+                        child: Container(
+                          // height: tabValue.value == 0 ? 220 : 150,
+                          width: Get.width / 2,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 12),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: DynamicColor.whiteClr),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  controller.selectedFilters.value = 0;
+                                  showFilter.value = false;
+                                  if (tabValue.value == 0) {
+                                    await controller.getRecommended(
+                                        url: "user-upcoming-events",
+                                        filter: "this_week");
+                                  }
+
+                                  if (tabValue.value == 1 &&
+                                      controller.recommendedVal.value == true) {
+                                    await controller.userPastEventHistory(
+                                        filter: "recent");
+                                  }
+
+                                  if (tabValue.value == 1 &&
+                                      controller.cancelledVal.value == true) {
+                                    await controller.cancelEventUserHistory(
+                                        filter: "recent");
+                                  }
+                                },
+                                child: Container(
+                                  width: Get.width,
+                                  height: 35,
+                                  padding: const EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color:
+                                          controller.selectedFilters.value != 0
                                               ? Colors.transparent
                                               : DynamicColor.yellowClr),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Finished",
-                                          style: poppinsMediumStyle(
-                                              fontSize: 14,
-                                              color:
-                                                  theme.scaffoldBackgroundColor,
-                                              context: context),
-                                        ),
-                                      ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      tabValue.value == 0
+                                          ? "This Week"
+                                          : "Recent (Last 7 Days)",
+                                      style: poppinsMediumStyle(
+                                          fontSize: 14,
+                                          color: theme.scaffoldBackgroundColor,
+                                          context: context),
                                     ),
                                   ),
                                 ),
-                          tabValue.value != 0
-                              ? const SizedBox.shrink()
-                              : Obx(
-                                  () => GestureDetector(
-                                    onTap: () {
-                                      selectedFilter.value = 4;
-                                      showFilter.value = false;
-                                    },
-                                    child: Container(
-                                      width: Get.width,
-                                      height: 35,
-                                      padding: const EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: selectedFilter.value != 4
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  controller.selectedFilters.value = 1;
+                                  showFilter.value = false;
+                                  if (tabValue.value == 0) {
+                                    await controller.getRecommended(
+                                        url: "user-upcoming-events",
+                                        filter: "next_7_days");
+                                  }
+
+                                  if (tabValue.value == 1 &&
+                                      controller.recommendedVal.value == true) {
+                                    await controller.userPastEventHistory(
+                                        filter: "past_week");
+                                  }
+
+                                  if (tabValue.value == 1 &&
+                                      controller.cancelledVal.value == true) {
+                                    await controller.cancelEventUserHistory(
+                                        filter: "past_week");
+                                  }
+                                },
+                                child: Container(
+                                  width: Get.width,
+                                  height: 35,
+                                  padding: const EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color:
+                                          controller.selectedFilters.value != 1
                                               ? Colors.transparent
                                               : DynamicColor.yellowClr),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Cancelled",
-                                          style: poppinsMediumStyle(
-                                              fontSize: 14,
-                                              color:
-                                                  theme.scaffoldBackgroundColor,
-                                              context: context),
-                                        ),
-                                      ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      tabValue.value == 0
+                                          ? "Next 7 Days"
+                                          : "Past Week",
+                                      style: poppinsMediumStyle(
+                                          fontSize: 14,
+                                          color: theme.scaffoldBackgroundColor,
+                                          context: context),
                                     ),
                                   ),
                                 ),
-                        ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  controller.selectedFilters.value = 2;
+                                  showFilter.value = false;
+                                  if (tabValue.value == 0) {
+                                    await controller.getRecommended(
+                                        url: "user-upcoming-events",
+                                        filter: "one_month_plus");
+                                  }
+                                  if (tabValue.value == 1 &&
+                                      controller.recommendedVal.value == true) {
+                                    await controller.userPastEventHistory(
+                                        filter: "older_than_month");
+                                  }
+                                  if (tabValue.value == 1 &&
+                                      controller.cancelledVal.value == true) {
+                                    await controller.cancelEventUserHistory(
+                                        filter: "older_than_month");
+                                  }
+                                },
+                                child: Container(
+                                  width: Get.width,
+                                  height: 35,
+                                  padding: const EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color:
+                                          controller.selectedFilters.value != 2
+                                              ? Colors.transparent
+                                              : DynamicColor.yellowClr),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      tabValue.value == 0
+                                          ? "1+ Month Away"
+                                          : "Older Than 1 Month",
+                                      style: poppinsMediumStyle(
+                                          fontSize: 14,
+                                          color: theme.scaffoldBackgroundColor,
+                                          context: context),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
+                    ));
+              }),
             ],
           ),
         ),
@@ -340,16 +339,12 @@ class _HistoryTabState extends State<HistoryTab> {
     }
   }
 
-  RxBool recommendedVal = false.obs;
-
-  RxBool cancelledVal = false.obs;
-
-  RxBool ongoingVal = false.obs;
+  // RxBool ongoingVal = false.obs;
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Obx(() {
+    return GetBuilder<HomeController>(builder: (controller) {
       return SingleChildScrollView(
         child: Column(
           children: [
@@ -376,16 +371,18 @@ class _HistoryTabState extends State<HistoryTab> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (recommendedVal.value == false) {
-                              controller.userPastEventHistory();
-                              recommendedVal.value = true;
+                            controller.selectedFilters.value = 0;
+                            if (controller.recommendedVal.value == false) {
+                              controller.userPastEventHistory(filter: "recent");
+                              controller.recommendedVal.value = true;
                             } else {
-                              recommendedVal.value = false;
+                              controller.recommendedVal.value = false;
                               controller.update();
                             }
+                            controller.update();
                           },
                           child: Icon(
-                            recommendedVal.value == false
+                            controller.recommendedVal.value == false
                                 ? Icons.keyboard_arrow_down
                                 : Icons.keyboard_arrow_up_outlined,
                             size: 35,
@@ -397,7 +394,7 @@ class _HistoryTabState extends State<HistoryTab> {
                     controller.getUserHistoryLoader.value == false
                         ? const SizedBox.shrink()
                         : Visibility(
-                            visible: recommendedVal.value,
+                            visible: controller.recommendedVal.value,
                             child: controller.userPastHistory == null ||
                                     controller
                                         .userPastHistory!.data!.data!.isEmpty
@@ -422,7 +419,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                                     .data!.data![index];
                                             return userCustomEvent(
                                                 isDelete: singleEventData
-                                                            .user?.deleteAt ==
+                                                            .user?.isDelete ==
                                                         null
                                                     ? false
                                                     : true,
@@ -512,16 +509,18 @@ class _HistoryTabState extends State<HistoryTab> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            if (cancelledVal.value == false) {
-                              controller.cancelEventUserHistory();
-                              cancelledVal.value = true;
+                            controller.selectedFilters.value = 0;
+                            if (controller.cancelledVal.value == false) {
+                              controller.cancelEventUserHistory(filter: "recent");
+                              controller.cancelledVal.value = true;
                             } else {
-                              cancelledVal.value = false;
+                              controller.cancelledVal.value = false;
                               controller.update();
                             }
+                            controller.update();
                           },
                           child: Icon(
-                            cancelledVal.value == false
+                            controller.cancelledVal.value == false
                                 ? Icons.keyboard_arrow_down
                                 : Icons.keyboard_arrow_up_outlined,
                             size: 35,
@@ -533,22 +532,19 @@ class _HistoryTabState extends State<HistoryTab> {
                     controller.cancelEventUserHistoryLoader.value == false
                         ? const SizedBox.shrink()
                         : Visibility(
-                            visible: cancelledVal.value,
-                            child: controller.recommendedEventData == null ||
-                                    controller.recommendedEventData!.data!.data!
-                                        .isEmpty
+                            visible: controller.cancelledVal.value,
+                            child: controller.cancelEventData == null ||
+                                    controller
+                                        .cancelEventData!.data!.data!.isEmpty
                                 ? noData(theme: theme, context: context)
                                 : Column(
                                     children: [
                                       ListView.builder(
-                                          itemCount: controller
-                                                      .recommendedEventData!
-                                                      .data!
-                                                      .data!
-                                                      .length >
+                                          itemCount: controller.cancelEventData!
+                                                      .data!.data!.length >
                                                   4
                                               ? 4
-                                              : controller.recommendedEventData!
+                                              : controller.cancelEventData!
                                                   .data!.data!.length,
                                           shrinkWrap: true,
                                           padding: EdgeInsets.zero,
@@ -557,11 +553,11 @@ class _HistoryTabState extends State<HistoryTab> {
                                           itemBuilder:
                                               (BuildContext context, index) {
                                             EventData singleEventData =
-                                                controller.recommendedEventData!
+                                                controller.cancelEventData!
                                                     .data!.data![index];
                                             return userCustomEvent(
                                                 isDelete: singleEventData
-                                                            .user?.deleteAt ==
+                                                            .user?.isDelete ==
                                                         null
                                                     ? false
                                                     : true,
@@ -681,12 +677,25 @@ class _UpcomingEventState extends State<UpcomingEvent> {
         return false;
       },
       child: GetBuilder<HomeController>(initState: (v) {
-        _controller.getRecommended(url: "user-upcoming-events");
+        _controller.getRecommended(
+            url: "user-upcoming-events", filter: "this_week");
       }, builder: (controller) {
         return controller.getRecommendedLoader.value == false
             ? const SizedBox.shrink()
             : controller.recommendedEventData!.data!.data!.isEmpty
-                ? noData(context: context, theme: theme)
+                ? API().sp.read("role") == "User"
+                    ? Center(
+                        child: Text(
+                          "Events you’re scheduled to attend in the future",
+                          style: poppinsMediumStyle(
+                            fontSize: 16,
+                            context: context,
+                            color: theme.primaryColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : noData(context: context, theme: theme)
                 : Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12.0, vertical: 8),
@@ -704,7 +713,7 @@ class _UpcomingEventState extends State<UpcomingEvent> {
                             EventData singleEventData = controller
                                 .recommendedEventData!.data!.data![index];
                             return userCustomEvent(
-                                isDelete: singleEventData.user?.deleteAt == null
+                                isDelete: singleEventData.user?.isDelete == null
                                     ? false
                                     : true,
                                 dayy: DateFormat.MMM()

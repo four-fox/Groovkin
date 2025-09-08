@@ -246,7 +246,7 @@ class UpcomingEvents extends StatelessWidget {
                               EventData singleEvent =
                                   controller.ongoingEvents!.data!.data![index];
                               return userCustomEvent(
-                                  isDelete: singleEvent.user!.deleteAt == null
+                                  isDelete: singleEvent.user!.isDelete == null
                                       ? false
                                       : true,
                                   dayy: DateFormat.MMM()
@@ -364,7 +364,7 @@ class UpcomingEvents extends StatelessWidget {
                                   .upcomingEventData!.data!.data![index];
                               return userCustomEvent(
                                   isDelete:
-                                      singleEventDat.user!.deleteAt == null
+                                      singleEventDat.user!.isDelete == null
                                           ? false
                                           : true,
                                   dayy: DateFormat.MMM()

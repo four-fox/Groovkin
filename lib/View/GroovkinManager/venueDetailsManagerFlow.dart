@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
@@ -101,6 +102,60 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                   text: controller.addressController.text,
                   image: "assets/location.png",
                   iconClr: theme.primaryColor.withValues(alpha: 0.7)),
+              if (controller.websiteController1.text.isNotEmpty)
+                Column(
+                  children: [
+                    eventDateTime(
+                      theme: theme,
+                      context: context,
+                      iconBgClr:
+                          DynamicColor.avatarBgClr.withValues(alpha: 0.8),
+                      iconClr: theme.primaryColor.withValues(alpha: 0.7),
+                      icon: true,
+                      Iconss: Icons.public,
+                      text: controller.websiteController1.text.toString(),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
+              if (controller.facebookController.text.isNotEmpty)
+                Column(
+                  children: [
+                    eventDateTime(
+                        theme: theme,
+                        context: context,
+                        iconBgClr:
+                            DynamicColor.avatarBgClr.withValues(alpha: 0.8),
+                        iconClr: theme.primaryColor.withValues(alpha: 0.7),
+                        icon: true,
+                        text: controller.facebookController.text.toString(),
+                        Iconss: FontAwesomeIcons.facebook),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
+              if (controller.instagramController1.text.isNotEmpty)
+                Column(
+                  children: [
+                    eventDateTime(
+                      theme: theme,
+                      context: context,
+                      iconBgClr:
+                          DynamicColor.avatarBgClr.withValues(alpha: 0.8),
+                      iconClr: theme.primaryColor.withValues(alpha: 0.7),
+                      icon: true,
+                      text: controller.instagramController1.text.toString(),
+                      Iconss: FontAwesomeIcons.instagram,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
+
               const SizedBox(
                 height: 10,
               ),
@@ -692,6 +747,7 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
   bool editButton = Get.arguments['editBtn'] ?? false;
 
   late AuthController _authController;
+
   @override
   void initState() {
     super.initState();
@@ -937,6 +993,67 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                     const SizedBox(
                       height: 10,
                     ),
+                    if (controller.venueDetails!.data!.website != null)
+                      eventDateTime(
+                        theme: theme,
+                        context: context,
+                        iconBgClr: DynamicColor.lightBlackClr,
+                        iconClr: DynamicColor.grayClr,
+                        icon: true,
+                        Iconss: Icons.public,
+                        text: controller.venueDetails!.data!.website.toString(),
+                      ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (controller.venueDetails?.data?.socialLinks != null &&
+                        controller
+                            .venueDetails!.data!.socialLinks!.isNotEmpty &&
+                        controller.venueDetails!.data!.socialLinks!.first
+                                .facebook !=
+                            null)
+                      Column(
+                        children: [
+                          eventDateTime(
+                            theme: theme,
+                            context: context,
+                            iconBgClr: DynamicColor.lightBlackClr,
+                            iconClr: DynamicColor.grayClr,
+                            icon: true,
+                            Iconss: FontAwesomeIcons.facebookF,
+                            text: controller
+                                .venueDetails!.data!.socialLinks!.first.facebook
+                                .toString(),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    if (controller.venueDetails?.data?.socialLinks != null &&
+                        controller
+                            .venueDetails!.data!.socialLinks!.isNotEmpty &&
+                        controller.venueDetails!.data!.socialLinks!.first
+                                .instagram !=
+                            null)
+                      Column(
+                        children: [
+                          eventDateTime(
+                            theme: theme,
+                            context: context,
+                            iconBgClr: DynamicColor.lightBlackClr,
+                            iconClr: DynamicColor.grayClr,
+                            icon: true,
+                            Iconss: FontAwesomeIcons.instagram,
+                            text: controller.venueDetails!.data!.socialLinks!
+                                .first.instagram
+                                .toString(),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
                     eventsTitles(text: "Image"),
                     const SizedBox(
                       height: 10,

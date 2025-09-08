@@ -8,12 +8,12 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
-
+  
 class InAppPurchased {
   static InAppPurchased? _instance;
-
+  
   InAppPurchased._a();
-
+  
   factory InAppPurchased() {
     return _instance ??= InAppPurchased._a();
   }
@@ -23,7 +23,7 @@ class InAppPurchased {
   late StreamSubscription<List<PurchaseDetails>> subscriptionStream;
   List<ProductDetails> _product = [];
   List<PurchaseDetails> _purchase = [];
-
+  
   final List<String> _identifiers = ["rc_premium_month", "rc_premium_year"];
 
   Future<void> initStore() async {
@@ -212,4 +212,6 @@ class InAppPurchased {
   Future<void> restorePurchased() async {
     await inAppPurchase.restorePurchases();
   }
+
+
 }

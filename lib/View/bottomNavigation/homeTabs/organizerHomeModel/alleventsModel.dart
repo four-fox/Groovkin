@@ -94,9 +94,8 @@ class Data {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data": data == null
-            ? []
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data":
+            data == null ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -133,15 +132,19 @@ class EventData {
   String? location;
   String? latitude;
   String? longitude;
+  String? description;
   int? userId;
   int? venueId;
+  int? acceptedBy;
+  int? saveDraft;
   String? status;
   String? createdAt;
   String? updatedAt;
   Venue? venue;
   List<ProfilePicture>? profilePicture;
   BannerImage? bannerImage;
-  DatumUser? user;
+  // DatumUser? user;
+  User? user;
   List<Service>? services;
   List<HardwareProvide>? hardwareProvide;
   List<MusicGenre>? musicGenre;
@@ -158,6 +161,7 @@ class EventData {
     this.endDateTime,
     this.maxCapacity,
     this.rate,
+    this.description,
     this.downPayment,
     this.balanceDue,
     this.totalAmount,
@@ -169,6 +173,8 @@ class EventData {
     this.longitude,
     this.userId,
     this.venueId,
+    this.acceptedBy,
+    this.saveDraft,
     this.status,
     this.createdAt,
     this.updatedAt,
@@ -189,6 +195,7 @@ class EventData {
         featuring: json["featuring"],
         about: json["about"],
         themeOfEvent: json["theme_of_event"],
+        description: json["description"],
         startDateTime: json["start_date_time"] == null
             ? null
             : DateTime.parse(json["start_date_time"]),
@@ -208,6 +215,8 @@ class EventData {
         longitude: json["longitude"],
         userId: json["user_id"],
         venueId: json["venue_id"],
+        acceptedBy: json["accepted_by"],
+        saveDraft: json["save_draft"],
         status: json["status"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
@@ -219,26 +228,26 @@ class EventData {
         bannerImage: json["banner_image"] == null
             ? null
             : BannerImage.fromJson(json["banner_image"]),
-        user: json["user"] == null ? null : DatumUser.fromJson(json["user"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         services: json["services"] == null
             ? []
             : List<Service>.from(
                 json["services"]!.map((x) => Service.fromJson(x))),
-        hardwareProvide: json["hardware_provide"] == null
+        hardwareProvide: json["hardwares"] == null
             ? []
-            : List<HardwareProvide>.from(json["hardware_provide"]!
-                .map((x) => HardwareProvide.fromJson(x))),
-        musicGenre: json["music_genre"] == null
+            : List<HardwareProvide>.from(
+                json["hardwares"]!.map((x) => HardwareProvide.fromJson(x))),
+        musicGenre: json["genre"] == null
             ? []
             : List<MusicGenre>.from(
-                json["music_genre"]!.map((x) => MusicGenre.fromJson(x))),
-        eventMusicChoiceTags: json["event_music_choice_tags"] == null
+                json["genre"]!.map((x) => MusicGenre.fromJson(x))),
+        eventMusicChoiceTags: json["eventMusicChoiceTags"] == null
             ? []
-            : List<EventMusicChoiceTag>.from(json["event_music_choice_tags"]!
+            : List<EventMusicChoiceTag>.from(json["eventMusicChoiceTags"]!
                 .map((x) => EventMusicChoiceTag.fromJson(x))),
-        eventActivityChoiceTags: json["event_activity_choice_tags"] == null
+        eventActivityChoiceTags: json["eventActivityChoiceTags"] == null
             ? []
-            : List<EventMusicChoiceTag>.from(json["event_activity_choice_tags"]!
+            : List<EventMusicChoiceTag>.from(json["eventActivityChoiceTags"]!
                 .map((x) => EventMusicChoiceTag.fromJson(x))),
       );
 
@@ -342,21 +351,15 @@ class BannerImage {
 
 class MusicGenre {
   int? id;
-  int? userId;
-  int? eventId;
-  int? categoryId;
-  int? itemId;
+  String? name;
   String? type;
   String? createdAt;
   String? updatedAt;
-  MusicGenreEventItem? eventItem;
+  List<MusicGenreEventItem>? eventItem;
 
   MusicGenre({
     this.id,
-    this.userId,
-    this.eventId,
-    this.categoryId,
-    this.itemId,
+    this.name,
     this.type,
     this.createdAt,
     this.updatedAt,
@@ -364,39 +367,33 @@ class MusicGenre {
   });
 
   factory MusicGenre.fromJson(Map<String, dynamic> json) => MusicGenre(
-        id: json["id"],
-        userId: json["user_id"],
-        eventId: json["event_id"],
-        categoryId: json["category_id"],
-        itemId: json["item_id"],
-        type: json["type"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        eventItem: json["event_item"] == null
-            ? null
-            : MusicGenreEventItem.fromJson(json["event_item"]),
-      );
+      id: json["id"],
+      name: json["name"],
+      type: json["type"],
+      createdAt: json["created_at"],
+      updatedAt: json["updated_at"],
+      eventItem: json["category_items"] == null
+          ? []
+          : List<MusicGenreEventItem>.from(json["category_items"].map(
+              (x) => MusicGenreEventItem.fromJson(x),
+            )));
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
-        "event_id": eventId,
-        "category_id": categoryId,
-        "item_id": itemId,
         "type": type,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "event_item": eventItem?.toJson(),
       };
 }
 
 class MusicGenreEventItem {
   int? id;
+  int? categoryId;
   String? name;
   String? type;
   String? createdAt;
   String? updatedAt;
-  List<FluffyCategoryItem>? categoryItems;
+  bool? selected;
 
   MusicGenreEventItem({
     this.id,
@@ -404,21 +401,19 @@ class MusicGenreEventItem {
     this.type,
     this.createdAt,
     this.updatedAt,
-    this.categoryItems,
+    this.selected,
+    this.categoryId,
   });
 
   factory MusicGenreEventItem.fromJson(Map<String, dynamic> json) =>
       MusicGenreEventItem(
-        id: json["id"],
-        name: json["name"],
-        type: json["type"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        categoryItems: json["category_items"] == null
-            ? []
-            : List<FluffyCategoryItem>.from(json["category_items"]!
-                .map((x) => FluffyCategoryItem.fromJson(x))),
-      );
+          id: json["id"],
+          name: json["name"],
+          categoryId: json["category_id"],
+          type: json["type"],
+          createdAt: json["created_at"],
+          updatedAt: json["updated_at"],
+          selected: json["selected"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -426,48 +421,45 @@ class MusicGenreEventItem {
         "type": type,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "category_items": categoryItems == null
-            ? []
-            : List<dynamic>.from(categoryItems!.map((x) => x.toJson())),
       };
 }
 
-class FluffyCategoryItem {
-  int? id;
-  int? categoryId;
-  String? name;
-  String? type;
-  String? createdAt;
-  String? updatedAt;
+// class FluffyCategoryItem {
+//   int? id;
+//   int? categoryId;
+//   String? name;
+//   String? type;
+//   String? createdAt;
+//   String? updatedAt;
 
-  FluffyCategoryItem({
-    this.id,
-    this.categoryId,
-    this.name,
-    this.type,
-    this.createdAt,
-    this.updatedAt,
-  });
+//   FluffyCategoryItem({
+//     this.id,
+//     this.categoryId,
+//     this.name,
+//     this.type,
+//     this.createdAt,
+//     this.updatedAt,
+//   });
 
-  factory FluffyCategoryItem.fromJson(Map<String, dynamic> json) =>
-      FluffyCategoryItem(
-        id: json["id"],
-        categoryId: json["category_id"],
-        name: json["name"],
-        type: json["type"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-      );
+//   factory FluffyCategoryItem.fromJson(Map<String, dynamic> json) =>
+//       FluffyCategoryItem(
+//         id: json["id"],
+//         categoryId: json["category_id"],
+//         name: json["name"],
+//         type: json["type"],
+//         createdAt: json["created_at"],
+//         updatedAt: json["updated_at"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_id": categoryId,
-        "name": name,
-        "type": type,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "category_id": categoryId,
+//         "name": name,
+//         "type": type,
+//         "created_at": createdAt,
+//         "updated_at": updatedAt,
+//       };
+// }
 
 class EventMusicChoiceTag {
   int? id;
@@ -568,6 +560,7 @@ class EventTagItemCategoryItem {
   String? type;
   String? createdAt;
   String? updatedAt;
+  bool? userSelection;
 
   EventTagItemCategoryItem({
     this.id,
@@ -576,17 +569,18 @@ class EventTagItemCategoryItem {
     this.type,
     this.createdAt,
     this.updatedAt,
+    this.userSelection,
   });
 
   factory EventTagItemCategoryItem.fromJson(Map<String, dynamic> json) =>
       EventTagItemCategoryItem(
-        id: json["id"],
-        eventTagId: json["event_tag_id"],
-        name: json["name"],
-        type: json["type"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-      );
+          id: json["id"],
+          eventTagId: json["event_tag_id"],
+          name: json["name"],
+          type: json["type"],
+          createdAt: json["created_at"],
+          updatedAt: json["updated_at"],
+          userSelection: json["user_selections"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -600,19 +594,17 @@ class EventTagItemCategoryItem {
 
 class HardwareProvide {
   int? id;
-  int? userId;
-  int? eventId;
-  int? eventItemId;
+  String? name;
+  String? image;
   String? type;
   String? createdAt;
   String? updatedAt;
-  HardwareProvideEventItem? eventItem;
+  List<HardwareProvideEventItem>? eventItem;
 
   HardwareProvide({
     this.id,
-    this.userId,
-    this.eventId,
-    this.eventItemId,
+    this.name,
+    this.image,
     this.type,
     this.createdAt,
     this.updatedAt,
@@ -621,112 +613,100 @@ class HardwareProvide {
 
   factory HardwareProvide.fromJson(Map<String, dynamic> json) =>
       HardwareProvide(
-        id: json["id"],
-        userId: json["user_id"],
-        eventId: json["event_id"],
-        eventItemId: json["event_item_id"],
-        type: json["type"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        eventItem: json["event_item"] == null
-            ? null
-            : HardwareProvideEventItem.fromJson(json["event_item"]),
-      );
+          id: json["id"],
+          name: json["name"],
+          type: json["type"],
+          image: json["image"],
+          createdAt: json["created_at"],
+          updatedAt: json["updated_at"],
+          eventItem: json["category_items"] == null
+              ? []
+              : List<HardwareProvideEventItem>.from(json["category_items"]
+                  .map((x) => HardwareProvideEventItem.fromJson(x))));
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
-        "event_id": eventId,
-        "event_item_id": eventItemId,
         "type": type,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "event_item": eventItem?.toJson(),
       };
 }
 
 class HardwareProvideEventItem {
   int? id;
   String? name;
-  dynamic image;
+  int? eventId;
   String? type;
   String? createdAt;
   String? updatedAt;
-  List<EventItemCategoryItem>? categoryItems;
+  bool? selected;
 
   HardwareProvideEventItem({
     this.id,
     this.name,
-    this.image,
+    this.eventId,
     this.type,
     this.createdAt,
     this.updatedAt,
-    this.categoryItems,
+    this.selected,
   });
 
   factory HardwareProvideEventItem.fromJson(Map<String, dynamic> json) =>
       HardwareProvideEventItem(
         id: json["id"],
         name: json["name"],
-        image: json["image"],
         type: json["type"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        categoryItems: json["category_items"] == null
-            ? []
-            : List<EventItemCategoryItem>.from(json["category_items"]!
-                .map((x) => EventItemCategoryItem.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "image": image,
-        "type": type,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "category_items": categoryItems == null
-            ? []
-            : List<dynamic>.from(categoryItems!.map((x) => x.toJson())),
-      };
-}
-
-class EventItemCategoryItem {
-  int? id;
-  int? eventId;
-  String? name;
-  String? type;
-  String? createdAt;
-  String? updatedAt;
-
-  EventItemCategoryItem({
-    this.id,
-    this.eventId,
-    this.name,
-    this.type,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  factory EventItemCategoryItem.fromJson(Map<String, dynamic> json) =>
-      EventItemCategoryItem(
-        id: json["id"],
         eventId: json["event_id"],
-        name: json["name"],
-        type: json["type"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        selected: json["selected"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "event_id": eventId,
         "name": name,
         "type": type,
         "created_at": createdAt,
         "updated_at": updatedAt,
       };
 }
+
+// class EventItemCategoryItem {
+//   int? id;
+//   int? eventId;
+//   String? name;
+//   String? type;
+//   String? createdAt;
+//   String? updatedAt;
+
+//   EventItemCategoryItem({
+//     this.id,
+//     this.eventId,
+//     this.name,
+//     this.type,
+//     this.createdAt,
+//     this.updatedAt,
+//   });
+
+//   factory EventItemCategoryItem.fromJson(Map<String, dynamic> json) =>
+//       EventItemCategoryItem(
+//         id: json["id"],
+//         eventId: json["event_id"],
+//         name: json["name"],
+//         type: json["type"],
+//         createdAt: json["created_at"],
+//         updatedAt: json["updated_at"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "event_id": eventId,
+//         "name": name,
+//         "type": type,
+//         "created_at": createdAt,
+//         "updated_at": updatedAt,
+//       };
+// }
 
 class ProfilePicture {
   int? id;
@@ -880,7 +860,9 @@ class DatumUser {
   String? updatedAt;
   String? deleteAt;
   PurpleProfile? profile;
-
+  Following? following;
+  Following? followers;
+  ProfilePicture? profilePicture;
   DatumUser({
     this.id,
     this.name,
@@ -892,6 +874,9 @@ class DatumUser {
     this.updatedAt,
     this.profile,
     this.deleteAt,
+    this.following,
+    this.followers,
+    this.profilePicture,
   });
 
   factory DatumUser.fromJson(Map<String, dynamic> json) => DatumUser(
@@ -904,6 +889,15 @@ class DatumUser {
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
         deleteAt: json["deleted_at"],
+        following: json["following"] == null
+            ? null
+            : Following.fromJson(json["following"]),
+        followers: json["follower"] == null
+            ? null
+            : Following.fromJson(json["follower"]),
+        profilePicture: json["profile_picture"] == null
+            ? null
+            : ProfilePicture.fromJson(json["profile_picture"]),
         profile: json["profile"] == null
             ? null
             : PurpleProfile.fromJson(json["profile"]),
@@ -996,10 +990,12 @@ class Venue {
   String? venueName;
   String? streetAddress;
   String? state;
+  String? city;
   String? zipCode;
   String? phoneNumber;
   String? latitude;
   String? longitude;
+  String? website;
   int? userId;
   String? createdAt;
   String? updatedAt;
@@ -1014,6 +1010,7 @@ class Venue {
     this.venueName,
     this.streetAddress,
     this.state,
+    this.city,
     this.zipCode,
     this.phoneNumber,
     this.latitude,
@@ -1025,6 +1022,7 @@ class Venue {
     this.profilePicture,
     this.following,
     this.follower,
+    this.website,
   });
 
   factory Venue.fromJson(Map<String, dynamic> json) => Venue(
@@ -1033,6 +1031,7 @@ class Venue {
         venueName: json["venue_name"],
         streetAddress: json["street_address"],
         state: json["state"],
+        city: json["city"],
         zipCode: json["zip_code"],
         phoneNumber: json["phone_number"],
         latitude: json["latitude"],
@@ -1040,6 +1039,7 @@ class Venue {
         userId: json["user_id"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        website: json["website"],
         following: json["following"] == null
             ? null
             : Following.fromJson(json["following"]),

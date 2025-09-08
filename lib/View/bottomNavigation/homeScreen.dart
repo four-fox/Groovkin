@@ -17,6 +17,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/PostEvents.da
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
+import 'package:groovkin/View/paymentMethod/showSelectedBottomSheetCard.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 
@@ -73,7 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         color: theme.scaffoldBackgroundColor,
         child: GetBuilder<HomeController>(initState: (v) {
-          _controller.showIndexValue!.value = 0;
+          if (mounted) {
+            _controller.showIndexValue!.value = 0;
+          }
         }, builder: (controller) {
           return Scaffold(
             backgroundColor: Colors.transparent,
@@ -90,12 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 90,
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
-                            // color: Colors.amberAccent
-                            color: DynamicColor.darkGrayClr,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: theme.primaryColor,
-                            )),
+                          // color: Colors.amberAccent
+                          color: DynamicColor.darkGrayClr,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: theme.primaryColor,
+                          ),
+                        ),
                         child: Center(
                           child: Text(
                             "View All",
@@ -247,83 +251,76 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     tabs: [
                       Tab(
-                        child: Obx(
-                          () => Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: controller.showIndexValue!.value == 0
-                                  ? DynamicColor.secondaryClr
-                                  : DynamicColor.lightBlackClr,
-                            ),
-                            child: Center(
-                              child: Text(
-                                /*sp.read("role") == "eventManager"
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: controller.showIndexValue!.value == 0
+                                ? DynamicColor.secondaryClr
+                                : DynamicColor.lightBlackClr,
+                          ),
+                          child: Center(
+                            child: Text(
+                              /*sp.read("role") == "eventManager"
                                     ? "Upcoming"
                                     :  
                                     */
 
-                                "Scheduled",
-                                style: poppinsMediumStyle(
-                                  fontSize: 14,
-                                  context: context,
-                                  color: controller.showIndexValue!.value == 0
-                                      ? theme.primaryColor
-                                      : DynamicColor.lightWhite,
-                                ),
+                              "Scheduled",
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: controller.showIndexValue!.value == 0
+                                    ? theme.primaryColor
+                                    : DynamicColor.lightWhite,
                               ),
                             ),
                           ),
                         ),
                       ),
                       Tab(
-                        child: Obx(
-                          () => Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: controller.showIndexValue!.value == 1
-                                    ? DynamicColor.secondaryClr
-                                    : DynamicColor.lightBlackClr),
-                            child: Center(
-                              child: Text(
-                                /*sp.read("role") == "eventManager"
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: controller.showIndexValue!.value == 1
+                                  ? DynamicColor.secondaryClr
+                                  : DynamicColor.lightBlackClr),
+                          child: Center(
+                            child: Text(
+                              /*sp.read("role") == "eventManager"
                                     ? "Pending"
                                     :*/
-
-                                "Requests",
-                                style: poppinsMediumStyle(
-                                  fontSize: 14,
-                                  context: context,
-                                  color: controller.showIndexValue!.value == 1
-                                      ? theme.primaryColor
-                                      : DynamicColor.lightWhite,
-                                ),
+                              "Requests",
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: controller.showIndexValue!.value == 1
+                                    ? theme.primaryColor
+                                    : DynamicColor.lightWhite,
                               ),
                             ),
                           ),
                         ),
                       ),
                       Tab(
-                        child: Obx(
-                          () => Container(
-                            height: 35,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: controller.showIndexValue!.value == 2
-                                  ? DynamicColor.secondaryClr
-                                  : DynamicColor.lightBlackClr,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "History",
-                                style: poppinsMediumStyle(
-                                    fontSize: 14,
-                                    context: context,
-                                    color: controller.showIndexValue!.value == 2
-                                        ? theme.primaryColor
-                                        : DynamicColor.lightWhite),
-                              ),
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: controller.showIndexValue!.value == 2
+                                ? DynamicColor.secondaryClr
+                                : DynamicColor.lightBlackClr,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "History",
+                              style: poppinsMediumStyle(
+                                  fontSize: 14,
+                                  context: context,
+                                  color: controller.showIndexValue!.value == 2
+                                      ? theme.primaryColor
+                                      : DynamicColor.lightWhite),
                             ),
                           ),
                         ),
@@ -340,6 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         controller.showFilter.value =
                             !controller.showFilter.value;
+                        controller.update();
                       },
                       child: Align(
                         alignment: Alignment.topRight,
@@ -369,214 +367,212 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Shahzain
 
-                Obx(
-                  () => Visibility(
-                    visible: controller.showFilter.value,
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.selectedFilter.value = 0;
-                      },
-                      child: Container(
-                        height:
-                            controller.showIndexValue!.value == 0 ? 100 : 130,
-                        width: Get.width / 2,
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: DynamicColor.whiteClr,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                controller.selectedFilter.value = 0;
-                                controller.showFilter.value = false;
-                                controller.update();
+                Visibility(
+                  visible: controller.showFilter.value,
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.selectedFilter.value = 0;
+                      controller.update();
+                    },
+                    child: Container(
+                      height: controller.showIndexValue!.value == 0 ? 100 : 130,
+                      width: Get.width / 2,
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: DynamicColor.whiteClr,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              controller.selectedFilter.value = 0;
+                              controller.showFilter.value = false;
+                              controller.update();
 
-                                if (controller.showIndexValue!.value == 2) {
-                                  controller.completedEvent();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") != "eventManager") {
-                                  _eventController.getAllSendingRequest();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") == "eventManager") {
-                                  _managerController.getAllPendingEvents();
-                                }
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
+                              if (controller.showIndexValue!.value == 2) {
+                                controller.completedEvent();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") != "eventManager") {
+                                _eventController.getAllSendingRequest();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") == "eventManager") {
+                                _managerController.getAllPendingEvents();
+                              }
+                            },
+                            child: Container(
+                              width: Get.width,
+                              height: 35,
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: controller.selectedFilter.value != 0
+                                    ? Colors.transparent
+                                    : DynamicColor.yellowClr,
+                              ),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Recent",
+                                  style: poppinsMediumStyle(
+                                      fontSize: 14,
+                                      color: theme.scaffoldBackgroundColor,
+                                      context: context),
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              controller.selectedFilter.value = 1;
+                              controller.showFilter.value = false;
+                              controller.update();
+                              if (controller.showIndexValue!.value == 2) {
+                                controller.completedEvent();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") != "eventManager") {
+                                _eventController.getAllSendingRequest();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") == "eventManager") {
+                                _managerController.getAllPendingEvents();
+                              }
+                            },
+                            child: Container(
+                              width: Get.width,
+                              height: 35,
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: controller.selectedFilter.value != 0
+                                  color: controller.selectedFilter.value != 1
                                       ? Colors.transparent
-                                      : DynamicColor.yellowClr,
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Recent",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
+                                      : DynamicColor.yellowClr),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Past Week",
+                                  style: poppinsMediumStyle(
+                                      fontSize: 14,
+                                      color: theme.scaffoldBackgroundColor,
+                                      context: context),
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                controller.selectedFilter.value = 1;
-                                controller.showFilter.value = false;
-                                controller.update();
-                                if (controller.showIndexValue!.value == 2) {
-                                  controller.completedEvent();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") != "eventManager") {
-                                  _eventController.getAllSendingRequest();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") == "eventManager") {
-                                  _managerController.getAllPendingEvents();
-                                }
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: controller.selectedFilter.value != 1
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Past Week",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              controller.selectedFilter.value = 2;
+                              controller.showFilter.value = false;
+                              controller.update();
+                              if (controller.showIndexValue!.value == 2) {
+                                controller.completedEvent();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") != "eventManager") {
+                                _eventController.getAllSendingRequest();
+                              }
+                              if (controller.showIndexValue!.value == 1 &&
+                                  sp.read("role") == "eventManager") {
+                                _managerController.getAllPendingEvents();
+                              }
+                            },
+                            child: Container(
+                              width: Get.width,
+                              height: 35,
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: controller.selectedFilter.value != 2
+                                      ? Colors.transparent
+                                      : DynamicColor.yellowClr),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Older then 1 month",
+                                  style: poppinsMediumStyle(
+                                      fontSize: 14,
+                                      color: theme.scaffoldBackgroundColor,
+                                      context: context),
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                controller.selectedFilter.value = 2;
-                                controller.showFilter.value = false;
-                                controller.update();
-                                if (controller.showIndexValue!.value == 2) {
-                                  controller.completedEvent();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") != "eventManager") {
-                                  _eventController.getAllSendingRequest();
-                                }
-                                if (controller.showIndexValue!.value == 1 &&
-                                    sp.read("role") == "eventManager") {
-                                  _managerController.getAllPendingEvents();
-                                }
-                              },
-                              child: Container(
-                                width: Get.width,
-                                height: 35,
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: controller.selectedFilter.value != 2
-                                        ? Colors.transparent
-                                        : DynamicColor.yellowClr),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Older then 1 month",
-                                    style: poppinsMediumStyle(
-                                        fontSize: 14,
-                                        color: theme.scaffoldBackgroundColor,
-                                        context: context),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            // controller.showIndexValue!.value == 0
-                            //     ? SizedBox.shrink()
-                            //     : GestureDetector(
-                            //         onTap: () {
-                            //           controller.selectedFilter.value = 3;
-                            //           controller.showFilter.value = false;
-                            //           controller.historyStatus();
-                            //         },
-                            //         child: Container(
-                            //           width: Get.width,
-                            //           height: 35,
-                            //           padding: EdgeInsets.only(left: 10),
-                            //           decoration: BoxDecoration(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10),
-                            //               color:
-                            //                   controller.selectedFilter.value !=
-                            //                           3
-                            //                       ? Colors.transparent
-                            //                       : DynamicColor.yellowClr),
-                            //           child: Align(
-                            //             alignment: Alignment.centerLeft,
-                            //             child: Text(
-                            //               controller.showIndexValue!.value == 2
-                            //                   ? "Requested"
-                            //                   : "Completed",
-                            //               style: poppinsMediumStyle(
-                            //                   fontSize: 14,
-                            //                   color:
-                            //                       theme.scaffoldBackgroundColor,
-                            //                   context: context),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ),
-                            // controller.showIndexValue!.value == 0
-                            //     ? SizedBox.shrink()
-                            //     : GestureDetector(
-                            //         onTap: () {
-                            //           controller.selectedFilter.value = 4;
-                            //           controller.showFilter.value = false;
-                            //           controller.historyStatus();
-                            //         },
-                            //         child: Container(
-                            //           width: Get.width,
-                            //           height: 35,
-                            //           padding: EdgeInsets.only(left: 10),
-                            //           decoration: BoxDecoration(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(10),
-                            //               color:
-                            //                   controller.selectedFilter.value !=
-                            //                           4
-                            //                       ? Colors.transparent
-                            //                       : DynamicColor.yellowClr),
-                            //           child: Align(
-                            //             alignment: Alignment.centerLeft,
-                            //             child: Text(
-                            //               controller.showIndexValue!.value == 2
-                            //                   ? "Pending"
-                            //                   : "Cancelled",
-                            //               style: poppinsMediumStyle(
-                            //                   fontSize: 14,
-                            //                   color:
-                            //                       theme.scaffoldBackgroundColor,
-                            //                   context: context),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ),
-                          ],
-                        ),
+                          ),
+                          // controller.showIndexValue!.value == 0
+                          //     ? SizedBox.shrink()
+                          //     : GestureDetector(
+                          //         onTap: () {
+                          //           controller.selectedFilter.value = 3;
+                          //           controller.showFilter.value = false;
+                          //           controller.historyStatus();
+                          //         },
+                          //         child: Container(
+                          //           width: Get.width,
+                          //           height: 35,
+                          //           padding: EdgeInsets.only(left: 10),
+                          //           decoration: BoxDecoration(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(10),
+                          //               color:
+                          //                   controller.selectedFilter.value !=
+                          //                           3
+                          //                       ? Colors.transparent
+                          //                       : DynamicColor.yellowClr),
+                          //           child: Align(
+                          //             alignment: Alignment.centerLeft,
+                          //             child: Text(
+                          //               controller.showIndexValue!.value == 2
+                          //                   ? "Requested"
+                          //                   : "Completed",
+                          //               style: poppinsMediumStyle(
+                          //                   fontSize: 14,
+                          //                   color:
+                          //                       theme.scaffoldBackgroundColor,
+                          //                   context: context),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+                          // controller.showIndexValue!.value == 0
+                          //     ? SizedBox.shrink()
+                          //     : GestureDetector(
+                          //         onTap: () {
+                          //           controller.selectedFilter.value = 4;
+                          //           controller.showFilter.value = false;
+                          //           controller.historyStatus();
+                          //         },
+                          //         child: Container(
+                          //           width: Get.width,
+                          //           height: 35,
+                          //           padding: EdgeInsets.only(left: 10),
+                          //           decoration: BoxDecoration(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(10),
+                          //               color:
+                          //                   controller.selectedFilter.value !=
+                          //                           4
+                          //                       ? Colors.transparent
+                          //                       : DynamicColor.yellowClr),
+                          //           child: Align(
+                          //             alignment: Alignment.centerLeft,
+                          //             child: Text(
+                          //               controller.showIndexValue!.value == 2
+                          //                   ? "Pending"
+                          //                   : "Cancelled",
+                          //               style: poppinsMediumStyle(
+                          //                   fontSize: 14,
+                          //                   color:
+                          //                       theme.scaffoldBackgroundColor,
+                          //                   context: context),
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+                        ],
                       ),
                     ),
                   ),
@@ -908,6 +904,7 @@ class ManagerPendingView extends StatefulWidget {
 
 class _ManagerPendingViewState extends State<ManagerPendingView> {
   late ManagerController _controller;
+  late HomeController _homeController;
 
   @override
   void initState() {
@@ -916,6 +913,10 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
       _controller = Get.find<ManagerController>();
     } else {
       _controller = Get.put(ManagerController());
+    }
+
+    if (Get.isRegistered<HomeController>()) {
+      _homeController = Get.find<HomeController>();
     }
   }
 
@@ -961,7 +962,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 ),
                                 Row(
                                   children: [
-                                    if (eventData.user!.deleteAt != null)
+                                    if (eventData.user!.isDelete != null)
                                       Utils.accountDelete(context),
                                     const SizedBox(
                                       width: 5,
@@ -1041,11 +1042,11 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 children: [
                                   CustomButton(
                                     heights: 35,
-                                    color2: eventData.user!.deleteAt == null
+                                    color2: eventData.user!.isDelete == null
                                         ? DynamicColor.redClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
-                                    color1: eventData.user!.deleteAt == null
+                                    color1: eventData.user!.isDelete == null
                                         ? DynamicColor.redClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
@@ -1053,7 +1054,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                     backgroundClr: false,
                                     fontSized: 12,
                                     text: "Not interested/decline",
-                                    onTap: eventData.user!.deleteAt == null
+                                    onTap: eventData.user!.isDelete == null
                                         ? () {
                                             cancelEventWidget(
                                                 context: context,
@@ -1081,7 +1082,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                     heights: 35,
                                     text: "Accept",
                                     fontSized: 12,
-                                    onTap: eventData.user!.deleteAt == null
+                                    onTap: eventData.user!.isDelete == null
                                         ? () {
                                             controller.checkBoxValue.value =
                                                 false;
@@ -1204,16 +1205,39 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                 heights: 35,
                                                                 text: "Accept",
                                                                 fontSized: 12,
-                                                                onTap: () {
+                                                                onTap:
+                                                                    () async {
                                                                   if (controller
                                                                       .checkBoxValue
                                                                       .value) {
-                                                                    controller.eventAcceptDeclineFtn(
-                                                                        event: controller
-                                                                            .managerPendingEvents!
-                                                                            .data!
-                                                                            .data![index],
-                                                                        status: "accepted");
+                                                                    await _homeController
+                                                                        .getAllCards()
+                                                                        .then(
+                                                                            (_) async {
+                                                                      if (_homeController
+                                                                          .transactionData
+                                                                          .isEmpty) {
+                                                                        bottomToast(
+                                                                            text:
+                                                                                "Please Add At Least One Card To Accept Event");
+                                                                      } else {
+                                                                        final isCardSelected =
+                                                                            await showBottomSelectedCardSheet(context);
+                                                                        if (isCardSelected ==
+                                                                            true) {
+                                                                          controller
+                                                                              .eventAcceptDeclineFtn(
+                                                                            event:
+                                                                                controller.managerPendingEvents!.data!.data![index],
+                                                                            status:
+                                                                                "accepted",
+                                                                          );
+                                                                        } else {
+                                                                          bottomToast(
+                                                                              text: "You didn't select any card");
+                                                                        }
+                                                                      }
+                                                                    });
                                                                   } else {
                                                                     bottomToast(
                                                                         text:
@@ -1249,11 +1273,11 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                         : () {
                                             Utils.showToast();
                                           },
-                                    color2: eventData.user!.deleteAt == null
+                                    color2: eventData.user!.isDelete == null
                                         ? DynamicColor.greenClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
-                                    color1: eventData.user!.deleteAt == null
+                                    color1: eventData.user!.isDelete == null
                                         ? DynamicColor.greenClr
                                             .withValues(alpha: 0.8)
                                         : DynamicColor.disabledColor,
@@ -1272,7 +1296,7 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                 color2: DynamicColor.secondaryClr,
                                 color1: DynamicColor.secondaryClr,
                                 backgroundClr: false,
-                                onTap: eventData.user!.deleteAt == null
+                                onTap: eventData.user!.isDelete == null
                                     ? () {
                                         Get.toNamed(Routes.pendingEventDetails,
                                                 arguments: {

@@ -151,7 +151,7 @@ class NotificationService {
       presentBadge: true,
       presentSound: true,
     );
-
+  
     // Combine Android & IOS Notification Details
     NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
@@ -228,6 +228,7 @@ class NotificationService {
     EventController controller = Get.find();
     ManagerController managerController = Get.find();
     HomeController homeController = Get.find();
+
     if (message.data["type"] == "send_message") {
       controller.eventDetails(eventId: data["source_id"]);
       managerController.getAllMessages(

@@ -80,6 +80,7 @@ eventDateTime({
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 12.0),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
           radius: 15,
@@ -102,6 +103,7 @@ eventDateTime({
             padding: const EdgeInsets.only(left: 6.0),
             child: Text(
               text ?? "04:00pm to 10:00pm",
+              // maxLines: 3,
               style: poppinsRegularStyle(
                 fontSize: 12,
                 context: context,

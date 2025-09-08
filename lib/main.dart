@@ -57,13 +57,15 @@ checkUserSubscriptionIsActive() async {
   if (Get.isRegistered<HomeController>()) {
     homeController = Get.find<HomeController>();
   } else {
-    homeController = Get.put(HomeController());
+    homeController = Get.put(HomeController(), permanent: true);
   }
 
   if (Get.isRegistered<AuthController>()) {
     authController = Get.find<AuthController>();
   } else {
-    authController = Get.put(AuthController());
+    authController = Get.put(
+      AuthController(),
+    );
   }
 
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
@@ -169,7 +171,8 @@ class _MyAppState extends State<MyApp> {
           primaryColor: const Color(0xff040305),
           cardColor: Colors.white,
 
-          // primaryColor: Colors.grey,
+          // primaryColor: const Color(0xffFFFFFF),
+        // primaryColor: Colors.grey,
 
           scaffoldBackgroundColor: Colors.white,
           textTheme: const TextTheme(
@@ -185,6 +188,7 @@ class _MyAppState extends State<MyApp> {
           ),
           brightness: Brightness.dark,
           primaryColor: const Color(0xffFFFFFF),
+        // primaryColor: Color(0xff040305),
           cardColor: Colors.white,
           scaffoldBackgroundColor: Colors.black,
           textTheme: const TextTheme(

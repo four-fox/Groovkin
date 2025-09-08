@@ -199,6 +199,9 @@ class EventController extends GetxController {
 
   RxBool getMyTagCollectionLoader = true.obs;
 
+  List<String> selectedTagIds = [];
+  List<String> addedTagIds = [];
+  List<String> deletedTagIds = [];
   MusicTagModel? tagCollectionList;
   getEventTagCollection({type}) async {
     try {
@@ -206,6 +209,18 @@ class EventController extends GetxController {
       final response = await API().getApi(url: "event-tags?type=${type}");
       if (response.statusCode == 200) {
         tagCollectionList = MusicTagModel.fromJson(response.data);
+      }
+      selectedTagIds.clear();
+
+      for (var collection in tagCollectionList!.data!) {
+        for (var item in collection.categoryItems ?? []) {
+          if (item.status == 1) {
+            selectedTagIds.add(item.id.toString());
+            item.selected?.value = true;
+          } else {
+            item.selected?.value = false;
+          }
+        }
       }
     } catch (e) {
       getMyTagCollectionLoader(true);
@@ -230,7 +245,6 @@ class EventController extends GetxController {
     update();
   }
 
-  String? id;
   RxBool addTagCollectionLoading = true.obs;
   addTagCollection({type}) async {
     try {
@@ -238,12 +252,15 @@ class EventController extends GetxController {
 
       final formData = form.FormData();
 
-      formData.fields.add(MapEntry("event_tag_item_ids[]", id!.toString()));
+      for (var tagIds in addedTagIds) {
+        formData.fields
+            .add(MapEntry("event_tag_item_ids[]", tagIds.toString()));
+      }
 
       final response =
           await API().postApi(formData, "add-tag-collection?type=${type}");
       if (response.statusCode == 200) {
-        bottomToast(text: "Tag Added!");
+        // bottomToast(text: "Tag Added!");
       }
     } catch (e) {
       addTagCollectionLoading(true);
@@ -257,13 +274,13 @@ class EventController extends GetxController {
   removeTagCollection() async {
     try {
       removeTagCollectionLoading(false);
-
       final formData = form.FormData();
-
-      formData.fields.add(MapEntry("event_tag_item_ids[]", id!));
+      for (var tagIds in deletedTagIds) {
+        formData.fields.add(MapEntry("event_tag_item_ids[]", tagIds));
+      }
       final response = await API().postApi(formData, "remove-tag-collection");
       if (response.statusCode == 200) {
-        bottomToast(text: "Tag Removed!");
+        // bottomToast(text: "Tag Removed!");
       }
     } catch (e) {
       removeTagCollectionLoading(true);
@@ -451,14 +468,14 @@ class EventController extends GetxController {
     print(authController.eventItemsList.length);
     for (var a = 0; a <= authController.eventItemsList.length; a++) {
       if (a != authController.eventItemsList.length) {
-        if (iiid != authController.eventItemsList[a].eventId) {
+        if (iiid != authController.eventItemsList[a].categoryId) {
           indexVal = indexVal! + 1;
           formData.fields.add(MapEntry(
               'hardware_provides[$indexVal][hardware_provide_id]',
-              authController.eventItemsList[a].eventId.toString()));
+              authController.eventItemsList[a].categoryId.toString()));
         }
         if (authController.eventItemsList[a].selectedItem!.value == true) {
-          iiid = authController.eventItemsList[a].eventId;
+          iiid = authController.eventItemsList[a].categoryId;
           formData.fields.add(MapEntry(
               'hardware_provides[$indexVal][hardware_item_ids][]',
               authController.eventItemsList[a].id.toString()));
@@ -542,6 +559,7 @@ class EventController extends GetxController {
           Get.offAllNamed(Routes.bottomNavigationView,
               arguments: {"indexValue": 0});
         });
+        
         showDialog(
             barrierColor: Colors.transparent,
             context: context,
@@ -666,7 +684,6 @@ class EventController extends GetxController {
     }
 
     /// todo hardware params
-
     /// todo life Style params
     int? indexVaal = -1;
     int? iiad = -1;
@@ -739,9 +756,10 @@ class EventController extends GetxController {
     }
 
     /// todo activity choice
-    print(formData);
     var response = await API().postApi(formData, "update-event");
     if (response.statusCode == 200) {
+      showEditPreviewScreen.value = false;
+      update();
       BotToast.showText(text: response.data['message']);
       clearFields();
       Get.offAllNamed(Routes.bottomNavigationView,
@@ -776,7 +794,8 @@ class EventController extends GetxController {
   /// clear fields
   RxBool draftCondition = false.obs;
   clearFields() async {
-    draftCondition(true);
+    // draftCondition(true);
+
     duplicateValue(true);
     draftValue(true);
     _authController.imageBytes = null;
@@ -796,6 +815,7 @@ class EventController extends GetxController {
     _authController.serviceList.clear();
     _authController.eventItemsList.clear();
     _authController.lifeStyleItemsList.clear();
+    _authController.itemsList.clear();
     activityListPost.clear();
     eventDateController.clear();
     eventEndDateController.clear();
@@ -809,9 +829,10 @@ class EventController extends GetxController {
   RxBool getAllEventsLoader = true.obs;
   bool getAllEventWaiting = false;
 
-  getAllEvents({nextUrl}) async {
+  getAllEvents({nextUrl, loader = true}) async {
     getAllEventsLoader(false);
-    var response = await API().getApi(url: "show-events", fullUrl: nextUrl);
+    var response = await API()
+        .getApi(url: "show-events", fullUrl: nextUrl, isLoader: loader);
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         getAllEventWaiting = false;
@@ -893,6 +914,7 @@ class EventController extends GetxController {
   List<String> venueImageList = [];
   RxBool duplicateValue = false.obs;
   RxBool draftValue = false.obs;
+  RxBool showEditPreviewScreen = false.obs;
 
   eventDetails({eventId}) async {
     eventDetailsLoader(false);
@@ -913,11 +935,11 @@ class EventController extends GetxController {
   List imageListtt = [];
 
   assignValueForUpdate() async {
-    eventTitleController.text = eventDetail!.data!.eventTitle.toString(); 
-    featuringController.text = eventDetail!.data!.featuring.toString(); 
-    aboutController.text = eventDetail!.data!.about.toString(); 
-    themeOfEventController.text = eventDetail!.data!.themeOfEvent.toString(); 
-    maxCapacityController.text = eventDetail!.data!.maxCapacity.toString(); 
+    eventTitleController.text = eventDetail!.data!.eventTitle.toString();
+    featuringController.text = eventDetail!.data!.featuring.toString();
+    aboutController.text = eventDetail!.data!.about.toString();
+    themeOfEventController.text = eventDetail!.data!.themeOfEvent.toString();
+    maxCapacityController.text = eventDetail!.data!.maxCapacity.toString();
     eventDateController.text =
         DateFormat('dd-MM-yyyy').format(eventDetail!.data!.startDateTime!);
     eventEndDateController.text =
@@ -932,6 +954,7 @@ class EventController extends GetxController {
         DateFormat('yyyy-MM-dd').format(eventDetail!.data!.endDateTime!);
     datePost =
         DateFormat('yyyy-MM-dd').format(eventDetail!.data!.startDateTime!);
+
     if (eventDetail!.data!.rateType == "hourly") {
       eventRateHourly.value = 0;
     } else {
@@ -975,7 +998,9 @@ class EventController extends GetxController {
       {survey.SurveyObject? items, value, CategoryItem? serviceObj}) async {
     List<String> temp = [];
     eventDetail!.data!.hardwareProvide?.forEach((element) {
-      temp.add(element.hardwareItems!.id.toString());
+      element.hardwareItems!.map((data) {
+        temp.add(data.id.toString());
+      });
     });
     for (var action in _authController.hardwareListing) {
       if (temp.contains(action.name)) {
@@ -998,7 +1023,9 @@ class EventController extends GetxController {
   surveyDataBind() async {
     List musicGenreId = [];
     for (var action in eventDetail!.data!.musicGenre!) {
-      musicGenreId.add(action.itemId);
+      action.musicGenreItems!.map((data) {
+        musicGenreId.add(data.id);
+      });
     }
     for (var element in _authController.surveyData!.data!) {
       for (var ele in element.categoryItems!) {
@@ -1113,8 +1140,10 @@ class EventController extends GetxController {
         if (managerController.managerPendingEvents != null) {
           int index = managerController.managerPendingEvents!.data!.data!
               .indexWhere((test) => test.id == eventId);
-          managerController.managerPendingEvents!.data!.data!.remove(
-              managerController.managerPendingEvents!.data!.data![index]);
+          if (index != -1) {
+            managerController.managerPendingEvents!.data!.data!.remove(
+                managerController.managerPendingEvents!.data!.data![index]);
+          }
         }
       }
       cancellationController.clear();

@@ -76,6 +76,7 @@ abstract class Routes {
   static const viewCreatedGroup = _Path.viewCreatedGroup;
   // static const inviteFriendsInGroups = _Path.inviteFriendsInGroups;
   static const theSquadScreen = _Path.theSquadScreen;
+  static const emailVerifiedOtpScreen = _Path.emailVerifiedOtpScreen;
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manger
   static const createCompanyProfileScreen = _Path.createCompanyProfileScreen;
@@ -110,12 +111,17 @@ abstract class Routes {
   static const viewAllNearByScreen = _Path.viewAllNearByScreen;
   static const viewAllTopRatingScreen = _Path.viewAllTopRatingScreen;
   static const settingNotificationScreen = _Path.settingNotificationScreen;
+  static const calenderView = _Path.calenderView;
+  static const editUserLifeStyleScreen = _Path.editUserLifeStyleScreen;
+  static const myusergroonvkinmusicgenrescreen =
+      _Path.myusergroonvkinmusicgenrescreen;
 
   ///chat screen
   static const chatNewUserScreen = _Path.chatNewUserScreen;
   static const chatRoomScreen = _Path.chatRoomScreen;
   static const chatInnerScreen = _Path.chatInnerScreen;
   static const emailVerifyScreen = _Path.emailVerifyScreen;
+  static const ratingScreen = _Path.ratingScreen;
 }
 
 abstract class _Path {
@@ -143,6 +149,8 @@ abstract class _Path {
   static const quickSurveyScreen = "/QuickSurveyScreen";
   // static const homeScreen = "/HomeScreen";
   static const upcomingScreen = "/UpcomingScreen";
+  static const myusergroonvkinmusicgenrescreen =
+      "/Myusergroonvkinmusicgenrescreen";
   static const upGradeEvents = "/UpGradeEvents";
   static const hardwareProvidedScreen = "/HardwareProvidedScreen";
   static const proposedMusicScreen = "/ProposedMusicScreen";
@@ -191,10 +199,13 @@ abstract class _Path {
   static const eventOrganizerScreen = "/EventOrganizerScreen";
   static const searchFilterScreen = "/SearchFilterScreen";
   static const createNewGroup = "/CreateNewGroup";
+  static const calenderView = "/calenderView";
   static const viewCreatedGroup = "/ViewCreatedGroup";
   // static const inviteFriendsInGroups = "/InviteFriendsInGroups";
   static const theSquadScreen = "/TheSquadScreen";
   static const settingNotificationScreen = "/settingNotificationScreen";
+  static const editUserLifeStyleScreen = "/editUserLifeStyleScreen";
+  static const emailVerifiedOtpScreen = "/emailVerifiedOtpScreen";
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manger
   static const createCompanyProfileScreen = "/CreateCompanyProfileScreen";
@@ -232,4 +243,6 @@ abstract class _Path {
   static const chatNewUserScreen = "/ChatNewUserScreen";
   static const chatRoomScreen = "/ChatRoomScreen";
   static const chatInnerScreen = "/ChatInnerScreen";
+
+  static const ratingScreen = "/rating_screen";
 }

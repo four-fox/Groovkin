@@ -44,6 +44,8 @@ import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
+import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+
 enum ChangeRole { user, organizer, manager }
 
 class AuthController extends GetxController {
@@ -158,48 +160,53 @@ class AuthController extends GetxController {
     });
 
     log(formData.toString());
-
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
+
     if (response.statusCode == 200) {
-      API().sp.write("socialType", signUpPlatform);
-      API().sp.write("token", response.data['data']['token']);
-      API().sp.write("userId", response.data['data']['user_details']['id']);
-      API().sp.write("isCompleteProfile",
-          response.data['data']['user_details']['is_complete_profile']);
-      API().sp.write("signupPlatform",
-          response.data['data']['user_details']['signup_platform']);
-      configureSDK();
-      if (response.data["data"]["user_details"]["current_role"] == "user") {
-        API().sp.write("currentRole", "User");
-      } else if (response.data["data"]["user_details"]["current_role"] ==
-          "event_owner") {
-        API().sp.write("currentRole", "eventOrganizer");
-      } else {
-        API().sp.write("currentRole", "eventManager");
-      }
-      clearTextFields();
       if (response.data["data"]["user_details"]["signup_platform"] == "app") {
-        if (API().sp.read("role") == "User") {
-          API().sp.write("isUserCreated",
-              response.data['data']['user_details']['is_user_created']);
-          Get.offAllNamed(Routes.welComeScreen);
-        } else if (API().sp.read("role") == "eventOrganizer") {
-          API().sp.write("isEventCreated",
-              response.data['data']['user_details']['is_event_created']);
-
-          Get.offAllNamed(Routes.welComeScreen);
-        } else {
-          Get.offAllNamed(Routes.welComeScreen);
-
-          // Get.offAllNamed(Routes.createCompanyProfileScreen,
-          //   arguments: {
-          //   "updationCondition": false,
-          //     "skipBtnHide": false,
-          //   }
-          // );
+        if (response.data["data"]["user_details"]["otp_status"] == 0) {
+          API().sp.write("email", emailController.text);
+          Get.offAllNamed(Routes.emailVerifiedOtpScreen);
         }
+
+        // if (API().sp.read("role") == "User") {
+        //   API().sp.write("isUserCreated",
+        //       response.data['data']['user_details']['is_user_created']);
+        //   Get.offAllNamed(Routes.welComeScreen);
+        // } else if (API().sp.read("role") == "eventOrganizer") {
+        //   API().sp.write("isEventCreated",
+        //       response.data['data']['user_details']['is_event_created']);
+
+        //   Get.offAllNamed(Routes.welComeScreen);
+        // } else {
+        //   Get.offAllNamed(Routes.welComeScreen);
+
+        //   // Get.offAllNamed(Routes.createCompanyProfileScreen,
+        //   //   arguments: {
+        //   //   "updationCondition": false,
+        //   //     "skipBtnHide": false,
+        //   //   }
+        //   // );
+        // }
       } else {
+        API().sp.write("socialType", signUpPlatform);
+        API().sp.write("token", response.data['data']['token']);
+        API().sp.write("userId", response.data['data']['user_details']['id']);
+        API().sp.write("isCompleteProfile",
+            response.data['data']['user_details']['is_complete_profile']);
+        API().sp.write("signupPlatform",
+            response.data['data']['user_details']['signup_platform']);
+        configureSDK();
+        if (response.data["data"]["user_details"]["current_role"] == "user") {
+          API().sp.write("currentRole", "User");
+        } else if (response.data["data"]["user_details"]["current_role"] ==
+            "event_owner") {
+          API().sp.write("currentRole", "eventOrganizer");
+        } else {
+          API().sp.write("currentRole", "eventManager");
+        }
+        clearTextFields();
         if (response.data["data"]["user_details"]["is_complete_profile"] == 1) {
           if (API().sp.read("role") == "User") {
             API().sp.write("isUserCreated",
@@ -237,6 +244,62 @@ class AuthController extends GetxController {
     }
   }
 
+  verifyEmailOtp(String otp) async {
+    try {
+      String email = API().sp.read("email");
+      var formData = {
+        "email": email,
+        "otp": otp,
+      };
+
+      var response = await API().postApi(
+        formData,
+        "verify-otp",
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data["data"]["user_details"]["signup_platform"] == "app") {
+          API().sp.write("token", response.data['data']['token']);
+          API().sp.write("userId", response.data['data']['user_details']['id']);
+          API().sp.write("isCompleteProfile",
+              response.data['data']['user_details']['is_complete_profile']);
+          API().sp.write("signupPlatform",
+              response.data['data']['user_details']['signup_platform']);
+          configureSDK();
+          if (response.data["data"]["user_details"]["current_role"] == "user") {
+            API().sp.write("currentRole", "User");
+          } else if (response.data["data"]["user_details"]["current_role"] ==
+              "event_owner") {
+            API().sp.write("currentRole", "eventOrganizer");
+          } else {
+            API().sp.write("currentRole", "eventManager");
+          }
+          clearTextFields();
+
+          if (API().sp.read("role") == "User") {
+            API().sp.write("isUserCreated",
+                response.data['data']['user_details']['is_user_created']);
+            Get.offAllNamed(Routes.welComeScreen);
+          } else if (API().sp.read("role") == "eventOrganizer") {
+            API().sp.write("isEventCreated",
+                response.data['data']['user_details']['is_event_created']);
+
+            Get.offAllNamed(Routes.welComeScreen);
+          } else {
+            Get.offAllNamed(Routes.welComeScreen);
+
+            // Get.offAllNamed(Routes.createCompanyProfileScreen,
+            //   arguments: {
+            //   "updationCondition": false,
+            //     "skipBtnHide": false,
+            //   }
+            // );
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
   /// login function
   final loginEmailController = TextEditingController();
   final loginPasswordController = TextEditingController();
@@ -253,6 +316,12 @@ class AuthController extends GetxController {
     var response = await API().postApi(formData, "login");
 
     if (response.statusCode == 200) {
+      if (response.data["message"] ==
+          "OTP has been sent to your email address.") {
+        API().sp.write("email", loginEmailController.text);
+        Get.offAllNamed(Routes.emailVerifiedOtpScreen);
+        return;
+      }
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
       API().sp.remove("currentRole");
@@ -294,6 +363,15 @@ class AuthController extends GetxController {
             selectUserIndexxx.value = 0;
             Get.offAllNamed(Routes.userBottomNavigationNav);
           }
+        } else if (sp.read("role") == "eventOrganizer") {
+          if (response.data['data']['user_details']['isEventCreated'] == 0) {
+            Get.offAllNamed(Routes.serviceScreen,
+                arguments: {"addMoreService": 1});
+          } else {
+            selectIndexxx.value = 0;
+            Get.offAllNamed(Routes.bottomNavigationView,
+                arguments: {"indexValue": 0});
+          }
         } else {
           selectIndexxx.value = 0;
           Get.offAllNamed(Routes.bottomNavigationView,
@@ -307,6 +385,7 @@ class AuthController extends GetxController {
 
   /// todo forgot password functionality
   final forgotPassEmailController = TextEditingController();
+
   forgotPassword() async {
     var formData = form.FormData.fromMap({
       "email": forgotPassEmailController.text,
@@ -322,6 +401,7 @@ class AuthController extends GetxController {
   final newPassController = TextEditingController();
   final newConfirmPassController = TextEditingController();
   final newPassOTPController = TextEditingController();
+
   newPassword() async {
     var formData = form.FormData.fromMap({
       "email": forgotPassEmailController.text,
@@ -340,6 +420,7 @@ class AuthController extends GetxController {
   final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final newConfirmPasswordController = TextEditingController();
+
   changePassword(context, theme) async {
     var formData = form.FormData.fromMap({
       "old_password": oldPasswordController.text,
@@ -453,6 +534,7 @@ class AuthController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get profile
   ProfileModel? userData;
   RxBool getProfileLoader = true.obs;
+
   getProfile({userId}) async {
     getProfileLoader(false);
     var response = await API().getApi(url: "user-profile/$userId");
@@ -500,7 +582,7 @@ class AuthController extends GetxController {
     Get.toNamed(Routes.profileScreen);
   }
 
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>toDo create profile functionality
+  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo create profile functionality
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -590,12 +672,23 @@ class AuthController extends GetxController {
       clearLists();
       surveyData = SurveyModel.fromJson(response.data);
 
+      if (mygrookinHit == true) {
+        myGroovkinLifeStyle(myGroockingMusicListing);
+        return;
+      }
+
       final EventController eventController = Get.find();
       if (eventController.eventDetail != null) {
         List musicGenreId = [];
+
         for (var action in eventController.eventDetail!.data!.musicGenre!) {
-          musicGenreId.add(action.itemId);
+          for (var data in action.musicGenreItems!) {
+            if (data.selected == true) {
+              musicGenreId.add(data.id);
+            }
+          }
         }
+        print(musicGenreId.length);
         for (var element in surveyData!.data!) {
           for (var ele in element.categoryItems!) {
             if (musicGenreId.contains(ele.id)) {
@@ -607,12 +700,14 @@ class AuthController extends GetxController {
             }
           }
         }
+
+        update();
+        print(surveyData!.data);
       }
       if (mygrookinHit != true) {
         getLifeStyleLoader(true);
         update();
       }
-      myGroovkinLifeStyle(myGroockingMusicListing);
     }
   }
 
@@ -648,6 +743,7 @@ class AuthController extends GetxController {
             : actions.selectedItem!.value = false;
       }
     }
+    print(surveyData!.data);
 
     getLifeStyleLoader(true);
     update();
@@ -663,7 +759,6 @@ class AuthController extends GetxController {
     } else {
       itemsList.remove(items);
     }
-
     update();
   }
 
@@ -767,23 +862,30 @@ class AuthController extends GetxController {
         }
         if (mygrookinHit == true) {
           myGroovkinHardwareListFtn(myGroovkingHardwareListing);
+          return;
         }
 
         final EventController eventController = Get.find();
         if (eventController.eventDetail != null) {
           List<String> temp = [];
-          eventController.eventDetail!.data!.hardwareProvide
-              ?.forEach((element) {
-            temp.add(element.hardwareItems!.id.toString());
-          });
-          for (var action in hardwareListing) {
-            if (temp.contains(action.name)) {
-              action.showItems!.value = true;
-            } else {
-              action.showItems!.value = false;
+          for (var element
+              in eventController.eventDetail!.data!.hardwareProvide!) {
+            print("object");
+            for (var data in element.hardwareItems!) {
+              if (data.selected == true) {
+                temp.add(data.id.toString());
+              }
             }
+          }
+          for (var action in hardwareListing) {
+            // if (temp2.contains(action.id.toString())) {
+            //   action.showItems!.value = true;
+            // } else {
+            //   action.showItems!.value = false;
+            // }
             for (var items in action.categoryItems!) {
               if (temp.contains(items.id.toString())) {
+                action.showItems!.value = true;
                 items.selectedItem!.value = true;
                 eventItemsList.add(items);
               } else {
@@ -802,7 +904,7 @@ class AuthController extends GetxController {
         if (eventController.eventDetail != null) {
           List musicGenreId = [];
           for (var action in eventController.eventDetail!.data!.musicGenre!) {
-            musicGenreId.add(action.itemId);
+            action.musicGenreItems!.map((data) => musicGenreId.add(data.id));
           }
           for (var element in surveyData!.data!) {
             for (var ele in element.categoryItems!) {
@@ -966,25 +1068,58 @@ class AuthController extends GetxController {
     update();
   }
 
+  // Future myGroovkinMusicGenreUpdate() async {
+  //   form.FormData data = form.FormData();
+  //   int? id = -1;
+  //   int index = -1;
+
+  //   for (var i = 0; i < musicCategory.length; i++) {
+  //     if (i != musicCategory.length) {
+  //       if (id != musicCategory[i].categoryId) {
+  //         index += 1;
+  //         data.fields.add(MapEntry('music_genre[$index][music_genre_id]',
+  //             musicCategory[i].categoryId.toString()));
+  //       }
+  //     }
+
+  //     if (musicCategory[i].selectedItem!.value == true) {
+  //       id = musicCategory[i].categoryId;
+  //       data.fields.add(MapEntry('music_genre[$index][music_genre_item_ids][]',
+  //           musicCategory[i].id.toString()));
+  //     }
+  //   }
+  //   print(data);
+  //   final response = await API().postApi(data, "edit-music-genre");
+
+  //   if (response.statusCode == 200) {}
+  // }
+
   Future myGroovkinMusicGenreUpdate() async {
     form.FormData data = form.FormData();
-    int? id = -1;
-    int index = -1;
 
-    for (var i = 0; i < musicCategory.length; i++) {
-      if (i != musicCategory.length) {
-        if (id != musicCategory[i].categoryId) {
-          index += 1;
-          data.fields.add(MapEntry('music_genre[$index][music_genre_id]',
-              musicCategory[i].categoryId.toString()));
-        }
-      }
-      if (musicCategory[i].selectedItem!.value == true) {
-        id = musicCategory[i].categoryId;
-        data.fields.add(MapEntry('music_genre[$index][music_genre_item_ids][]',
-            musicCategory[i].id.toString()));
+    Map<int, List<groovkin.CategoryItem>> grouped = {};
+
+    for (var item in musicCategory) {
+      if (item.selectedItem?.value == true) {
+        grouped.putIfAbsent(item.categoryId!, () => []);
+        grouped[item.categoryId]!.add(item);
       }
     }
+
+    int index = 0;
+
+    grouped.forEach((categoryId, items) {
+      data.fields.add(MapEntry(
+          'music_genre[$index][music_genre_id]', categoryId.toString()));
+
+      for (var item in items) {
+        data.fields.add(MapEntry(
+            'music_genre[$index][music_genre_item_ids][]', item.id.toString()));
+      }
+      index++;
+    });
+
+    print(data);
     final response = await API().postApi(data, "edit-music-genre");
 
     if (response.statusCode == 200) {}
@@ -998,11 +1133,11 @@ class AuthController extends GetxController {
       hardwareCategory.add(
         groovkin.CategoryItem(
           categoryId: serviceObj.categoryId,
-          eventId: serviceObj.eventId,
           selectedItem: RxBool(value),
           id: serviceObj.id!,
           name: serviceObj.name ?? "",
           type: serviceObj.type ?? "",
+          eventId: serviceObj.eventId,
           createdAt: serviceObj.createdAt ?? "",
           updatedAt: serviceObj.updatedAt ?? "",
         ),
@@ -1021,32 +1156,68 @@ class AuthController extends GetxController {
     update();
   }
 
+  // Future updateGroovkinghardware() async {
+  //   form.FormData data = form.FormData();
+  //   int? id = -1;
+  //   int index = -1;
+
+  //   for (var i = 0; i < hardwareCategory.length; i++) {
+  //     if (i != hardwareCategory.length) {
+  //       if (id != hardwareCategory[i].eventId) {
+  //         index += 1;
+  //         data.fields.add(MapEntry('events[$index][event_id]',
+  //             hardwareCategory[i].eventId.toString()));
+  //       }
+  //     }
+
+  //     if (hardwareCategory[i].selectedItem!.value == true) {
+  //       id = hardwareCategory[i].eventId;
+  //       data.fields.add(MapEntry(
+  //           'events[$index][item_ids][]', hardwareCategory[i].id.toString()));
+  //     }
+  //   }
+
+  //   print(data);
+
+  //   final response = await API().postApi(data, "edit-hardware-provides");
+
+  //   if (response.statusCode == 200) {}
+  // }
+
   Future updateGroovkinghardware() async {
     form.FormData data = form.FormData();
-    int? id = -1;
-    int index = -1;
 
-    for (var i = 0; i < hardwareCategory.length; i++) {
-      if (i != hardwareCategory.length) {
-        if (id != hardwareCategory[i].eventId) {
-          index += 1;
-          data.fields.add(MapEntry('events[$index][event_id]',
-              hardwareCategory[i].eventId.toString()));
-        }
-      }
+    // Group by eventId
+    Map<int, List<groovkin.CategoryItem>> grouped = {};
 
-      if (hardwareCategory[i].selectedItem!.value == true) {
-        id = hardwareCategory[i].eventId;
-        data.fields.add(MapEntry(
-            'events[$index][item_ids][]', hardwareCategory[i].id.toString()));
+    for (var item in hardwareCategory) {
+      if (item.selectedItem?.value == true) {
+        grouped.putIfAbsent(item.eventId!, () => []);
+        grouped[item.eventId]!.add(item);
       }
     }
 
-    print(data);
+    int index = 0;
+    grouped.forEach((eventId, items) {
+      // add event_id once
+      data.fields.add(MapEntry('events[$index][event_id]', eventId.toString()));
+
+      // add all item_ids under same index
+      for (var item in items) {
+        data.fields.add(
+          MapEntry('events[$index][item_ids][]', item.id.toString()),
+        );
+      }
+      index++;
+    });
+
+    print(data.fields);
 
     final response = await API().postApi(data, "edit-hardware-provides");
 
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      print("Hardware updated ✅");
+    }
   }
 
   ///organizer add life style provided by you
@@ -1409,26 +1580,46 @@ class AuthController extends GetxController {
 
   ///follow user
   RxBool followingLoader = true.obs;
-  followUser({User? userData, bool fromAllUser = true}) async {
+  followUser(
+      {User? userData,
+      bool fromAllUser = true,
+      bool fromRequestEvent = false,
+      EventsListModel? eventListModel}) async {
     followingLoader(false);
     var formData = form.FormData.fromMap({
       "follower_id": userData!.id,
-      "type": userData.role.toString(),
+      "type": userData.role ?? userData.roles!.first,
     });
     var response = await API().postApi(formData, "follow");
     if (response.statusCode == 200) {
       if (fromAllUser == true) {
         allUnFollower!.data!.data!.remove(userData);
       } else {
-        userData.following = Following(
-          id: -12,
-          userId: -2,
-          followerId: -12,
-          type: "",
-          status: "",
-          createdAt: "",
-          updatedAt: "",
-        );
+        if (fromRequestEvent && eventListModel != null) {
+          for (var event in eventListModel.data!.data) {
+            if (event.user?.id == userData.id) {
+              event.user!.following = Following(
+                id: -12,
+                userId: -2,
+                followerId: -12,
+                type: "",
+                status: "",
+                createdAt: "",
+                updatedAt: "",
+              );
+            }
+          }
+        } else {
+          userData.following = Following(
+            id: -12,
+            userId: -2,
+            followerId: -12,
+            type: "",
+            status: "",
+            createdAt: "",
+            updatedAt: "",
+          );
+        }
       }
       followingLoader(true);
       update();
@@ -1436,7 +1627,11 @@ class AuthController extends GetxController {
   }
 
   /// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> unfollow
-  unfollow({User? userData, bool fromAllUser = true}) async {
+  unfollow(
+      {User? userData,
+      bool fromAllUser = true,
+      bool fromRequestEvent = false,
+      EventsListModel? eventListModel}) async {
     followingLoader(false);
     var formData = form.FormData.fromMap({"follower_id": userData!.id});
     var response = await API().postApi(formData, "unfollow");
@@ -1444,7 +1639,15 @@ class AuthController extends GetxController {
       if (fromAllUser == true) {
         allUnFollower!.data!.data!.remove(userData);
       } else {
-        userData.following = null;
+        if (fromRequestEvent && eventListModel != null) {
+          for (var event in eventListModel.data!.data) {
+            if (event.user!.id == userData.id) {
+              event.user!.following = null;
+            }
+          }
+        } else {
+          userData.following = null;
+        }
       }
       followingLoader(true);
       update();
@@ -1737,6 +1940,7 @@ class AuthController extends GetxController {
           //   "indexValue": 0
           // }
         );
+
         BotToast.showText(
           text: "Genre Add Succesfully!",
           contentColor: Colors.black,

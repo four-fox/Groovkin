@@ -46,6 +46,7 @@ class SurveyObject {
   String? type;
   String? createdAt;
   String? updatedAt;
+  String? image;
   List<CategoryItem>? categoryItems;
   List<EventItem>? eventItems;
   RxBool? showItems = false.obs;
@@ -59,6 +60,7 @@ class SurveyObject {
     this.categoryItems,
     this.showItems,
     this.eventItems,
+    this.image,
   });
 
   factory SurveyObject.fromJson(Map<String, dynamic> json) => SurveyObject(
@@ -68,6 +70,7 @@ class SurveyObject {
         showItems: json["showItems"] ?? false.obs,
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        image: json["image"],
         eventItems: json["event_items"] == null
             ? []
             : List<EventItem>.from(
@@ -139,46 +142,40 @@ class EventItem {
 class CategoryItem {
   int? id;
   int? categoryId;
-  int? eventId;
   String? name;
+  int? eventId;
   String? type;
   String? createdAt;
   String? updatedAt;
-  dynamic userCategoryItems;
   RxBool? selectedItem = false.obs;
 
   CategoryItem({
     this.id,
     this.categoryId,
-    this.eventId,
     this.name,
     this.type,
     this.createdAt,
     this.updatedAt,
-    this.userCategoryItems,
-    this.selectedItem,
-  });
+    this.eventId,
+    bool selected = false,
+  }) : selectedItem = selected.obs;
 
   factory CategoryItem.fromJson(Map<String, dynamic> json) => CategoryItem(
-        id: json["id"],
-        categoryId: json["category_id"],
-        name: json["name"],
-        type: json["type"],
-        eventId: json["event_id"],
-        selectedItem: json["selectedItem"] ?? false.obs,
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        userCategoryItems: json["user_category_items"],
-      );
+      id: json["id"],
+      categoryId: json["category_id"],
+      name: json["name"],
+      type: json["type"],
+      selected: json["selected"] ?? false,
+      createdAt: json["created_at"],
+      updatedAt: json["updated_at"],
+      eventId: json["event_id"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "category_id": categoryId,
         "name": name,
         "type": type,
-        "event_id": eventId,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "user_category_items": userCategoryItems,
       };
 }

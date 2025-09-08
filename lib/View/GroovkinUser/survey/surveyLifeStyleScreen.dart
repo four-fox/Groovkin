@@ -96,8 +96,8 @@ class SurveyLifeStyleScreen extends StatelessWidget {
                                         : Icons.keyboard_arrow_down,
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.only(top: 4.0, bottom: 4),
+                                    padding: const EdgeInsets.only(
+                                        top: 4.0, bottom: 4),
                                     child: Visibility(
                                       visible: controller.surveyData!
                                           .data![index].showItems!.value,

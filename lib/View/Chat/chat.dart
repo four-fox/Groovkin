@@ -242,20 +242,21 @@ class ChatCenterScreen extends StatelessWidget {
                           border: Border.all(color: DynamicColor.grayClr)),
                       child: TextField(
                         decoration: InputDecoration(
-                            hintText: "Write here  to Townsquare",
-                            hintStyle: poppinsRegularStyle(
-                              fontSize: 10,
-                              context: context,
-                              color: DynamicColor.grayClr,
-                            ),
-                            prefixIcon: Icon(
-                              Icons.attach_file_outlined,
-                              color: DynamicColor.grayClr,
-                            ),
-                            suffixIcon: ImageIcon(
-                              const AssetImage("assets/sendIcon.png"),
-                              color: DynamicColor.grayClr,
-                            )),
+                          hintText: "Write here  to Townsquare",
+                          hintStyle: poppinsRegularStyle(
+                            fontSize: 10,
+                            context: context,
+                            color: DynamicColor.grayClr,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.attach_file_outlined,
+                            color: DynamicColor.grayClr,
+                          ),
+                          suffixIcon: ImageIcon(
+                            const AssetImage("assets/sendIcon.png"),
+                            color: DynamicColor.grayClr,
+                          ),
+                        ),
                       ),
                     ),
                   ),

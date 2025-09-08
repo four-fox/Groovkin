@@ -11,6 +11,8 @@ import 'package:groovkin/View/GroovkinManager/paymentConfirmationScreen.dart';
 import 'package:groovkin/View/GroovkinManager/venueDetailsManagerFlow.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/groupScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/theSquadScreen.dart';
+import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroonvkinMusicGenreScreen.dart';
+import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroovkinLifeStyleScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userEventDetailsScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHomeController.dart';
@@ -29,11 +31,13 @@ import 'package:groovkin/View/authView/forgotPassword/otpScreen.dart';
 import 'package:groovkin/View/authView/forgotPassword/sendEmailScreen.dart';
 import 'package:groovkin/View/authView/loginScreen.dart';
 import 'package:groovkin/View/authView/newPasswordScreen.dart';
+import 'package:groovkin/View/authView/otp_screen.dart';
 import 'package:groovkin/View/authView/sendEmailForOtpScreen.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/ongoingEvents/ongoingEventsCompleteScreen.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/AllUsersScreen.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/setting_notification_screen.dart';
+import 'package:groovkin/View/rating/event_rating.dart';
 import 'package:groovkin/unuses/venueInfoScreen.dart';
 import 'package:groovkin/View/counters/counterScreen.dart';
 import 'package:groovkin/View/paymentMethod/transectionHistoryScreen.dart';
@@ -384,6 +388,10 @@ class AppPages {
       binding: UserHomeBinding(),
     ),
     GetPage(
+      name: _Path.emailVerifiedOtpScreen,
+      page: () => OtpVerification(),
+    ),
+    GetPage(
         name: _Path.userEventDetailsScreen,
         page: () => const UserEventDetailsScreen(),
         bindings: [
@@ -402,6 +410,19 @@ class AppPages {
     GetPage(
       name: _Path.searchFilterScreen,
       page: () => const SearchFilterScreen(),
+      // bindings: [
+      //   // HomeBinding(),
+      // ],
+    ),
+    GetPage(
+        name: _Path.editUserLifeStyleScreen,
+        page: () => Myusergroovkinlifestylescreen()),
+    GetPage(
+        name: _Path.myusergroonvkinmusicgenrescreen,
+        page: () => Myusergroonvkinmusicgenrescreen()),
+    GetPage(
+      name: _Path.calenderView,
+      page: () => calenderView(),
     ),
     GetPage(
       name: _Path.createNewGroup,
@@ -517,7 +538,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.viewAllEventListScreen,
-      page: () => const ViewAllEventListScreen(),
+      page: () => ViewAllEventListScreen(),
     ),
     GetPage(
       name: _Path.cancellationReason,
@@ -548,6 +569,7 @@ class AppPages {
       name: _Path.settingNotificationScreen,
       page: () => const SettingNotificationScreen(),
     ),
+    GetPage(name: _Path.ratingScreen, page: () => EventRating()),
 
     ///chat screens
 

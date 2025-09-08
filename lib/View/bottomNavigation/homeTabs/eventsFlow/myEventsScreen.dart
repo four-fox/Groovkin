@@ -54,7 +54,7 @@ class MyEventsScreen extends StatelessWidget {
                   ? noData(context: context, theme: theme)
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: ListView.builder( 
+                      child: ListView.builder(
                           itemCount: controller
                                   .recommendedEventData?.data?.data?.length ??
                               0,
@@ -93,7 +93,7 @@ class MyEventsScreen extends StatelessWidget {
                                         Row(
                                           children: [
                                             if (singleEventData
-                                                    .user!.deleteAt !=
+                                                    .user!.isDelete !=
                                                 null)
                                               Utils.accountDelete(context),
                                             const SizedBox(
@@ -140,18 +140,19 @@ class MyEventsScreen extends StatelessWidget {
                                           CircleAvatar(
                                             radius: 28,
                                             backgroundImage: NetworkImage(
-                                                singleEventData.bannerImage ==
-                                                        null
-                                                    ? singleEventData
-                                                            .profilePicture!
-                                                            .isNotEmpty
-                                                        ? singleEventData
-                                                            .profilePicture![0]
-                                                            .mediaPath!
-                                                        : groupPlaceholder
-                                                    : singleEventData
-                                                        .bannerImage!.mediaPath
-                                                        .toString()),
+                                              singleEventData.bannerImage ==
+                                                      null
+                                                  ? singleEventData
+                                                          .profilePicture!
+                                                          .isNotEmpty
+                                                      ? singleEventData
+                                                          .profilePicture![0]
+                                                          .mediaPath!
+                                                      : groupPlaceholder
+                                                  : singleEventData
+                                                      .bannerImage!.mediaPath
+                                                      .toString(),
+                                            ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -203,7 +204,7 @@ class MyEventsScreen extends StatelessWidget {
                                           context: context,
                                           color: theme.primaryColor,
                                         ),
-                                        onTap: singleEventData.user!.deleteAt ==
+                                        onTap: singleEventData.user!.isDelete ==
                                                 null
                                             ? () {
                                                 Get.toNamed(
@@ -265,6 +266,7 @@ class MyEventsScreen extends StatelessWidget {
               EventController eventController = Get.find();
               eventController.eventDetail = null;
               eventController.clearFields();
+              eventController.draftCondition(true);
               Get.toNamed(Routes.upGradeEvents);
             },
             borderClr: Colors.transparent,

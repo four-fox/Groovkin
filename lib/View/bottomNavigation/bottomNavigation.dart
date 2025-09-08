@@ -90,9 +90,10 @@ class BottomNavigationView extends StatelessWidget {
                 items: [
                   BottomBarItem(
                     labelTextStyle: poppinsMediumStyle(
-                        fontSize: 12,
-                        context: context,
-                        color: theme.scaffoldBackgroundColor),
+                      fontSize: 12,
+                      context: context,
+                      color: theme.scaffoldBackgroundColor,
+                    ),
                     iconBuilder: Padding(
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(
@@ -140,20 +141,21 @@ class BottomNavigationView extends StatelessWidget {
                         : "Analytics",
                   ),
                   BottomBarItem(
-                      labelTextStyle: poppinsMediumStyle(
-                          fontSize: 12,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor),
-                      iconBuilder: Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: ImageIcon(
-                          const AssetImage("assets/settingIcon.png"),
-                          color: selectIndexxx.value == 3
-                              ? DynamicColor.yellowClr
-                              : DynamicColor.grayClr,
-                        ),
+                    labelTextStyle: poppinsMediumStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: theme.scaffoldBackgroundColor),
+                    iconBuilder: Padding(
+                      padding: const EdgeInsets.only(bottom: 6.0),
+                      child: ImageIcon(
+                        const AssetImage("assets/settingIcon.png"),
+                        color: selectIndexxx.value == 3
+                            ? DynamicColor.yellowClr
+                            : DynamicColor.grayClr,
                       ),
-                      label: "Settings"),
+                    ),
+                    label: "Settings",
+                  ),
                 ],
                 selectedIndex: selectIndexxx.value,
                 onSelect: (index) {

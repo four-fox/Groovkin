@@ -7,10 +7,18 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/social_sign_in.dart';
 
-class LoginWithScreen extends StatelessWidget {
+class LoginWithScreen extends StatefulWidget {
   const LoginWithScreen({super.key});
+
+  @override
+  State<LoginWithScreen> createState() => _LoginWithScreenState();
+}
+
+class _LoginWithScreenState extends State<LoginWithScreen> {
+  final authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +69,7 @@ class LoginWithScreen extends StatelessWidget {
                 context: context,
                 color: theme.primaryColor,
               ),
-            ),
+            ), 
             const SizedBox(
               height: kToolbarHeight * 1.4,
             ),
@@ -70,11 +78,13 @@ class LoginWithScreen extends StatelessWidget {
                 // if(sp.read("role") == "eventManager"){
                 //   Get.offAllNamed(Routes.welComeScreen);
                 // } else{
+                authController.emailController.clear();
+                API().sp.write("emailSocial", null);
                 Get.toNamed(Routes.loginOrSignUpScreen);
                 // }
               },
-              color2: DynamicColor.grayClr.withValues(alpha:0.4),
-              color1: DynamicColor.grayClr.withValues(alpha:0.1),
+              color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+              color1: DynamicColor.grayClr.withValues(alpha: 0.1),
               backgroundClr: false,
               borderClr: Colors.transparent,
               text: "Signup with email address",
@@ -84,10 +94,9 @@ class LoginWithScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-
-               SocialSignIn(
-                showSpotify: API().sp.read("role") == "User"? true:false,
-              ),
+            SocialSignIn(
+              showSpotify: API().sp.read("role") == "User" ? true : false,
+            ),
           ],
         ),
       ),

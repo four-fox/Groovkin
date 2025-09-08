@@ -73,10 +73,22 @@ class AddVenueScreen extends StatelessWidget {
                     //   validationError: "max hour",
                     //   keyBoardType: true,
                     // ),
+
                     const SizedBox(
                       height: 15,
                     ),
                     DateTimeField(
+                      validator: (value) {
+                        if (value == null) {
+                          return "opening hours is required";
+                        }
+                        return null;
+                      },
+                      initialValue: controller
+                              .openingHoursController.text.isEmpty
+                          ? null
+                          : DateFormat('hh:mm')
+                              .parse(controller.openingHoursController.text),
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -153,6 +165,22 @@ class AddVenueScreen extends StatelessWidget {
                       height: 15,
                     ),
                     DateTimeField(
+                      validator: (value) {
+                        if (value == null) {
+                          return "Closing hours is required";
+                        }
+                        return null;
+                      },
+                      // initialValue: DateTime.now(),
+                      initialValue:
+                          controller.closedHoursController.text.isEmpty
+                              ? null
+                              : DateFormat('hh:mm')
+                                  .parse(controller.closedHoursController.text),
+                      // controller.closedHoursController.text.isNotEmpty
+                      //     ? timeFormat.parse(
+                      //         controller.closedHoursController.toString())
+                      //     : null,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
@@ -229,85 +257,87 @@ class AddVenueScreen extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Select Days of the Week Open',
-                          style: poppinsRegularStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Wrap(
-                          runSpacing: 5,
-                          spacing: 5,
-                          children: [
-                            ...controller.weekDays.asMap().entries.map((entry) {
-                              int index = entry.key; // Index of the week day
-                              String data = entry.value; // Day name
-                              return GestureDetector(
-                                onTap: () {
-                                  controller.selectedWeekDays[index] =
-                                      controller.selectedWeekDays[index] == true
-                                          ? false
-                                          : true;
-                                  controller
-                                      .update(); // Notify the controller to update the UI
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Checkbox(
-                                      activeColor: DynamicColor.yellowClr,
-                                      checkColor: Colors.white,
-                                      value: controller.selectedWeekDays[index],
-                                      onChanged: (value) {
-                                        controller.selectedWeekDays[index] =
-                                            value!;
-                                        controller
-                                            .update(); // Notify the controller to update the UI
-                                      },
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                    ),
-                                    Text(
-                                      data,
-                                      style: poppinsRegularStyle(
-                                          context: context,
-                                          fontSize: 12,
-                                          color: theme.primaryColor),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            })
-                          ],
-                        ),
-                      ],
-                    )
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     Text(
+                    //       'Select Days of the Week Open',
+                    //       style: poppinsRegularStyle(
+                    //         fontSize: 14,
+                    //         fontWeight: FontWeight.bold,
+                    //         context: context,
+                    //         color: theme.primaryColor,
+                    //       ),
+                    //     ),
+                    //     const SizedBox(height: 10),
+                    // Wrap(
+                    //   runSpacing: 5,
+                    //   spacing: 5,
+                    //   children: [
+                    //     ...controller.weekDays.asMap().entries.map((entry) {
+                    //       int index = entry.key; // Index of the week day
+                    //       String data = entry.value; // Day name
+                    //       return GestureDetector(
+                    //         onTap: () {
+                    //           controller.selectedWeekDays[index] =
+                    //               controller.selectedWeekDays[index] == true
+                    //                   ? false
+                    //                   : true;
+                    //           controller
+                    //               .update(); // Notify the controller to update the UI
+                    //         },
+                    //         child: Row(
+                    //           mainAxisSize: MainAxisSize.min,
+                    //           children: [
+                    //             Checkbox(
+                    //               activeColor: DynamicColor.yellowClr,
+                    //               checkColor: Colors.white,
+                    //               value: controller.selectedWeekDays[index],
+                    //               onChanged: (value) {
+                    //                 controller.selectedWeekDays[index] =
+                    //                     value!;
+                    //                 controller
+                    //                     .update(); // Notify the controller to update the UI
+                    //               },
+                    //               materialTapTargetSize:
+                    //                   MaterialTapTargetSize.shrinkWrap,
+                    //             ),
+                    //             Text(
+                    //               data,
+                    //               style: poppinsRegularStyle(
+                    //                   context: context,
+                    //                   fontSize: 12,
+                    //                   color: DynamicColor.whiteClr),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       );
+                    //     })
+                    //   ],
+                    // ),
+                    //   ],
+                    // )
                   ],
                 ),
               ),
             ));
       }),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () {
-              if (venueForm.currentState!.validate()) {
-                Get.toNamed(Routes.addVenueDetailsScreen);
-              }
-            },
-            text: "Next",
+      bottomNavigationBar: GetBuilder<ManagerController>(builder: (controller) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: CustomButton(
+              borderClr: Colors.transparent,
+              onTap: () {
+                if (venueForm.currentState!.validate()) {
+                  Get.toNamed(Routes.addVenueDetailsScreen);
+                }
+              },
+              text: "Next",
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

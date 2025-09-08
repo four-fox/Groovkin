@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -50,10 +51,10 @@ class _SettingScreenState extends State<SettingScreen> {
             ? "Switch Role to Event Organizer"
             : (API().sp.read("role") == "eventManager" &&
                     API().sp.read("currentRole") == "eventManager")
-                ? "Switch  Role to User"
+                ? "Switch Role to User"
                 : (API().sp.read("role") == "User" &&
                         API().sp.read("currentRole") == "eventManager")
-                    ? "Switch  Role to Event Organizer"
+                    ? "Switch Role to Venue Manager"
                     : "Switch Role";
     return title;
   }
@@ -262,7 +263,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         "eventManager") {
                                   controller.changeRoles(ChangeRole.manager);
                                   BotToast.showText(
-                                      text: "Change Role to Event Organizer");
+                                      text: "Change Role to Venue Manager");
                                 }
 
                                 // showModalBottomSheet(
@@ -346,28 +347,28 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.groovkinInviteScreen);
                                 })
                             : const SizedBox.shrink(),
-                        // API().sp.read("role") == "User"
-                        //     ? customWidget(
-                        //         context: context,
-                        //         img: "assets/groovkin.png",
-                        //         text: "My Groovkin",
-                        //         onTap: () {
-                        //           Get.toNamed(Routes.userMyGroovkinScreen);
-                        //         })
-                        //     : const SizedBox.shrink(),
-                        API().sp.read("role") == "eventManager"
+                        API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,
-                                showIconWIdget: true,
-                                iconWidget: Icon(
-                                  Icons.notifications,
-                                  color: Color(0xffebc464),
-                                ),
-                                text: "Notifications",
+                                img: "assets/groovkin.png",
+                                text: "My Groovkin",
                                 onTap: () {
-                                  Get.toNamed(Routes.settingNotificationScreen);
+                                  Get.toNamed(Routes.userMyGroovkinScreen);
                                 })
-                            : SizedBox(),
+                            : const SizedBox.shrink(),
+                        // API().sp.read("role") == "eventManager"
+                        //     ? customWidget(
+                        //         context: context,
+                        //         showIconWIdget: true,
+                        //         iconWidget: Icon(
+                        //           Icons.notifications,
+                        //           color: Color(0xffebc464),
+                        //         ),
+                        //         text: "Notifications",
+                        //         onTap: () {
+                        //           Get.toNamed(Routes.settingNotificationScreen);
+                        //         })
+                        //     : SizedBox(),
 
                         API().sp.read("role") == "User"
                             ? customWidget(
@@ -421,6 +422,12 @@ class _SettingScreenState extends State<SettingScreen> {
                                 iconShow: true,
                                 onTap: () {
                                   Get.toNamed(Routes.transactionScreen);
+                                  // showBottomSelectedCardSheet(context);
+                                  // Get.toNamed(Routes.paymentMethodScreen,
+                                  // arguments: {
+                                  //   "paymentMethod": 2
+                                  // }
+                                  // );
                                 }),
 
                         SizedBox(
@@ -550,6 +557,7 @@ class _SettingScreenState extends State<SettingScreen> {
       bool? showIconWIdget,
       Widget? iconWidget,
       bool iconShow = false}) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -594,15 +602,18 @@ class _SettingScreenState extends State<SettingScreen> {
                             Icons.arrow_forward_ios,
                             color: DynamicColor.grayClr.withValues(alpha: 0.7),
                           )
-                    : SizedBox(
-                        height: 30,
-                        child: Switch(
+                    : Transform.scale(
+                        scale: 1.0,
+                        child: SizedBox(
+                          height: 10,
+                          child: CupertinoSwitch(
                             inactiveThumbColor: DynamicColor.yellowClr,
-                            activeColor: DynamicColor.yellowClr,
-                            inactiveTrackColor: DynamicColor.whiteClr,
-                            activeTrackColor: DynamicColor.whiteClr,
+                            inactiveTrackColor: theme.primaryColor,
+                            activeTrackColor: DynamicColor.yellowClr,
                             value: switchCondition,
-                            onChanged: onChanged),
+                            onChanged: onChanged,
+                          ),
+                        ),
                       )
               ],
             ),
