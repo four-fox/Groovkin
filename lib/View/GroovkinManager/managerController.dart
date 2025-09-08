@@ -444,7 +444,9 @@ class ManagerController extends GetxController {
       "image[]": multiPartImg,
       "city": cityController.text,
     });
+
     print(formData);
+
     var response = await API().postApi(formData, "add-venue", multiPart: true);
     if (response.statusCode == 200) {
       showDialog(
@@ -496,6 +498,7 @@ class ManagerController extends GetxController {
               ),
             );
           });
+
       Future.delayed(const Duration(seconds: 2), () {
         Get.back();
         selectIndexxx.value = 0;
