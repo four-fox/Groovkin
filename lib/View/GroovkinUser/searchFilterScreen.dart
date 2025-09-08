@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_collection_literals
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:get/get.dart';
@@ -25,6 +23,7 @@ class SearchFilterScreen extends StatefulWidget {
 }
 
 class _SearchFilterScreenState extends State<SearchFilterScreen> {
+
   late HomeController homeController;
   late CleanCalendarController calendarController;
   @override
@@ -35,6 +34,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
     } else {
       homeController = Get.put(HomeController());
     }
+
+    
     calendarController = CleanCalendarController(
       minDate: DateTime.now(),
       maxDate: DateTime.now().add(const Duration(days: 365)),

@@ -11,6 +11,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/main.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -75,7 +76,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CreditCardWidget(
-              glassmorphismConfig: Glassmorphism.defaultConfig(),
+              glassmorphismConfig: Glassmorphism.defaultConfig(
+                  isDark: isDark(context) ? true : false),
               // glassmorphismConfig:
               //     useGlassMorphism ? Glassmorphism.defaultConfig() : null,
               cardNumber: cardNumber,

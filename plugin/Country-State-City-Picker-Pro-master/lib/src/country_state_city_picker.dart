@@ -112,6 +112,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
 
         ///State TextField
         TextField(
+          
           controller: widget.state,
           style: const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
           onTap: () {

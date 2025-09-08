@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/grayClrBgAppBar.dart';
+import 'package:groovkin/main.dart';
 
 import '../Components/colors.dart';
 import '../Components/textFields.dart';
@@ -32,32 +34,7 @@ class ChatNewUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        leading: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: ImageIcon(
-                const AssetImage("assets/backArrow.png"),
-                color: theme.primaryColor,
-              ),
-            ),
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Chat",
-          style: poppinsMediumStyle(
-            fontSize: 17,
-            context: context,
-            color: theme.primaryColor,
-          ),
-        ),
-      ),
+      appBar: customAppBar(text: "Chats", theme: theme),
       body: GetBuilder<ChatController>(initState: (v) {
         _controller.getNewUser();
       }, builder: (controller) {
@@ -83,11 +60,15 @@ class ChatNewUserScreen extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8.0),
-                      color: DynamicColor.blackClr,
+                      color: isDark(context)
+                          ? DynamicColor.blackClr
+                          : DynamicColor.whiteClr,
                       child: SearchTextFields(
                         borderRadius: 12,
                         controller: controller.searchingController,
-                        bgColor: DynamicColor.blackClr,
+                        bgColor: isDark(context)
+                            ? DynamicColor.blackClr
+                            : DynamicColor.whiteClr,
                         // readOnly: true,
                         onChanged: (v) {
                           if (v != "") {
@@ -131,7 +112,7 @@ class ChatNewUserScreen extends StatelessWidget {
                                       shape: Border(
                                         bottom: BorderSide(
                                             color: theme.primaryColor
-                                                .withValues(alpha:0.7)),
+                                                .withValues(alpha: 0.7)),
                                       ),
                                       leading: CircleAvatar(
                                         radius: 25,
@@ -155,7 +136,7 @@ class ChatNewUserScreen extends StatelessWidget {
                                           fontSize: 14,
                                           context: context,
                                           color: theme.primaryColor
-                                              .withValues(alpha:0.8),
+                                              .withValues(alpha: 0.8),
                                         ),
                                       ),
                                     ),

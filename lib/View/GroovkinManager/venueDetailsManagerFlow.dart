@@ -14,6 +14,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/main.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
 class VenueDetailsManagerScreen extends StatelessWidget {
@@ -791,7 +792,9 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                               },
                               child: ImageIcon(
                                 const AssetImage("assets/backArrow.png"),
-                                color: theme.primaryColor,
+                                color: isDark(context)
+                                    ? theme.primaryColor
+                                    : DynamicColor.whiteClr,
                               ),
                             ),
                             API().sp.read("role") == "eventOrganizer"
@@ -866,10 +869,10 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                             );
                                           });
                                     },
-                                    icon: Icon(
-                                      Icons.more_vert,
-                                      color: theme.primaryColor,
-                                    ))
+                                    icon: Icon(Icons.more_vert,
+                                        color: isDark(context)
+                                            ? theme.primaryColor
+                                            : DynamicColor.whiteClr))
                                 : const SizedBox()
                           ],
                         ),
@@ -906,18 +909,20 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                       _controller.venueDetails!.data!.user!.name
                                           .toString(),
                                       style: poppinsRegularStyle(
-                                        fontSize: 16,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
+                                          fontSize: 16,
+                                          context: context,
+                                          color: isDark(context)
+                                              ? theme.primaryColor
+                                              : DynamicColor.whiteClr),
                                     ),
                                     Text(
                                       "Event Place",
                                       style: poppinsRegularStyle(
-                                        fontSize: 16,
-                                        context: context,
-                                        color: theme.primaryColor,
-                                      ),
+                                          fontSize: 16,
+                                          context: context,
+                                          color: isDark(context)
+                                              ? theme.primaryColor
+                                              : DynamicColor.whiteClr),
                                     ),
                                   ],
                                 ),
@@ -929,11 +934,11 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                                       onTap: () {
                                         _controller.editVenueDataBind();
                                       },
-                                      child: Icon(
-                                        Icons.edit_calendar_rounded,
-                                        size: 30,
-                                        color: theme.primaryColor,
-                                      ),
+                                      child: Icon(Icons.edit_calendar_rounded,
+                                          size: 30,
+                                          color: isDark(context)
+                                              ? theme.primaryColor
+                                              : DynamicColor.whiteClr),
                                     )
                             ],
                           ),

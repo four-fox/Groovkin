@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/main.dart';
 
 customAppBar({
   theme,
@@ -34,7 +36,9 @@ customAppBar({
                 },
             child: ImageIcon(
               const AssetImage("assets/backArrow.png"),
-              color: theme.primaryColor,
+              color: isDark(Get.context!)
+                  ? theme.primaryColor
+                  : DynamicColor.whiteClr,
             ))
         : null,
     title: container ??
@@ -43,7 +47,9 @@ customAppBar({
           style: style ??
               poppinsMediumStyle(
                 fontSize: 17,
-                color: theme.primaryColor,
+                color: isDark(Get.context!)
+                    ? theme.primaryColor
+                    : DynamicColor.whiteClr,
               ),
         ),
     actions: actions,

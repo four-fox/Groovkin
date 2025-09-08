@@ -10,6 +10,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/main.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
@@ -91,7 +92,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             "No Data Found",
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      color: Colors.white,
+                                      color: isDark(context)
+                                          ? Colors.white
+                                          : Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
                           ),
@@ -303,7 +306,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             style: poppinsMediumStyle(
               fontSize: 14,
               context: context,
-              color: theme.primaryColor,
+              color:
+                  isDark(context) ? theme.primaryColor : DynamicColor.whiteClr,
             ),
           ),
           subtitle: Text(

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/chatView/chatController.dart';
+import 'package:groovkin/main.dart';
 
 import '../Components/textFields.dart';
 import '../Components/textStyle.dart';
@@ -65,32 +67,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           ),
         ),
       ),
-      appBar: AppBar(
-        centerTitle: true,
-        leading: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: ImageIcon(
-                const AssetImage("assets/backArrow.png"),
-                color: theme.primaryColor,
-              ),
-            ),
-          ),
-        ),
-        title: Text(
-          "Inbox",
-          style: poppinsMediumStyle(
-            fontSize: 17,
-            context: context,
-            color: theme.primaryColor,
-          ),
-        ),
-      ),
+      appBar: customAppBar(text: "Inbox", theme: theme),
       body: GetBuilder<ChatController>(initState: (v) {
         _controller.chatRoomDataController.clear();
         _controller.getAllChatRoom();
@@ -117,11 +94,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8.0),
-                      color: DynamicColor.blackClr,
+                      color: isDark(context)
+                          ? DynamicColor.blackClr
+                          : DynamicColor.whiteClr,
                       child: SearchTextFields(
                         borderRadius: 12,
                         controller: controller.chatRoomDataController,
-                        bgColor: DynamicColor.blackClr,
+                        bgColor: isDark(context)
+                            ? DynamicColor.blackClr
+                            : DynamicColor.whiteClr,
                         onChanged: (v) {
                           if (v != "") {
                             _onChangeHandler();
@@ -140,7 +121,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                                 style: poppinsMediumStyle(
                                   fontSize: 17,
                                   context: context,
-                                  color: theme.primaryColor,
+                                  color: isDark(context)
+                                      ? Colors.white
+                                      : Colors.black,
                                 ),
                               ),
                             )

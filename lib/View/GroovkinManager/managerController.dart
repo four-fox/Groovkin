@@ -18,6 +18,7 @@ import 'package:groovkin/View/GroovkinManager/venueListManagerModel.dart';
 import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/counters/messagesModel.dart';
+import 'package:groovkin/main.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -479,7 +480,9 @@ class ManagerController extends GetxController {
                             fontSize: 22,
                             fontWeight: FontWeight.w700,
                             context: context,
-                            color: theme.primaryColor,
+                            color: isDark(context)
+                                ? theme.primaryColor
+                                : DynamicColor.whiteClr,
                           ),
                         ),
                         Padding(
@@ -491,7 +494,9 @@ class ManagerController extends GetxController {
                             style: poppinsRegularStyle(
                               fontSize: 13,
                               context: context,
-                              color: theme.primaryColor,
+                              color: isDark(context)
+                                  ? theme.primaryColor
+                                  : DynamicColor.whiteClr,
                             ),
                           ),
                         ),

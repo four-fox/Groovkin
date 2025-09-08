@@ -49,14 +49,14 @@ bottomToast({
 }
 
 ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> no Data
-noData({context, theme}) {
+noData({context, theme, isCard = false}) {
   return Center(
     child: Text(
       "No Data",
       style: poppinsMediumStyle(
         fontSize: 16,
         context: context,
-        color: theme.primaryColor,
+        color: isCard ? theme.cardColor : theme.primaryColor,
       ),
     ),
   );

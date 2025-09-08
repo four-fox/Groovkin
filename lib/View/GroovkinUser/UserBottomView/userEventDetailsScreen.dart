@@ -11,6 +11,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/main.dart';
 import 'package:intl/intl.dart';
 
 class UserEventDetailsScreen extends StatefulWidget {
@@ -292,482 +293,535 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                           title: "Featuring",
                           value: controller.eventDetail!.data!.featuring
                               .toString()),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(
-                      //       horizontal: 12.0, vertical: 10),
-                      //   child: Container(
-                      //     width: double.infinity,
-                      //     padding: const EdgeInsets.symmetric(
-                      //         vertical: 10, horizontal: 10),
-                      //     decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         color: DynamicColor.darkGrayClr),
-                      //     child: Column(
-                      //       children: [
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: Text(
-                      //             "Service",
-                      //             style: poppinsRegularStyle(
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.w600,
-                      //               context: context,
-                      //               color: theme.primaryColor,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         SizedBox(
-                      //           height: kToolbarHeight,
-                      //           child: Align(
-                      //             alignment: Alignment.topLeft,
-                      //             child: ListView.builder(
-                      //                 shrinkWrap: true,
-                      //                 scrollDirection: Axis.horizontal,
-                      //                 // physics: NeverScrollableScrollPhysics(),
-                      //                 itemCount: controller
-                      //                     .eventDetail!.data!.services!.length,
-                      //                 itemBuilder:
-                      //                     (BuildContext context, indx) {
-                      //                   return Padding(
-                      //                     padding: const EdgeInsets.symmetric(
-                      //                         horizontal: 6),
-                      //                     child: Chip(
-                      //                       backgroundColor:
-                      //                           DynamicColor.lightBlackClr,
-                      //                       shape: RoundedRectangleBorder(
-                      //                         borderRadius:
-                      //                             BorderRadius.circular(8),
-                      //                       ),
-                      //                       label: Text(
-                      //                         controller
-                      //                             .eventDetail!
-                      //                             .data!
-                      //                             .services![indx]
-                      //                             .eventItem!
-                      //                             .name
-                      //                             .toString(),
-                      //                         style: poppinsRegularStyle(
-                      //                           fontSize: 14,
-                      //                           context: context,
-                      //                           color: theme.primaryColor,
-                      //                         ),
-                      //                       ),
-                      //                     ),
-                      //                   );
-                      //                 }),
-                      //           ),
-                      //         ),
-                      //         const SizedBox(
-                      //           height: 10,
-                      //         ),
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: Text(
-                      //             "Hardware Provided",
-                      //             style: poppinsRegularStyle(
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.w600,
-                      //               context: context,
-                      //               color: theme.primaryColor,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: ListView.builder(
-                      //               shrinkWrap: true,
-                      //               itemCount: controller.eventDetail!.data!
-                      //                   .hardwareProvide!.length,
-                      //               padding: EdgeInsets.zero,
-                      //               physics:
-                      //                   const NeverScrollableScrollPhysics(),
-                      //               itemBuilder: (BuildContext context, index) {
-                      //                 final filterdItem = controller
-                      //                     .eventDetail!
-                      //                     .data!
-                      //                     .hardwareProvide![index]
-                      //                     .hardwareItems!
-                      //                     .where(
-                      //                         (data) => data.selected == true)
-                      //                     .toList();
-                      //                 if (filterdItem.isEmpty)
-                      //                   return SizedBox();
-                      //                 return Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   children: [
-                      //                     Row(
-                      //                       children: [
-                      //                         Text("${"• "}",
-                      //                             style:
-                      //                                 TextStyle(fontSize: 20)),
-                      //                         Text(
-                      //                           controller
-                      //                               .eventDetail!
-                      //                               .data!
-                      //                               .hardwareProvide![index]
-                      //                               .name
-                      //                               .toString(),
-                      //                           style: poppinsRegularStyle(
-                      //                             fontSize: 13,
-                      //                             fontWeight: FontWeight.w600,
-                      //                             context: context,
-                      //                             underline: true,
-                      //                             color: theme.primaryColor,
-                      //                           ),
-                      //                         )
-                      //                       ],
-                      //                     ),
-                      //                     SizedBox(
-                      //                       height: kToolbarHeight,
-                      //                       child: ListView.builder(
-                      //                         shrinkWrap: true,
-                      //                         scrollDirection: Axis.horizontal,
-                      //                         itemBuilder: (context, index1) {
-                      //                           return Padding(
-                      //                             padding: const EdgeInsets
-                      //                                 .symmetric(horizontal: 6),
-                      //                             child: Chip(
-                      //                               backgroundColor:
-                      //                                   DynamicColor
-                      //                                       .lightBlackClr,
-                      //                               shape:
-                      //                                   RoundedRectangleBorder(
-                      //                                 borderRadius:
-                      //                                     BorderRadius.circular(
-                      //                                         8),
-                      //                               ),
-                      //                               label: Text(
-                      //                                 filterdItem[index1]
-                      //                                     .name
-                      //                                     .toString(),
-                      //                                 style:
-                      //                                     poppinsRegularStyle(
-                      //                                   fontSize: 14,
-                      //                                   context: context,
-                      //                                   color:
-                      //                                       theme.primaryColor,
-                      //                                 ),
-                      //                               ),
-                      //                             ),
-                      //                           );
-                      //                         },
-                      //                         itemCount: filterdItem.length,
-                      //                       ),
-                      //                     )
-                      //                   ],
-                      //                 );
-                      //               }),
-                      //         ),
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: Text(
-                      //             "Music Genre",
-                      //             style: poppinsRegularStyle(
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.w600,
-                      //               context: context,
-                      //               color: theme.primaryColor,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: ListView.builder(
-                      //               padding: EdgeInsets.zero,
-                      //               shrinkWrap: true,
-                      //               physics: NeverScrollableScrollPhysics(),
-                      //               itemCount: controller
-                      //                   .eventDetail!.data!.musicGenre!.length,
-                      //               itemBuilder: (BuildContext context, index) {
-                      //                 final filterdItem = controller
-                      //                     .eventDetail!
-                      //                     .data!
-                      //                     .musicGenre![index]
-                      //                     .musicGenreItems!
-                      //                     .where(
-                      //                         (data) => data.selected == true)
-                      //                     .toList();
-                      //                 if (filterdItem.isEmpty)
-                      //                   return SizedBox();
-                      //                 return Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   children: [
-                      //                     Row(
-                      //                       children: [
-                      //                         Text("${"• "}",
-                      //                             style:
-                      //                                 TextStyle(fontSize: 20)),
-                      //                         Text(
-                      //                           controller.eventDetail!.data!
-                      //                               .musicGenre![index].name!
-                      //                               .toString(),
-                      //                           style: poppinsRegularStyle(
-                      //                             fontSize: 13,
-                      //                             fontWeight: FontWeight.w600,
-                      //                             context: context,
-                      //                             underline: true,
-                      //                             color: theme.primaryColor,
-                      //                           ),
-                      //                         )
-                      //                       ],
-                      //                     ),
-                      //                     SizedBox(
-                      //                       height: kToolbarHeight,
-                      //                       child: ListView.builder(
-                      //                         shrinkWrap: true,
-                      //                         scrollDirection: Axis.horizontal,
-                      //                         itemBuilder: (context, index1) {
-                      //                           return Padding(
-                      //                             padding: const EdgeInsets
-                      //                                 .symmetric(horizontal: 6),
-                      //                             child: Chip(
-                      //                               backgroundColor:
-                      //                                   DynamicColor
-                      //                                       .lightBlackClr,
-                      //                               shape:
-                      //                                   RoundedRectangleBorder(
-                      //                                 borderRadius:
-                      //                                     BorderRadius.circular(
-                      //                                         8),
-                      //                               ),
-                      //                               label: Text(
-                      //                                 filterdItem[index1]
-                      //                                     .name
-                      //                                     .toString(),
-                      //                                 style:
-                      //                                     poppinsRegularStyle(
-                      //                                   fontSize: 14,
-                      //                                   context: context,
-                      //                                   color:
-                      //                                       theme.primaryColor,
-                      //                                 ),
-                      //                               ),
-                      //                             ),
-                      //                           );
-                      //                         },
-                      //                         itemCount: filterdItem.length,
-                      //                       ),
-                      //                     )
-                      //                   ],
-                      //                 );
-                      //               }),
-                      //         ),
+                      if (API().sp.read("role") != "User")
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 10),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: DynamicColor.darkGrayClr),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Service",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      context: context,
+                                      color: isDark(context)
+                                          ? theme.primaryColor
+                                          : DynamicColor.whiteClr,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: kToolbarHeight,
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        // physics: NeverScrollableScrollPhysics(),
+                                        itemCount: controller.eventDetail!.data!
+                                            .services!.length,
+                                        itemBuilder:
+                                            (BuildContext context, indx) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 6),
+                                            child: Chip(
+                                              backgroundColor:
+                                                  DynamicColor.lightBlackClr,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              label: Text(
+                                                controller
+                                                    .eventDetail!
+                                                    .data!
+                                                    .services![indx]
+                                                    .eventItem!
+                                                    .name
+                                                    .toString(),
+                                                style: poppinsRegularStyle(
+                                                  fontSize: 14,
+                                                  context: context,
+                                                  color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Hardware Provided",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      context: context,
+                                      color: isDark(context)
+                                          ? theme.primaryColor
+                                          : DynamicColor.whiteClr,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: controller.eventDetail!.data!
+                                          .hardwareProvide!.length,
+                                      padding: EdgeInsets.zero,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, index) {
+                                        final filterdItem = controller
+                                            .eventDetail!
+                                            .data!
+                                            .hardwareProvide![index]
+                                            .hardwareItems!
+                                            .where(
+                                                (data) => data.selected == true)
+                                            .toList();
+                                        if (filterdItem.isEmpty)
+                                          return SizedBox();
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("${"• "}",
+                                                    style: TextStyle(
+                                                        fontSize: 20,        color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,)),
+                                                Text(
+                                                  controller
+                                                      .eventDetail!
+                                                      .data!
+                                                      .hardwareProvide![index]
+                                                      .name
+                                                      .toString(),
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    context: context,
+                                                    underline: true,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: kToolbarHeight,
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (context, index1) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 6),
+                                                    child: Chip(
+                                                      backgroundColor:
+                                                          DynamicColor
+                                                              .lightBlackClr,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      label: Text(
+                                                        filterdItem[index1]
+                                                            .name
+                                                            .toString(),
+                                                        style:
+                                                            poppinsRegularStyle(
+                                                          fontSize: 14,
+                                                          context: context,
+                                                          color: isDark(context)
+                                                              ? theme
+                                                                  .primaryColor
+                                                              : DynamicColor
+                                                                  .whiteClr,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                itemCount: filterdItem.length,
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Music Genre",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      context: context,
+                                      color: isDark(context)
+                                          ? theme.primaryColor
+                                          : DynamicColor.whiteClr,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: controller.eventDetail!.data!
+                                          .musicGenre!.length,
+                                      itemBuilder:
+                                          (BuildContext context, index) {
+                                        final filterdItem = controller
+                                            .eventDetail!
+                                            .data!
+                                            .musicGenre![index]
+                                            .musicGenreItems!
+                                            .where(
+                                                (data) => data.selected == true)
+                                            .toList();
+                                        if (filterdItem.isEmpty)
+                                          return SizedBox();
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("${"• "}",
+                                                    style: TextStyle(
+                                                        fontSize: 20,        color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,)),
+                                                Text(
+                                                  controller.eventDetail!.data!
+                                                      .musicGenre![index].name!
+                                                      .toString(),
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    context: context,
+                                                    underline: true,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: kToolbarHeight,
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (context, index1) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 6),
+                                                    child: Chip(
+                                                      backgroundColor:
+                                                          DynamicColor
+                                                              .lightBlackClr,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      label: Text(
+                                                        filterdItem[index1]
+                                                            .name
+                                                            .toString(),
+                                                        style:
+                                                            poppinsRegularStyle(
+                                                          fontSize: 14,
+                                                          context: context,
+                                                          color: isDark(context)
+                                                              ? theme
+                                                                  .primaryColor
+                                                              : DynamicColor
+                                                                  .whiteClr,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                itemCount: filterdItem.length,
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                ),
 
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: Text(
-                      //             "Music Choice",
-                      //             style: poppinsRegularStyle(
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.w600,
-                      //               context: context,
-                      //               color: theme.primaryColor,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: ListView.builder(
-                      //               padding: EdgeInsets.zero,
-                      //               itemCount: controller.eventDetail!.data!
-                      //                   .eventMusicChoiceTags!.length,
-                      //               shrinkWrap: true,
-                      //               physics:
-                      //                   const NeverScrollableScrollPhysics(),
-                      //               itemBuilder: (BuildContext context, index) {
-                      //                 final filterdItem = controller
-                      //                     .eventDetail!
-                      //                     .data!
-                      //                     .eventMusicChoiceTags![index]
-                      //                     .musicChoiceItems!
-                      //                     .categoryItems!
-                      //                     .where((data) =>
-                      //                         data.userSelection == true)
-                      //                     .toList();
-                      //                 if (filterdItem.isEmpty)
-                      //                   return SizedBox();
-                      //                 return Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   children: [
-                      //                     Row(
-                      //                       children: [
-                      //                         Text("${"• "}",
-                      //                             style:
-                      //                                 TextStyle(fontSize: 20)),
-                      //                         Text(
-                      //                           controller
-                      //                               .eventDetail!
-                      //                               .data!
-                      //                               .eventMusicChoiceTags![
-                      //                                   index]
-                      //                               .musicChoiceItems!
-                      //                               .name
-                      //                               .toString(),
-                      //                           style: poppinsRegularStyle(
-                      //                             fontSize: 13,
-                      //                             fontWeight: FontWeight.w600,
-                      //                             context: context,
-                      //                             underline: true,
-                      //                             color: theme.primaryColor,
-                      //                           ),
-                      //                         )
-                      //                       ],
-                      //                     ),
-                      //                     SizedBox(
-                      //                       height: kToolbarHeight,
-                      //                       child: ListView.builder(
-                      //                         shrinkWrap: true,
-                      //                         scrollDirection: Axis.horizontal,
-                      //                         itemBuilder: (context, index1) {
-                      //                           return Padding(
-                      //                             padding: const EdgeInsets
-                      //                                 .symmetric(horizontal: 6),
-                      //                             child: Chip(
-                      //                               backgroundColor:
-                      //                                   DynamicColor
-                      //                                       .lightBlackClr,
-                      //                               shape:
-                      //                                   RoundedRectangleBorder(
-                      //                                 borderRadius:
-                      //                                     BorderRadius.circular(
-                      //                                         8),
-                      //                               ),
-                      //                               label: Text(
-                      //                                 filterdItem[index1]
-                      //                                     .name
-                      //                                     .toString(),
-                      //                                 style:
-                      //                                     poppinsRegularStyle(
-                      //                                   fontSize: 14,
-                      //                                   context: context,
-                      //                                   color:
-                      //                                       theme.primaryColor,
-                      //                                 ),
-                      //                               ),
-                      //                             ),
-                      //                           );
-                      //                         },
-                      //                         itemCount: filterdItem.length,
-                      //                       ),
-                      //                     )
-                      //                   ],
-                      //                 );
-                      //               }),
-                      //         ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Music Choice",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      context: context,
+                                      color: isDark(context)
+                                          ? theme.primaryColor
+                                          : DynamicColor.whiteClr,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      itemCount: controller.eventDetail!.data!
+                                          .eventMusicChoiceTags!.length,
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, index) {
+                                        final filterdItem = controller
+                                            .eventDetail!
+                                            .data!
+                                            .eventMusicChoiceTags![index]
+                                            .musicChoiceItems!
+                                            .categoryItems!
+                                            .where((data) =>
+                                                data.userSelection == true)
+                                            .toList();
+                                        if (filterdItem.isEmpty)
+                                          return SizedBox();
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("${"• "}",
+                                                    style: TextStyle(
+                                                        fontSize: 20,        color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,)),
+                                                Text(
+                                                  controller
+                                                      .eventDetail!
+                                                      .data!
+                                                      .eventMusicChoiceTags![
+                                                          index]
+                                                      .musicChoiceItems!
+                                                      .name
+                                                      .toString(),
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    context: context,
+                                                    underline: true,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: kToolbarHeight,
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (context, index1) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 6),
+                                                    child: Chip(
+                                                      backgroundColor:
+                                                          DynamicColor
+                                                              .lightBlackClr,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      label: Text(
+                                                        filterdItem[index1]
+                                                            .name
+                                                            .toString(),
+                                                        style:
+                                                            poppinsRegularStyle(
+                                                          fontSize: 14,
+                                                          context: context,
+                                                          color: isDark(context)
+                                                              ? theme
+                                                                  .primaryColor
+                                                              : DynamicColor
+                                                                  .whiteClr,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                itemCount: filterdItem.length,
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                ),
 
-                      //         // Todo Activity Choice
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: Text(
-                      //             "Activity Choice",
-                      //             style: poppinsRegularStyle(
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.w600,
-                      //               context: context,
-                      //               color: theme.primaryColor,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Align(
-                      //           alignment: Alignment.topLeft,
-                      //           child: ListView.builder(
-                      //               padding: EdgeInsets.zero,
-                      //               itemCount: controller.eventDetail!.data!
-                      //                   .eventActivityChoiceTags!.length,
-                      //               shrinkWrap: true,
-                      //               physics:
-                      //                   const NeverScrollableScrollPhysics(),
-                      //               itemBuilder: (BuildContext context, index) {
-                      //                 final filterdItem = controller
-                      //                     .eventDetail!
-                      //                     .data!
-                      //                     .eventActivityChoiceTags![index]
-                      //                     .activityChoiceItems!
-                      //                     .categoryItems!
-                      //                     .where((data) =>
-                      //                         data.userSelection == true)
-                      //                     .toList();
-                      //                 if (filterdItem.isEmpty)
-                      //                   return SizedBox();
-                      //                 return Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   children: [
-                      //                     Row(
-                      //                       children: [
-                      //                         Text("${"• "}",
-                      //                             style:
-                      //                                 TextStyle(fontSize: 20)),
-                      //                         Text(
-                      //                           controller
-                      //                               .eventDetail!
-                      //                               .data!
-                      //                               .eventActivityChoiceTags![
-                      //                                   index]
-                      //                               .activityChoiceItems!
-                      //                               .name
-                      //                               .toString(),
-                      //                           style: poppinsRegularStyle(
-                      //                             fontSize: 13,
-                      //                             fontWeight: FontWeight.w600,
-                      //                             context: context,
-                      //                             underline: true,
-                      //                             color: theme.primaryColor,
-                      //                           ),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                     SizedBox(
-                      //                       height: kToolbarHeight,
-                      //                       child: ListView.builder(
-                      //                         padding: EdgeInsets.zero,
-                      //                         scrollDirection: Axis.horizontal,
-                      //                         itemBuilder: (context, index1) {
-                      //                           return Padding(
-                      //                             padding: const EdgeInsets
-                      //                                 .symmetric(horizontal: 6),
-                      //                             child: Chip(
-                      //                               backgroundColor:
-                      //                                   DynamicColor
-                      //                                       .lightBlackClr,
-                      //                               shape:
-                      //                                   RoundedRectangleBorder(
-                      //                                 borderRadius:
-                      //                                     BorderRadius.circular(
-                      //                                         8),
-                      //                               ),
-                      //                               label: Text(
-                      //                                 filterdItem[index1]
-                      //                                     .name
-                      //                                     .toString(),
-                      //                                 style:
-                      //                                     poppinsRegularStyle(
-                      //                                   fontSize: 14,
-                      //                                   context: context,
-                      //                                   color:
-                      //                                       theme.primaryColor,
-                      //                                 ),
-                      //                               ),
-                      //                             ),
-                      //                           );
-                      //                         },
-                      //                         itemCount: filterdItem.length,
-                      //                       ),
-                      //                     )
-                      //                   ],
-                      //                 );
-                      //               }),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
+                                // Todo Activity Choice
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Activity Choice",
+                                    style: poppinsRegularStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      context: context,
+                                      color: isDark(context)
+                                          ? theme.primaryColor
+                                          : DynamicColor.whiteClr,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      itemCount: controller.eventDetail!.data!
+                                          .eventActivityChoiceTags!.length,
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, index) {
+                                        final filterdItem = controller
+                                            .eventDetail!
+                                            .data!
+                                            .eventActivityChoiceTags![index]
+                                            .activityChoiceItems!
+                                            .categoryItems!
+                                            .where((data) =>
+                                                data.userSelection == true)
+                                            .toList();
+                                        if (filterdItem.isEmpty)
+                                          return SizedBox();
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("${"• "}",
+                                                    style: TextStyle(
+                                                        fontSize: 20,        color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,)),
+                                                Text(
+                                                  controller
+                                                      .eventDetail!
+                                                      .data!
+                                                      .eventActivityChoiceTags![
+                                                          index]
+                                                      .activityChoiceItems!
+                                                      .name
+                                                      .toString(),
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    context: context,
+                                                    underline: true,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: kToolbarHeight,
+                                              child: ListView.builder(
+                                                padding: EdgeInsets.zero,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder: (context, index1) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 6),
+                                                    child: Chip(
+                                                      backgroundColor:
+                                                          DynamicColor
+                                                              .lightBlackClr,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      label: Text(
+                                                        filterdItem[index1]
+                                                            .name
+                                                            .toString(),
+                                                        style:
+                                                            poppinsRegularStyle(
+                                                          fontSize: 14,
+                                                          context: context,
+                                                          color: isDark(context)
+                                                              ? theme
+                                                                  .primaryColor
+                                                              : DynamicColor
+                                                                  .whiteClr,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                itemCount: filterdItem.length,
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       if (controller.eventDetail!.data!.location != null) ...[
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -894,9 +948,10 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                   : controller.eventDetail!.data!.user == null
                                       ? SizedBox()
                                       : ourGuestWidget(
-                                          isDelete: controller.eventDetail!.data!.user!.isDelete == null
-                                              ? false
-                                              : true,
+                                          isDelete:
+                                              controller.eventDetail!.data!.user!.isDelete == null
+                                                  ? false
+                                                  : true,
                                           onTap: () {
                                             Get.toNamed(
                                                 Routes.viewProfileScreen,
@@ -908,15 +963,19 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                 });
                                           },
                                           horizontalPadding: 12,
-                                          networkImg:
-                                              controller.eventDetail!.data!.user!.profilePicture == null
-                                                  ? groupPlaceholder
-                                                  : controller
+                                          networkImg: controller
                                                       .eventDetail!
                                                       .data!
                                                       .user!
-                                                      .profilePicture!
-                                                      .mediaPath,
+                                                      .profilePicture ==
+                                                  null
+                                              ? groupPlaceholder
+                                              : controller
+                                                  .eventDetail!
+                                                  .data!
+                                                  .user!
+                                                  .profilePicture!
+                                                  .mediaPath,
                                           venueOwner: controller
                                               .eventDetail!.data!.user!.name
                                               .toString(),
@@ -925,17 +984,17 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                           rowPadding: 0.0,
                                           avatarPadding: 6,
                                           rowVerticalPadding: 0.0,
-                                          followBgClr:
-                                              controller.eventDetail!.data!.user!.following != null
-                                                  ? DynamicColor.grayClr
-                                                  : DynamicColor.avatarBgClr,
+                                          followBgClr: controller.eventDetail!
+                                                      .data!.user!.following !=
+                                                  null
+                                              ? DynamicColor.grayClr
+                                              : DynamicColor.avatarBgClr,
                                           textClr: controller.eventDetail!.data!.user!.following == null
-                                              ? theme.primaryColor
+                                              ? isDark(context)
+                                                  ? theme.primaryColor
+                                                  : DynamicColor.whiteClr
                                               : theme.scaffoldBackgroundColor,
-                                          followText:
-                                              controller.eventDetail!.data!.user!.following == null
-                                                  ? "Follow"
-                                                  : "Unfollow",
+                                          followText: controller.eventDetail!.data!.user!.following == null ? "Follow" : "Unfollow",
                                           followOnTap: () {
                                             if (controller.eventDetail!.data!
                                                     .user!.following ==
@@ -1107,7 +1166,9 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withValues(alpha: 0.6)),
+                  color: isDark(context)
+                      ? DynamicColor.whiteClr.withValues(alpha: 0.6)
+                      : theme.primaryColor),
             ),
           ),
         ),

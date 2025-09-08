@@ -12,6 +12,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/profile/editProfileScreen.dart';
+import 'package:groovkin/main.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 
@@ -34,6 +35,8 @@ class _CreateCompanyProfileScreenState
   ManagerController _controller = Get.find();
 
   bool editVenue = Get.arguments['updationCondition'];
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -92,7 +95,9 @@ class _CreateCompanyProfileScreenState
                           alignment: Alignment.centerLeft,
                           child: Icon(
                             Icons.arrow_back,
-                            color: theme.primaryColor,
+                            color: isDark(context)
+                                ? theme.primaryColor
+                                : DynamicColor.whiteClr,
                           ),
                         ),
                       ),
@@ -102,7 +107,9 @@ class _CreateCompanyProfileScreenState
                 "Add a new venue",
                 style: poppinsMediumStyle(
                   fontSize: 17,
-                  color: theme.primaryColor,
+                  color: isDark(context)
+                      ? theme.primaryColor
+                      : DynamicColor.whiteClr,
                 ),
               ),
               skipBtn == true
@@ -131,7 +138,9 @@ class _CreateCompanyProfileScreenState
                                 "Skip",
                                 style: poppinsRegularStyle(
                                   fontSize: 13,
-                                  color: theme.primaryColor,
+                                  color: isDark(context)
+                                      ? theme.primaryColor
+                                      : DynamicColor.whiteClr,
                                 ),
                               ),
                             ),
@@ -181,7 +190,9 @@ class _CreateCompanyProfileScreenState
                     child: DottedBorder(
                       borderType: BorderType.RRect,
                       radius: const Radius.circular(20),
-                      color: DynamicColor.whiteClr.withValues(alpha: 0.8),
+                      color: isDark(context)
+                          ? DynamicColor.whiteClr.withValues(alpha: 0.8)
+                          : DynamicColor.grayClr,
                       child: Container(
                         height: kToolbarHeight * 2.8,
                         decoration: BoxDecoration(
@@ -520,6 +531,9 @@ class _CreateCompanyProfileScreenState
                   ),
 
                   InternationalPhoneNumberInput(
+                    color: isDark(context)
+                        ? DynamicColor.blackClr
+                        : Colors.transparent,
                     onInputChanged: (PhoneNumber number) {
                       validateMobile(number.phoneNumber!);
                       controller.phoneNumController.text =
@@ -528,7 +542,8 @@ class _CreateCompanyProfileScreenState
                       // controller.update();
                     },
                     inputDecoration: InputDecoration(
-                      fillColor: Colors.black,
+                      fillColor:
+                          isDark(context) ? Colors.black : Colors.transparent,
                       hintStyle: TextStyle(
                         color: DynamicColor.grayClr,
                       ),
@@ -714,7 +729,13 @@ class _CreateCompanyProfileScreenState
                     height: 20,
                   ),
 
-                  TextField(
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter location";
+                      }
+                      return null;
+                    },
                     readOnly: true,
                     controller: controller.addressController,
                     onTap: () {
@@ -842,20 +863,26 @@ class _CreateCompanyProfileScreenState
                     },
                     style: poppinsRegularStyle(
                       fontSize: 15,
-                      color: theme.primaryColor,
+                      color: isDark(context)
+                          ? theme.primaryColor
+                          : DynamicColor.grayClr,
                       context: context,
                     ),
                     decoration: InputDecoration(
                       labelText: "Location",
                       labelStyle: poppinsRegularStyle(
                         fontSize: 15,
-                        color: theme.primaryColor,
+                        color: isDark(context)
+                            ? theme.primaryColor
+                            : DynamicColor.grayClr,
                         context: context,
                       ),
                       suffixIcon: Icon(
                         Icons.location_searching,
                         size: 20,
-                        color: theme.primaryColor,
+                        color: isDark(context)
+                            ? theme.primaryColor
+                            : DynamicColor.grayClr,
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -864,6 +891,10 @@ class _CreateCompanyProfileScreenState
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: DynamicColor.grayClr),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Color(0xffeabbb9)),
                       ),
                     ),
                   ),
@@ -972,8 +1003,10 @@ class _CreateCompanyProfileScreenState
                                                           poppinsRegularStyle(
                                                         fontSize: 13,
                                                         context: context,
-                                                        color:
-                                                            theme.primaryColor,
+                                                        color: isDark(context)
+                                                            ? theme.primaryColor
+                                                            : DynamicColor
+                                                                .whiteClr,
                                                       ),
                                                     ),
                                                   ),

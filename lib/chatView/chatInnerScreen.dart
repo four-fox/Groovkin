@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/Url.dart';
+import 'package:groovkin/main.dart';
 import 'package:popup_banner/popup_banner.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import '../Components/Network/API.dart';
@@ -25,7 +26,6 @@ class ChatInnerScreen extends StatefulWidget {
 }
 
 class _ChatInnerScreenState extends State<ChatInnerScreen> {
-  
   late ChatController _controller;
   var userData;
   Offset? _tapDownPosition;
@@ -117,6 +117,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, _) {
@@ -135,125 +137,129 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
               backgroundColor: Colors.transparent,
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(kToolbarHeight * 1.2),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              ///Todo latter on
-                              controller.isChat.value = false;
-                              isOnChat.value = false;
-                              _controller.innerUserOnline.value = false;
-                              // _controller.offChatInnerScreenSocket();
-                              ///Todo latter on
-                              Get.back();
-                            },
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(3.0),
-                                  child: Icon(
-                                    Icons.arrow_back_ios_new_rounded,
-                                    color: Colors.black45,
-                                    size: 20,
-                                  ),
-                                )),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              ///Todo latter on
-                              /* if(notificationFlow == false){
-                                    if (chatData!.user!.profile!.userImage != null || chatData!.userImage != null) {
-                                      Get.toNamed(Routes.photoViews, arguments: {
-                                        'fileImage': false,
-                                        'image': chatRoomNavigation==true? chatData!.user!.profile!.userImage:chatData!.userImage,
-                                      });
-                                    }
-                                  }else{
-                                    if (chatData['profile']['user_image'] != null */ /*|| chatData!.userImage != null*/ /*) {
-                                      Get.toNamed(Routes.photoViews, arguments: {
-                                        'fileImage': false,
-                                        'image': chatData['profile']['user_image'],
-                                      });
-                                    }
-                                  }*/
-                              ///Todo latter on
-                            },
-                            child: CircleAvatar(
-                                radius: 20,
-                                backgroundImage:
-                                    // NetworkImage(groupPlaceholder)
-                                    NetworkImage(userData!.profilePicture!)),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              ///ToDo latter on
-                              /*Get.toNamed(Routes.viewOtherProfile,
-                                      arguments: {
-                                        "otherUserData": notificationFlow==true?chatData['id'] : chatRoomNavigation==true? chatData.addresserId:chatData.userId,
-                                      });*/
-                              ///ToDo latter on
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  userData!.profile!.fullName!,
-                                  style: const TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 1,
-                                ),
-
-                                ///ToDo latter on
-                                /*   Obx(()=> _controller.innerUserOnline.value == true?
-                                    Text(
-                                      typing.value == false? "Online":"Typing....." ,
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10,
-                                          color: DynamicColors.primaryColor),
-                                    ):Text(
-                                      typing.value == false? "":"Typing....." ,
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 10,
-                                          color: DynamicColors.primaryColor),
-                                    )
-                                    ),*/
-                                ///ToDo latter on
-                              ],
-                            ),
-                          )
-                        ],
+                child: Container(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                    const Divider(
-                      color: Colors.grey,
-                      thickness: 1.2,
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                ///Todo latter on
+                                controller.isChat.value = false;
+                                isOnChat.value = false;
+                                _controller.innerUserOnline.value = false;
+                                // _controller.offChatInnerScreenSocket();
+                                ///Todo latter on
+                                Get.back();
+                              },
+                              child: Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(3.0),
+                                    child: Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: Colors.black45,
+                                      size: 20,
+                                    ),
+                                  )),
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                ///Todo latter on
+                                /* if(notificationFlow == false){
+                                      if (chatData!.user!.profile!.userImage != null || chatData!.userImage != null) {
+                                        Get.toNamed(Routes.photoViews, arguments: {
+                                          'fileImage': false,
+                                          'image': chatRoomNavigation==true? chatData!.user!.profile!.userImage:chatData!.userImage,
+                                        });
+                                      }
+                                    }else{
+                                      if (chatData['profile']['user_image'] != null */ /*|| chatData!.userImage != null*/ /*) {
+                                        Get.toNamed(Routes.photoViews, arguments: {
+                                          'fileImage': false,
+                                          'image': chatData['profile']['user_image'],
+                                        });
+                                      }
+                                    }*/
+                                ///Todo latter on
+                              },
+                              child: CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage:
+                                      // NetworkImage(groupPlaceholder)
+                                      NetworkImage(userData!.profilePicture!)),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                ///ToDo latter on
+                                /*Get.toNamed(Routes.viewOtherProfile,
+                                        arguments: {
+                                          "otherUserData": notificationFlow==true?chatData['id'] : chatRoomNavigation==true? chatData.addresserId:chatData.userId,
+                                        });*/
+                                ///ToDo latter on
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    userData!.profile!.fullName!,
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      color: isDark(context)
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 1,
+                                  ),
+
+                                  ///ToDo latter on
+                                  /*   Obx(()=> _controller.innerUserOnline.value == true?
+                                      Text(
+                                        typing.value == false? "Online":"Typing....." ,
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 10,
+                                            color: DynamicColors.primaryColor),
+                                      ):Text(
+                                        typing.value == false? "":"Typing....." ,
+                                        style: TextStyle(
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 10,
+                                            color: DynamicColors.primaryColor),
+                                      )
+                                      ),*/
+                                  ///ToDo latter on
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.grey,
+                        thickness: 1.2,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               body: controller.getAllChatLoader.value == false
@@ -282,7 +288,9 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                           },
                           child: Stack(
                             children: [
-                              buildStickyGroupedListView(context),
+                              controller.chatData!.data!.data!.isEmpty
+                                  ? noData(theme: theme)
+                                  : buildStickyGroupedListView(context),
                               Obx(
                                 () => _controller.bottomPosition.value == true
                                     ? Align(

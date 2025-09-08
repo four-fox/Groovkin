@@ -51,7 +51,7 @@ class MyEventsScreen extends StatelessWidget {
           return controller.getRecommendedLoader.value == false
               ? const SizedBox.shrink()
               : controller.recommendedEventData?.data?.data?.isEmpty ?? true
-                  ? noData(context: context, theme: theme)
+                  ? noData(context: context, theme: theme,)
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ListView.builder(
@@ -245,6 +245,7 @@ class MyEventsScreen extends StatelessWidget {
                                                 context: context,
                                                 color: theme.primaryColor,
                                               ),
+                                              
                                               text: "Cancellation Reason",
                                             ),
                                           )

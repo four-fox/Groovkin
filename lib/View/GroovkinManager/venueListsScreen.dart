@@ -1,6 +1,5 @@
 // ignore_for_file: unused_field
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -36,7 +35,8 @@ class VenueListScreen extends StatelessWidget {
                         "No Venue",
                         style: poppinsMediumStyle(
                           fontSize: 16,
-                          color: theme.primaryColor,
+                          // color: theme.primaryColor,
+                          color: theme.cardColor,
                           context: context,
                         ),
                       ),
@@ -78,7 +78,8 @@ class VenueListScreen extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
                                 child: Text(
                                   "These are the venues you manage.  You can update existing entries or add a new venue to your list.",
                                   textAlign: TextAlign.center,
@@ -109,8 +110,8 @@ class VenueListScreen extends StatelessWidget {
                                             });
                                       },
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 6.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 6.0),
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 8),
@@ -119,7 +120,7 @@ class VenueListScreen extends StatelessWidget {
                                                   BorderRadius.circular(12),
                                               image: const DecorationImage(
                                                 image: AssetImage(
-                                                "assets/grayClor.png",
+                                                  "assets/grayClor.png",
                                                 ),
                                                 fit: BoxFit.fill,
                                               )),
@@ -155,8 +156,8 @@ class VenueListScreen extends StatelessWidget {
                                                             : NetworkImage(Url().imageUrl + controller.allVenueData!.data!.data![index].profilePicture![0].thumbnail.toString()))),
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.only(left: 8.0),
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -168,12 +169,12 @@ class VenueListScreen extends StatelessWidget {
                                                           .data![index]
                                                           .venueName
                                                           .toString(),
-                                                      style:
-                                                          poppinsRegularStyle(
-                                                              fontSize: 15,
-                                                              color: theme
-                                                                  .primaryColor,
-                                                              context: context),
+                                                      style: poppinsRegularStyle(
+                                                          fontSize: 15,
+                                                          // color: theme
+                                                          //     .primaryColor,
+                                                          color: theme.cardColor,
+                                                          context: context),
                                                     ),
                                                     Text(
                                                       "Tap to view detail about property",
@@ -204,8 +205,9 @@ class VenueListScreen extends StatelessWidget {
           () => _controller.getAllVenuesLoader.value == false
               ? const SizedBox.shrink()
               : SafeArea(
-                child: Padding(
-                    padding: const EdgeInsets.only(bottom: 2, left: 12, right: 12),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: 2, left: 12, right: 12),
                     child: CustomButton(
                       backgroundClr: false,
                       onTap: () {
@@ -220,7 +222,7 @@ class VenueListScreen extends StatelessWidget {
                       borderClr: Colors.transparent,
                     ),
                   ),
-              ),
+                ),
         ),
       ),
     );

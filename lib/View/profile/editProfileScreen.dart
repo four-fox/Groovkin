@@ -11,6 +11,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -168,10 +169,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                             //     controller.userData!.data!.profile!.lastName!,
                             controller.userData?.data?.name ?? "Guest",
                             style: poppinsMediumStyle(
-                              context: context,
-                              fontSize: 16,
-                              color: theme.primaryColor,
-                            ),
+                                context: context,
+                                fontSize: 16,
+                                color: isDark(context)
+                                    ? theme.primaryColor
+                                    : DynamicColor.whiteClr),
                           ),
                           Text(
                             'Member since ${DateFormat.MMMd().format(controller.userData!.data!.profile!.createdAt!)}',
@@ -372,7 +374,9 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                         style: poppinsRegularStyle(
                                             fontSize: 12,
                                             context: context,
-                                            color: DynamicColor.grayClr),
+                                            color: isDark(context)
+                                                ? DynamicColor.grayClr
+                                                : Colors.black),
                                       ),
                                       Icon(
                                         Icons.keyboard_arrow_down,
@@ -398,11 +402,13 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                 country: controller.countryController,
                                 state: controller.stateController,
                                 // dialogColor: Colors.grey.shade200,
+
                                 textFieldDecoration: InputDecoration(
                                   hintStyle: const TextStyle(
                                       fontSize: 14, color: Color(0xff9DA3B5)),
                                   fillColor: Colors.transparent,
                                   filled: true,
+
                                   // suffixIcon: Icon(Icons.arrow_downward_rounded),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
@@ -440,9 +446,17 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           controller.numberAssign = number.dialCode.toString();
                           controller.update();
                         },
+                        color: isDark(context)
+                            ? DynamicColor.blackClr
+                            : Colors.transparent,
                         inputDecoration: InputDecoration(
-                          fillColor: Colors.black,
-                          hintStyle: TextStyle(color: DynamicColor.grayClr),
+                          fillColor: isDark(context)
+                              ? theme.primaryColor
+                              : DynamicColor.whiteClr,
+                          hintStyle: TextStyle(
+                              color: isDark(context)
+                                  ? DynamicColor.grayClr
+                                  : Colors.transparent),
                           border: OutlineInputBorder(
                             borderSide: BorderSide(color: DynamicColor.grayClr),
                             borderRadius: BorderRadius.circular(10),
@@ -646,13 +660,9 @@ class _editProfileScreenState extends State<editProfileScreen> {
                               // readOnly: email.value,
                             ),
                           ),
-
-
                           const SizedBox(
                             height: 15,
                           ),
-
-
                         ],
                       ),
 

@@ -83,6 +83,10 @@ checkUserSubscriptionIsActive() async {
   homeController.update();
 }
 
+bool isDark(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark;
+}
+
 void main() async {
   if (Platform.isIOS || Platform.isMacOS) {
     StoreConfig(apiKey: appleApiKey, store: Store.appStore);
@@ -161,6 +165,7 @@ class _MyAppState extends State<MyApp> {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Groovkin',
+
         theme: ThemeData(
           textSelectionTheme: TextSelectionThemeData(
             cursorColor: DynamicColor.yellowClr,
@@ -172,7 +177,7 @@ class _MyAppState extends State<MyApp> {
           cardColor: Colors.white,
 
           // primaryColor: const Color(0xffFFFFFF),
-        // primaryColor: Colors.grey,
+          // primaryColor: Colors.grey,
 
           scaffoldBackgroundColor: Colors.white,
           textTheme: const TextTheme(
@@ -188,7 +193,7 @@ class _MyAppState extends State<MyApp> {
           ),
           brightness: Brightness.dark,
           primaryColor: const Color(0xffFFFFFF),
-        // primaryColor: Color(0xff040305),
+          // primaryColor: Color(0xff040305),
           cardColor: Colors.white,
           scaffoldBackgroundColor: Colors.black,
           textTheme: const TextTheme(
@@ -211,6 +216,7 @@ class _MyAppState extends State<MyApp> {
         //     ? ThemeMode.light
         //     : ThemeMode.dark,
         themeMode: themeController.themeMode.value,
+        // themeMode: ThemeMode.system,
 
         initialRoute: AppPages.initial,
         getPages: AppPages.routes,

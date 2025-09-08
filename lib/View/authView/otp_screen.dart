@@ -6,7 +6,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
-import 'package:groovkin/View/bottomNavigation/homeController.dart';
+
 
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -27,7 +27,7 @@ class _OtpVerificationState extends State<OtpVerification> {
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
+
     var theme = Theme.of(context);
     return PopScope(
       canPop: false,

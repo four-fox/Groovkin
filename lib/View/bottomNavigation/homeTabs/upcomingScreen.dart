@@ -17,6 +17,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/main.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
@@ -745,7 +746,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             customWidget(context, theme,
                 title: "Event About",
                 value: controller.eventDetail!.data!.about.toString()),
-            if (controller.eventDetail!.data!.themeOfEvent != null)
+            if (controller.eventDetail!.data!.themeOfEvent != "null")
               customWidget(context, theme,
                   title: "Event theme",
                   value: controller.eventDetail!.data!.themeOfEvent.toString()),
@@ -863,7 +864,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                         Row(
                                           children: [
                                             Text("${"• "}",
-                                                style: TextStyle(fontSize: 20)),
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,
+                                                )),
                                             Text(
                                               controller.eventDetail!.data!
                                                   .hardwareProvide![index].name
@@ -873,7 +879,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                 fontWeight: FontWeight.w600,
                                                 context: context,
                                                 underline: true,
-                                                color: theme.primaryColor,
+                                                color: isDark(context)
+                                                    ? theme.primaryColor
+                                                    : DynamicColor.whiteClr,
                                               ),
                                             )
                                           ],
@@ -906,7 +914,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     style: poppinsRegularStyle(
                                                       fontSize: 14,
                                                       context: context,
-                                                      color: theme.primaryColor,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
                                                     ),
                                                   ),
                                                 ),
@@ -960,7 +971,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                         Row(
                                           children: [
                                             Text("${"• "}",
-                                                style: TextStyle(fontSize: 20)),
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,
+                                                )),
                                             Text(
                                               controller.eventDetail!.data!
                                                   .musicGenre![index].name
@@ -970,7 +986,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                 fontWeight: FontWeight.w600,
                                                 context: context,
                                                 underline: true,
-                                                color: theme.primaryColor,
+                                                color: isDark(context)
+                                                    ? theme.primaryColor
+                                                    : DynamicColor.whiteClr,
                                               ),
                                             )
                                           ],
@@ -1006,8 +1024,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                           poppinsRegularStyle(
                                                         fontSize: 14,
                                                         context: context,
-                                                        color:
-                                                            theme.primaryColor,
+                                                        color: isDark(context)
+                                                            ? theme.primaryColor
+                                                            : DynamicColor
+                                                                .whiteClr,
                                                       ),
                                                     ),
                                                   ),
@@ -1067,7 +1087,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               children: [
                                                 Text("${"• "}",
                                                     style: TextStyle(
-                                                        fontSize: 20)),
+                                                      fontSize: 20,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
+                                                    )),
                                                 Text(
                                                   controller
                                                       .eventDetail!
@@ -1082,7 +1107,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     fontWeight: FontWeight.w600,
                                                     context: context,
                                                     underline: true,
-                                                    color: theme.primaryColor,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
                                                   ),
                                                 )
                                               ],
@@ -1120,8 +1147,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                             poppinsRegularStyle(
                                                           fontSize: 14,
                                                           context: context,
-                                                          color: theme
-                                                              .primaryColor,
+                                                          color: isDark(context)
+                                                              ? theme
+                                                                  .primaryColor
+                                                              : DynamicColor
+                                                                  .whiteClr,
                                                         ),
                                                       ),
                                                     ),
@@ -1202,7 +1232,12 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                       Row(
                                         children: [
                                           Text("${"• "}",
-                                              style: TextStyle(fontSize: 20)),
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: isDark(context)
+                                                    ? theme.primaryColor
+                                                    : DynamicColor.whiteClr,
+                                              )),
                                           Text(
                                             controller
                                                 .eventDetail!
@@ -1216,7 +1251,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                               fontWeight: FontWeight.w600,
                                               context: context,
                                               underline: true,
-                                              color: theme.primaryColor,
+                                              color: isDark(context)
+                                                  ? theme.primaryColor
+                                                  : DynamicColor.whiteClr,
                                             ),
                                           )
                                         ],
@@ -1246,7 +1283,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     style: poppinsRegularStyle(
                                                       fontSize: 14,
                                                       context: context,
-                                                      color: theme.primaryColor,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
                                                     ),
                                                   ),
                                                 ),
@@ -1639,7 +1679,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           fontSize: 12, fontWeight: pw.FontWeight.normal)),
                 ]),
               if (controller.eventDetail!.data!.themeOfEvent.toString() !=
-                  "null")
+                      "null" ||
+                  controller.eventDetail!.data!.themeOfEvent != null)
                 // Event Theme
                 pw.Row(children: [
                   pw.Text("Event Theme",
@@ -1958,7 +1999,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 style: poppinsRegularStyle(
                   fontSize: 12,
                   context: context,
-                  color: textClr ?? theme.primaryColor,
+                  color: textClr ??
+                      (isDark(context)
+                          ? DynamicColor.whiteClr
+                          : theme.primaryColor),
                 ),
               ),
             ),
@@ -1998,7 +2042,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   fontWeight: FontWeight.w600,
                   context: context,
                   underline: true,
-                  color: DynamicColor.whiteClr.withValues(alpha: 0.6)),
+                  color: isDark(context)
+                      ? DynamicColor.whiteClr.withValues(alpha: 0.6)
+                      : Colors.black),
             ),
           ),
         ),

@@ -14,6 +14,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/main.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
@@ -560,7 +561,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                       .eventDetail!
                                                       .data!
                                                       .userId!;
-                                                }
+                                                }                                                
                                                 Get.toNamed(
                                                     Routes.counterScreen,
                                                     arguments: {
@@ -932,7 +933,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                 child: Align(
                                   alignment: Alignment.topLeft,
                                   child: ListView.builder(
-                                            padding: EdgeInsets.zero,
+                                      padding: EdgeInsets.zero,
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: controller
@@ -967,7 +968,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: ListView.builder(
-                                          padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.zero,
                                     itemCount: controller.eventDetail!.data!
                                         .hardwareProvide!.length,
                                     shrinkWrap: true,
@@ -990,8 +991,12 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           Row(
                                             children: [
                                               Text("${"• "}",
-                                                  style:
-                                                      TextStyle(fontSize: 20)),
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  )),
                                               Text(
                                                 controller
                                                     .eventDetail!
@@ -1051,7 +1056,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: ListView.builder(
-                                          padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.zero,
                                     shrinkWrap: true,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
@@ -1072,8 +1077,12 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           Row(
                                             children: [
                                               Text("${"• "}",
-                                                  style:
-                                                      TextStyle(fontSize: 20)),
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  )),
                                               Text(
                                                 controller.eventDetail!.data!
                                                     .musicGenre![index].name
@@ -1091,7 +1100,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           SizedBox(
                                             height: kToolbarHeight,
                                             child: ListView.builder(
-                                                      padding: EdgeInsets.zero,
+                                              padding: EdgeInsets.zero,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (context, index1) {
                                                 return customList(
@@ -1124,7 +1133,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: ListView.builder(
-                                          padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.zero,
                                     itemCount: controller.eventDetail!.data!
                                         .eventMusicChoiceTags!.length,
                                     shrinkWrap: true,
@@ -1148,8 +1157,12 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           Row(
                                             children: [
                                               Text("${"• "}",
-                                                  style:
-                                                      TextStyle(fontSize: 20)),
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  )),
                                               Text(
                                                 controller
                                                     .eventDetail!
@@ -1172,7 +1185,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           SizedBox(
                                             height: kToolbarHeight,
                                             child: ListView.builder(
-                                                      padding: EdgeInsets.zero,
+                                              padding: EdgeInsets.zero,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (context, index1) {
                                                 return customList(
@@ -1205,7 +1218,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: ListView.builder(
-                                          padding: EdgeInsets.zero,
+                                    padding: EdgeInsets.zero,
                                     itemCount: controller.eventDetail!.data!
                                         .eventActivityChoiceTags!.length,
                                     shrinkWrap: true,
@@ -1227,8 +1240,12 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           Row(
                                             children: [
                                               Text("${"• "}",
-                                                  style:
-                                                      TextStyle(fontSize: 20)),
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: isDark(context)
+                                                        ? theme.primaryColor
+                                                        : DynamicColor.whiteClr,
+                                                  )),
                                               Text(
                                                 controller
                                                     .eventDetail!
@@ -1251,7 +1268,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           SizedBox(
                                             height: kToolbarHeight,
                                             child: ListView.builder(
-                                                      padding: EdgeInsets.zero,
+                                              padding: EdgeInsets.zero,
                                               scrollDirection: Axis.horizontal,
                                               itemBuilder: (context, index1) {
                                                 return customList(

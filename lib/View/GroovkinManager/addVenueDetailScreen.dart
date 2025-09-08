@@ -403,7 +403,7 @@ class _HouseEventCapabilitiesScreenState
       curve: Curves.linear,
     );
   }
-  
+
   @override
   void initState() {
     super.initState();

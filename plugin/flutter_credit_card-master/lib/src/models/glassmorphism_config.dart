@@ -9,13 +9,13 @@ class Glassmorphism {
   });
 
   /// Default config for glassmorphism effect.
-  factory Glassmorphism.defaultConfig() {
+  factory Glassmorphism.defaultConfig({bool isDark = false}) {
     final LinearGradient gradient = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: <Color>[
-        Colors.grey.withAlpha(20),
-        Colors.grey.withAlpha(20),
+        isDark ? Colors.grey.withAlpha(20) : Colors.black,
+        isDark ? Colors.grey.withAlpha(20) : Colors.black,
       ],
       stops: const <double>[
         0.3,

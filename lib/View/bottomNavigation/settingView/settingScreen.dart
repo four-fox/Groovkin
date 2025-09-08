@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +13,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/theme_controller.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
+import 'package:groovkin/main.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
 
@@ -41,7 +40,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _authController = Get.put(AuthController());
     }
   }
-
+  
   String switchRoleText() {
     String title = (API().sp.read("role") == "eventOrganizer" &&
             API().sp.read("currentRole") == "eventOrganizer")
@@ -123,7 +122,9 @@ class _SettingScreenState extends State<SettingScreen> {
                             style: poppinsMediumStyle(
                               context: context,
                               fontSize: 16,
-                              color: theme.primaryColor,
+                              color: isDark(context)
+                                  ? theme.primaryColor
+                                  : DynamicColor.whiteClr,
                             ),
                           ),
                           if (controller.userData!.data!.profile != null)
@@ -171,15 +172,15 @@ class _SettingScreenState extends State<SettingScreen> {
                         //      Get.toNamed(Routes.venueScreen);
                         //    }
                         //  ):SizedBox.shrink(),
-                        API().sp.read("role") != "User"
-                            ? customWidget(
-                                context: context,
-                                img: "assets/messageCenter.png",
-                                text: "Message Center",
-                                onTap: () {
-                                  Get.toNamed(Routes.chatRoom);
-                                })
-                            : const SizedBox.shrink(),
+                        // API().sp.read("role") != "User"
+                        //     ? customWidget(
+                        //         context: context,
+                        //         img: "assets/messageCenter.png",
+                        //         text: "Message Center",
+                        //         onTap: () {
+                        //           Get.toNamed(Routes.chatRoom);
+                        //         })
+                        //     : const SizedBox.shrink(),
                         // sp.read("role") =="User"?SizedBox.shrink(): customWidget(context: context,
                         // img: "assets/following.png",
                         //   text: "Following",

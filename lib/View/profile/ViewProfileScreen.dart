@@ -10,6 +10,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userEventDetailsModel.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/main.dart';
 import 'package:intl/intl.dart';
 
 class ViewProfileScreen extends StatefulWidget {
@@ -85,9 +86,10 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                   title: Text(
                     'Profile',
                     style: poppinsMediumStyle(
-                      fontSize: 17,
-                      color: theme.primaryColor,
-                    ),
+                        fontSize: 17,
+                        color: isDark(context)
+                            ? theme.primaryColor
+                            : DynamicColor.whiteClr),
                   ),
                   leading: GestureDetector(
                       onTap: () {
@@ -95,7 +97,9 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                       },
                       child: ImageIcon(
                         const AssetImage("assets/backArrow.png"),
-                        color: theme.primaryColor,
+                        color: isDark(context)
+                            ? theme.primaryColor
+                            : DynamicColor.whiteClr,
                       )),
                   actions: [
                     if (!fromNotification && eventDetails != null)
@@ -158,7 +162,12 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   );
                                 });
                           },
-                          icon: const Icon(Icons.more_vert)),
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: isDark(context)
+                                ? theme.primaryColor
+                                : DynamicColor.whiteClr,
+                          )),
                     if (!fromNotification && venueDetails != null)
                       IconButton(
                           padding: EdgeInsets.zero,
@@ -220,7 +229,12 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                                   );
                                 });
                           },
-                          icon: const Icon(Icons.more_vert)),
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: isDark(context)
+                                ? theme.primaryColor
+                                : DynamicColor.whiteClr,
+                          )),
                   ],
                 ),
                 body: Column(
@@ -393,7 +407,6 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 12.0),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/main.dart';
 
 import 'colors.dart';
 
@@ -27,7 +28,9 @@ cancelEventWidget({context, theme, final GestureTapCallback? onTap}) {
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
                     context: context,
-                    color: theme.primaryColor,
+                    color: isDark(context)
+                        ? theme.primaryColor
+                        : DynamicColor.whiteClr,
                   ),
                 ),
                 Text(
@@ -37,7 +40,9 @@ cancelEventWidget({context, theme, final GestureTapCallback? onTap}) {
                   style: poppinsRegularStyle(
                     fontSize: 13,
                     context: context,
-                    color: theme.primaryColor,
+                    color: isDark(context)
+                        ? theme.primaryColor
+                        : DynamicColor.whiteClr,
                   ),
                 ),
                 Padding(

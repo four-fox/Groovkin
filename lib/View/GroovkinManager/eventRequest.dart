@@ -6,6 +6,7 @@ import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/main.dart';
 import 'package:intl/intl.dart';
 
 import '../../Routes/app_pages.dart';
@@ -93,7 +94,9 @@ class _EventRequestsState extends State<EventRequests> {
                                         style: poppinsMediumStyle(
                                           fontSize: 16,
                                           context: context,
-                                          color: theme.primaryColor,
+                                          color: isDark(context)
+                                              ? theme.primaryColor
+                                              : DynamicColor.whiteClr,
                                         ),
                                       ),
                                     ),
@@ -171,7 +174,9 @@ class _EventRequestsState extends State<EventRequests> {
                                             ? "Follow"
                                             : "Unfollow",
                                         textClr: data.user!.following == null
-                                            ? theme.primaryColor
+                                            ? isDark(context)
+                                                ? theme.primaryColor
+                                                : DynamicColor.whiteClr
                                             : theme.scaffoldBackgroundColor,
                                         followOnTap: () {
                                           if (data.user!.following == null) {

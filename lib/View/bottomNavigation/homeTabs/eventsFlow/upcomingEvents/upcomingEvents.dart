@@ -229,7 +229,8 @@ class UpcomingEvents extends StatelessWidget {
                       controller.ongoingEvents!.data!.data!.isEmpty
                   ? SizedBox(
                       height: kToolbarHeight * 3,
-                      child: noData(context: context, theme: theme),
+                      child:
+                          noData(context: context, theme: theme, isCard: true),
                     )
                   : Column(
                       children: [
@@ -345,7 +346,8 @@ class UpcomingEvents extends StatelessWidget {
                       controller.upcomingEventData!.data!.data!.isEmpty
                   ? SizedBox(
                       height: kToolbarHeight * 3,
-                      child: noData(context: context, theme: theme),
+                      child:
+                          noData(context: context, theme: theme, isCard: true),
                     )
                   : Column(
                       children: [

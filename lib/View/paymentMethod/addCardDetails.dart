@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/main.dart';
 
 class AddCardDetails extends StatefulWidget {
   const AddCardDetails({super.key});
@@ -67,14 +69,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
     var theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {
-            Get.back();
-          },
-          child: const Icon(Icons.arrow_back_ios),
-        ),
-      ),
+      appBar: customAppBar(),
       body: Column(
         children: <Widget>[
           // SizedBox(
@@ -83,7 +78,8 @@ class _AddCardDetailsState extends State<AddCardDetails> {
           CreditCardWidget(
             // glassmorphismConfig:
             //     useGlassMorphism ? Glassmorphism.defaultConfig() : null,
-            glassmorphismConfig: Glassmorphism.defaultConfig(),
+            glassmorphismConfig: Glassmorphism.defaultConfig(
+                isDark: isDark(context) ? true : false),
             cardNumber: cardNumber,
             expiryDate: expiryDate,
             cardHolderName: cardHolderName,
@@ -137,10 +133,13 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                       // textColor: Colors.white,
                       cardNumberDecoration: InputDecoration(
                         // labelText: 'Number',
-
                         hintText: 'Card Number',
-                        hintStyle: const TextStyle(color: Colors.white),
-                        labelStyle: const TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
+                        labelStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
@@ -153,8 +152,12 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         ),
                       ),
                       expiryDateDecoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.white),
-                        labelStyle: const TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
+                        labelStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
@@ -170,14 +173,17 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         hintText: 'Expired Date',
                       ),
                       cvvCodeDecoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.white),
-                        labelStyle: const TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
+                        labelStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
                           ),
                         ),
-
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,
@@ -187,8 +193,12 @@ class _AddCardDetailsState extends State<AddCardDetails> {
                         hintText: 'CVV',
                       ),
                       cardHolderDecoration: InputDecoration(
-                        hintStyle: const TextStyle(color: Colors.white),
-                        labelStyle: const TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
+                        labelStyle: TextStyle(
+                            color:
+                                isDark(context) ? Colors.white : Colors.black),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).primaryColor,

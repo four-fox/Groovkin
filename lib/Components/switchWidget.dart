@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:popup_banner/popup_banner.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 SwitchWiget(
     {theme,
@@ -80,7 +82,7 @@ eventDateTime({
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 12.0),
     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
           radius: 15,
@@ -97,17 +99,32 @@ eventDateTime({
                   size: iconSize ?? 21,
                 ),
         ),
-        SizedBox(
-          width: widths ?? Get.width / 1.2,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 6.0),
-            child: Text(
-              text ?? "04:00pm to 10:00pm",
-              // maxLines: 3,
-              style: poppinsRegularStyle(
-                fontSize: 12,
-                context: context,
-                color: textClr ?? theme.primaryColor,
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () async {
+            if (text.toString().contains("https") ||
+                text.toString().contains("http")) {
+              try {
+                await launchUrl(Uri.parse(text));
+              } on PlatformException catch (e) {
+                if (e.code == "ACTIVITY_NOT_FOUND") {
+                  bottomToast(text: "Invalid Url");
+                }
+              }
+            }
+          },
+          child: SizedBox(
+            width: widths ?? Get.width / 1.2,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 6.0),
+              child: Text(
+                text ?? "04:00pm to 10:00pm",
+                // maxLines: 3,
+                style: poppinsRegularStyle(
+                  fontSize: 12,
+                  context: context,
+                  color: textClr ?? theme.primaryColor,
+                ),
               ),
             ),
           ),

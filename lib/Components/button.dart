@@ -67,7 +67,7 @@ class CustomButton extends StatelessWidget {
             style: style ??
                 poppinsMediumStyle(
                   context: context,
-                  color: textClr ?? Theme.of(context).primaryColor,
+                  color: textClr ?? Theme.of(context).cardColor,
                   fontSize: fontSized ?? 15,
                 ),
           ),

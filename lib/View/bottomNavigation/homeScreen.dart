@@ -96,9 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           // color: Colors.amberAccent
                           color: DynamicColor.darkGrayClr,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: theme.primaryColor,
-                          ),
+                          border: Border.all(color: theme.primaryColor),
                         ),
                         child: Center(
                           child: Text(
@@ -364,7 +362,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     PostEvents(),
                   ],
                 ),
-
                 // Shahzain
 
                 Visibility(
@@ -379,9 +376,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: Get.width / 2,
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: DynamicColor.whiteClr,
-                      ),
+                          borderRadius: BorderRadius.circular(10),
+                          // color: DynamicColor.whiteClr,
+                          color: theme.primaryColor),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

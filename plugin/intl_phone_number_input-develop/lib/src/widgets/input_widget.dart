@@ -62,7 +62,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   /// Ignored if [setSelectorButtonAsPrefixIcon = true]
   final double spaceBetweenSelectorAndTextField;
   final int maxLength;
-
+  final Color? color;
   final bool isEnabled;
   final bool formatInput;
   final bool autoFocus;
@@ -93,6 +93,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       {Key? key,
       this.selectorConfig = const SelectorConfig(),
       required this.onInputChanged,
+      this.color,
       this.onInputValidated,
       this.onSubmit,
       this.onFieldSubmitted,
@@ -236,8 +237,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
       getParsedPhoneNumber(parsedPhoneNumberString, country?.alpha2Code)
           .then((phoneNumber) {
         if (phoneNumber == null) {
-          String phoneNumber =
-              '${country?.dialCode}$parsedPhoneNumberString';
+          String phoneNumber = '${country?.dialCode}$parsedPhoneNumberString';
 
           if (widget.onInputChanged != null) {
             widget.onInputChanged!(PhoneNumber(
@@ -330,8 +330,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (isValid && widget.errorMessage != null) {
         setState(() {
-          selectorButtonBottomPadding =
-              widget.selectorButtonOnErrorPadding;
+          selectorButtonBottomPadding = widget.selectorButtonOnErrorPadding;
         });
       } else {
         setState(() {
@@ -356,8 +355,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
       String parsedPhoneNumberString =
           controller!.text.replaceAll(RegExp(r'[^\d+]'), '');
 
-      String phoneNumber =
-          '${country?.dialCode ?? ''}$parsedPhoneNumberString';
+      String phoneNumber = '${country?.dialCode ?? ''}$parsedPhoneNumberString';
 
       widget.onSaved?.call(
         PhoneNumber(
@@ -400,7 +398,7 @@ class _InputWidgetView
 
     return Container(
       // padding: EdgeInsets.only(top: 4,bottom: 4),
-      color: Colors.black,
+      color: widget.color ?? Colors.black,
       // decoration: BoxDecoration(
       //   border: Border.all(color:Color(0xff9DA3B5)),
       //   borderRadius: BorderRadius.circular(8)
@@ -444,7 +442,9 @@ class _InputWidgetView
               keyboardType: widget.keyboardType,
               textInputAction: widget.keyboardAction,
               style: widget.textStyle,
-              decoration: state.getInputDecoration(widget.inputDecoration,),
+              decoration: state.getInputDecoration(
+                widget.inputDecoration,
+              ),
               textAlign: widget.textAlign,
               textAlignVertical: widget.textAlignVertical,
               onEditingComplete: widget.onSubmit,
