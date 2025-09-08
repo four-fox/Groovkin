@@ -3,7 +3,6 @@
 //     final eventsListModel = eventsListModelFromJson(jsonString);
 
 import 'dart:convert';
-
 import '../../../../Components/Network/API.dart';
 import '../../../../Components/Network/Url.dart';
 import '../../../../links.dart';
@@ -19,7 +18,7 @@ class EventsListModel {
   bool? status;
   Data? data;
   String? message;
-  
+
   EventsListModel({
     this.status,
     this.data,

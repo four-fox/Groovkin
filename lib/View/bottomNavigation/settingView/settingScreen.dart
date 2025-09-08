@@ -439,7 +439,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   // }
                                   // );
                                 }),
-                                  
+
                         SizedBox(
                           height: API().sp.read("role") == "eventOrganizer"
                               ? 30
