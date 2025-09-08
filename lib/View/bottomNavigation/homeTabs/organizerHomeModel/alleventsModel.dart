@@ -19,7 +19,7 @@ class EventsListModel {
   bool? status;
   Data? data;
   String? message;
-
+  
   EventsListModel({
     this.status,
     this.data,
@@ -40,7 +40,7 @@ class EventsListModel {
       };
 }
 
-class Data {
+class Data {  
   int? currentPage;
   List<EventData> data;
   String? firstPageUrl;

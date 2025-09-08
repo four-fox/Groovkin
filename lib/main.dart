@@ -95,6 +95,7 @@ void main() async {
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -105,6 +106,7 @@ void main() async {
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   await GetStorage.init();
   Get.put(ThemeController());
+
   runApp(const MyApp());
 }
 
@@ -130,16 +132,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    themeController.setTheme(API().sp.read("apptheme") == ThemeMode.light.name
-        ? ThemeMode.light
-        : ThemeMode.dark);
-
     if (Get.isRegistered<AuthController>()) {
       authController = Get.find<AuthController>();
     } else {
       authController = Get.put(AuthController());
     }
 
+    print("Role :${API().sp.read("role")}");
+    final role = API().sp.read("role") ?? "User"; // default role
+
+    themeController.fetchUserTheme(role);
     if (API().sp.read("userId") != null) {
       fetchSubscription();
     }
@@ -161,66 +163,63 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Groovkin',
-
-        theme: ThemeData(
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: DynamicColor.yellowClr,
-            selectionColor: DynamicColor.yellowClr,
-            selectionHandleColor: DynamicColor.yellowClr,
+    return Builder(builder: (context) {
+      return GetBuilder<ThemeController>(builder: (controller) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Groovkin',
+          theme: ThemeData(
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: DynamicColor.yellowClr,
+              selectionColor: DynamicColor.yellowClr,
+              selectionHandleColor: DynamicColor.yellowClr,
+            ),
+            brightness: Brightness.light,
+            primaryColor: const Color(0xff040305),
+            cardColor: Colors.white,
+            // primaryColor: const Color(0xffFFFFFF),
+            // primaryColor: Colors.grey,
+            scaffoldBackgroundColor: Colors.white,
+            textTheme: const TextTheme(
+              labelLarge:
+                  TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+            ),
           ),
-          brightness: Brightness.light,
-          primaryColor: const Color(0xff040305),
-          cardColor: Colors.white,
-
-          // primaryColor: const Color(0xffFFFFFF),
-          // primaryColor: Colors.grey,
-
-          scaffoldBackgroundColor: Colors.white,
-          textTheme: const TextTheme(
-            labelLarge:
-                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+          darkTheme: ThemeData(
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: DynamicColor.yellowClr,
+              selectionColor: DynamicColor.yellowClr,
+              selectionHandleColor: DynamicColor.yellowClr,
+            ),
+            brightness: Brightness.dark,
+            primaryColor: const Color(0xffFFFFFF),
+            // primaryColor: Color(0xff040305),
+            cardColor: Colors.white,
+            scaffoldBackgroundColor: Colors.black,
+            textTheme: const TextTheme(
+              labelLarge:
+                  TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
+            ),
           ),
-        ),
-        darkTheme: ThemeData(
-          textSelectionTheme: TextSelectionThemeData(
-            cursorColor: DynamicColor.yellowClr,
-            selectionColor: DynamicColor.yellowClr,
-            selectionHandleColor: DynamicColor.yellowClr,
-          ),
-          brightness: Brightness.dark,
-          primaryColor: const Color(0xffFFFFFF),
-          // primaryColor: Color(0xff040305),
-          cardColor: Colors.white,
-          scaffoldBackgroundColor: Colors.black,
-          textTheme: const TextTheme(
-            labelLarge:
-                TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
-          ),
-        ),
-        navigatorObservers: [BotToastNavigatorObserver()],
-        builder: (context, child) {
-          child = ScrollConfiguration(
-            behavior: MyBehavior(),
-            child: EasyLoading.init(builder: BotToastInit())(context, child),
-          );
-          // child = SafeArea(top: false, child: child);
-          return child;
-        },
-        // themeMode: ThemeMode.light,
-
-        // themeMode: API().sp.read("apptheme") == ThemeMode.light.name
-        //     ? ThemeMode.light
-        //     : ThemeMode.dark,
-        themeMode: themeController.themeMode.value,
-        // themeMode: ThemeMode.system,
-
-        initialRoute: AppPages.initial,
-        getPages: AppPages.routes,
-      );
+          navigatorObservers: [BotToastNavigatorObserver()],
+          builder: (context, child) {
+            child = ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: EasyLoading.init(builder: BotToastInit())(context, child),
+            );
+            // child = SafeArea(top: false, child: child);
+            return child;
+          },
+          // themeMode: ThemeMode.light,
+          // themeMode: API().sp.read("apptheme") == ThemeMode.light.name
+          //     ? ThemeMode.light
+          //     : ThemeMode.dark,
+          themeMode: controller.themeMode,
+          // themeMode: ThemeMode.system,
+          initialRoute: AppPages.initial,
+          getPages: AppPages.routes,
+        );
+      });
     });
   }
 }

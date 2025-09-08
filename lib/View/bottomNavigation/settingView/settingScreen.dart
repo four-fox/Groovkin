@@ -40,7 +40,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _authController = Get.put(AuthController());
     }
   }
-  
+
   String switchRoleText() {
     String title = (API().sp.read("role") == "eventOrganizer" &&
             API().sp.read("currentRole") == "eventOrganizer")
@@ -213,23 +213,19 @@ class _SettingScreenState extends State<SettingScreen> {
                         //       }),
                         // ),
                         if (API().sp.read("role") == "eventManager")
-                          Obx(
-                            () => customWidget(
-                                context: context,
-                                img: "assets/themeIcon.png",
-                                text: "Light & Dark Mood",
-                                toggleCondition: true,
-                                switchCondition:
-                                    _themeController.themeMode.value ==
-                                            ThemeMode.dark
-                                        ? true
-                                        : false,
-                                onChanged: (v) async {
-                                  await Future.delayed(
-                                      Duration(milliseconds: 100));
-                                  _themeController.toggleTheme();
-                                }),
-                          ),
+                          customWidget(
+                              context: context,
+                              img: "assets/themeIcon.png",
+                              text: "Light & Dark Mood",
+                              toggleCondition: true,
+                              switchCondition:
+                                  _themeController.themeMode == ThemeMode.dark,
+                              onChanged: (v) async {
+                                await Future.delayed(
+                                    Duration(milliseconds: 100));
+                                _themeController.toggleTheme("eventManager");
+                              }),
+
                         if (API().sp.read("currentRole") != "User")
                           customWidget(
                               context: context,
@@ -237,7 +233,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               text: controller.switchProfileLoading == true
                                   ? "Switching"
                                   : switchRoleText(),
-                              onTap: () {
+                              onTap: () async {
+                                _themeController.update();
                                 print(API().sp.read("role"));
                                 print(API().sp.read("currentRole"));
                                 if (API().sp.read("role") == "eventOrganizer" &&
@@ -246,12 +243,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                   controller.changeRoles(ChangeRole.user);
                                   BotToast.showText(
                                       text: "Change Role to User");
+                                  await _themeController.fetchUserTheme("User");
                                 } else if (API().sp.read("role") == "User" &&
                                     API().sp.read("currentRole") ==
                                         "eventOrganizer") {
                                   controller.changeRoles(ChangeRole.organizer);
                                   BotToast.showText(
                                       text: "Change Role to Event Organizer");
+                                  await _themeController
+                                      .fetchUserTheme("eventOrganizer");
                                 }
                                 if (API().sp.read("role") == "eventManager" &&
                                     API().sp.read("currentRole") ==
@@ -259,14 +259,16 @@ class _SettingScreenState extends State<SettingScreen> {
                                   controller.changeRoles(ChangeRole.user);
                                   BotToast.showText(
                                       text: "Change Role to User");
+                                  await _themeController.fetchUserTheme("User");
                                 } else if (API().sp.read("role") == "User" &&
                                     API().sp.read("currentRole") ==
                                         "eventManager") {
                                   controller.changeRoles(ChangeRole.manager);
                                   BotToast.showText(
                                       text: "Change Role to Venue Manager");
+                                  await _themeController
+                                      .fetchUserTheme("eventManager");
                                 }
-
                                 // showModalBottomSheet(
                                 //     shape: RoundedRectangleBorder(
                                 //         borderRadius:
@@ -339,6 +341,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 //   controller.changeRoles(ChangeRole.manager);
                                 // }
                               }),
+
                         API().sp.read("role") != "User"
                             ? customWidget(
                                 context: context,
@@ -348,6 +351,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.groovkinInviteScreen);
                                 })
                             : const SizedBox.shrink(),
+
                         API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,
@@ -357,6 +361,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.userMyGroovkinScreen);
                                 })
                             : const SizedBox.shrink(),
+
                         // API().sp.read("role") == "eventManager"
                         //     ? customWidget(
                         //         context: context,
@@ -380,6 +385,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.groovkinInviteScreen);
                                 })
                             : const SizedBox.shrink(),
+
                         API().sp.read("role") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
@@ -390,6 +396,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : const SizedBox.shrink(),
+
                         API().sp.read("role") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
@@ -400,6 +407,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                       arguments: {"isFromSettingScreen": true});
                                 })
                             : const SizedBox(),
+
                         (API().sp.read("role") == "eventOrganizer" &&
                                 appData.entitlementIsActive)
                             ? customWidget(
@@ -414,6 +422,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                               const SubscrptionScreenCheck()));
                                 })
                             : const SizedBox(),
+
                         sp.read("role") == "User"
                             ? const SizedBox.shrink()
                             : customWidget(
@@ -430,7 +439,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   // }
                                   // );
                                 }),
-
+                                  
                         SizedBox(
                           height: API().sp.read("role") == "eventOrganizer"
                               ? 30

@@ -1,25 +1,44 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:groovkin/Components/Network/API.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeController extends GetxController {
   // Default is system theme
-  var themeMode = ThemeMode.system.obs;
+  var themeMode = ThemeMode.system;
 
-  void toggleTheme() {
-    themeMode.value =
-        themeMode.value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+  /// Fetch theme for a specific role
+  Future<void> fetchUserTheme(String role) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    log("theme mode :: ${themeMode.value}");
-    API().sp.write("apptheme", themeMode.value.name);
+    if (role == "eventManager") {
+      final themeString = prefs.getString("user_theme");
+      if (themeString != null) {
+        themeMode = themeString == "light"
+            ? ThemeMode.light
+            : themeString == "dark"
+                ? ThemeMode.dark
+                : ThemeMode.system;
+      } else {
+        themeMode = ThemeMode.dark; // default
+      }
+    } else {
+      // All other roles forced to dark
+      themeMode = ThemeMode.dark;
+    }
+
+    log("Role: $role | Theme: $themeMode");
+    update();
   }
 
-  void setTheme(ThemeMode mode) {
-    themeMode.value = mode;
+  /// Toggle only works for User
+  void toggleTheme(String role) async {
+    if (role != "eventManager") return;
 
-    log("theme mode :: ${themeMode.value}");
+    themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("user_theme", themeMode.name);
+
     update();
   }
 }
