@@ -199,7 +199,8 @@ class _HardwareScreenState extends State<HardwareScreen> {
                                                                 .selectedItem!
                                                                 .value,
                                                             onChanged: (v) {
-                                                              if (isFromGroovkin==false &&
+                                                              if (isFromGroovkin ==
+                                                                      false &&
                                                                   _controller
                                                                       .hardwareCategoryId
                                                                       .isEmpty) {
@@ -279,7 +280,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
                   Get.toNamed(Routes.quickSurveyScreen, arguments: {
                     "addMoreService": 1,
                     "createEvent": createEventValue,
-                    "title": "Music Choice!",
+                    "title": "Music Gemre!",
                     "isFromEvent": true,
                   });
                 } else {

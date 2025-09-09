@@ -432,7 +432,8 @@ class ManagerController extends GetxController {
         "state": stateController.text,
         "zip_code": zipController.text,
         "location": addressController.text,
-        "phone_number": phoneNumController.text,
+        if (phoneNumController.text.isNotEmpty)
+          "phone_number": phoneNumController.text,
         "latitude": double.parse(lat),
         "longitude": double.parse(lng),
         "max_occupancy": int.parse(maxOccupancyController.text),
@@ -488,7 +489,7 @@ class ManagerController extends GetxController {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
-                            "Your profile has been created",
+                            "Your venue has been created",
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5,
                             style: poppinsRegularStyle(
@@ -648,7 +649,7 @@ class ManagerController extends GetxController {
     autocompletePlace = venueDetails!.data!.location!;
     addressController.text = venueDetails!.data!.location!;
     termsConditionAgree.value = true;
-    phoneNumController.text = venueDetails!.data!.phoneNumber!;
+    // phoneNumController.text = venueDetails!.data!.phoneNumber!;
     maxOccupancyController.text =
         venueDetails!.data!.venueProperty!.maxOccupancy!;
     maxSeatingController.text = venueDetails!.data!.venueProperty!.maxSeating!;

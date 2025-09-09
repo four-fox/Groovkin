@@ -147,11 +147,9 @@ class _MyAppState extends State<MyApp> {
     }
 
     // Todo Firebase Notification Start
-
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
-
     // notificationService.getDeviceToken();
   }
 

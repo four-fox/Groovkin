@@ -717,7 +717,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                           }
                         },
                         text: _controller.updateAmenities.value == true
-                            ? "Updated"
+                            ? "Update"
                             : "Complete",
                       ),
                     ],

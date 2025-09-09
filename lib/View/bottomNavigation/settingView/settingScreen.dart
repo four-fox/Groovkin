@@ -41,6 +41,8 @@ class _SettingScreenState extends State<SettingScreen> {
     }
   }
 
+
+  
   String switchRoleText() {
     String title = (API().sp.read("role") == "eventOrganizer" &&
             API().sp.read("currentRole") == "eventOrganizer")
@@ -57,7 +59,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     : "Switch Role";
     return title;
   }
-
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -212,6 +214,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         //         }
                         //       }),
                         // ),
+
                         if (API().sp.read("role") == "eventManager")
                           customWidget(
                               context: context,
@@ -396,7 +399,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : const SizedBox.shrink(),
-
                         API().sp.read("role") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
@@ -496,9 +498,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                 ],
                               )),
                         ),
+
                         const SizedBox(
                           height: 10,
                         ),
+
                         GestureDetector(
                           onTap: () {
                             customAlertt(
@@ -543,6 +547,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 ],
                               )),
                         ),
+
                         const SizedBox(
                           height: kToolbarHeight * 1.2,
                         ),

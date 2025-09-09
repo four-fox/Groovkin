@@ -42,7 +42,7 @@ class _CreateCompanyProfileScreenState
   void initState() {
     super.initState();
     if (editVenue == true) {
-      extractNumber(_controller.phoneNumController.text);
+      // extractNumber(_controller.phoneNumController.text);
     } else {
       _controller.mediaClass.clear();
       _controller.profilePictures.clear();
@@ -104,7 +104,8 @@ class _CreateCompanyProfileScreenState
                     )
                   : const SizedBox.shrink(),
               Text(
-                "Add a new venue",
+                // "Add a new venue",
+                "Add venue",
                 style: poppinsMediumStyle(
                   fontSize: 17,
                   color: isDark(context)
@@ -530,82 +531,82 @@ class _CreateCompanyProfileScreenState
                     height: 20,
                   ),
 
-                  InternationalPhoneNumberInput(
-                    color: isDark(context)
-                        ? DynamicColor.blackClr
-                        : Colors.transparent,
-                    onInputChanged: (PhoneNumber number) {
-                      validateMobile(number.phoneNumber!);
-                      controller.phoneNumController.text =
-                          number.phoneNumber.toString();
-                      // controller.numberAssign = number.dialCode.toString();
-                      // controller.update();
-                    },
-                    inputDecoration: InputDecoration(
-                      fillColor:
-                          isDark(context) ? Colors.black : Colors.transparent,
-                      hintStyle: TextStyle(
-                        color: DynamicColor.grayClr,
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: DynamicColor.grayClr),
-                        borderRadius: BorderRadius.circular(13),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: DynamicColor.grayClr),
-                        borderRadius: BorderRadius.circular(13),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: DynamicColor.grayClr),
-                        borderRadius: BorderRadius.circular(13),
-                      ),
-                      filled: true,
-                      contentPadding: const EdgeInsets.only(
-                        left: 15,
-                      ),
-                      hintText: "Enter Phone No",
-                      labelStyle: TextStyle(
-                        color: DynamicColor.grayClr,
-                      ),
-                    ),
-                    onInputValidated: (bool value) {},
-                    onFieldSubmitted: (value) {
-                      // getPhoneNumber(signUpController.phoneController.text);
-                    },
-                    selectorConfig: const SelectorConfig(
-                      selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                      setSelectorButtonAsPrefixIcon: true,
-                    ),
-                    ignoreBlank: false,
-                    autoValidateMode: AutovalidateMode.disabled,
-                    selectorTextStyle: poppinsRegularStyle(
-                      context: context,
-                      fontSize: 14,
-                      color: DynamicColor.grayClr,
-                    ),
-                    initialValue: number,
-                    hintText: "Phone Number(optional)",
-                    hintStyle: poppinsRegularStyle(
-                        context: context,
-                        fontSize: 14,
-                        color: DynamicColor.grayClr),
-                    textStyle: poppinsRegularStyle(
-                      context: context,
-                      fontSize: 14,
-                      color: DynamicColor.grayClr,
-                    ),
-                    spaceBetweenSelectorAndTextField: 0,
-                    keyboardType: const TextInputType.numberWithOptions(
-                        signed: true, decimal: true),
-                    inputBorder: InputBorder.none,
-                    onSaved: (PhoneNumber number) {
-                      print('On Saved: $number');
-                    },
-                  ),
+                  // InternationalPhoneNumberInput(
+                  //   color: isDark(context)
+                  //       ? DynamicColor.blackClr
+                  //       : Colors.transparent,
+                  //   onInputChanged: (PhoneNumber number) {
+                  //     validateMobile(number.phoneNumber!);
+                  //     controller.phoneNumController.text =
+                  //         number.phoneNumber.toString();
+                  //     // controller.numberAssign = number.dialCode.toString();
+                  //     // controller.update();
+                  //   },
+                  //   inputDecoration: InputDecoration(
+                  //     fillColor:
+                  //         isDark(context) ? Colors.black : Colors.transparent,
+                  //     hintStyle: TextStyle(
+                  //       color: DynamicColor.grayClr,
+                  //     ),
+                  //     border: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: DynamicColor.grayClr),
+                  //       borderRadius: BorderRadius.circular(13),
+                  //     ),
+                  //     enabledBorder: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: DynamicColor.grayClr),
+                  //       borderRadius: BorderRadius.circular(13),
+                  //     ),
+                  //     focusedBorder: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: DynamicColor.grayClr),
+                  //       borderRadius: BorderRadius.circular(13),
+                  //     ),
+                  //     filled: true,
+                  //     contentPadding: const EdgeInsets.only(
+                  //       left: 15,
+                  //     ),
+                  //     hintText: "Enter Phone No",
+                  //     labelStyle: TextStyle(
+                  //       color: DynamicColor.grayClr,
+                  //     ),
+                  //   ),
+                  //   onInputValidated: (bool value) {},
+                  //   onFieldSubmitted: (value) {
+                  //     // getPhoneNumber(signUpController.phoneController.text);
+                  //   },
+                  //   selectorConfig: const SelectorConfig(
+                  //     selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                  //     setSelectorButtonAsPrefixIcon: true,
+                  //   ),
+                  //   ignoreBlank: false,
+                  //   autoValidateMode: AutovalidateMode.disabled,
+                  //   selectorTextStyle: poppinsRegularStyle(
+                  //     context: context,
+                  //     fontSize: 14,
+                  //     color: DynamicColor.grayClr,
+                  //   ),
+                  //   initialValue: number,
+                  //   hintText: "Phone Number(optional)",
+                  //   hintStyle: poppinsRegularStyle(
+                  //       context: context,
+                  //       fontSize: 14,
+                  //       color: DynamicColor.grayClr),
+                  //   textStyle: poppinsRegularStyle(
+                  //     context: context,
+                  //     fontSize: 14,
+                  //     color: DynamicColor.grayClr,
+                  //   ),
+                  //   spaceBetweenSelectorAndTextField: 0,
+                  //   keyboardType: const TextInputType.numberWithOptions(
+                  //       signed: true, decimal: true),
+                  //   inputBorder: InputBorder.none,
+                  //   onSaved: (PhoneNumber number) {
+                  //     print('On Saved: $number');
+                  //   },
+                  // ),
 
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
 
                   // DateTimeField(
                   //   decoration: InputDecoration(
@@ -1089,7 +1090,9 @@ class _CreateCompanyProfileScreenState
                   SafeArea(
                     bottom: true,
                     child: CustomButton(
-                      text: "Add Venue Detail",
+                      text: editVenue == true
+                          ? "Update Venue Detail"
+                          : "Add Venue Detail",
                       onTap: () {
                         if (venueForm.currentState!.validate()) {
                           if (!controller.termsConditionAgree.value) {
@@ -1100,9 +1103,9 @@ class _CreateCompanyProfileScreenState
                             bottomToast(text: "Please choose venue image");
                           } else {
                             // ✅ check only if user entered something
+                            // !isValidUrl(
+                            //         controller.websiteController1.text) ||
                             if (!isValidUrl(
-                                    controller.websiteController1.text) ||
-                                !isValidUrl(
                                     controller.facebookController.text) ||
                                 !isValidUrl(
                                     controller.instagramController1.text)) {

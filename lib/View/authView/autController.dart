@@ -682,7 +682,7 @@ class AuthController extends GetxController {
         List musicGenreId = [];
 
         for (var action in eventController.eventDetail!.data!.musicGenre!) {
-          for (var data in action.musicGenreItems!) {
+          for (var data in action.musicGenreItems ?? []) {
             if (data.selected == true) {
               musicGenreId.add(data.id);
             }

@@ -82,6 +82,7 @@ class AddVenueScreen extends StatelessWidget {
                         if (value == null) {
                           return "opening hours is required";
                         }
+
                         return null;
                       },
                       initialValue: controller
@@ -169,6 +170,32 @@ class AddVenueScreen extends StatelessWidget {
                         if (value == null) {
                           return "Closing hours is required";
                         }
+                        if (controller.openingHoursController.text.isNotEmpty) {
+                          try {
+                            final openingTime = DateFormat.jm()
+                                .parse(controller.openingHoursController.text);
+                            var closingTime = DateFormat.jm()
+                                .parse(controller.closedHoursController.text);
+
+                            print(openingTime);
+                            print(closingTime);
+                            // if (closingTime.isAtSameMomentAs(openingTime) ||
+                            //     closingTime.isBefore(openingTime)) {
+                            //   return "Closing time must be after opening time";
+                            // }
+                            // ✅ If closing is "before" opening, assume next day
+                            if (closingTime.isBefore(openingTime)) {
+                              closingTime =
+                                  closingTime.add(const Duration(days: 1));
+                            }
+
+                            if (closingTime.isAtSameMomentAs(openingTime)) {
+                              return "Closing time cannot be same as opening time";
+                            }
+                          } catch (e) {
+                            return "Invalid opening/closing time";
+                          }
+                        }
                         return null;
                       },
                       // initialValue: DateTime.now(),
@@ -254,10 +281,35 @@ class AddVenueScreen extends StatelessWidget {
                         return;
                       },
                     ),
+
                     const SizedBox(
                       height: 15,
                     ),
-                    // Column(
+                  ],
+                ),
+              ),
+            ));
+      }),
+      bottomNavigationBar: GetBuilder<ManagerController>(builder: (controller) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: CustomButton(
+              borderClr: Colors.transparent,
+              onTap: () {
+                if (venueForm.currentState!.validate()) {
+                  Get.toNamed(Routes.addVenueDetailsScreen);
+                }
+              },
+              text: "Next",
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}
+    // Column(
                     //   crossAxisAlignment: CrossAxisAlignment.start,
                     //   children: [
                     //     Text(
@@ -317,27 +369,3 @@ class AddVenueScreen extends StatelessWidget {
                     // ),
                     //   ],
                     // )
-                  ],
-                ),
-              ),
-            ));
-      }),
-      bottomNavigationBar: GetBuilder<ManagerController>(builder: (controller) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-            child: CustomButton(
-              borderClr: Colors.transparent,
-              onTap: () {
-                if (venueForm.currentState!.validate()) {
-                  Get.toNamed(Routes.addVenueDetailsScreen);
-                }
-              },
-              text: "Next",
-            ),
-          ),
-        );
-      }),
-    );
-  }
-}

@@ -143,7 +143,10 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
           onTap: () {
             _eventController.duplicateValue.value = false;
             _eventController.showEditPreviewScreen.value = false;
+            _authController.imageBytes = null;
+
             _eventController.update();
+            _authController.update();
             Get.back();
           }),
       body: PopScope(
@@ -152,7 +155,9 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
           if (!didPop) {
             _eventController.duplicateValue.value = false;
             _eventController.showEditPreviewScreen.value = false;
+            _authController.imageBytes = null;
             _eventController.update();
+            _authController.update();
             Get.back();
           }
         },
