@@ -126,19 +126,19 @@ class AuthController extends GetxController {
 
     // var theme = Theme.of(context);
     var formData = form.FormData.fromMap({
-      "first_name": firstNameController.text,
-      "last_name": lastNameController.text,
-      "email": emailController.text,
-      "display_name": displayNameController.text,
-      /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
-      "phone_number": phoneNumController.text,
-      "password": passwordController.text,
-      if (referralCodeController.text.isNotEmpty)
-        "referral_code": referralCodeController.text,
+      "first_name": firstNameController.text, 
+      "last_name": lastNameController.text, 
+      "email": emailController.text, 
+      "display_name": displayNameController.text, 
+      /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text, 
+      "phone_number": phoneNumController.text, 
+      "password": passwordController.text, 
+      if (referralCodeController.text.isNotEmpty) 
+        "referral_code": referralCodeController.text, 
       if ((API().sp.read("role") == "eventManager") &&
           (companyNameController.text.isNotEmpty))
-        "company_name": companyNameController.text,
-      "password_confirmation": confirmPasswordController.text,
+        "company_name": companyNameController.text, 
+      "password_confirmation": confirmPasswordController.text, 
       /*if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty)*/ "select_state":
           stateController.text,
       /*if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty)*/ "country":
@@ -151,7 +151,8 @@ class AuthController extends GetxController {
       "signup_platform": signUpPlatform,
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token": token ?? "tok-kjsdbcidbc",
+      "device_token":
+          token ?? "t1234o560k973e21nmnkljh7vbfg8c4xs5da0zq8ewr6tuy9ipo",
       "zip_code": zipController.text,
       "instagram_link": instagramController.text,
       "twitter_link": twitterXController.text,

@@ -145,20 +145,20 @@ class _MyAppState extends State<MyApp> {
     if (API().sp.read("userId") != null) {
       fetchSubscription();
     }
-
+    
     // Todo Firebase Notification Start
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
     // notificationService.getDeviceToken();
   }
-
+  
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     NotificationService().localNotificationsPlugin.cancelAll();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {

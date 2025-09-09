@@ -22,7 +22,6 @@ class _SplashScreenState extends State<SplashScreen> {
           print(API().sp.read("userId"));
           String userTypeInital = await API().sp.read('role');
           print(userTypeInital);
-
           if (API().sp.read("role") == "User") {
             print(API().sp.read("isUserCreated"));
             if (API().sp.read("isUserCreated") == 0) {
