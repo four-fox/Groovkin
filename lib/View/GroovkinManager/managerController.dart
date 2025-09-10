@@ -485,58 +485,59 @@ class ManagerController extends GetxController {
           await API().postApi(formData, "add-venue", multiPart: true);
       if (response.statusCode == 200) {
         showDialog(
-            barrierColor: Colors.transparent,
-            context: context,
-            barrierDismissible: true,
-            builder: (BuildContext context) {
-              return AlertWidget(
-                height: kToolbarHeight * 5,
-                container: SizedBox(
-                  width: Get.width,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12.0, horizontal: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Congratulation!',
-                          textAlign: TextAlign.center,
+          barrierColor: Colors.transparent,
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext context) {
+            return AlertWidget(
+              height: kToolbarHeight * 5,
+              container: SizedBox(
+                width: Get.width,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12.0, horizontal: 4),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Congratulation!',
+                        textAlign: TextAlign.center,
+                        style: poppinsRegularStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          context: context,
+                          color: isDark(context)
+                              ? theme.primaryColor
+                              : DynamicColor.whiteClr,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "Your venue has been created",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5,
                           style: poppinsRegularStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
                             context: context,
                             color: isDark(context)
                                 ? theme.primaryColor
                                 : DynamicColor.whiteClr,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            "Your venue has been created",
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5,
-                            style: poppinsRegularStyle(
-                              fontSize: 13,
-                              context: context,
-                              color: isDark(context)
-                                  ? theme.primaryColor
-                                  : DynamicColor.whiteClr,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                            height: 120,
-                            child: Image(
-                                image: AssetImage("assets/handshake.png"))),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                          height: 120,
+                          child:
+                              Image(image: AssetImage("assets/handshake.png"))),
+                    ],
                   ),
                 ),
-              );
-            });
+              ),
+            );
+          },
+        );
         Future.delayed(const Duration(seconds: 2), () {
           Get.back();
           selectIndexxx.value = 0;
