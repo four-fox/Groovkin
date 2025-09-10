@@ -280,7 +280,7 @@ class _HardwareScreenState extends State<HardwareScreen> {
                   Get.toNamed(Routes.quickSurveyScreen, arguments: {
                     "addMoreService": 1,
                     "createEvent": createEventValue,
-                    "title": "Music Gemre!",
+                    "title": "Music Genre!",
                     "isFromEvent": true,
                   });
                 } else {

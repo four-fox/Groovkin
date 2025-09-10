@@ -69,7 +69,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
     var theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: customAppBar(),
+      appBar: customAppBar(theme: theme),
       body: Column(
         children: <Widget>[
           // SizedBox(
