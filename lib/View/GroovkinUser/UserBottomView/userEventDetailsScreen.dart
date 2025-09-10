@@ -273,10 +273,11 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                           text:
                               "${controller.eventDetail!.data!.location ?? "N/N"}",
                           iconClr: DynamicColor.yellowClr),
-                      customWidget(context, theme,
-                          title: "Event Comments",
-                          value:
-                              controller.eventDetail!.data!.comment.toString()),
+                      if (API().sp.read("role") != "User")
+                        customWidget(context, theme,
+                            title: "Event Comments",
+                            value: controller.eventDetail!.data!.comment
+                                .toString()),
                       customWidget(context, theme,
                           title: "Event About",
                           value:
@@ -409,9 +410,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                               children: [
                                                 Text("${"• "}",
                                                     style: TextStyle(
-                                                        fontSize: 20,        color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,)),
+                                                      fontSize: 20,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
+                                                    )),
                                                 Text(
                                                   controller
                                                       .eventDetail!
@@ -519,9 +523,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                               children: [
                                                 Text("${"• "}",
                                                     style: TextStyle(
-                                                        fontSize: 20,        color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,)),
+                                                      fontSize: 20,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
+                                                    )),
                                                 Text(
                                                   controller.eventDetail!.data!
                                                       .musicGenre![index].name!
@@ -629,9 +636,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                               children: [
                                                 Text("${"• "}",
                                                     style: TextStyle(
-                                                        fontSize: 20,        color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,)),
+                                                      fontSize: 20,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
+                                                    )),
                                                 Text(
                                                   controller
                                                       .eventDetail!
@@ -745,9 +755,12 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                               children: [
                                                 Text("${"• "}",
                                                     style: TextStyle(
-                                                        fontSize: 20,        color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,)),
+                                                      fontSize: 20,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
+                                                    )),
                                                 Text(
                                                   controller
                                                       .eventDetail!
