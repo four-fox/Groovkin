@@ -78,12 +78,13 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                       fontSize: 16, color: DynamicColor.lightRedClr),
                 ),
               ),
-              venueService(
-                  context: context,
-                  theme: theme,
-                  text: controller.phoneNumController.text,
-                  image: "assets/phoneIcons.png",
-                  iconClr: theme.primaryColor.withValues(alpha: 0.7)),
+              if (controller.phoneNumController.text.isNotEmpty)
+                venueService(
+                    context: context,
+                    theme: theme,
+                    text: controller.phoneNumController.text,
+                    image: "assets/phoneIcons.png",
+                    iconClr: theme.primaryColor.withValues(alpha: 0.7)),
               venueService(
                   context: context,
                   theme: theme,

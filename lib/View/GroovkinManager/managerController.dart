@@ -94,6 +94,7 @@ class ManagerController extends GetxController {
   ///get image or video
   List<MediaClass> mediaClass = [];
   List<form.MultipartFile> multiPartImg = [];
+  List<String> pickFilePath = [];
 
   Future<void> pickFileee() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -135,7 +136,7 @@ class ManagerController extends GetxController {
           thumbnail: thumbnail,
         ));
 
-        multiPartImg.add(form.MultipartFile.fromFileSync(
+        multiPartImg.add(await form.MultipartFile.fromFile(
           file.path!,
           filename: 'Video.${file.path!.split('.').last}',
           contentType: MediaType('video', file.path!.split('.').last),
@@ -154,7 +155,7 @@ class ManagerController extends GetxController {
           fileType: extension,
         ));
 
-        multiPartImg.add(form.MultipartFile.fromFileSync(
+        multiPartImg.add(await form.MultipartFile.fromFile(
           file.path!,
           filename: 'Image.${file.path!.split('.').last}',
           contentType: MediaType('image', file.path!.split('.').last),
@@ -162,7 +163,7 @@ class ManagerController extends GetxController {
       } else if (extension == "pdf") {
         mediaClass.add(
             MediaClass(filename: file.path, fileType: extension, id: "pdf"));
-        multiPartImg.add(form.MultipartFile.fromFileSync(
+        multiPartImg.add(await form.MultipartFile.fromFile(
           file.path!,
           filename: 'Image.${file.path!.split('.').last}',
           contentType: MediaType('image', file.path!.split('.').last),
@@ -234,7 +235,7 @@ class ManagerController extends GetxController {
             mediaClass.add(MediaClass(
                 filename: file.path, fileType: extension, thumbnail: fileName));
 
-            multiPartImg.add(form.MultipartFile.fromFileSync(
+            multiPartImg.add(await form.MultipartFile.fromFile(
               file.path,
               filename: "Video.$extension",
               contentType: MediaType("video", extension),
@@ -248,8 +249,8 @@ class ManagerController extends GetxController {
 
             mediaClass
                 .add(MediaClass(filename: file.path, fileType: extension));
-
-            multiPartImg.add(form.MultipartFile.fromFileSync(
+            pickFilePath.add(file.path);
+            multiPartImg.add(await form.MultipartFile.fromFile(
               file.path,
               filename: "Image.$extension",
               contentType: MediaType("image", extension),
@@ -282,11 +283,12 @@ class ManagerController extends GetxController {
             profilePictures.add(venueDtail.ProfilePicture(
                 mediaPath: result[i].path, thumbnail: fileName));
           }
+
           mediaClass.add(MediaClass(
               filename: result[i].path,
               fileType: result[i].path.split('.').last,
               thumbnail: fileName));
-          multiPartImg.add(form.MultipartFile.fromFileSync(
+          multiPartImg.add(await form.MultipartFile.fromFile(
             result[i].path,
             filename: "Video.${result[i].path.split('.').last}",
             contentType: MediaType("video", result[i].path.split('.').last),
@@ -300,7 +302,8 @@ class ManagerController extends GetxController {
             filename: result[i].path,
             fileType: result[i].path.split('.').last,
           ));
-          multiPartImg.add(form.MultipartFile.fromFileSync(
+          pickFilePath.add(result[i].path);
+          multiPartImg.add(await form.MultipartFile.fromFile(
             result[i].path,
             filename: "Image.${result[i].path.split('.').last}",
             contentType: MediaType("image", result[i].path.split('.').last),
@@ -357,6 +360,7 @@ class ManagerController extends GetxController {
       if (type == "amenities") {
         amenitiesList.clear();
         if (updateAmenities.value == false) {
+          selectedAmenities.clear();
           amenitiesList.addAll(amenities!.data!);
         } else {
           for (var element in amenities!.data!) {
@@ -372,6 +376,7 @@ class ManagerController extends GetxController {
       } else if (type == "licenses_and_permit") {
         licensesPermitList.clear();
         if (updateAmenities.value == false) {
+          selectedLicensesPermit.clear();
           licensesPermitList.addAll(amenities!.data!);
         } else {
           for (var element in amenities!.data!) {
@@ -389,6 +394,7 @@ class ManagerController extends GetxController {
       } else {
         houseEventPermitList.clear();
         if (updateAmenities.value == false) {
+          selectedHouseEventPermit.clear();
           houseEventPermitList.addAll(amenities!.data!);
         } else {
           for (var element in amenities!.data!) {
@@ -426,6 +432,26 @@ class ManagerController extends GetxController {
         houseEvent.add(element.id);
       }
 
+      List<form.MultipartFile> files = [];
+
+      for (String path in pickFilePath) {
+        final ext = path.split('.').last.toLowerCase();
+        MediaType contentType;
+        if (ext == "pdf") {
+          contentType = MediaType("application", "pdf");
+        } else if (ext == "mp4") {
+          contentType = MediaType("video", "mp4");
+        } else {
+          contentType = MediaType("image", ext);
+        }
+        files.add(await form.MultipartFile.fromFile(
+          path,
+          filename: "Image.$ext",
+          contentType: contentType,
+        ));
+        print(files.length);
+      }
+
       var formData = form.FormData.fromMap({
         "venue_name": venueNameController.text,
         "street_address": streetAddressController.text,
@@ -445,7 +471,7 @@ class ManagerController extends GetxController {
         "amenities[]": amenities,
         "licenses_and_permit_items[]": permitList,
         "house_event_items[]": houseEvent,
-        "image[]": multiPartImg,
+        "image[]": files,
         "city": cityController.text,
         if (instagramController1.text.isNotEmpty)
           "instagram_link": instagramController1.text,

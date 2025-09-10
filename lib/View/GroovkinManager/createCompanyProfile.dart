@@ -722,8 +722,7 @@ class _CreateCompanyProfileScreenState
                     labelText: "Website",
                     controller: controller.websiteController1,
                     validationError: "Website",
-                    isEmail: false,
-                    isOptional: false,
+                    isOptional: true,
                   ),
 
                   const SizedBox(
