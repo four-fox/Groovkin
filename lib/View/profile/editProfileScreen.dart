@@ -317,7 +317,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                             label: Padding(
                               padding: const EdgeInsets.only(left: 15.0),
                               child: Text(
-                                "Year of Birth",
+                                "Birth Year",
                                 style: poppinsRegularStyle(
                                     context: context,
                                     fontSize: 14,
@@ -706,8 +706,10 @@ pictureAlert(context,
       context: context,
       builder: (BuildContext context) {
         return Theme(
-          data: Theme.of(context)
-              .copyWith(dialogBackgroundColor: DynamicColor.avatarBgClr),
+          data: Theme.of(context).copyWith(
+            dialogTheme:
+                DialogThemeData(backgroundColor: DynamicColor.avatarBgClr),
+          ),
           child: AlertDialog(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(

@@ -126,19 +126,19 @@ class AuthController extends GetxController {
 
     // var theme = Theme.of(context);
     var formData = form.FormData.fromMap({
-      "first_name": firstNameController.text, 
-      "last_name": lastNameController.text, 
-      "email": emailController.text, 
-      "display_name": displayNameController.text, 
-      /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text, 
-      "phone_number": phoneNumController.text, 
-      "password": passwordController.text, 
-      if (referralCodeController.text.isNotEmpty) 
-        "referral_code": referralCodeController.text, 
+      "first_name": firstNameController.text,
+      "last_name": lastNameController.text,
+      "email": emailController.text,
+      "display_name": displayNameController.text,
+      /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
+      "phone_number": phoneNumController.text,
+      "password": passwordController.text,
+      if (referralCodeController.text.isNotEmpty)
+        "referral_code": referralCodeController.text,
       if ((API().sp.read("role") == "eventManager") &&
           (companyNameController.text.isNotEmpty))
-        "company_name": companyNameController.text, 
-      "password_confirmation": confirmPasswordController.text, 
+        "company_name": companyNameController.text,
+      "password_confirmation": confirmPasswordController.text,
       /*if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty)*/ "select_state":
           stateController.text,
       /*if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty)*/ "country":
@@ -617,7 +617,7 @@ class AuthController extends GetxController {
         "select_state": stateController.text,
       if (API().sp.read("role") == "eventOrganizer" &&
           countryController.text.isNotEmpty)
-        "country": countryController.text,
+        "country": "United States",
       // if(API().sp.read("role") == "eventOrganizer") "company_name": "asdf",
       if (imageList.isNotEmpty) "image[]": imageList,
       if (zipController.text.isNotEmpty) "zip_code": zipController.text,
@@ -1881,6 +1881,7 @@ class AuthController extends GetxController {
   }
 
   List<dynamic> filteredGenres = [];
+
   Future<dynamic> getSpotifyArtistGenre() async {
     setIsArtistLoading = true;
     try {
@@ -1888,6 +1889,7 @@ class AuthController extends GetxController {
         fullUrl: "https://api.spotify.com/v1/me/top/artists",
         isFromSpotify: true,
       );
+
       if (response.statusCode == 200) {
         spotifyArtistGenreModel =
             SpotifyArtistGenreModel.fromJson(response.data);
@@ -1934,6 +1936,7 @@ class AuthController extends GetxController {
       formData.fields.add(const MapEntry("type", "spotify"));
 
       final response = await API().postApi(formData, "add-music-genre");
+
       if (response.statusCode == 200) {
         Get.offAllNamed(
           Routes.userBottomNavigationNav,

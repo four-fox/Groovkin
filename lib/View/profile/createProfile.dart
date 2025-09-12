@@ -48,7 +48,7 @@ class _CreateProfileState extends State<CreateProfile> {
     if (API().sp.read("nameSocial") != null) {
       _controller.displayNameController.text = API().sp.read("nameSocial");
     }
-
+    _controller.countryController.text = "United States";
     _controller.getCurrentLocation(true);
   }
 
@@ -242,11 +242,11 @@ class _CreateProfileState extends State<CreateProfile> {
                                     DynamicColor.grayClr.withValues(alpha: 0.6),
                               ), //<-- SEE HERE
                             ),
-                            hintText: "Enter Year of birth",
+                            hintText: "Enter Birth Year",
                             label: Padding(
                               padding: const EdgeInsets.only(left: 15.0),
                               child: Text(
-                                "Year Of Birth",
+                                "Birth Year",
                                 style: poppinsRegularStyle(
                                   context: context,
                                   fontSize: 14,
@@ -445,12 +445,14 @@ class _CreateProfileState extends State<CreateProfile> {
                       CountryStateCityPicker(
                           country: controller.countryController,
                           state: controller.stateController,
+
                           // dialogColor: Colors.grey.shade200,
                           textFieldDecoration: InputDecoration(
                             hintStyle: const TextStyle(
                                 fontSize: 14, color: Color(0xff9DA3B5)),
                             fillColor: Colors.transparent,
                             filled: true,
+
                             // suffixIcon: Icon(Icons.arrow_downward_rounded),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),

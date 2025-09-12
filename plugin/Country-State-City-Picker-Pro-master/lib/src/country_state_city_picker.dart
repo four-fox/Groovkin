@@ -102,6 +102,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
             setState(() => _title = 'Country');
             _showDialog(context);
           },
+          // enabled: false,
           decoration: widget.textFieldDecoration == null
               ? defaultDecoration.copyWith(hintText: 'Select country')
               : widget.textFieldDecoration
@@ -112,7 +113,6 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
 
         ///State TextField
         TextField(
-          
           controller: widget.state,
           style: const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
           onTap: () {
@@ -158,7 +158,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
     showGeneralDialog(
       barrierLabel: _title,
       barrierDismissible: false,
-      barrierColor: Colors.black.withValues(alpha:0.5),
+      barrierColor: Colors.black.withValues(alpha: 0.5),
       transitionDuration: const Duration(milliseconds: 350),
       context: context,
       pageBuilder: (context, __, ___) {

@@ -26,7 +26,7 @@ class TRatingIndicator extends StatelessWidget {
               valueColor: AlwaysStoppedAnimation(DynamicColor.yellowClr),
             ),
           ),
-        )
+        ),
       ],
     );
   }

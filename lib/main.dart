@@ -200,7 +200,7 @@ class _MyAppState extends State<MyApp> {
                   TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
             ),
           ),
-       
+
           navigatorObservers: [BotToastNavigatorObserver()],
           builder: (context, child) {
             child = ScrollConfiguration(
