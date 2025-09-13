@@ -18,7 +18,9 @@ class AddCardDetails extends StatefulWidget {
 }
 
 class _AddCardDetailsState extends State<AddCardDetails> {
-  final HomeController _controller = Get.find();
+  bool fromSignUp = Get.arguments?["fromSignUp"] ?? false;
+
+  late HomeController _controller;
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
@@ -49,7 +51,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
               expiryDate.split("/").first,
               expiryDate.split("/").last,
               cvvCode,
-            );
+              fromSignUp);
     }
   }
 
@@ -62,6 +64,11 @@ class _AddCardDetailsState extends State<AddCardDetails> {
       ),
     );
     super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      _controller = Get.find<HomeController>();
+    } else {
+      _controller = Get.put(HomeController());
+    }
   }
 
   @override
@@ -69,7 +76,7 @@ class _AddCardDetailsState extends State<AddCardDetails> {
     var theme = Theme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: customAppBar(theme: theme),
+      appBar: customAppBar(theme: theme, backArrow: fromSignUp ? false : true),
       body: Column(
         children: <Widget>[
           // SizedBox(
@@ -250,79 +257,102 @@ class _AddCardDetailsState extends State<AddCardDetails> {
         bottom: true,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () {
-              if (paymentMethodFlow == 1) {
-                showDialog(
-                    barrierColor: Colors.transparent,
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return AlertWidget(
-                        height: kToolbarHeight * 5,
-                        container: SizedBox(
-                          width: Get.width,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 4),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Payment Success',
-                                  style: poppinsMediumStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600,
-                                    context: context,
-                                    color: theme.primaryColor,
-                                  ),
-                                ),
-                                CircleAvatar(
-                                  radius: 38,
-                                  backgroundColor: DynamicColor.yellowClr,
-                                  child: Icon(
-                                    Icons.check,
-                                    size: 45,
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                  ),
-                                ),
-                                Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0),
-                                    child: Text(
-                                      'Your Payment has been\nsuccessfully done ',
-                                      textAlign: TextAlign.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (fromSignUp == true) ...[
+                CustomButton(
+                  borderClr: Colors.transparent,
+                  onTap: () {
+                    Get.offAllNamed(Routes.createCompanyProfileScreen,
+                        arguments: {
+                          "updationCondition": false,
+                          "skipBtnHide": false,
+                        });
+                  },
+                  text: "Skip",
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+              ],
+              CustomButton(
+                borderClr: Colors.transparent,
+                onTap: () {
+                  if (paymentMethodFlow == 1) {
+                    showDialog(
+                        barrierColor: Colors.transparent,
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertWidget(
+                            height: kToolbarHeight * 5,
+                            container: SizedBox(
+                              width: Get.width,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12.0, horizontal: 4),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Payment Success',
                                       style: poppinsMediumStyle(
-                                        fontSize: 20,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w600,
                                         context: context,
+                                        color: theme.primaryColor,
+                                      ),
+                                    ),
+                                    CircleAvatar(
+                                      radius: 38,
+                                      backgroundColor: DynamicColor.yellowClr,
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 45,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .surface,
                                       ),
-                                    )),
-                              ],
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: Text(
+                                          'Your Payment has been\nsuccessfully done ',
+                                          textAlign: TextAlign.center,
+                                          style: poppinsMediumStyle(
+                                            fontSize: 20,
+                                            context: context,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .surface,
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      );
+                          );
+                        });
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Get.back();
+                      Get.toNamed(Routes.serviceScreen,
+                          arguments: {"addMoreService": 1});
                     });
-                Future.delayed(const Duration(seconds: 2), () {
-                  Get.back();
-                  Get.toNamed(Routes.serviceScreen,
-                      arguments: {"addMoreService": 1});
-                });
-              } else if (paymentMethodFlow == 2) {
-                saveCard();
-                // Get.back();
-                // Get.toNamed(Routes.viewPaymentMethod);
-              } else {
-                Get.toNamed(Routes.paymentConfirmationScreen);
-              }
-            },
-            text: isFromreplaced ? "Replace" : "Add",
+                  } else if (paymentMethodFlow == 2) {
+                    saveCard();
+                    // Get.back();
+                    // Get.toNamed(Routes.viewPaymentMethod);
+                  } else {
+                    Get.toNamed(Routes.paymentConfirmationScreen);
+                  }
+                },
+                text: isFromreplaced ? "Replace" : "Add",
+              ),
+            ],
           ),
         ),
       ),

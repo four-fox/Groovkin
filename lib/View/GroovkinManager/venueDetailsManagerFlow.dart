@@ -637,7 +637,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                           result.geometry.location.lng);
                                       controller.addressController.text =
                                           result.formattedAddress!;
-                                      Get.back();
+                                      // Get.back();
                                       mapUpdate(true);
                                       _controller.update();
                                     }
@@ -700,7 +700,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                           );
                         },
                         fontSized: 13,
-                        text: "Add another location",
+                        text: "Change Location",
                       ),
                       CustomButton(
                         borderClr: Colors.transparent,
@@ -932,14 +932,23 @@ class _ViewOtherEventsDetailsState extends State<ViewOtherEventsDetails> {
                               editButton == false
                                   ? const SizedBox.shrink()
                                   : GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
                                       onTap: () {
                                         _controller.editVenueDataBind();
                                       },
-                                      child: Icon(Icons.edit_calendar_rounded,
-                                          size: 30,
-                                          color: isDark(context)
-                                              ? theme.primaryColor
-                                              : DynamicColor.whiteClr),
+                                      child: Row(
+                                        children: [
+                                          Text("Edit"),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(Icons.edit,
+                                              size: 30,
+                                              color: isDark(context)
+                                                  ? theme.primaryColor
+                                                  : DynamicColor.whiteClr),
+                                        ],
+                                      ),
                                     )
                             ],
                           ),

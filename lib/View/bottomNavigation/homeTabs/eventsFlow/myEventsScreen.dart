@@ -23,7 +23,9 @@ class MyEventsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: "My Events"),
+      appBar: customAppBar(
+          theme: theme,
+          text: pageCondition == "drafts" ? "Draft Events" : "My Events"),
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) {
           if (scrollNotification.metrics.pixels ==
@@ -51,7 +53,10 @@ class MyEventsScreen extends StatelessWidget {
           return controller.getRecommendedLoader.value == false
               ? const SizedBox.shrink()
               : controller.recommendedEventData?.data?.data?.isEmpty ?? true
-                  ? noData(context: context, theme: theme,)
+                  ? noData(
+                      context: context,
+                      theme: theme,
+                    )
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ListView.builder(
@@ -245,7 +250,6 @@ class MyEventsScreen extends StatelessWidget {
                                                 context: context,
                                                 color: theme.primaryColor,
                                               ),
-                                              
                                               text: "Cancellation Reason",
                                             ),
                                           )

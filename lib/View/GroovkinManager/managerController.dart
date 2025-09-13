@@ -768,12 +768,13 @@ class ManagerController extends GetxController {
 
   int? selectedCardId;
   RxBool checkBoxValue = false.obs;
-  eventAcceptDeclineFtn({status, EventData? event}) async {
+  eventAcceptDeclineFtn({status, int? id}) async {
     var formData = form.FormData.fromMap(
-        {"event_id": event!.id, "status": status, "card_id": selectedCardId});
+        {"event_id": id, "status": status, "card_id": selectedCardId});
     var response = await API().postApi(formData, "accept-event-request");
     if (response.statusCode == 200) {
-      managerPendingEvents!.data!.data!.remove(event);
+      // managerPendingEvents!.data!.data!.remove(event);
+      managerPendingEvents!.data!.data!.removeWhere((e) => e.id == id);
       checkBoxValue.value = false;
       bottomToast(text: response.data['message']);
       update();

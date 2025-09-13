@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/RecommendedForUserModel.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/eventsNearByMeUserModel.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/topRatedEventUserModel.dart';
@@ -139,7 +140,7 @@ class HomeController extends GetxController {
       update();
     }
   }
-  
+
   ///>>>>>>>>>>>>>>>>>>> get top rated events
   TopRatedEventModel? topRatingData;
   RxBool getTopRatedEventLoader = true.obs;
@@ -251,8 +252,14 @@ class HomeController extends GetxController {
 
   // Todo Add Cards
 
-  addCard(String cardHolderName, String number, String expiryMonth,
-      String expiryYear, String cvc) async {
+  addCard(
+    String cardHolderName,
+    String number,
+    String expiryMonth,
+    String expiryYear,
+    String cvc,
+    bool fromSignUp,
+  ) async {
     try {
       final formData = form.FormData.fromMap({
         "cardholder_name": cardHolderName,
@@ -265,7 +272,14 @@ class HomeController extends GetxController {
       var response = await API().postApi(formData, "add-card");
       if (response.statusCode == 200) {
         Utils.showFlutterToast("Your Card Has Been Added!");
-        Get.back();
+        if (fromSignUp == true) {
+          Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
+            "updationCondition": false,
+            "skipBtnHide": false,
+          });
+        } else {
+          Get.back();
+        }
       }
     } catch (e) {
       print("Exception $e");

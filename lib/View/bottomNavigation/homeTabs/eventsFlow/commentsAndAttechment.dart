@@ -237,87 +237,88 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                   Get.toNamed(Routes.eventPreview,
                       arguments: {"viewDetails": 1});
                 } else {
-                  if (_controller.eventDetail != null &&
-                      _controller.eventDetail!.data!.location != null &&
-                      _controller.draftCondition.value != false) {
-                    Get.toNamed(Routes.eventPreview,
-                        arguments: {"viewDetails": 1});
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return MapLocationPicker(
-                            onTappp: () {
-                              print(managerController.lat);
-                              print(managerController.lng);
-                              Get.toNamed(Routes.listOfVenuesScreen);
-                            },
-                            // onTapShow: true,
-                            // hideLocation: true,
-                            // lat: double.parse(eventData.latitude.toString()),
-                            // long: double.parse(eventData.longitude.toString()),
-                            minMaxZoomPreference:
-                                const MinMaxZoomPreference(0, 15),
-                            apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
-                            canPopOnNextButtonTaped: true,
-                            searchHintText: managerController.address != "null"
-                                ? managerController.address
-                                : "Start typing to search",
-                            // canPopOnNextButtonTaped: true,
-                            latLng: managerController.latLng,
-                            initAddress: managerController.address,
-                            nextPage: () {
+                  // if (_controller.eventDetail != null &&
+                  //     _controller.eventDetail!.data!.location != null &&
+                  //     _controller.draftCondition.value != false) {
+                  //   Get.toNamed(Routes.eventPreview,
+                  //       arguments: {"viewDetails": 1});
+                  // } else {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return MapLocationPicker(
+                          onTappp: () {
+                            print(managerController.lat);
+                            print(managerController.lng);
+                            Get.toNamed(Routes.listOfVenuesScreen);
+                          },
+                          // onTapShow: true,
+                          // hideLocation: true,
+                          // lat: double.parse(eventData.latitude.toString()),
+                          // long: double.parse(eventData.longitude.toString()),
+                          minMaxZoomPreference:
+                              const MinMaxZoomPreference(0, 15),
+                          apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                          canPopOnNextButtonTaped: true,
+                          searchHintText: managerController.address != "null"
+                              ? managerController.address
+                              : "Start typing to search",
+                          // canPopOnNextButtonTaped: true,
+                          latLng: managerController.latLng,
+                          initAddress: managerController.address,
+                          nextPage: () {
+                            Get.toNamed(Routes.listOfVenuesScreen);
+                            managerController.update();
+                          },
+                          onNext: (GeocodingResult? result) {
+                            if (result != null) {
+                              managerController.lat =
+                                  result.geometry.location.lat.toString();
+                              managerController.lng =
+                                  result.geometry.location.lng.toString();
+                              managerController.address =
+                                  result.formattedAddress ?? "";
+                              managerController.latLng = LatLng(
+                                  result.geometry.location.lat,
+                                  result.geometry.location.lng);
+                              managerController.addressController.text =
+                                  result.formattedAddress!;
                               Get.toNamed(Routes.listOfVenuesScreen);
                               managerController.update();
-                            },
-                            onNext: (GeocodingResult? result) {
-                              if (result != null) {
-                                managerController.lat =
-                                    result.geometry.location.lat.toString();
-                                managerController.lng =
-                                    result.geometry.location.lng.toString();
-                                managerController.address =
-                                    result.formattedAddress ?? "";
-                                managerController.latLng = LatLng(
-                                    result.geometry.location.lat,
-                                    result.geometry.location.lng);
-                                managerController.addressController.text =
-                                    result.formattedAddress!;
-                                Get.toNamed(Routes.listOfVenuesScreen);
-                                managerController.update();
-                              }
-                            },
-                            onSuggestionSelected:
-                                (PlacesDetailsResponse? result) {
-                              if (result != null) {
-                                managerController.lat = result
-                                    .result.geometry!.location.lat
-                                    .toString();
-                                managerController.lng = result
-                                    .result.geometry!.location.lng
-                                    .toString();
-                                managerController.autocompletePlace =
-                                    result.result.formattedAddress ?? "";
-                                managerController.address =
-                                    result.result.formattedAddress ?? "";
-                                managerController.latLng = LatLng(
-                                    result.result.geometry!.location.lat,
-                                    result.result.geometry!.location.lng);
-                                managerController.addressController.text =
-                                    result.result.formattedAddress!;
+                            }
+                          },
+                          onSuggestionSelected:
+                              (PlacesDetailsResponse? result) {
+                            if (result != null) {
+                              managerController.lat = result
+                                  .result.geometry!.location.lat
+                                  .toString();
+                              managerController.lng = result
+                                  .result.geometry!.location.lng
+                                  .toString();
+                              managerController.autocompletePlace =
+                                  result.result.formattedAddress ?? "";
+                              managerController.address =
+                                  result.result.formattedAddress ?? "";
+                              managerController.latLng = LatLng(
+                                  result.result.geometry!.location.lat,
+                                  result.result.geometry!.location.lng);
+                              managerController.addressController.text =
+                                  result.result.formattedAddress!;
 
-                                Get.toNamed(Routes.listOfVenuesScreen);
-                                managerController.update();
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  }
+                              Get.toNamed(Routes.listOfVenuesScreen);
+                              managerController.update();
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  );
                 }
               }
+              // }
             },
             text: "Continue",
           ),
@@ -480,7 +481,7 @@ class ListOfVenuesScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight * 3.3),
+        preferredSize: const Size.fromHeight(kToolbarHeight * 3.5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -512,6 +513,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                       },
                       child: const ImageIcon(
                         AssetImage("assets/backArrow.png"),
+                        color: Colors.black,
                       )),
                 ],
               ),
@@ -613,7 +615,20 @@ class ListOfVenuesScreen extends StatelessWidget {
                   );
                 })
               ],
-            )
+            ),
+            SizedBox(
+              height: 3,
+            ),
+            Center(
+              child: Text(
+                "Select the venue for the event",
+                style: poppinsMediumStyle(
+                  fontSize: 16,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -663,7 +678,7 @@ class ListOfVenuesScreen extends StatelessWidget {
                                 arguments: {
                                   "venueId": venue.id,
                                   "buttonShow": true,
-                                  "editBtn": false
+                                  "editBtn": false,
                                 });
                             // Get.toNamed(Routes.venueInfoScreen);
                           }

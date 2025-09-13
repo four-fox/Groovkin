@@ -123,6 +123,21 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
+                      height: 20,
+                    ),
+                    CustomButton(
+                      borderClr: Colors.transparent,
+                      onTap: () {
+                        if (loginForm.currentState!.validate()) {
+                          controller.login();
+                        }
+                      },
+                      text: "Login",
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const SizedBox(
                       height: kToolbarHeight * 2,
                     ),
                     Row(
@@ -189,21 +204,6 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomButton(
-                      borderClr: Colors.transparent,
-                      onTap: () {
-                        if (loginForm.currentState!.validate()) {
-                          controller.login();
-                        }
-                      },
-                      text: "Login",
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    )
                   ],
                 ),
               ),

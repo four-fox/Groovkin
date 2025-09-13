@@ -71,8 +71,8 @@ class SelectorButton extends StatelessWidget {
                     Country? selected;
                     if (selectorConfig.selectorType ==
                         PhoneInputSelectorType.BOTTOM_SHEET) {
-                      selected = await showCountrySelectorBottomSheet(
-                          context, countries);
+                      // selected = await showCountrySelectorBottomSheet(
+                      //     context, countries);
                     } else {
                       selected =
                           await showCountrySelectorDialog(context, countries);
@@ -84,7 +84,7 @@ class SelectorButton extends StatelessWidget {
                   }
                 : null,
             child: Padding(
-              padding: const EdgeInsets.only(left: 8,right: 8.0),
+              padding: const EdgeInsets.only(left: 8, right: 8.0),
               child: Item(
                 country: country,
                 showFlag: selectorConfig.showFlags,

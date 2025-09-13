@@ -515,12 +515,14 @@ class _CreateCompanyProfileScreenState
                   const SizedBox(
                     height: 20,
                   ),
+
                   // CustomTextFields(
                   //   labelText: "Add Location",
                   // ),
                   // SizedBox(
                   //   height: 20,
                   // ),
+
                   CustomTextFields(
                     labelText: "Venue name",
                     controller: controller.venueNameController,
@@ -892,6 +894,10 @@ class _CreateCompanyProfileScreenState
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: DynamicColor.grayClr),
                       ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: DynamicColor.grayClr),
+                      ),
                       errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: Color(0xffeabbb9)),
@@ -1094,12 +1100,12 @@ class _CreateCompanyProfileScreenState
                           : "Add Venue Detail",
                       onTap: () {
                         if (venueForm.currentState!.validate()) {
-                          if (!controller.termsConditionAgree.value) {
-                            bottomToast(
-                                text: "Please accept terms and condition");
-                          } else if (controller.multiPartImg.isEmpty &&
+                          if (controller.multiPartImg.isEmpty &&
                               editVenue == false) {
                             bottomToast(text: "Please choose venue image");
+                          } else if (!controller.termsConditionAgree.value) {
+                            bottomToast(
+                                text: "Please accept terms and condition");
                           } else {
                             // ✅ check only if user entered something
                             // !isValidUrl(

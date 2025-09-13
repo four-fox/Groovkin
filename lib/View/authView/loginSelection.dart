@@ -23,6 +23,7 @@ class _LoginSelectionState extends State<LoginSelection> {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
+      bottom: false,
       child: PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, _) {

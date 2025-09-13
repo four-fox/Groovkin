@@ -284,7 +284,6 @@ class AuthController extends GetxController {
           } else if (API().sp.read("role") == "eventOrganizer") {
             API().sp.write("isEventCreated",
                 response.data['data']['user_details']['is_event_created']);
-
             Get.offAllNamed(Routes.welComeScreen);
           } else {
             Get.offAllNamed(Routes.welComeScreen);

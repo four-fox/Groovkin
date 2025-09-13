@@ -176,7 +176,7 @@ class _MyCollectionDetailsScreenState extends State<MyCollectionDetailsScreen> {
                                   children: controller
                                       .tagCollectionDetail!.data!
                                       .expand((tag) => tag.categoryItems ?? [])
-                                      .map((data) { 
+                                      .map((data) {
                                     return Chip(
                                       backgroundColor: theme.primaryColor,
                                       shape: RoundedRectangleBorder(
@@ -273,9 +273,9 @@ class _CreateNewTagState extends State<CreateNewTag> {
                           const SizedBox(
                             height: 10,
                           ),
-                          SearchTextFields(
-                            controller: TextEditingController(),
-                          ),
+                          // SearchTextFields(
+                          //   controller: TextEditingController(),
+                          // ),
                           Expanded(
                             child: SizedBox(
                               height: Get.height / 1.4,

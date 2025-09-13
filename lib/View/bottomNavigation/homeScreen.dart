@@ -75,7 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
         color: theme.scaffoldBackgroundColor,
         child: GetBuilder<HomeController>(initState: (v) {
           if (mounted) {
+            // WidgetsBinding.instance.addPostFrameCallback((_) {
             _controller.showIndexValue!.value = 0;
+            // });
           }
         }, builder: (controller) {
           return Scaffold(
@@ -1211,6 +1213,11 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                         .getAllCards()
                                                                         .then(
                                                                             (_) async {
+                                                                      controller
+                                                                              .selectedCardId =
+                                                                          null;
+                                                                      controller
+                                                                          .update();
                                                                       if (_homeController
                                                                           .transactionData
                                                                           .isEmpty) {
@@ -1224,10 +1231,13 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                             true) {
                                                                           controller
                                                                               .eventAcceptDeclineFtn(
-                                                                            event:
-                                                                                controller.managerPendingEvents!.data!.data![index],
+                                                                            id: controller.managerPendingEvents!.data!.data![index].id!,
                                                                             status:
                                                                                 "accepted",
+                                                                          );
+
+                                                                          print(
+                                                                            controller.managerPendingEvents!.data!.data![index].id,
                                                                           );
                                                                         } else {
                                                                           bottomToast(

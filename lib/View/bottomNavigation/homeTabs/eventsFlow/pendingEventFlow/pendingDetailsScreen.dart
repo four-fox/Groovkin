@@ -13,7 +13,9 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/View/paymentMethod/showSelectedBottomSheetCard.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
@@ -42,6 +44,7 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
   late EventController _eventController;
 
   late AuthController _authController;
+  late HomeController _homeController;
 
   @override
   void initState() {
@@ -59,6 +62,12 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
       _eventController = Get.find<EventController>();
     } else {
       _eventController = Get.put(EventController());
+    }
+
+    if (Get.isRegistered<HomeController>()) {
+      _homeController = Get.find<HomeController>();
+    } else {
+      _homeController = Get.put(HomeController());
     }
     super.initState();
   }
@@ -541,49 +550,233 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
-                                      child: CustomButton(
-                                        heights: 39,
-                                        onTap: controller.eventDetail!.data!
-                                                    .user!.isDelete ==
-                                                null
-                                            ? () {
-                                                int? userId;
-                                                if (controller.eventDetail!
-                                                        .data!.userId ==
-                                                    API().sp.read("userId")) {
-                                                  userId = controller
-                                                      .eventDetail!
-                                                      .data!
-                                                      .venue!
-                                                      .userId;
-                                                } else {
-                                                  userId = controller
-                                                      .eventDetail!
-                                                      .data!
-                                                      .userId!;
-                                                }                                                
-                                                Get.toNamed(
-                                                    Routes.counterScreen,
-                                                    arguments: {
-                                                      "textField": true,
-                                                      "acceptVal": true,
-                                                      "userId": userId,
-                                                      "eventId": eventId,
-                                                    });
-                                              }
-                                            : () {
-                                                Utils.showToast();
-                                              },
-                                        style: poppinsMediumStyle(
-                                            fontSize: 13,
-                                            context: context,
-                                            color:
-                                                theme.scaffoldBackgroundColor),
-                                        backgroundClr: false,
-                                        color2: DynamicColor.lightYellowClr,
-                                        color1: DynamicColor.lightYellowClr,
-                                        borderClr: Colors.transparent,
-                                        text: "Counters",
+                                      child: Column(
+                                        children: [
+                                          CustomButton(
+                                            heights: 39,
+                                            onTap: controller.eventDetail!.data!
+                                                        .user!.isDelete ==
+                                                    null
+                                                ? () {
+                                                    int? userId;
+                                                    if (controller.eventDetail!
+                                                            .data!.userId ==
+                                                        API()
+                                                            .sp
+                                                            .read("userId")) {
+                                                      userId = controller
+                                                          .eventDetail!
+                                                          .data!
+                                                          .venue!
+                                                          .userId;
+                                                    } else {
+                                                      userId = controller
+                                                          .eventDetail!
+                                                          .data!
+                                                          .userId!;
+                                                    }
+                                                    Get.toNamed(
+                                                        Routes.counterScreen,
+                                                        arguments: {
+                                                          "textField": true,
+                                                          "acceptVal": true,
+                                                          "userId": userId,
+                                                          "eventId": eventId,
+                                                        });
+                                                  }
+                                                : () {
+                                                    Utils.showToast();
+                                                  },
+                                            style: poppinsMediumStyle(
+                                                fontSize: 13,
+                                                context: context,
+                                                color: theme
+                                                    .scaffoldBackgroundColor),
+                                            backgroundClr: false,
+                                            color2: DynamicColor.lightYellowClr,
+                                            color1: DynamicColor.lightYellowClr,
+                                            borderClr: Colors.transparent,
+                                            text: "Counters",
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          if (sp.read("role") == "eventManager")
+                                            CustomButton(
+                                              heights: 39,
+                                              text: "Accept",
+                                              fontSized: 12,
+                                              onTap:
+                                                  controller.eventDetail!.data!
+                                                              .user!.isDelete ==
+                                                          null
+                                                      ? () {
+                                                          _controller
+                                                              .checkBoxValue
+                                                              .value = false;
+                                                          showDialog(
+                                                              barrierColor: Colors
+                                                                  .transparent,
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  true,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertWidget(
+                                                                  height:
+                                                                      Get.height *
+                                                                          .45,
+                                                                  container:
+                                                                      SizedBox(
+                                                                    width: Get
+                                                                        .width,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          vertical:
+                                                                              12.0,
+                                                                          horizontal:
+                                                                              4),
+                                                                      child:
+                                                                          SingleChildScrollView(
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.center,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Disclaimer",
+                                                                              style: poppinsMediumStyle(
+                                                                                fontSize: 20,
+                                                                                context: context,
+                                                                                color: theme.primaryColor,
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 15,
+                                                                            ),
+                                                                            Text(
+                                                                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                                                                              maxLines: 8,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              style: poppinsMediumStyle(
+                                                                                fontSize: 13,
+                                                                                context: context,
+                                                                                color: theme.primaryColor,
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 15,
+                                                                            ),
+                                                                            Row(
+                                                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                                                              children: [
+                                                                                Obx(
+                                                                                  () => Theme(
+                                                                                    data: Theme.of(context).copyWith(
+                                                                                      unselectedWidgetColor: Colors.white,
+                                                                                    ),
+                                                                                    child: SizedBox(
+                                                                                      width: 30,
+                                                                                      child: Checkbox(
+                                                                                          activeColor: DynamicColor.yellowClr,
+                                                                                          value: _controller.checkBoxValue.value,
+                                                                                          onChanged: (v) {
+                                                                                            _controller.checkBoxValue.value = v!;
+                                                                                            controller.update();
+                                                                                          }),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                Flexible(
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.only(left: 2.0),
+                                                                                    child: Text(
+                                                                                      'i have read and agree to the terms and conditions',
+                                                                                      style: poppinsRegularStyle(
+                                                                                        fontSize: 13,
+                                                                                        context: context,
+                                                                                        color: theme.primaryColor,
+                                                                                      ),
+                                                                                      maxLines: 2,
+                                                                                    ),
+                                                                                  ),
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                            CustomButton(
+                                                                              heights: 35,
+                                                                              text: "Accept",
+                                                                              fontSized: 12,
+                                                                              onTap: () async {
+                                                                                if (_controller.checkBoxValue.value) {
+                                                                                  await _homeController.getAllCards().then((_) async {
+                                                                                    _controller.selectedCardId = null;
+                                                                                    _controller.update();
+                                                                                    if (_homeController.transactionData.isEmpty) {
+                                                                                      bottomToast(text: "Please Add At Least One Card To Accept Event");
+                                                                                    } else {
+                                                                                      final isCardSelected = await showBottomSelectedCardSheet(context);
+                                                                                      if (isCardSelected == true) {
+                                                                                        _controller.eventAcceptDeclineFtn(
+                                                                                          id: controller.eventDetail!.data!.id,
+                                                                                          status: "accepted",
+                                                                                        );
+                                                                                      } else {
+                                                                                        bottomToast(text: "You didn't select any card");
+                                                                                      }
+                                                                                    }
+                                                                                  });
+                                                                                } else {
+                                                                                  bottomToast(text: "Please agree with the disclaimer to accept the event request");
+                                                                                }
+                                                                              },
+                                                                              color2: DynamicColor.greenClr.withValues(alpha: 0.8),
+                                                                              color1: DynamicColor.greenClr.withValues(alpha: 0.8),
+                                                                              widths: Get.width / 1.4,
+                                                                              backgroundClr: false,
+                                                                              borderClr: Colors.transparent,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+                                                        }
+                                                      : () {
+                                                          Utils.showToast();
+                                                        },
+                                              color2: controller
+                                                          .eventDetail!
+                                                          .data!
+                                                          .user!
+                                                          .isDelete ==
+                                                      null
+                                                  ? DynamicColor.greenClr
+                                                      .withValues(alpha: 0.8)
+                                                  : DynamicColor.disabledColor,
+                                              color1: controller
+                                                          .eventDetail!
+                                                          .data!
+                                                          .user!
+                                                          .isDelete ==
+                                                      null
+                                                  ? DynamicColor.greenClr
+                                                      .withValues(alpha: 0.8)
+                                                  : DynamicColor.disabledColor,
+                                              // widths: Get.width / 2.4,
+                                              backgroundClr: false,
+                                              borderClr: Colors.transparent,
+                                            ),
+                                        ],
                                       ),
                                     ),
                               const SizedBox(

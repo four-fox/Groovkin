@@ -303,7 +303,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       const SizedBox(
                         height: 15,
                       ),
-                      TextField(
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter start date";
+                          } else {
+                            return null;
+                          }
+                        },
                         keyboardType: TextInputType.none,
                         style: TextStyle(
                           fontSize: 14,
@@ -386,7 +393,14 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       const SizedBox(
                         height: 15,
                       ),
-                      TextField(
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter end date";
+                          } else {
+                            return null;
+                          }
+                        },
                         keyboardType: TextInputType.none,
                         style: TextStyle(
                           fontSize: 14,
@@ -1024,18 +1038,22 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                       endDate.isBefore(today)) {
                                     bottomToast(
                                         text: "Past dates are not allowed");
-                                  } else if (startDate
-                                      .isAtSameMomentAs(endDate)) {
-                                    bottomToast(
-                                        text:
-                                            "Start and End date cannot be the same");
-                                  } else if (endDate.isBefore(startDate)) {
-                                    bottomToast(
-                                        text:
-                                            "End date must be after the start date");
                                   } else {
                                     controller.checkingTime();
                                   }
+                                  // else if (startDate
+                                  //       .isAtSameMomentAs(endDate)) {
+                                  //     bottomToast(
+                                  //         text:
+                                  //             "Start and End date cannot be the same");
+                                  //   } else if (endDate.isBefore(startDate)) {
+                                  //     bottomToast(
+                                  //         text:
+                                  //             "End date must be after the start date");
+                                  //   } else {
+
+                                  //   }
+                                  // }
                                 }
                               } else {
                                 bottomToast(text: "Please choose event banner");

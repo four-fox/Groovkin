@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,7 +26,7 @@ class _WelComeScreenState extends State<WelComeScreen> {
     // print(intialRole);
     return SafeArea(
       top: false,
-      bottom: true,
+      bottom: Platform.isIOS ? false : true,
       child: Scaffold(
         // appBar: AppBar(
         //   backgroundColor: theme.scaffoldBackgroundColor,
@@ -109,11 +111,16 @@ class _WelComeScreenState extends State<WelComeScreen> {
                 } else if (API().sp.read("role") == "eventOrganizer") {
                   Get.offAllNamed(Routes.subscriptionScreen);
                 } else {
-                  Get.offAllNamed(Routes.createCompanyProfileScreen,
-                      arguments: {
-                        "updationCondition": false,
-                        "skipBtnHide": false,
-                      });
+                  Get.offAllNamed(Routes.addCardDetails, arguments: {
+                    "fromSignUp": true,
+                    "paymentMethod": 2,
+                  });
+
+                  // Get.offAllNamed(Routes.createCompanyProfileScreen,
+                  //     arguments: {
+                  //       "updationCondition": false,
+                  //       "skipBtnHide": false,
+                  //     });
                 }
                 // Get.toNamed(Routes.loginWithScreen);
               },

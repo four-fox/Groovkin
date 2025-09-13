@@ -37,6 +37,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
   @override
   void initState() {
     _getCountry();
+    getState(231.toString());
     super.initState();
   }
 
@@ -52,7 +53,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
     });
   }
 
-  Future<void> _getState(String countryId) async {
+  Future<void> getState(String countryId) async {
     _stateList.clear();
     _cityList.clear();
     List<StateModel> subStateList = [];
@@ -95,21 +96,22 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
     return Column(
       children: [
         ///Country TextField
-        TextField(
-          style: const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
-          controller: widget.country,
-          onTap: () {
-            setState(() => _title = 'Country');
-            _showDialog(context);
-          },
-          // enabled: false,
-          decoration: widget.textFieldDecoration == null
-              ? defaultDecoration.copyWith(hintText: 'Select country')
-              : widget.textFieldDecoration
-                  ?.copyWith(hintText: 'Select country'),
-          readOnly: true,
-        ),
-        const SizedBox(height: 15.0),
+        // TextField(
+        //   style: const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
+        //   controller: widget.country,
+        //   enabled: false,
+        //   onTap: () {
+        //     setState(() => _title = 'Country');
+        //     _showDialog(context);
+        //   },
+        //   // enabled: false,
+        //   decoration: widget.textFieldDecoration == null
+        //       ? defaultDecoration.copyWith(hintText: 'Select country')
+        //       : widget.textFieldDecoration
+        //           ?.copyWith(hintText: 'Select country'),
+        //   readOnly: true,
+        // ),
+        // const SizedBox(height: 15.0),
 
         ///State TextField
         TextField(
@@ -117,11 +119,11 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
           style: const TextStyle(fontSize: 14, color: Color(0xff9DA3B5)),
           onTap: () {
             setState(() => _title = 'State');
-            if (widget.country.text.isNotEmpty) {
-              _showDialog(context);
-            } else {
-              _showSnackBar('Select Country');
-            }
+            // if (widget.country.text.isNotEmpty) {
+            _showDialog(context);
+            // } else {
+            //   _showSnackBar('Select Country');
+            // }
           },
           decoration: widget.textFieldDecoration == null
               ? defaultDecoration.copyWith(hintText: 'Select state')
@@ -244,7 +246,7 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
                                   if (_title == "Country") {
                                     widget.country.text =
                                         _countrySubList[index].name;
-                                    _getState(_countrySubList[index].id);
+                                    getState(_countrySubList[index].id);
                                     _countrySubList = _countryList;
                                     widget.state.clear();
                                     // widget.city!.clear();

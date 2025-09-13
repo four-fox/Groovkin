@@ -559,7 +559,7 @@ class EventController extends GetxController {
           Get.offAllNamed(Routes.bottomNavigationView,
               arguments: {"indexValue": 0});
         });
-        
+
         showDialog(
             barrierColor: Colors.transparent,
             context: context,
@@ -590,6 +590,7 @@ class EventController extends GetxController {
                           context: context,
                           color: theme.primaryColor,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(
                         height: 90,

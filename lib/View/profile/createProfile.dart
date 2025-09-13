@@ -49,7 +49,27 @@ class _CreateProfileState extends State<CreateProfile> {
       _controller.displayNameController.text = API().sp.read("nameSocial");
     }
     _controller.countryController.text = "United States";
+
     _controller.getCurrentLocation(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      clear();
+    });
+  }
+
+  clear() {
+    _controller.firstNameController.clear();
+    _controller.lastNameController.clear();
+    _controller.displayNameController.clear();
+    _controller.dobController.clear();
+    _controller.phoneNumController.clear();
+    _controller.stateController.clear();
+    _controller.countryController.clear();
+    _controller.companyNameController.clear();
+    _controller.zipController.clear();
+    _controller.youtubeController.clear();
+    _controller.twitterXController.clear();
+    _controller.instagramController.clear();
+    _controller.aboutController.clear();
   }
 
   @override
@@ -68,7 +88,7 @@ class _CreateProfileState extends State<CreateProfile> {
         key: createProfileForm,
         child: SafeArea(
           top: false,
-          bottom: true,
+          bottom: Platform.isIOS ? false : true,
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: theme.scaffoldBackgroundColor,
@@ -269,6 +289,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                       itemBuilder:
                                           (BuildContext context, index) {
                                         return GestureDetector(
+                                          behavior: HitTestBehavior.translucent,
                                           onTap: () {
                                             controller.dobController.text =
                                                 dobYear[index].toString();
@@ -434,9 +455,9 @@ class _CreateProfileState extends State<CreateProfile> {
                       //   },
                       // ),
 
-                      SizedBox(
-                        height: sp.read('role') == "eventManager" ? 15 : 0,
-                      ),
+                      // SizedBox(
+                      //   height: sp.read('role') == "eventManager" ? 15 : 0,
+                      // ),
 
                       const SizedBox(
                         height: 15,
@@ -445,14 +466,12 @@ class _CreateProfileState extends State<CreateProfile> {
                       CountryStateCityPicker(
                           country: controller.countryController,
                           state: controller.stateController,
-
                           // dialogColor: Colors.grey.shade200,
                           textFieldDecoration: InputDecoration(
                             hintStyle: const TextStyle(
                                 fontSize: 14, color: Color(0xff9DA3B5)),
                             fillColor: Colors.transparent,
                             filled: true,
-
                             // suffixIcon: Icon(Icons.arrow_downward_rounded),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),

@@ -109,7 +109,7 @@ class MusicChoiceScreen extends StatelessWidget {
                       //   ],
                       // ),
                       controller.tagListPost.isEmpty
-                          ? noData(theme: theme)
+                          ? SizedBox()
                           : SizedBox(
                               height: kToolbarHeight,
                               child: Align(
@@ -148,183 +148,203 @@ class MusicChoiceScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                     
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "My Tags Collection",
-                          style: poppinsRegularStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                            context: context,
-                            color: theme.primaryColor,
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "My Tags Collection",
+                              style: poppinsRegularStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
+                            ),
                           ),
-                        ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Get.toNamed(Routes.myTagCollection)!
+                                      .then((_) {
+                                    _controller.getHashtagCollectionApi(
+                                        type: "music_choice");
+                                  });
+                                },
+                                icon: Icon(Icons.add),
+                              )
+                            ],
+                          )
+                        ],
                       ),
                       Container(
                           padding: const EdgeInsets.only(top: 8),
-                          child: controller.tagList.isEmpty? noData(theme: theme): ListView.builder(
-                              itemCount: controller.tagList.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context, index) {
-                                return Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          controller.tagList[index].showSubCat!
-                                                  .value =
-                                              !controller.tagList[index]
-                                                  .showSubCat!.value;
-                                          controller.update();
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: DynamicColor.darkGrayClr,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                controller.tagList[index].name
-                                                    .toString(),
-                                                style: poppinsRegularStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                  context: context,
-                                                  color: theme.primaryColor,
-                                                ),
-                                              ),
-                                              Icon(
-                                                controller.tagList[index]
-                                                        .showSubCat!.value
-                                                    ? Icons
-                                                        .keyboard_arrow_up_outlined
-                                                    : Icons
-                                                        .keyboard_arrow_down_sharp,
-                                                color: DynamicColor.whiteClr,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Visibility(
-                                          visible: controller
-                                              .tagList[index].showSubCat!.value,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 4),
+                          child: controller.tagList.isEmpty
+                              ? noData(theme: theme)
+                              : ListView.builder(
+                                  itemCount: controller.tagList.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (BuildContext context, index) {
+                                    return Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              controller.tagList[index]
+                                                      .showSubCat!.value =
+                                                  !controller.tagList[index]
+                                                      .showSubCat!.value;
+                                              controller.update();
+                                            },
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(8),
+                                                    BorderRadius.circular(10),
                                                 color: DynamicColor.darkGrayClr,
                                               ),
-                                              child: ListView.builder(
-                                                  itemCount: controller
-                                                      .tagList[index]
-                                                      .categoryItems!
-                                                      .length,
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          indexess) {
-                                                    return Column(
-                                                      children: [
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      8),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            color: DynamicColor
-                                                                .darkGrayClr,
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                    .tagList[
-                                                                        index]
-                                                                    .categoryItems![
-                                                                        indexess]
-                                                                    .name
-                                                                    .toString(),
-                                                                style:
-                                                                    poppinsRegularStyle(
-                                                                  fontSize: 14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  context:
-                                                                      context,
-                                                                  color: theme
-                                                                      .primaryColor,
-                                                                ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    controller
+                                                        .tagList[index].name
+                                                        .toString(),
+                                                    style: poppinsRegularStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      context: context,
+                                                      color: theme.primaryColor,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    controller.tagList[index]
+                                                            .showSubCat!.value
+                                                        ? Icons
+                                                            .keyboard_arrow_up_outlined
+                                                        : Icons
+                                                            .keyboard_arrow_down_sharp,
+                                                    color:
+                                                        DynamicColor.whiteClr,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Visibility(
+                                              visible: controller.tagList[index]
+                                                  .showSubCat!.value,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 4),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    color: DynamicColor
+                                                        .darkGrayClr,
+                                                  ),
+                                                  child: ListView.builder(
+                                                      itemCount: controller
+                                                          .tagList[index]
+                                                          .categoryItems!
+                                                          .length,
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      shrinkWrap: true,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              indexess) {
+                                                        return Column(
+                                                          children: [
+                                                            Container(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          8),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                color: DynamicColor
+                                                                    .darkGrayClr,
                                                               ),
-                                                              Theme(
-                                                                data: Theme.of(
-                                                                        context)
-                                                                    .copyWith(
-                                                                  unselectedWidgetColor:
-                                                                      Colors
-                                                                          .white,
-                                                                ),
-                                                                child: Checkbox(
-                                                                    activeColor:
-                                                                        DynamicColor
-                                                                            .yellowClr,
-                                                                    value: controller
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    controller
                                                                         .tagList[
                                                                             index]
                                                                         .categoryItems![
                                                                             indexess]
-                                                                        .selected!
-                                                                        .value,
-                                                                    onChanged:
-                                                                        (v) {
-                                                                      controller.tagAddFtn(
-                                                                          items: controller.tagList[index].categoryItems![
-                                                                              indexess],
-                                                                          value:
-                                                                              v);
-                                                                    }),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Divider(
-                                                          color: DynamicColor
-                                                              .whiteClr,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                            ),
-                                          ))
-                                    ],
-                                  ),
-                                );
-                              }))
+                                                                        .name
+                                                                        .toString(),
+                                                                    style:
+                                                                        poppinsRegularStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      context:
+                                                                          context,
+                                                                      color: theme
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  Theme(
+                                                                    data: Theme.of(
+                                                                            context)
+                                                                        .copyWith(
+                                                                      unselectedWidgetColor:
+                                                                          Colors
+                                                                              .white,
+                                                                    ),
+                                                                    child: Checkbox(
+                                                                        activeColor: DynamicColor.yellowClr,
+                                                                        value: controller.tagList[index].categoryItems![indexess].selected!.value,
+                                                                        onChanged: (v) {
+                                                                          controller.tagAddFtn(
+                                                                              items: controller.tagList[index].categoryItems![indexess],
+                                                                              value: v);
+                                                                        }),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Divider(
+                                                              color:
+                                                                  DynamicColor
+                                                                      .whiteClr,
+                                                            ),
+                                                          ],
+                                                        );
+                                                      }),
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                    );
+                                  }))
                     ],
                   ),
                 ),
@@ -337,14 +357,14 @@ class MusicChoiceScreen extends StatelessWidget {
           child: CustomButton(
             borderClr: Colors.transparent,
             onTap: () async {
-              // if (_controller.tagListPost.isNotEmpty) {
+              if (_controller.tagListPost.isNotEmpty) {
                 if (_controller.eventDetail != null) {
                   await _controller.getMusicTag(type: "activity_choice");
                 }
                 Get.toNamed(Routes.activityChoiceScreen);
-              // } else {
-              //   bottomToast(text: "Please add music event");
-              // }
+              } else {
+                bottomToast(text: "Please add music event");
+              }
               // Get.toNamed(Routes.eventPreview,
               // arguments: {
               //   "viewDetails": 1

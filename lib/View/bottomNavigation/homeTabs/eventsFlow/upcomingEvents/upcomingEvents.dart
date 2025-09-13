@@ -15,7 +15,7 @@ import '../../organizerHomeModel/alleventsModel.dart';
 
 class UpcomingEvents extends StatelessWidget {
   UpcomingEvents({super.key});
-
+  
   RxBool recommendedVal = false.obs;
   RxBool ongoingVal = false.obs;
   RxBool pastVal = false.obs;

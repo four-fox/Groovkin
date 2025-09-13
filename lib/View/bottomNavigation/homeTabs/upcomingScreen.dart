@@ -101,6 +101,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   : Padding(
                       padding: const EdgeInsets.only(right: 7.0),
                       child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
                           onTap: () {
                             if ((API().sp.read("role") == "eventOrganizer") &&
                                 (appBarTitle == "Pending")) {
@@ -111,7 +112,15 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           },
                           child: ((API().sp.read("role") == "eventOrganizer") &&
                                   (appBarTitle == "Pending"))
-                              ? const Icon(Icons.edit_calendar)
+                              ? Row(
+                                  children: [
+                                    Text("Edit"),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(Icons.edit)
+                                  ],
+                                )
                               : const SizedBox.shrink()),
                     )
             ],
@@ -161,6 +170,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                               _controller.draftValue.value = false;
                               _controller.duplicateValue.value = false;
                             }
+                            _controller.showEditPreviewScreen.value = false;
                             _controller.assignValueForUpdate();
                           },
                           text: appBarTitle == "Drafts"

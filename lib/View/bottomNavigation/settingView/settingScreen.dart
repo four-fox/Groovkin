@@ -41,8 +41,6 @@ class _SettingScreenState extends State<SettingScreen> {
     }
   }
 
-
-  
   String switchRoleText() {
     String title = (API().sp.read("role") == "eventOrganizer" &&
             API().sp.read("currentRole") == "eventOrganizer")
@@ -59,7 +57,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     : "Switch Role";
     return title;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
