@@ -75,6 +75,8 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                 indicator: const BoxDecoration(color: Colors.white),
                 onTap: (v) {
                   homeController.selectedFilters.value = 0;
+                  homeController.cancelledVal.value = false;
+                  homeController.recommendedVal.value = false;
                   tabValue.value = v;
                   showFilter.value = false;
                 },
@@ -511,7 +513,8 @@ class _HistoryTabState extends State<HistoryTab> {
                           onTap: () {
                             controller.selectedFilters.value = 0;
                             if (controller.cancelledVal.value == false) {
-                              controller.cancelEventUserHistory(filter: "recent");
+                              controller.cancelEventUserHistory(
+                                  filter: "recent");
                               controller.cancelledVal.value = true;
                             } else {
                               controller.cancelledVal.value = false;
@@ -606,7 +609,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                           Get.toNamed(
                                               Routes.viewAllRecommendedScreen,
                                               arguments: {
-                                                "urlText": "past-events",
+                                                "urlText": "cancelled-events",
                                                 "appBarText": "All Past Event"
                                               });
                                         },

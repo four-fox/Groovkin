@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -228,6 +230,11 @@ class HomeController extends GetxController {
   }
 
   // Todo Get All Cards
+  String cardNumber = '';
+
+  String expiryDate = '';
+
+  String cardHolderName = '';
 
   List<transaction_history_model.Data> transactionData = [];
 
@@ -236,6 +243,7 @@ class HomeController extends GetxController {
     if (response.statusCode == 200) {
       final responseData =
           transaction_history_model.CardModel.fromJson(response.data);
+      addDefaultCardValue();
       transactionData.clear();
       for (var data in responseData.data!) {
         transactionData.add(data);
@@ -244,11 +252,32 @@ class HomeController extends GetxController {
     }
   }
 
-  String cardNumber = "";
-  String cardHolderName = '';
+  Future clearCard() async {
+    cardNumber = '';
+    expiryDate = '';
+    cardHolderName = '';
+    update();
+  }
 
-  String cvvCode = '';
-  String expiryDate = '';
+  addDefaultCardValue() {
+    if (transactionData.isNotEmpty) {
+      final Map<String, dynamic> decode =
+          jsonDecode(transactionData.first.cardDetails.toString());
+
+      cardNumber =
+          "${transactionData.first.first4digit!} 0000 0000 ${transactionData.first.last4digit!}";
+      cardHolderName = transactionData.first.cardholderName!;
+      expiryDate =
+          "${decode["exp_month"].toString().length == 1 ? ("0${decode["exp_month"]}") : decode["exp_month"].toString()}/${decode["exp_year"].toString().substring(2)}";
+      update();
+    }
+  }
+
+  // String cardNumber = "";
+  // String cardHolderName = '';
+
+  // String cvvCode = '';
+  // String expiryDate = '';
 
   // Todo Add Cards
 
@@ -272,6 +301,7 @@ class HomeController extends GetxController {
       var response = await API().postApi(formData, "add-card");
       if (response.statusCode == 200) {
         Utils.showFlutterToast("Your Card Has Been Added!");
+        // await getAllCards();
         if (fromSignUp == true) {
           Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
             "updationCondition": false,

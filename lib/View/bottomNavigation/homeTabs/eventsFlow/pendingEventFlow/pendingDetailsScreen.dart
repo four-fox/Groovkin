@@ -724,10 +724,13 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                                                                     } else {
                                                                                       final isCardSelected = await showBottomSelectedCardSheet(context);
                                                                                       if (isCardSelected == true) {
-                                                                                        _controller.eventAcceptDeclineFtn(
+                                                                                        await _controller.eventAcceptDeclineFtn(
                                                                                           id: controller.eventDetail!.data!.id,
                                                                                           status: "accepted",
-                                                                                        );
+                                                                                        )
+                                                                                            .then((_) {
+                                                                                          Get.back();
+                                                                                        });
                                                                                       } else {
                                                                                         bottomToast(text: "You didn't select any card");
                                                                                       }

@@ -616,14 +616,14 @@ class ListOfVenuesScreen extends StatelessWidget {
                 })
               ],
             ),
-            SizedBox(
-              height: 3,
-            ),
+            // SizedBox(
+          //   height: 3,
+            // ),
             Center(
               child: Text(
                 "Select the venue for the event",
                 style: poppinsMediumStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   context: context,
                   color: theme.primaryColor,
                 ),
