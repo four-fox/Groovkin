@@ -264,7 +264,6 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           throw Exception(error.toString());
                         });
-
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);
                         if (isPro) {

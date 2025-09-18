@@ -1943,7 +1943,6 @@ class AuthController extends GetxController {
           //   "indexValue": 0
           // }
         );
-
         BotToast.showText(
           text: "Genre Add Succesfully!",
           contentColor: Colors.black,
@@ -2015,24 +2014,34 @@ class AuthController extends GetxController {
     }
   }
 
-  completePurchase(CustomerInfo purchaseDetails) async {
-    await sp.write("identifier",
-        purchaseDetails.entitlements.active["premium"]?.productIdentifier);
-    final productId = purchaseDetails.entitlements.active["productIdentifier"];
-    // final productId = entitlement?.productIdentifier;
-    // Determine plan type
-    int planType = 0;
-    if (productId?.productIdentifier.toLowerCase().contains("monthly") ==
-        true) {
-      planType = 1;
-    } else if (productId?.productIdentifier.toLowerCase().contains("yearly") ==
-        true) {
-      planType = 2;
+  completePurchase(CustomerInfo customerInfo) async {
+    log(customerInfo.toString());
+
+    // Get the entitlement you configured in RevenueCat dashboard (example: "premium")
+    final entitlement = customerInfo.entitlements.active["premium"];
+
+    if (entitlement == null) {
+      BotToast.showText(text: "No active subscription found");
+      return;
     }
 
-    Purchases.logIn(purchaseDetails.originalAppUserId);
+    final productId = entitlement.productIdentifier;
+    // Save locally if needed
+    await sp.write("identifier", productId);
+
+    // Determine plan type
+    int planType = 0;
+    if (productId.toLowerCase().contains("monthly")) {
+      planType = 1;
+    } else if (productId.toLowerCase().contains("yearly")) {
+      planType = 2;
+    }
+    // Optional: log in with RevenueCat userId
+    await Purchases.logIn(customerInfo.originalAppUserId);
+    // Send to your API
     final data = form.FormData();
     data.fields.add(MapEntry("id", planType.toString()));
+
     final response = await API().postApi(data, "subscription");
     if (response.statusCode == 200) {
       BotToast.showText(text: "Subscription Purchased");
@@ -2054,13 +2063,11 @@ class AuthController extends GetxController {
                   if (kDebugMode) {
                     log("Restore Purchased!");
                   }
-
                   final time = DateTime.parse(value.customerInfo.entitlements
                           .all[entitlementID]!.expirationDate!)
                       .toLocal()
                       .difference(DateTime.now().toLocal())
                       .inMinutes;
-
                   if (time >= 0) {
                     // BotToast.closeAllLoading();
                     // checkSub("Subscription Is Not Expired!");

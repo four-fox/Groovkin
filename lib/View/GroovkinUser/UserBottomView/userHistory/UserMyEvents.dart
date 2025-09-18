@@ -21,7 +21,6 @@ class MyEventsScreen extends StatefulWidget {
 
 class _MyEventsScreenState extends State<MyEventsScreen> {
   RxInt tabValue = 0.obs;
-
   RxBool showFilter = false.obs;
 
   @override
@@ -32,7 +31,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
 
   RxBool recommendedVal = false.obs;
   final HomeController homeController = Get.find<HomeController>();
-
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -330,7 +329,7 @@ class HistoryTab extends StatefulWidget {
 
 class _HistoryTabState extends State<HistoryTab> {
   late HomeController controller;
-
+  
   @override
   void initState() {
     super.initState();
@@ -340,7 +339,7 @@ class _HistoryTabState extends State<HistoryTab> {
       controller = Get.put(HomeController());
     }
   }
-
+  
   // RxBool ongoingVal = false.obs;
 
   @override
@@ -397,89 +396,92 @@ class _HistoryTabState extends State<HistoryTab> {
                         ? const SizedBox.shrink()
                         : Visibility(
                             visible: controller.recommendedVal.value,
-                            child: controller.userPastHistory == null ||
-                                    controller
-                                        .userPastHistory!.data!.data!.isEmpty
-                                ? noData(theme: theme, context: context)
-                                : Column(
-                                    children: [
-                                      ListView.builder(
-                                          itemCount: controller.userPastHistory!
-                                                      .data!.data!.length >
-                                                  4
-                                              ? 4
-                                              : controller.userPastHistory!
-                                                  .data!.data!.length,
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.zero,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemBuilder:
-                                              (BuildContext context, index) {
-                                            EventData singleEventData =
-                                                controller.userPastHistory!
-                                                    .data!.data![index];
-                                            return userCustomEvent(
-                                                isDelete: singleEventData
-                                                            .user?.isDelete ==
-                                                        null
-                                                    ? false
-                                                    : true,
-                                                dayy:
-                                                    DateFormat
-                                                            .MMM()
-                                                        .format(
-                                                            singleEventData
-                                                                .startDateTime!),
-                                                datee:
-                                                    "${singleEventData.startDateTime!.day}\n",
-                                                networkImg:
-                                                    singleEventData.bannerImage == null
-                                                        ? false
-                                                        : true,
-                                                img:
-                                                    singleEventData
-                                                        .bannerImage?.mediaPath
-                                                        .toString(),
-                                                title: singleEventData.eventTitle
-                                                    .toString(),
-                                                location:
-                                                    singleEventData.location,
-                                                subtitle: singleEventData
-                                                    .venue!.venueName
-                                                    .toString(),
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                      Routes
-                                                          .userEventDetailsScreen,
-                                                      arguments: {
-                                                        "notify": true,
-                                                        "notifyBackBtn": true,
-                                                        'appBarTitle':
-                                                            "Event Preview",
-                                                        "statusText":
-                                                            singleEventData.id
-                                                                .toString(),
-                                                        "isCancel": true,
-                                                      });
-                                                },
-                                                context: context,
-                                                theme: theme);
-                                          }),
-                                      CustomButton(
-                                        onTap: () {
-                                          Get.toNamed(
-                                              Routes.viewAllRecommendedScreen,
-                                              arguments: {
-                                                "urlText": "past-events",
-                                                "appBarText": "All Past Event"
-                                              });
-                                        },
-                                        borderClr: Colors.transparent,
-                                        text: "View All ",
+                            child:
+                                controller.userPastHistory == null ||
+                                        controller.userPastHistory!.data!.data!
+                                            .isEmpty
+                                    ? noData(theme: theme, context: context)
+                                    : Column(
+                                        children: [
+                                          ListView.builder(
+                                            itemCount: controller
+                                                        .userPastHistory!
+                                                        .data!
+                                                        .data!
+                                                        .length >
+                                                    4
+                                                ? 4
+                                                : controller.userPastHistory!
+                                                    .data!.data!.length,
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.zero,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemBuilder:
+                                                (BuildContext context, index) {
+                                              EventData singleEventData =
+                                                  controller.userPastHistory!
+                                                      .data!.data![index];
+                                              return userCustomEvent(
+                                                  isDelete: singleEventData
+                                                              .user?.isDelete ==
+                                                          null
+                                                      ? false
+                                                      : true,
+                                                  dayy: DateFormat.MMM().format(
+                                                      singleEventData
+                                                          .startDateTime!),
+                                                  datee:
+                                                      "${singleEventData.startDateTime!.day}\n",
+                                                  networkImg:
+                                                      singleEventData.bannerImage == null
+                                                          ? false
+                                                          : true,
+                                                  img: singleEventData
+                                                      .bannerImage?.mediaPath
+                                                      .toString(),
+                                                  title: singleEventData.eventTitle
+                                                      .toString(),
+                                                  location:
+                                                      singleEventData.location,
+                                                  subtitle: singleEventData
+                                                      .venue!.venueName
+                                                      .toString(),
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                        Routes
+                                                            .userEventDetailsScreen,
+                                                        arguments: {
+                                                          "notify": true,
+                                                          "notifyBackBtn": true,
+                                                          'appBarTitle':
+                                                              "Event Preview",
+                                                          "statusText":
+                                                              singleEventData.id
+                                                                  .toString(),
+                                                          "isCancel": true,
+                                                        });
+                                                  },
+                                                  context: context,
+                                                  theme: theme);
+                                            },
+                                          ),
+                                          CustomButton(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  Routes
+                                                      .viewAllRecommendedScreen,
+                                                  arguments: {
+                                                    "urlText": "past-events",
+                                                    "appBarText":
+                                                        "All Past Event"
+                                                  });
+                                            },
+                                            borderClr: Colors.transparent,
+                                            text: "View All ",
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
                           ),
                   ],
                 ),

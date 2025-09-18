@@ -151,7 +151,7 @@ class NotificationService {
       presentBadge: true,
       presentSound: true,
     );
-  
+
     // Combine Android & IOS Notification Details
     NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
@@ -224,11 +224,9 @@ class NotificationService {
     } else {
       data = message.data;
     }
-
     EventController controller = Get.find();
     ManagerController managerController = Get.find();
     HomeController homeController = Get.find();
-
     if (message.data["type"] == "send_message") {
       controller.eventDetails(eventId: data["source_id"]);
       managerController.getAllMessages(
@@ -253,7 +251,7 @@ class NotificationService {
         "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-        "appBarTitle": "Completed"
+        "appBarTitle": "Completed",
         // "${singleEvent.status.toString().capitalize} Event"
       })!
           .then(

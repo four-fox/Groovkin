@@ -17,11 +17,12 @@ String dummyProfile =
     "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg";
 
 class API {
+
   /// SingleTon
   static final API _singleton = API._internal();
   var sp = GetStorage();
   late Dio dio;
-
+  
   factory API() {
     return _singleton;
   }
@@ -32,7 +33,6 @@ class API {
       connectTimeout: const Duration(seconds: 180),
       receiveTimeout: const Duration(seconds: 180),
     ));
-
     dio.interceptors.add(InterceptorsServices());
   }
 
@@ -79,7 +79,6 @@ class API {
     context,
     /*required RoundedLoadingButtonController postButton*/
   }) async {
-    
     print(Url().baseUrl + url);
     print(sp.read('token'));
 
