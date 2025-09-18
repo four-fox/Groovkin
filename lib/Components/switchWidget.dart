@@ -100,7 +100,7 @@ eventDateTime({
                 ),
         ),
         GestureDetector(
-          behavior: HitTestBehavior.translucent,
+          // behavior: HitTestBehavior.translucent,
           onTap: () async {
             if (text.toString().contains("https") ||
                 text.toString().contains("http")) {

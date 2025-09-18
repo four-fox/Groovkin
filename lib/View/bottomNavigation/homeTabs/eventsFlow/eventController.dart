@@ -832,8 +832,8 @@ class EventController extends GetxController {
 
   getAllEvents({nextUrl, loader = true}) async {
     getAllEventsLoader(false);
-    var response = await API()
-        .getApi(url: "show-events", fullUrl: nextUrl, isLoader: loader);
+    var response = await API().getApi(
+        url: "show-venue-my-events", fullUrl: nextUrl, isLoader: loader);
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         getAllEventWaiting = false;

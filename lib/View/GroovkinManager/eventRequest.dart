@@ -57,26 +57,25 @@ class _EventRequestsState extends State<EventRequests> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, index) {
                           final data = controller.allEvents!.data!.data[index];
-                          return GestureDetector(
-                            onTap: () {
-                              // Get.toNamed(Routes.pendingEventDetails,
-                              //     arguments: {
-                              //       "notInterestedBtn": 2,
-                              //       "title": "About Event"
-                              //     }
-                              // );
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                // Get.toNamed(Routes.pendingEventDetails,
+                                //     arguments: {
+                                //       "notInterestedBtn": 2,
+                                //       "title": "About Event"
+                                //     }
+                                // );
 
-                              Get.toNamed(Routes.upcomingScreen, arguments: {
-                                "notInterestedBtn": 2,
-                                "appBarTitle": "About Event",
-                                "eventId": data.id ?? 1,
-                                // "isFromEventRequestPage": true,
-                                // "reportedEventView": 1
-                              });
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
+                                Get.toNamed(Routes.upcomingScreen, arguments: {
+                                  "notInterestedBtn": 2,
+                                  "appBarTitle": "About Event",
+                                  "eventId": data.id ?? 1,
+                                  // "isFromEventRequestPage": true,
+                                  // "reportedEventView": 1
+                                });
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                     image: const DecorationImage(

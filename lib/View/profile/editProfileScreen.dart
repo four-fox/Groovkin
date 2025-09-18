@@ -451,7 +451,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                             : Colors.transparent,
                         inputDecoration: InputDecoration(
                           fillColor: isDark(context)
-                              ? theme.primaryColor
+                              ? DynamicColor.blackClr
                               : DynamicColor.whiteClr,
                           hintStyle: TextStyle(
                               color: isDark(context)

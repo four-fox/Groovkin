@@ -127,7 +127,7 @@ class _MyAppState extends State<MyApp> {
     checkUserSubscriptionIsActive();
     authController.restore();
   }
-
+  
   @override
   void initState() {
     super.initState();

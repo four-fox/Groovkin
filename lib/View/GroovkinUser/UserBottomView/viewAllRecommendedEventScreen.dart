@@ -25,25 +25,12 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
     super.initState();
     if (Get.isRegistered<HomeController>()) {
       _controller = Get.find<HomeController>();
-    }else{
+    } else {
       _controller = Get.put(HomeController());
     }
   }
 
   String urlText = Get.arguments['urlText'];
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +66,8 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
               : controller.recommendedEventData!.data!.data!.isEmpty
                   ? noData(context: context, theme: theme)
                   : Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 8),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
@@ -95,7 +82,7 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
                               EventData singleEventData = controller
                                   .recommendedEventData!.data!.data![index];
                               return userCustomEvent(
-                                        isDelete:
+                                  isDelete:
                                       singleEventData.user?.isDelete == null
                                           ? false
                                           : true,
@@ -108,7 +95,7 @@ class _ViewAllRecommendedScreenState extends State<ViewAllRecommendedScreen> {
                                           ? false
                                           : true,
                                   img: singleEventData.bannerImage?.mediaPath
-                                          .toString(),
+                                      .toString(),
                                   title: singleEventData.eventTitle.toString(),
                                   location: singleEventData.location,
                                   subtitle: singleEventData.venue!.venueName

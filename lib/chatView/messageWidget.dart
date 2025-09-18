@@ -67,7 +67,7 @@ Widget messageWidget(
                           vertical: 4, horizontal: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.red.withValues(alpha:0.5),
+                        color: Colors.red.withValues(alpha: 0.5),
                         // borderRadius: BorderRadius.circular(30)
                       ),
                       child: const Center(
@@ -214,7 +214,7 @@ Widget messageWidget(
                                             .sourceId!),
                                         "reportedEventView": 1,
                                         "notInterestedBtn": 1,
-                                        "appBarTitle": ""
+                                        "appBarTitle": "About Event"
                                         // "${singleEvent.status.toString().capitalize} Event"
                                       });
                                 },
@@ -559,7 +559,7 @@ Widget messageWidget(
                                                                         ),
                                                                         color: Colors
                                                                             .grey
-                                                                            .withValues(alpha:0.5)),
+                                                                            .withValues(alpha: 0.5)),
                                                               ),
                                                             ),
                                                           ),
@@ -644,7 +644,8 @@ Widget messageWidget(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 8),
                                       decoration: BoxDecoration(
-                                          color: Colors.red.withValues(alpha:0.5),
+                                          color:
+                                              Colors.red.withValues(alpha: 0.5),
                                           borderRadius:
                                               BorderRadius.circular(30)),
                                       child: const Center(

@@ -42,7 +42,6 @@ class PostEvents extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 14.0),
                           child: Container(
                             // padding: EdgeInsets.all(6),
-
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
                               border: Border.all(
@@ -94,7 +93,8 @@ class PostEvents extends StatelessWidget {
                                                   : Colors.transparent),
                                           child: Center(
                                             child: Text(
-                                              "Completed",
+                                              // "Completed",
+                                              singleEvent.status!.toString(),
                                               style: poppinsRegularStyle(
                                                 fontSize: 11,
                                                 context: context,
@@ -180,7 +180,11 @@ class PostEvents extends StatelessWidget {
                                                   "eventId": singleEvent.id,
                                                   "reportedEventView": 1,
                                                   "notInterestedBtn": 1,
-                                                  "appBarTitle": "Completed"
+                                                  // "appBarTitle": "Completed"
+                                                  "appBarTitle": singleEvent
+                                                      .status
+                                                      .toString()
+                                                      .capitalize
                                                   // "${singleEvent.status.toString().capitalize} Event"
                                                 })!
                                                 .then(

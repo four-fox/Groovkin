@@ -185,6 +185,7 @@ class PendingScreen extends StatelessWidget {
                                     fontSized: 13,
                                     onTap: eventData.user!.isDelete == null
                                         ? () {
+                                            // print(eventData.status);
                                             Get.toNamed(
                                                     Routes.pendingEventDetails,
                                                     arguments: {
@@ -223,11 +224,15 @@ class PendingScreen extends StatelessWidget {
                                                 onTap: () {
                                                   Get.back();
                                                   Get.toNamed(
-                                                      Routes.cancelReason,
-                                                      arguments: {
+                                                          Routes.cancelReason,
+                                                          arguments: {
                                                         "eventId": eventData.id,
                                                         "doubleBack": false,
-                                                      });
+                                                      })!
+                                                      .then((_) {
+                                                    _eventController
+                                                        .getAllSendingRequest();
+                                                  });
                                                 });
                                           }
                                         : () {

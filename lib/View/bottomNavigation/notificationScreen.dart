@@ -50,7 +50,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   String formatDate(String dateString) {
-    DateTime dateTime = DateTime.parse(dateString);
+    DateTime dateTime = DateTime.parse(dateString).toLocal();
     return DateFormat.jm().format(dateTime); // "1:00 PM"
   }
 
@@ -89,7 +89,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   : controller.notificationModel!.data!.datas!.isEmpty
                       ? Center(
                           child: Text(
-                            "No Data Found",
+                            "No Notification Found",
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(
                                       color: isDark(context)
@@ -175,76 +175,41 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "appBarTitle": "Completed",
+                                            "appBarTitle": "About Event",
+                                            // "appBarTitle": "Completed",
                                             // "${singleEvent.status.toString().capitalize} Event"
                                           })!
                                           .then(
                                         (value) => _controller.completedEvent(),
                                       );
-                                      // Get.toNamed(Routes.upcomingScreen,
-                                      //         arguments: {
-                                      //       "eventId": data.sourceId,
-                                      //       "reportedEventView": 1,
-                                      //       "notInterestedBtn": 1,
-                                      //       "appBarTitle": "Completed Event"
-                                      //       // "${singleEvent.status.toString().capitalize} Event"
-                                      //     })!
-                                      //     .then(
-                                      //   (value) => _controller.completedEvent(),
-                                      // );
-                                      // Get.toNamed(Routes.upcomingScreen,
-                                      //         arguments: {
-                                      //       "eventId": data.sourceId,
-                                      //       "reportedEventView": 1,
-                                      //       "notInterestedBtn": 1,
-                                      //       "appBarTitle": "Completed Event",
-                                      //       "isComingFromNotification": true,
-                                      //     })!
-                                      //     .then(
-                                      //   (value) => _controller.completedEvent(),
-                                      // );
                                     } else if (data.type == "event_cancelled") {
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "appBarTitle": "Cancelled",
+                                            // "appBarTitle": "Cancelled",
                                             "isComingFromNotification": true,
+                                            "appBarTitle": "About Event",
                                           });
                                     } else if (data.type ==
                                         "event_acknowledged") {
-                                      // Get.toNamed(Routes.upcomingScreen,
-                                      //     arguments: {
-                                      //       "eventId": data.sourceId,
-                                      //       "reportedEventView": 1,
-                                      //       "notInterestedBtn": 1,
-                                      //       "appBarTitle": "Completed",
-                                      //       "isComingFromNotification": true,
-                                      //     });
-
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "appBarTitle": "Acknowledged"
+                                            // "appBarTitle": "Acknowledged"
+                                            "appBarTitle": "About Event",
                                           });
-
-                                      // Get.toNamed(Routes.upcomingScreen,
-                                      //     arguments: {
-                                      //       "eventId": data.sourceId,
-                                      //       "reportedEventView": 1,
-                                      //       "notInterestedBtn": 1,
-                                      //       "appBarTitle": "On Going"
-                                      //     });
                                     } else if (data.type == "event_declined") {
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "appBarTitle": "Cancelled",
+                                            "appBarTitle": "About Event",
+                                            // "appBarTitle": "Cancelled",
                                             // "isComingFromNotification": true,
                                           });
                                     }
