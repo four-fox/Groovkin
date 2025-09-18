@@ -15,8 +15,11 @@ import 'package:groovkin/Components/showCustomMap.dart';
 import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/pendingEventFlow/pendingDetailsScreen.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:iconsax/iconsax.dart';
@@ -27,6 +30,7 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import '../../../Components/t_section_button.dart';
+import 'eventsFlow/pendingEventFlow/pendingDetailsScreen.dart';
 
 class UpcomingScreen extends StatefulWidget {
   const UpcomingScreen({super.key});
@@ -54,13 +58,25 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
 
   final EventController _controller = Get.find();
   late AuthController _authController;
-
+  late ManagerController _managercontroller;
+  late HomeController _homeController;
   @override
   void initState() {
     if (Get.isRegistered<AuthController>()) {
       _authController = Get.find<AuthController>();
     } else {
       _authController = Get.put(AuthController());
+    }
+    if (Get.isRegistered<ManagerController>()) {
+      _managercontroller = Get.find<ManagerController>();
+    } else {
+      _managercontroller = Get.put(ManagerController());
+    }
+
+    if (Get.isRegistered<HomeController>()) {
+      _homeController = Get.find<HomeController>();
+    } else {
+      _homeController = Get.put(HomeController());
     }
     super.initState();
   }
@@ -133,60 +149,74 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
           child: GetBuilder<EventController>(initState: (v) {
             _controller.eventDetails(eventId: eventId);
           }, builder: (controller) {
-            print(controller.eventDetail?.data?.status);
             return controller.eventDetailsLoader.value == false
                 ? const SizedBox.shrink()
-                : upcomingWidget(theme, context, controller);
+                : controller.eventDetail!.data!.status == "pending"
+                    ? pendingDetailsWidget(
+                        theme,
+                        controller,
+                        context,
+                        flowBtn,
+                        eventId,
+                        _managercontroller,
+                        _authController,
+                        _homeController)
+                    : upcomingWidget(theme, context, controller);
           }),
         ),
         bottomNavigationBar: GetBuilder<EventController>(builder: (controller) {
           return controller.eventDetailsLoader.value == false
-              ? const SizedBox.shrink()
-              : (API().sp.read("role") == "eventManager" &&
-                      (controller.eventDetail!.data!.status == "completed" ||
-                          controller.eventDetail!.data!.status ==
-                              "acknowledged"))
-                  ? SafeArea(
-                      child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4.0, vertical: 3),
-                      child: CustomButton(
-                        text: "Download Event Details",
-                        onTap: () {
-                          downloadEventDetails(theme, context, controller);
-                        },
-                      ),
-                    ))
-                  : isComingFromNotifcation == true
-                      ? SizedBox()
-                      : API().sp.read("role") != "eventOrganizer"
-                          ? const SizedBox.shrink()
-                          : SafeArea(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0,
-                                  vertical: 3,
-                                ),
-                                child: CustomButton(
-                                  borderClr: Colors.transparent,
-                                  onTap: () {
-                                    if (appBarTitle != "Drafts") {
-                                      _controller.duplicateValue.value = true;
-                                      _controller.draftValue.value = false;
-                                    } else {
-                                      _controller.draftValue.value = false;
-                                      _controller.duplicateValue.value = false;
-                                    }
-                                    _controller.showEditPreviewScreen.value =
-                                        false;
-                                    _controller.assignValueForUpdate();
-                                  },
-                                  text: appBarTitle == "Drafts"
-                                      ? "Submit Draft Event"
-                                      : "Duplicate",
-                                ),
-                              ),
-                            );
+              ? SafeArea(child: SizedBox())
+              : controller.eventDetail!.data!.status == "pending"
+                  ? SafeArea(child: SizedBox())
+                  : (API().sp.read("role") == "eventManager" &&
+                          (controller.eventDetail!.data!.status ==
+                                  "completed" ||
+                              controller.eventDetail!.data!.status ==
+                                  "acknowledged"))
+                      ? SafeArea(
+                          child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 4.0, vertical: 3),
+                          child: CustomButton(
+                            text: "Download Event Details",
+                            onTap: () {
+                              downloadEventDetails(theme, context, controller);
+                            },
+                          ),
+                        ))
+                      : isComingFromNotifcation == true
+                          ? SafeArea(child: SizedBox())
+                          : API().sp.read("role") != "eventOrganizer"
+                              ? SafeArea(child: SizedBox())
+                              : SafeArea(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0,
+                                      vertical: 3,
+                                    ),
+                                    child: CustomButton(
+                                      borderClr: Colors.transparent,
+                                      onTap: () {
+                                        if (appBarTitle != "Drafts") {
+                                          _controller.duplicateValue.value =
+                                              true;
+                                          _controller.draftValue.value = false;
+                                        } else {
+                                          _controller.draftValue.value = false;
+                                          _controller.duplicateValue.value =
+                                              false;
+                                        }
+                                        _controller.showEditPreviewScreen
+                                            .value = false;
+                                        _controller.assignValueForUpdate();
+                                      },
+                                      text: appBarTitle == "Drafts"
+                                          ? "Submit Draft Event"
+                                          : "Duplicate",
+                                    ),
+                                  ),
+                                );
         }));
   }
 

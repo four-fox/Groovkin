@@ -11,6 +11,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinManager/eventRequest.dart';
 import 'package:groovkin/View/GroovkinManager/venueListsScreen.dart';
 import 'package:groovkin/View/bottomNavigation/AnalyticFlowBottomBar/AnalyticPortal.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeScreen.dart';
 import 'package:groovkin/View/bottomNavigation/myGroovkinScreen.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
@@ -21,10 +22,27 @@ get selectIndex => selectIndexxx.value;
 
 set selectIndex(index) => selectIndexxx.value = index;
 
-class BottomNavigationView extends StatelessWidget {
+class BottomNavigationView extends StatefulWidget {
   const BottomNavigationView({
     super.key,
   });
+
+  @override
+  State<BottomNavigationView> createState() => _BottomNavigationViewState();
+}
+
+class _BottomNavigationViewState extends State<BottomNavigationView> {
+  late HomeController homeController;
+
+  @override
+  void initState() {
+    super.initState();
+    if (Get.isRegistered<HomeController>()) {
+      homeController = Get.find<HomeController>();
+    } else {
+      homeController = Get.put(HomeController());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +177,8 @@ class BottomNavigationView extends StatelessWidget {
                 ],
                 selectedIndex: selectIndexxx.value,
                 onSelect: (index) {
+                  homeController.showFilter.value = false;
+                  homeController.update();
                   selectIndexxx.value = index;
                 },
               ),
