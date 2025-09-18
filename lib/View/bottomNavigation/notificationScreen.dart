@@ -120,55 +120,100 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                 true, // Add this flag
                                           });
                                     } else if (data.type == "event_accept") {
-                                      Get.toNamed(Routes.pendingEventDetails,
+                                      // Get.toNamed(Routes.pendingEventDetails,
+                                      //     arguments: {
+                                      //       "notInterestedBtn": 1,
+                                      //       "title": "About Event",
+                                      //       "eventId": data.sourceId!,
+                                      //       "type": "event",
+                                      //     });
+                                      Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
+                                            "eventId": data.sourceId,
+                                            "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "title": "About Event",
-                                            "eventId": data.sourceId!,
-                                            "type": "event",
+                                            "appBarTitle": "About Event",
+                                            // "appBarTitle": "Completed",
+                                            // "${singleEvent.status.toString().capitalize} Event"
                                           });
                                     } else if (data.type == "event_created") {
-                                      Get.toNamed(Routes.pendingEventDetails,
+                                      // Get.toNamed(Routes.pendingEventDetails,
+                                      //     arguments: {
+                                      //       "notInterestedBtn": 1,
+                                      //       "title": "About Event",
+                                      //       "eventId": data.sourceId!,
+                                      //       "type": "event",
+                                      //     });
+                                      Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
+                                            "eventId": data.sourceId,
+                                            "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "title": "About Event",
-                                            "eventId": data.sourceId!,
-                                            "type": "event",
+                                            "appBarTitle": "Event Created",
+                                            // "appBarTitle": "Completed",
+                                            // "${singleEvent.status.toString().capitalize} Event"
                                           });
                                     } else if (data.type ==
                                         "event_reschedule") {
-                                      Get.toNamed(Routes.pendingEventDetails,
+                                      // Get.toNamed(Routes.pendingEventDetails,
+                                      //     arguments: {
+                                      //       "eventId": data.sourceId,
+                                      //       "notInterestedBtn": 1,
+                                      //       "title": "Reschedule Event",
+                                      //       "type": "event",
+                                      //     });
+                                      Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
+                                            "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "title": "Reschedule Event",
-                                            "type": "event",
+                                            "appBarTitle": "Reschedule Event",
+                                            // "appBarTitle": "Completed",
+                                            // "${singleEvent.status.toString().capitalize} Event"
                                           });
                                     } else if (data.type == "event_rate") {
-                                      Get.toNamed(Routes.pendingEventDetails,
-                                              arguments: {
+                                      // Get.toNamed(Routes.pendingEventDetails,
+                                      //         arguments: {
+                                      //       "eventId": data.sourceId,
+                                      //       "notInterestedBtn": 1,
+                                      //       "title": "About Event",
+                                      //       "type": "event",
+                                      //     })!
+                                      //     .then(
+                                      //   (value) => _managercontroller
+                                      //       .getAllPendingEvents(),
+                                      // );
+                                      Get.toNamed(Routes.upcomingScreen,
+                                          arguments: {
                                             "eventId": data.sourceId,
+                                            "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "title": "About Event",
-                                            "type": "event",
-                                          })!
-                                          .then(
-                                        (value) => _managercontroller
-                                            .getAllPendingEvents(),
-                                      );
+                                            "appBarTitle": "Event Rate",
+                                            // "appBarTitle": "Completed",
+                                            // "${singleEvent.status.toString().capitalize} Event"
+                                          });
                                     } else if (data.type ==
                                         "event_price_update") {
-                                      Get.toNamed(Routes.pendingEventDetails,
-                                              arguments: {
+                                      // Get.toNamed(Routes.pendingEventDetails,
+                                      //         arguments: {
+                                      //       "eventId": data.sourceId,
+                                      //       "notInterestedBtn": 1,
+                                      //       "title": "About Event",
+                                      //       "type": "event",
+                                      //     })!
+                                      //     .then(
+                                      //   (value) => _managercontroller
+                                      //       .getAllPendingEvents(),
+                                      // );
+                                      Get.toNamed(Routes.upcomingScreen,
+                                          arguments: {
                                             "eventId": data.sourceId,
+                                            "reportedEventView": 1,
                                             "notInterestedBtn": 1,
-                                            "title": "About Event",
-                                            "type": "event",
-                                          })!
-                                          .then(
-                                        (value) => _managercontroller
-                                            .getAllPendingEvents(),
-                                      );
+                                            "appBarTitle": "Event Price Update",
+                                            // "appBarTitle": "Completed",
+                                            // "${singleEvent.status.toString().capitalize} Event"
+                                          });
                                     } else if (data.type == "event_complete") {
                                       Get.toNamed(Routes.upcomingScreen,
                                               arguments: {

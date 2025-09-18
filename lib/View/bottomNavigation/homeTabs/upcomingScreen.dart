@@ -69,835 +69,932 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-            const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
-                //     :flowBtn==3?
-                // kToolbarHeight*1.3
-                //     :kToolbarHeight*4.9
-                ),
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
-          ),
-          child: customAppBar(
-            onTap: () async {
-              _controller.duplicateValue.value = false;
-              _controller.update();
-              if (isFromEventRequestPage) {
-                await _controller.getAllEvents();
+        appBar: PreferredSize(
+          preferredSize:
+              const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
+                  //     :flowBtn==3?
+                  // kToolbarHeight*1.3
+                  //     :kToolbarHeight*4.9
+                  ),
+          child: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+            ),
+            child: customAppBar(
+              onTap: () async {
+                _controller.duplicateValue.value = false;
+                _controller.update();
+                if (isFromEventRequestPage) {
+                  await _controller.getAllEvents();
 
-                Get.back();
-              } else {
-                Get.back();
-              }
-            },
-            theme: theme,
-            text: appBarTitle,
-            actions: [
-              reportedEventPreview == 3
-                  ? const SizedBox.shrink()
-                  : Padding(
-                      padding: const EdgeInsets.only(right: 7.0),
-                      child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            if ((API().sp.read("role") == "eventOrganizer") &&
-                                (appBarTitle == "Pending")) {
-                              _controller.assignValueForUpdate();
-                              _controller.showEditPreviewScreen.value = true;
-                              _controller.update();
-                            }
-                          },
-                          child: ((API().sp.read("role") == "eventOrganizer") &&
-                                  (appBarTitle == "Pending"))
-                              ? Row(
-                                  children: [
-                                    Text("Edit"),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(Icons.edit)
-                                  ],
-                                )
-                              : const SizedBox.shrink()),
-                    )
-            ],
-            imagee: false,
+                  Get.back();
+                } else {
+                  Get.back();
+                }
+              },
+              theme: theme,
+              text: appBarTitle,
+              actions: [
+                reportedEventPreview == 3
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.only(right: 7.0),
+                        child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              if ((API().sp.read("role") == "eventOrganizer") &&
+                                  (appBarTitle == "Pending")) {
+                                _controller.assignValueForUpdate();
+                                _controller.showEditPreviewScreen.value = true;
+                                _controller.update();
+                              }
+                            },
+                            child:
+                                ((API().sp.read("role") == "eventOrganizer") &&
+                                        (appBarTitle == "Pending"))
+                                    ? Row(
+                                        children: [
+                                          Text("Edit"),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Icon(Icons.edit)
+                                        ],
+                                      )
+                                    : const SizedBox.shrink()),
+                      )
+              ],
+              imagee: false,
+            ),
           ),
         ),
-      ),
-      body: GetBuilder<EventController>(initState: (v) {
-        _controller.eventDetails(eventId: eventId);
-      }, builder: (controller) {
-        print(controller.eventDetail?.data?.status);
-        return controller.eventDetailsLoader.value == false
-            ? const SizedBox.shrink()
-            : upcomingWidget(theme, context, controller);
-      }),
-      bottomNavigationBar: (API().sp.read("role") == "eventManager" &&
-              appBarTitle == "Completed")
-          ? GetBuilder<EventController>(builder: (controller) {
-              return SafeArea(
-                  child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 3),
-                child: CustomButton(
-                  text: "Download Event Details",
-                  onTap: () {
-                    downloadEventDetails(theme, context, controller);
-                  },
-                ),
-              ));
-            })
-          : isComingFromNotifcation == true
-              ? null
-              : API().sp.read("role") != "eventOrganizer"
-                  ? const SizedBox.shrink()
-                  : SafeArea(
+        body: SafeArea(
+          child: GetBuilder<EventController>(initState: (v) {
+            _controller.eventDetails(eventId: eventId);
+          }, builder: (controller) {
+            print(controller.eventDetail?.data?.status);
+            return controller.eventDetailsLoader.value == false
+                ? const SizedBox.shrink()
+                : upcomingWidget(theme, context, controller);
+          }),
+        ),
+        bottomNavigationBar: GetBuilder<EventController>(builder: (controller) {
+          return controller.eventDetailsLoader.value == false
+              ? const SizedBox.shrink()
+              : (API().sp.read("role") == "eventManager" &&
+                      (controller.eventDetail!.data!.status == "completed" ||
+                          controller.eventDetail!.data!.status ==
+                              "acknowledged"))
+                  ? SafeArea(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4.0,
-                          vertical: 3,
-                        ),
-                        child: CustomButton(
-                          borderClr: Colors.transparent,
-                          onTap: () {
-                            if (appBarTitle != "Drafts") {
-                              _controller.duplicateValue.value = true;
-                              _controller.draftValue.value = false;
-                            } else {
-                              _controller.draftValue.value = false;
-                              _controller.duplicateValue.value = false;
-                            }
-                            _controller.showEditPreviewScreen.value = false;
-                            _controller.assignValueForUpdate();
-                          },
-                          text: appBarTitle == "Drafts"
-                              ? "Submit Draft Event"
-                              : "Duplicate",
-                        ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4.0, vertical: 3),
+                      child: CustomButton(
+                        text: "Download Event Details",
+                        onTap: () {
+                          downloadEventDetails(theme, context, controller);
+                        },
                       ),
-                    ),
-    );
+                    ))
+                  : isComingFromNotifcation == true
+                      ? SizedBox()
+                      : API().sp.read("role") != "eventOrganizer"
+                          ? const SizedBox.shrink()
+                          : SafeArea(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4.0,
+                                  vertical: 3,
+                                ),
+                                child: CustomButton(
+                                  borderClr: Colors.transparent,
+                                  onTap: () {
+                                    if (appBarTitle != "Drafts") {
+                                      _controller.duplicateValue.value = true;
+                                      _controller.draftValue.value = false;
+                                    } else {
+                                      _controller.draftValue.value = false;
+                                      _controller.duplicateValue.value = false;
+                                    }
+                                    _controller.showEditPreviewScreen.value =
+                                        false;
+                                    _controller.assignValueForUpdate();
+                                  },
+                                  text: appBarTitle == "Drafts"
+                                      ? "Submit Draft Event"
+                                      : "Duplicate",
+                                ),
+                              ),
+                            );
+        }));
   }
 
   upcomingWidget(
       ThemeData theme, BuildContext context, EventController controller) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 6),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: DynamicColor.avatarBgClr.withValues(alpha: 0.4),
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(
-                        color: DynamicColor.grayClr.withValues(alpha: 0.6)),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: ImageIcon(
-                              const AssetImage("assets/pin.png"),
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              if (_controller
-                                      .eventDetail!.data!.user!.isDelete !=
-                                  null)
-                                Utils.accountDelete(context),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              appBarTitle == ""
-                                  ? const SizedBox.shrink()
-                                  : Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 6, horizontal: 18),
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10),
-                                        ),
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "assets/topbtnGradent.png"),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          // appBarTitle,
-                                          controller.eventDetail!.data!.status!
-                                              .toString(),
-                                          style: poppinsRegularStyle(
-                                            fontSize: 11,
-                                            context: context,
-                                            color:
-                                                theme.scaffoldBackgroundColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: _controller.eventDetail!.data!.user!.isDelete !=
-                                null
-                            ? () {
-                                Utils.showToast();
-                              }
-                            : () {
-                                // Get.toNamed(Routes.eventOrganizerScreen,
-                                //     arguments: {
-                                //       "eventOrganizerValue": 3,
-                                //       'profileImg': "assets/eventOrganizer.png",
-                                //       "manager": sp.read("role"),
-                                //       "propertyView": true,
-                                //       "user": _controller.eventDetail?.data?.user
-                                //     });
-                              },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                          ),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 25,
-                                backgroundImage: NetworkImage(_controller
-                                            .eventDetail!.data!.bannerImage ==
-                                        null
-                                    ? dummyProfile
-                                    : _controller.eventDetail!.data!
-                                        .bannerImage!.mediaPath!),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: SizedBox(
-                                  width: Get.width / 1.7,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      _controller.eventDetail!.data!.venue ==
-                                              null
-                                          ? const SizedBox.shrink()
-                                          : Text(
-                                              _controller.eventDetail!.data!
-                                                  .venue!.location
-                                                  .toString(),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: poppinsRegularStyle(
-                                                  fontSize: 12,
-                                                  context: context,
-                                                  color: theme.primaryColor,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                      Text(
-                                        _controller
-                                            .eventDetail!.data!.eventTitle!,
-                                        style: poppinsRegularStyle(
-                                            fontSize: 12,
-                                            context: context,
-                                            color: DynamicColor.lightRedClr,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 6),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: DynamicColor.avatarBgClr.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(13),
+                  border: Border.all(
+                      color: DynamicColor.grayClr.withValues(alpha: 0.6)),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: ImageIcon(
+                            const AssetImage("assets/pin.png"),
+                            color: theme.primaryColor,
                           ),
                         ),
+                        Row(
+                          children: [
+                            if (_controller.eventDetail!.data!.user!.isDelete !=
+                                null)
+                              Utils.accountDelete(context),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            appBarTitle == ""
+                                ? const SizedBox.shrink()
+                                : Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 6, horizontal: 18),
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                      ),
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/topbtnGradent.png"),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        // appBarTitle,
+                                        controller.eventDetail!.data!.status!
+                                            .toString(),
+                                        style: poppinsRegularStyle(
+                                          fontSize: 11,
+                                          context: context,
+                                          color: theme.scaffoldBackgroundColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap:
+                          _controller.eventDetail!.data!.user!.isDelete != null
+                              ? () {
+                                  Utils.showToast();
+                                }
+                              : () {
+                                  // Get.toNamed(Routes.eventOrganizerScreen,
+                                  //     arguments: {
+                                  //       "eventOrganizerValue": 3,
+                                  //       'profileImg': "assets/eventOrganizer.png",
+                                  //       "manager": sp.read("role"),
+                                  //       "propertyView": true,
+                                  //       "user": _controller.eventDetail?.data?.user
+                                  //     });
+                                },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: NetworkImage(
+                                  _controller.eventDetail!.data!.bannerImage ==
+                                          null
+                                      ? dummyProfile
+                                      : _controller.eventDetail!.data!
+                                          .bannerImage!.mediaPath!),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: SizedBox(
+                                width: Get.width / 1.7,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _controller.eventDetail!.data!.venue == null
+                                        ? const SizedBox.shrink()
+                                        : Text(
+                                            _controller.eventDetail!.data!
+                                                .venue!.location
+                                                .toString(),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: poppinsRegularStyle(
+                                                fontSize: 12,
+                                                context: context,
+                                                color: theme.primaryColor,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                    Text(
+                                      _controller
+                                          .eventDetail!.data!.eventTitle!,
+                                      style: poppinsRegularStyle(
+                                          fontSize: 12,
+                                          context: context,
+                                          color: DynamicColor.lightRedClr,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      ((API().sp.read("role") == "eventManager") &&
-                              (appBarTitle == "On Going") &&
-                              controller.eventDetail!.data!.isEventComplete!
-                                      .value ==
-                                  0)
-                          ? const SizedBox.shrink()
-                          : SizedBox(
-                              child: Column(
-                                children: [
-                                  /// da organizer che kala ongoing event details goree
-                                  appBarTitle == "On Going" ||
-                                          appBarTitle == "Past Event"
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: CustomButton(
-                                            heights: 33,
-                                            widths: Get.width / 1.15,
-                                            color1: DynamicColor.greenClr,
-                                            color2: DynamicColor.greenClr,
-                                            backgroundClr: false,
-                                            borderClr: Colors.transparent,
-                                            onTap: () {
-                                              if ((API().sp.read("role") ==
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ((API().sp.read("role") == "eventManager") &&
+                            (appBarTitle == "On Going") &&
+                            controller.eventDetail!.data!.isEventComplete!
+                                    .value ==
+                                0)
+                        ? const SizedBox.shrink()
+                        : SizedBox(
+                            child: Column(
+                              children: [
+                                /// da organizer che kala ongoing event details goree
+                                appBarTitle == "On Going" ||
+                                        appBarTitle == "Past Event"
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: CustomButton(
+                                          heights: 33,
+                                          widths: Get.width / 1.15,
+                                          color1: DynamicColor.greenClr,
+                                          color2: DynamicColor.greenClr,
+                                          backgroundClr: false,
+                                          borderClr: Colors.transparent,
+                                          onTap: () {
+                                            if ((API().sp.read("role") ==
+                                                    "eventManager") &&
+                                                (appBarTitle ==
+                                                    "On Going" // "Past Event"
+                                                )) {
+                                              controller.acknowledgedEvent(
+                                                eventId: controller
+                                                    .eventDetail!.data!.id,
+                                              );
+                                            } else {
+                                              if (controller.eventDetail!.data!
+                                                      .isEventComplete!.value ==
+                                                  0) {
+                                                Get.toNamed(
+                                                    Routes
+                                                        .completeOnGoingEventsScreen,
+                                                    arguments: {
+                                                      "eventData": _controller
+                                                          .eventDetail!.data!
+                                                    });
+                                              }
+                                            }
+                                            // Get.toNamed(Routes.upcomingScreen,
+                                            //     arguments: {
+                                            //       "reportedEventView": flowBtn==2?3: 1
+                                            //     }
+                                            // );
+                                          },
+                                          textClr: theme.primaryColor,
+                                          text: ((API().sp.read("role") ==
                                                       "eventManager") &&
                                                   (appBarTitle ==
-                                                      "On Going" // "Past Event"
-                                                  )) {
-                                                controller.acknowledgedEvent(
-                                                  eventId: controller
-                                                      .eventDetail!.data!.id,
-                                                );
-                                              } else {
-                                                if (controller
-                                                        .eventDetail!
-                                                        .data!
-                                                        .isEventComplete!
-                                                        .value ==
-                                                    0) {
-                                                  Get.toNamed(
-                                                      Routes
-                                                          .completeOnGoingEventsScreen,
-                                                      arguments: {
-                                                        "eventData": _controller
-                                                            .eventDetail!.data!
-                                                      });
-                                                }
-                                              }
-                                              // Get.toNamed(Routes.upcomingScreen,
-                                              //     arguments: {
-                                              //       "reportedEventView": flowBtn==2?3: 1
-                                              //     }
-                                              // );
-                                            },
-                                            textClr: theme.primaryColor,
-                                            text: ((API().sp.read("role") ==
-                                                        "eventManager") &&
-                                                    (appBarTitle ==
-                                                        "On Going" /*"Past Event"*/))
-                                                ? "Acknowledged Event"
-                                                : controller
-                                                            .eventDetail!
-                                                            .data!
-                                                            .isEventComplete!
-                                                            .value ==
-                                                        1
-                                                    ? "Waiting for acknowledged"
-                                                    : "Complete",
-                                          ),
-                                        )
-                                      : appBarTitle == "Upcoming"
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
-                                              child: Row(
-                                                mainAxisAlignment: flowBtn == 2
-                                                    ? MainAxisAlignment
-                                                        .spaceBetween
-                                                    : MainAxisAlignment.center,
-                                                children: [
-                                                  CustomButton(
-                                                    backgroundClr: false,
-                                                    heights: 33,
-                                                    widths: flowBtn == 2
-                                                        ? Get.width / 2.4
-                                                        : Get.width / 1.15,
-                                                    onTap: () {
-                                                      cancelEventWidget(
-                                                          context: context,
-                                                          theme: theme,
-                                                          onTap: () {
-                                                            Get.back();
-                                                            Get.toNamed(
-                                                                Routes
-                                                                    .cancelReason,
-                                                                arguments: {
-                                                                  "eventId":
-                                                                      controller
-                                                                          .eventDetail!
-                                                                          .data!
-                                                                          .id,
-                                                                  "doubleBack":
-                                                                      false,
-                                                                });
-                                                          });
-                                                    },
-                                                    borderClr:
-                                                        Colors.transparent,
-                                                    color2: DynamicColor.redClr,
-                                                    color1: DynamicColor.redClr,
-                                                    fontSized: 13,
-                                                    text: flowBtn == 2
-                                                        ? "Not interested/decline"
-                                                        : "Cancel",
-                                                    // fontSized: 12,
-                                                  ),
-                                                  flowBtn == 2
-                                                      ? CustomButton(
-                                                          backgroundClr: false,
-                                                          widths: flowBtn == 2
-                                                              ? Get.width / 2.4
-                                                              : Get.width /
-                                                                  1.15,
-                                                          heights: 33,
-                                                          onTap: () {
-                                                            showDialog(
-                                                                barrierColor: Colors
-                                                                    .transparent,
-                                                                context:
-                                                                    context,
-                                                                barrierDismissible:
-                                                                    true,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return AlertWidget(
-                                                                    height:
-                                                                        kToolbarHeight *
-                                                                            10,
-                                                                    container:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                          horizontal:
-                                                                              8.0),
-                                                                      child:
-                                                                          DisclaimerView(
-                                                                        onTap:
-                                                                            () {
-                                                                          Get.back();
-                                                                          Get.toNamed(
-                                                                              Routes.addCardDetails,
-                                                                              arguments: {
-                                                                                'paymentMethod': 3
-                                                                              });
-                                                                        },
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                });
-                                                          },
-                                                          borderClr: Colors
-                                                              .transparent,
-                                                          color2: DynamicColor
-                                                              .greenClr,
-                                                          color1: DynamicColor
-                                                              .greenClr,
-                                                          text: "Accept",
-                                                          fontSized: 12,
-                                                        )
-                                                      : const SizedBox.shrink(),
-                                                ],
-                                              ),
-                                            )
-                                          : const SizedBox(),
-                                  appBarTitle == "Completed Event"
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0, vertical: 8),
-                                          child: CustomButton(
-                                            heights: 33,
-                                            color2: DynamicColor.secondaryClr,
-                                            color1: DynamicColor.secondaryClr,
-                                            backgroundClr: false,
-                                            onTap: () {
-                                              Get.toNamed(Routes.counterScreen,
-                                                  arguments: {
-                                                    "textField": false,
-                                                    "acceptVal": false,
-                                                    "userId":
-                                                        API().sp.read("role") ==
-                                                                "eventOrganizer"
-                                                            ? controller
-                                                                .eventDetail!
-                                                                .data!
-                                                                .venue!
-                                                                .user!
-                                                                .id
-                                                            : controller
-                                                                .eventDetail!
-                                                                .data!
-                                                                .user!
-                                                                .id,
-                                                    "eventId": controller
-                                                        .eventDetail!.data!.id,
-                                                  });
-                                            },
-                                            borderClr: Colors.transparent,
-                                            text: "See Counter",
-                                          ),
-                                        )
-                                      : const SizedBox.shrink(),
-                                  SizedBox(
-                                    height: flowBtn == 2 ? 0 : 8,
-                                  ),
-
-                                  /// da che kala organizer upcoming events details check kyee
-                                  ((appBarTitle == "Upcoming") &&
-                                          (API().sp.read("role") ==
-                                              "eventOrganizer"))
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                          ),
-                                          child: CustomButton(
-                                            heights: 33,
-                                            widths: Get.width / 1.15,
-                                            color1: DynamicColor.greenClr,
-                                            color2: DynamicColor.greenClr,
-                                            backgroundClr: false,
-                                            borderClr: Colors.transparent,
-                                            onTap: () {
-                                              _controller.postponedAssign();
-                                            },
-                                            textClr: theme.primaryColor,
-                                            text: "Reschedule",
-                                          ),
-                                        )
-                                      : const SizedBox.shrink(),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                ],
-                              ),
-                            ),
-                    ],
-                  ),
-                ),
-              ),
-              appBarTitle == "Completed Event"
-                  ? Align(
-                      alignment: Alignment.centerRight,
-                      child: interestedWidget(
-                          theme: theme,
-                          context: context,
-                          text:
-                              "Attended user ${controller.eventDetail!.data!.eventsGoingCount}"),
-                    )
-                  : const SizedBox.shrink(),
-              SizedBox(
-                height: flowBtn == 3 ? 0 : 12,
-              ),
-
-              ///todo dalta counter button data
-              SizedBox(
-                height: flowBtn == 3 ? 0 : 10,
-              ),
-
-              controller.venueImageList.isEmpty
-                  ? const SizedBox.shrink()
-                  : SizedBox(
-                      height: kToolbarHeight * 3,
-                      width: Get.width,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: controller.venueImageList.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12.0),
-                              child: Container(
-                                width: controller.venueImageList.length == 1
-                                    ? Get.width
-                                    : Get.width / 1.5,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: theme.primaryColor,
-                                    ),
-                                    image: controller.venueImageList[index]
-                                                .toString()
-                                                .split(".")
-                                                .last ==
-                                            "pdf"
-                                        ? null
-                                        : DecorationImage(
-                                            image: controller
-                                                        .venueImageList[index]
-                                                        .toString()
-                                                        .split(".")
-                                                        .last !=
-                                                    "mp4"
-                                                ? NetworkImage(controller
-                                                    .venueImageList[index]
-                                                    .toString())
-                                                : NetworkImage(controller
-                                                    .venueImageList[index]
-                                                    .toString()),
-                                            fit: BoxFit.fill,
-                                          )),
-                                child: controller.venueImageList[index]
-                                            .toString()
-                                            .split(".")
-                                            .last ==
-                                        "pdf"
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          Get.to(() => Scaffold(
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                appBar: AppBar(
-                                                    title: const Text(
-                                                        "PDF Viewer")),
-                                                body: SfPdfViewer.network(
-                                                  controller
-                                                      .venueImageList[index]
-                                                      .toString(),
-                                                ),
-                                              ));
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: DynamicColor.lightGrayClr
-                                                .withValues(alpha: 0.2),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.picture_as_pdf,
-                                              color: Colors.red,
-                                            ),
-                                          ),
+                                                      "On Going" /*"Past Event"*/))
+                                              ? "Acknowledged Event"
+                                              : controller
+                                                          .eventDetail!
+                                                          .data!
+                                                          .isEventComplete!
+                                                          .value ==
+                                                      1
+                                                  ? "Waiting for acknowledged"
+                                                  : "Complete",
                                         ),
                                       )
-                                    : null,
-                              ),
-                            );
-                          }),
-                    ),
+                                    : appBarTitle == "Upcoming"
+                                        ? Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: Row(
+                                              mainAxisAlignment: flowBtn == 2
+                                                  ? MainAxisAlignment
+                                                      .spaceBetween
+                                                  : MainAxisAlignment.center,
+                                              children: [
+                                                CustomButton(
+                                                  backgroundClr: false,
+                                                  heights: 33,
+                                                  widths: flowBtn == 2
+                                                      ? Get.width / 2.4
+                                                      : Get.width / 1.15,
+                                                  onTap: () {
+                                                    cancelEventWidget(
+                                                        context: context,
+                                                        theme: theme,
+                                                        onTap: () {
+                                                          Get.back();
+                                                          Get.toNamed(
+                                                              Routes
+                                                                  .cancelReason,
+                                                              arguments: {
+                                                                "eventId":
+                                                                    controller
+                                                                        .eventDetail!
+                                                                        .data!
+                                                                        .id,
+                                                                "doubleBack":
+                                                                    false,
+                                                              });
+                                                        });
+                                                  },
+                                                  borderClr: Colors.transparent,
+                                                  color2: DynamicColor.redClr,
+                                                  color1: DynamicColor.redClr,
+                                                  fontSized: 13,
+                                                  text: flowBtn == 2
+                                                      ? "Not interested/decline"
+                                                      : "Cancel",
+                                                  // fontSized: 12,
+                                                ),
+                                                flowBtn == 2
+                                                    ? CustomButton(
+                                                        backgroundClr: false,
+                                                        widths: flowBtn == 2
+                                                            ? Get.width / 2.4
+                                                            : Get.width / 1.15,
+                                                        heights: 33,
+                                                        onTap: () {
+                                                          showDialog(
+                                                              barrierColor: Colors
+                                                                  .transparent,
+                                                              context: context,
+                                                              barrierDismissible:
+                                                                  true,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return AlertWidget(
+                                                                  height:
+                                                                      kToolbarHeight *
+                                                                          10,
+                                                                  container:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            8.0),
+                                                                    child:
+                                                                        DisclaimerView(
+                                                                      onTap:
+                                                                          () {
+                                                                        Get.back();
+                                                                        Get.toNamed(
+                                                                            Routes.addCardDetails,
+                                                                            arguments: {
+                                                                              'paymentMethod': 3
+                                                                            });
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+                                                        },
+                                                        borderClr:
+                                                            Colors.transparent,
+                                                        color2: DynamicColor
+                                                            .greenClr,
+                                                        color1: DynamicColor
+                                                            .greenClr,
+                                                        text: "Accept",
+                                                        fontSized: 12,
+                                                      )
+                                                    : const SizedBox.shrink(),
+                                              ],
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                appBarTitle == "Completed Event"
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 8),
+                                        child: CustomButton(
+                                          heights: 33,
+                                          color2: DynamicColor.secondaryClr,
+                                          color1: DynamicColor.secondaryClr,
+                                          backgroundClr: false,
+                                          onTap: () {
+                                            Get.toNamed(Routes.counterScreen,
+                                                arguments: {
+                                                  "textField": false,
+                                                  "acceptVal": false,
+                                                  "userId":
+                                                      API().sp.read("role") ==
+                                                              "eventOrganizer"
+                                                          ? controller
+                                                              .eventDetail!
+                                                              .data!
+                                                              .venue!
+                                                              .user!
+                                                              .id
+                                                          : controller
+                                                              .eventDetail!
+                                                              .data!
+                                                              .user!
+                                                              .id,
+                                                  "eventId": controller
+                                                      .eventDetail!.data!.id,
+                                                });
+                                          },
+                                          borderClr: Colors.transparent,
+                                          text: "See Counter",
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                                SizedBox(
+                                  height: flowBtn == 2 ? 0 : 8,
+                                ),
 
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
-                  child: Text(
-                    controller.eventDetail!.data!.eventTitle.toString(),
-                    style: poppinsMediumStyle(
-                      fontSize: 21,
-                      color: theme.primaryColor,
-                      context: context,
-                    ),
+                                /// da che kala organizer upcoming events details check kyee
+                                ((appBarTitle == "Upcoming") &&
+                                        (API().sp.read("role") ==
+                                            "eventOrganizer"))
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                        ),
+                                        child: CustomButton(
+                                          heights: 33,
+                                          widths: Get.width / 1.15,
+                                          color1: DynamicColor.greenClr,
+                                          color2: DynamicColor.greenClr,
+                                          backgroundClr: false,
+                                          borderClr: Colors.transparent,
+                                          onTap: () {
+                                            _controller.postponedAssign();
+                                          },
+                                          textClr: theme.primaryColor,
+                                          text: "Reschedule",
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                              ],
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+            ),
+            appBarTitle == "Completed Event"
+                ? Align(
+                    alignment: Alignment.centerRight,
+                    child: interestedWidget(
+                        theme: theme,
+                        context: context,
+                        text:
+                            "Attended user ${controller.eventDetail!.data!.eventsGoingCount}"),
+                  )
+                : const SizedBox.shrink(),
+            SizedBox(
+              height: flowBtn == 3 ? 0 : 12,
+            ),
+
+            ///todo dalta counter button data
+            SizedBox(
+              height: flowBtn == 3 ? 0 : 10,
+            ),
+
+            controller.venueImageList.isEmpty
+                ? const SizedBox.shrink()
+                : SizedBox(
+                    height: kToolbarHeight * 3,
+                    width: Get.width,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.venueImageList.length,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Container(
+                              width: controller.venueImageList.length == 1
+                                  ? Get.width
+                                  : Get.width / 1.5,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: theme.primaryColor,
+                                  ),
+                                  image: controller.venueImageList[index]
+                                              .toString()
+                                              .split(".")
+                                              .last ==
+                                          "pdf"
+                                      ? null
+                                      : DecorationImage(
+                                          image: controller
+                                                      .venueImageList[index]
+                                                      .toString()
+                                                      .split(".")
+                                                      .last !=
+                                                  "mp4"
+                                              ? NetworkImage(controller
+                                                  .venueImageList[index]
+                                                  .toString())
+                                              : NetworkImage(controller
+                                                  .venueImageList[index]
+                                                  .toString()),
+                                          fit: BoxFit.fill,
+                                        )),
+                              child: controller.venueImageList[index]
+                                          .toString()
+                                          .split(".")
+                                          .last ==
+                                      "pdf"
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => Scaffold(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              appBar: AppBar(
+                                                  title:
+                                                      const Text("PDF Viewer")),
+                                              body: SfPdfViewer.network(
+                                                controller.venueImageList[index]
+                                                    .toString(),
+                                              ),
+                                            ));
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: DynamicColor.lightGrayClr
+                                              .withValues(alpha: 0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.picture_as_pdf,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          );
+                        }),
+                  ),
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 12),
+                child: Text(
+                  controller.eventDetail!.data!.eventTitle.toString(),
+                  style: poppinsMediumStyle(
+                    fontSize: 21,
+                    color: theme.primaryColor,
+                    context: context,
                   ),
                 ),
               ),
+            ),
 
-              const SizedBox(
-                height: 10,
-              ),
+            const SizedBox(
+              height: 10,
+            ),
 
-              eventDateTime(
-                text:
-                    "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
-                theme: theme,
-                context: context,
-                iconClr: DynamicColor.yellowClr,
-              ),
+            eventDateTime(
+              text:
+                  "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
+              theme: theme,
+              context: context,
+              iconClr: DynamicColor.yellowClr,
+            ),
 
-              const SizedBox(
-                height: 10,
-              ),
+            const SizedBox(
+              height: 10,
+            ),
 
-              eventDateTime(
-                theme: theme,
-                context: context,
-                img: "assets/calender.png",
-                text: DateFormat.yMMMMEEEEd()
-                    .format(controller.eventDetail!.data!.startDateTime!),
-                iconClr: DynamicColor.yellowClr,
-              ),
+            eventDateTime(
+              theme: theme,
+              context: context,
+              img: "assets/calender.png",
+              text: DateFormat.yMMMMEEEEd()
+                  .format(controller.eventDetail!.data!.startDateTime!),
+              iconClr: DynamicColor.yellowClr,
+            ),
 
-              const SizedBox(
-                height: 10,
-              ),
+            const SizedBox(
+              height: 10,
+            ),
 
-              controller.eventDetail!.data!.location == null
-                  ? const SizedBox.shrink()
-                  : eventDateTime(
-                      theme: theme,
-                      context: context,
-                      icon: true,
-                      text: "${controller.eventDetail!.data!.location}",
-                      iconClr: DynamicColor.yellowClr,
-                    ),
+            controller.eventDetail!.data!.location == null
+                ? const SizedBox.shrink()
+                : eventDateTime(
+                    theme: theme,
+                    context: context,
+                    icon: true,
+                    text: "${controller.eventDetail!.data!.location}",
+                    iconClr: DynamicColor.yellowClr,
+                  ),
 
-              controller.eventDetail!.data!.comment == null
-                  ? const SizedBox.shrink()
-                  : customWidget(context, theme,
-                      title: "Event Comments",
-                      value: controller.eventDetail!.data!.comment.toString()),
+            controller.eventDetail!.data!.comment == null
+                ? const SizedBox.shrink()
+                : customWidget(context, theme,
+                    title: "Event Comments",
+                    value: controller.eventDetail!.data!.comment.toString()),
+            customWidget(context, theme,
+                title: "Event About",
+                value: controller.eventDetail!.data!.about.toString()),
+            if (controller.eventDetail!.data!.themeOfEvent != "null")
               customWidget(context, theme,
-                  title: "Event About",
-                  value: controller.eventDetail!.data!.about.toString()),
-              if (controller.eventDetail!.data!.themeOfEvent != "null")
-                customWidget(context, theme,
-                    title: "Event theme",
-                    value:
-                        controller.eventDetail!.data!.themeOfEvent.toString()),
-              customWidget(context, theme,
-                  title: "Featuring",
-                  value: controller.eventDetail!.data!.featuring.toString()),
-              Padding(
+                  title: "Event theme",
+                  value: controller.eventDetail!.data!.themeOfEvent.toString()),
+            customWidget(context, theme,
+                title: "Featuring",
+                value: controller.eventDetail!.data!.featuring.toString()),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+              child: Container(
+                width: double.infinity,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-                child: Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr),
-                  child: Column(
-                    children: [
-                      controller.eventDetail!.data!.services!.isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Service",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.cardColor,
-                                ),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: DynamicColor.darkGrayClr),
+                child: Column(
+                  children: [
+                    controller.eventDetail!.data!.services!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Service",
+                              style: poppinsRegularStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                underline: true,
+                                color: theme.cardColor,
                               ),
                             ),
-                      controller.eventDetail!.data!.services!.isEmpty
-                          ? const SizedBox.shrink()
-                          : SizedBox(
-                              height: kToolbarHeight,
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    // physics: NeverScrollableScrollPhysics(),
-                                    itemCount: controller
-                                        .eventDetail!.data!.services!.length,
-                                    itemBuilder: (BuildContext context, indx) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6),
-                                        child: Chip(
-                                          backgroundColor:
-                                              DynamicColor.lightBlackClr,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          label: Text(
-                                            controller.eventDetail!.data!
-                                                .services![indx].eventItem!.name
-                                                .toString(),
-                                            style: poppinsRegularStyle(
-                                              fontSize: 14,
-                                              context: context,
-                                              color: theme.cardColor,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                              ),
-                            ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      controller.eventDetail!.data!.hardwareProvide!.isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Hardware Provided",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.cardColor,
-                                ),
-                              ),
-                            ),
-                      controller.eventDetail!.data!.hardwareProvide!.isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
+                          ),
+                    controller.eventDetail!.data!.services!.isEmpty
+                        ? const SizedBox.shrink()
+                        : SizedBox(
+                            height: kToolbarHeight,
+                            child: Align(
                               alignment: Alignment.topLeft,
                               child: ListView.builder(
                                   padding: EdgeInsets.zero,
-                                  itemCount: controller.eventDetail!.data!
-                                      .hardwareProvide!.length,
                                   shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, index) {
-                                    final filterdItem = controller
-                                        .eventDetail!
-                                        .data!
-                                        .hardwareProvide![index]
-                                        .hardwareItems!
-                                        .where((data) => data.selected == true)
-                                        .toList();
-                                    if (filterdItem.isEmpty) return SizedBox();
+                                  scrollDirection: Axis.horizontal,
+                                  // physics: NeverScrollableScrollPhysics(),
+                                  itemCount: controller
+                                      .eventDetail!.data!.services!.length,
+                                  itemBuilder: (BuildContext context, indx) {
                                     return Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 6),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("${"• "}",
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: isDark(context)
-                                                        ? theme.primaryColor
-                                                        : DynamicColor.whiteClr,
-                                                  )),
-                                              Text(
-                                                controller
-                                                    .eventDetail!
-                                                    .data!
-                                                    .hardwareProvide![index]
-                                                    .name
-                                                    .toString(),
-                                                style: poppinsRegularStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w600,
-                                                  context: context,
-                                                  underline: true,
+                                      child: Chip(
+                                        backgroundColor:
+                                            DynamicColor.lightBlackClr,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        label: Text(
+                                          controller.eventDetail!.data!
+                                              .services![indx].eventItem!.name
+                                              .toString(),
+                                          style: poppinsRegularStyle(
+                                            fontSize: 14,
+                                            context: context,
+                                            color: theme.cardColor,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    controller.eventDetail!.data!.hardwareProvide!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Hardware Provided",
+                              style: poppinsRegularStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                underline: true,
+                                color: theme.cardColor,
+                              ),
+                            ),
+                          ),
+                    controller.eventDetail!.data!.hardwareProvide!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: controller
+                                    .eventDetail!.data!.hardwareProvide!.length,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (BuildContext context, index) {
+                                  final filterdItem = controller
+                                      .eventDetail!
+                                      .data!
+                                      .hardwareProvide![index]
+                                      .hardwareItems!
+                                      .where((data) => data.selected == true)
+                                      .toList();
+                                  if (filterdItem.isEmpty) return SizedBox();
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("${"• "}",
+                                                style: TextStyle(
+                                                  fontSize: 20,
                                                   color: isDark(context)
                                                       ? theme.primaryColor
                                                       : DynamicColor.whiteClr,
+                                                )),
+                                            Text(
+                                              controller.eventDetail!.data!
+                                                  .hardwareProvide![index].name
+                                                  .toString(),
+                                              style: poppinsRegularStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                context: context,
+                                                underline: true,
+                                                color: isDark(context)
+                                                    ? theme.primaryColor
+                                                    : DynamicColor.whiteClr,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        SizedBox(
+                                          height: kToolbarHeight,
+                                          child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
+                                                child: Chip(
+                                                  backgroundColor: DynamicColor
+                                                      .lightBlackClr,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  label: Text(
+                                                    filterdItem[index1]
+                                                        .name
+                                                        .toString(),
+                                                    style: poppinsRegularStyle(
+                                                      fontSize: 14,
+                                                      context: context,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
+                                                    ),
+                                                  ),
                                                 ),
-                                              )
-                                            ],
+                                              );
+                                            },
+                                            itemCount: filterdItem.length,
                                           ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            height: kToolbarHeight,
-                                            child: ListView.builder(
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ),
+                    controller.eventDetail!.data!.musicGenre!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Music Genre",
+                              style: poppinsRegularStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                underline: true,
+                                color: theme.cardColor,
+                              ),
+                            ),
+                          ),
+                    controller.eventDetail!.data!.musicGenre!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: controller
+                                    .eventDetail!.data!.musicGenre!.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  final filteredItem = controller.eventDetail!
+                                      .data!.musicGenre![index].musicGenreItems!
+                                      .where((data) => data.selected == true)
+                                      .toList();
+
+                                  if (filteredItem.isEmpty) return SizedBox();
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("${"• "}",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,
+                                                )),
+                                            Text(
+                                              controller.eventDetail!.data!
+                                                  .musicGenre![index].name
+                                                  .toString(),
+                                              style: poppinsRegularStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w600,
+                                                context: context,
+                                                underline: true,
+                                                color: isDark(context)
+                                                    ? theme.primaryColor
+                                                    : DynamicColor.whiteClr,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        SizedBox(
+                                          height: kToolbarHeight,
+                                          child: ListView.builder(
                                               padding: EdgeInsets.zero,
                                               scrollDirection: Axis.horizontal,
+                                              itemCount: filteredItem.length,
                                               itemBuilder: (context, index1) {
                                                 return Padding(
                                                   padding: const EdgeInsets
@@ -913,7 +1010,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                               8),
                                                     ),
                                                     label: Text(
-                                                      filterdItem[index1]
+                                                      filteredItem[index1]
                                                           .name
                                                           .toString(),
                                                       style:
@@ -928,90 +1025,98 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     ),
                                                   ),
                                                 );
-                                              },
-                                              itemCount: filterdItem.length,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                            ),
-                      controller.eventDetail!.data!.musicGenre!.isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Music Genre",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.cardColor,
-                                ),
+                                              }),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ),
+                    controller.eventDetail!.data!.eventMusicChoiceTags!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Music Choice",
+                              style: poppinsRegularStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                underline: true,
+                                color: theme.cardColor,
                               ),
                             ),
-                      controller.eventDetail!.data!.musicGenre!.isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
+                          ),
+                    controller.eventDetail!.data!.eventMusicChoiceTags!.isEmpty
+                        ? const SizedBox.shrink()
+                        : SizedBox(
+                            child: Align(
                               alignment: Alignment.topLeft,
                               child: ListView.builder(
                                   padding: EdgeInsets.zero,
+                                  itemCount: controller.eventDetail!.data!
+                                      .eventMusicChoiceTags!.length,
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: controller
-                                      .eventDetail!.data!.musicGenre!.length,
                                   itemBuilder: (BuildContext context, index) {
-                                    final filteredItem = controller
+                                    final filterdItem = controller
                                         .eventDetail!
                                         .data!
-                                        .musicGenre![index]
-                                        .musicGenreItems!
-                                        .where((data) => data.selected == true)
+                                        .eventMusicChoiceTags![index]
+                                        .musicChoiceItems!
+                                        .categoryItems!
+                                        .where((data) =>
+                                            data.userSelection == true)
                                         .toList();
-
-                                    if (filteredItem.isEmpty) return SizedBox();
+                                    if (filterdItem.isEmpty) return SizedBox();
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 6),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("${"• "}",
-                                                  style: TextStyle(
-                                                    fontSize: 20,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text("${"• "}",
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      color: isDark(context)
+                                                          ? theme.primaryColor
+                                                          : DynamicColor
+                                                              .whiteClr,
+                                                    )),
+                                                Text(
+                                                  controller
+                                                      .eventDetail!
+                                                      .data!
+                                                      .eventMusicChoiceTags![
+                                                          index]
+                                                      .musicChoiceItems!
+                                                      .name
+                                                      .toString(),
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w600,
+                                                    context: context,
+                                                    underline: true,
                                                     color: isDark(context)
                                                         ? theme.primaryColor
                                                         : DynamicColor.whiteClr,
-                                                  )),
-                                              Text(
-                                                controller.eventDetail!.data!
-                                                    .musicGenre![index].name
-                                                    .toString(),
-                                                style: poppinsRegularStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w600,
-                                                  context: context,
-                                                  underline: true,
-                                                  color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            height: kToolbarHeight,
-                                            child: ListView.builder(
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            SizedBox(
+                                              height: kToolbarHeight,
+                                              child: ListView.builder(
                                                 padding: EdgeInsets.zero,
                                                 scrollDirection:
                                                     Axis.horizontal,
-                                                itemCount: filteredItem.length,
+                                                shrinkWrap: true,
                                                 itemBuilder: (context, index1) {
                                                   return Padding(
                                                     padding: const EdgeInsets
@@ -1028,9 +1133,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                                 .circular(8),
                                                       ),
                                                       label: Text(
-                                                        filteredItem[index1]
-                                                            .name
-                                                            .toString(),
+                                                        filterdItem[index1]
+                                                                .name ??
+                                                            "",
                                                         style:
                                                             poppinsRegularStyle(
                                                           fontSize: 14,
@@ -1044,528 +1149,389 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                       ),
                                                     ),
                                                   );
-                                                }),
+                                                },
+                                                itemCount: filterdItem.length,
+                                              ),
+                                            ),
+                                          ],
+                                        ));
+
+                                    /*return ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems!.length,
+                                    itemBuilder: (BuildContext context,indx){
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 6),
+                                        child: Chip(
+                                          backgroundColor: DynamicColor.lightBlackClr,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                          label: Text(controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
+                                            style: poppinsRegularStyle(
+                                                fontSize: 14,
+                                                context: context,
+                                                color: theme.primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    });*/
+                                  }),
+                            ),
+                          ),
+                    controller
+                            .eventDetail!.data!.eventActivityChoiceTags!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Activity Choice",
+                              style: poppinsRegularStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                underline: true,
+                                color: theme.cardColor,
+                              ),
+                            ),
+                          ),
+                    controller
+                            .eventDetail!.data!.eventActivityChoiceTags!.isEmpty
+                        ? const SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: controller.eventDetail!.data!
+                                    .eventActivityChoiceTags!.length,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (BuildContext context, index) {
+                                  final filterdItem = controller
+                                      .eventDetail!
+                                      .data!
+                                      .eventActivityChoiceTags![index]
+                                      .activityChoiceItems!
+                                      .categoryItems!
+                                      .where(
+                                          (data) => data.userSelection == true)
+                                      .toList();
+                                  if (filterdItem.isEmpty) return SizedBox();
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text("${"• "}",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: isDark(context)
+                                                    ? theme.primaryColor
+                                                    : DynamicColor.whiteClr,
+                                              )),
+                                          Text(
+                                            controller
+                                                .eventDetail!
+                                                .data!
+                                                .eventActivityChoiceTags![index]
+                                                .activityChoiceItems!
+                                                .name
+                                                .toString(),
+                                            style: poppinsRegularStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w600,
+                                              context: context,
+                                              underline: true,
+                                              color: isDark(context)
+                                                  ? theme.primaryColor
+                                                  : DynamicColor.whiteClr,
+                                            ),
                                           )
                                         ],
                                       ),
-                                    );
-                                  }),
-                            ),
-                      controller
-                              .eventDetail!.data!.eventMusicChoiceTags!.isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Music Choice",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.cardColor,
-                                ),
-                              ),
-                            ),
-                      controller
-                              .eventDetail!.data!.eventMusicChoiceTags!.isEmpty
-                          ? const SizedBox.shrink()
-                          : SizedBox(
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: controller.eventDetail!.data!
-                                        .eventMusicChoiceTags!.length,
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemBuilder: (BuildContext context, index) {
-                                      final filterdItem = controller
-                                          .eventDetail!
-                                          .data!
-                                          .eventMusicChoiceTags![index]
-                                          .musicChoiceItems!
-                                          .categoryItems!
-                                          .where((data) =>
-                                              data.userSelection == true)
-                                          .toList();
-                                      if (filterdItem.isEmpty)
-                                        return SizedBox();
-                                      return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 6),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text("${"• "}",
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: isDark(context)
-                                                            ? theme.primaryColor
-                                                            : DynamicColor
-                                                                .whiteClr,
-                                                      )),
-                                                  Text(
-                                                    controller
-                                                        .eventDetail!
-                                                        .data!
-                                                        .eventMusicChoiceTags![
-                                                            index]
-                                                        .musicChoiceItems!
+                                      SizedBox(
+                                          height: kToolbarHeight,
+                                          child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (context, index1) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 6),
+                                                child: Chip(
+                                                  backgroundColor: DynamicColor
+                                                      .lightBlackClr,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  label: Text(
+                                                    filterdItem[index1]
                                                         .name
                                                         .toString(),
                                                     style: poppinsRegularStyle(
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                      fontSize: 14,
                                                       context: context,
-                                                      underline: true,
                                                       color: isDark(context)
                                                           ? theme.primaryColor
                                                           : DynamicColor
                                                               .whiteClr,
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              SizedBox(
-                                                height: kToolbarHeight,
-                                                child: ListView.builder(
-                                                  padding: EdgeInsets.zero,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  shrinkWrap: true,
-                                                  itemBuilder:
-                                                      (context, index1) {
-                                                    return Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 6),
-                                                      child: Chip(
-                                                        backgroundColor:
-                                                            DynamicColor
-                                                                .lightBlackClr,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                        ),
-                                                        label: Text(
-                                                          filterdItem[index1]
-                                                                  .name ??
-                                                              "",
-                                                          style:
-                                                              poppinsRegularStyle(
-                                                            fontSize: 14,
-                                                            context: context,
-                                                            color: isDark(
-                                                                    context)
-                                                                ? theme
-                                                                    .primaryColor
-                                                                : DynamicColor
-                                                                    .whiteClr,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  itemCount: filterdItem.length,
-                                                ),
-                                              ),
-                                            ],
-                                          ));
-
-                                      /*return ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                      itemBuilder: (BuildContext context,indx){
-                                        return Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 6),
-                                          child: Chip(
-                                            backgroundColor: DynamicColor.lightBlackClr,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                            ),
-                                            label: Text(controller.eventDetail!.data!.eventMusicChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
-                                              style: poppinsRegularStyle(
-                                                  fontSize: 14,
-                                                  context: context,
-                                                  color: theme.primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      });*/
-                                    }),
-                              ),
-                            ),
-                      controller.eventDetail!.data!.eventActivityChoiceTags!
-                              .isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Activity Choice",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.cardColor,
-                                ),
-                              ),
-                            ),
-                      controller.eventDetail!.data!.eventActivityChoiceTags!
-                              .isEmpty
-                          ? const SizedBox.shrink()
-                          : Align(
-                              alignment: Alignment.topLeft,
-                              child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: controller.eventDetail!.data!
-                                      .eventActivityChoiceTags!.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, index) {
-                                    final filterdItem = controller
-                                        .eventDetail!
-                                        .data!
-                                        .eventActivityChoiceTags![index]
-                                        .activityChoiceItems!
-                                        .categoryItems!
-                                        .where((data) =>
-                                            data.userSelection == true)
-                                        .toList();
-                                    if (filterdItem.isEmpty) return SizedBox();
-                                    return Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text("${"• "}",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,
-                                                )),
-                                            Text(
-                                              controller
-                                                  .eventDetail!
-                                                  .data!
-                                                  .eventActivityChoiceTags![
-                                                      index]
-                                                  .activityChoiceItems!
-                                                  .name
-                                                  .toString(),
-                                              style: poppinsRegularStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600,
-                                                context: context,
-                                                underline: true,
-                                                color: isDark(context)
-                                                    ? theme.primaryColor
-                                                    : DynamicColor.whiteClr,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                            height: kToolbarHeight,
-                                            child: ListView.builder(
-                                              padding: EdgeInsets.zero,
-                                              scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, index1) {
-                                                return Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(horizontal: 6),
-                                                  child: Chip(
-                                                    backgroundColor:
-                                                        DynamicColor
-                                                            .lightBlackClr,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                    ),
-                                                    label: Text(
-                                                      filterdItem[index1]
-                                                          .name
-                                                          .toString(),
-                                                      style:
-                                                          poppinsRegularStyle(
-                                                        fontSize: 14,
-                                                        context: context,
-                                                        color: isDark(context)
-                                                            ? theme.primaryColor
-                                                            : DynamicColor
-                                                                .whiteClr,
-                                                      ),
-                                                    ),
                                                   ),
-                                                );
-                                              },
-                                              itemCount: filterdItem.length,
-                                            ))
-                                      ],
-                                    );
-                                    // return ListView.builder(
-                                    //     shrinkWrap: true,
-                                    //     scrollDirection: Axis.horizontal,
-                                    //     physics: NeverScrollableScrollPhysics(),
-                                    //     itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
-                                    //     itemBuilder: (BuildContext context,indx){
-                                    //       return Padding(
-                                    //         padding: EdgeInsets.symmetric(horizontal: 6),
-                                    //         child: Chip(
-                                    //           backgroundColor: DynamicColor.lightBlackClr,
-                                    //           shape: RoundedRectangleBorder(
-                                    //             borderRadius: BorderRadius.circular(8),
-                                    //           ),
-                                    //           label: Text(controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
-                                    //             style: poppinsRegularStyle(
-                                    //                 fontSize: 14,
-                                    //                 context: context,
-                                    //                 color: theme.primaryColor,
-                                    //             ),
-                                    //           ),
-                                    //         ),
-                                    //       );
-                                    //     });
-                                  }),
-                            ),
-                    ],
-                  ),
+                                                ),
+                                              );
+                                            },
+                                            itemCount: filterdItem.length,
+                                          ))
+                                    ],
+                                  );
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     physics: NeverScrollableScrollPhysics(),
+                                  //     itemCount: controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems!.length,
+                                  //     itemBuilder: (BuildContext context,indx){
+                                  //       return Padding(
+                                  //         padding: EdgeInsets.symmetric(horizontal: 6),
+                                  //         child: Chip(
+                                  //           backgroundColor: DynamicColor.lightBlackClr,
+                                  //           shape: RoundedRectangleBorder(
+                                  //             borderRadius: BorderRadius.circular(8),
+                                  //           ),
+                                  //           label: Text(controller.eventDetail!.data!.eventActivityChoiceTags![index].eventTagItem!.categoryItems![indx].name.toString(),
+                                  //             style: poppinsRegularStyle(
+                                  //                 fontSize: 14,
+                                  //                 context: context,
+                                  //                 color: theme.primaryColor,
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     });
+                                }),
+                          ),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
 
-              controller.eventDetail!.data!.location == null
-                  ? const SizedBox.shrink()
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Text(
-                            "Location",
-                            style: poppinsMediumStyle(
-                                fontWeight: FontWeight.w700,
-                                color: DynamicColor.lightRedClr,
-                                context: context,
-                                fontSize: 17),
+            controller.eventDetail!.data!.location == null
+                ? const SizedBox.shrink()
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Text(
+                          "Location",
+                          style: poppinsMediumStyle(
+                              fontWeight: FontWeight.w700,
+                              color: DynamicColor.lightRedClr,
+                              context: context,
+                              fontSize: 17),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Text(
+                          controller.eventDetail!.data!.location.toString(),
+                          style: poppinsMediumStyle(
+                            color: theme.primaryColor,
+                            context: context,
+                            fontSize: 16,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Text(
-                            controller.eventDetail!.data!.location.toString(),
-                            style: poppinsMediumStyle(
-                              color: theme.primaryColor,
-                              context: context,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-              const SizedBox(
-                height: 6,
-              ),
-              ((controller.eventDetail!.data!.latitude == null) &&
-                      (controller.eventDetail!.data!.longitude == null))
-                  ? const SizedBox.shrink()
-                  : ShowCustomMap(
-                      lat:
-                          double.parse(controller.eventDetail!.data!.latitude!),
-                      lng: double.parse(
-                          controller.eventDetail!.data!.longitude!),
-                    ),
-              const SizedBox(
-                height: 10,
-              ),
-              sp.read('role') == "eventManager"
-                  ? const SizedBox.shrink()
-                  : ((controller.eventDetail!.data!.profilePicture!.isEmpty) &&
-                          (controller.venueImageList.isEmpty))
-                      ? const SizedBox.shrink()
-                      : Obx(
-                          () => _authController.followingLoader.value == false
-                              ? const SizedBox.shrink()
-                              : controller.eventDetail!.data!.venue == null
-                                  ? const SizedBox.shrink()
-                                  : aboutEventCreator(
-                                      isDelete: controller.eventDetail!.data!.venue!.user!.isDelete == null
-                                          ? false
-                                          : true,
-                                      text: controller.eventDetail!.data!.venue!
-                                          .user!.profile!.about
-                                          .toString(),
-                                      horizontalPadding: 12,
-                                      theme: theme,
-                                      context: context,
-                                      image: controller.eventDetail!.data!.venue!
-                                                  .user!.profilePicture ==
-                                              null
-                                          ? groupPlaceholder
-                                          : controller.eventDetail!.data!.venue!
-                                              .user!.profilePicture!.mediaPath,
-                                      organizerName: controller
-                                          .eventDetail!.data!.venue!.user!.name
-                                          .toString(),
-                                      icons: Icons.add,
-                                      followBg: DynamicColor.grayClr,
-                                      textClr: theme.primaryColor,
-                                      authController: _authController,
-                                      followText: controller.eventDetail!.data!
-                                                  .venue!.user!.following ==
-                                              null
-                                          ? "Follow"
-                                          : "Unfollow",
-                                      onTap: () {
-                                        if (controller.eventDetail!.data!.venue!
-                                                .user!.following ==
-                                            null) {
-                                          _authController.followUser(
-                                              userData: controller.eventDetail!
-                                                  .data!.venue!.user,
-                                              fromAllUser: false);
-                                        } else {
-                                          _authController.unfollow(
-                                              userData: controller.eventDetail!
-                                                  .data!.venue!.user,
-                                              fromAllUser: false);
-                                        }
-                                        controller.update();
-                                        // followBgClr.value = !followBgClr.value;
-                                      }),
-                        ),
-              sp.read('role') == "eventOrganizer"
-                  ? const SizedBox.shrink()
-                  : Obx(
-                      () => _authController.followingLoader.value == false
-                          ? const SizedBox.shrink()
-                          : ourGuestWidget(
-                              isDelete: controller
-                                          .eventDetail!.data!.user!.isDelete ==
-                                      null
-                                  ? false
-                                  : true,
-                              horizontalPadding: 12,
-                              networkImg: controller.eventDetail!.data!.user!
-                                          .profilePicture ==
-                                      null
-                                  ? groupPlaceholder
-                                  : controller.eventDetail!.data!.user!
-                                      .profilePicture!.mediaPath!,
-                              venueOwner: controller
-                                  .eventDetail!.data!.user!.name
-                                  .toString(),
-                              theme: theme,
-                              context: context,
-                              rowPadding: 0.0,
-                              avatarPadding: 6,
-                              rowVerticalPadding: 0.0,
-                              followBgClr: controller
-                                          .eventDetail!.data!.user!.following !=
-                                      null
-                                  ? theme.primaryColor
-                                  : DynamicColor.avatarBgClr,
-                              textClr: controller
-                                          .eventDetail!.data!.user!.following ==
-                                      null
-                                  ? theme.cardColor
-                                  : theme.scaffoldBackgroundColor,
-                              followText: controller
-                                          .eventDetail!.data!.user!.following ==
-                                      null
-                                  ? "Follow"
-                                  : "Unfollow",
-                              followOnTap: () async {
-                                if (controller
-                                        .eventDetail!.data!.user!.following ==
-                                    null) {
-                                  await _authController.followUser(
+                      ),
+                    ],
+                  ),
+            const SizedBox(
+              height: 6,
+            ),
+            ((controller.eventDetail!.data!.latitude == null) &&
+                    (controller.eventDetail!.data!.longitude == null))
+                ? const SizedBox.shrink()
+                : ShowCustomMap(
+                    lat: double.parse(controller.eventDetail!.data!.latitude!),
+                    lng: double.parse(controller.eventDetail!.data!.longitude!),
+                  ),
+            const SizedBox(
+              height: 10,
+            ),
+            sp.read('role') == "eventManager"
+                ? const SizedBox.shrink()
+                : ((controller.eventDetail!.data!.profilePicture!.isEmpty) &&
+                        (controller.venueImageList.isEmpty))
+                    ? const SizedBox.shrink()
+                    : Obx(
+                        () => _authController.followingLoader.value == false
+                            ? const SizedBox.shrink()
+                            : controller.eventDetail!.data!.venue == null
+                                ? const SizedBox.shrink()
+                                : aboutEventCreator(
+                                    isDelete:
+                                        controller.eventDetail!.data!.venue!.user!.isDelete == null
+                                            ? false
+                                            : true,
+                                    text: controller.eventDetail!.data!.venue!
+                                        .user!.profile!.about
+                                        .toString(),
+                                    horizontalPadding: 12,
+                                    theme: theme,
+                                    context: context,
+                                    image: controller.eventDetail!.data!.venue!
+                                                .user!.profilePicture ==
+                                            null
+                                        ? groupPlaceholder
+                                        : controller.eventDetail!.data!.venue!
+                                            .user!.profilePicture!.mediaPath,
+                                    organizerName: controller
+                                        .eventDetail!.data!.venue!.user!.name
+                                        .toString(),
+                                    icons: Icons.add,
+                                    followBg: DynamicColor.grayClr,
+                                    textClr: theme.primaryColor,
+                                    authController: _authController,
+                                    followText: controller.eventDetail!.data!
+                                                .venue!.user!.following ==
+                                            null
+                                        ? "Follow"
+                                        : "Unfollow",
+                                    onTap: () {
+                                      if (controller.eventDetail!.data!.venue!
+                                              .user!.following ==
+                                          null) {
+                                        _authController.followUser(
+                                            userData: controller
+                                                .eventDetail!.data!.venue!.user,
+                                            fromAllUser: false);
+                                      } else {
+                                        _authController.unfollow(
+                                            userData: controller
+                                                .eventDetail!.data!.venue!.user,
+                                            fromAllUser: false);
+                                      }
+                                      controller.update();
+                                      // followBgClr.value = !followBgClr.value;
+                                    }),
+                      ),
+            sp.read('role') == "eventOrganizer"
+                ? const SizedBox.shrink()
+                : Obx(
+                    () => _authController.followingLoader.value == false
+                        ? const SizedBox.shrink()
+                        : ourGuestWidget(
+                            isDelete:
+                                controller.eventDetail!.data!.user!.isDelete ==
+                                        null
+                                    ? false
+                                    : true,
+                            horizontalPadding: 12,
+                            networkImg: controller.eventDetail!.data!.user!
+                                        .profilePicture ==
+                                    null
+                                ? groupPlaceholder
+                                : controller.eventDetail!.data!.user!
+                                    .profilePicture!.mediaPath!,
+                            venueOwner: controller.eventDetail!.data!.user!.name
+                                .toString(),
+                            theme: theme,
+                            context: context,
+                            rowPadding: 0.0,
+                            avatarPadding: 6,
+                            rowVerticalPadding: 0.0,
+                            followBgClr:
+                                controller.eventDetail!.data!.user!.following !=
+                                        null
+                                    ? theme.primaryColor
+                                    : DynamicColor.avatarBgClr,
+                            textClr:
+                                controller.eventDetail!.data!.user!.following ==
+                                        null
+                                    ? theme.cardColor
+                                    : theme.scaffoldBackgroundColor,
+                            followText:
+                                controller.eventDetail!.data!.user!.following ==
+                                        null
+                                    ? "Follow"
+                                    : "Unfollow",
+                            followOnTap: () async {
+                              if (controller
+                                      .eventDetail!.data!.user!.following ==
+                                  null) {
+                                await _authController.followUser(
+                                  userData: controller.eventDetail!.data!.user,
+                                  fromAllUser: false,
+                                );
+                              } else {
+                                await _authController.unfollow(
                                     userData:
                                         controller.eventDetail!.data!.user,
-                                    fromAllUser: false,
-                                  );
-                                } else {
-                                  await _authController.unfollow(
-                                      userData:
-                                          controller.eventDetail!.data!.user,
-                                      fromAllUser: false);
-                                }
-                                await _controller.getAllEvents(loader: false);
-                                controller.update();
-                              },
-                              onTap: () {}),
-                    ),
-              API().sp.read("role") == "eventOrganizer"
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        interestedWidget(
-                            height: 36,
-                            theme: theme,
-                            context: context,
-                            text:
-                                "Interested users ${controller.eventDetail!.data!.eventsInterestedCount}"),
-                        interestedWidget(
-                            height: 36,
-                            theme: theme,
-                            context: context,
-                            text:
-                                "Ongoing users ${controller.eventDetail!.data!.eventsGoingCount}"),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
-
-              const SizedBox(
-                height: 20,
-              ),
-
-              if (controller.eventDetail!.data!.rating != null &&
-                  controller.eventDetail!.data!.rating!.isNotEmpty &&
-                  API().sp.read("role") == "eventManager")
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Row(
+                                    fromAllUser: false);
+                              }
+                              await _controller.getAllEvents(loader: false);
+                              controller.update();
+                            },
+                            onTap: () {}),
+                  ),
+            API().sp.read("role") == "eventOrganizer"
+                ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TSectionHeading(
-                        title:
-                            "Reviews (${controller.eventDetail!.data!.rating!.length})",
-                        showActionButton: false,
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.ratingScreen);
-                          },
-                          icon: const Icon(
-                            Iconsax.arrow_right_3,
-                          ))
+                      interestedWidget(
+                          height: 36,
+                          theme: theme,
+                          context: context,
+                          text:
+                              "Interested users ${controller.eventDetail!.data!.eventsInterestedCount}"),
+                      interestedWidget(
+                          height: 36,
+                          theme: theme,
+                          context: context,
+                          text:
+                              "Ongoing users ${controller.eventDetail!.data!.eventsGoingCount}"),
                     ],
-                  ),
+                  )
+                : const SizedBox.shrink(),
+
+            const SizedBox(
+              height: 20,
+            ),
+
+            if (controller.eventDetail!.data!.rating != null &&
+                controller.eventDetail!.data!.rating!.isNotEmpty &&
+                API().sp.read("role") == "eventManager")
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TSectionHeading(
+                      title:
+                          "Reviews (${controller.eventDetail!.data!.rating!.length})",
+                      showActionButton: false,
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.ratingScreen);
+                        },
+                        icon: const Icon(
+                          Iconsax.arrow_right_3,
+                        ))
+                  ],
                 ),
-              const SizedBox(
-                height: 10,
               ),
-            ],
-          ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
         ),
       ),
     );

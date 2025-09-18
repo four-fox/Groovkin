@@ -491,8 +491,14 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                           ],
                                         ),
                                       )
-                                    : controller.eventDetail!.data!.status ==
-                                            "cancelled"
+                                    : (controller.eventDetail!.data!.status ==
+                                                "cancelled" ||
+                                            controller.eventDetail!.data!
+                                                    .status ==
+                                                "completed" ||
+                                            controller.eventDetail!.data!
+                                                    .status ==
+                                                "acknowledged")
                                         ? SizedBox()
                                         : Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -546,12 +552,18 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                                   height: 8,
                                 ),
                                 (API().sp.read("role") == "eventOrganizer" &&
-                                        controller.eventDetail!.data!
-                                                .isCounterActive!.value ==
+                                        controller.eventDetail!.data!.isCounterActive!
+                                                .value ==
                                             0)
                                     ? const SizedBox.shrink()
-                                    : controller.eventDetail!.data!.status ==
-                                            "cancelled"
+                                    : (controller.eventDetail!.data!.status ==
+                                                "cancelled" ||
+                                            controller.eventDetail!.data!
+                                                    .status ==
+                                                "completed" ||
+                                            controller.eventDetail!.data!
+                                                    .status ==
+                                                "acknowledged")
                                         ? SizedBox()
                                         : Padding(
                                             padding: const EdgeInsets.symmetric(
