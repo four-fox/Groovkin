@@ -1789,22 +1789,39 @@ class AuthController extends GetxController {
 
   // Todo Facebook Sign In
   Future<void> loginWithFacebook() async {
-    final LoginResult loginResult = await FacebookAuth.instance.login();
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance
+          .login(permissions: ["public_profile", "email"]);
 
-    if (loginResult.status == LoginStatus.success) {
-      final AccessToken? accessToken = loginResult.accessToken;
-      if (accessToken != null) {
-        final validCredential = firebase_auth.FacebookAuthProvider.credential(
-          accessToken.tokenString,
-        );
+      if (loginResult.status == LoginStatus.success) {
+        final AccessToken? accessToken = loginResult.accessToken;
+        if (accessToken != null) {
+          final validCredential = firebase_auth.FacebookAuthProvider.credential(
+            accessToken.tokenString,
+          );
 
-        final firebase_auth.UserCredential userCredential = await firebase_auth
-            .FirebaseAuth.instance
-            .signInWithCredential(validCredential);
+          final firebase_auth.UserCredential userCredential =
+              await firebase_auth.FirebaseAuth.instance
+                  .signInWithCredential(validCredential);
 
-        final firebase_auth.User? user = userCredential.user;
-        if (user != null) {}
+          final firebase_auth.User? user = userCredential.user;
+          if (user != null) {
+            emailController.text = userCredential.user!.email!;
+            API().sp.write("emailSocial", userCredential.user!.email!);
+            // API().sp.write("nameSocial", userCredential.user!.displayName!);
+            API()
+                .sp
+                .write("accessToken", userCredential.credential!.accessToken);
+            sigUp(
+              Get.context,
+              signUpPlatform: "facebook",
+              platformId: userCredential.credential!.accessToken,
+            );
+          }
+        }
       }
+    } catch (e) {
+      print(e);
     }
   }
 

@@ -176,6 +176,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
+
                                 ///Todo latter on
                                 /* if(notificationFlow == false){
                                       if (chatData!.user!.profile!.userImage != null || chatData!.userImage != null) {
@@ -193,6 +194,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                       }
                                     }*/
                                 ///Todo latter on
+                                
                               },
                               child: CircleAvatar(
                                   radius: 20,

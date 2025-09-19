@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -12,6 +11,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/utils/constant.dart' as con;
 import 'package:http/http.dart' as http;
+import 'package:iconsax/iconsax.dart';
 
 class SocialSignIn extends StatefulWidget {
   final bool showGoogle, showFacebook, showApple, showSpotify;
@@ -125,8 +125,6 @@ class _SocialSignInState extends State<SocialSignIn> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -154,6 +152,25 @@ class _SocialSignInState extends State<SocialSignIn> {
             const SizedBox(
               height: 20,
             ),
+        if (widget.showFacebook)
+          // if (Platform.isAndroid)
+          CustomButtonWithIcon(
+              onTap: () {
+                _authController.loginWithFacebook();
+              },
+              text: "Continue with Facebook",
+              iconValue: true,
+              bgColor: Colors.transparent,
+              gradientClr: true,
+              color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+              color1: DynamicColor.grayClr.withValues(alpha: 0.1),
+              imageIconn: ImageIcon(
+                const AssetImage("assets/facebook.png"),
+                color: theme.primaryColor,
+              )),
+        const SizedBox(
+          height: 20,
+        ),
         if (widget.showGoogle)
           // if (Platform.isAndroid)
           CustomButtonWithIcon(

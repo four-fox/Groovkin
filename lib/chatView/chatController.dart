@@ -319,6 +319,8 @@ class ChatController extends GetxController {
           innerUserOnline.value = true;
         }
         conversationID = chatData!.data!.data![0].conversationId;
+        print("User Id ${API().sp.read("userId")}");
+        print("Creator ID ${response.data['data']['data'][0]['creator_id']}");
         if (response.data['data']['data'][0]['creator_id'] !=
             API().sp.read("userId")) {
           messageSeen(conversationID);
