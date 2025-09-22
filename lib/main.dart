@@ -127,7 +127,7 @@ class _MyAppState extends State<MyApp> {
     checkUserSubscriptionIsActive();
     authController.restore();
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -183,7 +183,6 @@ class _MyAppState extends State<MyApp> {
                   TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
             ),
           ),
-
           darkTheme: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: DynamicColor.yellowClr,
@@ -200,7 +199,6 @@ class _MyAppState extends State<MyApp> {
                   TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
             ),
           ),
-
           navigatorObservers: [BotToastNavigatorObserver()],
           builder: (context, child) {
             child = ScrollConfiguration(
@@ -210,6 +208,7 @@ class _MyAppState extends State<MyApp> {
             // child = SafeArea(top: false, child: child);
             return child;
           },
+
           // themeMode: ThemeMode.light,
           // themeMode: API().sp.read("apptheme") == ThemeMode.light.name
           //     ? ThemeMode.light

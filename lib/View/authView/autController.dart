@@ -327,11 +327,11 @@ class AuthController extends GetxController {
       API().sp.remove("currentRole");
       API().sp.remove("role");
       await configureSDK();
+
       Future.delayed(const Duration(microseconds: 1000), () {
         restore();
         logInWithRevenueCat();
         checkUserSubscriptionIsActive();
-
         if (response.data["data"]["user_details"]["current_role"] == "user") {
           API().sp.write("currentRole", "User");
         } else if (response.data["data"]["user_details"]["current_role"] ==
@@ -341,7 +341,6 @@ class AuthController extends GetxController {
             "venue_manager") {
           API().sp.write("currentRole", "eventManager");
         }
-
         if (response.data['data']['user_details']['active_role'] ==
             'venue_manager') {
           API().sp.write("role", 'eventManager');
@@ -664,6 +663,7 @@ class AuthController extends GetxController {
 
   List<CategoryItem> musicGenre = [];
   SurveyModel? surveyData;
+
   getLifeStyle({surveyType, bool mygrookinHit = false}) async {
     getLifeStyleLoader(false);
     var response =
@@ -973,7 +973,7 @@ class AuthController extends GetxController {
   myGroovkinListFtn(List data) {
     serviceLista.clear();
 
-    for (var action in data) {
+    for (var action in data) {  
       serviceLista.add(action.eventItemId);
     }
 
@@ -982,8 +982,8 @@ class AuthController extends GetxController {
           ? action.showItems!.value = true
           : action.showItems!.value = false;
     }
-    getAllServiceLoader(true);
-    update();
+    getAllServiceLoader(true);  
+    update();  
   }
 
   updateGroovkinService() async {
@@ -991,7 +991,8 @@ class AuthController extends GetxController {
 
     for (var data in serviceLista) {
       formData.fields.add(MapEntry('service_id[]', data.toString()));
-    }
+    } 
+
     print(formData);
 
     var response = await API().postApi(formData, "edit-services");
@@ -1918,7 +1919,7 @@ class AuthController extends GetxController {
                 seenGenres.add(genre);
                 filteredGenres.add({
                   'name': genre,
-                  'selected': false.obs,  // make it observable
+                  'selected': false.obs, // make it observable
                 });
               }
             }
@@ -1950,9 +1951,7 @@ class AuthController extends GetxController {
       }
 
       formData.fields.add(const MapEntry("type", "spotify"));
-
       final response = await API().postApi(formData, "add-music-genre");
-
       if (response.statusCode == 200) {
         Get.offAllNamed(
           Routes.userBottomNavigationNav,
@@ -1969,7 +1968,7 @@ class AuthController extends GetxController {
       rethrow;
     }
   }
-  
+
   get_specific.GetSpecificArtistGenre? getSpecificArtistGenreModel;
   RxBool isSpecificArtistLoading = false.obs;
 
@@ -2086,16 +2085,15 @@ class AuthController extends GetxController {
                       .difference(DateTime.now().toLocal())
                       .inMinutes;
                   if (time >= 0) {
-                    // BotToast.closeAllLoading();
-                    // checkSub("Subscription Is Not Expired!");
+                    checkSub("Subscription Is Not Expired!");
                   } else {
-                    // checkSub("Subscription expired");
+                    checkSub("Subscription expired");
                   }
                 } else {
-                  // checkSub("No Active Subscription");
+                  checkSub("No Active Subscription");
                 }
               } else {
-                // checkSub("No Active Subscription");
+                checkSub("No Active Subscription");
               }
             },
           ).onError(
@@ -2115,12 +2113,12 @@ class AuthController extends GetxController {
     }
   }
 
-  // checkSub(String text) {
-  //   BotToast.closeAllLoading();
-  //   BotToast.showText(
-  //     text: text,
-  //   );
-  // }
+  checkSub(String text) {
+    BotToast.closeAllLoading();
+    BotToast.showText(
+      text: text,
+    );
+  }
 
   logOutRevenuecat() async {
     try {

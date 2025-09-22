@@ -365,7 +365,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 // Shahzain
-
                 Visibility(
                   visible: controller.showFilter.value,
                   child: GestureDetector(

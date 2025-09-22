@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, must_be_immutable
 
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
@@ -84,74 +86,77 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-        appBar: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
-                  //     :flowBtn==3?
-                  // kToolbarHeight*1.3
-                  //     :kToolbarHeight*4.9
+    return GetBuilder<EventController>(initState: (v) {
+      _controller.eventDetails(eventId: eventId);
+    }, builder: (controller) {
+      return controller.eventDetailsLoader.value == false
+          ? const SizedBox.shrink()
+          : Scaffold(
+              appBar: PreferredSize(
+                preferredSize:
+                    const Size.fromHeight(/*flowBtn==2 ?*/ kToolbarHeight * 1.1
+                        //     :flowBtn==3?
+                        // kToolbarHeight*1.3
+                        //     :kToolbarHeight*4.9
+                        ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/grayClor.png"),
+                        fit: BoxFit.fill),
                   ),
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
-            ),
-            child: customAppBar(
-              onTap: () async {
-                _controller.duplicateValue.value = false;
-                _controller.update();
-                if (isFromEventRequestPage) {
-                  await _controller.getAllEvents();
+                  child: customAppBar(
+                    onTap: () async {
+                      _controller.duplicateValue.value = false;
+                      _controller.update();
+                      if (isFromEventRequestPage) {
+                        await _controller.getAllEvents();
 
-                  Get.back();
-                } else {
-                  Get.back();
-                }
-              },
-              theme: theme,
-              text: appBarTitle,
-              actions: [
-                reportedEventPreview == 3
-                    ? const SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsets.only(right: 7.0),
-                        child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              if ((API().sp.read("role") == "eventOrganizer") &&
-                                  (appBarTitle == "Pending")) {
-                                _controller.assignValueForUpdate();
-                                _controller.showEditPreviewScreen.value = true;
-                                _controller.update();
-                              }
-                            },
-                            child:
-                                ((API().sp.read("role") == "eventOrganizer") &&
-                                        (appBarTitle == "Pending"))
-                                    ? Row(
-                                        children: [
-                                          Text("Edit"),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Icon(Icons.edit)
-                                        ],
-                                      )
-                                    : const SizedBox.shrink()),
-                      )
-              ],
-              imagee: false,
-            ),
-          ),
-        ),
-        body: SafeArea(
-          child: GetBuilder<EventController>(initState: (v) {
-            _controller.eventDetails(eventId: eventId);
-          }, builder: (controller) {
-            return controller.eventDetailsLoader.value == false
-                ? const SizedBox.shrink()
-                : controller.eventDetail!.data!.status == "pending"
+                        Get.back();
+                      } else {
+                        Get.back();
+                      }
+                    },
+                    theme: theme,
+                    text:  isComingFromNotifcation?  controller.eventDetail!.data!.status:  appBarTitle,
+                    actions: [
+                      reportedEventPreview == 3
+                          ? const SizedBox.shrink()
+                          : Padding(
+                              padding: const EdgeInsets.only(right: 7.0),
+                              child: GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: () {
+                                    if ((API().sp.read("role") ==
+                                            "eventOrganizer") &&
+                                        (appBarTitle == "Pending")) {
+                                      _controller.assignValueForUpdate();
+                                      _controller.showEditPreviewScreen.value =
+                                          true;
+                                      _controller.update();
+                                    }
+                                  },
+                                  child: ((API().sp.read("role") ==
+                                              "eventOrganizer") &&
+                                          (appBarTitle == "Pending"))
+                                      ? Row(
+                                          children: [
+                                            Text("Edit"),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Icon(Icons.edit)
+                                          ],
+                                        )
+                                      : const SizedBox.shrink()),
+                            )
+                    ],
+                    imagee: false,
+                  ),
+                ),
+              ),
+              body: SafeArea(
+                child: controller.eventDetail!.data!.status == "pending"
                     ? pendingDetailsWidget(
                         theme,
                         controller,
@@ -161,63 +166,68 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         _managercontroller,
                         _authController,
                         _homeController)
-                    : upcomingWidget(theme, context, controller);
-          }),
-        ),
-        bottomNavigationBar: GetBuilder<EventController>(builder: (controller) {
-          return controller.eventDetailsLoader.value == false
-              ? SafeArea(child: SizedBox())
-              : controller.eventDetail!.data!.status == "pending"
-                  ? SafeArea(child: SizedBox())
-                  : (API().sp.read("role") == "eventManager" &&
-                          (controller.eventDetail!.data!.status ==
-                                  "completed" ||
-                              controller.eventDetail!.data!.status ==
-                                  "acknowledged"))
-                      ? SafeArea(
-                          child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0, vertical: 3),
-                          child: CustomButton(
-                            text: "Download Event Details",
-                            onTap: () {
-                              downloadEventDetails(theme, context, controller);
-                            },
-                          ),
-                        ))
-                      : isComingFromNotifcation == true
-                          ? SafeArea(child: SizedBox())
-                          : API().sp.read("role") != "eventOrganizer"
-                              ? SafeArea(child: SizedBox())
-                              : SafeArea(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0,
-                                      vertical: 3,
-                                    ),
-                                    child: CustomButton(
-                                      borderClr: Colors.transparent,
-                                      onTap: () {
-                                        if (appBarTitle != "Drafts") {
-                                          _controller.duplicateValue.value =
-                                              true;
-                                          _controller.draftValue.value = false;
-                                        } else {
-                                          _controller.draftValue.value = false;
-                                          _controller.duplicateValue.value =
-                                              false;
-                                        }
-                                        _controller.showEditPreviewScreen
-                                            .value = false;
-                                        _controller.assignValueForUpdate();
-                                      },
-                                      text: appBarTitle == "Drafts"
-                                          ? "Submit Draft Event"
-                                          : "Duplicate",
-                                    ),
-                                  ),
-                                );
-        }));
+                    : upcomingWidget(theme, context, controller),
+              ),
+              bottomNavigationBar:
+                  GetBuilder<EventController>(builder: (controller) {
+                return controller.eventDetailsLoader.value == false
+                    ? SafeArea(child: SizedBox())
+                    : controller.eventDetail!.data!.status == "pending"
+                        ? SafeArea(child: SizedBox())
+                        : (API().sp.read("role") == "eventManager" &&
+                                (controller.eventDetail!.data!.status ==
+                                        "completed" ||
+                                    controller.eventDetail!.data!.status ==
+                                        "acknowledged"))
+                            ? SafeArea(
+                                child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0, vertical: 3),
+                                child: CustomButton(
+                                  text: "Download Event Details",
+                                  onTap: () {
+                                    downloadEventDetails(
+                                        theme, context, controller);
+                                  },
+                                ),
+                              ))
+                            : isComingFromNotifcation == true
+                                ? SafeArea(child: SizedBox())
+                                : API().sp.read("role") != "eventOrganizer"
+                                    ? SafeArea(child: SizedBox())
+                                    : SafeArea(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 4.0,
+                                            vertical: 3,
+                                          ),
+                                          child: CustomButton(
+                                            borderClr: Colors.transparent,
+                                            onTap: () {
+                                              if (appBarTitle != "Drafts") {
+                                                _controller.duplicateValue
+                                                    .value = true;
+                                                _controller.draftValue.value =
+                                                    false;
+                                              } else {
+                                                _controller.draftValue.value =
+                                                    false;
+                                                _controller.duplicateValue
+                                                    .value = false;
+                                              }
+                                              _controller.showEditPreviewScreen
+                                                  .value = false;
+                                              _controller
+                                                  .assignValueForUpdate();
+                                            },
+                                            text: appBarTitle == "Drafts"
+                                                ? "Submit Draft Event"
+                                                : "Duplicate",
+                                          ),
+                                        ),
+                                      );
+              }));
+    });
   }
 
   upcomingWidget(
@@ -769,7 +779,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             customWidget(context, theme,
                 title: "Event About",
                 value: controller.eventDetail!.data!.about.toString()),
-            if (controller.eventDetail!.data!.themeOfEvent != "null")
+            if (controller.eventDetail!.data!.themeOfEvent.toString() !=
+                    "null" ||
+                controller.eventDetail!.data!.themeOfEvent != null)
               customWidget(context, theme,
                   title: "Event theme",
                   value: controller.eventDetail!.data!.themeOfEvent.toString()),
@@ -1609,7 +1621,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     style: pw.TextStyle(
                         fontSize: 15, fontWeight: pw.FontWeight.bold)),
                 pw.Spacer(),
-                pw.Text("Completed",
+                pw.Text(controller.eventDetail!.data!.status!.toString(),
                     style: pw.TextStyle(
                         fontSize: 12, fontWeight: pw.FontWeight.normal)),
               ]),
@@ -1910,6 +1922,15 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       .toList(),
                 )
               ]),
+
+              // // Rating
+              // if (controller.eventDetail!.data!.rating != null &&
+              //     controller.eventDetail!.data!.rating!.isNotEmpty)
+              //   pw.Row(children: [
+              //     pw.Text("Rating",
+              //         style: pw.TextStyle(
+              //             fontSize: 15, fontWeight: pw.FontWeight.bold)),
+              //   ]),
             ]),
           ),
         ]));
@@ -1975,11 +1996,35 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       final file = File(fullPath);
       await file.writeAsBytes(await pdf.save());
       print(fullPath);
+      // showDownloadPdfNotification(Random().nextInt(100));
       bottomToast(text: "Pdf Downloaded Successfully!");
     } catch (e) {
       print(e);
       bottomToast(text: "Downloaded Failed!");
     }
+  }
+
+  showDownloadPdfNotification(int rand) async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+
+    flutterLocalNotificationsPlugin.show(
+      rand,
+      "Groovkin",
+      "Pdf Downloaded Successfully!",
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          'DemoTestChannel',
+          'High Importance Notifications',
+          icon: '@mipmap/ic_launcher',
+          enableVibration: false,
+          importance: Importance.high,
+          onlyAlertOnce: true,
+          maxProgress: 100,
+          channelShowBadge: false,
+        ),
+      ),
+    );
   }
 
   eventDateTime({

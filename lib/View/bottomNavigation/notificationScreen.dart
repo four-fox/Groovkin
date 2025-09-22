@@ -10,6 +10,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   late AuthController controller;
   late HomeController _controller;
   late ManagerController _managercontroller;
+  late EventController _eventController;
 
   @override
   void initState() {
@@ -46,6 +48,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
       _managercontroller = Get.find<ManagerController>();
     } else {
       _managercontroller = Get.put(ManagerController());
+    }
+    if (Get.isRegistered<EventController>()) {
+      _eventController = Get.find<EventController>();
+    } else {
+      _eventController = Get.put(EventController());
     }
   }
 
@@ -95,7 +102,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       color: isDark(context)
                                           ? Colors.white
                                           : Colors.black,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.bold, 
                                     ),
                           ),
                         )
@@ -119,98 +126,70 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             "fromNotification":
                                                 true, // Add this flag
                                           });
+                                    } else if (data.type == "send_message") {
+                                      _eventController.eventDetails(
+                                          eventId: data.sourceId);
+                                      _managercontroller.getAllMessages(
+                                          userId: data.senderId,
+                                          sourceId: data.sourceId);
+                                      Get.toNamed(Routes.counterScreen,
+                                          arguments: {
+                                            "userId": data.senderId,
+                                            "eventId": data.sourceId,
+                                            "acceptVal": true,
+                                          });
                                     } else if (data.type == "event_accept") {
-                                      // Get.toNamed(Routes.pendingEventDetails,
-                                      //     arguments: {
-                                      //       "notInterestedBtn": 1,
-                                      //       "title": "About Event",
-                                      //       "eventId": data.sourceId!,
-                                      //       "type": "event",
-                                      //     });
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "About Event",
+                                            "isComingFromNotification": true,
                                             // "appBarTitle": "Completed",
                                             // "${singleEvent.status.toString().capitalize} Event"
                                           });
                                     } else if (data.type == "event_created") {
-                                      // Get.toNamed(Routes.pendingEventDetails,
-                                      //     arguments: {
-                                      //       "notInterestedBtn": 1,
-                                      //       "title": "About Event",
-                                      //       "eventId": data.sourceId!,
-                                      //       "type": "event",
-                                      //     });
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "Event Created",
-                                            // "appBarTitle": "Completed",
-                                            // "${singleEvent.status.toString().capitalize} Event"
+                                            "isComingFromNotification": true,
                                           });
                                     } else if (data.type ==
                                         "event_reschedule") {
-                                      // Get.toNamed(Routes.pendingEventDetails,
-                                      //     arguments: {
-                                      //       "eventId": data.sourceId,
-                                      //       "notInterestedBtn": 1,
-                                      //       "title": "Reschedule Event",
-                                      //       "type": "event",
-                                      //     });
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "Reschedule Event",
+                                            "isComingFromNotification": true,
                                             // "appBarTitle": "Completed",
                                             // "${singleEvent.status.toString().capitalize} Event"
                                           });
                                     } else if (data.type == "event_rate") {
-                                      // Get.toNamed(Routes.pendingEventDetails,
-                                      //         arguments: {
-                                      //       "eventId": data.sourceId,
-                                      //       "notInterestedBtn": 1,
-                                      //       "title": "About Event",
-                                      //       "type": "event",
-                                      //     })!
-                                      //     .then(
-                                      //   (value) => _managercontroller
-                                      //       .getAllPendingEvents(),
-                                      // );
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "Event Rate",
+                                            "isComingFromNotification": true,
                                             // "appBarTitle": "Completed",
                                             // "${singleEvent.status.toString().capitalize} Event"
                                           });
                                     } else if (data.type ==
                                         "event_price_update") {
-                                      // Get.toNamed(Routes.pendingEventDetails,
-                                      //         arguments: {
-                                      //       "eventId": data.sourceId,
-                                      //       "notInterestedBtn": 1,
-                                      //       "title": "About Event",
-                                      //       "type": "event",
-                                      //     })!
-                                      //     .then(
-                                      //   (value) => _managercontroller
-                                      //       .getAllPendingEvents(),
-                                      // );
                                       Get.toNamed(Routes.upcomingScreen,
                                           arguments: {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "Event Price Update",
+                                            "isComingFromNotification": true,
                                             // "appBarTitle": "Completed",
                                             // "${singleEvent.status.toString().capitalize} Event"
                                           });
@@ -221,6 +200,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "About Event",
+                                            "isComingFromNotification": true,
                                             // "appBarTitle": "Completed",
                                             // "${singleEvent.status.toString().capitalize} Event"
                                           })!
@@ -244,6 +224,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             "eventId": data.sourceId,
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
+                                            "isComingFromNotification": true,
                                             // "appBarTitle": "Acknowledged"
                                             "appBarTitle": "About Event",
                                           });
@@ -254,6 +235,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             "reportedEventView": 1,
                                             "notInterestedBtn": 1,
                                             "appBarTitle": "About Event",
+                                            "isComingFromNotification": true,
                                             // "appBarTitle": "Cancelled",
                                             // "isComingFromNotification": true,
                                           });

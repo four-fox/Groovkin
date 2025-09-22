@@ -240,30 +240,35 @@ class NotificationService {
       User? user = User.fromJson(jsonDecode(data['data'])['user']);
       Get.toNamed(Routes.chatInnerScreen, arguments: {"userData": user});
     } else if (data["type"] == "event_created") {
-      Get.toNamed(Routes.pendingEventDetails, arguments: {
-        "notInterestedBtn": 1,
-        "title": "About Event",
+      Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
-        "type": "event",
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "Event Created",
+        "isComingFromNotification": true,
+        // "appBarTitle": "Completed",
+        // "${singleEvent.status.toString().capitalize} Event"
       });
     } else if (data["type"] == "event_complete") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-                    // "appBarTitle":"About Event",
-        // "appBarTitle": "Completed",
-        // "${singleEvent.status.toString().capitalize} Event"
+        "appBarTitle": "About Event",
+        "isComingFromNotification": true,
       })!
           .then(
         (value) => homeController.completedEvent(),
       );
     } else if (data["type"] == "event_accept") {
-      Get.toNamed(Routes.pendingEventDetails, arguments: {
-        "notInterestedBtn": 1,
-        "title": "About Event",
+      Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
-        "type": "event",
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "About Event",
+        "isComingFromNotification": true,
+        // "appBarTitle": "Completed",
+        // "${singleEvent.status.toString().capitalize} Event"
       });
     } else if (data["type"] == "event_following") {
       Get.toNamed(Routes.viewProfileScreen, arguments: {
@@ -271,25 +276,25 @@ class NotificationService {
         "fromNotification": true, // Add this flag
       });
     } else if (data["type"] == "event_rate") {
-      Get.toNamed(Routes.pendingEventDetails, arguments: {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
+        "reportedEventView": 1,
         "notInterestedBtn": 1,
-        "title": "About Event",
-        "type": "event",
-      })!
-          .then(
-        (value) => managerController.getAllPendingEvents(),
-      );
+        "appBarTitle": "Event Rate",
+        "isComingFromNotification": true,
+        // "appBarTitle": "Completed",
+        // "${singleEvent.status.toString().capitalize} Event"
+      });
     } else if (data["type"] == "event_price_update") {
-      Get.toNamed(Routes.pendingEventDetails, arguments: {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
+        "reportedEventView": 1,
         "notInterestedBtn": 1,
-        "title": "About Event",
-        "type": "event",
-      })!
-          .then(
-        (value) => managerController.getAllPendingEvents(),
-      );
+        "appBarTitle": "Event Price Update",
+        "isComingFromNotification": true,
+        // "appBarTitle": "Completed",
+        // "${singleEvent.status.toString().capitalize} Event"
+      });
     } else if (data["type"] == "event_cancelled") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
@@ -297,16 +302,15 @@ class NotificationService {
         "notInterestedBtn": 1,
         // "appBarTitle": "Cancelled",
         "isComingFromNotification": true,
-                    // "appBarTitle":"About Event",
+        "appBarTitle": "About Event",
       });
     } else if (data["type"] == "event_declined") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
         "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-        // "appBarTitle": "Declined",
+        "appBarTitle": "About Event",
         "isComingFromNotification": true,
-                    // "appBarTitle":"About Event",
       });
     } else if (data["type"] == "event_acknowledged") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
@@ -315,15 +319,27 @@ class NotificationService {
         "notInterestedBtn": 1,
         // "appBarTitle": "Completed",
         "isComingFromNotification": true,
-                    "appBarTitle":"About Event",
+        "appBarTitle": "About Event",
       });
     } else if (data.type == "event_reschedule") {
       Get.toNamed(Routes.upcomingScreen, arguments: {
-        "eventId": data.sourceId,
+        "eventId": int.parse(data["source_id"]),
         "reportedEventView": 1,
         "notInterestedBtn": 1,
-                    // "appBarTitle":"About Event",
-        // "appBarTitle": "Upcoming"
+        "appBarTitle": "Reschedule Event",
+        "isComingFromNotification": true,
+        // "appBarTitle": "Completed",
+        // "${singleEvent.status.toString().capitalize} Event"
+      });
+    } else if (data.type == "event_rate") {
+      Get.toNamed(Routes.upcomingScreen, arguments: {
+        "eventId": int.parse(data["source_id"]),
+        "reportedEventView": 1,
+        "notInterestedBtn": 1,
+        "appBarTitle": "Event Rate",
+        "isComingFromNotification": true,
+        // "appBarTitle": "Completed",
+        // "${singleEvent.status.toString().capitalize} Event"
       });
     }
   }
