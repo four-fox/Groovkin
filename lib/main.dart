@@ -213,10 +213,10 @@ class _MyAppState extends State<MyApp> {
           // themeMode: API().sp.read("apptheme") == ThemeMode.light.name
           //     ? ThemeMode.light
           //     : ThemeMode.dark,
-          themeMode: controller.themeMode,
+          themeMode: controller.themeMode,  
           // themeMode: ThemeMode.system,
-          initialRoute: AppPages.initial,
-          getPages: AppPages.routes,
+          initialRoute: AppPages.initial,  
+          getPages: AppPages.routes,  
         );
       });
     });

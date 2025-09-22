@@ -973,7 +973,7 @@ class AuthController extends GetxController {
   myGroovkinListFtn(List data) {
     serviceLista.clear();
 
-    for (var action in data) {  
+    for (var action in data) {
       serviceLista.add(action.eventItemId);
     }
 
@@ -982,8 +982,8 @@ class AuthController extends GetxController {
           ? action.showItems!.value = true
           : action.showItems!.value = false;
     }
-    getAllServiceLoader(true);  
-    update();  
+    getAllServiceLoader(true);
+    update();
   }
 
   updateGroovkinService() async {
@@ -991,7 +991,7 @@ class AuthController extends GetxController {
 
     for (var data in serviceLista) {
       formData.fields.add(MapEntry('service_id[]', data.toString()));
-    } 
+    }
 
     print(formData);
 
@@ -1073,7 +1073,6 @@ class AuthController extends GetxController {
   //   form.FormData data = form.FormData();
   //   int? id = -1;
   //   int index = -1;
-
   //   for (var i = 0; i < musicCategory.length; i++) {
   //     if (i != musicCategory.length) {
   //       if (id != musicCategory[i].categoryId) {
@@ -1082,7 +1081,6 @@ class AuthController extends GetxController {
   //             musicCategory[i].categoryId.toString()));
   //       }
   //     }
-
   //     if (musicCategory[i].selectedItem!.value == true) {
   //       id = musicCategory[i].categoryId;
   //       data.fields.add(MapEntry('music_genre[$index][music_genre_item_ids][]',
@@ -1091,7 +1089,6 @@ class AuthController extends GetxController {
   //   }
   //   print(data);
   //   final response = await API().postApi(data, "edit-music-genre");
-
   //   if (response.statusCode == 200) {}
   // }
 
@@ -1708,7 +1705,7 @@ class AuthController extends GetxController {
   }
 
   NotificationModel? notificationModel;
-
+  
   Future<dynamic> getAllNotification(
       {fullUrl, String url = 'notifications'}) async {
     isNotificationLoading.value = true; // Start loading
@@ -1857,11 +1854,9 @@ class AuthController extends GetxController {
         API().sp.write("emailSocial", userCredential.user!.email!);
         // API().sp.write("nameSocial", userCredential.user!.displayName!);
         API().sp.write("accessToken", userCredential.credential!.accessToken);
-        sigUp(
-          Get.context,
-          signUpPlatform: "apple",
-          platformId: userCredential.credential!.accessToken,
-        );
+        sigUp(Get.context,
+            signUpPlatform: "apple",
+            platformId: userCredential.credential!.accessToken);
       }
     } catch (e) {
       EasyLoading.dismiss();
@@ -2010,7 +2005,7 @@ class AuthController extends GetxController {
   }
 
   /// Subsction Work  By Revenue Cat
-
+  ///
   RxInt selected = 0.obs;
 
   logInWithRevenueCat() async {
@@ -2131,7 +2126,7 @@ class AuthController extends GetxController {
       // );
     }
   }
-
+  
   CustomerInfo? customerInfo;
 
   Future<void> initPlatformState() async {
@@ -2150,6 +2145,7 @@ class AuthController extends GetxController {
     }
     update();
   }
+
 }
 
 class AuthBinding implements Bindings {

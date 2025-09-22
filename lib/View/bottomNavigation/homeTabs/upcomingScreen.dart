@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, must_be_immutable
 
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -32,7 +31,6 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import '../../../Components/t_section_button.dart';
-import 'eventsFlow/pendingEventFlow/pendingDetailsScreen.dart';
 
 class UpcomingScreen extends StatefulWidget {
   const UpcomingScreen({super.key});
@@ -118,7 +116,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       }
                     },
                     theme: theme,
-                    text:  isComingFromNotifcation?  controller.eventDetail!.data!.status:  appBarTitle,
+                    text: isComingFromNotifcation
+                        ? controller.eventDetail!.data!.status
+                        : appBarTitle,
                     actions: [
                       reportedEventPreview == 3
                           ? const SizedBox.shrink()
@@ -170,6 +170,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
               ),
               bottomNavigationBar:
                   GetBuilder<EventController>(builder: (controller) {
+                print(API().sp.read("role"));
                 return controller.eventDetailsLoader.value == false
                     ? SafeArea(child: SizedBox())
                     : controller.eventDetail!.data!.status == "pending"

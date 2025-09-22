@@ -102,7 +102,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       color: isDark(context)
                                           ? Colors.white
                                           : Colors.black,
-                                      fontWeight: FontWeight.bold, 
+                                      fontWeight: FontWeight.bold,
                                     ),
                           ),
                         )

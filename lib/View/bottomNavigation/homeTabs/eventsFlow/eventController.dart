@@ -876,6 +876,7 @@ class EventController extends GetxController {
   ///>>>>>>>>>>>> get all event sending requests
   RxBool getAllSendingRequestLoader = true.obs;
   bool requestEventWaiting = false;
+  
   getAllSendingRequest({nextUrl}) async {
     getAllSendingRequestLoader(false);
     var response = await API().getApi(
@@ -907,9 +908,9 @@ class EventController extends GetxController {
       update();
     }
   }
-
+  
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get details of event details
-
+  ///
   UserEventDetailsModel? eventDetail;
   RxBool eventDetailsLoader = true.obs;
   List<String> venueImageList = [];
@@ -1156,6 +1157,7 @@ class EventController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get upcoming events
   UpcomingEventsModel? upcomingEventData;
   RxBool getUpcomingEventsLoader = true.obs;
+
   getUpcomingEvents() async {
     getUpcomingEventsLoader(false);
     var response = await API().getApi(url: "upcoming-events");
@@ -1167,6 +1169,7 @@ class EventController extends GetxController {
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> postponed data assign
+  ///
   postponedAssign() async {
     proposedTimeWindowsController.text =
         DateFormat().add_jm().format(eventDetail!.data!.startDateTime!);
@@ -1260,7 +1263,7 @@ class ListClass {
   RxBool? condition = false.obs;
   ListClass({this.text, this.condition});
 }
-
+  
 class EventBinding implements Bindings {
   @override
   void dependencies() {

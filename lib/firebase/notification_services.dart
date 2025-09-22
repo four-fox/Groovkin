@@ -108,10 +108,10 @@ class NotificationService {
       }
     });
   }
-
+  
   //! Todo showNotification
 
-  Future<void> showNotification(RemoteMessage message) async {
+  Future<void> showNotification(RemoteMessage message) async {  
     // Check if message.notification is null (important for silent notifications)
     if (message.notification == null) return;
     // Define a default notification channel ID (for Android)
