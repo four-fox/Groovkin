@@ -22,26 +22,50 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+
+	<!-- ✅ Facebook config -->
+	<key>FacebookAppID</key>
+	<string>1346585106890172</string>
+	<key>FacebookDisplayName</key>
+	<string>Groovkin</string>
+	<!-- Optional if required -->
+	<key>FacebookClientToken</key>
+	<string>e0ca9a2769a4ea1b3a70f25fe3ca7523</string>
+
+	<!-- ✅ URL Schemes -->
 	<key>CFBundleURLTypes</key>
 	<array>
+		<!-- Facebook Login -->
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1346585106890172</string>
+			</array>
+		</dict>
+
+		<!-- Google Sign-In -->
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0</string>
-				<string>groovkin</string>
 			</array>
-		</dict>
-	</array>
+		</dict> 
+	</array> 
+
+	<!-- Google Client ID (from GoogleService-Info.plist) -->
 	<key>GIDClientID</key>
-	<!-- TODO Replace this value: -->
-	<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
 	<string>682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com</string>
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+	<!-- Permissions -->
 	<key>NSCameraUsageDescription</key>
 	<string>Used to demonstrate image picker plugin</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -56,6 +80,8 @@
 	<string>We need access to save images to your photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to demonstrate image picker plugin</string>
+
+	<!-- Background Modes -->
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -64,15 +90,17 @@
 		<string>remote-notification</string>
 		<string>audio</string>
 	</array>
+
+	<!-- UI -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+	<array> 
+		<string>UIInterfaceOrientationPortrait</string> 
+		<string>UIInterfaceOrientationLandscapeLeft</string> 
+		<string>UIInterfaceOrientationLandscapeRight</string> 
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

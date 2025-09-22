@@ -1797,14 +1797,14 @@ class AuthController extends GetxController {
         final AccessToken? accessToken = loginResult.accessToken;
         if (accessToken != null) {
           final validCredential = firebase_auth.FacebookAuthProvider.credential(
-            accessToken.tokenString,
-          );
+              accessToken.tokenString);
 
           final firebase_auth.UserCredential userCredential =
               await firebase_auth.FirebaseAuth.instance
                   .signInWithCredential(validCredential);
 
           final firebase_auth.User? user = userCredential.user;
+
           if (user != null) {
             emailController.text = userCredential.user!.email!;
             API().sp.write("emailSocial", userCredential.user!.email!);
@@ -1821,7 +1821,7 @@ class AuthController extends GetxController {
         }
       }
     } catch (e) {
-      print(e);
+      print("Error $e");
     }
   }
 
@@ -1918,7 +1918,7 @@ class AuthController extends GetxController {
                 seenGenres.add(genre);
                 filteredGenres.add({
                   'name': genre,
-                  'selected': false.obs, // make it observable
+                  'selected': false.obs,  // make it observable
                 });
               }
             }
@@ -1969,7 +1969,7 @@ class AuthController extends GetxController {
       rethrow;
     }
   }
-
+  
   get_specific.GetSpecificArtistGenre? getSpecificArtistGenreModel;
   RxBool isSpecificArtistLoading = false.obs;
 
