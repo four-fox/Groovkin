@@ -313,6 +313,7 @@ class AuthController extends GetxController {
       "password": loginPasswordController.text,
       "device_token": await notificationService.getDeviceToken(),
     };
+
     var response = await API().postApi(formData, "login");
 
     if (response.statusCode == 200) {
@@ -744,13 +745,11 @@ class AuthController extends GetxController {
       }
     }
     print(surveyData!.data);
-
     getLifeStyleLoader(true);
     update();
   }
 
   List<CategoryItem> itemsList = [];
-
   List catTemList = [];
   surveyAddFtn({CategoryItem? items, value, SurveyObject? surveyObj}) async {
     items!.selectedItem!.value = value;
@@ -930,8 +929,10 @@ class AuthController extends GetxController {
   // Todo MyGroovking List Hardware Data
   List hardwareListId = [];
   List hardwareCategoryId = [];
+
   List<groovkin.CategoryItem> hardwareCategory = [];
   List<groovkin.CategoryItem> musicCategory = [];
+
   void myGroovkinHardwareListFtn(List<groovkin.HardwareProvided> data) {
     // Clear previous lists
     hardwareListId.clear();
@@ -1001,7 +1002,6 @@ class AuthController extends GetxController {
 
   Future<void> updateInsurance() async {
     form.FormData formData = form.FormData();
-
     formData.fields
         .add(MapEntry("is_insurance", insuranceVal.value.toString()));
     var response = await API().postApi(formData, "edit-insurance");
@@ -1049,12 +1049,12 @@ class AuthController extends GetxController {
       musicGenereCategoryIds.add(items.id);
       musicCategory.add(groovkin.CategoryItem(
         id: items.id!,
-        name: items.name ?? "",
+        name: items.name ?? "", 
         type: items.type ?? "",
         createdAt: items.createdAt ?? "",
         updatedAt: items.updatedAt ?? "",
         categoryId: items.categoryId,
-        eventId: items.eventId,
+        eventId: items.eventId, 
         selectedItem: RxBool(value),
       ));
     } else {
@@ -1507,6 +1507,7 @@ class AuthController extends GetxController {
     for (var action in invitationList) {
       eventInvitation.add(action.emailController.text);
     }
+
     String username = 'william@gologonow.com'; // Your Email
 
     String password =
@@ -1705,7 +1706,7 @@ class AuthController extends GetxController {
   }
 
   NotificationModel? notificationModel;
-  
+
   Future<dynamic> getAllNotification(
       {fullUrl, String url = 'notifications'}) async {
     isNotificationLoading.value = true; // Start loading
@@ -2126,7 +2127,7 @@ class AuthController extends GetxController {
       // );
     }
   }
-  
+
   CustomerInfo? customerInfo;
 
   Future<void> initPlatformState() async {
@@ -2145,7 +2146,6 @@ class AuthController extends GetxController {
     }
     update();
   }
-
 }
 
 class AuthBinding implements Bindings {

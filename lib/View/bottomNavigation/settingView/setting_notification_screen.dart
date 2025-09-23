@@ -83,13 +83,14 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
                       ),
                     ),
                     Transform.scale(
-                        scale: 0.8,
-                        child: CupertinoSwitch(
-                            activeTrackColor: DynamicColor.yellowClr,
-                            value: controller.chatNotification.value,
-                            onChanged: (value) {
-                              controller.setChatNotification = value;
-                            }))
+                      scale: 0.8,
+                      child: CupertinoSwitch(
+                          activeTrackColor: DynamicColor.yellowClr,
+                          value: controller.chatNotification.value,
+                          onChanged: (value) {
+                            controller.setChatNotification = value;
+                          }),
+                    )
                   ],
                 ),
                 SizedBox(

@@ -11,7 +11,6 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/utils/constant.dart' as con;
 import 'package:http/http.dart' as http;
-import 'package:iconsax/iconsax.dart';
 
 class SocialSignIn extends StatefulWidget {
   final bool showGoogle, showFacebook, showApple, showSpotify;

@@ -27,8 +27,6 @@ import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
-
-import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 import 'package:geocoding/geocoding.dart';
 
 class ManagerController extends GetxController {
@@ -752,8 +750,8 @@ class ManagerController extends GetxController {
               ? "past_week"
               : "older_than_1_month",
     });
-    final token = await API().sp.read("token");
-    final userId = await API().sp.read("userId");
+    final token = await API().sp.read("token");   
+    final userId = await API().sp.read("userId");   
     print(token);
     if (response.statusCode == 200) {
       managerPendingEvents = ManagerPendingEventsModel.fromJson(response.data);

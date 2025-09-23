@@ -158,7 +158,7 @@ class _MyAppState extends State<MyApp> {
     super.didChangeDependencies();
     NotificationService().localNotificationsPlugin.cancelAll();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
@@ -185,10 +185,9 @@ class _MyAppState extends State<MyApp> {
           ),
           darkTheme: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
-              cursorColor: DynamicColor.yellowClr,
-              selectionColor: DynamicColor.yellowClr,
-              selectionHandleColor: DynamicColor.yellowClr,
-            ),
+                cursorColor: DynamicColor.yellowClr,
+                selectionColor: DynamicColor.yellowClr,
+                selectionHandleColor: DynamicColor.yellowClr),
             brightness: Brightness.dark,
             primaryColor: const Color(0xffFFFFFF),
             // primaryColor: Color(0xff040305),
@@ -208,15 +207,14 @@ class _MyAppState extends State<MyApp> {
             // child = SafeArea(top: false, child: child);
             return child;
           },
-
           // themeMode: ThemeMode.light,
           // themeMode: API().sp.read("apptheme") == ThemeMode.light.name
           //     ? ThemeMode.light
           //     : ThemeMode.dark,
-          themeMode: controller.themeMode,  
+          themeMode: controller.themeMode,
           // themeMode: ThemeMode.system,
-          initialRoute: AppPages.initial,  
-          getPages: AppPages.routes,  
+          initialRoute: AppPages.initial,
+          getPages: AppPages.routes,
         );
       });
     });

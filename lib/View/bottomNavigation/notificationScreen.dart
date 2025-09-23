@@ -108,8 +108,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         )
                       : ListView.builder(
                           itemBuilder: (BuildContext context, index) {
-                            final Datas data = controller
-                                .notificationModel!.data!.datas![index];
+                            final Datas data = controller.notificationModel!.data!.datas![index]; 
                             return Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 6.0),

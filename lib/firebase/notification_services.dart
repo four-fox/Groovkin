@@ -100,6 +100,7 @@ class NotificationService {
           forgroundMessage();
         }
       }
+      
       if (Platform.isAndroid) {
         if (context.mounted) {
           initLocalNotifications(context, message);
@@ -107,11 +108,11 @@ class NotificationService {
         }
       }
     });
-  }
-  
+  } 
+
   //! Todo showNotification
 
-  Future<void> showNotification(RemoteMessage message) async {  
+  Future<void> showNotification(RemoteMessage message) async {
     // Check if message.notification is null (important for silent notifications)
     if (message.notification == null) return;
     // Define a default notification channel ID (for Android)
@@ -212,7 +213,6 @@ class NotificationService {
   }
 
   // ! when user tap on the notification
-
   void handleMessage(BuildContext context, RemoteMessage message) {
     if (kDebugMode) {
       print(message.data);
@@ -224,6 +224,7 @@ class NotificationService {
     } else {
       data = message.data;
     }
+
     EventController controller = Get.find();
     ManagerController managerController = Get.find();
     HomeController homeController = Get.find();

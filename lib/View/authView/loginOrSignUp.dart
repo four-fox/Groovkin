@@ -88,11 +88,11 @@ class LoginOrSignUpScreen extends StatelessWidget {
                         color: DynamicColor.grayClr.withValues(alpha: 0.6),
                       ),
                     ),
-                  ),
+                  ),        
                   const SizedBox(
                     height: 15,
-                  ),
-                  CustomTextFields(
+                  ),        
+                  CustomTextFields( 
                     controller: controller.confirmPasswordController,
                     labelText: "Confirm Password",
                     validationError: "confirm password",
@@ -145,7 +145,7 @@ class LoginOrSignUpScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

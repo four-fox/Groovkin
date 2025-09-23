@@ -29,7 +29,7 @@ class NotifyScreen extends StatelessWidget {
                     "Send an invitation to your Friends!",
                     style: poppinsRegularStyle(
                       fontSize: 13,
-                      color: DynamicColor.lightRedClr, 
+                      color: DynamicColor.lightRedClr,
                       context: context,
                     ),
                   ),
@@ -117,7 +117,8 @@ class NotifyScreen extends StatelessWidget {
                       height: Get.height / 3.5,
                       container: Column(
                         children: [
-                          const Image(image: AssetImage("assets/notifySend.png")),
+                          const Image(
+                              image: AssetImage("assets/notifySend.png")),
                           Text(
                             "Notify Send",
                             style: poppinsMediumStyle(

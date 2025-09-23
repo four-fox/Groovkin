@@ -1403,10 +1403,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 : ShowCustomMap(
                     lat: double.parse(controller.eventDetail!.data!.latitude!),
                     lng: double.parse(controller.eventDetail!.data!.longitude!),
-                  ),
-            const SizedBox(
-              height: 10,
-            ),
+                  ), 
+            const SizedBox(height: 10),
             sp.read('role') == "eventManager"
                 ? const SizedBox.shrink()
                 : ((controller.eventDetail!.data!.profilePicture!.isEmpty) &&
