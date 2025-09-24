@@ -158,7 +158,7 @@ class _MyAppState extends State<MyApp> {
     super.didChangeDependencies();
     NotificationService().localNotificationsPlugin.cancelAll();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
@@ -185,9 +185,10 @@ class _MyAppState extends State<MyApp> {
           ),
           darkTheme: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
-                cursorColor: DynamicColor.yellowClr,
-                selectionColor: DynamicColor.yellowClr,
-                selectionHandleColor: DynamicColor.yellowClr),
+              cursorColor: DynamicColor.yellowClr,
+              selectionColor: DynamicColor.yellowClr,
+              selectionHandleColor: DynamicColor.yellowClr,
+            ),
             brightness: Brightness.dark,
             primaryColor: const Color(0xffFFFFFF),
             // primaryColor: Color(0xff040305),

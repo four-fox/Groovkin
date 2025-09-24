@@ -90,7 +90,7 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
                           onChanged: (value) {
                             controller.setChatNotification = value;
                           }),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -107,13 +107,15 @@ class _SettingNotificationScreenState extends State<SettingNotificationScreen> {
                       ),
                     ),
                     Transform.scale(
-                        scale: 0.8,
-                        child: CupertinoSwitch(
-                            activeTrackColor: DynamicColor.yellowClr,
-                            value: controller.counterNotification.value,
-                            onChanged: (value) {
-                              controller.setCounterNotification = value;
-                            }))
+                      scale: 0.8,
+                      child: CupertinoSwitch(
+                        activeTrackColor: DynamicColor.yellowClr,
+                        value: controller.counterNotification.value,
+                        onChanged: (value) {
+                          controller.setCounterNotification = value;
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ],

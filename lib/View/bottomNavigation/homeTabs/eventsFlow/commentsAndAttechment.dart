@@ -75,156 +75,164 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
               : const SizedBox.shrink()
         ],
       ),
-      body: GetBuilder<EventController>(builder: (eventController) {
-        return GetBuilder<ManagerController>(builder: (controller) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Form(
-              key: commentsForm,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Comments to Venue Manager',
-                          textAlign: TextAlign.center,
-                          style: poppinsMediumStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: DynamicColor.darkGrayClr,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: CustomTextFieldsHintText(
-                        maxLine: 5,
-                        validation: "comments",
-                        controller: eventController.commentsController,
-                        hintText: "write her..",
-                        borderClr: DynamicColor.grayClr.withValues(alpha: 0.6),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                        color: DynamicColor.darkGrayClr,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: DynamicColor.avatarBgClr),
-                      ),
-                      child: Column(
-                        children: [
-                          // Description for attached files
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
+      body: GetBuilder<EventController>(
+        builder: (eventController) {
+          return GetBuilder<ManagerController>(
+            builder: (controller) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Form(
+                  key: commentsForm,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
                             child: Text(
-                              "Please upload any documents/files that will help with the negotiation.",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: DynamicColor.grayClr,
+                              'Comments to Venue Manager',
+                              textAlign: TextAlign.center,
+                              style: poppinsMediumStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                context: context,
+                                color: theme.primaryColor,
                               ),
                             ),
                           ),
-
-                          ((eventController.imageListtt.isNotEmpty) &&
-                                      (eventController.duplicateValue.value ==
-                                          false)) ||
-                                  controller.mediaClass.isNotEmpty
-                              ? SizedBox(
-                                  height: 180,
-                                  width: Get.width,
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemCount: ((controller
-                                              .mediaClass.isNotEmpty))
-                                          ? controller.mediaClass.length
-                                          : eventController.imageListtt.length,
-                                      itemBuilder:
-                                          (BuildContext context, index) {
-                                        return assetImage(
-                                          eventController: eventController,
-                                          controller: controller,
-                                          mediaItem:
-                                              controller.mediaClass.isNotEmpty
-                                                  ? controller.mediaClass[index]
-                                                  : null,
-                                          bannerImage: eventController
-                                                  .imageListtt.isNotEmpty
-                                              ? eventController
-                                                  .imageListtt[index]
-                                              : null,
-                                        );
-                                      }),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
-                                  child: Icon(
-                                    Icons.attach_file_outlined,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: DynamicColor.darkGrayClr,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: CustomTextFieldsHintText(
+                            maxLine: 5,
+                            validation: "comments",
+                            controller: eventController.commentsController,
+                            hintText: "write her..",
+                            borderClr:
+                                DynamicColor.grayClr.withValues(alpha: 0.6),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                            color: DynamicColor.darkGrayClr,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: DynamicColor.avatarBgClr),
+                          ),
+                          child: Column(
+                            children: [
+                              // Description for attached files
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  "Please upload any documents/files that will help with the negotiation.",
+                                  style: TextStyle(
+                                    fontSize: 14,
                                     color: DynamicColor.grayClr,
-                                    size: 35,
                                   ),
                                 ),
+                              ),
 
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                if (FocusScope.of(context).hasFocus) {
-                                  FocusScope.of(context).unfocus();
-                                }
-                                // if (Platform.isAndroid) {
-                                //   managerController.pickFile();
-                                // } else {
-                                // }
-                                managerController.pickFileee();
-                              },
-                              child: Container(
-                                width: 120,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: DynamicColor.grayClr
-                                      .withValues(alpha: 0.2),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Attached file",
-                                    style: poppinsRegularStyle(
-                                      fontSize: 15,
-                                      context: context,
-                                      color: theme.primaryColor,
+                              ((eventController.imageListtt.isNotEmpty) &&
+                                          (eventController
+                                                  .duplicateValue.value ==
+                                              false)) ||
+                                      controller.mediaClass.isNotEmpty
+                                  ? SizedBox(
+                                      height: 180,
+                                      width: Get.width,
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: ((controller
+                                                  .mediaClass.isNotEmpty))
+                                              ? controller.mediaClass.length
+                                              : eventController
+                                                  .imageListtt.length,
+                                          itemBuilder:
+                                              (BuildContext context, index) {
+                                            return assetImage(
+                                              eventController: eventController,
+                                              controller: controller,
+                                              mediaItem: controller
+                                                      .mediaClass.isNotEmpty
+                                                  ? controller.mediaClass[index]
+                                                  : null,
+                                              bannerImage: eventController
+                                                      .imageListtt.isNotEmpty
+                                                  ? eventController
+                                                      .imageListtt[index]
+                                                  : null,
+                                            );
+                                          }),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10.0),
+                                      child: Icon(
+                                        Icons.attach_file_outlined,
+                                        color: DynamicColor.grayClr,
+                                        size: 35,
+                                      ),
+                                    ),
+
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (FocusScope.of(context).hasFocus) {
+                                      FocusScope.of(context).unfocus();
+                                    }
+                                    // if (Platform.isAndroid) {
+                                    //   managerController.pickFile();
+                                    // } else {
+                                    // }
+                                    managerController.pickFileee();
+                                  },
+                                  child: Container(
+                                    width: 120,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: DynamicColor.grayClr
+                                          .withValues(alpha: 0.2),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Attached file",
+                                        style: poppinsRegularStyle(
+                                          fontSize: 15,
+                                          context: context,
+                                          color: theme.primaryColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
-        });
-      }),
+        },
+      ),
       bottomNavigationBar: SafeArea(
         bottom: true,
         child: Padding(
@@ -243,7 +251,6 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                   //   Get.toNamed(Routes.eventPreview,
                   //       arguments: {"viewDetails": 1});
                   // } else {
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -312,7 +319,6 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                               managerController.update();
                             }
                           },
-                          
                         );
                       },
                     ),
@@ -618,7 +624,7 @@ class ListOfVenuesScreen extends StatelessWidget {
               ],
             ),
             // SizedBox(
-          //   height: 3,
+            //   height: 3,
             // ),
             Center(
               child: Text(

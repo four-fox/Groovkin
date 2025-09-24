@@ -630,12 +630,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             SizedBox(
               height: flowBtn == 3 ? 0 : 12,
             ),
-
             ///todo dalta counter button data
             SizedBox(
               height: flowBtn == 3 ? 0 : 10,
             ),
-
             controller.venueImageList.isEmpty
                 ? const SizedBox.shrink()
                 : SizedBox(
@@ -717,7 +715,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           );
                         }),
                   ),
-
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -732,11 +729,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 ),
               ),
             ),
-
             const SizedBox(
               height: 10,
             ),
-
             eventDateTime(
               text:
                   "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
@@ -744,11 +739,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
               context: context,
               iconClr: DynamicColor.yellowClr,
             ),
-
             const SizedBox(
               height: 10,
             ),
-
             eventDateTime(
               theme: theme,
               context: context,
@@ -757,11 +750,9 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   .format(controller.eventDetail!.data!.startDateTime!),
               iconClr: DynamicColor.yellowClr,
             ),
-
             const SizedBox(
               height: 10,
             ),
-
             controller.eventDetail!.data!.location == null
                 ? const SizedBox.shrink()
                 : eventDateTime(
@@ -771,7 +762,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     text: "${controller.eventDetail!.data!.location}",
                     iconClr: DynamicColor.yellowClr,
                   ),
-
             controller.eventDetail!.data!.comment == null
                 ? const SizedBox.shrink()
                 : customWidget(context, theme,
@@ -1364,7 +1354,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             const SizedBox(
               height: 10,
             ),
-
             controller.eventDetail!.data!.location == null
                 ? const SizedBox.shrink()
                 : Column(
@@ -1403,7 +1392,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 : ShowCustomMap(
                     lat: double.parse(controller.eventDetail!.data!.latitude!),
                     lng: double.parse(controller.eventDetail!.data!.longitude!),
-                  ), 
+                  ),
             const SizedBox(height: 10),
             sp.read('role') == "eventManager"
                 ? const SizedBox.shrink()
@@ -1519,7 +1508,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                               await _controller.getAllEvents(loader: false);
                               controller.update();
                             },
-                            onTap: () {}),
+                            onTap: () {},
+                          ),
                   ),
             API().sp.read("role") == "eventOrganizer"
                 ? Row(
@@ -1540,11 +1530,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     ],
                   )
                 : const SizedBox.shrink(),
-
-            const SizedBox(
-              height: 20,
-            ),
-
+            const SizedBox(height: 20),
             if (controller.eventDetail!.data!.rating != null &&
                 controller.eventDetail!.data!.rating!.isNotEmpty &&
                 API().sp.read("role") == "eventManager")
@@ -1569,9 +1555,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   ],
                 ),
               ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
