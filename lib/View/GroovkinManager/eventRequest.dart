@@ -180,11 +180,11 @@ class _EventRequestsState extends State<EventRequests> {
                                         followOnTap: () {
                                           if (data.user!.following == null) {
                                             _authController.followUser(
-                                              userData: data.user,
-                                              fromAllUser: false,
-                                              fromRequestEvent: true,
-                                              eventListModel:
-                                                  controller.allEvents,
+                                              userData: data.user,  
+                                              fromAllUser: false,  
+                                              fromRequestEvent: true,  
+                                              eventListModel: 
+                                                  controller.allEvents,  
                                             );
                                             // _eventController.getAllEvents();
                                           } else {

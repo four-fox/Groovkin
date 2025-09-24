@@ -14,6 +14,7 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import '../chatView/chatRoomModel.dart';
 
+
 class NotificationService {
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
@@ -31,7 +32,7 @@ class NotificationService {
       badge: true,
       carPlay: true,
     );
-
+      
     if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.authorized) {
       if (kDebugMode) {
@@ -100,7 +101,7 @@ class NotificationService {
           forgroundMessage();
         }
       }
-      
+
       if (Platform.isAndroid) {
         if (context.mounted) {
           initLocalNotifications(context, message);
@@ -108,7 +109,7 @@ class NotificationService {
         }
       }
     });
-  } 
+  }
 
   //! Todo showNotification
 
