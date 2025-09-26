@@ -67,7 +67,6 @@ class _EventRequestsState extends State<EventRequests> {
                                 //       "title": "About Event"
                                 //     }
                                 // );
-
                                 Get.toNamed(Routes.upcomingScreen, arguments: {
                                   "notInterestedBtn": 2,
                                   "appBarTitle": "About Event",
@@ -85,6 +84,7 @@ class _EventRequestsState extends State<EventRequests> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Column(
                                   children: [
+
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10.0),
@@ -99,6 +99,7 @@ class _EventRequestsState extends State<EventRequests> {
                                         ),
                                       ),
                                     ),
+
                                     if (data.startDateTime != null ||
                                         data.endDateTime != null)
                                       eventDateTime(
@@ -112,9 +113,11 @@ class _EventRequestsState extends State<EventRequests> {
                                         textClr: DynamicColor.lightRedClr,
                                         widths: Get.width / 1.4,
                                       ),
+
                                     const SizedBox(
                                       height: 4,
                                     ),
+
                                     if (data.startDateTime != null)
                                       eventDateTime(
                                         context: context,
@@ -128,24 +131,29 @@ class _EventRequestsState extends State<EventRequests> {
                                         textClr: DynamicColor.lightRedClr,
                                         widths: Get.width / 1.4,
                                       ),
+
                                     const SizedBox(
                                       height: 4,
                                     ),
+
                                     eventDateTime(
-                                        context: context,
-                                        iconBgClr: DynamicColor.darkGrayClr,
-                                        theme: theme,
-                                        iconClr: DynamicColor.darkYellowClr,
-                                        img: "assets/calender.png",
-                                        icon: true,
-                                        iconSize: 17,
-                                        text: data.location ?? "",
-                                        textClr: DynamicColor.lightRedClr,
-                                        widths: Get.width / 1.4),
+                                      context: context,
+                                      iconBgClr: DynamicColor.darkGrayClr,
+                                      theme: theme,
+                                      iconClr: DynamicColor.darkYellowClr,
+                                      img: "assets/calender.png",
+                                      icon: true,
+                                      iconSize: 17,
+                                      text: data.location ?? "",
+                                      textClr: DynamicColor.lightRedClr,
+                                      widths: Get.width / 1.4,
+                                    ),
+
                                     Divider(
                                       thickness: 2,
                                       color: DynamicColor.avatarBgClr,
                                     ),
+
                                     GetBuilder<AuthController>(
                                         builder: (contr) {
                                       return ourGuestWidget(
@@ -180,11 +188,11 @@ class _EventRequestsState extends State<EventRequests> {
                                         followOnTap: () {
                                           if (data.user!.following == null) {
                                             _authController.followUser(
-                                              userData: data.user,  
-                                              fromAllUser: false,  
-                                              fromRequestEvent: true,  
-                                              eventListModel: 
-                                                  controller.allEvents,  
+                                              userData: data.user,
+                                              fromAllUser: false,
+                                              fromRequestEvent: true,
+                                              eventListModel:
+                                                  controller.allEvents,
                                             );
                                             // _eventController.getAllEvents();
                                           } else {
@@ -195,13 +203,15 @@ class _EventRequestsState extends State<EventRequests> {
                                               eventListModel:
                                                   controller.allEvents,
                                             );
+
                                             // _eventController.getAllEvents();
                                           }
                                           _authController.update();
                                           controller.update();
                                         },
                                       );
-                                    })
+                                    }),
+                                    
                                   ],
                                 ),
                               ),
