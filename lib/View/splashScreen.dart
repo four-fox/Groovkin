@@ -18,36 +18,72 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () async {
       if (API().sp.read("intro") == true) {
         if (API().sp.read("token") != null) {
-          print(API().sp.read("token"));
-          print(API().sp.read("userId"));
-          String userTypeInital = await API().sp.read('role');
-          print(userTypeInital);
-          if (API().sp.read("role") == "User") {
-            print(API().sp.read("isUserCreated"));
-            if (API().sp.read("isUserCreated") == 0) {
-              print(API().sp.read("isUserCreated"));
-              Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
-                "update": false,
-              });
+          print("Event Create ${API().sp.read("isEventCreated")}");
+
+          if (API().sp.read("signupPlatform") != "app") {
+            print(API().sp.read("isCompleteProfile"));
+            print(API().sp.read("signupPlatform"));
+            if (API().sp.read("isCompleteProfile") == 0) {
+              // Get.toNamed(Routes.createProfile, arguments: {
+              //   "socialType": API().sp.read("socialType"),
+              //   "accessToken": API().sp.read("accessToken"),
+              // });
+              Get.offAllNamed(Routes.loginSelection);
+              API().sp.remove("token");
             } else {
-              Get.offAllNamed(Routes.userBottomNavigationNav);
-            }
-          } else {
-            if (API().sp.read("role") == "eventOrganizer") {
-              if (API().sp.read("isEventCreated") == 0) {
-                Get.offAllNamed(Routes.serviceScreen,
-                    arguments: {"addMoreService": 1});
+              if (API().sp.read("role") == "User") {
+                if (API().sp.read("isUserCreated") == 0) {
+                  Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
+                    "update": false,
+                  });
+                } else {
+                  // selectUserIndexxx.value = 0;
+                  Get.offAllNamed(Routes.userBottomNavigationNav);
+                }
+              } else if (API().sp.read("role") == "eventOrganizer") {
+                if (API().sp.read("isEventCreated").toString().isEmpty ||
+                    API().sp.read("isEventCreated") == 1) {
+                  Get.offAllNamed(Routes.bottomNavigationView,
+                      arguments: {"indexValue": 0});
+                } else {
+                  Get.offAllNamed(Routes.welComeScreen);
+                }
               } else {
                 Get.offAllNamed(Routes.bottomNavigationView,
                     arguments: {"indexValue": 0});
               }
+            }
+          }
+          
+          if (API().sp.read("signupPlatform") != "app") {
+          } else {
+            if (API().sp.read("role") == "User") {
+              print(API().sp.read("isUserCreated"));
+              if (API().sp.read("isUserCreated") == 0) {
+                print(API().sp.read("isUserCreated"));
+                Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
+                  "update": false,
+                });
+              } else {
+                Get.offAllNamed(Routes.userBottomNavigationNav);
+              }
             } else {
-              Get.offAllNamed(Routes.bottomNavigationView,
-                  arguments: {"indexValue": 0});
+              if (API().sp.read("role") == "eventOrganizer") {
+                if (API().sp.read("isEventCreated") == 0) {
+                  Get.offAllNamed(Routes.serviceScreen,
+                      arguments: {"addMoreService": 1});
+                } else {
+                  Get.offAllNamed(Routes.bottomNavigationView,
+                      arguments: {"indexValue": 0});
+                }
+              } else {
+                Get.offAllNamed(Routes.bottomNavigationView,
+                    arguments: {"indexValue": 0});
+              }
             }
           }
         } else {
-          Get.offAllNamed(Routes.loginScreen);
+          Get.offAllNamed(Routes.loginSelection);
           // Get.offAllNamed(Routes.loginSelection);
         }
       } else {

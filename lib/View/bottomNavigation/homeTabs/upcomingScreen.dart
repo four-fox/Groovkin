@@ -29,6 +29,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Components/t_section_button.dart';
 
@@ -156,7 +157,8 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 ),
               ),
               body: SafeArea(
-                child: controller.eventDetail!.data!.status == "pending"
+                child: controller.eventDetail!.data!.status == "pending" &&
+                        appBarTitle != "Drafts"
                     ? pendingDetailsWidget(
                         theme,
                         controller,
@@ -170,10 +172,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
               ),
               bottomNavigationBar:
                   GetBuilder<EventController>(builder: (controller) {
-                print(API().sp.read("role"));
                 return controller.eventDetailsLoader.value == false
                     ? SafeArea(child: SizedBox())
-                    : controller.eventDetail!.data!.status == "pending"
+                    : controller.eventDetail!.data!.status == "pending" &&
+                            appBarTitle != "Drafts"
                         ? SafeArea(child: SizedBox())
                         : (API().sp.read("role") == "eventManager" &&
                                 (controller.eventDetail!.data!.status ==
@@ -630,6 +632,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             SizedBox(
               height: flowBtn == 3 ? 0 : 12,
             ),
+
             ///todo dalta counter button data
             SizedBox(
               height: flowBtn == 3 ? 0 : 10,
@@ -682,8 +685,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                           .last ==
                                       "pdf"
                                   ? GestureDetector(
-                                      onTap: () {
-                                        Get.to(() => Scaffold(
+                                      onTap: () async {
+                                        if (Platform.isIOS) {
+                                          Get.to(() async {
+                                            Scaffold(
                                               backgroundColor:
                                                   Colors.transparent,
                                               appBar: AppBar(
@@ -693,7 +698,22 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                 controller.venueImageList[index]
                                                     .toString(),
                                               ),
-                                            ));
+                                            );
+                                          });
+                                        } else if (Platform.isAndroid) {
+                                          final Uri url = Uri.parse(
+                                            controller.venueImageList[index]
+                                                .toString(),
+                                          );
+                                          if (!await launchUrl(
+                                            url,
+                                            mode: LaunchMode
+                                                .externalApplication, // opens in browser
+                                          )) {
+                                            throw Exception(
+                                                'Could not open ${controller.venueImageList[index].toString()}');
+                                          }
+                                        }
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(

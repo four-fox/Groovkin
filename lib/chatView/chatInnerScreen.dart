@@ -118,9 +118,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
-    return PopScope(
-      canPop: true,
+    return PopScope(  
+      canPop: true,  
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
           isOnChat.value = false;
@@ -176,7 +175,6 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-
                                 ///Todo latter on
                                 /* if(notificationFlow == false){
                                       if (chatData!.user!.profile!.userImage != null || chatData!.userImage != null) {
@@ -194,7 +192,6 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                       }
                                     }*/
                                 ///Todo latter on
-                                
                               },
                               child: CircleAvatar(
                                   radius: 20,
@@ -591,6 +588,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                 if (controller.messageController.text.isNotEmpty ||
                     controller.multipleImageList.isNotEmpty) {
                   _controller.sendMessage(receiverId: userData!.id);
+                  FocusScope.of(context).unfocus();
                 } else {
                   bottomToast(text: "Please write something");
                   // BotToast.showText(text: "Please write something");

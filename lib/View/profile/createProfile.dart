@@ -55,11 +55,11 @@ class _CreateProfileState extends State<CreateProfile> {
       clear();
     });
   }
-
+  
   clear() {
     _controller.firstNameController.clear();
     _controller.lastNameController.clear();
-    _controller.displayNameController.clear();
+    if (socialType == null) _controller.displayNameController.clear();
     _controller.dobController.clear();
     _controller.phoneNumController.clear();
     _controller.stateController.clear();

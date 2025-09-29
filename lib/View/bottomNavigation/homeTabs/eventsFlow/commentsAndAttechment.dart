@@ -16,6 +16,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/allev
 import 'package:groovkin/utils/utils.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../Components/Network/Url.dart';
 
 class CommentsAndAttachment extends StatefulWidget {
@@ -437,14 +438,28 @@ assetImage(
                 children: [
                   if (bannerImage.mediaPath.toString().split(".").last == "pdf")
                     GestureDetector(
-                      onTap: () {
-                        Get.to(() => Scaffold(
-                              backgroundColor: Colors.transparent,
-                              appBar: AppBar(title: const Text("PDF Viewer")),
-                              body: SfPdfViewer.network(
-                                bannerImage.mediaPath.toString(),
-                              ),
-                            ));
+                      onTap: () async {
+                        if (Platform.isIOS) {
+                          Get.to(() => Scaffold(
+                                backgroundColor: Colors.transparent,
+                                appBar: AppBar(title: const Text("PDF Viewer")),
+                                body: SfPdfViewer.network(
+                                  bannerImage.mediaPath.toString(),
+                                ),
+                              ));
+                        } else if (Platform.isAndroid) {
+                          final Uri url = Uri.parse(
+                            bannerImage.mediaPath.toString(),
+                          );
+                          if (!await launchUrl(
+                            url,
+                            mode: LaunchMode
+                                .externalApplication, // opens in browser
+                          )) {
+                            throw Exception(
+                                'Could not open ${bannerImage.mediaPath.toString()}');
+                          }
+                        }
                       },
                       child: Container(
                         width: 200,

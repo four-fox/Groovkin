@@ -31,7 +31,6 @@ class _AddCardDetailsState extends State<AddCardDetails> {
   RxBool defaultPayment = true.obs;
   OutlineInputBorder? border;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   int paymentMethodFlow = Get.arguments['paymentMethod'];
   bool isFromreplaced = Get.arguments?["isFromreplaced"] ?? false;
 
@@ -43,15 +42,19 @@ class _AddCardDetailsState extends State<AddCardDetails> {
     if (validate) {
       isFromreplaced == true
           ? Get.back()
-          : _controller.addCard(
-              cardHolderName,
-              cardNumber
-                  .toString()
-                  .replaceAll(RegExp(r'\s+'), ''), // Remove all whitespace
-              expiryDate.split("/").first,
-              expiryDate.split("/").last,
-              cvvCode,
-              fromSignUp);
+          : _controller
+              .addCard(
+                  cardHolderName,
+                  cardNumber
+                      .toString()
+                      .replaceAll(RegExp(r'\s+'), ''), // Remove all whitespace
+                  expiryDate.split("/").first,
+                  expiryDate.split("/").last,
+                  cvvCode,
+                  fromSignUp)
+              .then((_) {
+              _controller.getAllCards();
+            });
     }
   }
 

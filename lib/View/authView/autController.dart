@@ -43,7 +43,6 @@ import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-
 import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 
 enum ChangeRole { user, organizer, manager }
@@ -190,6 +189,7 @@ class AuthController extends GetxController {
         //   //   }
         //   // );
         // }
+     
       } else {
         API().sp.write("socialType", signUpPlatform);
         API().sp.write("token", response.data['data']['token']);
@@ -213,9 +213,8 @@ class AuthController extends GetxController {
             API().sp.write("isUserCreated",
                 response.data['data']['user_details']['is_user_created']);
             if (response.data['data']['user_details']['is_user_created'] == 0) {
-              Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
-                "update": false,
-              });
+              Get.offAllNamed(Routes.surveyLifeStyleScreen,
+                  arguments: {"update": false});
             } else {
               selectUserIndexxx.value = 0;
               Get.offAllNamed(Routes.userBottomNavigationNav);
@@ -223,9 +222,17 @@ class AuthController extends GetxController {
           } else if (API().sp.read("role") == "eventOrganizer") {
             API().sp.write("isEventCreated",
                 response.data['data']['user_details']['is_event_created']);
-            Get.offAllNamed(Routes.welComeScreen);
+            if (response.data['data']['user_details']['is_event_created'] ==
+                0) {
+              Get.offAllNamed(Routes.welComeScreen);
+            } else {
+              selectUserIndexxx.value = 0;
+              Get.offAllNamed(Routes.bottomNavigationView,
+                  arguments: {"indexValue": 0});
+            }
           } else {
             Get.offAllNamed(Routes.welComeScreen);
+
             // Get.offAllNamed(Routes.createCompanyProfileScreen,
             //   arguments: {
             //   "updationCondition": false,
@@ -276,7 +283,6 @@ class AuthController extends GetxController {
             API().sp.write("currentRole", "eventManager");
           }
           clearTextFields();
-
           if (API().sp.read("role") == "User") {
             API().sp.write("isUserCreated",
                 response.data['data']['user_details']['is_user_created']);
@@ -364,7 +370,9 @@ class AuthController extends GetxController {
             Get.offAllNamed(Routes.userBottomNavigationNav);
           }
         } else if (sp.read("role") == "eventOrganizer") {
-          if (response.data['data']['user_details']['isEventCreated'] == 0) {
+          API().sp.write("isEventCreated",
+              response.data['data']['user_details']['is_event_created']);
+          if (response.data['data']['user_details']['is_event_created'] == 0) {
             Get.offAllNamed(Routes.serviceScreen,
                 arguments: {"addMoreService": 1});
           } else {
@@ -1049,12 +1057,12 @@ class AuthController extends GetxController {
       musicGenereCategoryIds.add(items.id);
       musicCategory.add(groovkin.CategoryItem(
         id: items.id!,
-        name: items.name ?? "", 
+        name: items.name ?? "",
         type: items.type ?? "",
         createdAt: items.createdAt ?? "",
         updatedAt: items.updatedAt ?? "",
         categoryId: items.categoryId,
-        eventId: items.eventId, 
+        eventId: items.eventId,
         selectedItem: RxBool(value),
       ));
     } else {
@@ -1771,6 +1779,9 @@ class AuthController extends GetxController {
         API().sp.write("emailSocial", userCredential.user!.email ?? "");
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
         API().sp.write("accessToken", userCredential.credential!.accessToken);
+
+        firebase_auth.FirebaseAuth.instance.signOut();
+        await GoogleSignIn().signOut();
         sigUp(
           Get.context,
           signUpPlatform: "google",

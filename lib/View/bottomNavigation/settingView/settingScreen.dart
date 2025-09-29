@@ -215,6 +215,11 @@ class _SettingScreenState extends State<SettingScreen> {
 
                         if (API().sp.read("role") == "eventManager")
                           customWidget(
+                              onTap: () async {
+                                await Future.delayed(
+                                    Duration(milliseconds: 100));
+                                _themeController.toggleTheme("eventManager");
+                              },
                               context: context,
                               img: "assets/themeIcon.png",
                               text: "Light & Dark Mood",

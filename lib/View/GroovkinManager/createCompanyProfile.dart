@@ -724,7 +724,7 @@ class _CreateCompanyProfileScreenState
                     labelText: "Website",
                     controller: controller.websiteController1,
                     validationError: "Website",
-                    isOptional: true,
+                    isOptional: false,
                   ),
 
                   const SizedBox(
@@ -1106,21 +1106,20 @@ class _CreateCompanyProfileScreenState
                           } else if (!controller.termsConditionAgree.value) {
                             bottomToast(
                                 text: "Please accept terms and condition");
+                          } else if
+                              // ✅ check only if user entered something
+                              (!isValidUrl(
+                                      controller.websiteController1.text) ||
+                                  !isValidUrl(
+                                      controller.facebookController.text) ||
+                                  !isValidUrl(
+                                      controller.instagramController1.text)) {
+                            bottomToast(
+                                text:
+                                    "Please enter valid links (must start with http:// or https://)");
                           } else {
-                            // ✅ check only if user entered something
-                            // !isValidUrl(
-                            //         controller.websiteController1.text) ||
-                            if (!isValidUrl(
-                                    controller.facebookController.text) ||
-                                !isValidUrl(
-                                    controller.instagramController1.text)) {
-                              bottomToast(
-                                  text:
-                                      "Please enter valid links (must start with http:// or https://)");
-                            } else {
-                              // ✅ all good
-                              Get.toNamed(Routes.addVenueScreen);
-                            }
+                            // ✅ all good
+                            Get.toNamed(Routes.addVenueScreen);
                           }
                         }
                       },

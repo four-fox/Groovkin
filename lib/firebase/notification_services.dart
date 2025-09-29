@@ -14,11 +14,12 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import '../chatView/chatRoomModel.dart';
 
-class NotificationService {
+class NotificationService { 
+
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   final FlutterLocalNotificationsPlugin localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();    
 
   // ! Todo check the permissions of the notification service
 
@@ -29,9 +30,9 @@ class NotificationService {
       alert: true,
       announcement: true,
       badge: true,
-      carPlay: true,
+      carPlay: true
     );
-    
+
     if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.authorized) {
       if (kDebugMode) {
@@ -49,7 +50,7 @@ class NotificationService {
   }
 
   // ! Todo get devices token
-
+  
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
     log("Device Token $token");
@@ -57,10 +58,10 @@ class NotificationService {
       print("Device Token $token");
     }
     return token!;
-  }
-
-  // ! Todo refresh token
-
+  } 
+  
+  // ! Todo refresh token   
+  
   void isRefreshToken() async {
     firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
@@ -206,10 +207,7 @@ class NotificationService {
   Future forgroundMessage() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+            alert: true, badge: true, sound: true);
   }
 
   // ! when user tap on the notification

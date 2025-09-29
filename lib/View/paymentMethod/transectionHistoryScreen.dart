@@ -65,8 +65,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
   //   }
   // }
 
-  
-  @override 
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return PopScope(
@@ -465,25 +464,25 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
             );
           }
           // Show "Replace" button if there's only one card left and none are selected
-          else if (homecontroller.transactionData.length == 1 &&
-              selectedIndex == null) {
-            return SafeArea(
-              bottom: true,
-              child: Container(
-                margin: const EdgeInsets.all(8.0),
-                child: CustomButton(
-                  onTap: () {
-                    Get.toNamed(Routes.addCardDetails, arguments: {
-                      "isFromreplaced": true,
-                      "paymentMethod": 2,
-                    });
-                    // Add functionality for "Replace" if required
-                  },
-                  text: "Replace",
-                ),
-              ),
-            );
-          }
+          // else if (homecontroller.transactionData.length == 1 &&
+          //     selectedIndex == null) {
+          //   return SafeArea(
+          //     bottom: true,
+          //     child: Container(
+          //       margin: const EdgeInsets.all(8.0),
+          //       child: CustomButton(
+          //         onTap: () {
+          //           Get.toNamed(Routes.addCardDetails, arguments: {
+          //             "isFromreplaced": true,
+          //             "paymentMethod": 2,
+          //           });
+          //           // Add functionality for "Replace" if required
+          //         },
+          //         text: "Replace",
+          //       ),
+          //     ),
+          //   );
+          // }
           return const SizedBox();
           // Return null if neither condition is met (no button shown)
         }));

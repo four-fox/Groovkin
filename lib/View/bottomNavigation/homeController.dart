@@ -281,7 +281,7 @@ class HomeController extends GetxController {
 
   // Todo Add Cards
 
-  addCard(
+ Future<void> addCard(
     String cardHolderName,
     String number,
     String expiryMonth,
