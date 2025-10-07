@@ -20,137 +20,139 @@ class LoginOrSignUpScreen extends StatelessWidget {
     return Form(
       key: signUpForm,
       child: Scaffold(
-        body: GetBuilder<AuthController>(builder: (controller) {
-          return Container(
-            height: double.infinity,
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/loginSelection3.png"),
-                  fit: BoxFit.fill),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: kToolbarHeight / 1.5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: ImageIcon(
-                      const AssetImage('assets/backArrow.png'),
-                      size: 32,
-                      color: theme.primaryColor,
+        body: GetBuilder<AuthController>(
+          builder: (controller) {
+            return Container(
+              height: double.infinity,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/loginSelection3.png"),
+                    fit: BoxFit.fill),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: kToolbarHeight / 1.5,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    /*sp.read("role")=="eventManager"?*/ "Sign Up" /*:'Let’s get Started'*/,
-                    style: poppinsMediumStyle(
-                      fontSize: 28,
-                      context: context,
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: kToolbarHeight * 1.5,
-                  ),
-                  CustomTextFields(
-                    controller: controller.emailController,
-                    isEmail: true,
-                    validationError: "email",
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  CustomTextFields(
-                    controller: controller.passwordController,
-                    labelText: "Password",
-                    obscureText: controller.showPassword.value,
-                    validationError: "password",
-                    iconShow: true,
-                    suffixWidget: GestureDetector(
+                    GestureDetector(
                       onTap: () {
-                        controller.showPassword.value =
-                            !controller.showPassword.value;
-                        controller.update();
+                        Get.back();
                       },
-                      child: Icon(
-                        controller.showPassword.value != true
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: DynamicColor.grayClr.withValues(alpha: 0.6),
+                      child: ImageIcon(
+                        const AssetImage('assets/backArrow.png'),
+                        size: 32,
+                        color: theme.primaryColor,
                       ),
                     ),
-                  ),        
-                  const SizedBox(
-                    height: 15,
-                  ),        
-                  CustomTextFields( 
-                    controller: controller.confirmPasswordController,
-                    labelText: "Confirm Password",
-                    validationError: "confirm password",
-                    obscureText: controller.showConfirmPassword.value,
-                    iconShow: true,
-                    suffixWidget: GestureDetector(
-                      onTap: () {
-                        controller.showConfirmPassword.value =
-                            !controller.showConfirmPassword.value;
-                        controller.update();
-                      },
-                      child: Icon(
-                        controller.showConfirmPassword.value != true
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: DynamicColor.grayClr.withValues(alpha: 0.6),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      /*sp.read("role")=="eventManager"?*/ "Sign Up" /*:'Let’s get Started'*/,
+                      style: poppinsMediumStyle(
+                        fontSize: 28,
+                        context: context,
+                        color: theme.primaryColor,
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: kToolbarHeight / 2.5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.offAllNamed(Routes.loginScreen);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Already have an account? ',
-                            style: poppinsRegularStyle(
+                    const SizedBox(
+                      height: kToolbarHeight * 1.5,
+                    ),
+                    CustomTextFields(
+                      controller: controller.emailController,
+                      isEmail: true,
+                      validationError: "email",
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomTextFields(
+                      controller: controller.passwordController,
+                      labelText: "Password",
+                      obscureText: controller.showPassword.value,
+                      validationError: "password",
+                      iconShow: true,
+                      suffixWidget: GestureDetector(
+                        onTap: () {
+                          controller.showPassword.value =
+                              !controller.showPassword.value;
+                          controller.update();
+                        },
+                        child: Icon(
+                          controller.showPassword.value != true
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: DynamicColor.grayClr.withValues(alpha: 0.6),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    CustomTextFields(
+                      controller: controller.confirmPasswordController,
+                      labelText: "Confirm Password",
+                      validationError: "confirm password",
+                      obscureText: controller.showConfirmPassword.value,
+                      iconShow: true,
+                      suffixWidget: GestureDetector(
+                        onTap: () {
+                          controller.showConfirmPassword.value =
+                              !controller.showConfirmPassword.value;
+                          controller.update();
+                        },
+                        child: Icon(
+                          controller.showConfirmPassword.value != true
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: DynamicColor.grayClr.withValues(alpha: 0.6),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: kToolbarHeight / 2.5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.offAllNamed(Routes.loginScreen);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Already have an account? ',
+                              style: poppinsRegularStyle(
+                                  fontSize: 15,
+                                  context: context,
+                                  fontWeight: FontWeight.w600,
+                                  color: DynamicColor.lightRedClr),
+                            ),
+                            Text(
+                              'Login here',
+                              style: poppinsRegularStyle(
                                 fontSize: 15,
                                 context: context,
                                 fontWeight: FontWeight.w600,
-                                color: DynamicColor.lightRedClr),
-                          ),
-                          Text(
-                            'Login here',
-                            style: poppinsRegularStyle(
-                              fontSize: 15,
-                              context: context,
-                              fontWeight: FontWeight.w600,
-                              color: theme.primaryColor,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
         bottomNavigationBar: SafeArea(
           top: false,
           child: Padding(

@@ -1,5 +1,4 @@
 // ignore_for_file: depend_on_referenced_packages
-
 import 'dart:async';
 import 'dart:core';
 import 'package:bot_toast/bot_toast.dart';
@@ -12,7 +11,7 @@ import 'package:groovkin/Components/Network/interceptors_service.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'ErrorMethod.dart';
 import 'Url.dart';
-
+  
 String dummyProfile =
     "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg";
 
@@ -49,14 +48,15 @@ class API {
     dio.options.headers['Accept'] = "application/json";
     if (url != "") {
       try {
-        print(url);
         if (isLoader == true) {
           showLoading();
         }
+
         final response = await dio.get(
           fullUrl ?? Url().baseUrl + url,
           queryParameters: queryParameters,
         );
+
         BotToast.closeAllLoading();
         return response;
       } on DioException catch (e) {
@@ -177,8 +177,9 @@ errorIcon(postButton) async {
   Timer(const Duration(seconds: 3), () {
     postButton.reset();
   });
-}
-//
+}   
+
+
 
 class LoaderClass extends StatelessWidget {
   const LoaderClass({super.key, this.colorOne, this.colorTwo});

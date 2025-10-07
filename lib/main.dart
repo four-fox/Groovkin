@@ -63,9 +63,7 @@ checkUserSubscriptionIsActive() async {
   if (Get.isRegistered<AuthController>()) {
     authController = Get.find<AuthController>();
   } else {
-    authController = Get.put(
-      AuthController(),
-    );
+    authController = Get.put(AuthController());
   }
 
   CustomerInfo customerInfo = await Purchases.getCustomerInfo();
@@ -106,7 +104,6 @@ void main() async {
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
   await GetStorage.init();
   Get.put(ThemeController());
-
   runApp(const MyApp());
 }
 
@@ -131,7 +128,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     if (Get.isRegistered<AuthController>()) {
       authController = Get.find<AuthController>();
     } else {

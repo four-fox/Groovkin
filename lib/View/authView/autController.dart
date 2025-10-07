@@ -478,7 +478,7 @@ class AuthController extends GetxController {
   }
 
   /// todo forgot password functionality
-
+  
   /// clear signUp and create profile fields
   clearTextFields() async {
     imageBytes = null;
@@ -507,7 +507,7 @@ class AuthController extends GetxController {
   final dobController = TextEditingController();
 
   ///Upload Profile Pic
-
+  
   String? imageBytes;
   XFile? files;
   final ImagePicker _picker = ImagePicker();
@@ -589,7 +589,7 @@ class AuthController extends GetxController {
 
     Get.toNamed(Routes.profileScreen);
   }
-
+  
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo create profile functionality
 
   final firstNameController = TextEditingController();

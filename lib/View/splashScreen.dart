@@ -11,15 +11,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     super.initState();
-
     Future.delayed(const Duration(seconds: 3), () async {
       if (API().sp.read("intro") == true) {
         if (API().sp.read("token") != null) {
-          print("Event Create ${API().sp.read("isEventCreated")}");
-
           if (API().sp.read("signupPlatform") != "app") {
             print(API().sp.read("isCompleteProfile"));
             print(API().sp.read("signupPlatform"));
@@ -54,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
               }
             }
           }
-          
+
           if (API().sp.read("signupPlatform") != "app") {
           } else {
             if (API().sp.read("role") == "User") {
