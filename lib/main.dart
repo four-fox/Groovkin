@@ -141,7 +141,7 @@ class _MyAppState extends State<MyApp> {
     if (API().sp.read("userId") != null) {
       fetchSubscription();
     }
-
+  
     // Todo Firebase Notification Start
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);

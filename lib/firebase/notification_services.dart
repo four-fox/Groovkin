@@ -61,7 +61,7 @@ class NotificationService {
   } 
 
   // ! Todo refresh token   
-  
+
   void isRefreshToken() async {
     firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
@@ -84,9 +84,9 @@ class NotificationService {
       },
     );
   }
-
+  
   // ! Todo listen the notification
-
+  
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
       if (kDebugMode) {
