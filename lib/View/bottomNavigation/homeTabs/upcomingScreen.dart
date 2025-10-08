@@ -44,7 +44,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   int reportedEventPreview = Get.arguments['reportedEventView'] ?? 1;
 
   int flowBtn = Get.arguments['notInterestedBtn'];
-  
+
   String? appBarTitle = Get.arguments?['appBarTitle'];
 
   RxBool organizerGuestVal = false.obs;
@@ -98,12 +98,14 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                         //     :flowBtn==3?
                         // kToolbarHeight*1.3
                         //     :kToolbarHeight*4.9
+
                         ),
                 child: Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/grayClor.png"),
-                        fit: BoxFit.fill),
+                      image: AssetImage("assets/grayClor.png"),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                   child: customAppBar(
                     onTap: () async {
