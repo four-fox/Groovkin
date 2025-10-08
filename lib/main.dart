@@ -133,7 +133,7 @@ class _MyAppState extends State<MyApp> {
     } else {
       authController = Get.put(AuthController());
     }
-
+    
     print("Role :${API().sp.read("role")}");
     final role = API().sp.read("role") ?? "User"; // default role
 
@@ -141,7 +141,7 @@ class _MyAppState extends State<MyApp> {
     if (API().sp.read("userId") != null) {
       fetchSubscription();
     }
-  
+
     // Todo Firebase Notification Start
     notificationService.requestNotificationPermission();
     notificationService.setUpInteractMessage(context);

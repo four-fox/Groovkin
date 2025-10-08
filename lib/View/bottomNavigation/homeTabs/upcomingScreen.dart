@@ -44,7 +44,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   int reportedEventPreview = Get.arguments['reportedEventView'] ?? 1;
 
   int flowBtn = Get.arguments['notInterestedBtn'];
-
+  
   String? appBarTitle = Get.arguments?['appBarTitle'];
 
   RxBool organizerGuestVal = false.obs;
@@ -61,6 +61,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
   late AuthController _authController;
   late ManagerController _managercontroller;
   late HomeController _homeController;
+
   @override
   void initState() {
     if (Get.isRegistered<AuthController>()) {
@@ -619,6 +620,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 ),
               ),
             ),
+
             appBarTitle == "Completed Event"
                 ? Align(
                     alignment: Alignment.centerRight,
@@ -629,6 +631,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                             "Attended user ${controller.eventDetail!.data!.eventsGoingCount}"),
                   )
                 : const SizedBox.shrink(),
+
             SizedBox(
               height: flowBtn == 3 ? 0 : 12,
             ),
@@ -637,6 +640,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
             SizedBox(
               height: flowBtn == 3 ? 0 : 10,
             ),
+
             controller.venueImageList.isEmpty
                 ? const SizedBox.shrink()
                 : SizedBox(
@@ -735,6 +739,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                           );
                         }),
                   ),
+
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -749,9 +754,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 ),
               ),
             ),
+
             const SizedBox(
               height: 10,
             ),
+
             eventDateTime(
               text:
                   "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
@@ -1371,9 +1378,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             controller.eventDetail!.data!.location == null
                 ? const SizedBox.shrink()
                 : Column(
@@ -1403,9 +1408,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                       ),
                     ],
                   ),
-            const SizedBox(
-              height: 6,
-            ),
+            const SizedBox(height: 6),
             ((controller.eventDetail!.data!.latitude == null) &&
                     (controller.eventDetail!.data!.longitude == null))
                 ? const SizedBox.shrink()
