@@ -49,8 +49,8 @@ class NotificationService {
     }
   }
 
-  // ! Todo get devices token
-  
+  // ! Todo get devices token 
+
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
     log("Device Token $token");
@@ -59,7 +59,7 @@ class NotificationService {
     }
     return token!;
   } 
-  
+
   // ! Todo refresh token   
   
   void isRefreshToken() async {
@@ -67,9 +67,9 @@ class NotificationService {
       event.toString();
     });
   }
-
+  
   // ! Todo initialize the android and ios settings and icon
-
+  
   void initLocalNotifications(
     BuildContext context,
     RemoteMessage message,
