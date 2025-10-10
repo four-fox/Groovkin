@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,14 +8,23 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+
 android {
     namespace = "com.gologonow.groovkin"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
@@ -23,28 +35,18 @@ android {
         applicationId = "com.gologonow.groovkin"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 23
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
-        }
-    }
-}
-
-flutter { source = "../.." }
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
             storeFile = keystoreProperties["storeFile"]?.let { file(it) }
             storePassword = keystoreProperties["storePassword"] as String
-            // keyAlias = keystoreProperties["keyAlias"] as? String ?: ""
-            // keyPassword = keystoreProperties["keyPassword"] as? String ?: ""
-            // storeFile = keystoreProperties["storeFile"]?.let { file(it) }
-            // storePassword = keystoreProperties["storePassword"] as? String ?: ""
         }
     }
 
@@ -56,7 +58,10 @@ flutter { source = "../.." }
             signingConfig = signingConfigs.getByName("release")
         }
     }
+    
 }
+
+
 
 flutter {
     source = "../.."

@@ -25,7 +25,7 @@ class InAppPurchased {
   List<PurchaseDetails> _purchase = [];
 
   final List<String> _identifiers = ["rc_premium_month", "rc_premium_year"];
-
+  
   Future<void> initStore() async {
     bool isAvailable = await inAppPurchase.isAvailable();
 
@@ -174,6 +174,7 @@ class InAppPurchased {
         await skPaymentQueueWrapper.finishTransaction(transaction);
       }
     } catch (e) {}
+
     await inAppPurchase
         .buyNonConsumable(
             purchaseParam: PurchaseParam(
