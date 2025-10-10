@@ -57,9 +57,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 12, horizontal: 18),
