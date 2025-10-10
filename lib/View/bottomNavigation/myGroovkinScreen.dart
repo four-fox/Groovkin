@@ -85,7 +85,7 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                                   },
                                   child: Icon(Icons.edit,
                                       color: DynamicColor.yellowClr),
-                                )
+                                ),
                         ],
                       ),
                     ),
@@ -137,12 +137,13 @@ class _MyGroovkinScreenState extends State<MyGroovkinScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6.0),
                       child: serviceWidget(
-                          context: context,
-                          theme: theme,
-                          text: data.isInsurance == 0
-                              ? "Insurance cannot be provided"
-                              : "Insurance can be provided",
-                          image: "assets/insurance.png"),
+                        context: context,
+                        theme: theme,
+                        text: data.isInsurance == 0
+                            ? "Insurance cannot be provided"
+                            : "Insurance can be provided",
+                        image: "assets/insurance.png",
+                      ),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(

@@ -11,7 +11,7 @@ import 'package:groovkin/Components/Network/interceptors_service.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'ErrorMethod.dart';
 import 'Url.dart';
-  
+
 String dummyProfile =
     "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg";
 
@@ -177,9 +177,7 @@ errorIcon(postButton) async {
   Timer(const Duration(seconds: 3), () {
     postButton.reset();
   });
-}   
-
-
+}
 
 class LoaderClass extends StatelessWidget {
   const LoaderClass({super.key, this.colorOne, this.colorTwo});
