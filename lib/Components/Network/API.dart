@@ -90,21 +90,23 @@ class API {
         showLoading();
       }
 
-      dynamic response = await dio.post(fullUrl ?? Url().baseUrl + url,
-          data: formData,
-          options: multiPart == true
-              ? Options(
-                  headers: {
-                    Headers.acceptHeader: "application/json",
-                  },
-                  contentType: 'multipart/form-data',
-                )
-              : Options(
-                  headers: {
-                    Headers.acceptHeader: "application/json",
-                  },
-                ),
-          onSendProgress: (int progress, int total) {});
+      dynamic response = await dio.post(
+        fullUrl ?? Url().baseUrl + url,
+        data: formData,
+        options: multiPart == true
+            ? Options(
+                headers: {
+                  Headers.acceptHeader: "application/json",
+                },
+                contentType: 'multipart/form-data',
+              )
+            : Options(
+                headers: {
+                  Headers.acceptHeader: "application/json",
+                },
+              ),
+        onSendProgress: (int progress, int total) {},
+      );
       BotToast.closeAllLoading();
       return response;
     } on DioException catch (e) {
@@ -134,9 +136,11 @@ class API {
         dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
         // dio.options.headers['Accept'] = "application/json";
       }
+
       if (showProgress) {
         showLoading();
       }
+
       dynamic response = await dio.delete(fullUrl ?? Url().baseUrl + url,
           data: formData,
           options: multiPart == true
@@ -150,8 +154,8 @@ class API {
                   headers: {
                     Headers.acceptHeader: "application/json",
                   },
-                ));
-      BotToast.closeAllLoading();
+                )); 
+      BotToast.closeAllLoading(); 
       return response;
     } on DioException catch (e) {
       BotToast.closeAllLoading();

@@ -30,7 +30,7 @@ class NotificationService {
       alert: true,
       announcement: true,
       badge: true,
-      carPlay: true
+      carPlay: true,
     );
 
     if (notificationSettings.authorizationStatus ==

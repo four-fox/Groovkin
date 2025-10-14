@@ -55,16 +55,16 @@ class InviteFriendsInGroups extends StatelessWidget {
             ),
           ),
           Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
-              child: Text(
-                "Send an invitation to your Friends!",
-                style: poppinsRegularStyle(
-                  fontSize: 14,
-                  color: DynamicColor.lightRedClr,
-                  context: context,
-                ),
-              )),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
+            child: Text(
+              "Send an invitation to your Friends!",
+              style: poppinsRegularStyle(
+                fontSize: 14,
+                color: DynamicColor.lightRedClr,
+                context: context,
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: TextFormField(
@@ -150,7 +150,7 @@ class InviteFriendsInGroups extends StatelessWidget {
                     Divider(
                       thickness: 1.2,
                       color: DynamicColor.grayClr,
-                    )
+                    ),
                   ],
                 ),
               );
