@@ -14,12 +14,12 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import '../chatView/chatRoomModel.dart';
 
-class NotificationService { 
-
+class NotificationService {
+  
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   final FlutterLocalNotificationsPlugin localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();    
+      FlutterLocalNotificationsPlugin();
 
   // ! Todo check the permissions of the notification service
 
@@ -49,7 +49,7 @@ class NotificationService {
     }
   }
 
-  // ! Todo get devices token 
+  // ! Todo get devices token
 
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
@@ -58,18 +58,18 @@ class NotificationService {
       print("Device Token $token");
     }
     return token!;
-  } 
+  }
 
-  // ! Todo refresh token   
+  // ! Todo refresh token
 
   void isRefreshToken() async {
     firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
     });
   }
-  
+
   // ! Todo initialize the android and ios settings and icon
-  
+
   void initLocalNotifications(
     BuildContext context,
     RemoteMessage message,
@@ -84,9 +84,9 @@ class NotificationService {
       },
     );
   }
-  
+
   // ! Todo listen the notification
-  
+
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
       if (kDebugMode) {
