@@ -16,8 +16,6 @@ String dummyProfile =
     "https://www.itdp.org/wp-content/uploads/2021/06/avatar-man-icon-profile-placeholder-260nw-1229859850-e1623694994111.jpg";
 
 class API {
-
-  
   /// SingleTon
   static final API _singleton = API._internal();
   var sp = GetStorage();
@@ -37,7 +35,7 @@ class API {
     dio.interceptors.add(
         LogInterceptor(responseBody: true, request: true, requestHeader: true));
   }
-
+      
   ///Get
   Future<dynamic> getApi({
     url,

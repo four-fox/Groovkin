@@ -13,12 +13,12 @@ class InterceptorsServices extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     handler.next(err);
   }
-
+      
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     handler.next(options);
   }
-
+  
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.statusCode == 401) {
@@ -33,7 +33,7 @@ class InterceptorsServices extends Interceptor {
     if (response.statusCode! > 400) {
       BotToast.closeAllLoading();
       BotToast.showText(text: response.data["data"]);
-    }
+    }     
 
     log(response.data.toString());
     handler.next(response);

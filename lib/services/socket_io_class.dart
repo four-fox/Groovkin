@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
-typedef ListenFunction = Function(String onData);
+typedef ListenFunction = Function(dynamic onData);
 
 // Todo  SingleTon Class
 class SocketIoClass {
@@ -13,9 +13,9 @@ class SocketIoClass {
   factory SocketIoClass() {
     return singleton ??= SocketIoClass._interval();
   }
-  
+
   // Todo Connect Socket
-  
+
   connectSocket() {
     socket = io.io("", <String, dynamic>{
       'transports': ['webscoket'],

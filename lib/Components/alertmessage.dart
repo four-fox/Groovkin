@@ -41,7 +41,7 @@ void alertMethod(
       ],
       radius: 10.0);
 }
-
+      
 class AlertWidget extends StatelessWidget {
   AlertWidget(
       {super.key,
@@ -95,8 +95,9 @@ customAlertt(
   return showDialog(
       context: context,
       builder: (context) => Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -130,9 +131,10 @@ customAlertt(
                     text.toString(),
                     textAlign: TextAlign.center,
                     style: poppinsRegularStyle(
-                        fontSize: 14,
-                        color: DynamicColor.whiteClr,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 14,
+                      color: DynamicColor.whiteClr,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(
                     height: 30.0,
