@@ -175,9 +175,8 @@ class _MyAppState extends State<MyApp> {
             // primaryColor: Colors.grey,
             scaffoldBackgroundColor: Colors.white,
             textTheme: const TextTheme(
-              labelLarge:
-                  TextStyle(color: Colors.white, fontFamily: 'poppinsMedium'),
-            ),
+                labelLarge: TextStyle(
+                    color: Colors.white, fontFamily: 'poppinsMedium')),
           ),
           darkTheme: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
