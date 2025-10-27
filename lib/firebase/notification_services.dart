@@ -25,11 +25,12 @@ class NotificationService {
   void requestNotificationPermission() async {
     final NotificationSettings notificationSettings =
         await firebaseMessaging.requestPermission(
-            sound: true,
-            alert: true,
-            announcement: true,
-            badge: true,
-            carPlay: true);
+      sound: true,
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+    );
 
     if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.authorized) {
@@ -47,7 +48,7 @@ class NotificationService {
     }
   }
 
-  // ! Todo get devices token 
+  // ! Todo get devices token
 
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
@@ -106,11 +107,12 @@ class NotificationService {
           showNotification(message);
         }
       }
+           
     });
   }
 
   //! Todo showNotification
-    
+
   Future<void> showNotification(RemoteMessage message) async {
     // Check if message.notification is null (important for silent notifications)
     if (message.notification == null) return;
@@ -166,6 +168,8 @@ class NotificationService {
         notificationDetails,
       );
     });
+
+    
   }
 
   // ! Todo when app is background and terminated

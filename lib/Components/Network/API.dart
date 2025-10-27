@@ -9,6 +9,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/Network/interceptors_service.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'ErrorMethod.dart';
 import 'Url.dart';
 
@@ -32,10 +33,15 @@ class API {
       receiveTimeout: const Duration(seconds: 180),
     ));
     dio.interceptors.add(InterceptorsServices());
-    dio.interceptors.add(
-        LogInterceptor(responseBody: true, request: true, requestHeader: true));
+    dio.interceptors.add(PrettyDioLogger(
+      compact: true,
+      maxWidth: 90,
+      responseBody: true,
+      request: true,
+      requestHeader: true,
+    ));
   }
-      
+
   ///Get
   Future<dynamic> getApi({
     url,
@@ -79,7 +85,7 @@ class API {
   }) async {
     print(Url().baseUrl + url);
     print(sp.read('token'));
-
+  
     try {
       if (auth == true) {
         dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
@@ -107,7 +113,9 @@ class API {
               ),
         onSendProgress: (int progress, int total) {},
       );
+
       BotToast.closeAllLoading();
+
       return response;
     } on DioException catch (e) {
       BotToast.closeAllLoading();
@@ -115,7 +123,6 @@ class API {
       return returnResponse(e.response);
     } catch (e) {
       print(e.toString());
-      BotToast.closeAllLoading();
       BotToast.showText(text: e.toString());
     }
   }
@@ -155,7 +162,9 @@ class API {
                     Headers.acceptHeader: "application/json",
                   },
                 ));
+
       BotToast.closeAllLoading();
+
       return response;
     } on DioException catch (e) {
       BotToast.closeAllLoading();

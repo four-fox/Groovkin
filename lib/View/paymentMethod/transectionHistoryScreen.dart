@@ -273,130 +273,132 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
           theme: theme,
           text: "Your Card List ",
         ),
-        body: GetBuilder<HomeController>(builder: (homecontroller) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: homecontroller.transactionData.isEmpty
-                ? Center(
-                    child: Text(
-                      "No Card Found!",
-                      style: poppinsMediumStyle(
-                        fontSize: 16,
-                        context: context,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  )
-                : Column(
-                    children: [
-                      if (_controller.transactionData.isNotEmpty &&
-                          _controller.transactionData.length != 1)
-                        Material(
-                          color: Colors.transparent,
-                          child: GestureDetector(
-                            onTap: () {
-                              if (isDeleteCard == true) {
-                                setState(() {
-                                  isDeleteCard = false;
-                                  selectedIndex = null;
-                                });
-                              } else {
-                                setState(() {
-                                  isDeleteCard = true;
-                                });
-                              }
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text("Delete Card"),
-                                Checkbox(
-                                  value: isDeleteCard,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value == true) {
-                                        isDeleteCard = true;
-                                      } else {
-                                        isDeleteCard = false;
-                                        selectedIndex = null;
-                                      }
-                                    });
-                                  },
-                                  checkColor: Colors.white,
-                                  activeColor: DynamicColor.yellowClr,
-                                )
-                              ],
-                            ),
-                          ),
+        body: GetBuilder<HomeController>(
+          builder: (homecontroller) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: homecontroller.transactionData.isEmpty
+                  ? Center(
+                      child: Text(
+                        "No Card Found!",
+                        style: poppinsMediumStyle(
+                          fontSize: 16,
+                          context: context,
+                          color: theme.primaryColor,
                         ),
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: homecontroller.transactionData.length,
-                            shrinkWrap: true,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, index) {
-                              final transactionData =
-                                  homecontroller.transactionData[index];
-                              final Map<String, dynamic> decode = jsonDecode(
-                                  transactionData.cardDetails.toString());
-                              return Row(
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        if (_controller.transactionData.isNotEmpty &&
+                            _controller.transactionData.length != 1)
+                          Material(
+                            color: Colors.transparent,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (isDeleteCard == true) {
+                                  setState(() {
+                                    isDeleteCard = false;
+                                    selectedIndex = null;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isDeleteCard = true;
+                                  });
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Expanded(
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          // Get.toNamed(Routes.confirmationEventScreen);
-                                        },
-                                        child: CreditCardWidget(
-                                          glassmorphismConfig:
-                                              Glassmorphism.defaultConfig(),
-                                          isSwipeGestureEnabled: false,
-                                          cardNumber:
-                                              "${transactionData.first4digit!} 0000 0000 ${transactionData.last4digit!}",
-                                          expiryDate:
-                                              "${decode["exp_month"].toString().length == 1 ? ("0${decode["exp_month"]}") : decode["exp_month"].toString()}/${decode["exp_year"].toString().substring(2)}",
-                                          cardHolderName:
-                                              transactionData.cardholderName!,
-                                          cvvCode: "",
-                                          showBackView: false,
-                                          onCreditCardWidgetChange: (p0) {},
-                                          cardType:
-                                              transactionData.brand == "visa"
-                                                  ? CardType.visa
-                                                  : null,
-                                          isHolderNameVisible: true,
-                                        )),
-                                  ),
-                                  Visibility(
-                                    visible:
-                                        isDeleteCard, // * if delete all is true then show
-                                    child: Checkbox(
-                                      value: selectedIndex ==
-                                          index, // * Only the selected checkbox will be true
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          if (value == true) {
-                                            selectedIndex =
-                                                index; // Set selected checkbox index
-                                          } else {
-                                            selectedIndex =
-                                                null; // Deselect the checkbox
-                                          }
-                                        });
-                                      },
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      activeColor: DynamicColor.yellowClr,
-                                      checkColor: Colors.white,
-                                    ),
+                                  const Text("Delete Card"),
+                                  Checkbox(
+                                    value: isDeleteCard,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value == true) {
+                                          isDeleteCard = true;
+                                        } else {
+                                          isDeleteCard = false;
+                                          selectedIndex = null;
+                                        }
+                                      });
+                                    },
+                                    checkColor: Colors.white,
+                                    activeColor: DynamicColor.yellowClr,
                                   ),
                                 ],
-                              );
-                            }),
-                      ),
-                    ],
-                  ),
-          );
-        }),
+                              ),
+                            ),
+                          ),
+                        Expanded(
+                          child: ListView.builder(
+                              itemCount: homecontroller.transactionData.length,
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, index) {
+                                final transactionData =
+                                    homecontroller.transactionData[index];
+                                final Map<String, dynamic> decode = jsonDecode(
+                                    transactionData.cardDetails.toString());
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                          onTap: () {
+                                            // Get.toNamed(Routes.confirmationEventScreen);
+                                          },
+                                          child: CreditCardWidget(
+                                            glassmorphismConfig:
+                                                Glassmorphism.defaultConfig(),
+                                            isSwipeGestureEnabled: false,
+                                            cardNumber:
+                                                "${transactionData.first4digit!} 0000 0000 ${transactionData.last4digit!}",
+                                            expiryDate:
+                                                "${decode["exp_month"].toString().length == 1 ? ("0${decode["exp_month"]}") : decode["exp_month"].toString()}/${decode["exp_year"].toString().substring(2)}",
+                                            cardHolderName:
+                                                transactionData.cardholderName!,
+                                            cvvCode: "",
+                                            showBackView: false,
+                                            onCreditCardWidgetChange: (p0) {},
+                                            cardType:
+                                                transactionData.brand == "visa"
+                                                    ? CardType.visa
+                                                    : null,
+                                            isHolderNameVisible: true,
+                                          )),
+                                    ),
+                                    Visibility(
+                                      visible:
+                                          isDeleteCard, // * if delete all is true then show
+                                      child: Checkbox(
+                                        value: selectedIndex ==
+                                            index, // * Only the selected checkbox will be true
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            if (value == true) {
+                                              selectedIndex =
+                                                  index; // Set selected checkbox index
+                                            } else {
+                                              selectedIndex =
+                                                  null; // Deselect the checkbox
+                                            }
+                                          });
+                                        },
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        activeColor: DynamicColor.yellowClr,
+                                        checkColor: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+            );
+          },
+        ),
         bottomNavigationBar:
             GetBuilder<HomeController>(builder: (homecontroller) {
           // Show "Delete" button if a card is selected
@@ -463,6 +465,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
               ),
             );
           }
+
           // Show "Replace" button if there's only one card left and none are selected
           // else if (homecontroller.transactionData.length == 1 &&
           //     selectedIndex == null) {
