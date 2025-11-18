@@ -30,6 +30,7 @@ class StoreConfig {
   factory StoreConfig({required Store store, required String apiKey}) {
     return instances ??= StoreConfig._interval(store: store, apiKey: apiKey);
   }
+
   static StoreConfig get instance => StoreConfig.instances!;
 }
 
@@ -128,6 +129,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     if (Get.isRegistered<AuthController>()) {
       authController = Get.find<AuthController>();
     } else {

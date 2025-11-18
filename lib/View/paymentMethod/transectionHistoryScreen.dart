@@ -250,10 +250,14 @@ class ViewAllCardList extends StatefulWidget {
 }
 
 class _ViewAllCardListState extends State<ViewAllCardList> {
+
   final HomeController _controller = Get.find();
+  
   bool isDeleteCard = false;
+
   bool cardListCheckBox = false;
-  int? selectedIndex;
+
+  int? selectedIndex; 
 
   @override
   void initState() {
@@ -264,7 +268,7 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
   Future _fetchCards() async {
     await _controller.getAllCards();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -437,7 +441,6 @@ class _ViewAllCardListState extends State<ViewAllCardList> {
                               widths: context.width * .25,
                               onTap: () {
                                 Get.back();
-
                                 // Get the selected card's ID and perform deletion
                                 final int id = homecontroller
                                     .transactionData[selectedIndex!].id!;

@@ -135,6 +135,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10),
+                  
                   child: GestureDetector(
                     onTap: () {
                       for (var i = 0; i < subscriptionList.length; i++) {
@@ -264,8 +265,10 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           throw Exception(error.toString());
                         });
+
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);
+                            
                         if (isPro) {
                           appData.entitlementIsActive = customerInfo
                                   .entitlements.all[entitlementID]?.isActive ??

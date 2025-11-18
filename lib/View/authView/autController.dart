@@ -2141,7 +2141,7 @@ class AuthController extends GetxController {
       // );
     }
   }
-
+  
   CustomerInfo? customerInfo;
 
   Future<void> initPlatformState() async {
@@ -2160,6 +2160,9 @@ class AuthController extends GetxController {
     }
     update();
   }
+
+
+
 }
 
 class AuthBinding implements Bindings {
