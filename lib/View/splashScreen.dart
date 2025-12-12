@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
             }
           }
         } else {
-          Get.offAllNamed(Routes.loginSelection);
+          Get.offAllNamed(Routes.loginScreen);
           // Get.offAllNamed(Routes.loginSelection);
         }
       } else {
@@ -89,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

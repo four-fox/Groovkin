@@ -39,7 +39,7 @@ class IntroPages extends StatelessWidget {
                   controller.indexValue.value = controller.index;
                   if (ind == 3) {
                     API().sp.write("intro", true);
-                    Get.offAllNamed(Routes.loginSelection);
+                    Get.offAllNamed(Routes.loginScreen);
                   }
                 },
                 onScrolled: (v) {
@@ -73,7 +73,7 @@ class IntroPages extends StatelessWidget {
                               fontSize: 18,
                               fontWeight: FontWeight.w600),
                           colors: [
-                            Colors.yellow.withValues(alpha:0.5),
+                            Colors.yellow.withValues(alpha: 0.5),
                             Colors.yellow,
                           ],
                         ),
@@ -111,7 +111,7 @@ class IntroPages extends StatelessWidget {
                         _controller.nextPage();
                         if (controller.indexValue.value == 2) {
                           API().sp.write("intro", true);
-                          Get.offAllNamed(Routes.loginSelection);
+                          Get.offAllNamed(Routes.loginScreen);
                         } /*else{
                           controller.indexValue.value = controller.indexValue.value + 1;
                           controller.index = controller.indexValue.value;
@@ -189,7 +189,7 @@ class IntroPages extends StatelessWidget {
                                     onTap: () {
                                       if (controller.index == 2) {
                                         API().sp.write("intro", true);
-                                        Get.offAllNamed(Routes.loginSelection);
+                                        Get.offAllNamed(Routes.loginScreen);
                                       } else {
                                         controller.indexValue.value =
                                             controller.indexValue.value + 1;
