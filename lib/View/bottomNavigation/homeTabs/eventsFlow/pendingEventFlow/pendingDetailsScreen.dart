@@ -829,7 +829,7 @@ Widget pendingDetailsWidget(
                                                                               status: "accepted",
                                                                             )
                                                                                 .then((_) {
-                                                                              // Get.back();
+                                                                              Get.back();
                                                                             });
                                                                           } else {
                                                                             bottomToast(text: "Please agree with the disclaimer to accept the event request");
