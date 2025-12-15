@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
-import 'package:groovkin/Components/colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewStripe extends StatefulWidget {
@@ -157,8 +156,9 @@ class _SuccessAccountCreationState extends State<SuccessAccountCreation> {
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/loginSelection1.png"),
-                fit: BoxFit.fill),
+              image: AssetImage("assets/loginSelection1.png"),
+              fit: BoxFit.fill,
+            ),
           ),
           child: Center(
             child: Column(

@@ -1208,42 +1208,17 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                   if (controller
                                                                       .checkBoxValue
                                                                       .value) {
-                                                                    await _homeController
-                                                                        .getAllCards()
-                                                                        .then(
-                                                                            (_) async {
-                                                                      controller
-                                                                              .selectedCardId =
-                                                                          null;
-                                                                      controller
-                                                                          .update();
-                                                                      if (_homeController
-                                                                          .transactionData
-                                                                          .isEmpty) {
-                                                                        bottomToast(
-                                                                            text:
-                                                                                "Please Add At Least One Card To Accept Event");
-                                                                      } else {
-                                                                        final isCardSelected =
-                                                                            await showBottomSelectedCardSheet(context);
-                                                                        if (isCardSelected ==
-                                                                            true) {
-                                                                          controller
-                                                                              .eventAcceptDeclineFtn(
-                                                                            id: controller.managerPendingEvents!.data!.data![index].id!,
-                                                                            status:
-                                                                                "accepted",
-                                                                          );
-
-                                                                          print(
-                                                                            controller.managerPendingEvents!.data!.data![index].id,
-                                                                          );
-                                                                        } else {
-                                                                          bottomToast(
-                                                                              text: "You didn't select any card");
-                                                                        }
-                                                                      }
-                                                                    });
+                                                                    controller
+                                                                        .eventAcceptDeclineFtn(
+                                                                      id: controller
+                                                                          .managerPendingEvents!
+                                                                          .data!
+                                                                          .data![
+                                                                              index]
+                                                                          .id!,
+                                                                      status:
+                                                                          "accepted",
+                                                                    );
                                                                   } else {
                                                                     bottomToast(
                                                                         text:

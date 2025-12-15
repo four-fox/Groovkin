@@ -368,20 +368,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 })
                             : const SizedBox.shrink(),
 
-                        // API().sp.read("role") == "eventManager"
-                        //     ? customWidget(
-                        //         context: context,
-                        //         showIconWIdget: true,
-                        //         iconWidget: Icon(
-                        //           Icons.notifications,
-                        //           color: Color(0xffebc464),
-                        //         ),
-                        //         text: "Notifications",
-                        //         onTap: () {
-                        //           Get.toNamed(Routes.settingNotificationScreen);
-                        //         })
-                        //     : SizedBox(),
-
+                      
                         API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,

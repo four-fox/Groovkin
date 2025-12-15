@@ -823,26 +823,13 @@ Widget pendingDetailsWidget(
                                                                           if (_controller
                                                                               .checkBoxValue
                                                                               .value) {
-                                                                            await _homeController.getAllCards().then((_) async {
-                                                                              _controller.selectedCardId = null;
-                                                                              _controller.update();
-                                                                              if (_homeController.transactionData.isEmpty) {
-                                                                                bottomToast(text: "Please Add At Least One Card To Accept Event");
-                                                                              } else {
-                                                                                final isCardSelected = await showBottomSelectedCardSheet(context);
-                                                                                if (isCardSelected == true) {
-                                                                                  await _controller
-                                                                                      .eventAcceptDeclineFtn(
-                                                                                    id: controller.eventDetail!.data!.id,
-                                                                                    status: "accepted",
-                                                                                  )
-                                                                                      .then((_) {
-                                                                                    Get.back();
-                                                                                  });
-                                                                                } else {
-                                                                                  bottomToast(text: "You didn't select any card");
-                                                                                }
-                                                                              }
+                                                                            await _controller
+                                                                                .eventAcceptDeclineFtn(
+                                                                              id: controller.eventDetail!.data!.id,
+                                                                              status: "accepted",
+                                                                            )
+                                                                                .then((_) {
+                                                                              // Get.back();
                                                                             });
                                                                           } else {
                                                                             bottomToast(text: "Please agree with the disclaimer to accept the event request");
