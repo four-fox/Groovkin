@@ -111,16 +111,16 @@ class _WelComeScreenState extends State<WelComeScreen> {
                 } else if (API().sp.read("role") == "eventOrganizer") {
                   Get.offAllNamed(Routes.subscriptionScreen);
                 } else {
-                  Get.offAllNamed(Routes.addCardDetails, arguments: {
-                    "fromSignUp": true,
-                    "paymentMethod": 2,
-                  });
+                  // Get.offAllNamed(Routes.addCardDetails, arguments: {
+                  //   "fromSignUp": true,
+                  //   "paymentMethod": 2,
+                  // });
 
-                  // Get.offAllNamed(Routes.createCompanyProfileScreen,
-                  //     arguments: {
-                  //       "updationCondition": false,
-                  //       "skipBtnHide": false,
-                  //     });
+                  Get.offAllNamed(Routes.createCompanyProfileScreen,
+                      arguments: {
+                        "updationCondition": false,
+                        "skipBtnHide": false,
+                      });
                 }
                 // Get.toNamed(Routes.loginWithScreen);
               },

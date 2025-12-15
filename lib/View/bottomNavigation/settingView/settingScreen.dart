@@ -402,6 +402,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   Get.toNamed(Routes.myTagCollection);
                                 })
                             : const SizedBox.shrink(),
+
                         API().sp.read("role") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
@@ -428,7 +429,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                 })
                             : const SizedBox(),
 
-                        sp.read("role") == "User"
+                        (sp.read("role") == "User" ||
+                                sp.read("role") == "eventManager")
                             ? const SizedBox.shrink()
                             : customWidget(
                                 context: context,

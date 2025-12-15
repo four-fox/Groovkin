@@ -8,6 +8,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/social_sign_in.dart';
+import 'package:groovkin/stripe/web_view_stripe.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -131,6 +132,10 @@ class LoginScreen extends StatelessWidget {
                         if (loginForm.currentState!.validate()) {
                           controller.login();
                         }
+                        // Get.to(() => WebViewStripe(
+                        //       urlSetted:
+                        //           "https://buy.stripe.com/test_14k14j7sLfDg4oM6op",
+                        //     ));
                       },
                       text: "Login",
                     ),
