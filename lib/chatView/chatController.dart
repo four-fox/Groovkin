@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_import
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:file_picker/file_picker.dart';
@@ -103,27 +104,26 @@ class ChatController extends GetxController {
 
   /// socket initialization
   void _socketConnect() async {
-    if (kDebugMode) {
-      print("object object");
-    }
-
-    Map<String, dynamic> map = {
-      'token': API().sp.read("token"),
-      'user_id': API().sp.read("userId")
-    };
+    log("Socket Initilaized");
 
     socket = IO.io(
         Url().socketUrl,
+        // );
+
         OptionBuilder()
-            .setTransports(['websocket', 'polling'])
-            .setAuth(map)
+            .setTransports(['websocket'])
+            .setQuery({
+              'token': API().sp.read("token"),
+              'user_id': API().sp.read("userId"),
+            })
+            .enableAutoConnect()
             .build());
 
     socket!.connect();
 
     socket!.onConnect((data) {
       if (kDebugMode) {
-        print('connect');
+        log("connected");
       }
     });
 
@@ -139,6 +139,18 @@ class ChatController extends GetxController {
     socket!.onDisconnect((_) {
       if (kDebugMode) {
         print('disconnect');
+      }
+    });
+
+    socket!.onError((e) {
+      if (kDebugMode) {
+        print('socket error ${e.toString()}');
+      }
+    });
+
+    socket!.onConnectError((e) {
+      if (kDebugMode) {
+        print('onConnectError  ${e.toString()}');
       }
     });
 

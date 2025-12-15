@@ -750,8 +750,8 @@ class ManagerController extends GetxController {
               ? "past_week"
               : "older_than_1_month",
     });
-    final token = await API().sp.read("token");   
-    final userId = await API().sp.read("userId");   
+    final token = await API().sp.read("token");
+    final userId = await API().sp.read("userId");
     print(token);
     if (response.statusCode == 200) {
       managerPendingEvents = ManagerPendingEventsModel.fromJson(response.data);
@@ -767,8 +767,7 @@ class ManagerController extends GetxController {
   int? selectedCardId;
   RxBool checkBoxValue = false.obs;
   Future<void> eventAcceptDeclineFtn({status, int? id}) async {
-    var formData = form.FormData.fromMap(
-        {"event_id": id, "status": status});
+    var formData = form.FormData.fromMap({"event_id": id, "status": status});
     var response = await API().postApi(formData, "accept-event-request");
     if (response.statusCode == 200) {
       // managerPendingEvents!.data!.data!.remove(event);
