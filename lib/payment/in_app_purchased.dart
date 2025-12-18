@@ -16,8 +16,8 @@ class InAppPurchased {
 
   factory InAppPurchased() {
     return _instance ??= InAppPurchased._a();
-  }
-
+  } 
+  
   final InAppPurchase inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> purchasedSubscrption;
   late StreamSubscription<List<PurchaseDetails>> subscriptionStream;
@@ -25,7 +25,7 @@ class InAppPurchased {
   List<PurchaseDetails> _purchase = [];
 
   final List<String> _identifiers = ["rc_premium_month", "rc_premium_year"];
-  
+
   Future<void> initStore() async {
     bool isAvailable = await inAppPurchase.isAvailable();
 
@@ -213,4 +213,5 @@ class InAppPurchased {
   Future<void> restorePurchased() async {
     await inAppPurchase.restorePurchases();
   }
+
 }

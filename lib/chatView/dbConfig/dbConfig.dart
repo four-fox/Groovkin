@@ -1,15 +1,14 @@
-
 import 'package:sqflite/sqflite.dart';
 
 import 'initDb.dart';
-
+  
 abstract class DatabaseBaseConfig {
   Future<Database> initDatabase();
 }
 
 class UserChatItemDatabase implements DatabaseBaseConfig {
   static final UserChatItemDatabase chatSingletonClass =
-  UserChatItemDatabase._internal();
+      UserChatItemDatabase._internal();
 
   factory UserChatItemDatabase() {
     return chatSingletonClass;

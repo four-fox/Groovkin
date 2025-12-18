@@ -25,7 +25,7 @@ class SwitchProfileScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: ImageIcon(
-                  const AssetImage("assets/backArrow.png"),
+                  const AssetImage("assets/backArrow.png"), 
                   color: theme.primaryColor,
                 ),
               ),

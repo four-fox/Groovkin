@@ -17,7 +17,6 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/PostEvents.da
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
-import 'package:groovkin/View/paymentMethod/showSelectedBottomSheetCard.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 

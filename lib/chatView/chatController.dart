@@ -165,7 +165,6 @@ class ChatController extends GetxController {
   }
 
   /// get all user for new chat
-  ///
 
   RxBool newUserChatLoader = false.obs;
   ChatNewUserModel? newUserData;
