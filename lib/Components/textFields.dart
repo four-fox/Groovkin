@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 
@@ -34,6 +35,7 @@ class CustomTextFields extends StatelessWidget {
       this.disabled,
       this.prefixWidget,
       this.isOptional = false,
+      this.inputFormatter = const [],
       this.isLink});
 
   String? labelText;
@@ -59,6 +61,7 @@ class CustomTextFields extends StatelessWidget {
   bool? isLink = false;
   final ValueChanged<String>? onChanged;
   String? hintText;
+  List<TextInputFormatter>? inputFormatter;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +77,7 @@ class CustomTextFields extends StatelessWidget {
         readOnly: readOnly,
         obscureText: obscureText,
         onChanged: onChanged,
+        inputFormatters: inputFormatter,
         keyboardType:
             keyBoardType == false ? TextInputType.text : TextInputType.number,
         decoration: InputDecoration(

@@ -106,6 +106,7 @@ class AuthController extends GetxController {
   final confirmPasswordController = TextEditingController();
   final aboutController = TextEditingController();
   final zipController = TextEditingController();
+  final inviteCodeController = TextEditingController();
   final instagramController = TextEditingController();
   final twitterXController = TextEditingController();
   final youtubeController = TextEditingController();
@@ -157,6 +158,8 @@ class AuthController extends GetxController {
       "twitter_link": twitterXController.text,
       "youtube_link": youtubeController.text,
       "about": aboutController.text,
+      if (API().sp.read("role") != "User")
+        "invite_code": inviteCodeController.text
     });
 
     log(formData.toString());
@@ -169,26 +172,6 @@ class AuthController extends GetxController {
           API().sp.write("email", emailController.text);
           Get.offAllNamed(Routes.emailVerifiedOtpScreen);
         }
-
-        // if (API().sp.read("role") == "User") {
-        //   API().sp.write("isUserCreated",
-        //       response.data['data']['user_details']['is_user_created']);
-        //   Get.offAllNamed(Routes.welComeScreen);
-        // } else if (API().sp.read("role") == "eventOrganizer") {
-        //   API().sp.write("isEventCreated",
-        //       response.data['data']['user_details']['is_event_created']);
-
-        //   Get.offAllNamed(Routes.welComeScreen);
-        // } else {
-        //   Get.offAllNamed(Routes.welComeScreen);
-
-        //   // Get.offAllNamed(Routes.createCompanyProfileScreen,
-        //   //   arguments: {
-        //   //   "updationCondition": false,
-        //   //     "skipBtnHide": false,
-        //   //   }
-        //   // );
-        // }
       } else {
         API().sp.write("socialType", signUpPlatform);
         API().sp.write("token", response.data['data']['token']);
@@ -305,6 +288,29 @@ class AuthController extends GetxController {
     } catch (e) {}
   }
 
+  validateInviteCode(String inviteCode) async {
+    try {
+      var formData = {
+        "invite_code": inviteCode,
+        "role": API().sp.read("role") == "eventManager"
+            ? "venue_manager"
+            : "event_owner",
+        "email": emailController.text.trim()
+      };
+
+      log("body ${formData}");
+
+      var response = await API().postApi(
+        formData,
+        "validate-invite-code",
+      );
+
+      log("response ${response}");
+    } catch (e) {
+      log("invite code exception  ${e.toString()}");
+    }
+  }
+
   /// login function
   final loginEmailController = TextEditingController();
   final loginPasswordController = TextEditingController();
@@ -312,13 +318,15 @@ class AuthController extends GetxController {
 
   login() async {
     NotificationService notificationService = NotificationService();
-
     var formData = {
       "email": loginEmailController.text,
       "password": loginPasswordController.text,
       "device_token": await notificationService.getDeviceToken(),
+
+      // "device_token": "tok-jdibvhrjbvjrbv489hcn",
     };
 
+    log("login body data :: ${formData}");
     var response = await API().postApi(formData, "login");
 
     if (response.statusCode == 200) {
@@ -328,6 +336,7 @@ class AuthController extends GetxController {
         Get.offAllNamed(Routes.emailVerifiedOtpScreen);
         return;
       }
+
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
       API().sp.remove("currentRole");
@@ -1415,9 +1424,22 @@ class AuthController extends GetxController {
     String userType = checkUserRole(changeRole!);
     print(userType);
     setSwitchProfileLoading(true);
-    var formData = form.FormData.fromMap({"role": userType});
+    log("user role :: ${userType}");
+    dynamic dd = {
+      "role": userType,
+      //  "invite_code": "DNCS-8HPJ"
+    };
+    if (API().sp.read("role") == "User") {
+      dd['invite_code'] = inviteCodeController.text;
+    }
+
+    var formData = form.FormData.fromMap(dd);
+
+    log("switch user body :: $dd");
+
     final response = await API().postApi(formData, "switch-profile");
     if (response.statusCode == 200) {
+      inviteCodeController.clear();
       final data = SwitchProfile.fromJson(response.data);
       print("Token:${data.data!.token}");
       API().sp.write("token", data.data!.token);

@@ -4,7 +4,6 @@ version: 0.0.6
 homepage: https://github.com/SujitSarkar/Country-State-City-Picker-Pro
 
 environment:
-
   sdk: ">=2.19.2 <4.0.0"
   flutter: ">=1.17.0"
 
@@ -15,7 +14,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 flutter:
   assets:

@@ -273,10 +273,10 @@ class SuccessPaymentScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 45,
-              backgroundColor: DynamicColor.greenClr.withValues(alpha:0.4),
+              backgroundColor: DynamicColor.greenClr.withValues(alpha: 0.4),
               child: CircleAvatar(
                 radius: 35,
-                backgroundColor: DynamicColor.greenClr.withValues(alpha:0.6),
+                backgroundColor: DynamicColor.greenClr.withValues(alpha: 0.6),
                 child: Icon(
                   Icons.check,
                   size: 40,

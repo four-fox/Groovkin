@@ -190,7 +190,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                         false) ||
                                     (_authController.imageBytes == null))
                                 ? Container(
-                                    height: context.height * 0.20,
+                                    height: context.height * 0.40,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                       borderRadius:
@@ -232,7 +232,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                               ),
                                   )
                                 : Container(
-                                    height: context.height * 0.20,
+                                    height: context.height * 0.40,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                         border: Border.all(
@@ -374,6 +374,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             padding: const EdgeInsets.only(left: 15.0),
                             child: Text(
                               "Start Date",
+                              // "Event Date",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: DynamicColor.whiteClr,
@@ -701,7 +702,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 7.0),
                                 child: Text(
-                                  "Flat Free",
+                                  "Flat Fee",
                                   style: poppinsRegularStyle(
                                     fontSize: 12,
                                     color: theme.primaryColor,

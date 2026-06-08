@@ -26,7 +26,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   num? groovkinTax;
   num? stripeTax;
   num? balanceDue;
-  num? subTotalWithText;
+  num? subTotalWithTax;
   num? subTotal;
   double? hoursDifference;
   DateFormat format = DateFormat("yyyy-MM-dd");
@@ -40,18 +40,16 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
         _controller.proposedTimeWindowsController.text.toString().trim();
     List<String> parts = time.split(RegExp(r'\s+'));
 
-    DateTime dt1 = DateFormat("dd-MM-yyyy hh:mm a")
-        .parse("$startDate ${parts.first} ${parts.last}");
+    DateTime dt1 = DateFormat(
+      "dd-MM-yyyy hh:mm a",
+    ).parse("$startDate ${parts.first} ${parts.last}");
 
     String time2 = _controller.endTimeController.text.toString().trim();
     List<String> parts2 = time2.split(RegExp(r'\s+'));
     print(parts2);
-    DateTime dt2 = DateFormat("dd-MM-yyyy hh:mm a")
-        .parse("$endDate ${parts2.first} ${parts2.last}");
-
-    log("String time ${_controller.proposedTimeWindowsController.text}");
-    log("First Date ${dt1.millisecondsSinceEpoch}");
-    log("Second Date $dt2");
+    DateTime dt2 = DateFormat(
+      "dd-MM-yyyy hh:mm a",
+    ).parse("$endDate ${parts2.first} ${parts2.last}");
 
     Duration diff = dt2.difference(dt1);
     double totalHours = diff.inMinutes / 60;
@@ -102,40 +100,125 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
       hoursDifference = totalHours;
 
       if (_controller.rateType!.value == "hourly") {
-        subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
-            0 * hoursDifference!;
-        double tempDownPayment = (subTotal! *
-            (double.parse(_controller.paymentSchedule!.value) / 100));
-        stripeTax = 0.10 * subTotal!;
-        groovkinTax = 0.05 * subTotal!;
-        subTotalWithText = subTotal! + (0.20 * subTotal!);
-        tax = 0.05 * subTotal!;
-        downPayment = tempDownPayment + (0.20 * subTotal!);
-        balanceDue = subTotalWithText! - downPayment!;
+        // subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
+        //     0 * hoursDifference!;
+        // double tempDownPayment = (subTotal! *
+        //     (double.parse(_controller.paymentSchedule!.value) / 100));
+        // stripeTax = 0.10 * subTotal!;
+        // groovkinTax = 0.05 * subTotal!;
+        // subTotalWithTax = subTotal! + (0.20 * subTotal!);
+        // tax = 0.05 * subTotal!;
+        // downPayment = tempDownPayment + (0.20 * subTotal!);
+        // balanceDue = subTotalWithTax! - downPayment!;
+        //-----------------------
+        calcPerHour();
       } else {
-        subTotal = double.parse(_controller.hourlyRateController.text);
-        double tempDownPayment = (subTotal! *
-            (double.parse(_controller.paymentSchedule!.value) / 100));
-        stripeTax = 0.10 * subTotal!;
-        groovkinTax = 0.05 * subTotal!;
-        subTotalWithText = subTotal! + (0.20 * subTotal!);
-        tax = 0.05 * subTotal!;
-        downPayment = tempDownPayment + (0.20 * subTotal!);
-        balanceDue = subTotalWithText! - downPayment!;
+        // subTotal = double.parse(_controller.hourlyRateController.text);
+        // double tempDownPayment = (subTotal! *
+        //     (double.parse(_controller.paymentSchedule!.value) / 100));
+        // stripeTax = 0.10 * subTotal!;
+        // groovkinTax = 0.05 * subTotal!;
+        // subTotalWithTax = subTotal! + (0.20 * subTotal!);
+        // tax = 0.05 * subTotal!;
+        // downPayment = tempDownPayment + (0.20 * subTotal!);
+        // balanceDue = subTotalWithTax! - downPayment!;
+        //-----------------------
+        calcFlatRate();
       }
     }
   }
 
-  // AuthController _authController = Get.find();
+  void calcPerHour() {
+    log("In Hourly Rate");
+    // subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
+    //     0 * hoursDifference!;
+
+    subTotal =
+        ((double.tryParse(_controller.hourlyRateController.text) ?? 0) *
+            CalculateHoursFromDate());
+    log(
+      "per hour rate : ${double.tryParse(_controller.hourlyRateController.text)}",
+    );
+
+    log("total hours : ${CalculateHoursFromDate()}");
+
+    log("subTotal : $subTotal");
+    // log("subTotal : ${12.0 * 5.0}");
+
+    stripeTax = 0.10 * subTotal!;
+    log("stripeTax: $stripeTax");
+
+    groovkinTax = 0.05 * subTotal!;
+    log("groovkinTax: $groovkinTax");
+
+    subTotalWithTax = subTotal! + (0.20 * subTotal!);
+    log("subTotalWithTax: $subTotalWithTax");
+
+    tax = 0.05 * subTotal!;
+    log("tax: $tax");
+
+    // double downPayment = (subTotalWithTax! *
+    //     (double.parse(_controller.paymentSchedule!.value) / 100));
+    downPayment =
+        (subTotalWithTax! / 100) *
+        (double.parse(_controller.paymentSchedule!.value));
+    log("downPayment: $downPayment");
+
+    balanceDue = subTotalWithTax! - downPayment!;
+    log("balanceDue: $balanceDue");
+  }
+
+  void calcFlatRate() {
+    log("In Flat Rate");
+    // subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
+    //     0 * hoursDifference!;
+
+    subTotal = (double.tryParse(_controller.hourlyRateController.text) ?? 0);
+
+    log(
+      "per hour rate : ${double.tryParse(_controller.hourlyRateController.text)}",
+    );
+
+    log("total hours : ${CalculateHoursFromDate()}");
+
+    log("subTotal : $subTotal");
+    // log("subTotal : ${12.0 * 5.0}");
+
+    stripeTax = 0.10 * subTotal!;
+    log("stripeTax: $stripeTax");
+
+    groovkinTax = 0.05 * subTotal!;
+    log("groovkinTax: $groovkinTax");
+
+    subTotalWithTax = subTotal! + (0.20 * subTotal!);
+    log("subTotalWithTax: $subTotalWithTax");
+
+    tax = 0.05 * subTotal!;
+    log("tax: $tax");
+
+    // double downPayment = (subTotalWithTax! *
+    //     (double.parse(_controller.paymentSchedule!.value) / 100));
+    downPayment =
+        (subTotalWithTax! / 100) *
+        (double.parse(_controller.paymentSchedule!.value));
+    log("downPayment: $downPayment");
+
+    balanceDue = subTotalWithTax! - downPayment!;
+    log("balanceDue: $balanceDue");
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("Hours: ${hoursDifference!.toInt()}");
+    // print("Hours: ${hoursDifference!.toInt()}");
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: "Confirmation", actions: [
-        ((_controller.eventDetail == null) &&
-                (_controller.draftCondition.value == true))
-            ? GestureDetector(
+      appBar: customAppBar(
+        theme: theme,
+        text: "Confirmation",
+        actions: [
+          ((_controller.eventDetail == null) &&
+                  (_controller.draftCondition.value == true))
+              ? GestureDetector(
                 onTap: () {
                   _controller.postEventFunction(context, theme, draft: true);
                 },
@@ -144,20 +227,17 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                   child: Icon(Icons.drafts),
                 ),
               )
-            : const SizedBox.shrink()
-      ]),
+              : const SizedBox.shrink(),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             // customWidget(theme: theme,context: context),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Text(
               ((_controller.eventDetail != null) &&
                       (_controller.eventDetail!.data!.venue != null))
@@ -175,22 +255,20 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
                   ? _controller.eventDetail!.data!.venue!.location!
                   : _controller.venuesDetails!.location!,
               style: poppinsRegularStyle(
-                  fontSize: 14,
-                  context: context,
-                  color: DynamicColor.grayClr.withValues(alpha: 0.7)),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            customWidget(
-                theme: theme,
+                fontSize: 14,
                 context: context,
-                title: "Date",
-                value:
-                    "${_controller.eventDateController.text}/${_controller.eventEndDateController.text}"),
-            const SizedBox(
-              height: 10,
+                color: DynamicColor.grayClr.withValues(alpha: 0.7),
+              ),
             ),
+            const SizedBox(height: 10),
+            customWidget(
+              theme: theme,
+              context: context,
+              title: "Date",
+              value:
+                  "${_controller.eventDateController.text}/${_controller.eventEndDateController.text}",
+            ),
+            const SizedBox(height: 10),
             // customWidget(
             //     theme: theme,
             //     context: context,
@@ -200,82 +278,81 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
             //   height: 10,
             // ),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "Start Time",
-                value: _controller.proposedTimeWindowsController.text),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "Start Time",
+              value: _controller.proposedTimeWindowsController.text,
             ),
+            const SizedBox(height: 10),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "End Time",
-                value: _controller.endTimeController.text),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "End Time",
+              value: _controller.endTimeController.text,
             ),
+            const SizedBox(height: 10),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "No. hours",
-                value: CalculateHoursFromDate().toStringAsFixed(2)),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "No. hours",
+              value: CalculateHoursFromDate().toStringAsFixed(2),
             ),
+            const SizedBox(height: 10),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "Subtotal",
-                value:
-                    "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate()).toStringAsFixed(2)}"),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "Subtotal",
+
+              // value:
+              //     "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate()).toStringAsFixed(2)}"
+              value: "\$ ${subTotal}",
             ),
+            const SizedBox(height: 10),
 
             customWidget(
-                theme: theme,
-                context: context,
-                title: "Tax (5%) ",
-                value: "\$${tax?.toStringAsFixed(2)}"),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "Tax (5%) ",
+              value: "\$${tax?.toStringAsFixed(2)}",
             ),
+            const SizedBox(height: 10),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "Groovkin Tax(5%)",
-                value: "\$${groovkinTax?.toStringAsFixed(2)}"),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "Groovkin Tax(5%)",
+              value: "\$${groovkinTax?.toStringAsFixed(2)}",
             ),
+            const SizedBox(height: 10),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "Stripe Tax(10%)",
-                value: "\$${stripeTax?.toStringAsFixed(2)}"),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "Stripe Tax(10%)",
+              value: "\$${stripeTax?.toStringAsFixed(2)}",
             ),
+            const SizedBox(height: 10),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "Down Payment Inc. Tax",
-                value: "\$${downPayment?.toStringAsFixed(2)}"),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "Total",
+              value: "\$${subTotalWithTax?.toStringAsFixed(2)}",
             ),
+            const SizedBox(height: 10),
             customWidget(
-                theme: theme,
-                context: context,
-                title: "Balance Due",
-                value: "\$${balanceDue?.toStringAsFixed(2)}"),
-            const SizedBox(
-              height: 10,
+              theme: theme,
+              context: context,
+              title: "Down Payment Inc. Tax",
+              value: "\$${downPayment?.toStringAsFixed(2) ?? "0"}",
             ),
-            Divider(
-              color: DynamicColor.grayClr,
+
+            const SizedBox(height: 10),
+            customWidget(
+              theme: theme,
+              context: context,
+              title: "Balance Due",
+              value: "\$${balanceDue?.toStringAsFixed(2)}",
             ),
+            const SizedBox(height: 10),
+            Divider(color: DynamicColor.grayClr),
           ],
         ),
       ),
@@ -287,6 +364,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
             borderClr: Colors.transparent,
             onTap: () {
               Get.toNamed(Routes.disclaimerScreen);
+              // calcPerHour();
+              // calcFlatRate();
             },
             text: "Next",
           ),

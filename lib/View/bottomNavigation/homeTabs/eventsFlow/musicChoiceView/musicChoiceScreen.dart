@@ -363,7 +363,8 @@ class MusicChoiceScreen extends StatelessWidget {
                 }
                 Get.toNamed(Routes.activityChoiceScreen);
               } else {
-                bottomToast(text: "Please add music event");
+                // bottomToast(text: "Please add music event");
+                bottomToast(text: "Please add a hashtag");
               }
               // Get.toNamed(Routes.eventPreview,
               // arguments: {

@@ -20,8 +20,6 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  // ! Todo check the permissions of the notification service
-
   void requestNotificationPermission() async {
     final NotificationSettings notificationSettings =
         await firebaseMessaging.requestPermission(
@@ -48,8 +46,6 @@ class NotificationService {
     }
   }
 
-  // ! Todo get devices token
-
   Future<String> getDeviceToken() async {
     String? token = await firebaseMessaging.getToken();
     log("Device Token $token");
@@ -59,15 +55,11 @@ class NotificationService {
     return token!;
   }
 
-  // ! Todo refresh token
-
   void isRefreshToken() async {
     firebaseMessaging.onTokenRefresh.listen((event) {
       event.toString();
     });
   }
-
-  // ! Todo initialize the android and ios settings and icon
 
   void initLocalNotifications(
     BuildContext context,
@@ -83,8 +75,6 @@ class NotificationService {
       },
     );
   }
-
-  // ! Todo listen the notification
 
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
@@ -107,11 +97,8 @@ class NotificationService {
           showNotification(message);
         }
       }
-           
     });
   }
-
-  //! Todo showNotification
 
   Future<void> showNotification(RemoteMessage message) async {
     // Check if message.notification is null (important for silent notifications)
@@ -168,14 +155,9 @@ class NotificationService {
         notificationDetails,
       );
     });
-
-    
   }
 
-  // ! Todo when app is background and terminated
-
   Future<void> setUpInteractMessage(BuildContext context) async {
-    // ! when app is terminated
     RemoteMessage? message =
         await FirebaseMessaging.instance.getInitialMessage();
     if (message != null) {
@@ -193,7 +175,6 @@ class NotificationService {
       }
     }
 
-    //! when app is backgroundr
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       if (context.mounted) {
         if (kDebugMode) {

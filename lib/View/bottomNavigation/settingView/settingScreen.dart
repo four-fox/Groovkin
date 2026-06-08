@@ -7,15 +7,19 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/Network/Url.dart';
 import 'package:groovkin/Components/alertmessage.dart';
+import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/theme_controller.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
+import 'package:groovkin/View/profile/createProfile.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -30,6 +34,14 @@ class _SettingScreenState extends State<SettingScreen> {
   late AuthController _authController;
 
   late ThemeController _themeController = Get.find<ThemeController>();
+  final switchRoleForm = GlobalKey<FormState>();
+
+  final inviteCodeMaskFormatter = MaskTextInputFormatter(
+    mask: '####-####',
+    filter: {
+      '#': RegExp(r'[A-Za-z0-9]'),
+    },
+  );
 
   @override
   void initState() {
@@ -240,112 +252,57 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ? "Switching"
                                   : switchRoleText(),
                               onTap: () async {
-                                _themeController.update();
-                                print(API().sp.read("role"));
-                                print(API().sp.read("currentRole"));
-                                if (API().sp.read("role") == "eventOrganizer" &&
-                                    API().sp.read("currentRole") ==
-                                        "eventOrganizer") {
-                                  controller.changeRoles(ChangeRole.user);
-                                  BotToast.showText(
-                                      text: "Change Role to User");
-                                  await _themeController.fetchUserTheme("User");
-                                } else if (API().sp.read("role") == "User" &&
-                                    API().sp.read("currentRole") ==
-                                        "eventOrganizer") {
-                                  controller.changeRoles(ChangeRole.organizer);
-                                  BotToast.showText(
-                                      text: "Change Role to Event Organizer");
-                                  await _themeController
-                                      .fetchUserTheme("eventOrganizer");
+                                if (API().sp.read("role") == "User") {
+                                  await showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0)),
+                                      builder: (ctx) {
+                                        return roleSwitchSheet(controller, ctx);
+                                      });
+                                } else {
+                                  _themeController.update();
+                                  print(API().sp.read("role"));
+                                  print(API().sp.read("currentRole"));
+                                  if (API().sp.read("role") ==
+                                          "eventOrganizer" &&
+                                      API().sp.read("currentRole") ==
+                                          "eventOrganizer") {
+                                    controller.changeRoles(ChangeRole.user);
+                                    BotToast.showText(
+                                        text: "Change Role to User");
+                                    await _themeController
+                                        .fetchUserTheme("User");
+                                  } else if (API().sp.read("role") == "User" &&
+                                      API().sp.read("currentRole") ==
+                                          "eventOrganizer") {
+                                    controller
+                                        .changeRoles(ChangeRole.organizer);
+                                    BotToast.showText(
+                                        text: "Change Role to Event Organizer");
+                                    await _themeController
+                                        .fetchUserTheme("eventOrganizer");
+                                  }
+                                  if (API().sp.read("role") == "eventManager" &&
+                                      API().sp.read("currentRole") ==
+                                          "eventManager") {
+                                    controller.changeRoles(ChangeRole.user);
+                                    BotToast.showText(
+                                        text: "Change Role to User");
+                                    await _themeController
+                                        .fetchUserTheme("User");
+                                  } else if (API().sp.read("role") == "User" &&
+                                      API().sp.read("currentRole") ==
+                                          "eventManager") {
+                                    controller.changeRoles(ChangeRole.manager);
+                                    BotToast.showText(
+                                        text: "Change Role to Venue Manager");
+                                    await _themeController
+                                        .fetchUserTheme("eventManager");
+                                  }
                                 }
-                                if (API().sp.read("role") == "eventManager" &&
-                                    API().sp.read("currentRole") ==
-                                        "eventManager") {
-                                  controller.changeRoles(ChangeRole.user);
-                                  BotToast.showText(
-                                      text: "Change Role to User");
-                                  await _themeController.fetchUserTheme("User");
-                                } else if (API().sp.read("role") == "User" &&
-                                    API().sp.read("currentRole") ==
-                                        "eventManager") {
-                                  controller.changeRoles(ChangeRole.manager);
-                                  BotToast.showText(
-                                      text: "Change Role to Venue Manager");
-                                  await _themeController
-                                      .fetchUserTheme("eventManager");
-                                }
-                                // showModalBottomSheet(
-                                //     shape: RoundedRectangleBorder(
-                                //         borderRadius:
-                                //             BorderRadius.circular(12.0)),
-                                //     context: context,
-                                //     builder: (context) {
-                                //       return SafeArea(
-                                //         child: Column(
-                                //           mainAxisSize: MainAxisSize.min,
-                                //           children: [
-                                //             API().sp.read("role") == "User"
-                                //                 ? SizedBox()
-                                //                 : ListTile(
-                                //                     shape:
-                                //                         RoundedRectangleBorder(
-                                //                             borderRadius:
-                                //                                 BorderRadius
-                                //                                     .circular(
-                                //                                         12.0)),
-                                //                     onTap: () {
-                                //                       Navigator.pop(context);
-                                //                       controller.changeRoles(
-                                //                           ChangeRole.user);
-                                //                     },
-                                //                     title: Text("User"),
-                                //                   ),
-                                //             API().sp.read("role") ==
-                                //                     "eventOrganizer"
-                                //                 ? SizedBox()
-                                //                 : ListTile(
-                                //                     shape:
-                                //                         RoundedRectangleBorder(
-                                //                             borderRadius:
-                                //                                 BorderRadius
-                                //                                     .circular(
-                                //                                         12.0)),
-                                //                     onTap: () {
-                                //                       Navigator.pop(context);
-                                //                       controller.changeRoles(
-                                //                           ChangeRole.organizer);
-                                //                     },
-                                //                     title:
-                                //                         Text("Event Organizer"),
-                                //                   ),
-                                //             API().sp.read("role") ==
-                                //                     "eventManager"
-                                //                 ? SizedBox()
-                                //                 : ListTile(
-                                //                     shape:
-                                //                         RoundedRectangleBorder(
-                                //                             borderRadius:
-                                //                                 BorderRadius
-                                //                                     .circular(
-                                //                                         12.0)),
-                                //                     onTap: () {
-                                //                       Navigator.pop(context);
-                                //                       controller.changeRoles(
-                                //                           ChangeRole.manager);
-                                //                     },
-                                //                     title:
-                                //                         Text("Venue Manager"),
-                                //                   ),
-                                //           ],
-                                //         ),
-                                //       );
-                                //     });
-                                // if (API().sp.read("role") == "eventManager") {
-                                //   controller.changeRoles(ChangeRole.organizer);
-                                // } else {
-                                //   controller.changeRoles(ChangeRole.manager);
-                                // }
                               }),
 
                         API().sp.read("role") != "User"
@@ -368,7 +325,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                 })
                             : const SizedBox.shrink(),
 
-                      
                         API().sp.read("role") == "User"
                             ? customWidget(
                                 context: context,
@@ -632,6 +588,127 @@ class _SettingScreenState extends State<SettingScreen> {
               thickness: 1.2,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget roleSwitchSheet(AuthController controller, BuildContext sheetCtx) {
+    return AnimatedPadding(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(sheetCtx).viewInsets.bottom,
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Form(
+              key: switchRoleForm,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    "Enter Invite Code",
+                    style: poppinsMediumStyle(
+                      fontSize: 16,
+                      context: context,
+                      color: DynamicColor.grayClr.withValues(alpha: 0.7),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextFields(
+                    labelText: "Invite Code",
+                    controller: controller.inviteCodeController,
+                    validationError: "Invite code",
+                    isOptional: false,
+                    // keyBoardType: true,
+                    inputFormatter: [
+                      UpperCaseTextFormatter(),
+                      inviteCodeMaskFormatter
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButton(
+                        borderClr: Colors.transparent,
+                        backgroundClr: false,
+                        color1: DynamicColor.redClr,
+                        color2: DynamicColor.redClr,
+                        widths: Get.width / 2.5,
+                        heights: 50,
+                        fontSized: 12,
+                        onTap: () {
+                          Get.back();
+                        },
+                        text: "Cancel",
+                      ),
+                      CustomButton(
+                        borderClr: Colors.transparent,
+                        backgroundClr: false,
+                        color1: DynamicColor.greenClr,
+                        color2: DynamicColor.greenClr,
+                        widths: Get.width / 2.5,
+                        heights: 50,
+                        fontSized: 12,
+                        onTap: () async {
+                          if (switchRoleForm.currentState!.validate()) {
+                            _themeController.update();
+                            print(API().sp.read("role"));
+                            print(API().sp.read("currentRole"));
+                            if (API().sp.read("role") == "eventOrganizer" &&
+                                API().sp.read("currentRole") ==
+                                    "eventOrganizer") {
+                              controller.changeRoles(ChangeRole.user);
+                              BotToast.showText(text: "Change Role to User");
+                              await _themeController.fetchUserTheme("User");
+                            } else if (API().sp.read("role") == "User" &&
+                                API().sp.read("currentRole") ==
+                                    "eventOrganizer") {
+                              controller.changeRoles(ChangeRole.organizer);
+                              BotToast.showText(
+                                  text: "Change Role to Event Organizer");
+                              await _themeController
+                                  .fetchUserTheme("eventOrganizer");
+                            }
+                            if (API().sp.read("role") == "eventManager" &&
+                                API().sp.read("currentRole") ==
+                                    "eventManager") {
+                              controller.changeRoles(ChangeRole.user);
+                              BotToast.showText(text: "Change Role to User");
+                              await _themeController.fetchUserTheme("User");
+                            } else if (API().sp.read("role") == "User" &&
+                                API().sp.read("currentRole") ==
+                                    "eventManager") {
+                              controller.changeRoles(ChangeRole.manager);
+                              BotToast.showText(
+                                  text: "Change Role to Venue Manager");
+                              await _themeController
+                                  .fetchUserTheme("eventManager");
+                            }
+                          }
+                        },
+                        text: "Submit",
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

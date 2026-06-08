@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -14,6 +15,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/profile/editProfileScreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CreateProfile extends StatefulWidget {
   const CreateProfile({super.key});
@@ -35,6 +37,13 @@ class _CreateProfileState extends State<CreateProfile> {
 
   final String? socialType = Get.arguments?["socialType"];
 
+  final inviteCodeMaskFormatter = MaskTextInputFormatter(
+    mask: '####-####',
+    filter: {
+      '#': RegExp(r'[A-Za-z0-9]'),
+    },
+  );
+
   @override
   void initState() {
     super.initState();
@@ -55,7 +64,7 @@ class _CreateProfileState extends State<CreateProfile> {
       clear();
     });
   }
-  
+
   clear() {
     _controller.firstNameController.clear();
     _controller.lastNameController.clear();
@@ -199,7 +208,7 @@ class _CreateProfileState extends State<CreateProfile> {
                         labelText: "User name",
                         controller: controller.displayNameController,
                         validationError: "User name",
-                        readOnly: API().sp.read("nameSocial") != null,
+                        // readOnly: API().sp.read("nameSocial") != null,
                       ),
                       SizedBox(
                         height: (sp.read('role') == "eventManager" ||
@@ -514,6 +523,23 @@ class _CreateProfileState extends State<CreateProfile> {
                         keyBoardType: true,
                       ),
 
+                      if (API().sp.read("role") != "User") ...[
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        CustomTextFields(
+                          labelText: "Invite Code",
+                          controller: controller.inviteCodeController,
+                          validationError: "Invite code",
+                          isOptional: false,
+                          // keyBoardType: true,
+                          inputFormatter: [
+                            UpperCaseTextFormatter(),
+                            inviteCodeMaskFormatter
+                          ],
+                        ),
+                      ],
+
                       const SizedBox(
                         height: 15,
                       ),
@@ -720,3 +746,16 @@ class OptionalWidgetText extends StatelessWidget {
 }
 
 List yearList = [""];
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return newValue.copyWith(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
+}

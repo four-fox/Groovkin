@@ -159,13 +159,14 @@ class LoginOrSignUpScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             child: CustomButton(
               borderClr: Colors.transparent,
-              onTap: () {
+              onTap: () async {
                 if (signUpForm.currentState!.validate()) {
                   if (_controller.confirmPasswordController.text ==
                       _controller.passwordController.text) {
                     if (_controller.confirmPasswordController.text.length >=
                         6) {
                       Get.toNamed(Routes.createProfile);
+                      // await _controller.validateInviteCode();
                     } else {
                       bottomToast(
                           text:
