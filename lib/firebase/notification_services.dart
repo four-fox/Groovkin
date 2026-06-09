@@ -69,7 +69,7 @@ class NotificationService {
     var ios = const DarwinInitializationSettings();
     final initializations = InitializationSettings(android: android, iOS: ios);
     await localNotificationsPlugin.initialize(
-      initializations,
+      settings: initializations,
       onDidReceiveNotificationResponse: (payload) {
         handleMessage(context, message);
       },
@@ -149,10 +149,10 @@ class NotificationService {
 
     Future.delayed(Duration.zero, () {
       localNotificationsPlugin.show(
-        message.hashCode, // Unique ID for the notification
-        message.notification!.title ?? "New Notification",
-        message.notification!.body ?? "Tap to open",
-        notificationDetails,
+        id: message.hashCode,
+        title: message.notification!.title ?? "New Notification",
+        body: message.notification!.body ?? "Tap to open",
+        notificationDetails: notificationDetails,
       );
     });
   }

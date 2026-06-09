@@ -18,6 +18,7 @@ import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:groovkin/utils/constant.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class StoreConfig {
@@ -86,6 +87,21 @@ bool isDark(BuildContext context) {
   return Theme.of(context).brightness == Brightness.dark;
 }
 
+Future<void> _initializeGoogleSignIn() async {
+  if (Platform.isAndroid) {
+    await GoogleSignIn.instance.initialize(
+      serverClientId: googleWebClientId,
+    );
+  } else if (Platform.isIOS || Platform.isMacOS) {
+    await GoogleSignIn.instance.initialize(
+      clientId: googleIosClientId,
+      serverClientId: googleWebClientId,
+    );
+  } else {
+    await GoogleSignIn.instance.initialize();
+  }
+}
+
 void main() async {
   if (Platform.isIOS || Platform.isMacOS) {
     StoreConfig(apiKey: appleApiKey, store: Store.appStore);
@@ -96,8 +112,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-      // options: DefaultFirebaseOptions.currentPlatform,
-      );
+    // options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await _initializeGoogleSignIn();
 
   // Todo Received BackGround Message
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

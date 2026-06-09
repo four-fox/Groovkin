@@ -6,107 +6,107 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.19.6 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6
-  get: ^4.6.6
-  rename: ^2.1.1
-  carousel_slider: ^5.0.0
-  simple_gradient_text: ^1.3.0
-  dotted_border: ^2.1.0
-  sign_in_with_apple: ^6.1.0
-  google_sign_in: ^6.2.1
+  cupertino_icons: ^1.0.9
+  get: ^4.7.3
+  rename: ^3.1.0
+  carousel_slider: ^5.1.2
+  simple_gradient_text: ^1.4.0
+  dotted_border: ^3.1.0
+  sign_in_with_apple: ^8.1.0
+  google_sign_in: ^7.2.0
   flutter_credit_card:
-    path: ../groovkin/plugin/flutter_credit_card-master
-  permission_handler: ^11.3.1
+    path: plugin/flutter_credit_card-master
+  permission_handler: ^12.0.3
   get_storage: ^2.1.1
   flutter_app_badge: ^2.0.2
   bottom_bar_matu:
-    path: ../groovkin/plugin/bottom_bar_matu-master
+    path: plugin/bottom_bar_matu-master
   date_field: ^6.0.3+1
   flutter_staggered_grid_view: ^0.7.0
   scrollable_clean_calendar: ^1.5.0
-  mailer: ^6.1.0
-  pdf: ^3.11.3
-  open_file: ^3.5.10
+  mailer: ^7.1.0
+  pdf: ^3.12.0
+  open_file: ^3.5.11
   flutter_rating_bar: ^4.0.1
   double_back_to_close_app: ^2.1.0
-  flutter_local_notifications: ^17.2.1+2
-  firebase_core: ^3.13.0
+  flutter_local_notifications: ^22.0.0
+  firebase_core: ^4.10.0
   map_location_picker:
-    path: ../groovkin/plugin/map_location_picker-master
-  intl: ^0.19.0
+    path: plugin/map_location_picker-master
+  intl: ^0.20.2
   intl_phone_number_input:
-    path: ../groovkin/plugin/intl_phone_number_input-develop
+    path: plugin/intl_phone_number_input-develop
   flutter_datetime_picker_bdaya: ^3.0.2
-  month_year_picker: ^0.4.0+1
-  image_picker: ^1.1.2
-  image_cropper: ^8.0.0
+  month_year_picker: ^0.5.0+1
+  image_picker: ^1.2.2
+  image_cropper: ^12.2.1
   popup_banner: ^1.0.0
   flutter_chip_tags: ^2.0.2
-  dio: ^5.5.0+1
+  dio: ^5.9.2
   bot_toast: ^4.1.3
   flutter_easyloading: ^3.0.5
-  shared_preferences: ^2.3.2
-  flutter_spinkit: ^5.2.1
-  file_picker: ^8.0.6
-  http_parser: ^4.1.0
-  video_thumbnail: ^0.5.3
-  path_provider: ^2.1.3
-  wakelock_plus: ^1.1.4
+  shared_preferences: ^2.5.5
+  flutter_spinkit: ^5.2.2
+  file_picker: ^11.0.2
+  http_parser: ^4.1.2
+  video_thumbnail: ^0.5.6
+  path_provider: ^2.1.5
+  wakelock_plus: ^1.2.8
   iconsax: ^0.0.8
-  http: ^1.2.1
-  collection: ^1.19.0
+  http: ^1.6.0
+  collection: ^1.19.1
   datetime_picker_formfield_new: ^2.1.0
-  image_cropper_platform_interface: ^7.0.0
-  form_builder_extra_fields: ^10.2.0
-  better_player_plus: 1.0.6
-  in_app_purchase: ^3.2.1
-  purchases_flutter: ^8.6.1
-  webview_flutter: ^4.4.2
-  app_settings: ^5.1.1
-  fluttertoast: ^8.2.8
-  url_launcher: ^6.3.1
+  image_cropper_platform_interface: ^8.0.0
+  form_builder_extra_fields: ^12.2.0
+  better_player_plus: ^1.2.1
+  in_app_purchase: ^3.3.0
+  purchases_flutter: ^10.2.2
+  webview_flutter: ^4.13.1
+  app_settings: ^7.0.0
+  fluttertoast: ^9.1.0
+  url_launcher: ^6.3.2
   otp_text_field:
-    path: ../groovkin/plugin/OTPTextField-dev
+    path: plugin/OTPTextField-dev
   country_state_city_pro:
-    path: ../groovkin/plugin/Country-State-City-Picker-Pro-master
-  flutter_layout_grid: ^2.0.7
+    path: plugin/Country-State-City-Picker-Pro-master
+  flutter_layout_grid: ^2.0.8
   custom_pop_up_menu: ^1.2.4
   sticky_grouped_list: ^3.1.0
-  sqflite: ^2.4.1
-  socket_io_client: ^3.1.3
+  sqflite: ^2.4.3
+  socket_io_client: ^3.1.5
   swipe_to: ^1.0.6
-  syncfusion_flutter_charts: ^28.2.7
-  fl_chart: ^0.70.2
-  material_charts: ^0.0.26
-  google_fonts: ^6.2.1
-  geocoding: ^3.0.0
-  firebase_auth: ^5.5.1
+  syncfusion_flutter_charts: ^33.2.10
+  fl_chart: ^1.2.0
+  material_charts: ^0.0.39
+  google_fonts: ^8.1.0
+  geocoding: ^4.0.0
+  firebase_auth: ^6.5.2
   reorderables: ^0.6.0
-  firebase_messaging: ^15.2.6
-  flutter_web_auth_2: ^4.1.0
-  font_awesome_flutter: ^10.9.0
-  geolocator: ^9.0.1
-  flutter_facebook_auth: ^7.1.2
-  syncfusion_flutter_pdfviewer:
+  firebase_messaging: ^16.3.0
+  flutter_web_auth_2: ^5.0.3
+  font_awesome_flutter: ^11.0.0
+  geolocator: ^14.0.2
+  flutter_facebook_auth: ^7.1.7
+  syncfusion_flutter_pdfviewer: ^33.2.10
   readmore: ^3.0.0
-  pin_code_fields: ^8.0.1
+  pin_code_fields: ^9.4.0
   circular_countdown_timer: ^0.2.4
   pretty_dio_logger: ^1.4.0
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
   collection: ^1.19.0
-  image_cropper: ^7.1.0
-  http: ^1.2.1
-  intl: ^0.19.0
-  form_builder_extra_fields: ^10.2.0
-  image_cropper_platform_interface: ^6.1.0
-  socket_io_client: ^3.0.2
+  image_cropper: ^12.2.1
+  http: ^1.6.0
+  intl: ^0.20.2
+  form_builder_extra_fields: ^12.2.0
+  image_cropper_platform_interface: ^8.0.0
+  socket_io_client: ^3.1.5
   mask_text_input_formatter: ^2.9.0
 
   modal_progress_hud_nsn: ^0.5.1

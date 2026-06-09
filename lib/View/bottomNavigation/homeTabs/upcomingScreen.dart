@@ -2358,10 +2358,10 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
         FlutterLocalNotificationsPlugin();
 
     flutterLocalNotificationsPlugin.show(
-      rand,
-      "Groovkin",
-      "Pdf Downloaded Successfully!",
-      NotificationDetails(
+      id: rand,
+      title: "Groovkin",
+      body: "Pdf Downloaded Successfully!",
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           'DemoTestChannel',
           'High Importance Notifications',

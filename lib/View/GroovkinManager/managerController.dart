@@ -95,7 +95,7 @@ class ManagerController extends GetxController {
   List<String> pickFilePath = [];
 
   Future<void> pickFileee() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    FilePickerResult? result = await FilePicker.pickFiles(
         allowMultiple: true,
         type: FileType.custom,
         allowedExtensions: ["png", "jpg", "jpeg", "pdf"]);

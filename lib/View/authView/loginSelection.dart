@@ -76,9 +76,10 @@ class _LoginSelectionState extends State<LoginSelection> {
                   height: 50,
                 ),
                 DottedBorder(
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(30),
-                  color: DynamicColor.whiteClr.withValues(alpha: 0.8),
+                  options: RoundedRectDottedBorderOptions(
+                    radius: const Radius.circular(30),
+                    color: DynamicColor.whiteClr.withValues(alpha: 0.8),
+                  ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
                     child: Container(
@@ -121,9 +122,10 @@ class _LoginSelectionState extends State<LoginSelection> {
                   height: 50,
                 ),
                 DottedBorder(
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(30),
-                  color: DynamicColor.whiteClr.withValues(alpha: 0.8),
+                  options: RoundedRectDottedBorderOptions(
+                    radius: const Radius.circular(30),
+                    color: DynamicColor.whiteClr.withValues(alpha: 0.8),
+                  ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
                     child: Container(

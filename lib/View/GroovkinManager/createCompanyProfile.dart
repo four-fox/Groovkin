@@ -189,11 +189,12 @@ class _CreateCompanyProfileScreenState
                       }
                     },
                     child: DottedBorder(
-                      borderType: BorderType.RRect,
-                      radius: const Radius.circular(20),
-                      color: isDark(context)
-                          ? DynamicColor.whiteClr.withValues(alpha: 0.8)
-                          : DynamicColor.grayClr,
+                      options: RoundedRectDottedBorderOptions(
+                        radius: const Radius.circular(20),
+                        color: isDark(context)
+                            ? DynamicColor.whiteClr.withValues(alpha: 0.8)
+                            : DynamicColor.grayClr,
+                      ),
                       child: Container(
                         height: kToolbarHeight * 2.8,
                         decoration: BoxDecoration(
@@ -690,7 +691,7 @@ class _CreateCompanyProfileScreenState
 
                   CustomTextFields(
                     labelText: "Instagram (Optional)",
-                    prefixWidget: Icon(
+                    prefixWidget: FaIcon(
                       FontAwesomeIcons.instagram,
                       color: DynamicColor.yellowClr.withValues(alpha: 0.5),
                     ),
@@ -706,7 +707,7 @@ class _CreateCompanyProfileScreenState
 
                   CustomTextFields(
                     labelText: "Facebook (Optional)",
-                    prefixWidget: Icon(
+                    prefixWidget: FaIcon(
                       FontAwesomeIcons.facebookF,
                       color: DynamicColor.yellowClr.withValues(alpha: 0.5),
                     ),

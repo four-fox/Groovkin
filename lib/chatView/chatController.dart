@@ -900,7 +900,7 @@ class ChatController extends GetxController {
       file = null;
       FilePickerResult? result;
       if (type == 'gallery') {
-        result = await FilePicker.platform.pickFiles(
+        result = await FilePicker.pickFiles(
           allowMultiple: true,
           type: FileType.any,
         );

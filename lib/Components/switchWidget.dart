@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -76,7 +77,7 @@ eventDateTime({
   Color? iconBgClr,
   double? iconSize,
   Color? textClr,
-  IconData? Iconss,
+  Object? Iconss,
   double? widths,
 }) {
   return Padding(
@@ -93,11 +94,17 @@ eventDateTime({
                   color: iconClr ?? DynamicColor.grayClr,
                   size: iconSize ?? 21,
                 )
-              : Icon(
-                  Iconss ?? Icons.location_on_sharp,
-                  color: iconClr ?? DynamicColor.grayClr,
-                  size: iconSize ?? 21,
-                ),
+              : Iconss is FaIconData
+                  ? FaIcon(
+                      Iconss,
+                      color: iconClr ?? DynamicColor.grayClr,
+                      size: iconSize ?? 21,
+                    )
+                  : Icon(
+                      Iconss as IconData? ?? Icons.location_on_sharp,
+                      color: iconClr ?? DynamicColor.grayClr,
+                      size: iconSize ?? 21,
+                    ),
         ),
         GestureDetector(
           // behavior: HitTestBehavior.translucent,

@@ -19,9 +19,15 @@ class OtpVerification extends StatefulWidget {
 class _OtpVerificationState extends State<OtpVerification> {
   final formKeySignIn = GlobalKey<FormState>();
 
-  final otp = TextEditingController();
+  final otp = PinInputController();
 
   final AuthController _controller = Get.find();
+
+  @override
+  void dispose() {
+    otp.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,38 +89,34 @@ class _OtpVerificationState extends State<OtpVerification> {
                     SizedBox(
                       height: 30,
                     ),
-                    PinCodeTextField(
-                      appContext: context,
+                    MaterialPinField(
                       length: 4,
-                      controller: otp,
+                      pinController: otp,
                       onCompleted: (v) async {
                         print("in on complete");
-                        // FocusScope.of(context).nextFocus();
                         FocusScope.of(context).unfocus();
                       },
                       autoDismissKeyboard: true,
-                      pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        activeFillColor:
+                      theme: MaterialPinTheme(
+                        shape: MaterialPinShape.filled,
+                        fillColor:
                             DynamicColor.yellowClr.withValues(alpha: 0.7),
-                        inactiveFillColor:
+                        filledFillColor:
                             DynamicColor.yellowClr.withValues(alpha: 0.7),
-                        selectedFillColor:
+                        focusedFillColor:
                             DynamicColor.yellowClr.withValues(alpha: 0.7),
                         borderRadius: BorderRadius.circular(8),
-                        inactiveColor: DynamicColor.whiteClr,
-                        activeColor: DynamicColor.whiteClr,
-                        selectedColor: DynamicColor.whiteClr,
+                        borderColor: DynamicColor.whiteClr,
+                        filledBorderColor: DynamicColor.whiteClr,
+                        focusedBorderColor: DynamicColor.whiteClr,
                         borderWidth: 1,
                         errorBorderColor: Theme.of(context).colorScheme.error,
+                        textStyle: TextStyle(
+                            color: DynamicColor.whiteClr, fontSize: 15),
                       ),
-                      textStyle:
-                          TextStyle(color: DynamicColor.whiteClr, fontSize: 15),
-                      cursorColor: DynamicColor.whiteClr,
                       keyboardType: const TextInputType.numberWithOptions(
                           decimal: false, signed: false),
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      enableActiveFill: true,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                     ),
                     SizedBox(

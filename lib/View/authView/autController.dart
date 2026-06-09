@@ -1771,23 +1771,59 @@ class AuthController extends GetxController {
     }
   }
 
+  Future<String?> _googleAccessToken(GoogleSignInAccount account) async {
+    final authorization = await account.authorizationClient
+            .authorizationForScopes(googleSignInScopes) ??
+        await account.authorizationClient
+            .authorizeScopes(googleSignInScopes);
+    return authorization.accessToken;
+  }
+
+  String _googleSignInErrorMessage(GoogleSignInException error) {
+    return switch (error.code) {
+      GoogleSignInExceptionCode.canceled => 'Sign in canceled',
+      GoogleSignInExceptionCode.clientConfigurationError =>
+        'Google Sign-In is misconfigured. Check Firebase OAuth settings.',
+      _ => error.description ?? 'Google Sign-In failed (${error.code})',
+    };
+  }
+
   // Todo Social Sign IN
   Future<dynamic> googleSignIn() async {
     try {
       EasyLoading.show();
-      GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
 
-      if (googleSignInAccount == null) {
-        EasyLoading.dismiss();
+      if (!GoogleSignIn.instance.supportsAuthenticate()) {
+        BotToast.showText(text: 'Google Sign-In is not supported here.');
         return null;
       }
 
-      GoogleSignInAuthentication? googleSignInAuthentication =
-          await googleSignInAccount.authentication;
+      GoogleSignInAccount googleSignInAccount;
+      try {
+        googleSignInAccount = await GoogleSignIn.instance.authenticate(
+          scopeHint: googleSignInScopes,
+        );
+      } on GoogleSignInException catch (error) {
+        if (error.code != GoogleSignInExceptionCode.canceled) {
+          BotToast.showText(text: _googleSignInErrorMessage(error));
+        }
+        return null;
+      }
+
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          googleSignInAccount.authentication;
+      final idToken = googleSignInAuthentication.idToken;
+      if (idToken == null || idToken.isEmpty) {
+        BotToast.showText(text: 'Google Sign-In failed: missing ID token.');
+        return null;
+      }
+
+      final accessToken = await _googleAccessToken(googleSignInAccount);
+      final platformToken = accessToken ?? idToken;
 
       final credential = firebase_auth.GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
+        accessToken: accessToken,
+        idToken: idToken,
       );
 
       final firebase_auth.UserCredential userCredential = await firebase_auth
@@ -1795,24 +1831,27 @@ class AuthController extends GetxController {
           .signInWithCredential(credential);
 
       if (userCredential.user != null) {
-        emailController.text = userCredential.user!.email ?? "";
-        displayNameController.text = userCredential.user!.displayName ?? "";
+        emailController.text =
+            userCredential.user!.email ?? googleSignInAccount.email;
+        displayNameController.text = userCredential.user!.displayName ??
+            googleSignInAccount.displayName ??
+            '';
         API().sp.write("emailSocial", userCredential.user!.email ?? "");
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
-        API().sp.write("accessToken", userCredential.credential!.accessToken);
+        API().sp.write("accessToken", platformToken);
 
-        firebase_auth.FirebaseAuth.instance.signOut();
-        await GoogleSignIn().signOut();
+        await firebase_auth.FirebaseAuth.instance.signOut();
+        await GoogleSignIn.instance.signOut();
         sigUp(
           Get.context,
           signUpPlatform: "google",
-          platformId: userCredential.credential!.accessToken,
+          platformId: platformToken,
         );
       }
       log(userCredential.toString());
-    } catch (e) {
-      print(e.toString());
-      EasyLoading.dismiss();
+    } catch (e, stackTrace) {
+      log('googleSignIn failed: $e', stackTrace: stackTrace);
+      BotToast.showText(text: 'Google Sign-In failed. Please try again.');
     } finally {
       EasyLoading.dismiss();
     }

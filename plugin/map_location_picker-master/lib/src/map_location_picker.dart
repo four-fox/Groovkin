@@ -577,7 +577,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                   );
                                                   return state.results;
                                                 },
-                                                onSuggestionSelected:
+                                                onSelected:
                                                     (value) async {
                                                   _searchController.selection =
                                                       TextSelection.collapsed(
@@ -588,7 +588,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                       value.placeId ?? "");
                                                   setState(() {});
                                                 },
-                                                hideSuggestionsOnKeyboardHide:
+                                                hideWithKeyboard:
                                                     widget
                                                         .hideSuggestionsOnKeyboardHide,
                                               );

@@ -408,7 +408,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 onTap: () async {
                                   if (API().sp.read("socialType") != null &&
                                       API().sp.read("socialType") == "google") {
-                                    await GoogleSignIn().signOut();
+                                    await GoogleSignIn.instance.signOut();
                                     await FirebaseAuth.instance.signOut();
                                     await controller.logout();
                                     await controller.logOutRevenuecat();

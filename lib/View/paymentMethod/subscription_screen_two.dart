@@ -222,7 +222,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                       }
                       if (Platform.isAndroid) {
                         BotToast.showLoading();
-                        final customerInfo =
+                        final purchaseResult =
                             await Purchases.purchaseSubscriptionOption(
                                     _offerings!
                                         .current!.availablePackages.reversed
@@ -240,6 +240,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           throw Exception(error.toString());
                         });
+                        final customerInfo = purchaseResult.customerInfo;
 
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);
@@ -254,7 +255,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                         }
                       } else {
                         BotToast.showLoading();
-                        final customerInfo = await Purchases.purchasePackage(
+                        final purchaseResult = await Purchases.purchasePackage(
                                 _offerings!.current!.availablePackages[
                                     controller.selected.value])
                             .then((value) {
@@ -265,6 +266,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                           BotToast.closeAllLoading();
                           throw Exception(error.toString());
                         });
+                        final customerInfo = purchaseResult.customerInfo;
 
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);

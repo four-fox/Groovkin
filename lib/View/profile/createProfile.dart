@@ -546,7 +546,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
                       CustomTextFields(
                         labelText: "Instagram (Optional)",
-                        prefixWidget: Icon(
+                        prefixWidget: FaIcon(
                           FontAwesomeIcons.instagram,
                           color: DynamicColor.yellowClr.withValues(alpha: 0.5),
                         ),
@@ -562,7 +562,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
                       CustomTextFields(
                         labelText: "Twitter X (Optional)",
-                        prefixWidget: Icon(
+                        prefixWidget: FaIcon(
                           FontAwesomeIcons.xTwitter,
                           color: DynamicColor.yellowClr.withValues(alpha: 0.5),
                         ),
@@ -576,7 +576,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                       CustomTextFields(
                         labelText: "Youtube (Optional)",
-                        prefixWidget: Icon(
+                        prefixWidget: FaIcon(
                           FontAwesomeIcons.youtube,
                           color: DynamicColor.yellowClr.withValues(alpha: 0.5),
                         ),
