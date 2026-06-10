@@ -153,6 +153,7 @@ class EventController extends GetxController {
   RxInt paymentScheduleValue = 0.obs;
   RxString? rateType = "hourly".obs;
   RxString? paymentSchedule = "0".obs;
+  final downPaymentController = TextEditingController();
   final format = DateFormat('dd-MM-yyyy');
 
   ///>>>>>>>>>>>>>>>>>  get music tag
@@ -392,6 +393,8 @@ class EventController extends GetxController {
   String? postEndTime;
 
   postEventFunction(context, theme, {location, bool draft = false}) async {
+    print("lora lae $datePost ${postTime.toString().split(" ")[0]} $endDatePost $postEndTime");
+
     AuthController authController = Get.find();
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
@@ -422,9 +425,9 @@ class EventController extends GetxController {
       "featuring": featuringController.text,
       "about": aboutController.text,
       "theme_of_event": themeOfEventController.text,
-      "start_date_time": "$datePost $postTime" /*datePost*/,
+      "start_date_time": "$datePost ${postTime.toString().split(" ")[0]}" /*datePost*/,
       // "check_in": postTime,
-      "end_date_time": "$endDatePost $postEndTime",
+      "end_date_time": "$endDatePost ${postEndTime.toString().split(" ")[0]}",
       // "max_capacity": maxCapacityController.text,
       "rate": hourlyRateController.text,
       "rate_type": rateType!.value,
@@ -813,6 +816,7 @@ class EventController extends GetxController {
     postEndTime = null;
     rateType!.value = "hourly";
     paymentSchedule!.value = "0";
+    downPaymentController.clear();
     _authController.serviceList.clear();
     _authController.eventItemsList.clear();
     _authController.lifeStyleItemsList.clear();
@@ -963,16 +967,16 @@ class EventController extends GetxController {
       eventRateHourly.value = 1;
     }
     hourlyRateController.text = eventDetail!.data!.rate.toString();
-    if (eventDetail!.data!.paymentSchedule == "25") {
-      paymentSchedule!.value = "25";
-      paymentScheduleValue.value = 0;
-    } else if (eventDetail!.data!.paymentSchedule == "50") {
-      paymentSchedule!.value = "50";
-      paymentScheduleValue.value = 1;
-    } else {
-      paymentSchedule!.value = "70";
-      paymentScheduleValue.value = 2;
-    }
+    // if (eventDetail!.data!.paymentSchedule == "25") {
+    //   paymentSchedule!.value = "25";
+    //   paymentScheduleValue.value = 0;
+    // } else if (eventDetail!.data!.paymentSchedule == "50") {
+    //   paymentSchedule!.value = "50";
+    //   paymentScheduleValue.value = 1;
+    // } else {
+    //   paymentSchedule!.value = "70";
+    //   paymentScheduleValue.value = 2;
+    // }
     if (eventDetail!.data!.comment != null) {
       commentsController.text = eventDetail!.data!.comment.toString();
     }

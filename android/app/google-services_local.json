@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "545599432217",
+    "project_id": "groovkin-5f843",
+    "storage_bucket": "groovkin-5f843.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545599432217:android:3de20e687f5417c1012c88",
+        "android_client_info": {
+          "package_name": "com.gologonow.groovkin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545599432217-kdhugusbe69uh5glab8j1tsc96acnaun.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkin",
+            "certificate_hash": "60a76db65da581d874e467c405136f6c8119fca4"
+          }
+        },
+        {
+          "client_id": "545599432217-0katl36ol67aa15n8pf6si65iud6h06m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb3t2jMIEoGUDcNMjy9KWkttjwqro7YQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545599432217-0katl36ol67aa15n8pf6si65iud6h06m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "545599432217-oj6jh25m453gv5qm96i5i9hq1hs1v8ij.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gologonow.groovkin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -112,6 +112,7 @@ class AppPages {
     GetPage(
       name: _Path.loginSelection,
       page: () => const LoginSelection(),
+      binding: AuthBinding(),
     ),
     GetPage(
       name: _Path.sendEmailScreen,

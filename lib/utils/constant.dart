@@ -7,9 +7,11 @@ const appleApiKey = 'appl_sUGoMUqrMbaxQGbwWvgauwEYVzn';
 //TO DO: add the Google API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
 const googleApiKey = 'goog_UILXHDQwjnEFQbzLknGmHsYFinw';
 
-// Google Sign-In OAuth client IDs (from Firebase console / google-services.json)
+// Google Sign-In OAuth client IDs (from Firebase console / google-services_local.json)
+// const googleWebClientId =
+//     '545599432217-0katl36ol67aa15n8pf6si65iud6h06m.apps.googleusercontent.com';
 const googleWebClientId =
-    '545599432217-0katl36ol67aa15n8pf6si65iud6h06m.apps.googleusercontent.com';
+    '682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com';
 const googleIosClientId =
     '682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com';
 const googleSignInScopes = <String>['email', 'profile'];

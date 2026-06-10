@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 // import 'package:date_field/date_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -74,6 +75,10 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
 
     _eventController.postTime = intialTime;
     _eventController.postEndTime = intialEndTime;
+    if (_eventController.downPaymentController.text.isEmpty) {
+      _eventController.downPaymentController.text =
+          _eventController.paymentSchedule!.value;
+    }
   }
 
   // bool? createEvent({
@@ -232,7 +237,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                               ),
                                   )
                                 : Container(
-                                    height: context.height * 0.40,
+                                    height: context.height * 0.50,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                         border: Border.all(
@@ -242,9 +247,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                                             BorderRadius.circular(12.0)),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(12.0),
+                                      child: Padding(padding: EdgeInsets.all(2),
                                       child: Image.file(
                                         File(_authController.imageBytes!),
+                                        fit: BoxFit.cover,
                                         // fit: BoxFit.contain,
+                                      ),
                                       ),
                                     ),
                                   ),
@@ -745,169 +753,213 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          controller.paymentSchedule!.value = "0";
-                          controller.paymentScheduleValue.value = 0;
-                          controller.update();
-                        },
-                        child: SizedBox(
-                          height: 40,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 23,
-                                child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor: theme.primaryColor,
-                                  ),
-                                  child: Radio(
-                                      activeColor: DynamicColor.yellowClr,
-                                      value: 0,
-                                      groupValue:
-                                          controller.paymentScheduleValue.value,
-                                      onChanged: (v) {
-                                        controller.paymentSchedule!.value = "0";
-                                        controller.paymentScheduleValue.value =
-                                            v!;
-                                        controller.update();
-                                      }),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 7.0),
-                                child: Text(
-                                  "0% Down Payment",
-                                  style: poppinsRegularStyle(
-                                    fontSize: 12,
-                                    color: theme.primaryColor,
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                              SizedBox(
-                                width: 23,
-                                child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor: theme.primaryColor,
-                                  ),
-                                  child: Radio(
-                                      activeColor: DynamicColor.yellowClr,
-                                      value: 1,
-                                      groupValue:
-                                          controller.paymentScheduleValue.value,
-                                      onChanged: (v) {
-                                        controller.paymentSchedule!.value =
-                                            "25";
-                                        controller.paymentScheduleValue.value =
-                                            v!;
-                                        controller.update();
-                                      }),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  controller.paymentSchedule!.value = "25";
-                                  controller.paymentScheduleValue.value = 1;
-                                  controller.update();
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 7.0),
-                                  child: Text(
-                                    "25% Down Payment",
-                                    style: poppinsRegularStyle(
-                                      fontSize: 12,
-                                      color: theme.primaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      const SizedBox(
+                        height: 10,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          controller.paymentSchedule!.value = "50";
-                          controller.paymentScheduleValue.value = 2;
-                          controller.update();
-                        },
-                        child: SizedBox(
-                          height: 40,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 23,
-                                child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor: theme.primaryColor,
-                                  ),
-                                  child: Radio(
-                                      activeColor: DynamicColor.yellowClr,
-                                      value: 2,
-                                      groupValue:
-                                          controller.paymentScheduleValue.value,
-                                      onChanged: (v) {
-                                        controller.paymentSchedule!.value =
-                                            "50";
-                                        controller.paymentScheduleValue.value =
-                                            v!;
-                                        controller.update();
-                                      }),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 7.0),
-                                child: Text(
-                                  "50% Down Payment",
-                                  style: poppinsRegularStyle(
-                                    fontSize: 12,
-                                    color: theme.primaryColor,
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                              SizedBox(
-                                width: 23,
-                                child: Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor: theme.primaryColor,
-                                  ),
-                                  child: Radio(
-                                      activeColor: DynamicColor.yellowClr,
-                                      value: 3,
-                                      groupValue:
-                                          controller.paymentScheduleValue.value,
-                                      onChanged: (v) {
-                                        controller.paymentSchedule!.value =
-                                            "75";
-                                        controller.paymentScheduleValue.value =
-                                            v!;
-                                        controller.update();
-                                      }),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  controller.paymentSchedule!.value = "75";
-                                  controller.paymentScheduleValue.value = 3;
-                                  controller.update();
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 7.0),
-                                  child: Text(
-                                    "75% Down Payment",
-                                    style: poppinsRegularStyle(
-                                      fontSize: 12,
-                                      color: theme.primaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            // width: 100,
+                            child: CustomTextFields(
+
+                              controller: controller.downPaymentController,
+                              keyBoardType: true,
+                              isOptional: true,
+                              labelText: "Value",
+                              hintText: "0",
+                              textClr: theme.primaryColor,
+                              inputFormatter: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              onChanged: (value) {
+                                controller.paymentSchedule!.value =
+                                    value.isEmpty ? "0" : value;
+
+                                controller.update();
+                              },
+                            ),
                           ),
-                        ),
+                          const SizedBox(width: 8),
+                          Flexible(
+                            flex: 6,
+                            child: Text(
+                            "% down payment",
+                            style: poppinsRegularStyle(
+                              context: context,
+                              fontSize: 12,
+                              color: theme.primaryColor,
+                            ),
+                          )),
+                        ],
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     controller.paymentSchedule!.value = "0";
+                      //     controller.paymentScheduleValue.value = 0;
+                      //     controller.update();
+                      //   },
+                      //   child: SizedBox(
+                      //     height: 40,
+                      //     child: Row(
+                      //       children: [
+                      //         SizedBox(
+                      //           width: 23,
+                      //           child: Theme(
+                      //             data: Theme.of(context).copyWith(
+                      //               unselectedWidgetColor: theme.primaryColor,
+                      //             ),
+                      //             child: Radio(
+                      //                 activeColor: DynamicColor.yellowClr,
+                      //                 value: 0,
+                      //                 groupValue:
+                      //                     controller.paymentScheduleValue.value,
+                      //                 onChanged: (v) {
+                      //                   controller.paymentSchedule!.value = "0";
+                      //                   controller.paymentScheduleValue.value =
+                      //                       v!;
+                      //                   controller.update();
+                      //                 }),
+                      //           ),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.only(left: 7.0),
+                      //           child: Text(
+                      //             "0% Down Payment",
+                      //             style: poppinsRegularStyle(
+                      //               fontSize: 12,
+                      //               color: theme.primaryColor,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         const Spacer(),
+                      //         SizedBox(
+                      //           width: 23,
+                      //           child: Theme(
+                      //             data: Theme.of(context).copyWith(
+                      //               unselectedWidgetColor: theme.primaryColor,
+                      //             ),
+                      //             child: Radio(
+                      //                 activeColor: DynamicColor.yellowClr,
+                      //                 value: 1,
+                      //                 groupValue:
+                      //                     controller.paymentScheduleValue.value,
+                      //                 onChanged: (v) {
+                      //                   controller.paymentSchedule!.value =
+                      //                       "25";
+                      //                   controller.paymentScheduleValue.value =
+                      //                       v!;
+                      //                   controller.update();
+                      //                 }),
+                      //           ),
+                      //         ),
+                      //         GestureDetector(
+                      //           onTap: () {
+                      //             controller.paymentSchedule!.value = "25";
+                      //             controller.paymentScheduleValue.value = 1;
+                      //             controller.update();
+                      //           },
+                      //           child: Padding(
+                      //             padding: const EdgeInsets.only(left: 7.0),
+                      //             child: Text(
+                      //               "25% Down Payment",
+                      //               style: poppinsRegularStyle(
+                      //                 fontSize: 12,
+                      //                 color: theme.primaryColor,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     controller.paymentSchedule!.value = "50";
+                      //     controller.paymentScheduleValue.value = 2;
+                      //     controller.update();
+                      //   },
+                      //   child: SizedBox(
+                      //     height: 40,
+                      //     child: Row(
+                      //       children: [
+                      //         SizedBox(
+                      //           width: 23,
+                      //           child: Theme(
+                      //             data: Theme.of(context).copyWith(
+                      //               unselectedWidgetColor: theme.primaryColor,
+                      //             ),
+                      //             child: Radio(
+                      //                 activeColor: DynamicColor.yellowClr,
+                      //                 value: 2,
+                      //                 groupValue:
+                      //                     controller.paymentScheduleValue.value,
+                      //                 onChanged: (v) {
+                      //                   controller.paymentSchedule!.value =
+                      //                       "50";
+                      //                   controller.paymentScheduleValue.value =
+                      //                       v!;
+                      //                   controller.update();
+                      //                 }),
+                      //           ),
+                      //         ),
+                      //         Padding(
+                      //           padding: const EdgeInsets.only(left: 7.0),
+                      //           child: Text(
+                      //             "50% Down Payment",
+                      //             style: poppinsRegularStyle(
+                      //               fontSize: 12,
+                      //               color: theme.primaryColor,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         const Spacer(),
+                      //         SizedBox(
+                      //           width: 23,
+                      //           child: Theme(
+                      //             data: Theme.of(context).copyWith(
+                      //               unselectedWidgetColor: theme.primaryColor,
+                      //             ),
+                      //             child: Radio(
+                      //                 activeColor: DynamicColor.yellowClr,
+                      //                 value: 3,
+                      //                 groupValue:
+                      //                     controller.paymentScheduleValue.value,
+                      //                 onChanged: (v) {
+                      //                   controller.paymentSchedule!.value =
+                      //                       "75";
+                      //                   controller.paymentScheduleValue.value =
+                      //                       v!;
+                      //                   controller.update();
+                      //                 }),
+                      //           ),
+                      //         ),
+                      //         GestureDetector(
+                      //           onTap: () {
+                      //             controller.paymentSchedule!.value = "75";
+                      //             controller.paymentScheduleValue.value = 3;
+                      //             controller.update();
+                      //           },
+                      //           child: Padding(
+                      //             padding: const EdgeInsets.only(left: 7.0),
+                      //             child: Text(
+                      //               "75% Down Payment",
+                      //               style: poppinsRegularStyle(
+                      //                 fontSize: 12,
+                      //                 color: theme.primaryColor,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       // SizedBox(
                       //   height: 40,
                       //   child: Row(

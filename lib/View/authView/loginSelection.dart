@@ -4,6 +4,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -18,6 +20,9 @@ class LoginSelection extends StatefulWidget {
 }
 
 class _LoginSelectionState extends State<LoginSelection> {
+
+  final AuthController authController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -154,8 +159,13 @@ class _LoginSelectionState extends State<LoginSelection> {
                             onTap: () {
                               sp.write("currentRole", "eventOrganizer");
                               sp.write('role', 'eventOrganizer');
-                              Get.toNamed(Routes.loginWithScreen);
-                              // Get.toNamed(Routes.welComeScreen);
+                              // Get.toNamed(Routes.loginWithScreen);
+                              authController.emailController.clear();
+                              authController.passwordController.clear();
+                              authController.confirmPasswordController.clear();
+                              API().sp.write("emailSocial", null);
+                              Get.toNamed(Routes.loginOrSignUpScreen);
+
                             },
                             text: "Register as Event Organizer",
                           ),
@@ -169,8 +179,13 @@ class _LoginSelectionState extends State<LoginSelection> {
                             onTap: () {
                               sp.write("currentRole", "eventManager");
                               sp.write('role', 'eventManager');
-                              Get.toNamed(Routes.loginWithScreen);
-                              // Get.toNamed(Routes.welComeScreen);
+                              // Get.toNamed(Routes.loginWithScreen);
+                              authController.emailController.clear();
+                              authController.passwordController.clear();
+                              authController.confirmPasswordController.clear();
+                              API().sp.write("emailSocial", null);
+                              Get.toNamed(Routes.loginOrSignUpScreen);
+
                             },
                           ),
                           const SizedBox(

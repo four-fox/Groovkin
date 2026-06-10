@@ -1,48 +1,108 @@
 {
   "project_info": {
-    "project_number": "545599432217",
-    "project_id": "groovkin-5f843",
-    "storage_bucket": "groovkin-5f843.firebasestorage.app"
+    "project_number": "682228072753",
+    "project_id": "my-groovkin-app",
+    "storage_bucket": "my-groovkin-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:545599432217:android:3de20e687f5417c1012c88",
+        "mobilesdk_app_id": "1:682228072753:android:cb8de8728eb9544c3f3010",
         "android_client_info": {
           "package_name": "com.gologonow.groovkin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "545599432217-kdhugusbe69uh5glab8j1tsc96acnaun.apps.googleusercontent.com",
+          "client_id": "682228072753-0m5f50rd9kitotseuj4mjqhht78drnok.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.gologonow.groovkin",
-            "certificate_hash": "60a76db65da581d874e467c405136f6c8119fca4"
+            "certificate_hash": "a840f8617a6fe5d4c6367c3f60bfff9c614c6976"
           }
         },
         {
-          "client_id": "545599432217-0katl36ol67aa15n8pf6si65iud6h06m.apps.googleusercontent.com",
+          "client_id": "682228072753-hrfe1o46m4rqqlfcuoeqjs956tvc46f5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkin",
+            "certificate_hash": "9eed7aea4ac0d73399ab1744d1c957db82b74344"
+          }
+        },
+        {
+          "client_id": "682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCb3t2jMIEoGUDcNMjy9KWkttjwqro7YQ4"
+          "current_key": "AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "545599432217-0katl36ol67aa15n8pf6si65iud6h06m.apps.googleusercontent.com",
+              "client_id": "108310936936281340241",
               "client_type": 3
             },
             {
-              "client_id": "545599432217-oj6jh25m453gv5qm96i5i9hq1hs1v8ij.apps.googleusercontent.com",
+              "client_id": "682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.gologonow.groovkin"
+                "bundle_id": "com.gologonow.groovkinn"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682228072753:android:86ad771ffd5bec383f3010",
+        "android_client_info": {
+          "package_name": "com.gologonow.groovkinn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682228072753-0thr3a4cgic3g4cg8gc1opl8vud2gu2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkinn",
+            "certificate_hash": "a840f8617a6fe5d4c6367c3f60bfff9c614c6976"
+          }
+        },
+        {
+          "client_id": "682228072753-qvumh3qj1npsdpbe4com5jo4h4o4c96o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gologonow.groovkinn",
+            "certificate_hash": "5af32871b0fa84253120b5f3f90386dac40206c6"
+          }
+        },
+        {
+          "client_id": "682228072753-pciug78enuidnmuqmfjcid3valhk6np7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108310936936281340241",
+              "client_type": 3
+            },
+            {
+              "client_id": "682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gologonow.groovkinn"
               }
             }
           ]

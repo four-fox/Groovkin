@@ -191,30 +191,30 @@ class _SocialSignInState extends State<SocialSignIn> {
           const SizedBox(
             height: 20,
           ),
-        if (widget.showSpotify)
-          if (Platform.isAndroid)
-            CustomButtonWithIcon(
-                onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const SpotifyWebView(
-                  //               clientId: clientId,
-                  //               clientSecret: clientSecret,
-                  //               redirectUri: redirectUri,
-                  //             )));
-                  loginWithSpotify();
-                },
-                text: "Continue with Spotify",
-                iconValue: true,
-                bgColor: Colors.transparent,
-                gradientClr: true,
-                color2: DynamicColor.grayClr.withValues(alpha: 0.4),
-                color1: DynamicColor.grayClr.withValues(alpha: 0.1),
-                imageIconn: ImageIcon(
-                  const AssetImage("assets/spotify.png"),
-                  color: theme.primaryColor,
-                )),
+        // if (widget.showSpotify)
+        //   if (Platform.isAndroid)
+        //     CustomButtonWithIcon(
+        //         onTap: () {
+        //           // Navigator.push(
+        //           //     context,
+        //           //     MaterialPageRoute(
+        //           //         builder: (context) => const SpotifyWebView(
+        //           //               clientId: clientId,
+        //           //               clientSecret: clientSecret,
+        //           //               redirectUri: redirectUri,
+        //           //             )));
+        //           loginWithSpotify();
+        //         },
+        //         text: "Continue with Spotify",
+        //         iconValue: true,
+        //         bgColor: Colors.transparent,
+        //         gradientClr: true,
+        //         color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+        //         color1: DynamicColor.grayClr.withValues(alpha: 0.1),
+        //         imageIconn: ImageIcon(
+        //           const AssetImage("assets/spotify.png"),
+        //           color: theme.primaryColor,
+        //         )),
       ],
     );
   }

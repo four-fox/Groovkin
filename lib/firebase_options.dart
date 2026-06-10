@@ -50,21 +50,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCb3t2jMIEoGUDcNMjy9KWkttjwqro7YQ4',
-    appId: '1:545599432217:android:3de20e687f5417c1012c88',
-    messagingSenderId: '545599432217',
-    projectId: 'groovkin-5f843',
-    storageBucket: 'groovkin-5f843.firebasestorage.app',
-  );
-
   // static const FirebaseOptions android = FirebaseOptions(
-  //   apiKey: 'AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc',
-  //   appId: '1:682228072753:android:cb8de8728eb9544c3f3010',
-  //   messagingSenderId: '682228072753',
-  //   projectId: 'my-groovkin-app',
-  //   storageBucket: 'my-groovkin-app.firebasestorage.app',
+  //   apiKey: 'AIzaSyCb3t2jMIEoGUDcNMjy9KWkttjwqro7YQ4',
+  //   appId: '1:545599432217:android:3de20e687f5417c1012c88',
+  //   messagingSenderId: '545599432217',
+  //   projectId: 'groovkin-5f843',
+  //   storageBucket: 'groovkin-5f843.firebasestorage.app',
   // );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDaKVQhEDdDJ2BER0Ut7tTJajxETG0PsXc',
+    appId: '1:682228072753:android:cb8de8728eb9544c3f3010',
+    messagingSenderId: '682228072753',
+    projectId: 'my-groovkin-app',
+    storageBucket: 'my-groovkin-app.firebasestorage.app',
+  );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCuAkWOdbbcjtEe0X4-u0TEbrsvXUdNWXA',

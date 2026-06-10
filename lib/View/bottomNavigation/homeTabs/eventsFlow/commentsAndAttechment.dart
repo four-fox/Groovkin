@@ -115,7 +115,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                             maxLine: 5,
                             validation: "comments",
                             controller: eventController.commentsController,
-                            hintText: "write her..",
+                            hintText: "write here..",
                             borderClr:
                                 DynamicColor.grayClr.withValues(alpha: 0.6),
                           ),
