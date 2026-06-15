@@ -187,7 +187,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return MapLocationPicker(
+                              return MapLocationPicker(                          isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
+
                                 onTappp: () {},
                                 // onTapShow: true,
                                 // hideLocation: true,

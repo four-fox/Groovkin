@@ -34,6 +34,7 @@ class _CreateProfileState extends State<CreateProfile> {
   List<int> dobYear = [];
 
   final String? accessToken = Get.arguments?["accessToken"];
+  final bool isClear = Get.arguments?["isClear"]??true;
 
   final String? socialType = Get.arguments?["socialType"];
 
@@ -61,7 +62,9 @@ class _CreateProfileState extends State<CreateProfile> {
 
     _controller.getCurrentLocation(true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      clear();
+      if(isClear){
+        clear();
+      }
     });
   }
 
@@ -523,7 +526,7 @@ class _CreateProfileState extends State<CreateProfile> {
                         keyBoardType: true,
                       ),
 
-                      if (API().sp.read("role") != "User") ...[
+                      if (socialType == null ) ...[
                         const SizedBox(
                           height: 15,
                         ),
@@ -683,6 +686,7 @@ class _CreateProfileState extends State<CreateProfile> {
                                                 onTap: () {
                                                   // if(_controller.imageBytes != null){
                                                   _controller.sigUp(context,
+                                                      role: "eventOrganizer",
                                                       signUpPlatform:
                                                           socialType,
                                                       platformId: accessToken);
@@ -702,6 +706,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       } else {
                         // if(_controller.imageBytes != null){
                         _controller.sigUp(context,
+                            role:API().sp.read("role") == "User"?null:API().sp.read("role"),
                             signUpPlatform: socialType,
                             platformId: accessToken);
                         // }else{

@@ -7,372 +7,191 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
-class MusicChoiceScreen extends StatelessWidget {
-  MusicChoiceScreen({super.key});
+// ─────────────────────────────────────────────────────────────────────────────
+// Shared helpers
+// ─────────────────────────────────────────────────────────────────────────────
 
-  final EventController _controller = Get.find();
+/// Draft icon shown in the app-bar when editing is not in progress.
+Widget _draftAction(EventController controller, BuildContext context,
+    ThemeData theme) {
+  if (controller.eventDetail != null ||
+      controller.draftCondition.value == false) {
+    return const SizedBox.shrink();
+  }
+  return GestureDetector(
+    onTap: () => controller.postEventFunction(context, theme, draft: true),
+    child: const Padding(
+      padding: EdgeInsets.only(right: 8),
+      child: Icon(Icons.drafts),
+    ),
+  );
+}
+
+/// Horizontal chip row for selected tags / activities.
+Widget _selectedChipsRow(BuildContext context,List items) {
+  if (items.isEmpty) return const SizedBox.shrink();
+  return SizedBox(
+    height: kToolbarHeight,
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: ListView.builder(
+        itemCount: items.length,
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemBuilder: (_, i) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: _styledChip(context,items[i].name.toString(),),
+        ),
+      ),
+    ),
+  );
+}
+
+/// A styled white chip with rounded corners.
+Widget _styledChip(BuildContext context,String label, { ThemeData? theme}) {
+  return Chip(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    backgroundColor: DynamicColor.whiteClr,
+    label: Text(
+      label,
+      style: poppinsRegularStyle(
+        fontSize: 12,
+        context: context,
+        color: theme?.scaffoldBackgroundColor,
+      ),
+    ),
+  );
+}
+
+/// Expandable category list with checkboxes for sub-items.
+class _ExpandableCategoryList extends StatelessWidget {
+  const _ExpandableCategoryList({
+    required this.items,
+    required this.onToggleCategory,
+    required this.onCheckItem,
+  });
+
+  final List items;
+  final void Function(int index) onToggleCategory;
+  final void Function({required dynamic items, required bool? value}) onCheckItem;
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(theme: theme, text: "Create Event", actions: [
-        ((_controller.eventDetail == null) &&
-                (_controller.draftCondition.value == true))
-            ? GestureDetector(
-                onTap: () {
-                  _controller.postEventFunction(context, theme, draft: true);
-                },
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.drafts),
-                ),
-              )
-            : const SizedBox.shrink()
-      ]),
-      body: GetBuilder<EventController>(initState: (v) {
-        if (_controller.eventDetail != null) {
-          _controller.musicChoiceBinding();
-        } else {
-          _controller.getHashtagCollectionApi(type: "music_choice");
-        }
-      }, builder: (controller) {
-        return controller.getMusicHashTagLoader.value == false
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.only(top: 8),
+      child: items.isEmpty
+          ? noData(theme: theme)
+          : ListView.builder(
+        itemCount: items.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (_, index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Column(
+            children: [
+              // ── Category header ──────────────────────────────
+              GestureDetector(
+                onTap: () => onToggleCategory(index),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: DynamicColor.darkGrayClr,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          'Add Hashtags',
-                          textAlign: TextAlign.center,
-                          style: poppinsRegularStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      ),
                       Text(
-                        'Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
-                        textAlign: TextAlign.center,
+                        items[index].name.toString(),
                         style: poppinsRegularStyle(
-                          fontSize: 12,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                           context: context,
-                          color: DynamicColor.lightRedClr,
+                          color: theme.primaryColor,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: 15,
-                      // ),
-                      // SearchTextFields(
-                      //   controller: TextEditingController(),
-                      //   searchIcon: false,
-                      //   hintText: "add tags",
-                      // ),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text(
-                      //       "90’s Hip Hop Party",
-                      //       style: poppinsRegularStyle(
-                      //         fontSize: 17,
-                      //         fontWeight: FontWeight.w600,
-                      //         context: context,
-                      //         color: theme.primaryColor,
-                      //       ),
-                      //     ),
-                      //     CustomButtonWithIcon(
-                      //       // bgColor: null,
-                      //       bgColor: DynamicColor.secondaryClr,
-                      //       width: 90,
-                      //       height: 30,
-                      //       borderRadius: 5,
-                      //       iconValue: false,
-                      //       iconss: Icons.bookmark,
-                      //       iconsClr: theme.primaryColor,
-                      //       text: "Save",
-                      //       onTap: () {
-                      //         Get.toNamed(Routes.saveHashTagScreen, arguments: {
-                      //           "musicHashTag": true,
-                      //         });
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
-                      controller.tagListPost.isEmpty
-                          ? SizedBox()
-                          : SizedBox(
-                              height: kToolbarHeight,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: ListView.builder(
-                                    itemCount: controller.tagListPost.length,
-                                    shrinkWrap: true,
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (BuildContext context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        child: Chip(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            backgroundColor:
-                                                DynamicColor.whiteClr,
-                                            label: Text(
-                                              controller.tagListPost[index].name
-                                                  .toString(),
-                                              style: poppinsRegularStyle(
-                                                fontSize: 12,
-                                                context: context,
-                                                color: theme
-                                                    .scaffoldBackgroundColor,
-                                              ),
-                                            )),
-                                      );
-                                    }),
-                              ),
-                            ),
-                      const SizedBox(
-                        height: 10,
+                      Icon(
+                        items[index].showSubCat!.value
+                            ? Icons.keyboard_arrow_up_outlined
+                            : Icons.keyboard_arrow_down_sharp,
+                        color: DynamicColor.whiteClr,
                       ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "My Tags Collection",
-                              style: poppinsRegularStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                                context: context,
-                                color: theme.primaryColor,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Get.toNamed(Routes.myTagCollection)!
-                                      .then((_) {
-                                    _controller.getHashtagCollectionApi(
-                                        type: "music_choice");
-                                  });
-                                },
-                                icon: Icon(Icons.add),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      Container(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: controller.tagList.isEmpty
-                              ? noData(theme: theme)
-                              : ListView.builder(
-                                  itemCount: controller.tagList.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, index) {
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 4),
-                                      child: Column(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              controller.tagList[index]
-                                                      .showSubCat!.value =
-                                                  !controller.tagList[index]
-                                                      .showSubCat!.value;
-                                              controller.update();
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: DynamicColor.darkGrayClr,
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    controller
-                                                        .tagList[index].name
-                                                        .toString(),
-                                                    style: poppinsRegularStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      context: context,
-                                                      color: theme.primaryColor,
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    controller.tagList[index]
-                                                            .showSubCat!.value
-                                                        ? Icons
-                                                            .keyboard_arrow_up_outlined
-                                                        : Icons
-                                                            .keyboard_arrow_down_sharp,
-                                                    color:
-                                                        DynamicColor.whiteClr,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Visibility(
-                                              visible: controller.tagList[index]
-                                                  .showSubCat!.value,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 4),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    color: DynamicColor
-                                                        .darkGrayClr,
-                                                  ),
-                                                  child: ListView.builder(
-                                                      itemCount: controller
-                                                          .tagList[index]
-                                                          .categoryItems!
-                                                          .length,
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              indexess) {
-                                                        return Column(
-                                                          children: [
-                                                            Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          8),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                color: DynamicColor
-                                                                    .darkGrayClr,
-                                                              ),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                    controller
-                                                                        .tagList[
-                                                                            index]
-                                                                        .categoryItems![
-                                                                            indexess]
-                                                                        .name
-                                                                        .toString(),
-                                                                    style:
-                                                                        poppinsRegularStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      context:
-                                                                          context,
-                                                                      color: theme
-                                                                          .primaryColor,
-                                                                    ),
-                                                                  ),
-                                                                  Theme(
-                                                                    data: Theme.of(
-                                                                            context)
-                                                                        .copyWith(
-                                                                      unselectedWidgetColor:
-                                                                          Colors
-                                                                              .white,
-                                                                    ),
-                                                                    child: Checkbox(
-                                                                        activeColor: DynamicColor.yellowClr,
-                                                                        value: controller.tagList[index].categoryItems![indexess].selected!.value,
-                                                                        onChanged: (v) {
-                                                                          controller.tagAddFtn(
-                                                                              items: controller.tagList[index].categoryItems![indexess],
-                                                                              value: v);
-                                                                        }),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ),
-                                                            Divider(
-                                                              color:
-                                                                  DynamicColor
-                                                                      .whiteClr,
-                                                            ),
-                                                          ],
-                                                        );
-                                                      }),
-                                                ),
-                                              ))
-                                        ],
-                                      ),
-                                    );
-                                  }))
                     ],
                   ),
                 ),
-              );
-      }),
-      bottomNavigationBar: SafeArea(
-        bottom: true,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () async {
-              if (_controller.tagListPost.isNotEmpty) {
-                if (_controller.eventDetail != null) {
-                  await _controller.getMusicTag(type: "activity_choice");
-                }
-                Get.toNamed(Routes.activityChoiceScreen);
-              } else {
-                // bottomToast(text: "Please add music event");
-                bottomToast(text: "Please add a hashtag");
-              }
-              // Get.toNamed(Routes.eventPreview,
-              // arguments: {
-              //   "viewDetails": 1
-              // }
-              // );
-            },
-            text: "Continue",
+              ),
+              // ── Sub-items ────────────────────────────────────
+              Visibility(
+                visible: items[index].showSubCat!.value,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: DynamicColor.darkGrayClr,
+                    ),
+                    child: ListView.builder(
+                      itemCount:
+                      items[index].categoryItems!.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (_, subIndex) {
+                        final item =
+                        items[index].categoryItems![subIndex];
+                        return Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(10),
+                                color: DynamicColor.darkGrayClr,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    item.name.toString(),
+                                    style: poppinsRegularStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      context: context,
+                                      color: theme.primaryColor,
+                                    ),
+                                  ),
+                                  Theme(
+                                    data: Theme.of(context).copyWith(
+                                      unselectedWidgetColor:
+                                      Colors.white,
+                                    ),
+                                    child: Checkbox(
+                                      activeColor:
+                                      DynamicColor.yellowClr,
+                                      value: item.selected!.value,
+                                      onChanged: (v) =>
+                                          onCheckItem(
+                                              items: item,
+                                              value: v),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if(subIndex < items[index].categoryItems!.length -1)
+                              Divider(color: DynamicColor.whiteClr),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -380,7 +199,104 @@ class MusicChoiceScreen extends StatelessWidget {
   }
 }
 
-///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Activity Choice
+// ─────────────────────────────────────────────────────────────────────────────
+// MusicChoiceScreen
+// ─────────────────────────────────────────────────────────────────────────────
+
+class MusicChoiceScreen extends StatelessWidget {
+  MusicChoiceScreen({super.key});
+
+  final EventController _controller = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Scaffold(
+      appBar: customAppBar(
+        theme: theme,
+        text: 'Create Event',
+        actions: [_draftAction(_controller, context, theme)],
+      ),
+      body: GetBuilder<EventController>(
+        initState: (_) => _controller.eventDetail != null
+            ? _controller.musicChoiceBinding()
+            : _controller.getHashtagCollectionApi(type: 'music_choice'),
+        builder: (controller) {
+          if (!controller.getMusicHashTagLoader.value) {
+            return const SizedBox.shrink();
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _sectionHeader(
+                    context: context,
+                    theme: theme,
+                    title: 'Add Hashtags',
+                    subtitle:
+                    'Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
+                  ),
+                  _selectedChipsRow(context,controller.tagListPost),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'My Tags Collection',
+                        style: poppinsRegularStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.myTagCollection)!.then((_) {
+                            _controller.getHashtagCollectionApi(
+                                type: 'music_choice');
+                          });
+                        },
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                  _ExpandableCategoryList(
+                    items: controller.tagList,
+                    onToggleCategory: (i) {
+                      controller.tagList[i].showSubCat!.value =
+                      !controller.tagList[i].showSubCat!.value;
+                      controller.update();
+                    },
+                    onCheckItem: ({required items, required value}) =>
+                        controller.tagAddFtn(items: items, value: value),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: _continueBar(
+        onTap: () async {
+          if (_controller.tagListPost.isNotEmpty) {
+            if (_controller.eventDetail != null) {
+              await _controller.getMusicTag(type: 'activity_choice');
+            }
+            Get.toNamed(Routes.activityChoiceScreen);
+          } else {
+            bottomToast(text: 'Please add a hashtag');
+          }
+        },
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ActivityChoiceScreen
+// ─────────────────────────────────────────────────────────────────────────────
 
 class ActivityChoiceScreen extends StatelessWidget {
   ActivityChoiceScreen({super.key});
@@ -389,643 +305,333 @@ class ActivityChoiceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: "Create Event", actions: [
-        ((_controller.eventDetail == null) &&
-                (_controller.draftCondition.value == true))
-            ? GestureDetector(
-                onTap: () {
-                  _controller.postEventFunction(context, theme, draft: true);
-                },
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.drafts),
-                ),
-              )
-            : const SizedBox.shrink()
-      ]),
-      body: GetBuilder<EventController>(initState: (v) {
-        if (_controller.eventDetail != null) {
-          _controller.activityChoice();
-        } else {
-          _controller.getMusicTag(type: "activity_choice");
-        }
-      }, builder: (controller) {
-        return controller.getMusicTagLoader.value == false
-            ? const SizedBox.shrink()
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'Activity Choice!',
-                            textAlign: TextAlign.center,
+      appBar: customAppBar(
+        theme: theme,
+        text: 'Create Event',
+        actions: [_draftAction(_controller, context, theme)],
+      ),
+      body: GetBuilder<EventController>(
+        initState: (_) => _controller.eventDetail != null
+            ? _controller.activityChoice()
+            : _controller.getMusicTag(type: 'activity_choice'),
+        builder: (controller) {
+          if (!controller.getMusicTagLoader.value) {
+            return const SizedBox.shrink();
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _sectionHeader(
+                    context: context,
+                    theme: theme,
+                    title: 'Activity Choice!',
+                    subtitle:
+                    'Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
+                  ),
+                  _selectedChipsRow(context,controller.activityListPost),
+                  _ExpandableCategoryList(
+                    items: controller.activityList,
+                    onToggleCategory: (i) {
+                      controller.activityList[i].showSubCat!.value =
+                      !controller.activityList[i].showSubCat!.value;
+                      controller.update();
+                    },
+                    onCheckItem: ({required items, required value}) =>
+                        controller.activityAddFtn(items: items, value: value),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: _continueBar(
+        onTap: () {
+          if (_controller.activityListPost.isNotEmpty) {
+            _controller.imageListtt.clear();
+            _controller.removeImageList.clear();
+            if (_controller.eventDetail != null) {
+              for (final ele in _controller.eventDetail!.data!.profilePicture!) {
+                _controller.imageListtt.add(ele);
+              }
+            }
+            _controller.update();
+            Get.toNamed(Routes.commentsAndAttachment);
+          } else {
+            bottomToast(text: 'Please select activity choice');
+          }
+        },
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SaveHashTagScreen
+// ─────────────────────────────────────────────────────────────────────────────
+
+class SaveHashTagScreen extends StatelessWidget {
+  SaveHashTagScreen({super.key});
+
+  final EventController _controller = Get.find();
+  final bool hashTag = Get.arguments['musicHashTag'];
+  final List selectedHashList = [];
+
+  final List<ListClass> listA = [
+    ListClass(text: "90's Hip Hop Party", condition: false.obs),
+    ListClass(text: 'for  night party ', condition: false.obs),
+    ListClass(text: 'for birthday', condition: false.obs),
+    ListClass(text: 'for  night party ', condition: false.obs),
+    ListClass(text: "90's Hip Hop Party", condition: false.obs),
+    ListClass(text: 'for  night party ', condition: false.obs),
+    ListClass(text: 'for birthday', condition: false.obs),
+    ListClass(text: 'for  night party ', condition: false.obs),
+  ];
+
+  static const _staticTags = [
+    '#Pooltable',
+    '#Billiards',
+    '#Tequla',
+    '#8Ball',
+    '#TacoTuesday',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Scaffold(
+      appBar: customAppBar(theme: theme, text: 'Save Hashtag'),
+      body: GetBuilder<EventController>(
+        builder: (controller) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              // ── Static chips ────────────────────────────────────────
+              Wrap(
+                children: _staticTags
+                    .map((tag) => Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 5),
+                  child: _styledChip(context,tag,
+                       theme: theme),
+                ))
+                    .toList(),
+              ),
+              // ── List ────────────────────────────────────────────────
+              Expanded(
+                child: ListView.builder(
+                  itemCount: listA.length,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemBuilder: (_, index) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Container(
+                      height: 45,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: DynamicColor.darkGrayClr,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            listA[index].text.toString(),
                             style: poppinsRegularStyle(
-                              fontSize: 17,
+                              fontSize: 14,
                               fontWeight: FontWeight.w600,
                               context: context,
                               color: theme.primaryColor,
                             ),
                           ),
-                        ),
-                      ),
-                      Text(
-                        'Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
-                        textAlign: TextAlign.center,
-                        style: poppinsRegularStyle(
-                          fontSize: 12,
-                          context: context,
-                          color: DynamicColor.lightRedClr,
-                        ),
-                      ),
-                      // SizedBox(
-                      //   height: 15,
-                      // ),
-                      // SearchTextFields(
-                      //   controller: TextEditingController(),
-                      //   searchIcon: false,
-                      //   hintText: "add tags",
-                      // ),
-                      // SizedBox(
-                      //   height: 20,
-                      // ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text(
-                      //       "Foodie Pool Hall",
-                      //       style: poppinsRegularStyle(
-                      //         fontSize: 17,
-                      //         fontWeight: FontWeight.w600,
-                      //         context: context,
-                      //         color: theme.primaryColor,
-                      //       ),
-                      //     ),
-                      //     CustomButtonWithIcon(
-                      //       // bgColor: null,
-                      //       bgColor: DynamicColor.secondaryClr,
-                      //       width: 90,
-                      //       height: 30,
-                      //       onTap: () {
-                      //         Get.toNamed(Routes.saveHashTagScreen, arguments: {
-                      //           "musicHashTag": true,
-                      //         });
-                      //       },
-                      //       borderRadius: 5,
-                      //       iconValue: false,
-                      //       iconss: Icons.bookmark,
-                      //       iconsClr: theme.primaryColor,
-                      //       text: "Save",
-                      //     ),
-                      //   ],
-                      // ),
-                      controller.activityListPost.isEmpty
-                          ? const SizedBox.shrink()
-                          : SizedBox(
-                              height: kToolbarHeight,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: ListView.builder(
-                                    itemCount:
-                                        controller.activityListPost.length,
-                                    shrinkWrap: true,
-                                    physics:
-                                        const AlwaysScrollableScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (BuildContext context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        child: Chip(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            backgroundColor:
-                                                DynamicColor.whiteClr,
-                                            label: Text(
-                                              controller
-                                                  .activityListPost[index].name
-                                                  .toString(),
-                                              style: poppinsRegularStyle(
-                                                fontSize: 12,
-                                                context: context,
-                                                color: theme
-                                                    .scaffoldBackgroundColor,
-                                              ),
-                                            )),
-                                      );
-                                    }),
-                              ),
+                          Theme(
+                            data: Theme.of(context).copyWith(
+                              unselectedWidgetColor: Colors.white,
                             ),
-                      Container(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: ListView.builder(
-                              itemCount: controller.activityList.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context, index) {
-                                return Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          controller.activityList[index]
-                                                  .showSubCat!.value =
-                                              !controller.activityList[index]
-                                                  .showSubCat!.value;
-                                          controller.update();
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: DynamicColor.darkGrayClr,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                controller
-                                                    .activityList[index].name
-                                                    .toString(),
-                                                style: poppinsRegularStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                  context: context,
-                                                  color: theme.primaryColor,
-                                                ),
-                                              ),
-                                              Icon(
-                                                controller.activityList[index]
-                                                        .showSubCat!.value
-                                                    ? Icons
-                                                        .keyboard_arrow_up_outlined
-                                                    : Icons
-                                                        .keyboard_arrow_down_sharp,
-                                                color: DynamicColor.whiteClr,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Visibility(
-                                          visible: controller
-                                              .activityList[index]
-                                              .showSubCat!
-                                              .value,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 4),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                color: DynamicColor.darkGrayClr,
-                                              ),
-                                              child: ListView.builder(
-                                                  itemCount: controller
-                                                      .activityList[index]
-                                                      .categoryItems!
-                                                      .length,
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          indexess) {
-                                                    return Column(
-                                                      children: [
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      8),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            color: DynamicColor
-                                                                .darkGrayClr,
-                                                          ),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                controller
-                                                                    .activityList[
-                                                                        index]
-                                                                    .categoryItems![
-                                                                        indexess]
-                                                                    .name
-                                                                    .toString(),
-                                                                style:
-                                                                    poppinsRegularStyle(
-                                                                  fontSize: 14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  context:
-                                                                      context,
-                                                                  color: theme
-                                                                      .primaryColor,
-                                                                ),
-                                                              ),
-                                                              Theme(
-                                                                data: Theme.of(
-                                                                        context)
-                                                                    .copyWith(
-                                                                  unselectedWidgetColor:
-                                                                      Colors
-                                                                          .white,
-                                                                ),
-                                                                child: Checkbox(
-                                                                    activeColor:
-                                                                        DynamicColor
-                                                                            .yellowClr,
-                                                                    value: controller
-                                                                        .activityList[
-                                                                            index]
-                                                                        .categoryItems![
-                                                                            indexess]
-                                                                        .selected!
-                                                                        .value,
-                                                                    onChanged:
-                                                                        (v) {
-                                                                      controller.activityAddFtn(
-                                                                          items: controller.activityList[index].categoryItems![
-                                                                              indexess],
-                                                                          value:
-                                                                              v);
-                                                                    }),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Divider(
-                                                          color: DynamicColor
-                                                              .whiteClr,
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }),
-                                            ),
-                                          ))
-                                    ],
-                                  ),
-                                );
-                              }))
-                    ],
+                            child: Checkbox(
+                              activeColor: DynamicColor.yellowClr,
+                              value: listA[index].condition!.value,
+                              onChanged: (v) {
+                                selectedHashList.contains(listA[index].text)
+                                    ? selectedHashList
+                                    .remove(listA[index].text)
+                                    : selectedHashList
+                                    .add(listA[index].text);
+                                listA[index].condition!.value = v!;
+                                controller.update();
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              );
-      }),
-      bottomNavigationBar: SafeArea(
-        bottom: true,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () {
-              if (_controller.activityListPost.isNotEmpty) {
-                if (_controller.eventDetail != null) {
-                  _controller.imageListtt.clear();
-                  _controller.removeImageList.clear();
-                  // _controller.duplicateValue.value = false;
-                  for (var ele
-                      in _controller.eventDetail!.data!.profilePicture!) {
-                    _controller.imageListtt.add(ele);
-                  }
-                  _controller.update();
-                } else {
-                  _controller.imageListtt.clear();
-                  _controller.update();
-                }
-                _controller.update();
-                print(_controller.imageListtt);
-                Get.toNamed(Routes.commentsAndAttachment);
-              } else {
-                bottomToast(text: "Please select activity choice");
-              }
-            },
-            text: "Continue",
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<ListClass> listA = [
-    ListClass(text: "90’s Hip Hop Party", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-    ListClass(text: "for birthday", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-    ListClass(text: "90’s Hip Hop Party", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-    ListClass(text: "for birthday", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-  ];
-}
-
-class SaveHashTagScreen extends StatelessWidget {
-  SaveHashTagScreen({super.key});
-  final EventController _controller = Get.find();
-  bool hashTag = Get.arguments['musicHashTag'];
-  List selectedHashList = [];
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return Scaffold(
-      appBar: customAppBar(
-        theme: theme,
-        text: "Save Hashtag",
-      ),
-      body: GetBuilder<EventController>(builder: (controller) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            children: [
-              Wrap(
-                children: <Widget>[
-                  Chip(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: DynamicColor.whiteClr,
-                      label: Text(
-                        "#Pooltable",
-                        style: poppinsRegularStyle(
-                          fontSize: 12,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor,
-                        ),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Chip(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        backgroundColor: DynamicColor.whiteClr,
-                        label: Text(
-                          "#Billiards",
-                          style: poppinsRegularStyle(
-                            fontSize: 12,
-                            context: context,
-                            color: theme.scaffoldBackgroundColor,
-                          ),
-                        )),
-                  ),
-                  Chip(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: DynamicColor.whiteClr,
-                      label: Text(
-                        "#Tequla",
-                        style: poppinsRegularStyle(
-                          fontSize: 12,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor,
-                        ),
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Chip(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        backgroundColor: DynamicColor.whiteClr,
-                        label: Text(
-                          "#8Ball",
-                          style: poppinsRegularStyle(
-                            fontSize: 12,
-                            context: context,
-                            color: theme.scaffoldBackgroundColor,
-                          ),
-                        )),
-                  ),
-                  Chip(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: DynamicColor.whiteClr,
-                      label: Text(
-                        "#TacoTuesday",
-                        style: poppinsRegularStyle(
-                          fontSize: 12,
-                          context: context,
-                          color: theme.scaffoldBackgroundColor,
-                        ),
-                      )),
-                ],
               ),
-              Expanded(
-                child: SizedBox(
-                  height: Get.height / 3.15,
-                  child: ListView.builder(
-                      itemCount: listA.length,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Container(
-                            height: 45,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: DynamicColor.darkGrayClr,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  listA[index].text.toString(),
-                                  style: poppinsRegularStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    context: context,
-                                    color: theme.primaryColor,
-                                  ),
-                                ),
-                                Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor: Colors.white,
-                                  ),
-                                  child: Checkbox(
-                                      activeColor: DynamicColor.yellowClr,
-                                      value: listA[index].condition!.value,
-                                      onChanged: (v) {
-                                        selectedHashList
-                                                .contains(listA[index].text)
-                                            ? selectedHashList
-                                                .remove(listA[index].text)
-                                            : selectedHashList
-                                                .add(listA[index].text);
-                                        listA[index].condition!.value = v!;
-                                        print(selectedHashList.length);
-                                        controller.update();
-                                      }),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              ),
+              // ── Save button ─────────────────────────────────────────
               Visibility(
-                visible: selectedHashList.isNotEmpty ? true : false,
+                visible: selectedHashList.isNotEmpty,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 4),
+                  padding: const EdgeInsets.only(top: 8, bottom: 4),
                   child: CustomButton(
                     heights: 30,
                     widths: Get.width / 2.1,
                     borderClr: Colors.transparent,
-                    bgImage: "assets/grayClor.png",
+                    bgImage: 'assets/grayClor.png',
                     backgroundClr: true,
-                    onTap: () {
-                      // Get.offAllNamed(Routes.userQuickSurveyScreen);
-                    },
-                    text: "Save",
+                    onTap: () {},
+                    text: 'Save',
                   ),
                 ),
               ),
             ],
           ),
-        );
-      }),
+        ),
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
-            onTap: () {
-              Get.toNamed(Routes.createNewHashTagScreen);
-            },
-            text: "Create new Collection",
+            onTap: () => Get.toNamed(Routes.createNewHashTagScreen),
+            text: 'Create new Collection',
           ),
         ),
       ),
     );
   }
-
-  List<ListClass> listA = [
-    ListClass(text: "90’s Hip Hop Party", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-    ListClass(text: "for birthday", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-    ListClass(text: "90’s Hip Hop Party", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-    ListClass(text: "for birthday", condition: false.obs),
-    ListClass(text: "for  night party ", condition: false.obs),
-  ];
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CreateNewHashTagScreen
+// ─────────────────────────────────────────────────────────────────────────────
 
 class CreateNewHashTagScreen extends StatelessWidget {
   CreateNewHashTagScreen({super.key});
+
   final List<String> _myListCustom = [];
-  final hashController = TextEditingController();
+  final TextEditingController _hashController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(
-        theme: theme,
-        text: "New Hashtag",
-      ),
-      body: GetBuilder<EventController>(builder: (controller) {
-        return SingleChildScrollView(
+      appBar: customAppBar(theme: theme, text: 'New Hashtag'),
+      body: GetBuilder<EventController>(
+        builder: (controller) => SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Container(
                   padding: const EdgeInsets.only(left: 8),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: DynamicColor.avatarBgClr),
+                    borderRadius: BorderRadius.circular(8),
+                    color: DynamicColor.avatarBgClr,
+                  ),
                   child: TextFormField(
-                    controller: hashController,
+                    controller: _hashController,
                     style: poppinsRegularStyle(
-                        fontSize: 14,
-                        color: theme.primaryColor,
-                        context: context),
+                      fontSize: 14,
+                      color: theme.primaryColor,
+                      context: context,
+                    ),
                     decoration: const InputDecoration(
-                        hintText: "here", border: InputBorder.none),
+                      hintText: 'here',
+                      border: InputBorder.none,
+                    ),
                     onChanged: (v) {
-                      if (v != "") {
-                        if (v.contains(" ")) {
-                          _myListCustom.add(v);
-                          v = "";
-                          hashController.clear();
-                          controller.update();
-                        }
+                      if (v.isNotEmpty && v.contains(' ')) {
+                        _myListCustom.add(v);
+                        _hashController.clear();
+                        controller.update();
                       }
                     },
                   ),
                 ),
               ),
               Wrap(
-                children: <Widget>[
-                  for (var i in _myListCustom)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Chip(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          backgroundColor: DynamicColor.whiteClr,
-                          label: Text(
-                            i,
-                            style: poppinsRegularStyle(
-                              fontSize: 12,
-                              context: context,
-                              color: theme.scaffoldBackgroundColor,
-                            ),
-                          )),
-                    ),
-                ],
+                children: _myListCustom
+                    .map((tag) => Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: _styledChip(context,tag,
+                   theme: theme),
+                ))
+                    .toList(),
               ),
             ],
           ),
-        );
-      }),
+        ),
+      ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
             borderClr: Colors.transparent,
-            onTap: () {
-              Get.back();
-            },
-            text: "Save",
+            onTap: Get.back,
+            text: 'Save',
           ),
         ),
       ),
     );
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Private layout helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Centered title + subtitle header used in both hashtag screens.
+Widget _sectionHeader({
+  required BuildContext context,
+  required ThemeData theme,
+  required String title,
+  required String subtitle,
+}) {
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: poppinsRegularStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+            context: context,
+            color: theme.primaryColor,
+          ),
+        ),
+      ),
+      Text(
+        subtitle,
+        textAlign: TextAlign.center,
+        style: poppinsRegularStyle(
+          fontSize: 12,
+          context: context,
+          color: DynamicColor.lightRedClr,
+        ),
+      ),
+    ],
+  );
+}
+
+/// Standard bottom "Continue" bar shared by both tag screens.
+Widget _continueBar({required VoidCallback onTap}) {
+  return SafeArea(
+    bottom: true,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      child: CustomButton(
+        borderClr: Colors.transparent,
+        onTap: onTap,
+        text: 'Continue',
+      ),
+    ),
+  );
 }

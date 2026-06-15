@@ -747,6 +747,8 @@ class _CreateCompanyProfileScreenState
                         MaterialPageRoute(
                           builder: (context) {
                             return MapLocationPicker(
+                              isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
+
                               backBtnn: true,
                               // hideLocation: true,
                               // lat: double.parse(eventData.latitude.toString()),

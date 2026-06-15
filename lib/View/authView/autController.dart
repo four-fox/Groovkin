@@ -43,7 +43,8 @@ import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';import 'package:image_cropper_platform_interface/image_cropper_platform_interface.dart';
+
 
 enum ChangeRole { user, organizer, manager }
 
@@ -114,7 +115,7 @@ class AuthController extends GetxController {
   RxBool showConfirmPassword = true.obs;
 
   /// user register
-  sigUp(context, {String? signUpPlatform, String? platformId}) async {
+  sigUp(context, {String? signUpPlatform, String? platformId,String? role}) async {
     NotificationService notificationService = NotificationService();
     String? token = await notificationService.getDeviceToken();
     List imageList = [];
@@ -130,7 +131,7 @@ class AuthController extends GetxController {
       "last_name": lastNameController.text,
       "email": emailController.text,
       "display_name": displayNameController.text,
-      /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
+      "birth_year": dobController.text,
       "phone_number": phoneNumController.text,
       "password": passwordController.text,
       if (referralCodeController.text.isNotEmpty)
@@ -143,11 +144,15 @@ class AuthController extends GetxController {
           stateController.text,
       /*if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty)*/ "country":
           countryController.text,
-      "role": API().sp.read("role") == "User"
+      if(role != null)
+        "role": API().sp.read("role") == "User"
           ? "user"
           : API().sp.read("role") == "eventManager"
               ? "venue_manager"
               : "event_owner",
+      if(role == null)
+        "role":"user",
+
       "signup_platform": signUpPlatform,
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
@@ -181,16 +186,10 @@ class AuthController extends GetxController {
         API().sp.write("signupPlatform",
             response.data['data']['user_details']['signup_platform']);
         configureSDK();
-        if (response.data["data"]["user_details"]["current_role"] == "user") {
-          API().sp.write("currentRole", "User");
-        } else if (response.data["data"]["user_details"]["current_role"] ==
-            "event_owner") {
-          API().sp.write("currentRole", "eventOrganizer");
-        } else {
-          API().sp.write("currentRole", "eventManager");
-        }
+        API().sp.write("currentRole", "User");
+        API().sp.write("role", "User");
         clearTextFields();
-        if (response.data["data"]["user_details"]["is_complete_profile"] == 1) {
+        if (response.data["data"]["user_details"]["profile"]["id"] != null) {
           if (API().sp.read("role") == "User") {
             API().sp.write("isUserCreated",
                 response.data['data']['user_details']['is_user_created']);
@@ -201,26 +200,8 @@ class AuthController extends GetxController {
               selectUserIndexxx.value = 0;
               Get.offAllNamed(Routes.userBottomNavigationNav);
             }
-          } else if (API().sp.read("role") == "eventOrganizer") {
-            API().sp.write("isEventCreated",
-                response.data['data']['user_details']['is_event_created']);
-            if (response.data['data']['user_details']['is_event_created'] ==
-                0) {
-              Get.offAllNamed(Routes.welComeScreen);
-            } else {
-              selectUserIndexxx.value = 0;
-              Get.offAllNamed(Routes.bottomNavigationView,
-                  arguments: {"indexValue": 0});
-            }
           } else {
             Get.offAllNamed(Routes.welComeScreen);
-
-            // Get.offAllNamed(Routes.createCompanyProfileScreen,
-            //   arguments: {
-            //   "updationCondition": false,
-            //     "skipBtnHide": false,
-            //   }
-            // );
           }
         } else {
           emailController.text = API().sp.read("emailSocial");
@@ -507,6 +488,7 @@ class AuthController extends GetxController {
     twitterXController.clear();
     instagramController.clear();
     aboutController.clear();
+    inviteCodeController.clear();
   }
 
   /// todo create profile functionality
@@ -522,15 +504,28 @@ class AuthController extends GetxController {
   File? profileImage;
   RxBool imageLoaders = true.obs;
 
-  cameraImage(context, source) async {
+  cameraImage(context, source,{String? type}) async {
     try {
       imageLoaders(false);
       files = await _picker.pickImage(
           source: source, imageQuality: 50, maxHeight: 1920, maxWidth: 1080);
-      CroppedFile? file = await ImageCropper().cropImage(
+      CroppedFile? file;
+    if(type == "event"){
+      file = await ImageCropper().cropImage(
         sourcePath: files!.path,
-      );
+        aspectRatio:CropAspectRatio(ratioX:3,ratioY:4),
 
+      );
+      if(file != null){
+        imageBytes = file!.path;
+        imageLoaders(true);
+        update();
+      }
+    }else{
+      file = await ImageCropper().cropImage(
+        sourcePath: files!.path,
+
+      );
       if (files != null) {
         if (file != null) {
           imageBytes = file.path;
@@ -538,9 +533,13 @@ class AuthController extends GetxController {
           imageBytes = files!.path;
         }
       }
-
       imageLoaders(true);
       update();
+    }
+
+
+
+
     } catch (e) {
       imageLoaders(true);
       // BotToast.showText(text: e.toString());
@@ -1429,9 +1428,9 @@ class AuthController extends GetxController {
       "role": userType,
       //  "invite_code": "DNCS-8HPJ"
     };
-    if (API().sp.read("role") == "User") {
-      dd['invite_code'] = inviteCodeController.text;
-    }
+    // if (API().sp.read("role") == "User") {
+    //   dd['invite_code'] = inviteCodeController.text;
+    // }
 
     var formData = form.FormData.fromMap(dd);
 
@@ -1831,6 +1830,12 @@ class AuthController extends GetxController {
           .signInWithCredential(credential);
 
       if (userCredential.user != null) {
+        if(userCredential.user!.displayName.toString().contains(" ")){
+          firstNameController.text = userCredential.user!.displayName.toString().split(" ")[0];
+          lastNameController.text = userCredential.user!.displayName.toString().split(" ")[1];
+        }else{
+          firstNameController.text = userCredential.user!.displayName.toString();
+        }
         emailController.text =
             userCredential.user!.email ?? googleSignInAccount.email;
         displayNameController.text = userCredential.user!.displayName ??
@@ -1839,9 +1844,15 @@ class AuthController extends GetxController {
         API().sp.write("emailSocial", userCredential.user!.email ?? "");
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
         API().sp.write("accessToken", platformToken);
+        update();
 
         await firebase_auth.FirebaseAuth.instance.signOut();
         await GoogleSignIn.instance.signOut();
+        // Get.toNamed(Routes.createProfile, arguments: {
+        //   "socialType": "google",
+        //   "accessToken": API().sp.read("accessToken"),
+        //   "isClear": false,
+        // });
         sigUp(
           Get.context,
           signUpPlatform: "google",
@@ -1880,12 +1891,26 @@ class AuthController extends GetxController {
           final firebase_auth.User? user = userCredential.user;
 
           if (user != null) {
+            if(userCredential.user!.displayName.toString().contains(" ")){
+              firstNameController.text = userCredential.user!.displayName.toString().split(" ")[0];
+              lastNameController.text = userCredential.user!.displayName.toString().split(" ")[1];
+            }else{
+              firstNameController.text = userCredential.user!.displayName.toString();
+            }
             emailController.text = userCredential.user!.email!;
+            displayNameController.text = userCredential.user!.displayName!;
             API().sp.write("emailSocial", userCredential.user!.email!);
             // API().sp.write("nameSocial", userCredential.user!.displayName!);
             API()
                 .sp
                 .write("accessToken", userCredential.credential!.accessToken);
+
+            // Get.toNamed(Routes.createProfile, arguments: {
+            //   "socialType": "facebook",
+            //   "accessToken": API().sp.read("accessToken"),
+            //   "isClear": false,
+            // });
+
             sigUp(
               Get.context,
               signUpPlatform: "facebook",
@@ -1930,6 +1955,12 @@ class AuthController extends GetxController {
         API().sp.write("emailSocial", userCredential.user!.email!);
         // API().sp.write("nameSocial", userCredential.user!.displayName!);
         API().sp.write("accessToken", userCredential.credential!.accessToken);
+
+        // Get.toNamed(Routes.createProfile, arguments: {
+        //   "socialType": "apple",
+        //   "accessToken": API().sp.read("accessToken"),
+        // });
+
         sigUp(Get.context,
             signUpPlatform: "apple",
             platformId: userCredential.credential!.accessToken);

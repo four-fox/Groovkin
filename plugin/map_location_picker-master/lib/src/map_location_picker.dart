@@ -54,6 +54,8 @@ class MapLocationPicker extends StatefulWidget {
   /// Top card color
   final Color? topCardColor;
 
+  final bool isDarkMode;
+
   /// Top card shape
   final ShapeBorder topCardShape;
 
@@ -181,6 +183,7 @@ class MapLocationPicker extends StatefulWidget {
     this.lat,
     this.onTappp,
     this.onTapShow = false,
+    this.isDarkMode = false,
     this.nextPage,
     this.long,
     this.geoCodingHttpClient,
@@ -545,9 +548,9 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                     title: Text(
                                                         continent.description ??
                                                             "",
-                                                        style: const TextStyle(
+                                                        style:  TextStyle(
                                                           fontSize: 14,
-                                                          color: Colors.white,
+                                                          color: widget.isDarkMode?Colors.black:Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontFamily:

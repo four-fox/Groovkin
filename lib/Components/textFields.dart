@@ -51,7 +51,7 @@ class CustomTextFields extends StatelessWidget {
   final IconData? suffixIcon;
   Widget? suffixWidget;
   Widget? prefixWidget;
-  TextEditingController? controller = TextEditingController();
+  TextEditingController? controller ;
   bool obscureText = false;
   bool isOptional = false;
   String? validationError;
@@ -66,7 +66,7 @@ class CustomTextFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        controller: controller,
+        controller: controller??TextEditingController(),
         maxLines: maxLine!,
         enabled: disabled,
         style: style ??
@@ -85,7 +85,7 @@ class CustomTextFields extends StatelessWidget {
           hintText: hintText,
           alignLabelWithHint: true,
           suffixIcon: iconShow == true
-              ? GestureDetector(
+              ? GestureDetector( 
                   onTap: onTap,
                   child: suffixWidget ??
                       Icon(
