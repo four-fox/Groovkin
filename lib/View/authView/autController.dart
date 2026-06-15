@@ -508,18 +508,19 @@ class AuthController extends GetxController {
     try {
       imageLoaders(false);
       files = await _picker.pickImage(
-          source: source, imageQuality: 50, maxHeight: 1920, maxWidth: 1080);
+          source: source, imageQuality: 50,);
       CroppedFile? file;
     if(type == "event"){
       file = await ImageCropper().cropImage(
         sourcePath: files!.path,
+
         aspectRatio:CropAspectRatio(ratioX:3,ratioY:4),
 
       );
       if(file != null){
-        imageBytes = file!.path;
-        imageLoaders(true);
-        update();
+        imageBytes = file.path;
+        await imageValidator(imageBytes);
+
       }
     }else{
       file = await ImageCropper().cropImage(
@@ -557,6 +558,18 @@ class AuthController extends GetxController {
       userData = ProfileModel.fromJson(response.data);
       getProfileLoader(true);
       update();
+    }
+  }
+  imageValidator(img) async {
+final formData = form.FormData.fromMap({
+  "banner_image":multiPartingImage(img)
+});
+    final response = await API().postApi(formData, "validate-event-banner");
+    if (response.statusCode == 200) {
+      imageLoaders(true);
+      update();
+    }else{
+      BotToast.showText(text: response.data);
     }
   }
 

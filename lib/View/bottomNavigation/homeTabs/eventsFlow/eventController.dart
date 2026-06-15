@@ -260,7 +260,7 @@ class EventController extends GetxController {
 
       final response =
           await API().postApi(formData, "add-tag-collection?type=${type}");
-      if (response.statusCode == 200) {
+      if (response. statusCode == 200) {
         // bottomToast(text: "Tag Added!");
       }
     } catch (e) {

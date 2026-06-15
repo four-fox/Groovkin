@@ -253,6 +253,8 @@ class MusicChoiceScreen extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
+
+
                           Get.toNamed(Routes.myTagCollection)!.then((_) {
                             _controller.getHashtagCollectionApi(
                                 type: 'music_choice');

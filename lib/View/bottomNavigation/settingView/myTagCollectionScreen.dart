@@ -98,6 +98,10 @@ class _MyTagCollectionState extends State<MyTagCollection> {
                     color1: DynamicColor.blackClr,
                     color2: DynamicColor.blackClr,
                     onTap: () {
+
+
+                      // Get.toNamed(Routes.createNewHashTagScreen);
+
                       Get.toNamed(Routes.createNewTag,
                           arguments: {"isFromTagCollectionScreen": true});
                     },
