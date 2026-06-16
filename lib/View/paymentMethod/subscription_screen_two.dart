@@ -223,12 +223,12 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                       if (Platform.isAndroid) {
                         BotToast.showLoading();
                         final purchaseResult =
-                            await Purchases.purchaseSubscriptionOption(
-                                    _offerings!
-                                        .current!.availablePackages.reversed
-                                        .toList()[controller.selected.value]
-                                        .storeProduct
-                                        .subscriptionOptions![0])
+                            await Purchases.purchase(PurchaseParams.subscriptionOption(_offerings!
+                                .current!.availablePackages.reversed
+                                .toList()[controller.selected.value]
+                                .storeProduct
+                                .subscriptionOptions![0])
+                                    )
                                 .then((value) {
                           BotToast.closeAllLoading();
                           return value;
@@ -255,9 +255,9 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                         }
                       } else {
                         BotToast.showLoading();
-                        final purchaseResult = await Purchases.purchasePackage(
-                                _offerings!.current!.availablePackages[
-                                    controller.selected.value])
+                        final purchaseResult = await Purchases.purchase(
+                                PurchaseParams.package(_offerings!.current!.availablePackages[
+                                controller.selected.value]))
                             .then((value) {
                           BotToast.closeAllLoading();
                           return value;

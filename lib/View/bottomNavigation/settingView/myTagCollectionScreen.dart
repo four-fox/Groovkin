@@ -284,55 +284,118 @@ class _CreateNewTagState extends State<CreateNewTag> {
                             child: SizedBox(
                               height: Get.height / 1.4,
                               child: SingleChildScrollView(
-                                child: Wrap(
-                                    direction: Axis.horizontal,
-                                    spacing: 10,
-                                    children:
-                                        (controller.tagCollectionList?.data ??
-                                                [])
-                                            .expand((tag) =>
-                                                tag.categoryItems ??
-                                                const <CategoryItem>[])
-                                            .map((cat) {
-                                      return InputChip(
-                                        selected: cat.selected?.value ?? false,
-                                        backgroundColor: theme.primaryColor,
-                                        onSelected: (value) {
-                                          if (cat.selected != null) {
-                                            cat.selected!.value = value;
-
-                                            if (value) {
-                                              controller.selectedTagIds
-                                                  .add(cat.id.toString());
-                                              controller.addedTagIds
-                                                  .add(cat.id.toString());
-                                              // controller.addTagCollection(
-                                              //     type: "music_choice");
-                                            } else {
-                                              controller.selectedTagIds
-                                                  .remove(cat.id.toString());
-                                              controller.deletedTagIds
-                                                  .add(cat.id.toString());
-                                              // controller.removeTagCollection();
-                                            }
-                                            controller.update();
-                                          }
-                                        },
-                                        selectedColor: DynamicColor.yellowClr,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        label: Text(
-                                          '#${cat.name}',
-                                          style: poppinsRegularStyle(
-                                              fontSize: 14,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: (controller.tagCollectionList?.data ?? []).map((tag) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 16),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            tag.name ?? '',
+                                            style: poppinsMediumStyle(
+                                              fontSize: 16,
                                               context: context,
-                                              color: theme
-                                                  .scaffoldBackgroundColor),
-                                        ),
-                                      );
-                                    }).toList()),
+                                              color: theme.primaryColor,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+
+                                          Wrap(
+                                            spacing: 10,
+                                            runSpacing: 10,
+                                            children: (tag.categoryItems ?? []).map((cat) {
+                                              return InputChip(
+                                                selected: cat.selected?.value ?? false,
+                                                backgroundColor: theme.primaryColor,
+                                                selectedColor: DynamicColor.yellowClr,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                onSelected: (value) {
+                                                  if (cat.selected != null) {
+                                                    cat.selected!.value = value;
+
+                                                    if (value) {
+                                                      controller.selectedTagIds.add(cat.id.toString());
+                                                      controller.addedTagIds.add(cat.id.toString());
+                                                    } else {
+                                                      controller.selectedTagIds.remove(cat.id.toString());
+                                                      controller.deletedTagIds.add(cat.id.toString());
+                                                    }
+
+                                                    controller.update();
+                                                  }
+                                                },
+                                                label: Text(
+                                                  '#${cat.name}',
+                                                  style: poppinsRegularStyle(
+                                                    fontSize: 14,
+                                                    context: context,
+                                                    color: theme.scaffoldBackgroundColor,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                )
+
+
+
+                                // Wrap(
+                                //     direction: Axis.horizontal,
+                                //     spacing: 10,
+                                //     children:
+                                //         (controller.tagCollectionList?.data ??
+                                //                 [])
+                                //             .expand((tag) =>
+                                //                 tag.categoryItems ??
+                                //                 const <CategoryItem>[])
+                                //             .map((cat) {
+                                //       return InputChip(
+                                //         selected: cat.selected?.value ?? false,
+                                //         backgroundColor: theme.primaryColor,
+                                //         onSelected: (value) {
+                                //           if (cat.selected != null) {
+                                //             cat.selected!.value = value;
+                                //
+                                //             if (value) {
+                                //               controller.selectedTagIds
+                                //                   .add(cat.id.toString());
+                                //               controller.addedTagIds
+                                //                   .add(cat.id.toString());
+                                //               // controller.addTagCollection(
+                                //               //     type: "music_choice");
+                                //             } else {
+                                //               controller.selectedTagIds
+                                //                   .remove(cat.id.toString());
+                                //               controller.deletedTagIds
+                                //                   .add(cat.id.toString());
+                                //               // controller.removeTagCollection();
+                                //             }
+                                //             controller.update();
+                                //           }
+                                //         },
+                                //         selectedColor: DynamicColor.yellowClr,
+                                //         shape: RoundedRectangleBorder(
+                                //           borderRadius:
+                                //               BorderRadius.circular(8),
+                                //         ),
+                                //         label: Text(
+                                //           '#${cat.name}',
+                                //           style: poppinsRegularStyle(
+                                //               fontSize: 14,
+                                //               context: context,
+                                //               color: theme
+                                //                   .scaffoldBackgroundColor),
+                                //         ),
+                                //       );
+                                //     }).toList()),
                               ),
                             ),
                           )

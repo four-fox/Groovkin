@@ -33,7 +33,7 @@ extension IterableExtensions<T> on Iterable<T>? {
   /// Returns a set containing all elements that are contained
   /// by both this set and the specified collection.
   Set<T> intersect(Iterable other) {
-    final set = this.toSet();
+    final set = toSet();
     set.retainAll(other);
     return set;
   }

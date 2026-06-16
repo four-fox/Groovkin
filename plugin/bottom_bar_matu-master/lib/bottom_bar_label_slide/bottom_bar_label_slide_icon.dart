@@ -8,12 +8,12 @@ import '../components/colors.dart';
 
 class BottomBarLabelSlideIcon extends StatefulWidget {
   const BottomBarLabelSlideIcon({
-    Key? key,
+    super.key,
     required this.item,
     required this.color,
     this.backgroundColor = Colors.white,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   final BottomBarItem item;
   final Color color;

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class RippleAnimationWidget extends StatelessWidget {
   const RippleAnimationWidget({
-    Key? key,
+    super.key,
     required this.animation,
     required this.isSelect,
     required this.color,
-  }) : super(key: key);
+  });
 
   final Animation<double> animation;
 

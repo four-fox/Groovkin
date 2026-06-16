@@ -146,7 +146,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
         children: [
           Text(
             isFromEvent
-                ? "Indicate the type of music\nyou are proposing for this event."
+                ? "Update your profile with the \ntype of music you offer to play at events."
                 : ((addMoreSurvey == 1) &&
                         (sp.read("role") == "eventOrganizer"))
                     ? "Let us know more about\nyour lifestyle preference"

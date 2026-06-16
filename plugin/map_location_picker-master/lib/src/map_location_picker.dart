@@ -176,7 +176,7 @@ class MapLocationPicker extends StatefulWidget {
   bool onTapShow = false;
   GestureTapCallback? nextPage;
   MapLocationPicker({
-    Key? key,
+    super.key,
     this.desiredAccuracy = LocationAccuracy.high,
     required this.apiKey,
     this.geoCodingBaseUrl,
@@ -238,7 +238,7 @@ class MapLocationPicker extends StatefulWidget {
     this.latLng,
     this.initAddress,
     this.hideLocation = false,
-  }) : super(key: key);
+  });
 
   @override
   State<MapLocationPicker> createState() => _MapLocationPickerState();
@@ -269,7 +269,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
   /// initial latitude & longitude
   LatLng? _initialPosition;
 
-  currentPositionLatLng({latLng, address}) async {
+  Future<void> currentPositionLatLng({LatLng? latLng,String? address}) async {
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.unableToDetermine ||
         permission == LocationPermission.deniedForever ||

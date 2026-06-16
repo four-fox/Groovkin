@@ -5,7 +5,7 @@ import '../bottom_bar_item.dart';
 
 class BottomBarDoubleBullet extends StatefulWidget {
   const BottomBarDoubleBullet({
-    Key? key,
+    super.key,
     required this.items,
     this.selectedIndex = 0,
     this.height = 71,
@@ -15,7 +15,7 @@ class BottomBarDoubleBullet extends StatefulWidget {
     this.circle2Color = Colors.red,
     this.backgroundColor = Colors.white,
     this.onSelect,
-  }) : super(key: key);
+  });
 
   final int selectedIndex;
   final double height;

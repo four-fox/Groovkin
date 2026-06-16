@@ -5,7 +5,7 @@ import 'bottom_bar_label_slide_icon.dart';
 
 class BottomBarLabelSlide extends StatefulWidget {
   BottomBarLabelSlide({
-    Key? key,
+    super.key,
     required this.items,
     this.selectedIndex = 0,
     this.height = 71,
@@ -13,8 +13,7 @@ class BottomBarLabelSlide extends StatefulWidget {
     this.color = Colors.green,
     this.backgroundColor = Colors.white,
     this.onSelect,
-  })  : assert(items.every((element) => element.label?.isNotEmpty ?? false)),
-        super(key: key);
+  })  : assert(items.every((element) => element.label?.isNotEmpty ?? false));
 
   final int selectedIndex;
   final double height;

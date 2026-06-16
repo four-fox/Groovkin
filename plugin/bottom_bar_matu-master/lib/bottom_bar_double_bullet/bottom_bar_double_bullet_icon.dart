@@ -5,11 +5,11 @@ import '../components/colors.dart';
 
 class BottomBarDoubleBulletIcon extends StatefulWidget {
   const BottomBarDoubleBulletIcon({
-    Key? key,
+    super.key,
     required this.item,
     required this.color,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   final BottomBarItem item;
   final Color color;

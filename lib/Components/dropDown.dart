@@ -65,7 +65,7 @@ class DropDownClass extends StatelessWidget {
         child: DropdownButtonHideUnderline(
           child: _objectDropDown
               ? DropdownButtonFormField<String>(
-            value: _initialValue,
+            initialValue: _initialValue,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Please select any value";

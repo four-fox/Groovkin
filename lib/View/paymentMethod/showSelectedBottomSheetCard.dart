@@ -123,6 +123,7 @@ class _ShowselectedbottomsheetcardState
                           ),
                           Radio<int>.adaptive(
                             value: data.id!,
+
                             groupValue: managerController.selectedCardId,
                             activeColor: DynamicColor.yellowClr,
                             onChanged: (value) {

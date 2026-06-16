@@ -43,8 +43,8 @@ import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';import 'package:image_cropper_platform_interface/image_cropper_platform_interface.dart';
-
+import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+import 'package:image_cropper_platform_interface/image_cropper_platform_interface.dart';
 
 enum ChangeRole { user, organizer, manager }
 
@@ -115,7 +115,8 @@ class AuthController extends GetxController {
   RxBool showConfirmPassword = true.obs;
 
   /// user register
-  sigUp(context, {String? signUpPlatform, String? platformId,String? role}) async {
+  sigUp(context,
+      {String? signUpPlatform, String? platformId, String? role}) async {
     NotificationService notificationService = NotificationService();
     String? token = await notificationService.getDeviceToken();
     List imageList = [];
@@ -144,15 +145,13 @@ class AuthController extends GetxController {
           stateController.text,
       /*if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty)*/ "country":
           countryController.text,
-      if(role != null)
+      if (role != null)
         "role": API().sp.read("role") == "User"
-          ? "user"
-          : API().sp.read("role") == "eventManager"
-              ? "venue_manager"
-              : "event_owner",
-      if(role == null)
-        "role":"user",
-
+            ? "user"
+            : API().sp.read("role") == "eventManager"
+                ? "venue_manager"
+                : "event_owner",
+      if (role == null) "role": "user",
       "signup_platform": signUpPlatform,
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
@@ -504,43 +503,37 @@ class AuthController extends GetxController {
   File? profileImage;
   RxBool imageLoaders = true.obs;
 
-  cameraImage(context, source,{String? type}) async {
+  cameraImage(context, source, {String? type}) async {
     try {
       imageLoaders(false);
       files = await _picker.pickImage(
-          source: source, imageQuality: 50,);
+        source: source,
+        imageQuality: 50,
+      );
       CroppedFile? file;
-    if(type == "event"){
-      file = await ImageCropper().cropImage(
-        sourcePath: files!.path,
-
-        aspectRatio:CropAspectRatio(ratioX:3,ratioY:4),
-
-      );
-      if(file != null){
-        imageBytes = file.path;
-        await imageValidator(imageBytes);
-
-      }
-    }else{
-      file = await ImageCropper().cropImage(
-        sourcePath: files!.path,
-
-      );
-      if (files != null) {
+      if (type == "event") {
+        file = await ImageCropper().cropImage(
+          sourcePath: files!.path,
+          // aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 4),
+        );
         if (file != null) {
-          imageBytes = file.path;
-        } else {
-          imageBytes = files!.path;
+
+          await imageValidator(file.path);
         }
+      } else {
+        file = await ImageCropper().cropImage(
+          sourcePath: files!.path,
+        );
+        if (files != null) {
+          if (file != null) {
+            imageBytes = file.path;
+          } else {
+            imageBytes = files!.path;
+          }
+        }
+        imageLoaders(true);
+        update();
       }
-      imageLoaders(true);
-      update();
-    }
-
-
-
-
     } catch (e) {
       imageLoaders(true);
       // BotToast.showText(text: e.toString());
@@ -560,16 +553,15 @@ class AuthController extends GetxController {
       update();
     }
   }
-  imageValidator(img) async {
-final formData = form.FormData.fromMap({
-  "banner_image":multiPartingImage(img)
-});
-    final response = await API().postApi(formData, "validate-event-banner");
+
+  imageValidator(String img) async {
+    final formData =
+        form.FormData.fromMap({"banner_image": multiPartingImage(img)});
+    final response = await API().imagePostApi(formData, "validate-event-banner");
     if (response.statusCode == 200) {
+      imageBytes = img;
       imageLoaders(true);
       update();
-    }else{
-      BotToast.showText(text: response.data);
     }
   }
 
@@ -1786,8 +1778,7 @@ final formData = form.FormData.fromMap({
   Future<String?> _googleAccessToken(GoogleSignInAccount account) async {
     final authorization = await account.authorizationClient
             .authorizationForScopes(googleSignInScopes) ??
-        await account.authorizationClient
-            .authorizeScopes(googleSignInScopes);
+        await account.authorizationClient.authorizeScopes(googleSignInScopes);
     return authorization.accessToken;
   }
 
@@ -1843,11 +1834,14 @@ final formData = form.FormData.fromMap({
           .signInWithCredential(credential);
 
       if (userCredential.user != null) {
-        if(userCredential.user!.displayName.toString().contains(" ")){
-          firstNameController.text = userCredential.user!.displayName.toString().split(" ")[0];
-          lastNameController.text = userCredential.user!.displayName.toString().split(" ")[1];
-        }else{
-          firstNameController.text = userCredential.user!.displayName.toString();
+        if (userCredential.user!.displayName.toString().contains(" ")) {
+          firstNameController.text =
+              userCredential.user!.displayName.toString().split(" ")[0];
+          lastNameController.text =
+              userCredential.user!.displayName.toString().split(" ")[1];
+        } else {
+          firstNameController.text =
+              userCredential.user!.displayName.toString();
         }
         emailController.text =
             userCredential.user!.email ?? googleSignInAccount.email;
@@ -1904,11 +1898,14 @@ final formData = form.FormData.fromMap({
           final firebase_auth.User? user = userCredential.user;
 
           if (user != null) {
-            if(userCredential.user!.displayName.toString().contains(" ")){
-              firstNameController.text = userCredential.user!.displayName.toString().split(" ")[0];
-              lastNameController.text = userCredential.user!.displayName.toString().split(" ")[1];
-            }else{
-              firstNameController.text = userCredential.user!.displayName.toString();
+            if (userCredential.user!.displayName.toString().contains(" ")) {
+              firstNameController.text =
+                  userCredential.user!.displayName.toString().split(" ")[0];
+              lastNameController.text =
+                  userCredential.user!.displayName.toString().split(" ")[1];
+            } else {
+              firstNameController.text =
+                  userCredential.user!.displayName.toString();
             }
             emailController.text = userCredential.user!.email!;
             displayNameController.text = userCredential.user!.displayName!;

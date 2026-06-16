@@ -51,7 +51,7 @@ SwitchWiget(
                   height: 30,
                   child: Switch(
                     inactiveThumbColor: DynamicColor.blackClr,
-                    activeColor: DynamicColor.blackClr,
+                    activeThumbColor: DynamicColor.blackClr,
                     inactiveTrackColor: DynamicColor.whiteClr,
                     activeTrackColor: DynamicColor.whiteClr,
                     value: switchVal,
