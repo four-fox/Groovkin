@@ -391,6 +391,8 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
           response.isOverQueryLimit) {
         logger.e(response.errorMessage);
         _address = response.status;
+
+
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -410,6 +412,10 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
       controller
           .animateCamera(CameraUpdate.newCameraPosition(cameraPosition()));
       _address = response.result.formattedAddress ?? "";
+      if(_initialPosition != null){
+        _decodeAddress(Location(
+            lat: _initialPosition!.latitude, lng: _initialPosition!.longitude));
+      }
       widget.onSuggestionSelected?.call(response);
       setState(() {});
     } catch (e) {
@@ -522,13 +528,13 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                   hintStyle: TextStyle(
                                                       color: Colors.white),
                                                   hintText:
-                                                      widget.searchHintText,
+                                                      widget.searchHintText??"Search...",
                                                   border: InputBorder.none,
                                                   filled: true,
                                                   suffixIcon: IconButton(
-                                                    icon: const Icon(
+                                                    icon:  Icon(
                                                       Icons.close,
-                                                      color: Colors.black,
+                                                      color: !widget.isDarkMode?Colors.black:Colors.white,
                                                     ),
                                                     onPressed: () async {
                                                       _searchController.clear();

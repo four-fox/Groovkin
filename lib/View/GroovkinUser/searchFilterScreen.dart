@@ -187,9 +187,12 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return MapLocationPicker(                          isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
-
-                                onTappp: () {},
+                              return MapLocationPicker(
+                                isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
+                                backBtnn: true,
+                                onTappp: () {
+                                  print("locations");
+                                },
                                 // onTapShow: true,
                                 // hideLocation: true,
                                 // lat: double.parse(eventData.latitude.toString()),
@@ -204,7 +207,6 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                                             "null"
                                         ? homeController.locationController.text
                                         : "Start typing to search",
-                                // canPopOnNextButtonTaped: true,
                                 latLng: homeController.locationLatLng,
                                 initAddress:
                                     homeController.locationController.text,
@@ -227,7 +229,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                                       homeController.locationLatLng = latLng;
 
                                       homeController.update();
-                                      Get.back();
+                                      // Get.back();
                                     }
                                   }
                                 },
