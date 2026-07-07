@@ -9,7 +9,6 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/social_sign_in.dart';
 
-
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 

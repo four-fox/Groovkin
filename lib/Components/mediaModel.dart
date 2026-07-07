@@ -1,5 +1,3 @@
-
-
 import 'package:groovkin/Components/Network/Url.dart';
 
 class MediaClass {
@@ -21,24 +19,24 @@ class MediaClass {
       filename: json["filename"] == null
           ? null
           : json["file_id"] == null
-          ? json["filename"]
-          : json["filename"].toString().contains(Url().baseUrl)
-          ? json["filename"]
-          : Url().baseUrl + json["filename"],
+              ? json["filename"]
+              : json["filename"].toString().contains(Url().baseUrl)
+                  ? json["filename"]
+                  : Url().baseUrl + json["filename"],
       fileType: json["file_type"],
       thumbnail: json["thumbnail"] == null
           ? null
           : json["file_id"] == null
-          ? json["thumbnail"]
-          : json["thumbnail"].toString().contains(Url().baseUrl)
-          ? json["thumbnail"]
-          : Url().baseUrl + json["thumbnail"],
+              ? json["thumbnail"]
+              : json["thumbnail"].toString().contains(Url().baseUrl)
+                  ? json["thumbnail"]
+                  : Url().baseUrl + json["thumbnail"],
     );
   }
 
   Map<String, dynamic> toJson() => {
-    "filename": filename,
-    "file_type": fileType,
-    "thumbnail": thumbnail,
-  };
+        "filename": filename,
+        "file_type": fileType,
+        "thumbnail": thumbnail,
+      };
 }

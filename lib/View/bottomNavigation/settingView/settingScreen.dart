@@ -256,17 +256,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                   _themeController.update();
                                   print(API().sp.read("role"));
                                   print(API().sp.read("currentRole"));
-                                  if (API().sp.read("role") == "eventOrganizer" &&
+                                  if (API().sp.read("role") ==
+                                          "eventOrganizer" &&
                                       API().sp.read("currentRole") ==
                                           "eventOrganizer") {
                                     controller.changeRoles(ChangeRole.user);
-                                    BotToast.showText(text: "Change Role to User");
-                                    await _themeController.fetchUserTheme("User");
-                                  }
-                                  else if (API().sp.read("role") == "User" &&
+                                    BotToast.showText(
+                                        text: "Change Role to User");
+                                    await _themeController
+                                        .fetchUserTheme("User");
+                                  } else if (API().sp.read("role") == "User" &&
                                       API().sp.read("currentRole") ==
                                           "eventOrganizer") {
-                                    controller.changeRoles(ChangeRole.organizer);
+                                    controller
+                                        .changeRoles(ChangeRole.organizer);
                                     BotToast.showText(
                                         text: "Change Role to Event Organizer");
                                     await _themeController
@@ -276,8 +279,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                       API().sp.read("currentRole") ==
                                           "eventManager") {
                                     controller.changeRoles(ChangeRole.user);
-                                    BotToast.showText(text: "Change Role to User");
-                                    await _themeController.fetchUserTheme("User");
+                                    BotToast.showText(
+                                        text: "Change Role to User");
+                                    await _themeController
+                                        .fetchUserTheme("User");
                                   } else if (API().sp.read("role") == "User" &&
                                       API().sp.read("currentRole") ==
                                           "eventManager") {
@@ -287,8 +292,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                     await _themeController
                                         .fetchUserTheme("eventManager");
                                   }
-
-
 
                                   // await showModalBottomSheet(
                                   //     context: context,
@@ -709,8 +712,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               controller.changeRoles(ChangeRole.user);
                               BotToast.showText(text: "Change Role to User");
                               await _themeController.fetchUserTheme("User");
-                            }
-                            else if (API().sp.read("role") == "User" &&
+                            } else if (API().sp.read("role") == "User" &&
                                 API().sp.read("currentRole") ==
                                     "eventOrganizer") {
                               controller.changeRoles(ChangeRole.organizer);

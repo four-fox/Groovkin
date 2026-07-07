@@ -15,7 +15,8 @@ class CountrySearchListWidget extends StatefulWidget {
 
   const CountrySearchListWidget(
     this.countries,
-    this.locale, {Key? key, 
+    this.locale, {
+    Key? key,
     this.searchBoxDecoration,
     this.scrollController,
     this.showFlags,

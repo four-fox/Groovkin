@@ -86,7 +86,7 @@ class _SpotifyWebViewState extends State<SpotifyWebView> {
       );
     });
   }
-  
+
   String _hideSocialButtonsScript() {
     return """
     (function() {

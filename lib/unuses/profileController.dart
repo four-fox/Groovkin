@@ -1,11 +1,6 @@
-
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class ProfileController extends GetxController{
+class ProfileController extends GetxController {
   final nameController = TextEditingController();
-
 }

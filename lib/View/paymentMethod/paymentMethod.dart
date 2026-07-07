@@ -27,41 +27,41 @@ class PaymentMethodScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
           child: Column(
             children: [
-              cardsType(
-                  theme: theme,
-                  context: context,
-                  controller: controller,
-                  radioValuee: 0,
-                  onChanged: (v) {
-                    controller.radioValue.value = v;
-                    controller.update();
-                  }),
-              const SizedBox(
-                height: 24,
+              RadioGroup<int>(
+                groupValue: controller.radioValue.value,
+                onChanged: (v) {
+                  if (v == null) return;
+                  controller.radioValue.value = v;
+                  controller.update();
+                },
+                child: Column(
+                  children: [
+                    cardsType(
+                        theme: theme,
+                        context: context,
+                        controller: controller,
+                        radioValuee: 0),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    cardsType(
+                        theme: theme,
+                        context: context,
+                        radioValuee: 1,
+                        controller: controller,
+                        image: "assets/masterCard.png"),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    cardsType(
+                        theme: theme,
+                        context: context,
+                        radioValuee: 2,
+                        controller: controller,
+                        image: "assets/amex.png"),
+                  ],
+                ),
               ),
-              cardsType(
-                  theme: theme,
-                  context: context,
-                  radioValuee: 1,
-                  controller: controller,
-                  image: "assets/masterCard.png",
-                  onChanged: (v) {
-                    controller.radioValue.value = v;
-                    controller.update();
-                  }),
-              const SizedBox(
-                height: 24,
-              ),
-              cardsType(
-                  theme: theme,
-                  context: context,
-                  radioValuee: 2,
-                  controller: controller,
-                  image: "assets/amex.png",
-                  onChanged: (v) {
-                    controller.radioValue.value = v;
-                    controller.update();
-                  }),
             ],
           ),
         );
@@ -82,8 +82,7 @@ class PaymentMethodScreen extends StatelessWidget {
     );
   }
 
-  Widget cardsType(
-      {theme, context, controller, image, radioValuee, onChanged}) {
+  Widget cardsType({theme, context, controller, image, radioValuee}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
@@ -128,9 +127,7 @@ class PaymentMethodScreen extends StatelessWidget {
             ),
             child: Radio(
               value: radioValuee,
-              groupValue: controller.radioValue.value,
               activeColor: DynamicColor.yellowClr,
-              onChanged: onChanged,
             ),
           ),
         ],

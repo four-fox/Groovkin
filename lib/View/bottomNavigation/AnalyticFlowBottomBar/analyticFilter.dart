@@ -403,7 +403,7 @@ class AnalyticFilterScreen extends StatelessWidget {
                 width: Get.width / 2.5,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: DynamicColor.lightBlackClr.withValues(alpha:0.5),
+                  color: DynamicColor.lightBlackClr.withValues(alpha: 0.5),
                 ),
                 child: TextField(
                   decoration: InputDecoration(
@@ -462,7 +462,7 @@ class AnalyticFilterScreen extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(13),
-                  color: DynamicColor.lightBlackClr.withValues(alpha:0.5),
+                  color: DynamicColor.lightBlackClr.withValues(alpha: 0.5),
                 ),
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
@@ -494,7 +494,7 @@ class AnalyticFilterScreen extends StatelessWidget {
                         "Type here",
                         style: poppinsRegularStyle(
                             fontSize: 11,
-                            color: DynamicColor.grayClr.withValues(alpha:0.9),
+                            color: DynamicColor.grayClr.withValues(alpha: 0.9),
                             context: context),
                       ),
                     ),
@@ -583,7 +583,7 @@ class EventDetailsScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(3.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
-                        color: DynamicColor.grayClr.withValues(alpha:0.6),
+                        color: DynamicColor.grayClr.withValues(alpha: 0.6),
                       ),
                       child: Icon(
                         Icons.filter_alt,
@@ -603,7 +603,7 @@ class EventDetailsScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: DynamicColor.lightBlackClr.withValues(alpha:0.6),
+                color: DynamicColor.lightBlackClr.withValues(alpha: 0.6),
               ),
               child: Column(
                 children: [
@@ -627,7 +627,7 @@ class EventDetailsScreen extends StatelessWidget {
                   ),
                   Divider(
                     height: 5,
-                    color: theme.primaryColor.withValues(alpha:0.7),
+                    color: theme.primaryColor.withValues(alpha: 0.7),
                   ),
                   const SizedBox(
                     height: 9,
@@ -637,7 +637,7 @@ class EventDetailsScreen extends StatelessWidget {
                     theme: theme,
                     text: "Rock",
                     value: "60%",
-                    textClr: theme.primaryColor.withValues(alpha:0.6),
+                    textClr: theme.primaryColor.withValues(alpha: 0.6),
                   ),
                   const SizedBox(
                     height: 9,
@@ -647,7 +647,7 @@ class EventDetailsScreen extends StatelessWidget {
                     theme: theme,
                     text: "Classical music",
                     value: "30%",
-                    textClr: theme.primaryColor.withValues(alpha:0.6),
+                    textClr: theme.primaryColor.withValues(alpha: 0.6),
                   ),
                   const SizedBox(
                     height: 9,
@@ -657,7 +657,7 @@ class EventDetailsScreen extends StatelessWidget {
                     theme: theme,
                     text: "Disco",
                     value: "10%",
-                    textClr: theme.primaryColor.withValues(alpha:0.6),
+                    textClr: theme.primaryColor.withValues(alpha: 0.6),
                   ),
                 ],
               ),

@@ -592,6 +592,59 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                       }),
                                 ),
 
+                                if (controller.eventDetail!.data!.hashtags !=
+                                        null &&
+                                    controller.eventDetail!.data!.hashtags!
+                                        .isNotEmpty) ...[
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      "Hashtags",
+                                      style: poppinsRegularStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        context: context,
+                                        color: isDark(context)
+                                            ? theme.primaryColor
+                                            : DynamicColor.whiteClr,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Wrap(
+                                      spacing: 8,
+                                      runSpacing: 8,
+                                      children: controller
+                                          .eventDetail!.data!.hashtags!
+                                          .map(
+                                            (tag) => Chip(
+                                              backgroundColor:
+                                                  DynamicColor.lightBlackClr,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              label: Text(
+                                                tag.displayName ??
+                                                    "#${tag.name ?? ""}",
+                                                style: poppinsRegularStyle(
+                                                  fontSize: 14,
+                                                  context: context,
+                                                  color: isDark(context)
+                                                      ? theme.primaryColor
+                                                      : DynamicColor.whiteClr,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
+
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: Text(

@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -14,7 +10,10 @@ class VenueMoreImageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Venue Image",),
+      appBar: customAppBar(
+        theme: theme,
+        text: "Venue Image",
+      ),
       body: GridView.custom(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(
@@ -30,14 +29,13 @@ class VenueMoreImageScreen extends StatelessWidget {
           ],
         ),
         childrenDelegate: SliverChildBuilderDelegate(
-              (context, index) {
+          (context, index) {
             return Padding(
               padding: const EdgeInsets.all(5.0),
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: DynamicColor.yellowClr)
-                ),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: DynamicColor.yellowClr)),
                 // padding: EdgeInsets.all(4),
                 child: const Image(
                   image: AssetImage('assets/event2.png'),

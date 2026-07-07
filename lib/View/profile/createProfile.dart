@@ -34,7 +34,7 @@ class _CreateProfileState extends State<CreateProfile> {
   List<int> dobYear = [];
 
   final String? accessToken = Get.arguments?["accessToken"];
-  final bool isClear = Get.arguments?["isClear"]??true;
+  final bool isClear = Get.arguments?["isClear"] ?? true;
 
   final String? socialType = Get.arguments?["socialType"];
 
@@ -62,7 +62,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
     _controller.getCurrentLocation(true);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(isClear){
+      if (isClear) {
         clear();
       }
     });
@@ -526,7 +526,7 @@ class _CreateProfileState extends State<CreateProfile> {
                         keyBoardType: true,
                       ),
 
-                      if (socialType == null ) ...[
+                      if (socialType == null) ...[
                         const SizedBox(
                           height: 15,
                         ),
@@ -706,7 +706,9 @@ class _CreateProfileState extends State<CreateProfile> {
                       } else {
                         // if(_controller.imageBytes != null){
                         _controller.sigUp(context,
-                            role:API().sp.read("role") == "User"?null:API().sp.read("role"),
+                            role: API().sp.read("role") == "User"
+                                ? null
+                                : API().sp.read("role"),
                             signUpPlatform: socialType,
                             platformId: accessToken);
                         // }else{

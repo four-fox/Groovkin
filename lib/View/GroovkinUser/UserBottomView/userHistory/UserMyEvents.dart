@@ -31,7 +31,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
 
   RxBool recommendedVal = false.obs;
   final HomeController homeController = Get.find<HomeController>();
-  
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -329,7 +329,7 @@ class HistoryTab extends StatefulWidget {
 
 class _HistoryTabState extends State<HistoryTab> {
   late HomeController controller;
-  
+
   @override
   void initState() {
     super.initState();
@@ -339,7 +339,7 @@ class _HistoryTabState extends State<HistoryTab> {
       controller = Get.put(HomeController());
     }
   }
-  
+
   // RxBool ongoingVal = false.obs;
 
   @override

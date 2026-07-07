@@ -12,8 +12,8 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// Draft icon shown in the app-bar when editing is not in progress.
-Widget _draftAction(EventController controller, BuildContext context,
-    ThemeData theme) {
+Widget _draftAction(
+    EventController controller, BuildContext context, ThemeData theme) {
   if (controller.eventDetail != null ||
       controller.draftCondition.value == false) {
     return const SizedBox.shrink();
@@ -28,7 +28,7 @@ Widget _draftAction(EventController controller, BuildContext context,
 }
 
 /// Horizontal chip row for selected tags / activities.
-Widget _selectedChipsRow(BuildContext context,List items) {
+Widget _selectedChipsRow(BuildContext context, List items) {
   if (items.isEmpty) return const SizedBox.shrink();
   return SizedBox(
     height: kToolbarHeight,
@@ -41,7 +41,10 @@ Widget _selectedChipsRow(BuildContext context,List items) {
         physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (_, i) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: _styledChip(context,items[i].name.toString(),),
+          child: _styledChip(
+            context,
+            items[i].name.toString(),
+          ),
         ),
       ),
     ),
@@ -49,7 +52,7 @@ Widget _selectedChipsRow(BuildContext context,List items) {
 }
 
 /// A styled white chip with rounded corners.
-Widget _styledChip(BuildContext context,String label, { ThemeData? theme}) {
+Widget _styledChip(BuildContext context, String label, {ThemeData? theme}) {
   return Chip(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     backgroundColor: DynamicColor.whiteClr,
@@ -74,7 +77,8 @@ class _ExpandableCategoryList extends StatelessWidget {
 
   final List items;
   final void Function(int index) onToggleCategory;
-  final void Function({required dynamic items, required bool? value}) onCheckItem;
+  final void Function({required dynamic items, required bool? value})
+      onCheckItem;
 
   @override
   Widget build(BuildContext context) {
@@ -84,117 +88,112 @@ class _ExpandableCategoryList extends StatelessWidget {
       child: items.isEmpty
           ? noData(theme: theme)
           : ListView.builder(
-        itemCount: items.length,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (_, index) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Column(
-            children: [
-              // ── Category header ──────────────────────────────
-              GestureDetector(
-                onTap: () => onToggleCategory(index),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: DynamicColor.darkGrayClr,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        items[index].name.toString(),
-                        style: poppinsRegularStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          context: context,
-                          color: theme.primaryColor,
+              itemCount: items.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (_, index) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Column(
+                  children: [
+                    // ── Category header ──────────────────────────────
+                    GestureDetector(
+                      onTap: () => onToggleCategory(index),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: DynamicColor.darkGrayClr,
                         ),
-                      ),
-                      Icon(
-                        items[index].showSubCat!.value
-                            ? Icons.keyboard_arrow_up_outlined
-                            : Icons.keyboard_arrow_down_sharp,
-                        color: DynamicColor.whiteClr,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // ── Sub-items ────────────────────────────────────
-              Visibility(
-                visible: items[index].showSubCat!.value,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: DynamicColor.darkGrayClr,
-                    ),
-                    child: ListView.builder(
-                      itemCount:
-                      items[index].categoryItems!.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (_, subIndex) {
-                        final item =
-                        items[index].categoryItems![subIndex];
-                        return Column(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.circular(10),
-                                color: DynamicColor.darkGrayClr,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    item.name.toString(),
-                                    style: poppinsRegularStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      context: context,
-                                      color: theme.primaryColor,
-                                    ),
-                                  ),
-                                  Theme(
-                                    data: Theme.of(context).copyWith(
-                                      unselectedWidgetColor:
-                                      Colors.white,
-                                    ),
-                                    child: Checkbox(
-                                      activeColor:
-                                      DynamicColor.yellowClr,
-                                      value: item.selected!.value,
-                                      onChanged: (v) =>
-                                          onCheckItem(
-                                              items: item,
-                                              value: v),
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              items[index].name.toString(),
+                              style: poppinsRegularStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                context: context,
+                                color: theme.primaryColor,
                               ),
                             ),
-                            if(subIndex < items[index].categoryItems!.length -1)
-                              Divider(color: DynamicColor.whiteClr),
+                            Icon(
+                              items[index].showSubCat!.value
+                                  ? Icons.keyboard_arrow_up_outlined
+                                  : Icons.keyboard_arrow_down_sharp,
+                              color: DynamicColor.whiteClr,
+                            ),
                           ],
-                        );
-                      },
+                        ),
+                      ),
                     ),
-                  ),
+                    // ── Sub-items ────────────────────────────────────
+                    Visibility(
+                      visible: items[index].showSubCat!.value,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: DynamicColor.darkGrayClr,
+                          ),
+                          child: ListView.builder(
+                            itemCount: items[index].categoryItems!.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (_, subIndex) {
+                              final item =
+                                  items[index].categoryItems![subIndex];
+                              return Column(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: DynamicColor.darkGrayClr,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          item.name.toString(),
+                                          style: poppinsRegularStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            context: context,
+                                            color: theme.primaryColor,
+                                          ),
+                                        ),
+                                        Theme(
+                                          data: Theme.of(context).copyWith(
+                                            unselectedWidgetColor: Colors.white,
+                                          ),
+                                          child: Checkbox(
+                                            activeColor: DynamicColor.yellowClr,
+                                            value: item.selected!.value,
+                                            onChanged: (v) => onCheckItem(
+                                                items: item, value: v),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  if (subIndex <
+                                      items[index].categoryItems!.length - 1)
+                                    Divider(color: DynamicColor.whiteClr),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
@@ -218,9 +217,11 @@ class MusicChoiceScreen extends StatelessWidget {
         actions: [_draftAction(_controller, context, theme)],
       ),
       body: GetBuilder<EventController>(
-        initState: (_) => _controller.eventDetail != null
-            ? _controller.musicChoiceBinding()
-            : _controller.getHashtagCollectionApi(type: 'music_choice'),
+        initState: (_) {
+          _controller.getHashtagCollectionApi();
+          _controller.manualHashtagsChanged = false;
+          _controller.collectionSelectionChanged = false;
+        },
         builder: (controller) {
           if (!controller.getMusicHashTagLoader.value) {
             return const SizedBox.shrink();
@@ -229,21 +230,22 @@ class MusicChoiceScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _sectionHeader(
                     context: context,
                     theme: theme,
-                    title: 'Add Hashtags',
+                    title: 'Event Hashtags',
                     subtitle:
-                    'Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
+                        'Type event-only hashtags, add saved collections, or use both.',
                   ),
-                  _selectedChipsRow(context,controller.tagListPost),
-                  const SizedBox(height: 10),
+                  _ManualHashtagEditor(controller: controller),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'My Tags Collection',
+                        'Selected Collections',
                         style: poppinsRegularStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
@@ -251,29 +253,36 @@ class MusicChoiceScreen extends StatelessWidget {
                           color: theme.primaryColor,
                         ),
                       ),
-                      IconButton(
+                      TextButton.icon(
                         onPressed: () {
-
-
                           Get.toNamed(Routes.myTagCollection)!.then((_) {
-                            _controller.getHashtagCollectionApi(
-                                type: 'music_choice');
+                            _controller.getHashtagCollectionApi();
                           });
                         },
-                        icon: const Icon(Icons.add),
+                        icon: Icon(Icons.add, color: DynamicColor.yellowClr),
+                        label: Text(
+                          'Add a Collection',
+                          style: poppinsRegularStyle(
+                            fontSize: 12,
+                            context: context,
+                            color: DynamicColor.yellowClr,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  _ExpandableCategoryList(
-                    items: controller.tagList,
-                    onToggleCategory: (i) {
-                      controller.tagList[i].showSubCat!.value =
-                      !controller.tagList[i].showSubCat!.value;
-                      controller.update();
-                    },
-                    onCheckItem: ({required items, required value}) =>
-                        controller.tagAddFtn(items: items, value: value),
-                  ),
+                  _SelectedCollectionList(controller: controller),
+                  if (controller.hashtagCollectionError != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      controller.hashtagCollectionError!,
+                      style: poppinsRegularStyle(
+                        fontSize: 12,
+                        context: context,
+                        color: DynamicColor.lightRedClr,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -282,16 +291,185 @@ class MusicChoiceScreen extends StatelessWidget {
       ),
       bottomNavigationBar: _continueBar(
         onTap: () async {
-          if (_controller.tagListPost.isNotEmpty) {
-            if (_controller.eventDetail != null) {
-              await _controller.getMusicTag(type: 'activity_choice');
-            }
+          if (_controller.hasOrganizerHashtagSource) {
+            await _controller.getMusicTag(type: 'activity_choice');
             Get.toNamed(Routes.activityChoiceScreen);
           } else {
-            bottomToast(text: 'Please add a hashtag');
+            bottomToast(
+              text:
+                  'Please add a manual hashtag or select a hashtag collection',
+            );
           }
         },
       ),
+    );
+  }
+}
+
+class _ManualHashtagEditor extends StatelessWidget {
+  const _ManualHashtagEditor({required this.controller});
+
+  final EventController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Manual Hashtags',
+          style: poppinsRegularStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+            context: context,
+            color: theme.primaryColor,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: DynamicColor.darkGrayClr,
+          ),
+          child: TextField(
+            controller: controller.manualHashtagController,
+            style: poppinsRegularStyle(
+              fontSize: 14,
+              context: context,
+              color: theme.primaryColor,
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Add #hashtags, comma separated',
+              hintStyle: poppinsRegularStyle(
+                fontSize: 13,
+                context: context,
+                color: DynamicColor.lightRedClr,
+              ),
+            ),
+            textInputAction: TextInputAction.done,
+            onSubmitted: controller.addManualHashtagText,
+            onChanged: (value) {
+              if (value.contains(',')) controller.addManualHashtagText(value);
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: controller.manualHashtags
+              .map(
+                (tag) => Chip(
+                  backgroundColor: DynamicColor.whiteClr,
+                  deleteIcon: const Icon(Icons.close, size: 16),
+                  onDeleted: () => controller.removeManualHashtag(tag),
+                  label: Text(
+                    '#$tag',
+                    style: poppinsRegularStyle(
+                      fontSize: 12,
+                      context: context,
+                      color: theme.scaffoldBackgroundColor,
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _SelectedCollectionList extends StatelessWidget {
+  const _SelectedCollectionList({required this.controller});
+
+  final EventController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    if (controller.selectedOrganizerCollections.isEmpty) {
+      return Center(child: noData(theme: theme));
+    }
+    return Column(
+      children: controller.selectedOrganizerCollections.map((collection) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: DynamicColor.darkGrayClr,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        collection.title,
+                        style: poppinsRegularStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          controller.removeSelectedCollection(collection),
+                      child: Text(
+                        'Remove Collection',
+                        style: poppinsRegularStyle(
+                          fontSize: 11,
+                          context: context,
+                          color: DynamicColor.lightRedClr,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  children: collection.hashtags
+                      .map(
+                        (tag) => Chip(
+                          avatar: const Icon(Icons.lock, size: 14),
+                          backgroundColor: DynamicColor.whiteClr,
+                          label: Text(
+                            tag.displayName,
+                            style: poppinsRegularStyle(
+                              fontSize: 12,
+                              context: context,
+                              color: theme.scaffoldBackgroundColor,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+                if (collection.hashtags.isEmpty)
+                  Text(
+                    'No hashtags returned for this collection',
+                    style: poppinsRegularStyle(
+                      fontSize: 12,
+                      context: context,
+                      color: DynamicColor.lightRedClr,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }
@@ -333,14 +511,14 @@ class ActivityChoiceScreen extends StatelessWidget {
                     theme: theme,
                     title: 'Activity Choice!',
                     subtitle:
-                    'Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
+                        'Adding Tags to your proposal will give the Groovkin community a better understanding of your event!',
                   ),
-                  _selectedChipsRow(context,controller.activityListPost),
+                  _selectedChipsRow(context, controller.activityListPost),
                   _ExpandableCategoryList(
                     items: controller.activityList,
                     onToggleCategory: (i) {
                       controller.activityList[i].showSubCat!.value =
-                      !controller.activityList[i].showSubCat!.value;
+                          !controller.activityList[i].showSubCat!.value;
                       controller.update();
                     },
                     onCheckItem: ({required items, required value}) =>
@@ -358,7 +536,8 @@ class ActivityChoiceScreen extends StatelessWidget {
             _controller.imageListtt.clear();
             _controller.removeImageList.clear();
             if (_controller.eventDetail != null) {
-              for (final ele in _controller.eventDetail!.data!.profilePicture!) {
+              for (final ele
+                  in _controller.eventDetail!.data!.profilePicture!) {
                 _controller.imageListtt.add(ele);
               }
             }
@@ -417,11 +596,9 @@ class SaveHashTagScreen extends StatelessWidget {
               Wrap(
                 children: _staticTags
                     .map((tag) => Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 5),
-                  child: _styledChip(context,tag,
-                       theme: theme),
-                ))
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: _styledChip(context, tag, theme: theme),
+                        ))
                     .toList(),
               ),
               // ── List ────────────────────────────────────────────────
@@ -459,10 +636,8 @@ class SaveHashTagScreen extends StatelessWidget {
                               value: listA[index].condition!.value,
                               onChanged: (v) {
                                 selectedHashList.contains(listA[index].text)
-                                    ? selectedHashList
-                                    .remove(listA[index].text)
-                                    : selectedHashList
-                                    .add(listA[index].text);
+                                    ? selectedHashList.remove(listA[index].text)
+                                    : selectedHashList.add(listA[index].text);
                                 listA[index].condition!.value = v!;
                                 controller.update();
                               },
@@ -560,10 +735,9 @@ class CreateNewHashTagScreen extends StatelessWidget {
               Wrap(
                 children: _myListCustom
                     .map((tag) => Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: _styledChip(context,tag,
-                   theme: theme),
-                ))
+                          padding: const EdgeInsets.only(left: 8),
+                          child: _styledChip(context, tag, theme: theme),
+                        ))
                     .toList(),
               ),
             ],

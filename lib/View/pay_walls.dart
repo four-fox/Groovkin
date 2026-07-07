@@ -14,7 +14,6 @@ class _PayWallsState extends State<PayWalls> {
       appBar: AppBar(
         title: const Text("Paywalls"),
       ),
-      
     );
   }
 }

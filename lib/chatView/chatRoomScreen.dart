@@ -20,8 +20,6 @@ class ChatRoomScreen extends StatefulWidget {
 }
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
-  
-
   final ChatController _controller = Get.find();
 
   Timer? onStoppedTyping;

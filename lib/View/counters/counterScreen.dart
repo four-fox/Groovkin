@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -49,7 +48,7 @@ class _CounterScreenState extends State<CounterScreen> {
     var theme = Theme.of(context);
     return SafeArea(
       top: false,
-      bottom:true,
+      bottom: true,
       child: Scaffold(
         appBar: customAppBar(
           theme: theme,

@@ -174,7 +174,7 @@ class _SocialSignInState extends State<SocialSignIn> {
           // if (Platform.isAndroid)
           CustomButtonWithIcon(
               onTap: () {
-                  _authController.googleSignIn();
+                _authController.googleSignIn();
               },
               text: "Continue with Google",
               iconValue: true,

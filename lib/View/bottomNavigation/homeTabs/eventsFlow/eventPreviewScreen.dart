@@ -252,33 +252,36 @@ class EventPreview extends StatelessWidget {
               height: kToolbarHeight / 2,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: _authController.serviceList.isEmpty?noData(theme: theme): ListView.builder(
-                    itemCount: _authController.serviceList.length,
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              color: DynamicColor.lightRedClr,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              _authController.serviceList[index].name
-                                  .toString(),
-                              style: poppinsRegularStyle(
-                                fontSize: 12,
-                                context: context,
-                                color: theme.scaffoldBackgroundColor,
+                child: _authController.serviceList.isEmpty
+                    ? noData(theme: theme)
+                    : ListView.builder(
+                        itemCount: _authController.serviceList.length,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: DynamicColor.lightRedClr,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                child: Text(
+                                  _authController.serviceList[index].name
+                                      .toString(),
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    context: context,
+                                    color: theme.scaffoldBackgroundColor,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        }),
               ),
             ),
             const SizedBox(
@@ -307,33 +310,34 @@ class EventPreview extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: _authController.eventItemsList.isEmpty
                     ? noData(theme: theme)
-                    :  ListView.builder(
-                    itemCount: _authController.eventItemsList.length,
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              color: DynamicColor.lightRedClr,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Center(
-                            child: Text(
-                              _authController.eventItemsList[index].name
-                                  .toString(),
-                              style: poppinsRegularStyle(
-                                fontSize: 12,
-                                context: context,
-                                color: theme.scaffoldBackgroundColor,
+                    : ListView.builder(
+                        itemCount: _authController.eventItemsList.length,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  color: DynamicColor.lightRedClr,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                child: Text(
+                                  _authController.eventItemsList[index].name
+                                      .toString(),
+                                  style: poppinsRegularStyle(
+                                    fontSize: 12,
+                                    context: context,
+                                    color: theme.scaffoldBackgroundColor,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        }),
               ),
             ),
             const SizedBox(
@@ -400,7 +404,7 @@ class EventPreview extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Music Choice",
+                  "Hashtags",
                   style: poppinsMediumStyle(
                     fontSize: 13,
                     context: context,
@@ -412,41 +416,27 @@ class EventPreview extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            SizedBox(
-              height: kToolbarHeight / 2,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: _controller.tagListPost.isEmpty
-                    ? noData(theme: theme)
-                    : ListView.builder(
-                        itemCount: _controller.tagListPost.length,
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (BuildContext context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  color: DynamicColor.lightRedClr,
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Center(
-                                child: Text(
-                                  _controller.tagListPost[index].name
-                                      .toString(),
-                                  style: poppinsRegularStyle(
-                                    fontSize: 12,
-                                    context: context,
-                                    color: theme.scaffoldBackgroundColor,
-                                  ),
-                                ),
-                              ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: _controller.hasOrganizerHashtagSource
+                  ? Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        ..._controller.manualHashtags.map(
+                          (tag) => Chip(label: Text('#$tag')),
+                        ),
+                        ..._controller.selectedOrganizerCollections.expand(
+                          (collection) => collection.hashtags.map(
+                            (tag) => Chip(
+                              avatar: const Icon(Icons.lock, size: 14),
+                              label: Text(tag.displayName),
                             ),
-                          );
-                        }),
-              ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : noData(theme: theme),
             ),
             const SizedBox(
               height: 10,

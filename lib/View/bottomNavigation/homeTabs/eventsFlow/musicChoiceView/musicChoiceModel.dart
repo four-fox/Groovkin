@@ -40,6 +40,66 @@ class MusicTagModel {
       };
 }
 
+class OrganizerHashtagCollectionModel {
+  bool? status;
+  List<OrganizerHashtag> data;
+  String? message;
+
+  OrganizerHashtagCollectionModel({
+    this.status,
+    this.data = const [],
+    this.message,
+  });
+
+  factory OrganizerHashtagCollectionModel.fromJson(Map<String, dynamic> json) {
+    final rawData = json["data"];
+    return OrganizerHashtagCollectionModel(
+      status: json["status"],
+      data: rawData is List
+          ? List<OrganizerHashtag>.from(
+              rawData.map((x) => OrganizerHashtag.fromJson(x)))
+          : rawData is Map<String, dynamic>
+              ? [OrganizerHashtag.fromJson(rawData)]
+              : [],
+      message: json["message"],
+    );
+  }
+}
+
+class OrganizerHashtag {
+  int? id;
+  String? name;
+  String? displayName;
+  bool isActive;
+  int eventsCount;
+  String? createdAt;
+  String? updatedAt;
+  RxBool selected = false.obs;
+
+  OrganizerHashtag({
+    this.id,
+    this.name,
+    this.displayName,
+    this.isActive = true,
+    this.eventsCount = 0,
+    this.createdAt,
+    this.updatedAt,
+    bool selected = false,
+  }) : selected = selected.obs;
+
+  factory OrganizerHashtag.fromJson(Map<String, dynamic> json) {
+    return OrganizerHashtag(
+      id: json["id"],
+      name: json["name"],
+      displayName: json["display_name"],
+      isActive: json["is_active"] ?? true,
+      eventsCount: json["events_count"] ?? 0,
+      createdAt: json["created_at"],
+      updatedAt: json["updated_at"],
+    );
+  }
+}
+
 class TagObject {
   int? id;
   String? name;

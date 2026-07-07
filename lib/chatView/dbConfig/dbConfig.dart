@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'initDb.dart';
-  
+
 abstract class DatabaseBaseConfig {
   Future<Database> initDatabase();
 }

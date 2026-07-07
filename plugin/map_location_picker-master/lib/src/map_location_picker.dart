@@ -269,7 +269,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
   /// initial latitude & longitude
   LatLng? _initialPosition;
 
-  Future<void> currentPositionLatLng({LatLng? latLng,String? address}) async {
+  Future<void> currentPositionLatLng({LatLng? latLng, String? address}) async {
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.unableToDetermine ||
         permission == LocationPermission.deniedForever ||
@@ -392,7 +392,6 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
         logger.e(response.errorMessage);
         _address = response.status;
 
-
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -412,7 +411,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
       controller
           .animateCamera(CameraUpdate.newCameraPosition(cameraPosition()));
       _address = response.result.formattedAddress ?? "";
-      if(_initialPosition != null){
+      if (_initialPosition != null) {
         _decodeAddress(Location(
             lat: _initialPosition!.latitude, lng: _initialPosition!.longitude));
       }
@@ -528,13 +527,16 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                   hintStyle: TextStyle(
                                                       color: Colors.white),
                                                   hintText:
-                                                      widget.searchHintText??"Search...",
+                                                      widget.searchHintText ??
+                                                          "Search...",
                                                   border: InputBorder.none,
                                                   filled: true,
                                                   suffixIcon: IconButton(
-                                                    icon:  Icon(
+                                                    icon: Icon(
                                                       Icons.close,
-                                                      color: !widget.isDarkMode?Colors.black:Colors.white,
+                                                      color: !widget.isDarkMode
+                                                          ? Colors.black
+                                                          : Colors.white,
                                                     ),
                                                     onPressed: () async {
                                                       _searchController.clear();
@@ -554,9 +556,12 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                     title: Text(
                                                         continent.description ??
                                                             "",
-                                                        style:  TextStyle(
+                                                        style: TextStyle(
                                                           fontSize: 14,
-                                                          color: widget.isDarkMode?Colors.black:Colors.white,
+                                                          color: widget
+                                                                  .isDarkMode
+                                                              ? Colors.black
+                                                              : Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontFamily:
@@ -586,8 +591,7 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                   );
                                                   return state.results;
                                                 },
-                                                onSelected:
-                                                    (value) async {
+                                                onSelected: (value) async {
                                                   _searchController.selection =
                                                       TextSelection.collapsed(
                                                     offset: _searchController
@@ -597,9 +601,8 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
                                                       value.placeId ?? "");
                                                   setState(() {});
                                                 },
-                                                hideWithKeyboard:
-                                                    widget
-                                                        .hideSuggestionsOnKeyboardHide,
+                                                hideWithKeyboard: widget
+                                                    .hideSuggestionsOnKeyboardHide,
                                               );
                                             },
                                           ),

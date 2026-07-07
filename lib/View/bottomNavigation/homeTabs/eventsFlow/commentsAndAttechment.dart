@@ -257,7 +257,10 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                     MaterialPageRoute(
                       builder: (context) {
                         return MapLocationPicker(
-                          isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
+                          isDarkMode:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? true
+                                  : false,
                           onTappp: () {
                             print(managerController.lat);
                             print(managerController.lng);

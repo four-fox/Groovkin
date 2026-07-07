@@ -72,9 +72,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '682228072753',
     projectId: 'my-groovkin-app',
     storageBucket: 'my-groovkin-app.firebasestorage.app',
-    androidClientId: '682228072753-0thr3a4cgic3g4cg8gc1opl8vud2gu2f.apps.googleusercontent.com',
-    iosClientId: '682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com',
+    androidClientId:
+        '682228072753-0thr3a4cgic3g4cg8gc1opl8vud2gu2f.apps.googleusercontent.com',
+    iosClientId:
+        '682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0.apps.googleusercontent.com',
     iosBundleId: 'com.gologonow.groovkinn',
   );
-
 }

@@ -686,7 +686,8 @@ class ProposedMusicScreen extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, index) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
                               child: Center(
                                 child: Container(
                                   height: 40,

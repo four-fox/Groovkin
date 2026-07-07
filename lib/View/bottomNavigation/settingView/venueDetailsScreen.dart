@@ -37,7 +37,7 @@ class VenueDetailsScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
@@ -59,7 +59,8 @@ class VenueDetailsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 15,
-                    backgroundColor: DynamicColor.grayClr.withValues(alpha:0.3),
+                    backgroundColor:
+                        DynamicColor.grayClr.withValues(alpha: 0.3),
                     child: ImageIcon(
                       const AssetImage("assets/clock2.png"),
                       color: DynamicColor.grayClr,
@@ -89,7 +90,8 @@ class VenueDetailsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 15,
-                    backgroundColor: DynamicColor.grayClr.withValues(alpha:0.3),
+                    backgroundColor:
+                        DynamicColor.grayClr.withValues(alpha: 0.3),
                     child: ImageIcon(
                       const AssetImage("assets/groupIcon.png"),
                       color: DynamicColor.grayClr,
@@ -119,7 +121,8 @@ class VenueDetailsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 15,
-                    backgroundColor: DynamicColor.grayClr.withValues(alpha:0.3),
+                    backgroundColor:
+                        DynamicColor.grayClr.withValues(alpha: 0.3),
                     child: Icon(
                       Icons.location_on_sharp,
                       color: DynamicColor.grayClr,
@@ -144,7 +147,7 @@ class VenueDetailsScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(
@@ -202,7 +205,7 @@ class VenueDetailsScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(
@@ -223,7 +226,8 @@ class VenueDetailsScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 15,
-                    backgroundColor: DynamicColor.grayClr.withValues(alpha:0.3),
+                    backgroundColor:
+                        DynamicColor.grayClr.withValues(alpha: 0.3),
                     child: ImageIcon(
                       const AssetImage('assets/oppositArrow.png'),
                       color: DynamicColor.grayClr,
@@ -247,7 +251,7 @@ class VenueDetailsScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(
@@ -294,7 +298,7 @@ class VenueDetailsScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(
@@ -341,7 +345,7 @@ class VenueDetailsScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(

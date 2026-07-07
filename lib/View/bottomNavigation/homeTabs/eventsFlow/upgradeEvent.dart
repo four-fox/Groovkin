@@ -79,36 +79,6 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
 
-  /// Validates start/end date-time and returns true if we can proceed.
-  bool? _canCreateEvent({
-    required String? startDate,
-    required String? endDate,
-    required String? startTime,
-    required String? endTime,
-  }) {
-    if ((startDate ?? '').isEmpty ||
-        (endDate ?? '').isEmpty ||
-        (startTime ?? '').isEmpty ||
-        (endTime ?? '').isEmpty) {
-      bottomToast(text: 'Field Required!');
-      return null;
-    }
-
-    final fmt = DateFormat('yyyy-MM-dd h:mm a');
-    final start =
-    fmt.parse('$startDate ${startTime!.replaceAll(RegExp(r'\s+'), ' ').trim()}');
-    final end =
-    fmt.parse('$endDate ${endTime!.replaceAll(RegExp(r'\s+'), ' ').trim()}');
-    final now = DateTime.now();
-
-    if (now.isAfter(start) && now.isBefore(end)) {
-      bottomToast(text: 'Event is already running!');
-      return false;
-    }
-
-    return true;
-  }
-
   void _onBack() {
     _eventController
       ..duplicateValue.value = false
@@ -121,8 +91,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
   }
 
   /// Opens a styled date picker and returns the picked [DateTime] or null.
-  Future<DateTime?> _pickDate(BuildContext context) =>
-      showDatePicker(
+  Future<DateTime?> _pickDate(BuildContext context) => showDatePicker(
         context: context,
         initialEntryMode: DatePickerEntryMode.calendarOnly,
         initialDate: DateTime.now(),
@@ -147,8 +116,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
       );
 
   /// Opens a styled time picker and returns the picked [TimeOfDay] or null.
-  Future<TimeOfDay?> _pickTime(BuildContext context) =>
-      showTimePicker(
+  Future<TimeOfDay?> _pickTime(BuildContext context) => showTimePicker(
         context: context,
         initialEntryMode: TimePickerEntryMode.dial,
         initialTime: TimeOfDay.fromDateTime(DateTime.now()),
@@ -268,8 +236,9 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     _DateField(
                       controller: controller.eventDateController,
                       label: 'Start Date',
-                      validator: (v) =>
-                      (v == null || v.isEmpty) ? 'Please enter start date' : null,
+                      validator: (v) => (v == null || v.isEmpty)
+                          ? 'Please enter start date'
+                          : null,
                       onPick: () async {
                         final picked = await _pickDate(context);
                         if (picked != null) {
@@ -285,14 +254,16 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     _DateField(
                       controller: controller.eventEndDateController,
                       label: 'End Date',
-                      validator: (v) =>
-                      (v == null || v.isEmpty) ? 'Please enter end date' : null,
+                      validator: (v) => (v == null || v.isEmpty)
+                          ? 'Please enter end date'
+                          : null,
                       onPick: () async {
                         final picked = await _pickDate(context);
                         if (picked != null) {
                           controller.eventEndDateController.text =
                               _displayDateFormat.format(picked);
-                          controller.endDatePost = _postDateFormat.format(picked);
+                          controller.endDatePost =
+                              _postDateFormat.format(picked);
                         }
                       },
                     ),
@@ -309,7 +280,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           final selected = _timeOfDayToDateTime(time);
                           controller.proposedTimeWindowsController.text =
                               _displayTimeFormat.format(selected);
-                          controller.postTime = _postTimeFormat.format(selected);
+                          controller.postTime =
+                              _postTimeFormat.format(selected);
                         }
                       },
                     ),
@@ -326,7 +298,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                           final selected = _timeOfDayToDateTime(time);
                           controller.endTimeController.text =
                               _displayTimeFormat.format(selected);
-                          controller.postEndTime = _postTimeFormat.format(selected);
+                          controller.postEndTime =
+                              _postTimeFormat.format(selected);
                         }
                       },
                     ),
@@ -341,7 +314,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                     _buildTextField(
                       theme: theme,
                       labelText:
-                      '${controller.rateType!.value.capitalize} Rate',
+                          '${controller.rateType!.value.capitalize} Rate',
                       keyBoardType: true,
                       error: '${controller.rateType!.value} rate',
                       controller: controller.hourlyRateController,
@@ -378,7 +351,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                             ],
                             onChanged: (value) {
                               controller.paymentSchedule!.value =
-                              value.isEmpty ? '0' : value;
+                                  value.isEmpty ? '0' : value;
                               controller.update();
                             },
                           ),
@@ -508,16 +481,14 @@ class _BannerPicker extends StatelessWidget {
           );
         }
 
-        final networkImage =
-        (eventController.duplicateValue.value == false &&
-            eventController.eventDetail?.data?.bannerImage?.mediaPath !=
-                null)
+        final networkImage = (eventController.duplicateValue.value == false &&
+                eventController.eventDetail?.data?.bannerImage?.mediaPath !=
+                    null)
             ? DecorationImage(
-          image: NetworkImage(
-            eventController.eventDetail!.data!.bannerImage!
-                .mediaPath!,
-          ),
-        )
+                image: NetworkImage(
+                  eventController.eventDetail!.data!.bannerImage!.mediaPath!,
+                ),
+              )
             : null;
 
         return Container(
@@ -529,12 +500,12 @@ class _BannerPicker extends StatelessWidget {
             image: networkImage,
           ),
           child: (authController.imageBytes != null &&
-              eventController.eventDetail?.data?.bannerImage != null)
+                  eventController.eventDetail?.data?.bannerImage != null)
               ? const SizedBox.shrink()
               : ImageIcon(
-            const AssetImage('assets/imageUploadIcon.png'),
-            color: DynamicColor.yellowClr,
-          ),
+                  const AssetImage('assets/imageUploadIcon.png'),
+                  color: DynamicColor.yellowClr,
+                ),
         );
       }),
     );
@@ -572,7 +543,7 @@ class _DateField extends StatelessWidget {
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
       borderSide:
-      BorderSide(color: DynamicColor.grayClr.withValues(alpha: 0.6)),
+          BorderSide(color: DynamicColor.grayClr.withValues(alpha: 0.6)),
     );
     return InputDecoration(
       focusedBorder: border,
@@ -626,8 +597,7 @@ class _TimeField extends StatelessWidget {
           label,
           style: TextStyle(color: DynamicColor.whiteClr),
         ),
-        labelStyle:
-        TextStyle(fontSize: 14, color: DynamicColor.whiteClr),
+        labelStyle: TextStyle(fontSize: 14, color: DynamicColor.whiteClr),
         suffixIcon: const Icon(Icons.access_time_rounded, color: Colors.white),
       ),
       // onShowPicker is required by DateTimeField but the actual picking is
@@ -661,11 +631,19 @@ class _RateRadio extends StatelessWidget {
 
   @override
   Widget build(BuildContext _) {
-    return Column(
-      children: [
-        _radioRow(label: 'Hourly Rate', value: 0, type: 'hourly', height: 40),
-        _radioRow(label: 'Flat Fee', value: 1, type: 'flat', height: 30),
-      ],
+    return RadioGroup<int>(
+      groupValue: controller.eventRateHourly.value,
+      onChanged: (value) {
+        if (value == null) return;
+        final type = value == 0 ? 'hourly' : 'flat';
+        _select(type, value);
+      },
+      child: Column(
+        children: [
+          _radioRow(label: 'Hourly Rate', value: 0, type: 'hourly', height: 40),
+          _radioRow(label: 'Flat Fee', value: 1, type: 'flat', height: 30),
+        ],
+      ),
     );
   }
 
@@ -688,8 +666,6 @@ class _RateRadio extends StatelessWidget {
                 child: Radio<int>(
                   activeColor: DynamicColor.yellowClr,
                   value: value,
-                  groupValue: controller.eventRateHourly.value,
-                  onChanged: (_) => _select(type, value),
                 ),
               ),
             ),

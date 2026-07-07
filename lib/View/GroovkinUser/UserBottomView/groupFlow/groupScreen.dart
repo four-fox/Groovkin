@@ -109,7 +109,7 @@ class CreateNewGroup extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 17,
-                  backgroundColor: DynamicColor.grayClr.withValues(alpha:0.6),
+                  backgroundColor: DynamicColor.grayClr.withValues(alpha: 0.6),
                   child: Theme(
                     data: Theme.of(context).copyWith(
                       unselectedWidgetColor: Colors.white,
@@ -186,8 +186,8 @@ class CreateNewGroup extends StatelessWidget {
                                   const Spacer(),
                                   CircleAvatar(
                                     radius: 17,
-                                    backgroundColor:
-                                        DynamicColor.grayClr.withValues(alpha:0.6),
+                                    backgroundColor: DynamicColor.grayClr
+                                        .withValues(alpha: 0.6),
                                     child: Theme(
                                       data: Theme.of(context).copyWith(
                                         unselectedWidgetColor: Colors.white,
@@ -345,7 +345,8 @@ class ViewCreatedGroup extends StatelessWidget {
             child: Text(
               "Participants 3  ",
               style: poppinsRegularStyle(
-                  fontSize: 13, color: theme.primaryColor.withValues(alpha:0.5)),
+                  fontSize: 13,
+                  color: theme.primaryColor.withValues(alpha: 0.5)),
             ),
           ),
           const SizedBox(
@@ -388,11 +389,12 @@ class ViewCreatedGroup extends StatelessWidget {
                           CircleAvatar(
                               radius: 15,
                               backgroundColor:
-                                  DynamicColor.grayClr.withValues(alpha:0.4),
+                                  DynamicColor.grayClr.withValues(alpha: 0.4),
                               child: Icon(
                                 Icons.clear,
                                 size: 20,
-                                color: theme.primaryColor.withValues(alpha:0.7),
+                                color:
+                                    theme.primaryColor.withValues(alpha: 0.7),
                               ))
                         ],
                       ),

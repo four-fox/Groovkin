@@ -320,16 +320,6 @@ class _CountryStateCityPickerState extends State<CountryStateCityPicker> {
     );
   }
 
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        behavior: SnackBarBehavior.floating,
-        content: Text(message,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.black, fontSize: 16.0))));
-  }
-
   InputDecoration defaultDecoration = const InputDecoration(
       isDense: true,
       hintText: 'Select',

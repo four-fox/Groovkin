@@ -55,8 +55,7 @@ class PhoneNumberTest {
   }
 
   String parseNumber() {
-    return phoneNumber!
-        .replaceAll(RegExp('^([\\+]?$dialCode[\\s]?)'), '');
+    return phoneNumber!.replaceAll(RegExp('^([\\+]?$dialCode[\\s]?)'), '');
   }
 
   static String? getISO2CodeByPrefix(String prefix) {

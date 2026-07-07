@@ -44,7 +44,6 @@ import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
-import 'package:image_cropper_platform_interface/image_cropper_platform_interface.dart';
 
 enum ChangeRole { user, organizer, manager }
 
@@ -155,8 +154,7 @@ class AuthController extends GetxController {
       "signup_platform": signUpPlatform,
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
-      "device_token":
-          token ?? "t1234o560k973e21nmnkljh7vbfg8c4xs5da0zq8ewr6tuy9ipo",
+      "device_token": token,
       "zip_code": zipController.text,
       "instagram_link": instagramController.text,
       "twitter_link": twitterXController.text,
@@ -517,7 +515,6 @@ class AuthController extends GetxController {
           // aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 4),
         );
         if (file != null) {
-
           await imageValidator(file.path);
         }
       } else {
@@ -557,7 +554,8 @@ class AuthController extends GetxController {
   imageValidator(String img) async {
     final formData =
         form.FormData.fromMap({"banner_image": multiPartingImage(img)});
-    final response = await API().imagePostApi(formData, "validate-event-banner");
+    final response =
+        await API().imagePostApi(formData, "validate-event-banner");
     if (response.statusCode == 200) {
       imageBytes = img;
       imageLoaders(true);
@@ -1370,7 +1368,9 @@ class AuthController extends GetxController {
     } // If we reach here, we have permission
 
     geo.Position position = await geo.Geolocator.getCurrentPosition(
-      desiredAccuracy: geo.LocationAccuracy.high,
+      locationSettings: const geo.LocationSettings(
+        accuracy: geo.LocationAccuracy.high,
+      ),
     );
 
     this.position = position;
@@ -2167,9 +2167,8 @@ class AuthController extends GetxController {
     // Optional: log in with RevenueCat userId
     await Purchases.logIn(customerInfo.originalAppUserId);
     // Send to your API
-    final data = form.FormData();
-    data.fields.add(MapEntry("id", planType.toString()));
 
+    final data = {"id": planType};
     final response = await API().postApi(data, "subscription");
     if (response.statusCode == 200) {
       BotToast.showText(text: "Subscription Purchased");

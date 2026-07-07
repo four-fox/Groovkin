@@ -50,11 +50,13 @@ class VenueScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: DynamicColor.grayClr.withValues(alpha:0.6,)),
+                                color: DynamicColor.grayClr.withValues(
+                              alpha: 0.6,
+                            )),
                             borderRadius: BorderRadius.circular(8)),
                         child: ImageIcon(
                           const AssetImage("assets/filterIcons.png"),
-                          color: DynamicColor.grayClr.withValues(alpha:0.6),
+                          color: DynamicColor.grayClr.withValues(alpha: 0.6),
                         ),
                       ),
                     )
@@ -111,7 +113,10 @@ class DiscoverView extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     return MapLocationPicker(
-                      isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
+                      isDarkMode:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? true
+                              : false,
 
                       hideLocation: true,
                       // lat: double.parse(eventData.latitude.toString()),
@@ -195,7 +200,7 @@ class DiscoverView extends StatelessWidget {
                     list[index].subtitle.toString(),
                     style: poppinsRegularStyle(
                         fontSize: 14,
-                        color: theme.primaryColor.withValues(alpha:0.5),
+                        color: theme.primaryColor.withValues(alpha: 0.5),
                         context: context),
                   ),
                 ),

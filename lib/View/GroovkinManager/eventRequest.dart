@@ -84,7 +84,6 @@ class _EventRequestsState extends State<EventRequests> {
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Column(
                                   children: [
-
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10.0),
@@ -99,7 +98,6 @@ class _EventRequestsState extends State<EventRequests> {
                                         ),
                                       ),
                                     ),
-
                                     if (data.startDateTime != null ||
                                         data.endDateTime != null)
                                       eventDateTime(
@@ -113,11 +111,9 @@ class _EventRequestsState extends State<EventRequests> {
                                         textClr: DynamicColor.lightRedClr,
                                         widths: Get.width / 1.4,
                                       ),
-
                                     const SizedBox(
                                       height: 4,
                                     ),
-
                                     if (data.startDateTime != null)
                                       eventDateTime(
                                         context: context,
@@ -131,11 +127,9 @@ class _EventRequestsState extends State<EventRequests> {
                                         textClr: DynamicColor.lightRedClr,
                                         widths: Get.width / 1.4,
                                       ),
-
                                     const SizedBox(
                                       height: 4,
                                     ),
-
                                     eventDateTime(
                                       context: context,
                                       iconBgClr: DynamicColor.darkGrayClr,
@@ -148,12 +142,10 @@ class _EventRequestsState extends State<EventRequests> {
                                       textClr: DynamicColor.lightRedClr,
                                       widths: Get.width / 1.4,
                                     ),
-
                                     Divider(
                                       thickness: 2,
                                       color: DynamicColor.avatarBgClr,
                                     ),
-
                                     GetBuilder<AuthController>(
                                         builder: (contr) {
                                       return ourGuestWidget(
@@ -211,7 +203,6 @@ class _EventRequestsState extends State<EventRequests> {
                                         },
                                       );
                                     }),
-                                    
                                   ],
                                 ),
                               ),

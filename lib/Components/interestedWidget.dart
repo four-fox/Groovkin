@@ -10,7 +10,7 @@ interestedWidget({theme, context, text, double? height}) {
       width: 160,
       // padding: EdgeInsets.symmetric(horizontal: 8,vertical: 10),
       decoration: BoxDecoration(
-        color: DynamicColor.lightBlackClr.withValues(alpha:0.8),
+        color: DynamicColor.lightBlackClr.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(

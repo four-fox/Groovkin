@@ -39,7 +39,7 @@ class EventsListModel {
       };
 }
 
-class Data {  
+class Data {
   int? currentPage;
   List<EventData> data;
   String? firstPageUrl;
@@ -93,8 +93,7 @@ class Data {
 
   Map<String, dynamic> toJson() => {
         "current_page": currentPage,
-        "data":
-            data == null ? [] : List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "first_page_url": firstPageUrl,
         "from": from,
         "last_page": lastPage,
@@ -149,6 +148,7 @@ class EventData {
   List<MusicGenre>? musicGenre;
   List<EventMusicChoiceTag>? eventMusicChoiceTags;
   List<EventMusicChoiceTag>? eventActivityChoiceTags;
+  List<EventHashtag>? hashtags;
 
   EventData({
     this.id,
@@ -186,6 +186,7 @@ class EventData {
     this.musicGenre,
     this.eventMusicChoiceTags,
     this.eventActivityChoiceTags,
+    this.hashtags,
   });
 
   factory EventData.fromJson(Map<String, dynamic> json) => EventData(
@@ -248,6 +249,10 @@ class EventData {
             ? []
             : List<EventMusicChoiceTag>.from(json["eventActivityChoiceTags"]!
                 .map((x) => EventMusicChoiceTag.fromJson(x))),
+        hashtags: json["hashtags"] == null
+            ? []
+            : List<EventHashtag>.from(
+                json["hashtags"]!.map((x) => EventHashtag.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -295,6 +300,33 @@ class EventData {
         "event_activity_choice_tags": eventActivityChoiceTags == null
             ? []
             : List<dynamic>.from(eventActivityChoiceTags!.map((x) => x)),
+        "hashtags": hashtags == null
+            ? []
+            : List<dynamic>.from(hashtags!.map((x) => x.toJson())),
+      };
+}
+
+class EventHashtag {
+  int? id;
+  String? name;
+  String? displayName;
+
+  EventHashtag({
+    this.id,
+    this.name,
+    this.displayName,
+  });
+
+  factory EventHashtag.fromJson(Map<String, dynamic> json) => EventHashtag(
+        id: json["id"],
+        name: json["name"],
+        displayName: json["display_name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "display_name": displayName,
       };
 }
 

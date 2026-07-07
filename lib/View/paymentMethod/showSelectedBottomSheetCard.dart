@@ -95,50 +95,50 @@ class _ShowselectedbottomsheetcardState
 
             GetBuilder<ManagerController>(builder: (managerController) {
               return Flexible(
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: controller.transactionData.length,
-                  separatorBuilder: (_, __) => SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final data = controller.transactionData[index];
-                    return Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: managerController.selectedCardId == data.id
-                                ? DynamicColor.yellowClr
-                                : Colors.grey,
-                            width: 1.5),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "${data.first4digit} **** **** ${data.last4digit}",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white),
-                          ),
-                          Radio<int>.adaptive(
-                            value: data.id!,
-
-                            groupValue: managerController.selectedCardId,
-                            activeColor: DynamicColor.yellowClr,
-                            onChanged: (value) {
-                              managerController.selectedCardId = value;
-                              managerController.update();
-                              // ✅ close bottom sheet and return true
-                              Navigator.pop(context, true);
-                            },
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                          )
-                        ],
-                      ),
-                    );
+                child: RadioGroup<int>(
+                  groupValue: managerController.selectedCardId,
+                  onChanged: (value) {
+                    managerController.selectedCardId = value;
+                    managerController.update();
+                    Navigator.pop(context, true);
                   },
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: controller.transactionData.length,
+                    separatorBuilder: (_, __) => SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final data = controller.transactionData[index];
+                      return Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: managerController.selectedCardId == data.id
+                                  ? DynamicColor.yellowClr
+                                  : Colors.grey,
+                              width: 1.5),
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${data.first4digit} **** **** ${data.last4digit}",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white),
+                            ),
+                            Radio<int>.adaptive(
+                              value: data.id!,
+                              activeColor: DynamicColor.yellowClr,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               );
             }),

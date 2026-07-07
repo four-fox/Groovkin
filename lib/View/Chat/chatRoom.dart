@@ -49,7 +49,8 @@ class ChatRoom extends StatelessWidget {
                             style: poppinsMediumStyle(
                               fontSize: 10,
                               context: context,
-                              color: DynamicColor.grayClr.withValues(alpha:0.9),
+                              color:
+                                  DynamicColor.grayClr.withValues(alpha: 0.9),
                             ),
                           ),
                           RichText(

@@ -20,7 +20,6 @@ class LoginSelection extends StatefulWidget {
 }
 
 class _LoginSelectionState extends State<LoginSelection> {
-
   final AuthController authController = Get.find();
 
   @override
@@ -165,7 +164,6 @@ class _LoginSelectionState extends State<LoginSelection> {
                               authController.confirmPasswordController.clear();
                               API().sp.write("emailSocial", null);
                               Get.toNamed(Routes.loginOrSignUpScreen);
-
                             },
                             text: "Register as Event Organizer",
                           ),
@@ -185,7 +183,6 @@ class _LoginSelectionState extends State<LoginSelection> {
                               authController.confirmPasswordController.clear();
                               API().sp.write("emailSocial", null);
                               Get.toNamed(Routes.loginOrSignUpScreen);
-
                             },
                           ),
                           const SizedBox(

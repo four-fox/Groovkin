@@ -305,7 +305,7 @@ class User {
         profilePicture: json["profile_picture"] == null
             ? null
             : ProfilePicture.fromJson(json["profile_picture"]),
-            deleteAt: json["deleted_at"],
+        deleteAt: json["deleted_at"],
       );
 
   Map<String, dynamic> toJson() => {

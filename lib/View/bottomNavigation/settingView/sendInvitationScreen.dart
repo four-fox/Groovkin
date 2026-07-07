@@ -31,7 +31,7 @@ class SendInvitationScreen extends StatelessWidget {
               ),
               CircleAvatar(
                 radius: 40,
-                backgroundColor: DynamicColor.greenClr.withValues(alpha:0.3),
+                backgroundColor: DynamicColor.greenClr.withValues(alpha: 0.3),
                 child: CircleAvatar(
                   radius: 30,
                   backgroundColor: DynamicColor.greenClr,

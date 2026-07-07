@@ -117,8 +117,8 @@ class TheSquadScreen extends StatelessWidget {
                                 Align(
                                     alignment: Alignment.topRight,
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8, top: 8),
+                                      padding: const EdgeInsets.only(
+                                          right: 8, top: 8),
                                       child: eventDateWidget(
                                           theme: theme, context: context),
                                     )),
@@ -139,7 +139,8 @@ class TheSquadScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 8.0, bottom: 6),
+                            padding:
+                                const EdgeInsets.only(left: 8.0, bottom: 6),
                             child: Text(
                               "The Burning Cactus",
                               style: poppinsRegularStyle(

@@ -1,6 +1,3 @@
-
-
-
 // To parse this JSON data, do
 //
 //     final chatModel = chatModelFromJson(jsonString);
@@ -27,16 +24,16 @@ class ChatModel {
   });
 
   factory ChatModel.fromJson(Map<String, dynamic> json) => ChatModel(
-    status: json["status"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    message: json["message"],
-  );
+        status: json["status"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "data": data?.toJson(),
-    "message": message,
-  };
+        "status": status,
+        "data": data?.toJson(),
+        "message": message,
+      };
 }
 
 class Data {
@@ -71,36 +68,45 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    currentPage: json["current_page"],
-    data: json["data"] == null ? [] : List<MessageItem>.from(json["data"]!.map((x) => MessageItem.fromJson(x))),
-    firstPageUrl: json["first_page_url"],
-    from: json["from"],
-    lastPage: json["last_page"],
-    lastPageUrl: json["last_page_url"],
-    links: json["links"] == null ? [] : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
-    nextPageUrl: json["next_page_url"],
-    path: json["path"],
-    perPage: json["per_page"],
-    prevPageUrl: json["prev_page_url"],
-    to: json["to"],
-    total: json["total"],
-  );
+        currentPage: json["current_page"],
+        data: json["data"] == null
+            ? []
+            : List<MessageItem>.from(
+                json["data"]!.map((x) => MessageItem.fromJson(x))),
+        firstPageUrl: json["first_page_url"],
+        from: json["from"],
+        lastPage: json["last_page"],
+        lastPageUrl: json["last_page_url"],
+        links: json["links"] == null
+            ? []
+            : List<Link>.from(json["links"]!.map((x) => Link.fromJson(x))),
+        nextPageUrl: json["next_page_url"],
+        path: json["path"],
+        perPage: json["per_page"],
+        prevPageUrl: json["prev_page_url"],
+        to: json["to"],
+        total: json["total"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "current_page": currentPage,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-    "first_page_url": firstPageUrl,
-    "from": from,
-    "last_page": lastPage,
-    "last_page_url": lastPageUrl,
-    "links": links == null ? [] : List<dynamic>.from(links!.map((x) => x.toJson())),
-    "next_page_url": nextPageUrl,
-    "path": path,
-    "per_page": perPage,
-    "prev_page_url": prevPageUrl,
-    "to": to,
-    "total": total,
-  };
+        "current_page": currentPage,
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "first_page_url": firstPageUrl,
+        "from": from,
+        "last_page": lastPage,
+        "last_page_url": lastPageUrl,
+        "links": links == null
+            ? []
+            : List<dynamic>.from(links!.map((x) => x.toJson())),
+        "next_page_url": nextPageUrl,
+        "path": path,
+        "per_page": perPage,
+        "prev_page_url": prevPageUrl,
+        "to": to,
+        "total": total,
+      };
 }
 
 class MessageItem {
@@ -149,51 +155,56 @@ class MessageItem {
   });
 
   factory MessageItem.fromJson(Map<String, dynamic> json) => MessageItem(
-    id: json["id"],
-    senderId: json["sender_id"],
-    receiverId: json["receiver_id"],
-    sourceId: json["source_id"],
-    parentId: json["parent_id"],
-    conversationId: json["conversation_id"],
-    msg: json["msg"],
-    media: json["media"] == null ? [] : List<Media>.from(json["media"]!.map((x) => Media.fromJson(x))),
-    fileType: json["file_type"],
-    reply: json["reply"],
-    deleteBy: json["delete_by"],
-    isDeleted: json["is_deleted"],
-    isSeen: json["is_seen"],
-    isEventRequest: json["is_event_request"],
-    eventRequestAccepted: json["event_request_accepted"],
-    flaggedBy: json["flagged_by"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-    parentChat: json["parent_chat"],
-  );
+        id: json["id"],
+        senderId: json["sender_id"],
+        receiverId: json["receiver_id"],
+        sourceId: json["source_id"],
+        parentId: json["parent_id"],
+        conversationId: json["conversation_id"],
+        msg: json["msg"],
+        media: json["media"] == null
+            ? []
+            : List<Media>.from(json["media"]!.map((x) => Media.fromJson(x))),
+        fileType: json["file_type"],
+        reply: json["reply"],
+        deleteBy: json["delete_by"],
+        isDeleted: json["is_deleted"],
+        isSeen: json["is_seen"],
+        isEventRequest: json["is_event_request"],
+        eventRequestAccepted: json["event_request_accepted"],
+        flaggedBy: json["flagged_by"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        parentChat: json["parent_chat"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "sender_id": senderId,
-    "receiver_id": receiverId,
-    "source_id": sourceId,
-    "parent_id": parentId,
-    "conversation_id": conversationId,
-    "msg": msg,
-    "media": media == null ? [] : List<dynamic>.from(media!.map((x) => x.toJson())),
-    "file_type": fileType,
-    "reply": reply,
-    "delete_by": deleteBy,
-    "is_deleted": isDeleted,
-    "is_seen": isSeen,
-    "is_event_request": isEventRequest,
-    "event_request_accepted": eventRequestAccepted,
-    "flagged_by": flaggedBy,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "user": user?.toJson(),
-    "parent_chat": parentChat,
-  };
+        "id": id,
+        "sender_id": senderId,
+        "receiver_id": receiverId,
+        "source_id": sourceId,
+        "parent_id": parentId,
+        "conversation_id": conversationId,
+        "msg": msg,
+        "media": media == null
+            ? []
+            : List<dynamic>.from(media!.map((x) => x.toJson())),
+        "file_type": fileType,
+        "reply": reply,
+        "delete_by": deleteBy,
+        "is_deleted": isDeleted,
+        "is_seen": isSeen,
+        "is_event_request": isEventRequest,
+        "event_request_accepted": eventRequestAccepted,
+        "flagged_by": flaggedBy,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "user": user?.toJson(),
+        "parent_chat": parentChat,
+      };
 }
+
 class Media {
   String? fileType;
   String? filename;
@@ -204,14 +215,14 @@ class Media {
   });
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
-    fileType: json["file_type"],
-    filename:Url().imageUrl+ json["filename"],
-  );
+        fileType: json["file_type"],
+        filename: Url().imageUrl + json["filename"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "file_type": fileType,
-    "filename": filename,
-  };
+        "file_type": fileType,
+        "filename": filename,
+      };
 }
 
 class EventRequest {
@@ -272,62 +283,66 @@ class EventRequest {
   });
 
   factory EventRequest.fromJson(Map<String, dynamic> json) => EventRequest(
-    id: json["id"],
-    eventTitle: json["event_title"],
-    featuring: json["featuring"],
-    about: json["about"],
-    themeOfEvent: json["theme_of_event"],
-    startDateTime: json["start_date_time"] == null ? null : DateTime.parse(json["start_date_time"]),
-    endDateTime: json["end_date_time"] == null ? null : DateTime.parse(json["end_date_time"]),
-    maxCapacity: json["max_capacity"],
-    rate: json["rate"],
-    downPayment: json["down_payment"],
-    balanceDue: json["balance_due"],
-    totalAmount: json["total_amount"],
-    rateType: json["rate_type"],
-    paymentSchedule: json["payment_schedule"],
-    comment: json["comment"],
-    location: json["location"],
-    latitude: json["latitude"],
-    longitude: json["longitude"],
-    description: json["description"],
-    userId: json["user_id"],
-    venueId: json["venue_id"],
-    acceptedBy: json["accepted_by"],
-    parentId: json["parent_id"],
-    status: json["status"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        eventTitle: json["event_title"],
+        featuring: json["featuring"],
+        about: json["about"],
+        themeOfEvent: json["theme_of_event"],
+        startDateTime: json["start_date_time"] == null
+            ? null
+            : DateTime.parse(json["start_date_time"]),
+        endDateTime: json["end_date_time"] == null
+            ? null
+            : DateTime.parse(json["end_date_time"]),
+        maxCapacity: json["max_capacity"],
+        rate: json["rate"],
+        downPayment: json["down_payment"],
+        balanceDue: json["balance_due"],
+        totalAmount: json["total_amount"],
+        rateType: json["rate_type"],
+        paymentSchedule: json["payment_schedule"],
+        comment: json["comment"],
+        location: json["location"],
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        description: json["description"],
+        userId: json["user_id"],
+        venueId: json["venue_id"],
+        acceptedBy: json["accepted_by"],
+        parentId: json["parent_id"],
+        status: json["status"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "event_title": eventTitle,
-    "featuring": featuring,
-    "about": about,
-    "theme_of_event": themeOfEvent,
-    "start_date_time": startDateTime?.toIso8601String(),
-    "end_date_time": endDateTime?.toIso8601String(),
-    "max_capacity": maxCapacity,
-    "rate": rate,
-    "down_payment": downPayment,
-    "balance_due": balanceDue,
-    "total_amount": totalAmount,
-    "rate_type": rateType,
-    "payment_schedule": paymentSchedule,
-    "comment": comment,
-    "location": location,
-    "latitude": latitude,
-    "longitude": longitude,
-    "description": description,
-    "user_id": userId,
-    "venue_id": venueId,
-    "accepted_by": acceptedBy,
-    "parent_id": parentId,
-    "status": status,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "event_title": eventTitle,
+        "featuring": featuring,
+        "about": about,
+        "theme_of_event": themeOfEvent,
+        "start_date_time": startDateTime?.toIso8601String(),
+        "end_date_time": endDateTime?.toIso8601String(),
+        "max_capacity": maxCapacity,
+        "rate": rate,
+        "down_payment": downPayment,
+        "balance_due": balanceDue,
+        "total_amount": totalAmount,
+        "rate_type": rateType,
+        "payment_schedule": paymentSchedule,
+        "comment": comment,
+        "location": location,
+        "latitude": latitude,
+        "longitude": longitude,
+        "description": description,
+        "user_id": userId,
+        "venue_id": venueId,
+        "accepted_by": acceptedBy,
+        "parent_id": parentId,
+        "status": status,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }
 
 class User {
@@ -352,24 +367,24 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    deviceToken: json["device_token"],
-    emailVerifiedAt: json["email_verified_at"],
-    otp: json["otp"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        deviceToken: json["device_token"],
+        emailVerifiedAt: json["email_verified_at"],
+        otp: json["otp"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "device_token": deviceToken,
-    "email_verified_at": emailVerifiedAt,
-    "otp": otp,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "name": name,
+        "email": email,
+        "device_token": deviceToken,
+        "email_verified_at": emailVerifiedAt,
+        "otp": otp,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }

@@ -23,6 +23,8 @@ import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart' as form;
 
+import 'hashtagCollectionModel.dart';
+import 'hashtagCollectionRepository.dart';
 import 'ongoingEvents/ongoingEventsModel.dart';
 
 class EventController extends GetxController {
@@ -49,6 +51,8 @@ class EventController extends GetxController {
       homeController = Get.put(HomeController());
     }
   }
+
+
 
   ///quick survey condition Value
 
@@ -181,113 +185,227 @@ class EventController extends GetxController {
     }
   }
 
+  final HashtagCollectionRepository hashtagCollectionRepository =
+      HashtagCollectionRepository();
+  final manualHashtagController = TextEditingController();
   RxBool getMusicHashTagLoader = true.obs;
+  RxBool getMyTagCollectionLoader = true.obs;
+  RxBool getTagCollectionDetails = true.obs;
+  RxBool addTagCollectionLoading = true.obs;
+  RxBool removeTagCollectionLoading = true.obs;
+  String? hashtagCollectionError;
+  List<HashtagCollection> organizerCollections = [];
+  List<HashtagCollection> selectedOrganizerCollections = [];
+  HashtagCollection? tagCollectionDetail;
+  List<String> manualHashtags = [];
+  bool manualHashtagsChanged = false;
+  bool collectionSelectionChanged = false;
+
+  List<HashtagCollection> get activeOrganizerCollections =>
+      organizerCollections.where((element) => element.isActive).toList();
+
+  bool get hasOrganizerHashtagSource =>
+      manualHashtags.isNotEmpty || selectedOrganizerCollections.isNotEmpty;
+
+  List<int> get selectedCollectionIds => selectedOrganizerCollections
+      .map((collection) => collection.id)
+      .whereType<int>()
+      .toList();
+
   getHashtagCollectionApi({type}) async {
+    await getEventTagCollection(type: type);
+  }
+
+  getEventTagCollection({type}) async {
     try {
+      getMyTagCollectionLoader(false);
       getMusicHashTagLoader(false);
-      var response = await API().getApi(url: "my-tags-collection?type=$type");
-      if (response.statusCode == 200) {
-        tagListPost.clear();
-        tagList.clear();
-        tagList.addAll(MusicTagModel.fromJson(response.data).data!);
-      }
+      hashtagCollectionError = null;
+      organizerCollections =
+          await hashtagCollectionRepository.getHashtagCollections(type: type);
+      _bindSelectedCollectionsFromEventIfNeeded();
     } catch (e) {
-      getMusicHashTagLoader(true);
+      hashtagCollectionError = e.toString();
     }
+    getMyTagCollectionLoader(true);
     getMusicHashTagLoader(true);
     update();
   }
 
-  RxBool getMyTagCollectionLoader = true.obs;
-
-  List<String> selectedTagIds = [];
-  List<String> addedTagIds = [];
-  List<String> deletedTagIds = [];
-  MusicTagModel? tagCollectionList;
-  getEventTagCollection({type}) async {
-    try {
-      getMyTagCollectionLoader(false);
-      final response = await API().getApi(url: "event-tags?type=${type}");
-      if (response.statusCode == 200) {
-        tagCollectionList = MusicTagModel.fromJson(response.data);
-      }
-      selectedTagIds.clear();
-
-      for (var collection in tagCollectionList!.data!) {
-        for (var item in collection.categoryItems ?? []) {
-          if (item.status == 1) {
-            selectedTagIds.add(item.id.toString());
-            item.selected?.value = true;
-          } else {
-            item.selected?.value = false;
-          }
-        }
-      }
-    } catch (e) {
-      getMyTagCollectionLoader(true);
-    }
-    getMyTagCollectionLoader(true);
-    update();
-  }
-
-  MusicTagModel? tagCollectionDetail;
-  RxBool getTagCollectionDetails = true.obs;
   getEventTagDetail({id}) async {
+    if (id == null) return;
     try {
       getTagCollectionDetails(false);
-      final response = await API().getApi(url: "my-tags-collection-by-id/$id");
-      if (response.statusCode == 200) {
-        tagCollectionDetail = MusicTagModel.fromJson(response.data);
-      }
+      hashtagCollectionError = null;
+      tagCollectionDetail =
+          await hashtagCollectionRepository.getHashtagCollection(id);
     } catch (e) {
-      getTagCollectionDetails(true);
+      hashtagCollectionError = e.toString();
+      tagCollectionDetail = null;
     }
     getTagCollectionDetails(true);
     update();
   }
 
-  RxBool addTagCollectionLoading = true.obs;
-  addTagCollection({type}) async {
+  addTagCollection({
+    String? title,
+    String? name,
+    String? hashtagsText,
+    List<String>? hashtags,
+    int? collectionId,
+    int? hashtagId,
+    String type = 'music_choice',
+  }) async {
+    final collectionTitle = (title ?? name ?? '').trim();
+    final tagItems = hashtags ?? parseHashtagText(hashtagsText ?? '');
+    final error = validateCollectionForm(
+      title: collectionTitle,
+      type: type,
+      hashtags: tagItems,
+    );
+    if (error != null) {
+      BotToast.showText(text: error);
+      return;
+    }
+
     try {
       addTagCollectionLoading(false);
-
-      final formData = form.FormData();
-
-      for (var tagIds in addedTagIds) {
-        formData.fields
-            .add(MapEntry("event_tag_item_ids[]", tagIds.toString()));
+      hashtagCollectionError = null;
+      final saved = collectionId != null || hashtagId != null
+          ? await hashtagCollectionRepository.updateHashtagCollection(
+              UpdateHashtagCollectionRequest(
+                collectionId: collectionId ?? hashtagId!,
+                title: collectionTitle,
+                type: type,
+                hashtags: tagItems,
+              ),
+            )
+          : await hashtagCollectionRepository.createHashtagCollection(
+              CreateHashtagCollectionRequest(
+                title: collectionTitle,
+                type: type,
+                hashtags: tagItems,
+              ),
+            );
+      await getEventTagCollection();
+      if (!selectedOrganizerCollections.any((c) => c.id == saved.id)) {
+        selectedOrganizerCollections.add(saved);
+        collectionSelectionChanged = true;
       }
-
-      final response =
-          await API().postApi(formData, "add-tag-collection?type=${type}");
-      if (response. statusCode == 200) {
-        // bottomToast(text: "Tag Added!");
-      }
+      BotToast.showText(text: 'Collection saved');
     } catch (e) {
-      addTagCollectionLoading(true);
+      hashtagCollectionError = e.toString();
+      BotToast.showText(text: hashtagCollectionError!);
     }
     addTagCollectionLoading(true);
     update();
   }
 
-  RxBool removeTagCollectionLoading = true.obs;
-
-  removeTagCollection() async {
+  removeTagCollection({List<int>? collectionIds, List<int>? hashtagIds}) async {
+    final ids = collectionIds ?? hashtagIds ?? [];
+    if (ids.isEmpty) return;
     try {
       removeTagCollectionLoading(false);
-      final formData = form.FormData();
-      for (var tagIds in deletedTagIds) {
-        formData.fields.add(MapEntry("event_tag_item_ids[]", tagIds));
-      }
-      final response = await API().postApi(formData, "remove-tag-collection");
-      if (response.statusCode == 200) {
-        // bottomToast(text: "Tag Removed!");
-      }
+      hashtagCollectionError = null;
+      await hashtagCollectionRepository.removeHashtagCollections(ids);
+      selectedOrganizerCollections
+          .removeWhere((collection) => ids.contains(collection.id));
+      collectionSelectionChanged = true;
+      await getEventTagCollection();
+      BotToast.showText(text: 'Collection removed');
     } catch (e) {
-      removeTagCollectionLoading(true);
+      hashtagCollectionError = e.toString();
+      BotToast.showText(text: hashtagCollectionError!);
     }
     removeTagCollectionLoading(true);
     update();
+  }
+
+  String? validateCollectionForm({
+    required String title,
+    required String type,
+    required List<String> hashtags,
+  }) {
+    if (title.trim().isEmpty) return 'Collection title is required';
+    if (type != 'music_choice' && type != 'activity_choice') {
+      return 'Please select a valid collection type';
+    }
+    if (hashtags.where((tag) => cleanHashtag(tag).isNotEmpty).isEmpty) {
+      return 'At least one hashtag is required';
+    }
+    return null;
+  }
+
+  void addManualHashtagText(String value) {
+    final tags = parseHashtagText(value);
+    for (final tag in tags) {
+      final normalized = normalizeHashtag(tag);
+      final exists =
+          manualHashtags.any((item) => normalizeHashtag(item) == normalized);
+      if (!exists) manualHashtags.add(tag);
+    }
+    manualHashtagController.clear();
+    manualHashtagsChanged = true;
+    update();
+  }
+
+  void removeManualHashtag(String value) {
+    manualHashtags.removeWhere(
+      (tag) => normalizeHashtag(tag) == normalizeHashtag(value),
+    );
+    manualHashtagsChanged = true;
+    update();
+  }
+
+  void toggleOrganizerCollection(HashtagCollection collection, bool selected) {
+    if (!collection.isActive) {
+      BotToast.showText(text: 'Inactive collections cannot be selected');
+      return;
+    }
+    if (selected) {
+      if (!selectedOrganizerCollections
+          .any((item) => item.id == collection.id)) {
+        selectedOrganizerCollections.add(collection);
+      }
+    } else {
+      selectedOrganizerCollections
+          .removeWhere((item) => item.id == collection.id);
+    }
+    collectionSelectionChanged = true;
+    update();
+  }
+
+  void removeSelectedCollection(HashtagCollection collection) {
+    selectedOrganizerCollections
+        .removeWhere((item) => item.id == collection.id);
+    collectionSelectionChanged = true;
+    update();
+  }
+
+  void _bindSelectedCollectionsFromEventIfNeeded() {
+    if (eventDetail == null || selectedOrganizerCollections.isNotEmpty) return;
+    final collections = eventDetail!.data!.hashtagCollections;
+    if (collections == null || collections.isEmpty) return;
+    selectedOrganizerCollections = collections
+        .map((collection) => HashtagCollection(
+              id: collection.id,
+              title: collection.title ?? '',
+              type: collection.type,
+              hashtags: collection.hashtags
+                  .map((tag) => HashtagCollectionItem(
+                        name: tag.name,
+                        displayName: tag.displayName,
+                      ))
+                  .toList(),
+            ))
+        .toList();
+    manualHashtags = eventDetail!.data!.manualHashtags
+            ?.map((tag) => tag.name)
+            .where((tag) => tag.isNotEmpty)
+            .toList() ??
+        [];
+    manualHashtagsChanged = false;
+    collectionSelectionChanged = false;
   }
 
   ///>>>>>>>>>>>>>>>>>>>> tag list fill check box function
@@ -393,7 +511,8 @@ class EventController extends GetxController {
   String? postEndTime;
 
   postEventFunction(context, theme, {location, bool draft = false}) async {
-    print("lora lae $datePost ${postTime.toString().split(" ")[0]} $endDatePost $postEndTime");
+    print(
+        "lora lae $datePost ${postTime.toString().split(" ")[0]} $endDatePost $postEndTime");
 
     AuthController authController = Get.find();
     List<form.MultipartFile> mediaList = [];
@@ -425,7 +544,8 @@ class EventController extends GetxController {
       "featuring": featuringController.text,
       "about": aboutController.text,
       "theme_of_event": themeOfEventController.text,
-      "start_date_time": "$datePost ${postTime.toString().split(" ")[0]}" /*datePost*/,
+      "start_date_time":
+          "$datePost ${postTime.toString().split(" ")[0]}" /*datePost*/,
       // "check_in": postTime,
       "end_date_time": "$endDatePost ${postEndTime.toString().split(" ")[0]}",
       // "max_capacity": maxCapacityController.text,
@@ -552,6 +672,20 @@ class EventController extends GetxController {
     }
 
     /// todo activity choice
+
+    if (!draft && !hasOrganizerHashtagSource) {
+      BotToast.showText(
+        text:
+            'Add at least one manual hashtag or select at least one hashtag collection before submitting this event.',
+      );
+      return;
+    }
+    if (manualHashtags.isNotEmpty || selectedCollectionIds.isNotEmpty) {
+      EventHashtagPayload(
+        manualHashtags: manualHashtags,
+        collectionIds: selectedCollectionIds,
+      ).addToFormData(formData);
+    }
 
     print(formData);
     var response = await API().postApi(formData, 'create-event');
@@ -760,6 +894,26 @@ class EventController extends GetxController {
     }
 
     /// todo activity choice
+    final existingManualCount = eventDetail!.data!.manualHashtags?.length ?? 0;
+    final existingCollectionCount =
+        eventDetail!.data!.hashtagCollections?.length ?? 0;
+    final finalManualCount =
+        manualHashtagsChanged ? manualHashtags.length : existingManualCount;
+    final finalCollectionCount = collectionSelectionChanged
+        ? selectedCollectionIds.length
+        : existingCollectionCount;
+    if (finalManualCount == 0 && finalCollectionCount == 0) {
+      BotToast.showText(
+        text:
+            'Add at least one manual hashtag or select at least one hashtag collection before submitting this event.',
+      );
+      return;
+    }
+    EventHashtagPayload(
+      manualHashtags: manualHashtagsChanged ? manualHashtags : null,
+      collectionIds: collectionSelectionChanged ? selectedCollectionIds : null,
+    ).addToFormData(formData);
+
     var response = await API().postApi(formData, "update-event");
     if (response.statusCode == 200) {
       showEditPreviewScreen.value = false;
@@ -821,7 +975,13 @@ class EventController extends GetxController {
     _authController.eventItemsList.clear();
     _authController.lifeStyleItemsList.clear();
     _authController.itemsList.clear();
+    selectedOrganizerCollections.clear();
+    organizerCollections.clear();
+    manualHashtags.clear();
+    manualHashtagsChanged = false;
+    collectionSelectionChanged = false;
     activityListPost.clear();
+    tagListPost.clear();
     eventDateController.clear();
     eventEndDateController.clear();
     proposedTimeWindowsController.clear();
@@ -880,7 +1040,7 @@ class EventController extends GetxController {
   ///>>>>>>>>>>>> get all event sending requests
   RxBool getAllSendingRequestLoader = true.obs;
   bool requestEventWaiting = false;
-  
+
   getAllSendingRequest({nextUrl}) async {
     getAllSendingRequestLoader(false);
     var response = await API().getApi(
@@ -912,7 +1072,7 @@ class EventController extends GetxController {
       update();
     }
   }
-  
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get details of event details
   ///
   UserEventDetailsModel? eventDetail;
@@ -1267,7 +1427,7 @@ class ListClass {
   RxBool? condition = false.obs;
   ListClass({this.text, this.condition});
 }
-  
+
 class EventBinding implements Bindings {
   @override
   void dependencies() {

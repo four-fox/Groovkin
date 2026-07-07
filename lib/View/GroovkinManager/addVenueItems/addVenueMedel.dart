@@ -1,5 +1,3 @@
-
-
 // To parse this JSON data, do
 //
 //     final addVenueModel = addVenueModelFromJson(jsonString);
@@ -8,7 +6,8 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 
-AddVenueModel addVenueModelFromJson(String str) => AddVenueModel.fromJson(json.decode(str));
+AddVenueModel addVenueModelFromJson(String str) =>
+    AddVenueModel.fromJson(json.decode(str));
 
 String addVenueModelToJson(AddVenueModel data) => json.encode(data.toJson());
 
@@ -24,16 +23,21 @@ class AddVenueModel {
   });
 
   factory AddVenueModel.fromJson(Map<String, dynamic> json) => AddVenueModel(
-    status: json["status"],
-    data: json["data"] == null ? [] : List<AmenitiesItem>.from(json["data"]!.map((x) => AmenitiesItem.fromJson(x))),
-    message: json["message"],
-  );
+        status: json["status"],
+        data: json["data"] == null
+            ? []
+            : List<AmenitiesItem>.from(
+                json["data"]!.map((x) => AmenitiesItem.fromJson(x))),
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-    "message": message,
-  };
+        "status": status,
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "message": message,
+      };
 }
 
 class AmenitiesItem {
@@ -58,22 +62,22 @@ class AmenitiesItem {
   });
 
   factory AmenitiesItem.fromJson(Map<String, dynamic> json) => AmenitiesItem(
-    id: json["id"],
-    name: json["name"],
-    selected: json["selected"]??false.obs,
-    permit: json["permit"]??false.obs,
-    type: json["type"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-    userVenueItems: json["user_venue_items"],
-  );
+        id: json["id"],
+        name: json["name"],
+        selected: json["selected"] ?? false.obs,
+        permit: json["permit"] ?? false.obs,
+        type: json["type"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        userVenueItems: json["user_venue_items"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "type": type,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-    "user_venue_items": userVenueItems,
-  };
+        "id": id,
+        "name": name,
+        "type": type,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "user_venue_items": userVenueItems,
+      };
 }

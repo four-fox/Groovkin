@@ -1,5 +1,3 @@
-
-
 import 'package:intl/intl.dart';
 
 ///Time ago
@@ -87,9 +85,9 @@ extension DateOnlyCompare on DateTime {
   }
 }
 
-
 String formatShortMonth(String dateTime) {
   DateTime parsedDate = DateTime.parse(dateTime);
-  String formattedDate = DateFormat('MMM').format(parsedDate); // 'MMM' gives short month format
+  String formattedDate =
+      DateFormat('MMM').format(parsedDate); // 'MMM' gives short month format
   return formattedDate;
 }

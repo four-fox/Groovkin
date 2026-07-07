@@ -118,8 +118,8 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return PopScope(  
-      canPop: true,  
+    return PopScope(
+      canPop: true,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
           isOnChat.value = false;

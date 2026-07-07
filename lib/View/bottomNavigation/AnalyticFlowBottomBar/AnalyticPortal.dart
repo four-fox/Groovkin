@@ -201,7 +201,8 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             color: Colors.black.withValues(
-                                                alpha:0.4), // Slight dark overlay
+                                                alpha:
+                                                    0.4), // Slight dark overlay
                                           ),
                                           child: Row(
                                             children: [
@@ -307,7 +308,7 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     forceYAxisFromZero: false,
     crosshair: material.CrosshairConfig(
       enabled: true,
-      lineColor: Colors.grey.withValues(alpha:0.5),
+      lineColor: Colors.grey.withValues(alpha: 0.5),
     ),
   );
 
@@ -320,7 +321,8 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
-              color: Colors.black.withValues(alpha:0.6), // Semi-transparent overlay
+              color: Colors.black
+                  .withValues(alpha: 0.6), // Semi-transparent overlay
             ),
           ),
 
@@ -415,25 +417,25 @@ class Analytic {
 
   Analytic({this.title, this.subtitle, this.img});
 }
-    // SingleChildScrollView(
-          //   scrollDirection: Axis.horizontal,
-          //   child: Container(
-          //     width: Get.width,
-          //     child: SfCartesianChart(
-          //       primaryXAxis: CategoryAxis(
-          //         labelRotation: 45,
-          //         arrangeByIndex: true,
-          //       ),
-          //       primaryYAxis: NumericAxis(),
-          //       zoomPanBehavior: _zoomPanBehavior,
-          //       series: <CartesianSeries>[
-          //         StackedColumnSeries<ChartData, int>(
-          //           width: 0.4,
-          //           dataSource: data,
-          //           xValueMapper: (ChartData data, _) => data.x,
-          //           yValueMapper: (ChartData data, _) => data.y,
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
+// SingleChildScrollView(
+//   scrollDirection: Axis.horizontal,
+//   child: Container(
+//     width: Get.width,
+//     child: SfCartesianChart(
+//       primaryXAxis: CategoryAxis(
+//         labelRotation: 45,
+//         arrangeByIndex: true,
+//       ),
+//       primaryYAxis: NumericAxis(),
+//       zoomPanBehavior: _zoomPanBehavior,
+//       series: <CartesianSeries>[
+//         StackedColumnSeries<ChartData, int>(
+//           width: 0.4,
+//           dataSource: data,
+//           xValueMapper: (ChartData data, _) => data.x,
+//           yValueMapper: (ChartData data, _) => data.y,
+//         ),
+//       ],
+//     ),
+//   ),
+// ),

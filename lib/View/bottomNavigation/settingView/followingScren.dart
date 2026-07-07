@@ -86,7 +86,7 @@ class FollowingScreen extends StatelessWidget {
                             context: context,
                             color: selectedVal.value == 0
                                 ? theme.primaryColor
-                                : DynamicColor.whiteClr.withValues(alpha:0.3),
+                                : DynamicColor.whiteClr.withValues(alpha: 0.3),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -113,7 +113,8 @@ class FollowingScreen extends StatelessWidget {
                               context: context,
                               color: selectedVal.value == 1
                                   ? theme.primaryColor
-                                  : DynamicColor.whiteClr.withValues(alpha:0.3)),
+                                  : DynamicColor.whiteClr
+                                      .withValues(alpha: 0.3)),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -140,7 +141,8 @@ class FollowingScreen extends StatelessWidget {
                               context: context,
                               color: selectedVal.value == 2
                                   ? theme.primaryColor
-                                  : DynamicColor.whiteClr.withValues(alpha:0.3)),
+                                  : DynamicColor.whiteClr
+                                      .withValues(alpha: 0.3)),
                           textAlign: TextAlign.center,
                         ),
                       ),

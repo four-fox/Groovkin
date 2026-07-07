@@ -135,7 +135,6 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10),
-                  
                   child: GestureDetector(
                     onTap: () {
                       for (var i = 0; i < subscriptionList.length; i++) {
@@ -222,14 +221,13 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                       }
                       if (Platform.isAndroid) {
                         BotToast.showLoading();
-                        final purchaseResult =
-                            await Purchases.purchase(PurchaseParams.subscriptionOption(_offerings!
-                                .current!.availablePackages.reversed
-                                .toList()[controller.selected.value]
-                                .storeProduct
-                                .subscriptionOptions![0])
-                                    )
-                                .then((value) {
+                        final purchaseResult = await Purchases.purchase(
+                                PurchaseParams.subscriptionOption(_offerings!
+                                    .current!.availablePackages.reversed
+                                    .toList()[controller.selected.value]
+                                    .storeProduct
+                                    .subscriptionOptions![0]))
+                            .then((value) {
                           BotToast.closeAllLoading();
                           return value;
                         }).onError((error, _) {
@@ -256,8 +254,9 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
                       } else {
                         BotToast.showLoading();
                         final purchaseResult = await Purchases.purchase(
-                                PurchaseParams.package(_offerings!.current!.availablePackages[
-                                controller.selected.value]))
+                                PurchaseParams.package(
+                                    _offerings!.current!.availablePackages[
+                                        controller.selected.value]))
                             .then((value) {
                           BotToast.closeAllLoading();
                           return value;
@@ -270,7 +269,7 @@ class _SubscriptionClassState extends State<SubscriptionClass> {
 
                         final isPro = customerInfo.entitlements.active
                             .containsKey(entitlementID);
-                            
+
                         if (isPro) {
                           appData.entitlementIsActive = customerInfo
                                   .entitlements.all[entitlementID]?.isActive ??

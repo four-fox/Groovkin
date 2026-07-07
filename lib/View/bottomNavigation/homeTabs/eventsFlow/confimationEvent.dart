@@ -133,9 +133,8 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
     // subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
     //     0 * hoursDifference!;
 
-    subTotal =
-        ((double.tryParse(_controller.hourlyRateController.text) ?? 0) *
-            CalculateHoursFromDate());
+    subTotal = ((double.tryParse(_controller.hourlyRateController.text) ?? 0) *
+        CalculateHoursFromDate());
     log(
       "per hour rate : ${double.tryParse(_controller.hourlyRateController.text)}",
     );
@@ -159,8 +158,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
 
     // double downPayment = (subTotalWithTax! *
     //     (double.parse(_controller.paymentSchedule!.value) / 100));
-    downPayment =
-        (subTotalWithTax! / 100) *
+    downPayment = (subTotalWithTax! / 100) *
         (double.parse(_controller.paymentSchedule!.value));
     log("downPayment: $downPayment");
 
@@ -198,8 +196,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
 
     // double downPayment = (subTotalWithTax! *
     //     (double.parse(_controller.paymentSchedule!.value) / 100));
-    downPayment =
-        (subTotalWithTax! / 100) *
+    downPayment = (subTotalWithTax! / 100) *
         (double.parse(_controller.paymentSchedule!.value));
     log("downPayment: $downPayment");
 
@@ -219,14 +216,14 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
           ((_controller.eventDetail == null) &&
                   (_controller.draftCondition.value == true))
               ? GestureDetector(
-                onTap: () {
-                  _controller.postEventFunction(context, theme, draft: true);
-                },
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.drafts),
-                ),
-              )
+                  onTap: () {
+                    _controller.postEventFunction(context, theme, draft: true);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.drafts),
+                  ),
+                )
               : const SizedBox.shrink(),
         ],
       ),

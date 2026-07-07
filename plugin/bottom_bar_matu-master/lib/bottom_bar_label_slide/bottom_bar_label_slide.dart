@@ -13,7 +13,7 @@ class BottomBarLabelSlide extends StatefulWidget {
     this.color = Colors.green,
     this.backgroundColor = Colors.white,
     this.onSelect,
-  })  : assert(items.every((element) => element.label?.isNotEmpty ?? false));
+  }) : assert(items.every((element) => element.label?.isNotEmpty ?? false));
 
   final int selectedIndex;
   final double height;

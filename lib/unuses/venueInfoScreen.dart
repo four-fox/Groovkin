@@ -86,7 +86,7 @@ class VenueInfoScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
@@ -105,7 +105,7 @@ class VenueInfoScreen extends StatelessWidget {
             eventDateTime(
               theme: theme,
               context: context,
-              iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
+              iconBgClr: DynamicColor.grayClr.withValues(alpha: 0.3),
             ),
             const SizedBox(
               height: 10,
@@ -113,7 +113,7 @@ class VenueInfoScreen extends StatelessWidget {
             eventDateTime(
                 theme: theme,
                 context: context,
-                iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
+                iconBgClr: DynamicColor.grayClr.withValues(alpha: 0.3),
                 img: "assets/groupIcon.png",
                 text: "400-450"),
             const SizedBox(
@@ -122,7 +122,7 @@ class VenueInfoScreen extends StatelessWidget {
             eventDateTime(
                 theme: theme,
                 context: context,
-                iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
+                iconBgClr: DynamicColor.grayClr.withValues(alpha: 0.3),
                 icon: true,
                 Iconss: Icons.location_on_sharp,
                 text: "135 Cemetery St, Frankfort, NY 13340, USA"),
@@ -130,7 +130,7 @@ class VenueInfoScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(
@@ -176,7 +176,7 @@ class VenueInfoScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(
@@ -194,14 +194,14 @@ class VenueInfoScreen extends StatelessWidget {
             eventDateTime(
                 theme: theme,
                 context: context,
-                iconBgClr: DynamicColor.grayClr.withValues(alpha:0.3),
+                iconBgClr: DynamicColor.grayClr.withValues(alpha: 0.3),
                 img: "assets/groupIcon.png",
                 text: "400-450"),
             const SizedBox(
               height: 10,
             ),
             Container(
-              color: DynamicColor.darkGrayClr.withValues(alpha:0.7),
+              color: DynamicColor.darkGrayClr.withValues(alpha: 0.7),
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Text(

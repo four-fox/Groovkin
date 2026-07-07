@@ -84,7 +84,7 @@ class OTPTextField extends StatefulWidget {
         const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
     this.isDense = false,
     this.onCompleted,
-  })  : assert(length > 1);
+  }) : assert(length > 1);
 
   @override
   _OTPTextFieldState createState() => _OTPTextFieldState();
@@ -181,9 +181,8 @@ class _OTPTextFieldState extends State<OTPTextField> {
         right: isLast ? 0 : widget.spaceBetween,
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-        borderRadius: BorderRadius.circular(10)
-      ),
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(10)),
       child: TextField(
         controller: _textControllers[index],
         keyboardType: widget.keyboardType,

@@ -602,7 +602,11 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return MapLocationPicker(                          isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
+                                return MapLocationPicker(
+                                  isDarkMode: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? true
+                                      : false,
 
                                   // hideLocation: true,
                                   // lat: double.parse(eventData.latitude.toString()),

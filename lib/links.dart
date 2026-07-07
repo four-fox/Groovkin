@@ -10,16 +10,16 @@ class Link {
   });
 
   factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
+        url: json["url"],
+        label: json["label"],
+        active: json["active"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "url": url,
-    "label": label,
-    "active": active,
-  };
+        "url": url,
+        "label": label,
+        "active": active,
+      };
 }
 
 class Meta {
@@ -38,18 +38,18 @@ class Meta {
   });
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    itemCount: json["itemCount"],
-    totalItems: json["totalItems"],
-    itemsPerPage: json["itemsPerPage"],
-    totalPages: json["totalPages"],
-    currentPage: json["currentPage"],
-  );
+        itemCount: json["itemCount"],
+        totalItems: json["totalItems"],
+        itemsPerPage: json["itemsPerPage"],
+        totalPages: json["totalPages"],
+        currentPage: json["currentPage"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "itemCount": itemCount,
-    "totalItems": totalItems,
-    "itemsPerPage": itemsPerPage,
-    "totalPages": totalPages,
-    "currentPage": currentPage,
-  };
+        "itemCount": itemCount,
+        "totalItems": totalItems,
+        "itemsPerPage": itemsPerPage,
+        "totalPages": totalPages,
+        "currentPage": currentPage,
+      };
 }

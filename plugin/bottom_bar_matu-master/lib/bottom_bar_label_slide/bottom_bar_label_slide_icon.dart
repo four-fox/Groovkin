@@ -166,9 +166,7 @@ class BottomBarLabelSlideIconState extends State<BottomBarLabelSlideIcon>
   Widget _buildIconWidget(Color color) {
     if (widget.item.iconBuilder != null) {
       return Padding(
-          padding: const EdgeInsets.all(10),
-          child: widget.item.iconBuilder
-      );
+          padding: const EdgeInsets.all(10), child: widget.item.iconBuilder);
     } else {
       return Icon(widget.item.iconData!,
           size: widget.item.iconSize, color: color);

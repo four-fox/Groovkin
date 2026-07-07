@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -16,7 +13,7 @@ class GroovkinManagerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme,text: "Groovkin Invites"),
+      appBar: customAppBar(theme: theme, text: "Groovkin Invites"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
@@ -38,12 +35,12 @@ class GroovkinManagerScreen extends StatelessWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 7,vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
           child: CustomButton(
             borderClr: Colors.transparent,
             color1: DynamicColor.blackClr,
             color2: DynamicColor.blackClr,
-            onTap: (){
+            onTap: () {
               Get.toNamed(Routes.sendInvitationScreen);
             },
             text: "Send",

@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 class SuccessfullyScreen extends StatelessWidget {
@@ -10,9 +7,7 @@ class SuccessfullyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Column(
-        children: [
-
-        ],
+        children: [],
       ),
     );
   }

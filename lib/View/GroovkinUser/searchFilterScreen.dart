@@ -23,7 +23,6 @@ class SearchFilterScreen extends StatefulWidget {
 }
 
 class _SearchFilterScreenState extends State<SearchFilterScreen> {
-
   late HomeController homeController;
   late CleanCalendarController calendarController;
   @override
@@ -35,7 +34,6 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
       homeController = Get.put(HomeController());
     }
 
-    
     calendarController = CleanCalendarController(
       minDate: DateTime.now(),
       maxDate: DateTime.now().add(const Duration(days: 365)),
@@ -188,7 +186,10 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                           MaterialPageRoute(
                             builder: (context) {
                               return MapLocationPicker(
-                                isDarkMode:Theme.of(context).brightness == Brightness.dark?true:false,
+                                isDarkMode: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? true
+                                    : false,
                                 backBtnn: true,
                                 onTappp: () {
                                   print("locations");

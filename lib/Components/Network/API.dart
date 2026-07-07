@@ -85,7 +85,7 @@ class API {
   }) async {
     print(Url().baseUrl + url);
     print(sp.read('token'));
-  
+
     try {
       if (auth == true) {
         dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
@@ -128,39 +128,33 @@ class API {
   }
 
   ///Post
-  Future<dynamic> imagePostApi(
-    formData,
-    url) async {
-
+  Future<dynamic> imagePostApi(formData, url) async {
     try {
-        dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
-        dio.options.headers['accept'] = "application/json";
+      dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
+      dio.options.headers['accept'] = "application/json";
 
+      showLoading();
 
-        showLoading();
-
-
-      final response = await Dio().post(
-      Url().baseUrl + url,
-        data: formData,
-        options: Options(
-
-          headers: {
-
-            Headers.acceptHeader: "application/json",
-            'Authorization': "Bearer ${sp.read('token')}"
-          },
-                contentType: 'multipart/form-data',
-              )
-
-      );
+      final response = await Dio().post(Url().baseUrl + url,
+          data: formData,
+          options: Options(
+            headers: {
+              Headers.acceptHeader: "application/json",
+              'Authorization': "Bearer ${sp.read('token')}"
+            },
+            contentType: 'multipart/form-data',
+          ));
 
       BotToast.closeAllLoading();
 
       return response;
     } on DioException catch (e) {
       BotToast.closeAllLoading();
-      BotToast.showText(text: "${e.response!.data["message"]}\n${e.response!.data["errors"]["banner_image"]}",duration: Duration(seconds: 4),contentPadding: EdgeInsets.symmetric(horizontal: 10));
+      BotToast.showText(
+          text:
+              "${e.response!.data["message"]}\n${e.response!.data["errors"]["banner_image"]}",
+          duration: Duration(seconds: 4),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10));
       return e.response;
     }
   }

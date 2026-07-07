@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/hashtagCollectionModel.dart'
+    as hashtag_model;
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 
 UserEventDetailsModel userEventDetailsModelFromJson(String str) =>
@@ -83,6 +85,9 @@ class EventDetails {
   List<MusicGenre>? musicGenre;
   List<EventMusicChoiceTag>? eventMusicChoiceTags;
   List<EventActivityChoiceTag>? eventActivityChoiceTags;
+  List<EventHashtag>? hashtags;
+  List<hashtag_model.EventHashtagCollection>? hashtagCollections;
+  List<hashtag_model.EventManualHashtag>? manualHashtags;
   List<Rating>? rating;
   EventDetails({
     this.id,
@@ -125,6 +130,9 @@ class EventDetails {
     this.musicGenre,
     this.eventMusicChoiceTags,
     this.eventActivityChoiceTags,
+    this.hashtags,
+    this.hashtagCollections,
+    this.manualHashtags,
     this.ratingAvgRateNum,
     this.rating,
   });
@@ -199,6 +207,22 @@ class EventDetails {
             ? []
             : List<EventActivityChoiceTag>.from(json["eventActivityChoiceTags"]!
                 .map((x) => EventActivityChoiceTag.fromJson(x))),
+        hashtags: json["hashtags"] == null
+            ? []
+            : List<EventHashtag>.from(
+                json["hashtags"]!.map((x) => EventHashtag.fromJson(x))),
+        hashtagCollections: json["hashtag_collections"] == null
+            ? []
+            : List<hashtag_model.EventHashtagCollection>.from(
+                json["hashtag_collections"]!.map((x) =>
+                    hashtag_model.EventHashtagCollection.fromJson(
+                        Map<String, dynamic>.from(x)))),
+        manualHashtags: json["manual_hashtags"] == null
+            ? []
+            : List<hashtag_model.EventManualHashtag>.from(
+                json["manual_hashtags"]!.map((x) =>
+                    hashtag_model.EventManualHashtag.fromJson(
+                        Map<String, dynamic>.from(x)))),
         rating: json["ratings"] == null
             ? []
             : List<Rating>.from(
@@ -256,6 +280,20 @@ class EventDetails {
             ? []
             : List<dynamic>.from(
                 eventActivityChoiceTags!.map((x) => x.toJson())),
+        "hashtags": hashtags == null
+            ? []
+            : List<dynamic>.from(hashtags!.map((x) => x.toJson())),
+        "hashtag_collections": hashtagCollections == null
+            ? []
+            : List<dynamic>.from(hashtagCollections!.map((x) => {
+                  "id": x.id,
+                  "title": x.title,
+                  "type": x.type,
+                  "hashtags": x.hashtags.map((tag) => tag.toJson()).toList(),
+                })),
+        "manual_hashtags": manualHashtags == null
+            ? []
+            : List<dynamic>.from(manualHashtags!.map((x) => x.toJson())),
       };
 }
 

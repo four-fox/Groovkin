@@ -37,7 +37,7 @@ class SendEmailForOtp extends StatelessWidget {
               style: poppinsRegularStyle(
                   fontSize: 14,
                   context: context,
-                  color: DynamicColor.grayClr.withValues(alpha:0.8)),
+                  color: DynamicColor.grayClr.withValues(alpha: 0.8)),
             ),
             const SizedBox(
               height: 10,

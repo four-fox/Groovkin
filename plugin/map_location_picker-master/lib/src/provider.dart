@@ -30,7 +30,6 @@ class AutoCompleteState extends ChangeNotifier {
 
     /// API key for Google Places API
     String apiKey, {
-
     /// Session token for Google Places API
     String? sessionToken,
 

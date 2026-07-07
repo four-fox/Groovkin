@@ -16,8 +16,8 @@ class InAppPurchased {
 
   factory InAppPurchased() {
     return _instance ??= InAppPurchased._a();
-  } 
-  
+  }
+
   final InAppPurchase inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> purchasedSubscrption;
   late StreamSubscription<List<PurchaseDetails>> subscriptionStream;
@@ -213,5 +213,4 @@ class InAppPurchased {
   Future<void> restorePurchased() async {
     await inAppPurchase.restorePurchases();
   }
-
 }

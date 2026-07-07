@@ -41,7 +41,7 @@ void alertMethod(
       ],
       radius: 10.0);
 }
-      
+
 class AlertWidget extends StatelessWidget {
   AlertWidget(
       {super.key,

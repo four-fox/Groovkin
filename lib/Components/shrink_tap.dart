@@ -10,7 +10,7 @@ class ShrinkOnTap extends StatefulWidget {
 
 class _ShrinkOnTapState extends State<ShrinkOnTap> {
   bool _isTapped = false;
-  
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

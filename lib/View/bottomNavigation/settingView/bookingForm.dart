@@ -41,7 +41,8 @@ class BookingFormScreen extends StatelessWidget {
               TextSpan(
                 text: 'Venue rent is',
                 style: poppinsRegularStyle(
-                    fontSize: 12, color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                    fontSize: 12,
+                    color: DynamicColor.grayClr.withValues(alpha: 0.6)),
               ),
               TextSpan(
                 text: ' \$1500.00',
@@ -55,7 +56,8 @@ class BookingFormScreen extends StatelessWidget {
                 text:
                     ' but you can still negotiate with venue owner. is it ok for you?',
                 style: poppinsRegularStyle(
-                    fontSize: 12, color: DynamicColor.grayClr.withValues(alpha:0.6)),
+                    fontSize: 12,
+                    color: DynamicColor.grayClr.withValues(alpha: 0.6)),
               ),
             ])),
             const SizedBox(

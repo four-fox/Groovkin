@@ -9,9 +9,6 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
-import '../../model/my_groovkin_model.dart';
-import '../GroovkinUser/survey/surveyModel.dart';
-
 class QuickSurveyScreen extends StatefulWidget {
   const QuickSurveyScreen({super.key});
 

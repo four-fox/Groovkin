@@ -26,5 +26,3 @@ Future<String> initDeleteDb(String dbName) async {
   }
   return path;
 }
-
-  

@@ -1,58 +1,45 @@
-
 import 'package:get/get.dart';
 
-class CreateProfileController extends GetxController{
-
-
+class CreateProfileController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>get profile
   RxBool getProfileLoader = true.obs;
-  getProfile() async{
-
-  }
+  getProfile() async {}
 
   ///>>>>>>>>>>>>>>>>>>>>>> get all users
   RxBool getAllUserLoader = true.obs;
-  getAllUser() async{
-
-  }
+  getAllUser() async {}
 
   ///>>>>>>>>>>>>>>>>>>>>> get all event organizer
   RxBool getAllOrganizerLoader = true.obs;
-  getAllOrganizer() async{
-
-  }
+  getAllOrganizer() async {}
 
   ///>>>>>>>>>>>>>>>>>>>get all event manager
   RxBool getAllEventManagerLoader = true.obs;
-  getAllEventManager() async{
-
-  }
+  getAllEventManager() async {}
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>toDo create profile functionality
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>toDo life survey functionality
-  getAllLifeSurvey() async{
+  getAllLifeSurvey() async {
     ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> life survey ba dalta get kege
   }
 
-  getAllMusicGenre() async{
+  getAllMusicGenre() async {
     ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Music Genre ba dalta get kege
   }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>toDo life survey functionality
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>todo organizer create profile
-    RxBool getAllServicesLoader = true.obs;
-    getAllServices() async{
+  RxBool getAllServicesLoader = true.obs;
+  getAllServices() async {}
 
-    }
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>todo organizer create profile
-
 }
 
-class CreateProfileBinding implements Bindings{
+class CreateProfileBinding implements Bindings {
   @override
   void dependencies() {
-  Get.lazyPut<CreateProfileController>(() => CreateProfileController());
+    Get.lazyPut<CreateProfileController>(() => CreateProfileController());
   }
-
 }

@@ -337,36 +337,40 @@ class EditEventScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 40,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 23,
-                        child: Theme(
-                          data: Theme.of(context).copyWith(
-                            unselectedWidgetColor: theme.primaryColor,
-                          ),
-                          child: Radio(
+                  child: RadioGroup<int>(
+                    groupValue: controller.eventRateHourly.value,
+                    onChanged: (v) {
+                      if (v == null) return;
+                      controller.rateType!.value = "hourly";
+                      controller.eventRateHourly.value = v;
+                      controller.update();
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 23,
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                              unselectedWidgetColor: theme.primaryColor,
+                            ),
+                            child: Radio<int>(
                               activeColor: DynamicColor.yellowClr,
                               value: 0,
-                              groupValue: controller.eventRateHourly.value,
-                              onChanged: (v) {
-                                controller.rateType!.value = "hourly";
-                                controller.eventRateHourly.value = v!;
-                                controller.update();
-                              }),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 7.0),
-                        child: Text(
-                          "Hourly Rate",
-                          style: poppinsRegularStyle(
-                            fontSize: 12,
-                            color: theme.primaryColor,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 7.0),
+                          child: Text(
+                            "Hourly Rate",
+                            style: poppinsRegularStyle(
+                              fontSize: 12,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 // CustomTextFields(
