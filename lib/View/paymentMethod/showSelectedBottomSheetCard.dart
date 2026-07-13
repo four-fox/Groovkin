@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
-import 'package:groovkin/View/GroovkinManager/managerController.dart';
-import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/payment/payment_controller.dart';
+import 'package:groovkin/payment/payment_widgets.dart';
 
 Future<bool?> showBottomSelectedCardSheet(BuildContext context) async {
-  final result = await showModalBottomSheet(
-      isScrollControlled: true,
-      // backgroundColor: Colors.transparent,
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-      ),
-      builder: (context) {
-        return Showselectedbottomsheetcard();
-      });
+  final result = await showModalBottomSheet<bool>(
+    isScrollControlled: true,
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+    ),
+    builder: (context) {
+      return const Showselectedbottomsheetcard();
+    },
+  );
   return result ?? false;
 }
 
@@ -28,23 +29,15 @@ class Showselectedbottomsheetcard extends StatefulWidget {
 
 class _ShowselectedbottomsheetcardState
     extends State<Showselectedbottomsheetcard> {
-  late HomeController _homeController;
-  late ManagerController _managerController;
+  late final PaymentController _paymentController;
 
   @override
   void initState() {
     super.initState();
-    if (Get.isRegistered<HomeController>()) {
-      _homeController = Get.find<HomeController>();
-    } else {
-      _homeController = Get.put(HomeController());
-    }
-
-    if (Get.isRegistered<ManagerController>()) {
-      _managerController = Get.find<ManagerController>();
-    } else {
-      _managerController = Get.put(ManagerController());
-    }
+    _paymentController = Get.isRegistered<PaymentController>()
+        ? Get.find<PaymentController>()
+        : Get.put(PaymentController());
+    _paymentController.refreshPaymentMethods();
   }
 
   @override
@@ -53,9 +46,10 @@ class _ShowselectedbottomsheetcardState
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        // color: DynamicColor.blackClr,
         image: const DecorationImage(
-            image: AssetImage("assets/grayClor.png"), fit: BoxFit.fill),
+          image: AssetImage("assets/grayClor.png"),
+          fit: BoxFit.fill,
+        ),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
         boxShadow: [
           BoxShadow(
@@ -65,86 +59,67 @@ class _ShowselectedbottomsheetcardState
           )
         ],
       ),
-      child: GetBuilder<HomeController>(initState: (state) {
-        // _homeController.getAllCards();
-      }, builder: (controller) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // small drag indicator
-            Container(
-              width: 50,
-              height: 5,
-              margin: const EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
-                color: DynamicColor.yellowClr,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-
-            // heading
-            Text(
-              "Select Card",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            GetBuilder<ManagerController>(builder: (managerController) {
-              return Flexible(
-                child: RadioGroup<int>(
-                  groupValue: managerController.selectedCardId,
-                  onChanged: (value) {
-                    managerController.selectedCardId = value;
-                    managerController.update();
-                    Navigator.pop(context, true);
-                  },
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: controller.transactionData.length,
-                    separatorBuilder: (_, __) => SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final data = controller.transactionData[index];
-                      return Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: managerController.selectedCardId == data.id
-                                  ? DynamicColor.yellowClr
-                                  : Colors.grey,
-                              width: 1.5),
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "${data.first4digit} **** **** ${data.last4digit}",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Radio<int>.adaptive(
-                              value: data.id!,
-                              activeColor: DynamicColor.yellowClr,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+      child: GetBuilder<PaymentController>(
+        builder: (controller) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 50,
+                height: 5,
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  color: DynamicColor.yellowClr,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            }),
-          ],
-        );
-      }),
+              ),
+              const Text(
+                "Select Card",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Flexible(
+                child: controller.paymentMethods.isEmpty
+                    ? const Padding(
+                        padding: EdgeInsets.all(18),
+                        child: Text(
+                          'No secure payment methods saved.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: controller.paymentMethods.length,
+                        itemBuilder: (context, index) {
+                          final card = controller.paymentMethods[index];
+                          return PaymentMethodCardTile(
+                            card: card,
+                            onSetDefault: () async {
+                              await controller.setDefaultPaymentMethod(card);
+                              if (context.mounted) Navigator.pop(context, true);
+                            },
+                            onDelete: null,
+                          );
+                        },
+                      ),
+              ),
+              const SizedBox(height: 8),
+              CustomButton(
+                borderClr: Colors.transparent,
+                onTap: () async {
+                  await controller.addPaymentMethod();
+                  if (context.mounted) Navigator.pop(context, true);
+                },
+                text: 'Add Secure Card',
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

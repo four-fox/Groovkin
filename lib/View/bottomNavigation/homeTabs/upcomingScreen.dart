@@ -25,8 +25,8 @@ import 'package:groovkin/main.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:url_launcher/url_launcher.dart';
@@ -2270,35 +2270,11 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
 
   Future<void> downloadPdf(String fileName, pw.Document pdf) async {
     try {
-      if (Platform.isAndroid) {
-        if (await Permission.manageExternalStorage.isGranted) {
-          // Granted
-        } else {
-          var status = await Permission.manageExternalStorage.request();
-          if (!status.isGranted) {
-            bottomToast(text: "Permission Denied!");
-            return;
-          }
-        }
-      }
-
-      Directory directory = Platform.isAndroid
-          ? await getExternalStorageDirectory() as Directory
-          : await getApplicationDocumentsDirectory();
-
-      late String fullPath;
-
-      if (Platform.isAndroid) {
-        String subPath = directory.path.split("Android").first;
-        fullPath = "${subPath}Download/$fileName";
-      } else {
-        fullPath = "${directory.path}/$fileName";
-      }
-
+      final directory = await getApplicationDocumentsDirectory();
+      final fullPath = '${directory.path}/$fileName';
       final file = File(fullPath);
       await file.writeAsBytes(await pdf.save());
-      print(fullPath);
-      // showDownloadPdfNotification(Random().nextInt(100));
+      await OpenFile.open(fullPath);
       bottomToast(text: "Pdf Downloaded Successfully!");
     } catch (e) {
       print(e);

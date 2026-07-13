@@ -53,6 +53,16 @@
 			<array>
 				<string>com.googleusercontent.apps.682228072753-gkopa070pgphkcknhl0p1dkjd1vf0ve0</string>
 			</array>
+		</dict>
+
+		<!-- Stripe return URL -->
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>groovkin</string>
+			</array>
 		</dict> 
 	</array> 
 

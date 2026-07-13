@@ -127,6 +127,82 @@ class API {
     }
   }
 
+  Future<Response> jsonPostApi(
+    String url, {
+    Map<String, dynamic>? body,
+    Map<String, dynamic>? headers,
+    bool auth = true,
+    bool showProgress = false,
+  }) async {
+    try {
+      if (auth == true) {
+        dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
+      }
+      final requestHeaders = <String, dynamic>{
+        Headers.acceptHeader: "application/json",
+        Headers.contentTypeHeader: "application/json",
+        ...?headers,
+      };
+      if (showProgress) showLoading();
+      final response = await dio.post(
+        Url().baseUrl + url,
+        data: body ?? <String, dynamic>{},
+        options: Options(headers: requestHeaders),
+      );
+      if (showProgress) BotToast.closeAllLoading();
+      return response;
+    } on DioException catch (e) {
+      if (showProgress) BotToast.closeAllLoading();
+      return e.response ??
+          Response(
+            requestOptions: e.requestOptions,
+            statusCode: 0,
+            data: {
+              "status": false,
+              "message": "Network error",
+              "data": e.message,
+            },
+          );
+    }
+  }
+
+  Future<Response> jsonDeleteApi(
+    String url, {
+    Map<String, dynamic>? headers,
+    bool auth = true,
+    bool showProgress = false,
+  }) async {
+    try {
+      if (auth == true) {
+        dio.options.headers['Authorization'] = "Bearer ${sp.read('token')}";
+      }
+      final requestHeaders = <String, dynamic>{
+        Headers.acceptHeader: "application/json",
+        Headers.contentTypeHeader: "application/json",
+        ...?headers,
+      };
+      if (showProgress) showLoading();
+      final response = await dio.delete(
+        Url().baseUrl + url,
+        options: Options(headers: requestHeaders),
+      );
+      if (showProgress) BotToast.closeAllLoading();
+      return response;
+    } on DioException catch (e) {
+      if (showProgress) BotToast.closeAllLoading();
+      return e.response ??
+          Response(
+            requestOptions: e.requestOptions,
+            statusCode: 0,
+            data: {
+              "status": false,
+              "message": "Network error",
+              "data": e.message,
+            },
+          );
+    }
+  }
+
   ///Post
   Future<dynamic> imagePostApi(formData, url) async {
     try {

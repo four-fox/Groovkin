@@ -16,6 +16,7 @@ import 'package:groovkin/model/get_specific_artist_model.dart' as get_specific;
 import 'package:groovkin/model/my_groovkin_model.dart' as groovkin;
 import 'package:groovkin/model/notification_model.dart';
 import 'package:groovkin/model/spotify_artist_genre_model.dart';
+import 'package:groovkin/payment/stripe_config_service.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -668,6 +669,7 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     final repsposne = await API().postApi({}, "logout");
     if (repsposne.statusCode == 200) {
+      await StripeConfigService().resetCustomer();
       API().sp.erase();
       API().sp.write("intro", true);
       // Get.offAllNamed(Routes.loginScreen);

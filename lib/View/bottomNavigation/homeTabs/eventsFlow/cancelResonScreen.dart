@@ -6,6 +6,7 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class CancelReason extends StatelessWidget {
@@ -101,7 +102,13 @@ class CancelReason extends StatelessWidget {
             borderClr: Colors.transparent,
             onTap: () {
               if (cancellationForm.currentState!.validate()) {
-                _controller.cancelEvents(eventId: _eventId, back: doubleBack);
+                Get.toNamed(
+                  Routes.cancellationWorkflowScreen,
+                  arguments: {
+                    'eventId': _eventId,
+                    'initialReason': _controller.cancellationController.text,
+                  },
+                );
               }
               // Get.offAllNamed(Routes.bottomNavigationView,
               // arguments: {

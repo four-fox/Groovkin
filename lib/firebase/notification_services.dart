@@ -12,6 +12,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/payment/payment_deep_links.dart';
 import '../chatView/chatRoomModel.dart';
 
 class NotificationService {
@@ -204,6 +205,43 @@ class NotificationService {
       data = jsonDecode(message.data["data"]);
     } else {
       data = message.data;
+    }
+
+    final deepLink = data["deep_link"]?.toString() ?? data["link"]?.toString();
+    if (deepLink != null) {
+      final parsed = PaymentDeepLink.parse(deepLink);
+      if (parsed != null) {
+        parsed.navigate();
+        return;
+      }
+    }
+
+    if (data["payment_id"] != null) {
+      Get.toNamed(
+        Routes.paymentStatusScreen,
+        arguments: {"paymentId": int.tryParse(data["payment_id"].toString())},
+      );
+      return;
+    }
+    if (data["cancellation_id"] != null) {
+      Get.toNamed(
+        Routes.cancellationWorkflowScreen,
+        arguments: {
+          "cancellationId": int.tryParse(data["cancellation_id"].toString()),
+        },
+      );
+      return;
+    }
+    if (data["type"] == "completion_requested" ||
+        data["type"] == "counter_created" ||
+        data["type"] == "counter_revised" ||
+        data["type"] == "counter_accepted" ||
+        data["type"] == "counter_rejected") {
+      Get.toNamed(
+        Routes.completionWorkflowScreen,
+        arguments: {"eventId": int.tryParse(data["source_id"].toString())},
+      );
+      return;
     }
 
     EventController controller = Get.find();

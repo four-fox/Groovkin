@@ -19,6 +19,12 @@ abstract class Routes {
   static const subscriptionScreen = _Path.subscriptionScreen;
   static const paymentMethodScreen = _Path.paymentMethodScreen;
   static const addCardDetails = _Path.addCardDetails;
+  static const connectOnboardingScreen = _Path.connectOnboardingScreen;
+  static const securePaymentMethodsScreen = _Path.securePaymentMethodsScreen;
+  static const eventAcceptPaymentScreen = _Path.eventAcceptPaymentScreen;
+  static const paymentStatusScreen = _Path.paymentStatusScreen;
+  static const completionWorkflowScreen = _Path.completionWorkflowScreen;
+  static const cancellationWorkflowScreen = _Path.cancellationWorkflowScreen;
   static const transactionScreen = _Path.transactionScreen;
   static const insuranceScreen = _Path.insuranceScreen;
   static const hardwareScreen = _Path.hardwareScreen;
@@ -143,6 +149,12 @@ abstract class _Path {
   static const subscriptionScreen = "/SubscriptionScreen";
   static const paymentMethodScreen = "/PaymentMethodScreen";
   static const addCardDetails = "/AddCardDetails";
+  static const connectOnboardingScreen = "/ConnectOnboardingScreen";
+  static const securePaymentMethodsScreen = "/SecurePaymentMethodsScreen";
+  static const eventAcceptPaymentScreen = "/EventAcceptPaymentScreen";
+  static const paymentStatusScreen = "/PaymentStatusScreen";
+  static const completionWorkflowScreen = "/CompletionWorkflowScreen";
+  static const cancellationWorkflowScreen = "/CancellationWorkflowScreen";
   static const transactionScreen = "/TransactionScreen";
   static const insuranceScreen = "/insuranceScreen";
   static const hardwareScreen = "/HardwareScreen";

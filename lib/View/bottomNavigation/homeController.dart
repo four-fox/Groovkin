@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/RecommendedForUserModel.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/eventsNearByMeUserModel.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/topRatedEventUserModel.dart';
@@ -13,9 +11,6 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistoryModel.dart';
 import 'package:dio/dio.dart' as form;
 import 'package:groovkin/model/analytic_list_model.dart';
 import 'package:groovkin/model/analytic_model.dart';
-import 'package:groovkin/model/transaction_history_model.dart'
-    as transaction_history_model;
-import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import '../../model/my_groovkin_model.dart' as groovkin_model;
@@ -227,109 +222,8 @@ class HomeController extends GetxController {
     }
   }
 
-  // Todo Get All Cards
-  String cardNumber = '';
-
-  String expiryDate = '';
-
-  String cardHolderName = '';
-
-  List<transaction_history_model.Data> transactionData = [];
-
-  Future getAllCards() async {
-    var response = await API().getApi(url: "cards");
-    if (response.statusCode == 200) {
-      final responseData =
-          transaction_history_model.CardModel.fromJson(response.data);
-      addDefaultCardValue();
-      transactionData.clear();
-      for (var data in responseData.data!) {
-        transactionData.add(data);
-        update();
-      }
-    }
-  }
-
-  Future clearCard() async {
-    cardNumber = '';
-    expiryDate = '';
-    cardHolderName = '';
-    update();
-  }
-
-  addDefaultCardValue() {
-    if (transactionData.isNotEmpty) {
-      final Map<String, dynamic> decode =
-          jsonDecode(transactionData.first.cardDetails.toString());
-
-      cardNumber =
-          "${transactionData.first.first4digit!} 0000 0000 ${transactionData.first.last4digit!}";
-      cardHolderName = transactionData.first.cardholderName!;
-      expiryDate =
-          "${decode["exp_month"].toString().length == 1 ? ("0${decode["exp_month"]}") : decode["exp_month"].toString()}/${decode["exp_year"].toString().substring(2)}";
-      update();
-    }
-  }
-
-  // String cardNumber = "";
-  // String cardHolderName = '';
-
-  // String cvvCode = '';
-  // String expiryDate = '';
-
-  // Todo Add Cards
-
-  Future<void> addCard(
-    String cardHolderName,
-    String number,
-    String expiryMonth,
-    String expiryYear,
-    String cvc,
-    bool fromSignUp,
-  ) async {
-    try {
-      final formData = form.FormData.fromMap({
-        "cardholder_name": cardHolderName,
-        "number": number,
-        "exp_month": expiryMonth,
-        "exp_year": "20$expiryYear",
-        "cvc": cvc,
-      });
-
-      var response = await API().postApi(formData, "add-card");
-      if (response.statusCode == 200) {
-        Utils.showFlutterToast("Your Card Has Been Added!");
-        // await getAllCards();
-        if (fromSignUp == true) {
-          Get.offAllNamed(Routes.createCompanyProfileScreen, arguments: {
-            "updationCondition": false,
-            "skipBtnHide": false,
-          });
-        } else {
-          Get.back();
-        }
-      }
-    } catch (e) {
-      print("Exception $e");
-      rethrow;
-    }
-  }
-
-  // Todo Delete Card
-  Future<void> deleteCard(String cardId) async {
-    try {
-      final formData = form.FormData.fromMap({
-        "card_id": cardId,
-      });
-
-      var response = await API().postApi(formData, "delete-card");
-      if (response.statusCode == 200) {
-        Utils.showFlutterToast("Your Card Has Been Deleted!");
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
+  // Legacy raw-card APIs were removed from mobile. Use PaymentController and
+  // /api/payment-methods SetupIntent endpoints for reusable card management.
 
   // Todo Get Transaction History
 

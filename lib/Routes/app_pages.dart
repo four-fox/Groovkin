@@ -86,6 +86,7 @@ import 'package:groovkin/View/paymentMethod/paymentMethod.dart';
 import 'package:groovkin/View/paymentMethod/subscriptionScreen.dart';
 import 'package:groovkin/View/authView/welcomeScreen.dart';
 import 'package:groovkin/View/splashScreen.dart';
+import 'package:groovkin/payment/payment_screens.dart';
 
 import '../chatView/chatController.dart';
 import '../chatView/chatInnerScreen.dart';
@@ -178,6 +179,30 @@ class AppPages {
     GetPage(
       name: _Path.addCardDetails,
       page: () => const AddCardDetails(),
+    ),
+    GetPage(
+      name: _Path.connectOnboardingScreen,
+      page: () => ConnectOnboardingScreen(),
+    ),
+    GetPage(
+      name: _Path.securePaymentMethodsScreen,
+      page: () => SecurePaymentMethodScreen(),
+    ),
+    GetPage(
+      name: _Path.eventAcceptPaymentScreen,
+      page: () => EventAcceptPaymentScreen(),
+    ),
+    GetPage(
+      name: _Path.paymentStatusScreen,
+      page: () => PaymentStatusScreen(),
+    ),
+    GetPage(
+      name: _Path.completionWorkflowScreen,
+      page: () => const CompletionWorkflowScreen(),
+    ),
+    GetPage(
+      name: _Path.cancellationWorkflowScreen,
+      page: () => const CancellationWorkflowScreen(),
     ),
     GetPage(
       name: _Path.transactionScreen,

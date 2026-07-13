@@ -52,8 +52,6 @@ class EventController extends GetxController {
     }
   }
 
-
-
   ///quick survey condition Value
 
   RxBool hipHop = false.obs;
@@ -1288,34 +1286,16 @@ class EventController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> cancel events
   final cancellationController = TextEditingController();
   cancelEvents({eventId, back = false}) async {
-    var formData = form.FormData.fromMap({
-      "source_id": eventId,
-      "reason_message": cancellationController.text,
-    });
-    var response = await API().postApi(formData, "cancelled-event");
-    if (response.statusCode == 200) {
-      bottomToast(text: response.data["message"].toString());
-      if (back == true) {
-        if (allEvents != null) {
-          int events = allEvents!.data!.data
-              .indexWhere((element) => element.id == eventId);
-          allEvents!.data!.data.remove(allEvents!.data!.data[events]);
-          Get.back();
-        }
-      } else {
-        if (managerController.managerPendingEvents != null) {
-          int index = managerController.managerPendingEvents!.data!.data!
-              .indexWhere((test) => test.id == eventId);
-          if (index != -1) {
-            managerController.managerPendingEvents!.data!.data!.remove(
-                managerController.managerPendingEvents!.data!.data![index]);
-          }
-        }
-      }
-      cancellationController.clear();
-      update();
-      Get.back();
-    }
+    bottomToast(
+      text: "Cancellation now requires quote review and explicit confirmation.",
+    );
+    Get.toNamed(
+      Routes.cancellationWorkflowScreen,
+      arguments: {
+        "eventId": eventId,
+        "initialReason": cancellationController.text,
+      },
+    );
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get upcoming events
