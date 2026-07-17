@@ -16,11 +16,72 @@ Creates or reuses the authenticated user's Express account and returns an onboar
 
 `GET /api/stripe/connect/status`
 
-Returns `account_id`, `charges_enabled`, `payouts_enabled`, `details_submitted`, `requirements_due`, and `onboarding_complete`.
+Returns Connect readiness for the authenticated user:
+
+```json
+{
+  "status": true,
+  "data": {
+    "account_id": "acct_...",
+    "charges_enabled": true,
+    "payouts_enabled": true,
+    "details_submitted": true,
+    "requirements_due": [],
+    "onboarding_complete": true,
+    "role": "event_owner",
+    "title": "Payout Setup",
+    "can_receive_payouts": true,
+    "can_accept_payments": true
+  },
+  "message": "Stripe Connect status retrieved."
+}
+```
+
+`GET /api/stripe/onboarding/return` (public)
+
+Stripe Account Link return URL. Returns a mobile-friendly HTML page (not JSON) with:
+
+- "Stripe setup complete"
+- "You can now return to Groovkin"
+- an "Open Groovkin App" button linking to `groovkin://stripe-connect/return?status=success`
+
+The page auto-attempts the deep link after 1.5 seconds.
+
+`GET /api/stripe/onboarding/refresh` (public)
+
+Stripe Account Link refresh URL. Returns a mobile-friendly HTML page with:
+
+- "Stripe setup session expired"
+- "Please return to Groovkin and try again"
+- an "Open Groovkin App" button linking to `groovkin://stripe-connect/refresh?status=expired`
 
 `POST /api/payment-methods/setup-intent`
 
-Returns a Stripe SetupIntent for reusable VM payment methods.
+Returns a mobile-friendly SetupIntent payload:
+
+```json
+{
+  "status": true,
+  "data": {
+    "id": "seti_...",
+    "client_secret": "seti_..._secret_...",
+    "customer": "cus_...",
+    "status": "requires_payment_method",
+    "publishable_key": "pk_test_..."
+  },
+  "message": "SetupIntent created."
+}
+```
+
+If Stripe is not configured, returns:
+
+```json
+{
+  "status": false,
+  "code": "stripe_configuration_missing",
+  "message": "Payment setup is temporarily unavailable. Please contact support."
+}
+```
 
 `GET /api/payment-methods`
 
@@ -51,6 +112,22 @@ Returns server-calculated principal, deposit, remaining balance, fee estimate, a
 ```
 
 Requires both EO and VM Connect onboarding and a reusable VM payment method. If down payment is greater than zero, returns `client_secret` for Flutter confirmation. If down payment is zero, acceptance succeeds without a PaymentIntent.
+
+Connect readiness errors return stable `code` values:
+
+```json
+{
+  "status": false,
+  "code": "vm_connect_onboarding_incomplete",
+  "message": "Complete your Stripe account setup before accepting this event.",
+  "data": {
+    "vm_connect_ready": false,
+    "eo_connect_ready": true
+  }
+}
+```
+
+Other codes: `eo_connect_onboarding_incomplete`, `connect_onboarding_incomplete`.
 
 `GET /api/payments/{payment}`
 
@@ -316,6 +393,9 @@ Requires action:
 - `deprecated_raw_card_api`
 - `legacy_cancellation_flow_disabled`
 - `connect_onboarding_incomplete`
+- `vm_connect_onboarding_incomplete`
+- `eo_connect_onboarding_incomplete`
+- `stripe_configuration_missing`
 - `payment_method_required`
 - `payment_requires_action`
 - `payment_failed`
@@ -323,6 +403,10 @@ Requires action:
 - `invalid_minor_amount`
 - `completion_amount_prohibited`
 - `counter_amount_exceeds_event_principal`
+
+### Wallet (Optional)
+
+Wallet transaction history is not required for Connect onboarding, card setup, event acceptance, or down payment. Wallet endpoints may be absent without blocking payment flows.
 
 ### Webhook Events
 

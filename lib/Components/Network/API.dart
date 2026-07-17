@@ -67,6 +67,20 @@ class API {
         return response;
       } on DioException catch (e) {
         BotToast.closeAllLoading();
+        if (e.response == null) {
+          // Pure network failure (no HTTP response). Return a synthetic
+          // status-0 response so callers can distinguish connectivity
+          // problems from backend validation errors.
+          return Response(
+            requestOptions: e.requestOptions,
+            statusCode: 0,
+            data: {
+              "status": false,
+              "message": "Network error",
+              "data": e.message,
+            },
+          );
+        }
         return returnResponse(e.response!);
       }
     }

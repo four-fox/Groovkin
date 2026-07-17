@@ -18,6 +18,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventControll
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
 import 'package:groovkin/utils/utils.dart';
+import 'package:groovkin/payment/stripe_connect_widgets.dart';
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -185,6 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 10,
                   ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -574,6 +576,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+
+                const StripeConnectBanner(),
               ],
             ),
           );
@@ -1207,16 +1211,14 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                   if (controller
                                                                       .checkBoxValue
                                                                       .value) {
-                                                                    controller
-                                                                        .eventAcceptDeclineFtn(
-                                                                      id: controller
+                                                                    await controller
+                                                                        .beginPaidEventAcceptance(
+                                                                      controller
                                                                           .managerPendingEvents!
                                                                           .data!
                                                                           .data![
                                                                               index]
                                                                           .id!,
-                                                                      status:
-                                                                          "accepted",
                                                                     );
                                                                   } else {
                                                                     bottomToast(

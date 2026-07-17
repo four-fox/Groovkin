@@ -25,6 +25,9 @@ class PaymentStateView extends StatelessWidget {
       case PaymentWorkflowState.initial:
       case PaymentWorkflowState.ready:
       case PaymentWorkflowState.refreshing:
+      // Success renders the real screen content; the screen itself decides
+      // how to present the confirmed backend state.
+      case PaymentWorkflowState.success:
         return child;
       case PaymentWorkflowState.loading:
       case PaymentWorkflowState.submitting:
@@ -35,26 +38,32 @@ class PaymentStateView extends StatelessWidget {
             children: [
               CircularProgressIndicator(color: DynamicColor.yellowClr),
               const SizedBox(height: 14),
-              Text(
-                state == PaymentWorkflowState.processing
-                    ? 'Processing with backend confirmation...'
-                    : 'Loading...',
-                textAlign: TextAlign.center,
-                style: poppinsRegularStyle(
-                  context: context,
-                  fontSize: 14,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+              state == PaymentWorkflowState.processing
+                  ? _MessageState(
+                      title: 'Processing',
+                      message: message ?? 'Confirming payment status...',
+                      action: onRetry,
+                      actionText: 'Refresh',
+                    )
+                  : Text(
+                      'Loading...',
+                      textAlign: TextAlign.center,
+                      style: poppinsRegularStyle(
+                        context: context,
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
             ],
           ),
         );
       case PaymentWorkflowState.empty:
         return _MessageState(
-          title: 'No payment data yet',
-          message: message ?? 'Add a payment method or refresh this workflow.',
+          title: 'No payment method added',
+          message: message ??
+              'Add a secure card before accepting event requests. Your card details are handled securely by Stripe.',
           action: onRetry,
-          actionText: 'Refresh',
+          actionText: 'Add Secure Card',
         );
       case PaymentWorkflowState.requiresAction:
         return _MessageState(
@@ -64,13 +73,6 @@ class PaymentStateView extends StatelessWidget {
           action: onRetry,
           actionText: 'Continue',
         );
-      case PaymentWorkflowState.success:
-        return _MessageState(
-          title: 'Confirmed',
-          message: message ?? 'The backend has confirmed this workflow.',
-          action: onRetry,
-          actionText: 'Refresh',
-        );
       case PaymentWorkflowState.supportReview:
       case PaymentWorkflowState.manualReview:
         return _MessageState(
@@ -78,7 +80,7 @@ class PaymentStateView extends StatelessWidget {
               ? 'Support Review'
               : 'Manual Review',
           message: message ??
-              'Groovkin support is reviewing this workflow. Financial status will update from the backend.',
+              'Groovkin support is reviewing this. The status here will update automatically.',
           action: onRetry,
           actionText: 'Refresh',
         );
@@ -88,7 +90,7 @@ class PaymentStateView extends StatelessWidget {
         return _MessageState(
           title: state.name,
           message: message ??
-              'This status comes from backend payment and refund records.',
+              'This status reflects your latest payment and refund activity.',
           action: onRetry,
           actionText: 'Refresh',
         );

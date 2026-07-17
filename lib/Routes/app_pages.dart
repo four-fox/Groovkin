@@ -182,7 +182,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.connectOnboardingScreen,
-      page: () => ConnectOnboardingScreen(),
+      page: () => const ConnectOnboardingScreen(),
     ),
     GetPage(
       name: _Path.securePaymentMethodsScreen,
@@ -190,7 +190,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.eventAcceptPaymentScreen,
-      page: () => EventAcceptPaymentScreen(),
+      page: () => const EventAcceptPaymentScreen(),
     ),
     GetPage(
       name: _Path.paymentStatusScreen,

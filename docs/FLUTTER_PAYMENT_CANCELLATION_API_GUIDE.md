@@ -24,13 +24,17 @@ Android and iOS must follow the Stripe Flutter SDK setup for minimum SDK, manife
 
 ## Deep Links
 
-Configure a return URL such as:
+Configure Flutter URL schemes for Stripe SDK and Connect onboarding callbacks:
 
 ```text
 groovkin://stripe-redirect
+groovkin://stripe-connect/return?status=success
+groovkin://stripe-connect/refresh?status=expired
 ```
 
-Use the same return URL in Stripe SDK initialization and PaymentSheet configuration.
+Use `groovkin://stripe-redirect` in Stripe SDK initialization and PaymentSheet configuration.
+
+After Stripe Connect onboarding in an external browser, Stripe redirects to `GET /api/stripe/onboarding/return`. That backend page shows a success message and attempts to open `groovkin://stripe-connect/return?status=success`. If the session expires, Stripe redirects to `GET /api/stripe/onboarding/refresh`, which opens `groovkin://stripe-connect/refresh?status=expired`.
 
 ## Response Envelope
 
@@ -73,6 +77,8 @@ Check status:
 ```http
 GET /api/stripe/connect/status
 ```
+
+Response includes `onboarding_complete`, `role`, `title`, `can_receive_payouts`, and `can_accept_payments`.
 
 Require `onboarding_complete: true` for EO and VM before acceptance.
 
@@ -503,11 +509,45 @@ Response:
 
 Acceptance fails until both EO and VM have `charges_enabled=true` and `payouts_enabled=true`.
 
+VM incomplete:
+
 ```json
 {
   "status": false,
-  "data": "Both Event Organizer and Venue Manager must complete Stripe Connect onboarding before acceptance.",
-  "message": "Both Event Organizer and Venue Manager must complete Stripe Connect onboarding before acceptance."
+  "code": "vm_connect_onboarding_incomplete",
+  "message": "Complete your Stripe account setup before accepting this event.",
+  "data": {
+    "vm_connect_ready": false,
+    "eo_connect_ready": true
+  }
+}
+```
+
+EO incomplete:
+
+```json
+{
+  "status": false,
+  "code": "eo_connect_onboarding_incomplete",
+  "message": "The Event Organizer must complete Stripe payout setup before this event can be accepted.",
+  "data": {
+    "vm_connect_ready": true,
+    "eo_connect_ready": false
+  }
+}
+```
+
+Both incomplete:
+
+```json
+{
+  "status": false,
+  "code": "connect_onboarding_incomplete",
+  "message": "Both Event Organizer and Venue Manager must complete Stripe setup before acceptance.",
+  "data": {
+    "vm_connect_ready": false,
+    "eo_connect_ready": false
+  }
 }
 ```
 
@@ -672,6 +712,9 @@ Cancellation statuses: `quote_created`, `confirmed`, `payment_required`, `paymen
 - `deprecated_raw_card_api`
 - `legacy_cancellation_flow_disabled`
 - `connect_onboarding_incomplete`
+- `vm_connect_onboarding_incomplete`
+- `eo_connect_onboarding_incomplete`
+- `stripe_configuration_missing`
 - `payment_method_required`
 - `payment_requires_action`
 - `payment_failed`
@@ -679,3 +722,7 @@ Cancellation statuses: `quote_created`, `confirmed`, `payment_required`, `paymen
 - `invalid_minor_amount`
 - `completion_amount_prohibited`
 - `counter_amount_exceeds_event_principal`
+
+### Wallet (Optional)
+
+Wallet transaction history is not required for Connect onboarding, card setup, event acceptance, or down payment. If wallet endpoints are not implemented, hide or deprioritize wallet history in the mobile UI without blocking payment flows.

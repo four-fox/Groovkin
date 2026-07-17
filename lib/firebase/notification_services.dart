@@ -13,6 +13,7 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/payment/payment_deep_links.dart';
+import 'package:groovkin/payment/stripe_connect_controller.dart';
 import '../chatView/chatRoomModel.dart';
 
 class NotificationService {
@@ -214,6 +215,18 @@ class NotificationService {
         parsed.navigate();
         return;
       }
+    }
+
+    if (data["type"] == "connect_onboarding_incomplete" ||
+        data["type"] == "stripe_connect_status") {
+      Get.toNamed(
+        Routes.connectOnboardingScreen,
+        arguments: {'refreshAfterReturn': true},
+      );
+      if (Get.isRegistered<StripeConnectController>()) {
+        Get.find<StripeConnectController>().handleDeepLinkReturn();
+      }
+      return;
     }
 
     if (data["payment_id"] != null) {

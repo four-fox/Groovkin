@@ -236,12 +236,24 @@ class SetupIntentResponse {
   final String publishableKey;
 
   factory SetupIntentResponse.fromJson(Map<String, dynamic> json) {
+    final clientSecret = json['client_secret']?.toString().trim() ?? '';
+    final publishableKey = json['publishable_key']?.toString().trim() ?? '';
+    // Avoid `.toString()` on null, which becomes the literal "null".
+    if (clientSecret.isEmpty ||
+        clientSecret == 'null' ||
+        publishableKey.isEmpty ||
+        publishableKey == 'null') {
+      throw PaymentApiException(
+        message: 'Payment setup is temporarily unavailable.',
+        code: 'stripe_configuration_missing',
+      );
+    }
     return SetupIntentResponse(
-      id: json['id'].toString(),
-      clientSecret: json['client_secret'].toString(),
+      id: json['id']?.toString() ?? '',
+      clientSecret: clientSecret,
       customer: json['customer']?.toString(),
       status: json['status']?.toString(),
-      publishableKey: json['publishable_key'].toString(),
+      publishableKey: publishableKey,
     );
   }
 }

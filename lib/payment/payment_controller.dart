@@ -1,10 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'payment_models.dart';
 import 'payment_polling_service.dart';
 import 'payment_repository.dart';
+import 'stripe_connect_controller.dart';
 import 'stripe_config_service.dart';
 
 class PaymentController extends GetxController {
@@ -43,27 +45,20 @@ class PaymentController extends GetxController {
   }
 
   Future<void> refreshConnectStatus() async {
-    await _guard(() async {
-      state = PaymentWorkflowState.loading;
-      update();
-      connectStatus = await repository.getConnectStatus();
-      state = PaymentWorkflowState.ready;
-    });
+    final connect = stripeConnectController();
+    await connect.refreshConnectStatus();
+    connectStatus = connect.status;
+    update();
   }
 
   Future<void> launchConnectOnboarding() async {
-    await _guard(() async {
-      state = PaymentWorkflowState.submitting;
-      update();
-      final link = await repository.createConnectOnboardingLink();
-      final launched = await launchUrl(
-        Uri.parse(link.url),
-        mode: LaunchMode.externalApplication,
-      );
-      state = launched
-          ? PaymentWorkflowState.processing
-          : PaymentWorkflowState.retryableFailure;
-    });
+    final connect = stripeConnectController();
+    await connect.launchConnectOnboarding();
+    connectStatus = connect.status;
+    state = connect.state;
+    errorMessage = connect.errorMessage;
+    errorCode = connect.errorCode;
+    update();
   }
 
   Future<void> refreshPaymentMethods() async {
@@ -77,34 +72,91 @@ class PaymentController extends GetxController {
     });
   }
 
-  Future<void> addPaymentMethod({bool setFirstCardDefault = true}) async {
-    await _guard(() async {
-      state = PaymentWorkflowState.submitting;
+  /// Adds a reusable card through the backend SetupIntent + Stripe
+  /// PaymentSheet (setup mode). Returns true when a card was saved and
+  /// confirmed by the backend payment-method list.
+  Future<bool> addPaymentMethod({bool setFirstCardDefault = true}) async {
+    final token = API().sp.read('token');
+    if (token == null || token.toString().isEmpty) {
+      errorMessage = 'Please log in again.';
+      state = PaymentWorkflowState.authorizationError;
+      BotToast.showText(text: errorMessage!);
       update();
-      final setupIntent = await repository.createSetupIntent();
-      await stripeConfigService.configureStripe(
-        publishableKey: setupIntent.publishableKey,
-      );
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          merchantDisplayName: 'Groovkin',
-          setupIntentClientSecret: setupIntent.clientSecret,
-          returnURL: StripeConfigService.returnUrl,
-        ),
-      );
-      await Stripe.instance.presentPaymentSheet();
-      state = PaymentWorkflowState.processing;
-      update();
-      await refreshPaymentMethods();
-      if (setFirstCardDefault &&
-          paymentMethods.length == 1 &&
-          !paymentMethods.first.isDefault) {
-        await repository.setDefaultPaymentMethod(
-          paymentMethods.first.paymentMethodId,
+      return false;
+    }
+
+    var cardSaved = false;
+    await _guard(
+      () async {
+        state = PaymentWorkflowState.submitting;
+        update();
+
+        SetupIntentResponse setupIntent;
+        try {
+          setupIntent = await repository.createSetupIntent();
+        } on PaymentApiException catch (error) {
+          _logPaymentDebug(
+            endpoint: 'POST payment-methods/setup-intent',
+            httpStatus: error.httpStatus,
+            code: error.code,
+            message: error.message,
+          );
+          rethrow;
+        }
+        _logPaymentDebug(
+          endpoint: 'POST payment-methods/setup-intent',
+          httpStatus: 200,
+          code: null,
+          message: 'SetupIntent ${setupIntent.status ?? 'created'}',
         );
+
+        if (setupIntent.publishableKey.isEmpty ||
+            setupIntent.clientSecret.isEmpty) {
+          throw PaymentApiException(
+            message: 'Payment setup is temporarily unavailable.',
+            code: 'stripe_configuration_missing',
+          );
+        }
+
+        await stripeConfigService.configureStripe(
+          publishableKey: setupIntent.publishableKey,
+        );
+        await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            merchantDisplayName: 'Groovkin',
+            setupIntentClientSecret: setupIntent.clientSecret,
+            returnURL: StripeConfigService.returnUrl,
+          ),
+        );
+        await Stripe.instance.presentPaymentSheet();
+
+        // Never trust the local SDK alone: reload backend card metadata.
+        state = PaymentWorkflowState.processing;
+        update();
+        paymentMethods = await repository.getPaymentMethods();
+        if (setFirstCardDefault &&
+            paymentMethods.isNotEmpty &&
+            !paymentMethods.any((card) => card.isDefault)) {
+          await repository.setDefaultPaymentMethod(
+            paymentMethods.first.paymentMethodId,
+          );
+          paymentMethods = await repository.getPaymentMethods();
+        }
+        cardSaved = paymentMethods.isNotEmpty;
+        state = paymentMethods.isEmpty
+            ? PaymentWorkflowState.empty
+            : PaymentWorkflowState.ready;
+        if (cardSaved) {
+          BotToast.showText(text: 'Card saved securely.');
+        }
+      },
+      unknownErrorMessage: 'Could not add payment method. Please try again.',
+      onStripeCancel: () async {
+        // User closed the PaymentSheet; restore the current list quietly.
         await refreshPaymentMethods();
-      }
-    });
+      },
+    );
+    return cardSaved;
   }
 
   Future<void> setDefaultPaymentMethod(PaymentMethodCard card) async {
@@ -399,7 +451,11 @@ class PaymentController extends GetxController {
     });
   }
 
-  Future<void> _guard(Future<void> Function() action) async {
+  Future<void> _guard(
+    Future<void> Function() action, {
+    String? unknownErrorMessage,
+    Future<void> Function()? onStripeCancel,
+  }) async {
     try {
       errorCode = null;
       errorMessage = null;
@@ -409,12 +465,57 @@ class PaymentController extends GetxController {
       errorMessage = _messageForError(e);
       state = _stateForError(e);
       BotToast.showText(text: errorMessage!);
+    } on StripeConfigException catch (e) {
+      errorCode = 'stripe_configuration_missing';
+      errorMessage = e.message.contains('Publishable key')
+          ? 'Payment setup is temporarily unavailable.'
+          : e.message;
+      state = PaymentWorkflowState.nonRetryableFailure;
+      BotToast.showText(text: errorMessage!);
+    } on StripeException catch (e) {
+      final stripeError = e.error;
+      if (stripeError.code == FailureCode.Canceled) {
+        // The user dismissed the sheet; not an error.
+        if (onStripeCancel != null) {
+          await onStripeCancel();
+        } else {
+          state = PaymentWorkflowState.ready;
+        }
+      } else {
+        errorMessage = stripeError.localizedMessage ??
+            stripeError.message ??
+            'Your card could not be set up. Please try again.';
+        state = PaymentWorkflowState.retryableFailure;
+        BotToast.showText(text: errorMessage!);
+      }
     } catch (e) {
-      errorMessage = 'Please check your connection and try again.';
+      _logPaymentDebug(
+        endpoint: 'unhandled payment error',
+        httpStatus: null,
+        code: null,
+        message: e.toString(),
+      );
+      errorMessage = unknownErrorMessage ??
+          'Unable to connect. Check your internet and try again.';
       state = PaymentWorkflowState.networkError;
       BotToast.showText(text: errorMessage!);
     }
     update();
+  }
+
+  /// Logs safe payment debug info in development builds only. Never logs
+  /// client secrets or card data.
+  void _logPaymentDebug({
+    required String endpoint,
+    int? httpStatus,
+    String? code,
+    String? message,
+  }) {
+    if (!kDebugMode) return;
+    debugPrint(
+      '[Payment] $endpoint | http=${httpStatus ?? '-'} | '
+      'code=${code ?? '-'} | message=${message ?? '-'}',
+    );
   }
 
   void _pollPayment(int paymentId) {
@@ -531,9 +632,14 @@ class PaymentController extends GetxController {
   String _messageForError(PaymentApiException e) {
     switch (e.code) {
       case 'connect_onboarding_incomplete':
-        return 'Stripe Connect onboarding must be completed before this payment can continue.';
+      case 'vm_connect_onboarding_incomplete':
+        return 'Complete your Stripe account setup before continuing with this payment.';
+      case 'eo_connect_onboarding_incomplete':
+        return 'The Event Organizer must complete their Stripe payout setup before this event can be accepted.';
+      case 'stripe_configuration_missing':
+        return 'Payment setup is temporarily unavailable.';
       case 'payment_method_required':
-        return 'A reusable payment method is required.';
+        return 'Add a secure card to continue.';
       case 'payment_requires_action':
         return 'This payment needs authentication before it can finish.';
       case 'deprecated_raw_card_api':
@@ -542,10 +648,16 @@ class PaymentController extends GetxController {
       case 'cancellation_quote_confirmation_required':
         return 'Please review a cancellation quote before confirming cancellation.';
       case 'counter_amount_exceeds_event_principal':
-        return 'The proposed counter amount is above the allowed backend limit.';
+        return 'The proposed amount is higher than the allowed maximum for this event.';
       case 'completion_amount_prohibited':
         return 'Completion amount cannot be changed in this step.';
       default:
+        if (e.httpStatus == 401) {
+          return 'Please log in again.';
+        }
+        if (e.httpStatus == 0) {
+          return 'Unable to connect. Check your internet and try again.';
+        }
         return e.message;
     }
   }

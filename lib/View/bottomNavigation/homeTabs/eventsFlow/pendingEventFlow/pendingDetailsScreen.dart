@@ -805,15 +805,10 @@ Widget pendingDetailsWidget(
                                                                           .checkBoxValue
                                                                           .value) {
                                                                         await _controller
-                                                                            .eventAcceptDeclineFtn(
-                                                                          id: event
-                                                                              .id,
-                                                                          status:
-                                                                              "accepted",
-                                                                        )
-                                                                            .then((_) {
-                                                                          Get.back();
-                                                                        });
+                                                                            .beginPaidEventAcceptance(
+                                                                          event
+                                                                              .id!,
+                                                                        );
                                                                       } else {
                                                                         bottomToast(
                                                                             text:

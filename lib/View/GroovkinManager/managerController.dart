@@ -19,6 +19,7 @@ import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/counters/messagesModel.dart';
 import 'package:groovkin/main.dart';
+import 'package:groovkin/payment/event_acceptance_coordinator.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -766,6 +767,22 @@ class ManagerController extends GetxController {
 
   int? selectedCardId;
   RxBool checkBoxValue = false.obs;
+
+  Future<void> beginPaidEventAcceptance(int eventId) async {
+    final accepted =
+        await EventAcceptanceCoordinator.startVmAcceptance(eventId);
+    if (accepted) {
+      managerPendingEvents?.data?.data
+          ?.removeWhere((event) => event.id == eventId);
+      checkBoxValue.value = false;
+      bottomToast(text: 'Event accepted successfully.');
+      update();
+      if (Get.currentRoute != Routes.bottomNavigationView) {
+        Get.back();
+      }
+    }
+  }
+
   Future<void> eventAcceptDeclineFtn({status, int? id}) async {
     var formData = form.FormData.fromMap({"event_id": id, "status": status});
     var response = await API().postApi(formData, "accept-event-request");

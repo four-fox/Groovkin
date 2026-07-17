@@ -41,7 +41,7 @@ class AddCardDetails extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Groovkin no longer collects card numbers, expiry dates, or security codes. Stripe securely collects and tokenizes your card, then Laravel stores only safe card metadata.',
+                    'Add a secure card before accepting event requests. Your card details are handled securely by Stripe — Groovkin never sees or stores your card number.',
                     style: poppinsRegularStyle(
                       context: context,
                       fontSize: 14,
@@ -102,13 +102,15 @@ class AddCardDetails extends StatelessWidget {
               CustomButton(
                 borderClr: Colors.transparent,
                 onTap: () async {
-                  await controller.addPaymentMethod();
+                  final saved = await controller.addPaymentMethod();
                   if (fromSignUp && controller.errorMessage == null) {
                     Get.offAllNamed(Routes.createCompanyProfileScreen,
                         arguments: {
                           "updationCondition": false,
                           "skipBtnHide": false,
                         });
+                  } else if (saved) {
+                    Get.back(result: true);
                   }
                 },
                 text: "Add Secure Card",

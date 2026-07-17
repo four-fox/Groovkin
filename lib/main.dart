@@ -17,6 +17,8 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
+import 'package:groovkin/payment/payment_deep_links.dart';
+import 'package:groovkin/payment/stripe_connect_controller.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -133,7 +135,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   NotificationService notificationService = NotificationService();
   late AuthController authController;
   ThemeController themeController = Get.find<ThemeController>();
@@ -147,6 +149,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     if (Get.isRegistered<AuthController>()) {
       authController = Get.find<AuthController>();
@@ -167,6 +170,29 @@ class _MyAppState extends State<MyApp> {
     notificationService.setUpInteractMessage(context);
     notificationService.firebaseInit(context);
     // notificationService.getDeviceToken();
+
+    PaymentDeepLinkService.instance.init().then((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        PaymentDeepLinkService.instance.flushInitialLink();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed &&
+        Get.isRegistered<StripeConnectController>()) {
+      final connect = Get.find<StripeConnectController>();
+      if (connect.awaitingBrowserReturn) {
+        connect.handleBrowserReturn();
+      }
+    }
   }
 
   @override

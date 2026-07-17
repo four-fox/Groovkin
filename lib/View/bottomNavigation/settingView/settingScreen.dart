@@ -19,6 +19,7 @@ import 'package:groovkin/View/profile/createProfile.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
+import 'package:groovkin/payment/stripe_connect_models.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -422,13 +423,35 @@ class _SettingScreenState extends State<SettingScreen> {
                                 iconShow: true,
                                 onTap: () {
                                   Get.toNamed(Routes.transactionScreen);
-                                  // showBottomSelectedCardSheet(context);
-                                  // Get.toNamed(Routes.paymentMethodScreen,
-                                  // arguments: {
-                                  //   "paymentMethod": 2
-                                  // }
-                                  // );
                                 }),
+
+                        (sp.read("role") == "eventOrganizer" ||
+                                sp.read("role") == "eventManager")
+                            ? customWidget(
+                                context: context,
+                                img: "assets/paymentMethods.png",
+                                text: StripeConnectCopy.settingsMenuLabel(
+                                  StripeConnectCopy.roleFromStorage(
+                                    sp.read("role")?.toString(),
+                                  ),
+                                ),
+                                iconShow: true,
+                                onTap: () {
+                                  Get.toNamed(Routes.connectOnboardingScreen);
+                                })
+                            : const SizedBox.shrink(),
+
+                        sp.read("role") == "eventManager"
+                            ? customWidget(
+                                context: context,
+                                img: "assets/paymentMethods.png",
+                                text: "Payment Methods",
+                                iconShow: true,
+                                onTap: () {
+                                  Get.toNamed(
+                                      Routes.securePaymentMethodsScreen);
+                                })
+                            : const SizedBox.shrink(),
 
                         SizedBox(
                           height: API().sp.read("role") == "eventOrganizer"

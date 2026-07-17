@@ -4,9 +4,14 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/Routes/app_pages.dart';
+import 'event_acceptance_coordinator.dart';
 import 'payment_controller.dart';
 import 'payment_models.dart';
 import 'payment_widgets.dart';
+import 'stripe_connect_controller.dart';
+import 'stripe_connect_models.dart';
+import 'stripe_connect_widgets.dart';
 
 PaymentController _paymentController() {
   if (Get.isRegistered<PaymentController>()) {
@@ -15,80 +20,184 @@ PaymentController _paymentController() {
   return Get.put(PaymentController());
 }
 
-class ConnectOnboardingScreen extends StatelessWidget {
-  ConnectOnboardingScreen({super.key});
+class ConnectOnboardingScreen extends StatefulWidget {
+  const ConnectOnboardingScreen({super.key});
 
-  final PaymentController controller = _paymentController();
+  @override
+  State<ConnectOnboardingScreen> createState() =>
+      _ConnectOnboardingScreenState();
+}
+
+class _ConnectOnboardingScreenState extends State<ConnectOnboardingScreen> {
+  final StripeConnectController controller = stripeConnectController();
+  final bool refreshAfterReturn = Get.arguments?['refreshAfterReturn'] == true;
+  final bool linkExpired = Get.arguments?['linkExpired'] == true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (refreshAfterReturn) {
+        await controller.handleDeepLinkReturn(linkExpired: linkExpired);
+      } else {
+        await controller.refreshConnectStatus();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final role = controller.role;
+    final isVenueManager = role == StripeConnectRole.venueManager;
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: 'Stripe Connect'),
-      body: GetBuilder<PaymentController>(
-        initState: (_) => controller.refreshConnectStatus(),
+      appBar: customAppBar(
+        theme: theme,
+        text: StripeConnectCopy.screenTitle(role),
+      ),
+      body: GetBuilder<StripeConnectController>(
         builder: (controller) {
+          if (controller.checkingVerificationAfterReturn) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(color: DynamicColor.yellowClr),
+                  const SizedBox(height: 14),
+                  Text(
+                    'Checking Stripe setup...',
+                    style: poppinsRegularStyle(
+                      context: context,
+                      fontSize: 14,
+                      color: theme.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return PaymentStateView(
             state: controller.state,
             message: controller.errorMessage,
             onRetry: controller.refreshConnectStatus,
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            child: RefreshIndicator(
+              onRefresh: controller.refreshConnectStatus,
+              child: ListView(
+                padding: const EdgeInsets.all(14),
                 children: [
-                  Text(
-                    'Connect status',
-                    style: poppinsMediumStyle(
-                      context: context,
-                      fontSize: 20,
-                      color: theme.primaryColor,
+                  if (controller.onboardingLinkExpired &&
+                      !controller.isOnboardingComplete) ...[
+                    _InfoNote(
+                      icon: Icons.timer_off_outlined,
+                      text:
+                          'Your Stripe setup session expired. Start setup again to continue.',
                     ),
+                    const SizedBox(height: 12),
+                  ],
+                  StripeConnectStatusCard(
+                    status: controller.status,
+                    role: role,
+                    onPrimaryAction: controller.isOnboardingComplete
+                        ? null
+                        : controller.launchConnectOnboarding,
+                    onRefresh: controller.refreshConnectStatus,
                   ),
                   const SizedBox(height: 12),
-                  _statusLine('Account',
-                      controller.connectStatus?.accountId ?? 'Not started'),
-                  _statusLine(
-                      'Details submitted',
-                      controller.connectStatus?.detailsSubmitted == true
-                          ? 'Yes'
-                          : 'No'),
-                  _statusLine(
-                      'Charges enabled',
-                      controller.connectStatus?.chargesEnabled == true
-                          ? 'Yes'
-                          : 'No'),
-                  _statusLine(
-                      'Payouts enabled',
-                      controller.connectStatus?.payoutsEnabled == true
-                          ? 'Yes'
-                          : 'No'),
-                  const SizedBox(height: 12),
-                  if ((controller.connectStatus?.requirementsDue ?? [])
-                      .isNotEmpty)
+                  if (isVenueManager) ...[
+                    CustomButton(
+                      borderClr: Colors.transparent,
+                      onTap: () async {
+                        await _paymentController().addPaymentMethod();
+                      },
+                      text: 'Add Secure Card',
+                    ),
+                    const SizedBox(height: 8),
+                    CustomButton(
+                      borderClr: DynamicColor.yellowClr,
+                      backgroundClr: false,
+                      onTap: () =>
+                          Get.toNamed(Routes.securePaymentMethodsScreen),
+                      text: 'View Payment Methods',
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  _InfoNote(
+                    icon: Icons.receipt_long_outlined,
+                    text:
+                        'Transaction history will appear here after payments are processed.',
+                  ),
+                  if (controller.status != null &&
+                      !controller.isOnboardingComplete) ...[
+                    const SizedBox(height: 12),
                     Text(
-                      'Requirements due: ${controller.connectStatus!.requirementsDue.join(', ')}',
+                      'Groovkin confirms setup only after Stripe verification finishes. Returning from the browser does not finish setup by itself.',
                       style: poppinsRegularStyle(
                         context: context,
-                        fontSize: 13,
-                        color: DynamicColor.lightRedClr,
+                        fontSize: 12,
+                        color: DynamicColor.grayClr,
                       ),
                     ),
+                  ],
                 ],
               ),
             ),
           );
         },
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: controller.launchConnectOnboarding,
-            text: 'Open Stripe Onboarding',
+      bottomNavigationBar: GetBuilder<StripeConnectController>(
+        builder: (controller) {
+          if (controller.isOnboardingComplete) {
+            return const SizedBox.shrink();
+          }
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: CustomButton(
+                borderClr: Colors.transparent,
+                onTap: controller.launchConnectOnboarding,
+                text: controller.hasRequirementsDue ||
+                        controller.onboardingLinkExpired
+                    ? 'Continue Stripe Setup'
+                    : 'Complete Stripe Setup',
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _InfoNote extends StatelessWidget {
+  const _InfoNote({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: DynamicColor.darkGrayClr,
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: DynamicColor.yellowClr, size: 20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              style: poppinsRegularStyle(
+                context: context,
+                fontSize: 13,
+                color: DynamicColor.whiteClr,
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -99,6 +208,18 @@ class SecurePaymentMethodScreen extends StatelessWidget {
 
   final PaymentController controller = _paymentController();
 
+  /// Optional explanation shown when another flow (e.g. event acceptance)
+  /// routed the user here to add a card first.
+  final String? contextMessage = Get.arguments?['contextMessage']?.toString();
+
+  Future<void> _addCard() async {
+    final saved = await controller.addPaymentMethod();
+    // If an acceptance flow is waiting on this screen, hand control back.
+    if (saved && Get.arguments?['returnAfterAdd'] == true) {
+      Get.back(result: true);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -107,15 +228,25 @@ class SecurePaymentMethodScreen extends StatelessWidget {
       body: GetBuilder<PaymentController>(
         initState: (_) => controller.refreshPaymentMethods(),
         builder: (controller) {
+          final isEmpty = controller.state == PaymentWorkflowState.empty;
           return PaymentStateView(
             state: controller.state,
-            message: controller.errorMessage,
-            onRetry: controller.refreshPaymentMethods,
+            message: isEmpty ? contextMessage : controller.errorMessage,
+            onRetry: isEmpty ? _addCard : controller.refreshPaymentMethods,
             child: RefreshIndicator(
               onRefresh: controller.refreshPaymentMethods,
               child: ListView(
                 padding: const EdgeInsets.all(14),
                 children: [
+                  if (contextMessage != null) ...[
+                    _InfoNote(
+                      icon: Icons.credit_card_outlined,
+                      text: contextMessage!,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                  const StripeConnectBanner(),
+                  const SizedBox(height: 8),
                   Text(
                     'Saved cards',
                     style: poppinsMediumStyle(
@@ -137,7 +268,7 @@ class SecurePaymentMethodScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 60),
                       child: Text(
-                        'No reusable payment method is saved yet.',
+                        'No payment method added.\nAdd a secure card before accepting event requests. Your card details are handled securely by Stripe.',
                         textAlign: TextAlign.center,
                         style: poppinsRegularStyle(
                           context: context,
@@ -157,7 +288,7 @@ class SecurePaymentMethodScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: CustomButton(
             borderClr: Colors.transparent,
-            onTap: controller.addPaymentMethod,
+            onTap: _addCard,
             text: 'Add Secure Card',
           ),
         ),
@@ -184,55 +315,167 @@ class SecurePaymentMethodScreen extends StatelessWidget {
   }
 }
 
-class EventAcceptPaymentScreen extends StatelessWidget {
-  EventAcceptPaymentScreen({super.key});
+class EventAcceptPaymentScreen extends StatefulWidget {
+  const EventAcceptPaymentScreen({super.key});
 
+  @override
+  State<EventAcceptPaymentScreen> createState() =>
+      _EventAcceptPaymentScreenState();
+}
+
+class _EventAcceptPaymentScreenState extends State<EventAcceptPaymentScreen> {
   final int eventId = Get.arguments?['eventId'];
-  final PaymentController controller = _paymentController();
+  final PaymentController paymentController = _paymentController();
+  final StripeConnectController connectController = stripeConnectController();
+  EventAcceptanceBlocker blocker = EventAcceptanceBlocker.none;
+  bool accepting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadReadiness());
+  }
+
+  Future<void> _loadReadiness() async {
+    await connectController.refreshConnectStatus(silent: true);
+    await paymentController.loadPaymentSummary(eventId);
+    await paymentController.refreshPaymentMethods();
+    final readiness = await EventAcceptanceCoordinator.evaluateVmReadiness(
+      vmStatus: connectController.status,
+      paymentMethods: paymentController.paymentMethods,
+    );
+    setState(() => blocker = readiness);
+  }
+
+  Future<void> _acceptEvent() async {
+    setState(() => accepting = true);
+    final result = await EventAcceptanceCoordinator.acceptEventWithGuard(
+      paymentController,
+      connectController,
+      eventId,
+    );
+    if (!mounted) return;
+    setState(() {
+      accepting = false;
+      blocker = result;
+    });
+
+    if (result == EventAcceptanceBlocker.none &&
+        (paymentController.state == PaymentWorkflowState.success ||
+            paymentController.state == PaymentWorkflowState.processing)) {
+      Get.back(result: true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    if (blocker == EventAcceptanceBlocker.eoConnectIncomplete) {
+      return Scaffold(
+        appBar: customAppBar(theme: theme, text: 'Accept Event'),
+        body: OrganizerConnectIncompleteView(
+          onTryAgain: _loadReadiness,
+          onBack: Get.back,
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: customAppBar(theme: theme, text: 'Accept Event'),
       body: GetBuilder<PaymentController>(
-        initState: (_) async {
-          await controller.loadPaymentSummary(eventId);
-          await controller.refreshPaymentMethods();
-        },
         builder: (controller) {
+          if (blocker == EventAcceptanceBlocker.vmConnectIncomplete) {
+            return RefreshIndicator(
+              onRefresh: _loadReadiness,
+              child: ListView(
+                padding: const EdgeInsets.all(14),
+                children: [
+                  StripeConnectStatusCard(
+                    status: connectController.status,
+                    role: connectController.role,
+                    onPrimaryAction: () =>
+                        Get.toNamed(Routes.connectOnboardingScreen),
+                    onRefresh: _loadReadiness,
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (blocker == EventAcceptanceBlocker.paymentMethodRequired) {
+            return PaymentStateView(
+              state: PaymentWorkflowState.empty,
+              message: 'Add a secure card to continue accepting this event.',
+              onRetry: () async {
+                await Get.toNamed(
+                  Routes.securePaymentMethodsScreen,
+                  arguments: {
+                    'contextMessage':
+                        'Add a secure card to continue accepting this event.',
+                    'returnAfterAdd': true,
+                  },
+                );
+                await _loadReadiness();
+              },
+              child: const SizedBox.shrink(),
+            );
+          }
+
+          if (blocker == EventAcceptanceBlocker.stripeConfigurationMissing) {
+            return PaymentStateView(
+              state: PaymentWorkflowState.nonRetryableFailure,
+              message: 'Payment setup is temporarily unavailable.',
+              onRetry: _loadReadiness,
+              child: const SizedBox.shrink(),
+            );
+          }
+
           return PaymentStateView(
             state: controller.state,
             message: controller.errorMessage,
-            onRetry: () => controller.loadPaymentSummary(eventId),
-            child: ListView(
-              padding: const EdgeInsets.all(14),
-              children: [
-                if (controller.paymentSummary != null)
-                  PaymentBreakdownCard(summary: controller.paymentSummary!),
-                Text(
-                  'Payment completion is confirmed only after Laravel reports final status.',
-                  style: poppinsRegularStyle(
-                    context: context,
-                    fontSize: 13,
-                    color: DynamicColor.grayClr,
+            onRetry: _loadReadiness,
+            child: RefreshIndicator(
+              onRefresh: _loadReadiness,
+              child: ListView(
+                padding: const EdgeInsets.all(14),
+                children: [
+                  StripeConnectStatusCard(
+                    status: connectController.status,
+                    role: connectController.role,
+                    compact: true,
+                    onPrimaryAction: connectController.isOnboardingComplete
+                        ? null
+                        : () => Get.toNamed(Routes.connectOnboardingScreen),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 12),
+                  if (controller.paymentSummary != null)
+                    PaymentBreakdownCard(summary: controller.paymentSummary!),
+                  Text(
+                    'Your payment is confirmed once processing finishes. You can safely leave this screen while it completes.',
+                    style: poppinsRegularStyle(
+                      context: context,
+                      fontSize: 13,
+                      color: DynamicColor.grayClr,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: CustomButton(
-            borderClr: Colors.transparent,
-            onTap: () => controller.acceptEvent(eventId),
-            text: 'Accept and Continue',
-          ),
-        ),
-      ),
+      bottomNavigationBar: blocker == EventAcceptanceBlocker.none
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: CustomButton(
+                  borderClr: Colors.transparent,
+                  onTap: accepting ? null : _acceptEvent,
+                  text: accepting ? 'Accepting...' : 'Accept and Continue',
+                ),
+              ),
+            )
+          : null,
     );
   }
 }
@@ -264,7 +507,7 @@ class PaymentStatusScreen extends StatelessWidget {
                   StatusChip(label: payment?.status.name ?? 'unknown'),
                   const SizedBox(height: 12),
                   Text(
-                    'Backend status is the source of truth for payment, refund, dispute, and review states.',
+                    'Payment status updates automatically. Refunds, disputes, and reviews will appear here.',
                     style: poppinsRegularStyle(
                       context: context,
                       fontSize: 13,

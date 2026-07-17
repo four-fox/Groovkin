@@ -11,6 +11,8 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_CONNECT_COUNTRY=US
 STRIPE_CONNECT_REFRESH_URL=https://api.example.com/api/stripe/onboarding/refresh
 STRIPE_CONNECT_RETURN_URL=https://api.example.com/api/stripe/onboarding/return
+STRIPE_CONNECT_RETURN_DEEP_LINK=groovkin://stripe-connect/return?status=success
+STRIPE_CONNECT_REFRESH_DEEP_LINK=groovkin://stripe-connect/refresh?status=expired
 GROOVKIN_PAYMENT_CURRENCY=usd
 GROOVKIN_COMMISSION_BASIS_POINTS=1000
 GROOVKIN_COMMISSION_ON_CANCELLATION_LIABILITY=true
@@ -49,6 +51,13 @@ GROOVKIN_DEFAULT_EVENT_TIMEZONE=UTC
 ## Connect Accounts
 
 Both EO and VM use `POST /api/stripe/connect/onboarding-link`.
+
+The Account Link `return_url` and `refresh_url` must point to the public Laravel routes:
+
+- `GET /api/stripe/onboarding/return` — HTML success page with deep link `groovkin://stripe-connect/return?status=success`
+- `GET /api/stripe/onboarding/refresh` — HTML expired-session page with deep link `groovkin://stripe-connect/refresh?status=expired`
+
+Configure deep links via `STRIPE_CONNECT_RETURN_DEEP_LINK` and `STRIPE_CONNECT_REFRESH_DEEP_LINK`.
 
 The API requires `charges_enabled` and `payouts_enabled` before event acceptance. Although VM is the payer in this implementation, VM onboarding remains required by confirmed product policy.
 

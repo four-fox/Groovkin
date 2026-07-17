@@ -42,6 +42,20 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="groovkin" android:host="stripe-redirect" />
             </intent-filter>
+            <intent-filter android:label="stripe_connect">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="groovkin" android:host="stripe-connect" />
+            </intent-filter>
+            <intent-filter android:label="payment_links">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="groovkin" android:host="payments" />
+                <data android:scheme="groovkin" android:host="events" />
+                <data android:scheme="groovkin" android:host="cancellations" />
+            </intent-filter>
         </activity>
 
        <meta-data

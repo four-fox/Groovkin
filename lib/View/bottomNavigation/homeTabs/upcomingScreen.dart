@@ -26,6 +26,7 @@ import 'package:groovkin/utils/utils.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
+import 'package:groovkin/payment/event_acceptance_coordinator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -539,16 +540,20 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                                   ),
                                                                   child:
                                                                       DisclaimerView(
-                                                                    onTap: () {
+                                                                    onTap:
+                                                                        () async {
                                                                       Get.back();
-                                                                      Get.toNamed(
-                                                                        Routes
-                                                                            .addCardDetails,
-                                                                        arguments: {
-                                                                          'paymentMethod':
-                                                                              3,
-                                                                        },
-                                                                      );
+                                                                      final eventId = controller
+                                                                          .eventDetail!
+                                                                          .data!
+                                                                          .id;
+                                                                      if (eventId ==
+                                                                          null) {
+                                                                        return;
+                                                                      }
+                                                                      await EventAcceptanceCoordinator
+                                                                          .startVmAcceptance(
+                                                                              eventId);
                                                                     },
                                                                   ),
                                                                 ),

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.0+34
+version: 1.0.0+35
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -100,6 +100,7 @@ dependencies:
   pin_code_fields: ^9.4.0
   circular_countdown_timer: ^0.2.4
   pretty_dio_logger: ^1.4.0
+  app_links: ^6.4.0
 
 dependency_overrides:
   flutter_datetime_picker_bdaya: ^3.0.2
