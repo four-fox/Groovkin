@@ -71,8 +71,11 @@ Important:
 - `groovkin://stripe-connect/refresh?status=expired`
 - `groovkin://stripe-connect/status`
 - `groovkin://payments/{paymentId}`
+- `groovkin://events/{eventId}/payment`
 - `groovkin://events/{eventId}/completion`
 - `groovkin://events/{eventId}/counter`
+- `groovkin://wallet`
+- `groovkin://wallet/transactions/{transactionId}`
 - `groovkin://cancellations/{cancellationId}`
 
 Screens fetch backend state before rendering actions.

@@ -26,6 +26,10 @@ abstract class Routes {
   static const completionWorkflowScreen = _Path.completionWorkflowScreen;
   static const cancellationWorkflowScreen = _Path.cancellationWorkflowScreen;
   static const transactionScreen = _Path.transactionScreen;
+  static const walletHomeScreen = _Path.walletHomeScreen;
+  static const walletTransactionsScreen = _Path.walletTransactionsScreen;
+  static const walletTransactionDetailScreen =
+      _Path.walletTransactionDetailScreen;
   static const insuranceScreen = _Path.insuranceScreen;
   static const hardwareScreen = _Path.hardwareScreen;
   static const quickSurveyScreen = _Path.quickSurveyScreen;
@@ -156,6 +160,9 @@ abstract class _Path {
   static const completionWorkflowScreen = "/CompletionWorkflowScreen";
   static const cancellationWorkflowScreen = "/CancellationWorkflowScreen";
   static const transactionScreen = "/TransactionScreen";
+  static const walletHomeScreen = "/WalletHomeScreen";
+  static const walletTransactionsScreen = "/WalletTransactionsScreen";
+  static const walletTransactionDetailScreen = "/WalletTransactionDetailScreen";
   static const insuranceScreen = "/insuranceScreen";
   static const hardwareScreen = "/HardwareScreen";
   static const quickSurveyScreen = "/QuickSurveyScreen";

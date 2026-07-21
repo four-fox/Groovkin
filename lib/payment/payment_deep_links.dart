@@ -4,7 +4,9 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'journey/payment_journey_controller.dart';
 import 'stripe_connect_controller.dart';
+import 'wallet/wallet_controller.dart';
 
 class PaymentDeepLink {
   PaymentDeepLink({
@@ -12,6 +14,7 @@ class PaymentDeepLink {
     this.paymentId,
     this.eventId,
     this.cancellationId,
+    this.transactionId,
     this.status,
   });
 
@@ -19,6 +22,7 @@ class PaymentDeepLink {
   final int? paymentId;
   final int? eventId;
   final int? cancellationId;
+  final String? transactionId;
 
   /// Query value from Stripe Connect return/refresh links, e.g.
   /// `success` or `expired`. Informational only; backend status is
@@ -38,19 +42,32 @@ class PaymentDeepLink {
     if (uri.host == 'stripe-redirect') {
       return PaymentDeepLink(workflow: 'stripe_redirect');
     }
+    if (uri.host == 'wallet') {
+      if (segments.length >= 2 && segments.first == 'transactions') {
+        return PaymentDeepLink(
+          workflow: 'wallet_transaction',
+          transactionId: segments[1],
+        );
+      }
+      return PaymentDeepLink(workflow: 'wallet');
+    }
     if (uri.host == 'payments' && segments.isNotEmpty) {
       return PaymentDeepLink(
         workflow: 'payment',
         paymentId: int.tryParse(segments.first),
       );
     }
-    if (uri.host == 'events' && segments.length >= 2) {
+    if (uri.host == 'events' && segments.isNotEmpty) {
       final eventId = int.tryParse(segments.first);
-      if (segments[1] == 'completion') {
-        return PaymentDeepLink(workflow: 'completion', eventId: eventId);
-      }
-      if (segments[1] == 'counter') {
-        return PaymentDeepLink(workflow: 'counter', eventId: eventId);
+      if (segments.length >= 2) {
+        switch (segments[1]) {
+          case 'payment':
+            return PaymentDeepLink(workflow: 'event_payment', eventId: eventId);
+          case 'completion':
+            return PaymentDeepLink(workflow: 'completion', eventId: eventId);
+          case 'counter':
+            return PaymentDeepLink(workflow: 'counter', eventId: eventId);
+        }
       }
     }
     if (uri.host == 'cancellations' && segments.isNotEmpty) {
@@ -87,6 +104,20 @@ class PaymentDeepLink {
               arguments: {'paymentId': paymentId});
         }
         break;
+      case 'event_payment':
+        if (eventId != null) {
+          Get.toNamed(
+            Routes.pendingEventDetails,
+            arguments: {
+              'eventId': eventId,
+              'notInterestedBtn': 0,
+              'title': 'Event Details',
+              'type': 'payment',
+            },
+          );
+          paymentJourneyController(eventId!).refreshJourney();
+        }
+        break;
       case 'completion':
       case 'counter':
         if (eventId != null) {
@@ -99,6 +130,20 @@ class PaymentDeepLink {
           Get.toNamed(Routes.cancellationWorkflowScreen, arguments: {
             'cancellationId': cancellationId,
           });
+        }
+        break;
+      case 'wallet':
+        Get.toNamed(Routes.walletHomeScreen);
+        if (Get.isRegistered<WalletController>()) {
+          Get.find<WalletController>().refreshAll();
+        }
+        break;
+      case 'wallet_transaction':
+        if (transactionId != null) {
+          Get.toNamed(
+            Routes.walletTransactionDetailScreen,
+            arguments: {'transactionId': transactionId},
+          );
         }
         break;
       case 'stripe_connect':
@@ -126,7 +171,7 @@ class PaymentDeepLink {
 }
 
 /// Listens for OS-level `groovkin://` deep links (cold start and while
-/// running) and routes payment/Stripe Connect links to the right screen.
+/// running) and routes payment/Stripe Connect/wallet links to the right screen.
 class PaymentDeepLinkService {
   PaymentDeepLinkService._();
 

@@ -715,6 +715,9 @@ Cancellation statuses: `quote_created`, `confirmed`, `payment_required`, `paymen
 - `vm_connect_onboarding_incomplete`
 - `eo_connect_onboarding_incomplete`
 - `stripe_configuration_missing`
+- `unauthorized_event_payment_access`
+- `unauthorized_wallet_access`
+- `transaction_not_found`
 - `payment_method_required`
 - `payment_requires_action`
 - `payment_failed`
@@ -723,6 +726,23 @@ Cancellation statuses: `quote_created`, `confirmed`, `payment_required`, `paymen
 - `completion_amount_prohibited`
 - `counter_amount_exceeds_event_principal`
 
-### Wallet (Optional)
+### Wallet / Earnings
 
-Wallet transaction history is not required for Connect onboarding, card setup, event acceptance, or down payment. If wallet endpoints are not implemented, hide or deprioritize wallet history in the mobile UI without blocking payment flows.
+Use:
+
+```http
+GET /api/wallet/summary
+GET /api/wallet/transactions
+GET /api/wallet/transactions/{transaction}
+GET /api/wallet/payouts
+```
+
+EO sees earnings; VM sees payments/refunds. Do not treat wallet as a spendable balance. Full contract: `docs/WALLET_TRANSACTION_API.md`.
+
+For event screens, prefer:
+
+```http
+GET /api/events/{event}/payment-journey
+```
+
+Do not infer payment permissions from `event.status` alone. See `docs/EVENT_PAYMENT_JOURNEY_API.md`.

@@ -413,17 +413,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                 })
                             : const SizedBox(),
 
-                        (sp.read("role") == "User" ||
+                        (sp.read("role") == "eventOrganizer" ||
                                 sp.read("role") == "eventManager")
-                            ? const SizedBox.shrink()
-                            : customWidget(
+                            ? customWidget(
                                 context: context,
                                 img: "assets/paymentMethods.png",
-                                text: "Wallet",
+                                text: sp.read("role") == "eventOrganizer"
+                                    ? "Earnings & Payouts"
+                                    : "Payments & Refunds",
                                 iconShow: true,
                                 onTap: () {
-                                  Get.toNamed(Routes.transactionScreen);
-                                }),
+                                  Get.toNamed(Routes.walletHomeScreen);
+                                })
+                            : const SizedBox.shrink(),
 
                         (sp.read("role") == "eventOrganizer" ||
                                 sp.read("role") == "eventManager")

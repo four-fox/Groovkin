@@ -669,7 +669,11 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     final repsposne = await API().postApi({}, "logout");
     if (repsposne.statusCode == 200) {
-      await StripeConfigService().resetCustomer();
+      try{
+        await StripeConfigService().resetCustomer();
+      }catch(e){
+        print(e);
+      }
       API().sp.erase();
       API().sp.write("intro", true);
       // Get.offAllNamed(Routes.loginScreen);

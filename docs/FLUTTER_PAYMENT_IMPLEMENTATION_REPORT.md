@@ -1,5 +1,45 @@
 # Flutter Payment Implementation Report
 
+## 2026-07-20 Update: Event Payment Journey + Wallet
+
+### UI gaps found before this update
+
+- Event Detail had no payment journey section and ignored `payment_overview`.
+- Remaining-balance / completion / counter / final-auth actions were not driven by backend `permissions` / `next_action`.
+- Wallet screen was a developer placeholder with no `/api/wallet/*` integration.
+- No deep links for `events/{id}/payment` or wallet routes.
+
+### What was implemented
+
+1. **Payment journey API** — typed models, mapper, controller, repository method, Event Detail section.
+2. **Role-based actions** from `next_action.code` and `permissions` (not `event.status`).
+3. **Completion / counters / resume / retry** wired through journey primary actions + existing payment APIs.
+4. **Timeline** rendered from backend events only.
+5. **Wallet** — EO Earnings & Payouts / VM Payments & Refunds with summary, paginated transactions, detail, Connect transfers.
+6. **Payout copy** — bank tracking disabled messaging; never claims bank arrival.
+7. **Refresh** — open, resume, pull-to-refresh, after actions, deep links, bounded polling for processing stages.
+8. **Deep links / notification routing** for payment lifecycle types (refresh only; no invented notification backend).
+
+### Files added
+
+- `lib/payment/journey/payment_journey_models.dart`
+- `lib/payment/journey/payment_journey_mapper.dart`
+- `lib/payment/journey/payment_journey_controller.dart`
+- `lib/payment/journey/payment_journey_widgets.dart`
+- `lib/payment/wallet/wallet_models.dart`
+- `lib/payment/wallet/wallet_controller.dart`
+- `lib/payment/wallet/wallet_screens.dart`
+- `test/payment_journey_test.dart`
+- `test/wallet_models_test.dart`
+- `docs/FLUTTER_EVENT_PAYMENT_JOURNEY.md`
+- `docs/FLUTTER_WALLET_TRANSACTION_IMPLEMENTATION.md`
+
+### Backend note
+
+`docs/EVENT_PAYMENT_JOURNEY_API.md` documents stages and next-action codes but does not include a full JSON example. Flutter parsers accept nested sections (`readiness`, `agreement`, `totals`, `down_payment`, `completion`, `final_payment`, `cancellation`, `permissions`, `next_action`, `timeline`) with defensive field aliases matching existing payment money-field conventions. If staging field names differ, adjust parsers only — do not invent endpoints.
+
+---
+
 ## 2026-07 Update: Connect Return, Payouts UI, and Add Secure Card Fixes
 
 This update was made after the backend verified the Stripe Connect return pages, Connect status endpoint, SetupIntent response, and stable event-acceptance error codes.

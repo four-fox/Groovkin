@@ -87,6 +87,7 @@ import 'package:groovkin/View/paymentMethod/subscriptionScreen.dart';
 import 'package:groovkin/View/authView/welcomeScreen.dart';
 import 'package:groovkin/View/splashScreen.dart';
 import 'package:groovkin/payment/payment_screens.dart';
+import 'package:groovkin/payment/wallet/wallet_screens.dart';
 
 import '../chatView/chatController.dart';
 import '../chatView/chatInnerScreen.dart';
@@ -206,7 +207,19 @@ class AppPages {
     ),
     GetPage(
       name: _Path.transactionScreen,
-      page: () => const TransactionScreen(),
+      page: () => WalletHomeScreen(),
+    ),
+    GetPage(
+      name: _Path.walletHomeScreen,
+      page: () => WalletHomeScreen(),
+    ),
+    GetPage(
+      name: _Path.walletTransactionsScreen,
+      page: () => WalletTransactionsScreen(),
+    ),
+    GetPage(
+      name: _Path.walletTransactionDetailScreen,
+      page: () => const WalletTransactionDetailScreen(),
     ),
     GetPage(
       name: _Path.viewAllCardList,

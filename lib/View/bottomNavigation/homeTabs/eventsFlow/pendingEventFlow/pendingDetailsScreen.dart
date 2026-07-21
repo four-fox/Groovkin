@@ -16,6 +16,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/main.dart';
+import 'package:groovkin/payment/journey/payment_journey_widgets.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
@@ -973,6 +974,9 @@ Widget pendingDetailsWidget(
                 title: "Featuring", value: event.featuring.toString()),
             customWidget(context, theme,
                 title: "Price", value: event.balanceDue.toString()),
+            if (API().sp.read('role') == 'eventOrganizer' ||
+                API().sp.read('role') == 'eventManager')
+              EventPaymentJourneySection(eventId: eventId),
             customWidget(context, theme,
                 title: "Rating", value: event.rate.toString()),
             const SizedBox(

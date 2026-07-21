@@ -122,23 +122,23 @@ class _ConnectOnboardingScreenState extends State<ConnectOnboardingScreen> {
                     ),
                     const SizedBox(height: 12),
                   ],
-                  _InfoNote(
-                    icon: Icons.receipt_long_outlined,
-                    text:
-                        'Transaction history will appear here after payments are processed.',
-                  ),
-                  if (controller.status != null &&
-                      !controller.isOnboardingComplete) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      'Groovkin confirms setup only after Stripe verification finishes. Returning from the browser does not finish setup by itself.',
-                      style: poppinsRegularStyle(
-                        context: context,
-                        fontSize: 12,
-                        color: DynamicColor.grayClr,
-                      ),
-                    ),
-                  ],
+                  // _InfoNote(
+                  //   icon: Icons.receipt_long_outlined,
+                  //   text:
+                  //       'Transaction history will appear here after payments are processed.',
+                  // ),
+                  // if (controller.status != null &&
+                  //     !controller.isOnboardingComplete) ...[
+                  //   const SizedBox(height: 12),
+                  //   Text(
+                  //     'Groovkin confirms setup only after Stripe verification finishes. Returning from the browser does not finish setup by itself.',
+                  //     style: poppinsRegularStyle(
+                  //       context: context,
+                  //       fontSize: 12,
+                  //       color: DynamicColor.grayClr,
+                  //     ),
+                  //   ),
+                  // ],
                 ],
               ),
             ),

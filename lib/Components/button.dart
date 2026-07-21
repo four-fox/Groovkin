@@ -64,6 +64,7 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: Text(
             text ?? 'Get Started',
+            textAlign: TextAlign.center,
             style: style ??
                 poppinsMediumStyle(
                   context: context,

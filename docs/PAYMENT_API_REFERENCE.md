@@ -105,6 +105,12 @@ Soft-removes a stored reusable payment method. The only default method cannot be
 
 Returns server-calculated principal, deposit, remaining balance, fee estimate, and commission target in minor units.
 
+`GET /api/events/{event}/payment-journey`
+
+Role-aware payment journey read model (stages, permissions, next action, timeline, down payment / remaining balance). See `docs/EVENT_PAYMENT_JOURNEY_API.md`.
+
+Event Detail (`GET /api/event-details/{id}`) may include compact `payment_overview` for EO/VM participants.
+
 `POST /api/events/{event}/accept`
 
 ```json
@@ -396,6 +402,9 @@ Requires action:
 - `vm_connect_onboarding_incomplete`
 - `eo_connect_onboarding_incomplete`
 - `stripe_configuration_missing`
+- `unauthorized_event_payment_access`
+- `unauthorized_wallet_access`
+- `transaction_not_found`
 - `payment_method_required`
 - `payment_requires_action`
 - `payment_failed`
@@ -404,9 +413,16 @@ Requires action:
 - `completion_amount_prohibited`
 - `counter_amount_exceeds_event_principal`
 
-### Wallet (Optional)
+### Wallet / Earnings
 
-Wallet transaction history is not required for Connect onboarding, card setup, event acceptance, or down payment. Wallet endpoints may be absent without blocking payment flows.
+Implemented role-aware wallet APIs (not a stored-value balance):
+
+- `GET /api/wallet/summary`
+- `GET /api/wallet/transactions`
+- `GET /api/wallet/transactions/{transaction}`
+- `GET /api/wallet/payouts`
+
+See `docs/WALLET_TRANSACTION_API.md`. Bank payout tracking is disabled; only platform → Connect transfers are listed.
 
 ### Webhook Events
 

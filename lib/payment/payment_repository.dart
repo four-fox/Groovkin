@@ -1,10 +1,64 @@
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'journey/payment_journey_models.dart';
 import 'payment_models.dart';
+import 'wallet/wallet_models.dart';
 
 class PaymentRepository {
   final _storage = GetStorage();
+
+  Future<PaymentJourney> getPaymentJourney(int eventId) async {
+    final response = await API().getApi(
+      url: 'events/$eventId/payment-journey',
+      isLoader: false,
+    );
+    return PaymentJourney.fromJson(_unwrap(response));
+  }
+
+  Future<WalletSummary> getWalletSummary() async {
+    final response = await API().getApi(
+      url: 'wallet/summary',
+      isLoader: false,
+    );
+    return WalletSummary.fromJson(_unwrap(response));
+  }
+
+  Future<WalletTransactionPage> getWalletTransactions({
+    required int page,
+    int perPage = 20,
+    WalletTransactionFilters? filters,
+  }) async {
+    final response = await API().getApi(
+      url: 'wallet/transactions',
+      isLoader: false,
+      queryParameters: (filters ?? WalletTransactionFilters()).toQuery(
+        page: page,
+        perPage: perPage,
+      ),
+    );
+    // Paginated Laravel responses may put the page envelope in `data`
+    // or return the list directly under `data`.
+    final raw = _unwrapRaw(response);
+    return WalletTransactionPage.fromJson(raw);
+  }
+
+  Future<WalletTransactionDetail> getWalletTransaction(String id) async {
+    final encoded = Uri.encodeComponent(id);
+    final response = await API().getApi(
+      url: 'wallet/transactions/$encoded',
+      isLoader: false,
+    );
+    return WalletTransactionDetail.fromJson(_unwrap(response));
+  }
+
+  Future<WalletPayoutsResponse> getWalletPayouts() async {
+    final response = await API().getApi(
+      url: 'wallet/payouts',
+      isLoader: false,
+    );
+    return WalletPayoutsResponse.fromJson(_unwrap(response));
+  }
 
   Future<StripeOnboardingLink> createConnectOnboardingLink() async {
     final response = await API().jsonPostApi('stripe/connect/onboarding-link');

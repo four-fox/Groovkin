@@ -257,6 +257,50 @@ class NotificationService {
       return;
     }
 
+    // Payment lifecycle notification types. Text is not authoritative —
+    // always open the relevant screen and refresh backend state.
+    const paymentLifecycleTypes = {
+      'down_payment_succeeded',
+      'down_payment_failed',
+      'down_payment_requires_action',
+      'final_payment_requires_action',
+      'final_payment_failed',
+      'final_payment_succeeded',
+      'eo_transfer',
+      'refund',
+      'dispute',
+      'payout',
+      'manual_review',
+      'payment_journey_updated',
+    };
+    if (paymentLifecycleTypes.contains(data["type"]?.toString())) {
+      final eventId = int.tryParse(
+        data["event_id"]?.toString() ?? data["source_id"]?.toString() ?? '',
+      );
+      final transactionId = data["transaction_id"]?.toString();
+      if (transactionId != null && transactionId.isNotEmpty) {
+        Get.toNamed(
+          Routes.walletTransactionDetailScreen,
+          arguments: {'transactionId': transactionId},
+        );
+        return;
+      }
+      if (eventId != null) {
+        Get.toNamed(
+          Routes.pendingEventDetails,
+          arguments: {
+            'eventId': eventId,
+            'notInterestedBtn': 0,
+            'title': 'Event Details',
+            'type': 'payment',
+          },
+        );
+        return;
+      }
+      Get.toNamed(Routes.walletHomeScreen);
+      return;
+    }
+
     EventController controller = Get.find();
     ManagerController managerController = Get.find();
     HomeController homeController = Get.find();
