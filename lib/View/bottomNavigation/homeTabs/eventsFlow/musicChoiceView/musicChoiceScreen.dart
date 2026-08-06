@@ -218,8 +218,18 @@ class MusicChoiceScreen extends StatelessWidget {
       ),
       body: GetBuilder<EventController>(
         initState: (_) {
+          // Edit flow only (not create/duplicate/draft): re-seed manuals
+          // when the editor is still empty so collection-less events show
+          // their saved manual hashtags.
+          final isEditing = _controller.eventDetail != null &&
+              !_controller.duplicateValue.value &&
+              !_controller.draftValue.value;
+          if (isEditing &&
+              !_controller.manualHashtagsChanged &&
+              _controller.manualHashtags.isEmpty) {
+            _controller.seedHashtagsFromEventDetail();
+          }
           _controller.getHashtagCollectionApi();
-          _controller.manualHashtagsChanged = false;
           _controller.collectionSelectionChanged = false;
         },
         builder: (controller) {
@@ -532,20 +542,17 @@ class ActivityChoiceScreen extends StatelessWidget {
       ),
       bottomNavigationBar: _continueBar(
         onTap: () {
-          if (_controller.activityListPost.isNotEmpty) {
-            _controller.imageListtt.clear();
-            _controller.removeImageList.clear();
-            if (_controller.eventDetail != null) {
-              for (final ele
-                  in _controller.eventDetail!.data!.profilePicture!) {
-                _controller.imageListtt.add(ele);
-              }
+          // Activity Choice is optional — allow continue with zero selections.
+          _controller.imageListtt.clear();
+          _controller.removeImageList.clear();
+          if (_controller.eventDetail != null) {
+            for (final ele
+                in _controller.eventDetail!.data!.profilePicture!) {
+              _controller.imageListtt.add(ele);
             }
-            _controller.update();
-            Get.toNamed(Routes.commentsAndAttachment);
-          } else {
-            bottomToast(text: 'Please select activity choice');
           }
+          _controller.update();
+          Get.toNamed(Routes.commentsAndAttachment);
         },
       ),
     );

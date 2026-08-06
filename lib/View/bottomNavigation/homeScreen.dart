@@ -1208,23 +1208,25 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
                                                                 fontSized: 12,
                                                                 onTap:
                                                                     () async {
-                                                                  if (controller
+                                                                  if (!controller
                                                                       .checkBoxValue
                                                                       .value) {
-                                                                    await controller
-                                                                        .beginPaidEventAcceptance(
-                                                                      controller
-                                                                          .managerPendingEvents!
-                                                                          .data!
-                                                                          .data![
-                                                                              index]
-                                                                          .id!,
-                                                                    );
-                                                                  } else {
                                                                     bottomToast(
                                                                         text:
                                                                             "Please agree with the disclaimer to accept the event request");
+                                                                    return;
                                                                   }
+                                                                  final acceptEventId = controller
+                                                                      .managerPendingEvents!
+                                                                      .data!
+                                                                      .data![
+                                                                          index]
+                                                                      .id!;
+                                                                  Get.back();
+                                                                  await controller
+                                                                      .beginPaidEventAcceptance(
+                                                                    acceptEventId,
+                                                                  );
                                                                 },
                                                                 color2: DynamicColor
                                                                     .greenClr

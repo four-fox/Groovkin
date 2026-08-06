@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_final_fields
 import 'package:flutter/material.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -8,7 +7,6 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
-import 'package:groovkin/utils/responsive.dart';
 
 class AddVenueDetailsScreen extends StatelessWidget {
   AddVenueDetailsScreen({super.key});
@@ -53,169 +51,71 @@ class AddVenueDetailsScreen extends StatelessWidget {
       }, builder: (controller) {
         return controller.getAmenitiesLoader.value == false
             ? const SizedBox.shrink()
-            : SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 1, horizontal: 17),
-                  child: LayoutGrid(
-                    columnSizes: Responsive.isDesktop(context)
-                        ? [1.fr, 1.fr, 1.fr, 1.fr, 1.fr]
-                        : Responsive.isTablet(context)
-                            ? [1.fr, 1.fr, 1.fr, 1.fr]
-                            : Responsive.isMobileLarge(context)
-                                ? [1.fr, 1.fr, 1.fr]
-                                : Responsive.isMobile(context)
-                                    ? [1.fr, 1.fr]
-                                    : [1.fr], // Two columns
-                    rowSizes: List.generate(10, (_) => auto),
-                    children:
-                        controller.amenitiesList.asMap().entries.map((datas) {
-                      int index = datas.key;
-
-                      return SizedBox(
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              controller.amenitiesList[index].selected!.value =
-                                  !controller
-                                      .amenitiesList[index].selected!.value;
-                              if (controller
-                                      .amenitiesList[index].selected!.value ==
-                                  true) {
-                                controller.selectedAmenities
-                                    .add(controller.amenitiesList[index]);
-                              } else {
-                                controller.selectedAmenities
-                                    .remove(controller.amenitiesList[index]);
-                              }
-                              controller.update();
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  color: controller.amenitiesList[index]
-                                              .selected!.value !=
-                                          false
-                                      ? DynamicColor.grayClr
-                                      : DynamicColor.yellowClr,
-                                  borderRadius: BorderRadius.circular(12),
+            // Compact list rows (same pattern as Licenses & Permits) so
+            // tablet landscape shows more items instead of oversized tiles.
+            : ListView.builder(
+                itemCount: controller.amenitiesList.length,
+                shrinkWrap: true,
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                itemBuilder: (BuildContext context, index) {
+                  final item = controller.amenitiesList[index];
+                  final selected = item.selected!.value == true;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        item.selected!.value = !item.selected!.value;
+                        if (item.selected!.value == true) {
+                          controller.selectedAmenities.add(item);
+                        } else {
+                          controller.selectedAmenities.remove(item);
+                        }
+                        controller.update();
+                      },
+                      child: Container(
+                        height: 40,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: selected
+                              ? null
+                              : const DecorationImage(
+                                  image: AssetImage("assets/buttonBg.png"),
+                                  fit: BoxFit.fill,
                                 ),
-                                // padding: EdgeInsets.all(4),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 45,
-                                      width: 45,
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: controller.amenitiesList[index]
-                                                      .selected!.value ==
-                                                  false
-                                              ? DynamicColor.grayClr
-                                              : DynamicColor.yellowClr),
-                                      child: const Image(
-                                        image: AssetImage("assets/djing.png"),
-                                      ),
-                                    ),
-                                    Text(
-                                      controller.amenitiesList[index].name
-                                          .toString(),
-                                      style: poppinsRegularStyle(
-                                        fontSize: 13,
-                                        color: theme.primaryColor,
-                                        context: context,
-                                      ),
-                                    )
-                                  ],
-                                )),
-                          ),
+                          color: selected
+                              ? DynamicColor.grayClr
+                              : Colors.transparent,
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                item.name.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: poppinsRegularStyle(
+                                  fontSize: 13,
+                                  color: theme.primaryColor,
+                                  context: context,
+                                ),
+                              ),
+                            ),
+                            if (selected)
+                              Icon(
+                                Icons.check,
+                                size: 28,
+                                color: DynamicColor.blackClr,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
               );
-        // GridView.custom(
-        //   shrinkWrap: true,
-        //   padding: EdgeInsets.symmetric(vertical: 1, horizontal: 17),
-        //   // gridDelegate: SliverStairedGridDelegate(
-        //   //   crossAxisSpacing: 6,
-        //   //   mainAxisSpacing: 0.0,
-        //   //   startCrossAxisDirectionReversed: true,
-        //   //   pattern: [
-        //   //     StairedGridTile(0.5, 7 / 3.3),
-        //   //     StairedGridTile(0.5, 7 / 3.3),
-        //   //   ],
-        //   // ),
-        //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        //     crossAxisCount: 2,
-        //     childAspectRatio: 7 / 3.3,
-        //   ),
-        //   childrenDelegate: SliverChildBuilderDelegate(
-        //     (context, index) {
-        //       return Padding(
-        //         padding: EdgeInsets.all(5.0),
-        //         child: GestureDetector(
-        //           onTap: () {
-        //             controller.amenitiesList[index].selected!.value =
-        //                 !controller.amenitiesList[index].selected!.value;
-        //             if (controller.amenitiesList[index].selected!.value ==
-        //                 true) {
-        //               controller.selectedAmenities
-        //                   .add(controller.amenitiesList[index]);
-        //             } else {
-        //               controller.selectedAmenities
-        //                   .remove(controller.amenitiesList[index]);
-        //             }
-        //             controller.update();
-        //           },
-        //           child: Container(
-        //               decoration: BoxDecoration(
-        //                 color:
-        //                     controller.amenitiesList[index].selected!.value !=
-        //                             false
-        //                         ? DynamicColor.grayClr
-        //                         : DynamicColor.yellowClr,
-        //                 borderRadius: BorderRadius.circular(12),
-        //               ),
-        //               // padding: EdgeInsets.all(4),
-        //               child: Column(
-        //                 mainAxisAlignment: MainAxisAlignment.center,
-        //                 children: [
-        //                   Container(
-        //                     height: 45,
-        //                     width: 45,
-        //                     padding: EdgeInsets.all(4),
-        //                     decoration: BoxDecoration(
-        //                         shape: BoxShape.circle,
-        //                         color: controller.amenitiesList[index]
-        //                                     .selected!.value ==
-        //                                 false
-        //                             ? DynamicColor.grayClr
-        //                             : DynamicColor.yellowClr),
-        //                     child: Image(
-        //                       image: AssetImage("assets/djing.png"),
-        //                     ),
-        //                   ),
-        //                   Text(
-        //                     controller.amenitiesList[index].name.toString(),
-        //                     style: poppinsRegularStyle(
-        //                       fontSize: 13,
-        //                       color: theme.primaryColor,
-        //                       context: context,
-        //                     ),
-        //                   )
-        //                 ],
-        //               )),
-        //         ),
-        //       );
-        //     },
-        //     childCount: controller.amenitiesList.length,
-        //   ),
-        // );
       }),
       bottomNavigationBar: SafeArea(
         child: Padding(

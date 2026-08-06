@@ -185,14 +185,46 @@ PaymentNextActionCode parsePaymentNextActionCode(String? value) {
 }
 
 bool journeyStageNeedsPolling(PaymentJourneyStage stage) {
+  // Final-payment settlement + transfer reconciliation only. The backend now
+  // auto-retries/reconciles EO transfers, so `manual_review` self-resolves to
+  // `financially_settled` in the background (typically within ~10 minutes) —
+  // it must keep polling, not be treated as a terminal/error stage.
   return const {
-    PaymentJourneyStage.downPaymentProcessing,
     PaymentJourneyStage.finalPaymentProcessing,
     PaymentJourneyStage.finalTransferPending,
-    PaymentJourneyStage.cancellationProcessing,
-    PaymentJourneyStage.completionRequested,
-    PaymentJourneyStage.counterNegotiation,
+    PaymentJourneyStage.manualReview,
   }.contains(stage);
+}
+
+bool journeyStageStopsPolling(PaymentJourneyStage stage) {
+  return const {
+    PaymentJourneyStage.financiallySettled,
+    PaymentJourneyStage.finalPaymentFailed,
+    PaymentJourneyStage.finalPaymentRequiresAction,
+    PaymentJourneyStage.cancelled,
+    PaymentJourneyStage.disputed,
+  }.contains(stage);
+}
+
+/// Authoritative settlement check. Never use final_payment.status alone.
+bool isFinanciallySettled(String? settlementStatus) {
+  return settlementStatus == 'financially_settled';
+}
+
+bool isEoTransferFailed(String? transferStatus) {
+  switch (transferStatus) {
+    case 'failed':
+    case 'canceled':
+    case 'cancelled':
+    case 'reversed':
+      return true;
+    default:
+      return false;
+  }
+}
+
+bool isEoTransferSucceeded(String? transferStatus) {
+  return transferStatus == 'transferred' || transferStatus == 'succeeded';
 }
 
 class PaymentOverview {
@@ -283,6 +315,7 @@ class JourneyTotals {
     this.chargeAmountMinor,
     this.groovkinCommissionMinor,
     this.organizerProceedsMinor,
+    this.eoProceedsTransferredMinor,
   });
 
   final String currency;
@@ -295,6 +328,7 @@ class JourneyTotals {
   final int? chargeAmountMinor;
   final int? groovkinCommissionMinor;
   final int? organizerProceedsMinor;
+  final int? eoProceedsTransferredMinor;
 
   factory JourneyTotals.fromJson(Map<String, dynamic>? json) {
     if (json == null) return JourneyTotals();
@@ -320,6 +354,10 @@ class JourneyTotals {
       organizerProceedsMinor: _readInt(
         json['organizer_proceeds_minor'] ?? json['eo_proceeds_minor'],
       ),
+      eoProceedsTransferredMinor: _readInt(
+        json['eo_proceeds_transferred_minor'] ??
+            json['organizer_proceeds_transferred_minor'],
+      ),
     );
   }
 }
@@ -336,6 +374,9 @@ class JourneyPaymentSlice {
     this.transferAmountMinor,
     this.organizerProceedsMinor,
     this.groovkinCommissionMinor,
+    this.remainingPrincipalMinor,
+    this.estimatedTotalChargeMinor,
+    this.requiresAction = false,
   });
 
   final String? status;
@@ -348,9 +389,18 @@ class JourneyPaymentSlice {
   final int? transferAmountMinor;
   final int? organizerProceedsMinor;
   final int? groovkinCommissionMinor;
+  final int? remainingPrincipalMinor;
+  final int? estimatedTotalChargeMinor;
+  final bool requiresAction;
 
   bool get isSucceeded =>
       status == 'succeeded' || status == 'paid' || status == 'transferred';
+
+  bool get isProcessing => status == 'processing';
+
+  bool get isFailed => status == 'failed';
+
+  bool get isRequiresAction => requiresAction || status == 'requires_action';
 
   factory JourneyPaymentSlice.fromJson(Map<String, dynamic>? json) {
     if (json == null) return JourneyPaymentSlice();
@@ -371,6 +421,11 @@ class JourneyPaymentSlice {
       transferAmountMinor: _readInt(json['transfer_amount_minor']),
       organizerProceedsMinor: _readInt(json['organizer_proceeds_minor']),
       groovkinCommissionMinor: _readInt(json['groovkin_commission_minor']),
+      remainingPrincipalMinor: _readInt(json['remaining_principal_minor']),
+      estimatedTotalChargeMinor: _readInt(
+        json['estimated_total_charge_minor'] ?? json['total_charge_minor'],
+      ),
+      requiresAction: json['requires_action'] == true,
     );
   }
 }
@@ -383,6 +438,7 @@ class JourneyCounter {
     this.message,
     this.status,
     this.counterSecondsRemaining,
+    this.negotiationExpiresAt,
     this.createdAt,
     this.history = const [],
   });
@@ -393,8 +449,12 @@ class JourneyCounter {
   final String? message;
   final String? status;
   final int? counterSecondsRemaining;
+  final DateTime? negotiationExpiresAt;
   final DateTime? createdAt;
   final List<Map<String, dynamic>> history;
+
+  /// A counter still being negotiated (approval is paused while open).
+  bool get isOpen => status == 'open' || status == 'revised';
 
   int? get differenceMinor {
     if (proposedPrincipalMinor == null || originalPrincipalMinor == null) {
@@ -414,7 +474,12 @@ class JourneyCounter {
       ),
       message: json['message']?.toString(),
       status: json['status']?.toString(),
-      counterSecondsRemaining: _readInt(json['counter_seconds_remaining']),
+      counterSecondsRemaining: _readInt(
+        json['counter_seconds_remaining'] ?? json['seconds_remaining'],
+      ),
+      negotiationExpiresAt: DateTime.tryParse(
+        json['negotiation_expires_at']?.toString() ?? '',
+      ),
       createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
       history: historyRaw is List
           ? historyRaw
@@ -448,14 +513,19 @@ class JourneyCompletion {
     final counter = json['latest_counter'] ?? json['counter'];
     return JourneyCompletion(
       status: json['status']?.toString(),
-      requestedAt: DateTime.tryParse(json['requested_at']?.toString() ?? ''),
+      requestedAt: DateTime.tryParse(
+        json['requested_at']?.toString() ??
+            json['completion_requested_at']?.toString() ??
+            '',
+      ),
       autoApproveAt: DateTime.tryParse(
         json['auto_approve_at']?.toString() ??
             json['auto_approval_at']?.toString() ??
             '',
       ),
-      autoApproveSecondsRemaining:
-          _readInt(json['auto_approve_seconds_remaining']),
+      autoApproveSecondsRemaining: _readInt(
+        json['auto_approve_seconds_remaining'] ?? json['seconds_remaining'],
+      ),
       counterSecondsRemaining: _readInt(json['counter_seconds_remaining']),
       latestCounter: counter is Map
           ? JourneyCounter.fromJson(Map<String, dynamic>.from(counter))
@@ -673,6 +743,21 @@ class PaymentJourney {
             'remaining_principal_minor': json['remaining_principal_minor'],
           if (json['currency'] != null) 'currency': json['currency'],
         };
+
+    // The journey response also nests money under `agreement`
+    // (event_principal_minor / remaining_principal_minor). Backfill totals so
+    // widgets can read a single place.
+    final agreementMap = _asMap(json['agreement']);
+    if (agreementMap != null) {
+      for (final key in const [
+        'event_principal_minor',
+        'remaining_principal_minor',
+      ]) {
+        if (totalsMap[key] == null && agreementMap[key] != null) {
+          totalsMap[key] = agreementMap[key];
+        }
+      }
+    }
 
     final timelineRaw = json['timeline'];
     return PaymentJourney(

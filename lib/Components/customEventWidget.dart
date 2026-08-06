@@ -19,6 +19,9 @@ userCustomEvent(
     dayy,
     isDelete}) {
   return GestureDetector(
+    // Opaque so taps on empty/padding areas of the tile register too;
+    // default deferToChild made the row feel like it needed two taps.
+    behavior: HitTestBehavior.opaque,
     onTap: (isDelete != null && isDelete == true)
         ? () {
             Utils.showToast();
@@ -65,16 +68,18 @@ userCustomEvent(
                           color: DynamicColor.grayClr),
                     ),
                     SizedBox(
-                      width: Get.width / 1.7,
+                      width: Get.width / 1.8,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ImageIcon(
+
                             const AssetImage("assets/location.png"),
                             color: DynamicColor.grayClr,
                           ),
                           SizedBox(
-                            width: Get.width / 2,
+                            width: Get.width / 2.1,
                             child: Text(
                               location ?? "Herkimer County Fairgrounds",
                               maxLines: 2,

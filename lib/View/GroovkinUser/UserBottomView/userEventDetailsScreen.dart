@@ -58,6 +58,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
         body: GetBuilder<EventController>(initState: (v) {
           _controller.eventDetails(eventId: statusVal);
         }, builder: (controller) {
+          print(controller.eventDetail);
           return controller.eventDetailsLoader.value == false
               ? const SizedBox.shrink()
               : SingleChildScrollView(
@@ -67,7 +68,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       Stack(
                         alignment: Alignment.bottomRight,
                         children: [
-                          controller.eventDetail!.data!.profilePicture!.isEmpty
+                          controller.eventDetail!.data!.bannerImage == null
                               ? const SizedBox.shrink()
                               : SizedBox(
                                   height: kToolbarHeight * 3,
@@ -83,14 +84,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12.0),
                                           child: Container(
-                                            width: controller
-                                                        .eventDetail!
-                                                        .data!
-                                                        .profilePicture!
-                                                        .length ==
-                                                    1
-                                                ? Get.width
-                                                : Get.width / 1.5,
+                                            width: MediaQuery.of(context).size.width,
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                   color: theme.primaryColor,
@@ -99,9 +93,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                   image: controller
                                                               .eventDetail!
                                                               .data!
-                                                              .profilePicture![
-                                                                  index]
-                                                              .mediaPath
+                                                              .bannerImage!
+                                                              .mediaPath!
                                                               .toString()
                                                               .split(".")
                                                               .last !=
@@ -113,9 +106,8 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                                                           ? controller
                                                               .eventDetail!
                                                               .data!
-                                                              .profilePicture![
-                                                                  index]
-                                                              .mediaPath
+                                                              .bannerImage!
+                                                      .mediaPath!
                                                               .toString()
                                                           : 'assets/eventPreview.png')
                                                       : NetworkImage(controller

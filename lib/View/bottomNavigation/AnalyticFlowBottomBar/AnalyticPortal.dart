@@ -2,16 +2,19 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/shrink_tap.dart';
 import 'package:groovkin/Components/textStyle.dart';
-import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:material_charts/material_charts.dart' as material;
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+/// Phase-1: EO analytics is free. Persists after "Enjoy Your Free Subscription".
+const String _kEoPhase1FreeSubscriptionKey = 'eo_phase1_free_subscription';
 
 class ChartData {
   final String x;
@@ -32,6 +35,10 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
   late AuthController _authController;
   List<ChartData> data = [];
   late TooltipBehavior tooltipBehavior; // Declare tooltipBehavior
+  bool _phase1FreeAccess = false;
+
+  bool get _hasAnalyticsAccess =>
+      appData.entitlementIsActive == true || _phase1FreeAccess;
 
   String returnTextAccordingToType(String type) {
     switch (type) {
@@ -58,6 +65,9 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
       _authController = Get.put(AuthController());
     }
 
+    _phase1FreeAccess =
+        API().sp.read(_kEoPhase1FreeSubscriptionKey) == true;
+
     _homeController.getAllAnalyticsListData();
     _homeController.getAllAnalyticsData().then(
       (value) {
@@ -74,6 +84,14 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
     );
     tooltipBehavior =
         TooltipBehavior(enable: true); // Initialize tooltip behavior
+  }
+
+  void _acceptPhase1FreeSubscription() {
+    API().sp.write(_kEoPhase1FreeSubscriptionKey, true);
+    setState(() => _phase1FreeAccess = true);
+    if (Get.isRegistered<AuthController>()) {
+      Get.find<AuthController>().update();
+    }
   }
 
   List<String> list = [
@@ -284,8 +302,8 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
               }),
             ],
           ),
-          GetBuilder<AuthController>(builder: (context) {
-            return appData.entitlementIsActive == true
+          GetBuilder<AuthController>(builder: (_) {
+            return _hasAnalyticsAccess
                 ? const SizedBox()
                 : notSubscribeCardWidget();
           })
@@ -313,23 +331,23 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
   );
 
   Widget notSubscribeCardWidget() {
+    final disabledTextStyle = GoogleFonts.poppins(
+      fontSize: 14,
+      color: Colors.white.withValues(alpha: 0.45),
+    );
     return PopScope(
       canPop: false,
       child: Stack(
         children: [
-          // Blurred Background
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
-              color: Colors.black
-                  .withValues(alpha: 0.6), // Semi-transparent overlay
+              color: Colors.black.withValues(alpha: 0.6),
             ),
           ),
-
-          // Alert Dialog
           Center(
             child: SizedBox(
-              width: context.width * .8,
+              width: context.width * .85,
               child: Card(
                 elevation: 15,
                 margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -350,49 +368,85 @@ class _AnalyticPortalScreenState extends State<AnalyticPortalScreen> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // Future paid subscription messaging — visible but disabled.
+                        Opacity(
+                          opacity: 0.45,
+                          child: Column(
+                            children: [
+                              Text(
+                                "You're not subscribed!",
+                                style: GoogleFonts.bungee(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                "Subscribe now to unlock premium analytics and access this feature.",
+                                style: disabledTextStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 12),
+                              ElevatedButton(
+                                onPressed: null,
+                                style: ElevatedButton.styleFrom(
+                                  disabledBackgroundColor:
+                                      Colors.grey.shade600,
+                                  disabledForegroundColor:
+                                      Colors.white70,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                ),
+                                child: Text(
+                                  "Subscribe Now",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 18),
                         Text(
-                          "You're not subscribed!",
-                          style: GoogleFonts.bungee(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                          "Analytics portal is free to all Event Organizers for now.",
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 8),
                         Text(
-                          "Subscribe now to unlock premium analytics and access this feature.",
+                          "Enjoy Groovkin's paid features while our services are being deployed and improved!",
                           style: GoogleFonts.poppins(
-                              fontSize: 16, color: Colors.white),
+                            fontSize: 13,
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 18),
                         ShrinkOnTap(
                           child: ElevatedButton(
-                            onPressed: () {
-                              // Add subscription logic here
-                              Get.toNamed(
-                                Routes.subscriptionScreen,
-                                arguments: {"isFromSettingScreen": true},
-                              );
-                            },
+                            onPressed: _acceptPhase1FreeSubscription,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: DynamicColor.yellowClr,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
+                                  horizontal: 18, vertical: 12),
                             ),
                             child: Text(
-                              "Subscribe Now",
+                              "Enjoy Your Free Subscription",
+                              textAlign: TextAlign.center,
                               style: GoogleFonts.poppins(
-                                fontSize: 16,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),

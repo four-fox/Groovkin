@@ -27,10 +27,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:groovkin/payment/event_acceptance_coordinator.dart';
+import 'package:groovkin/payment/journey/payment_journey_widgets.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../Components/t_section_button.dart';
 
@@ -662,110 +661,118 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                   )
                 : const SizedBox.shrink(),
 
+            // Payment & Event Status (completion approve/counter, final
+            // payment). Hides itself when the viewer isn't an event party.
+            if (API().sp.read("role") != "User")
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: EventPaymentJourneySection(eventId: eventId),
+              ),
+
             SizedBox(height: flowBtn == 3 ? 0 : 12),
 
             ///todo dalta counter button data
             SizedBox(height: flowBtn == 3 ? 0 : 10),
 
-            controller.venueImageList.isEmpty
-                ? const SizedBox.shrink()
-                : SizedBox(
-                    height: kToolbarHeight * 3,
-                    width: Get.width,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.venueImageList.length,
-                      itemBuilder: (BuildContext context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Container(
-                            width: controller.venueImageList.length == 1
-                                ? Get.width
-                                : Get.width / 1.5,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: theme.primaryColor),
-                              image: controller.venueImageList[index]
-                                          .toString()
-                                          .split(".")
-                                          .last ==
-                                      "pdf"
-                                  ? null
-                                  : DecorationImage(
-                                      image: controller.venueImageList[index]
-                                                  .toString()
-                                                  .split(".")
-                                                  .last !=
-                                              "mp4"
-                                          ? NetworkImage(
-                                              controller.venueImageList[index]
-                                                  .toString(),
-                                            )
-                                          : NetworkImage(
-                                              controller.venueImageList[index]
-                                                  .toString(),
-                                            ),
-                                      fit: BoxFit.fill,
-                                    ),
-                            ),
-                            child: controller.venueImageList[index]
-                                        .toString()
-                                        .split(".")
-                                        .last ==
-                                    "pdf"
-                                ? GestureDetector(
-                                    onTap: () async {
-                                      if (Platform.isIOS) {
-                                        Get.to(() async {
-                                          Scaffold(
-                                            backgroundColor: Colors.transparent,
-                                            appBar: AppBar(
-                                              title: const Text("PDF Viewer"),
-                                            ),
-                                            body: SfPdfViewer.network(
-                                              controller.venueImageList[index]
-                                                  .toString(),
-                                            ),
-                                          );
-                                        });
-                                      } else if (Platform.isAndroid) {
-                                        final Uri url = Uri.parse(
-                                          controller.venueImageList[index]
-                                              .toString(),
-                                        );
-                                        if (!await launchUrl(
-                                          url,
-                                          mode: LaunchMode
-                                              .externalApplication, // opens in browser
-                                        )) {
-                                          throw Exception(
-                                            'Could not open ${controller.venueImageList[index].toString()}',
-                                          );
-                                        }
-                                      }
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: DynamicColor.lightGrayClr
-                                            .withValues(alpha: 0.2),
-                                        borderRadius: BorderRadius.circular(
-                                          8.0,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.picture_as_pdf,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+            // controller.venueImageList.isEmpty
+            //     ? const SizedBox.shrink()
+            //     : SizedBox(
+            //         height: kToolbarHeight * 3,
+            //         width: Get.width,
+            //         child: ListView.builder(
+            //           shrinkWrap: true,
+            //           scrollDirection: Axis.horizontal,
+            //           itemCount: controller.venueImageList.length,
+            //           itemBuilder: (BuildContext context, index) {
+            //             return Padding(
+            //               padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            //               child: Container(
+            //                 width: controller.venueImageList.length == 1
+            //                     ? Get.width
+            //                     : Get.width / 1.5,
+            //                 decoration: BoxDecoration(
+            //                   border: Border.all(color: theme.primaryColor),
+            //                   image: controller.venueImageList[index]
+            //                               .toString()
+            //                               .split(".")
+            //                               .last ==
+            //                           "pdf"
+            //                       ? null
+            //                       : DecorationImage(
+            //                           image: controller.venueImageList[index]
+            //                                       .toString()
+            //                                       .split(".")
+            //                                       .last !=
+            //                                   "mp4"
+            //                               ? NetworkImage(
+            //                                   controller.venueImageList[index]
+            //                                       .toString(),
+            //                                 )
+            //                               : NetworkImage(
+            //                                   controller.venueImageList[index]
+            //                                       .toString(),
+            //                                 ),
+            //                           fit: BoxFit.fill,
+            //                         ),
+            //                 ),
+            //                 child: controller.venueImageList[index]
+            //                             .toString()
+            //                             .split(".")
+            //                             .last ==
+            //                         "pdf"
+            //                     ? GestureDetector(
+            //                         onTap: () async {
+            //                           if (Platform.isIOS) {
+            //                             Get.to(() async {
+            //                               Scaffold(
+            //                                 backgroundColor: Colors.transparent,
+            //                                 appBar: AppBar(
+            //                                   title: const Text("PDF Viewer"),
+            //                                 ),
+            //                                 body: SfPdfViewer.network(
+            //                                   controller.venueImageList[index]
+            //                                       .toString(),
+            //                                 ),
+            //                               );
+            //                             });
+            //                           } else if (Platform.isAndroid) {
+            //                             final Uri url = Uri.parse(
+            //                               controller.venueImageList[index]
+            //                                   .toString(),
+            //                             );
+            //                             if (!await launchUrl(
+            //                               url,
+            //                               mode: LaunchMode
+            //                                   .externalApplication, // opens in browser
+            //                             )) {
+            //                               throw Exception(
+            //                                 'Could not open ${controller.venueImageList[index].toString()}',
+            //                               );
+            //                             }
+            //                           }
+            //                         },
+            //                         child: Container(
+            //                           decoration: BoxDecoration(
+            //                             color: DynamicColor.lightGrayClr
+            //                                 .withValues(alpha: 0.2),
+            //                             borderRadius: BorderRadius.circular(
+            //                               8.0,
+            //                             ),
+            //                           ),
+            //                           child: Center(
+            //                             child: Icon(
+            //                               Icons.picture_as_pdf,
+            //                               color: Colors.red,
+            //                             ),
+            //                           ),
+            //                         ),
+            //                       )
+            //                     : null,
+            //               ),
+            //             );
+            //           },
+            //         ),
+            //       ),
 
             Align(
               alignment: Alignment.centerLeft,

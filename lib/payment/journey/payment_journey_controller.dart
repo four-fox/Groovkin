@@ -8,6 +8,7 @@ import '../payment_models.dart';
 import '../payment_polling_service.dart';
 import '../payment_repository.dart';
 import '../stripe_config_service.dart';
+import '../wallet/wallet_controller.dart';
 import 'payment_journey_mapper.dart';
 import 'payment_journey_models.dart';
 
@@ -31,6 +32,8 @@ class PaymentJourneyController extends GetxController
   String? errorMessage;
   String? errorCode;
   bool actionInFlight = false;
+  bool _pollingActive = false;
+  bool _walletRefreshedForSettlement = false;
 
   JourneyUiState get ui => journey == null
       ? const JourneyUiState(
@@ -75,6 +78,7 @@ class PaymentJourneyController extends GetxController
       errorMessage = null;
       errorCode = null;
       _maybeStartPolling();
+      await _maybeRefreshWalletAfterSettlement();
     } on PaymentApiException catch (error) {
       errorCode = error.code;
       errorMessage = _messageForError(error);
@@ -92,20 +96,60 @@ class PaymentJourneyController extends GetxController
 
   void _maybeStartPolling() {
     final current = journey;
-    if (current == null || !journeyStageNeedsPolling(current.journeyStage)) {
+    if (current == null ||
+        journeyStageStopsPolling(current.journeyStage) ||
+        !journeyStageNeedsPolling(current.journeyStage)) {
+      _pollingActive = false;
       _poller.stop();
       return;
     }
+    // Prevent duplicate polling loops for the same processing stage.
+    if (_pollingActive) return;
+    _pollingActive = true;
     _poller.start(
       fetch: () => repository.getPaymentJourney(eventId),
-      isTerminal: (value) => !journeyStageNeedsPolling(value.journeyStage),
-      onValue: (value) {
+      isTerminal: (value) =>
+          journeyStageStopsPolling(value.journeyStage) ||
+          !journeyStageNeedsPolling(value.journeyStage),
+      onValue: (value) async {
         journey = value;
         state = PaymentWorkflowState.ready;
         update();
+        await _maybeRefreshWalletAfterSettlement();
       },
-      maxDuration: const Duration(minutes: 4),
+      onComplete: () {
+        _pollingActive = false;
+        _poller.stop();
+      },
+      // Backend transfer reconciliation typically completes within ~10
+      // minutes; bound polling generously beyond that so the UI can observe
+      // the automatic transition to financially_settled without user action.
+      maxDuration: const Duration(minutes: 15),
+      maxDelay: const Duration(seconds: 45),
     );
+  }
+
+  Future<void> _maybeRefreshWalletAfterSettlement() async {
+    final current = journey;
+    if (current == null || !isFinanciallySettled(current.settlementStatus)) {
+      if (current != null && !isFinanciallySettled(current.settlementStatus)) {
+        _walletRefreshedForSettlement = false;
+      }
+      return;
+    }
+    if (_walletRefreshedForSettlement) return;
+    _walletRefreshedForSettlement = true;
+    try {
+      if (Get.isRegistered<WalletController>()) {
+        await Get.find<WalletController>().refreshAll(silent: true);
+      } else {
+        // Warm wallet data so EO/VM see final earnings/payment after settlement.
+        final wallet = Get.put(WalletController());
+        await wallet.refreshAll(silent: true);
+      }
+    } catch (_) {
+      // Wallet refresh is best-effort after settlement.
+    }
   }
 
   Future<void> runPrimaryAction() async {
@@ -132,12 +176,30 @@ class PaymentJourneyController extends GetxController
           await EventAcceptanceCoordinator.startVmAcceptance(eventId);
           break;
         case PaymentNextActionCode.completeDownPayment:
+          await _resumePayment(current.nextAction.paymentId ??
+              current.downPayment.paymentId ??
+              current.finalPayment.paymentId);
+          break;
         case PaymentNextActionCode.resumeFinalPayment:
+          if (_mustNotChargeFinalPaymentAgain(current)) {
+            BotToast.showText(
+              text:
+                  'Final payment already succeeded. Organizer transfer recovery is handled by Groovkin support.',
+            );
+            break;
+          }
           await _resumePayment(current.nextAction.paymentId ??
               current.finalPayment.paymentId ??
               current.downPayment.paymentId);
           break;
         case PaymentNextActionCode.retryFinalPayment:
+          if (_mustNotChargeFinalPaymentAgain(current)) {
+            BotToast.showText(
+              text:
+                  'Final payment already succeeded. Organizer transfer recovery is handled by Groovkin support.',
+            );
+            break;
+          }
           await _retryPayment(
               current.nextAction.paymentId ?? current.finalPayment.paymentId);
           break;
@@ -208,7 +270,7 @@ class PaymentJourneyController extends GetxController
       BotToast.showText(text: 'Completion requested.');
       await refreshJourney();
     } on PaymentApiException catch (error) {
-      BotToast.showText(text: _messageForError(error));
+      await _handleActionError(error);
     } finally {
       actionInFlight = false;
       update();
@@ -223,14 +285,15 @@ class PaymentJourneyController extends GetxController
       BotToast.showText(text: 'Final payment processing.');
       await refreshJourney();
     } on PaymentApiException catch (error) {
-      BotToast.showText(text: _messageForError(error));
+      await _handleActionError(error);
     } finally {
       actionInFlight = false;
       update();
     }
   }
 
-  Future<void> createCounter({
+  /// Returns true when the counter was created (caller can close its sheet).
+  Future<bool> createCounter({
     required int proposedPrincipalMinor,
     required String message,
   }) async {
@@ -242,16 +305,20 @@ class PaymentJourneyController extends GetxController
         proposedPrincipalMinor: proposedPrincipalMinor,
         message: message,
       );
+      BotToast.showText(text: 'Counter submitted.');
       await refreshJourney();
+      return true;
     } on PaymentApiException catch (error) {
-      BotToast.showText(text: _messageForError(error));
+      await _handleActionError(error);
+      return false;
     } finally {
       actionInFlight = false;
       update();
     }
   }
 
-  Future<void> reviseCounter({
+  /// Returns true when the counter revision was accepted by the backend.
+  Future<bool> reviseCounter({
     required int counterId,
     required int proposedPrincipalMinor,
     required String message,
@@ -264,9 +331,12 @@ class PaymentJourneyController extends GetxController
         proposedPrincipalMinor: proposedPrincipalMinor,
         message: message,
       );
+      BotToast.showText(text: 'Counter revised.');
       await refreshJourney();
+      return true;
     } on PaymentApiException catch (error) {
-      BotToast.showText(text: _messageForError(error));
+      await _handleActionError(error);
+      return false;
     } finally {
       actionInFlight = false;
       update();
@@ -278,9 +348,10 @@ class PaymentJourneyController extends GetxController
     update();
     try {
       await repository.acceptCounter(counterId);
+      BotToast.showText(text: 'Counter accepted. Final payment processing.');
       await refreshJourney();
     } on PaymentApiException catch (error) {
-      BotToast.showText(text: _messageForError(error));
+      await _handleActionError(error);
     } finally {
       actionInFlight = false;
       update();
@@ -294,11 +365,78 @@ class PaymentJourneyController extends GetxController
       await repository.rejectCounter(counterId);
       await refreshJourney();
     } on PaymentApiException catch (error) {
-      BotToast.showText(text: _messageForError(error));
+      await _handleActionError(error);
     } finally {
       actionInFlight = false;
       update();
     }
+  }
+
+  /// Shows friendly copy; when the backend says the action already happened
+  /// (idempotent replay / parameter conflict), re-sync from the journey.
+  Future<void> _handleActionError(PaymentApiException error) async {
+    BotToast.showText(text: _messageForError(error));
+    if (const {
+      'payment_already_processing',
+      'payment_already_succeeded',
+      'payment_attempt_parameter_conflict',
+    }.contains(error.code)) {
+      await refreshJourney(silent: true);
+    }
+  }
+
+  /// Once the final PaymentIntent succeeded, never initiate another VM charge.
+  /// EO Connect transfer recovery is backend/support-driven only.
+  bool _mustNotChargeFinalPaymentAgain(PaymentJourney current) {
+    return current.finalPayment.isSucceeded;
+  }
+
+  /// Stripe authentication for a final payment in `requires_action`.
+  Future<void> resumeFinalPaymentAction() async {
+    final current = journey;
+    if (current == null || actionInFlight) return;
+    if (_mustNotChargeFinalPaymentAgain(current)) {
+      await refreshJourney(silent: true);
+      return;
+    }
+    actionInFlight = true;
+    update();
+    try {
+      await _resumePayment(
+        current.finalPayment.paymentId ?? current.nextAction.paymentId,
+      );
+    } finally {
+      actionInFlight = false;
+      update();
+    }
+  }
+
+  /// Retry a failed final payment charge.
+  Future<void> retryFinalPaymentAction() async {
+    final current = journey;
+    if (current == null || actionInFlight) return;
+    actionInFlight = true;
+    update();
+    try {
+      await _retryPayment(
+        current.finalPayment.paymentId ?? current.nextAction.paymentId,
+      );
+    } finally {
+      actionInFlight = false;
+      update();
+    }
+  }
+
+  Future<void> updatePaymentMethod() async {
+    await Get.toNamed(
+      Routes.securePaymentMethodsScreen,
+      arguments: {
+        'contextMessage':
+            'Update your payment method, then retry the payment if needed.',
+        'returnAfterAdd': true,
+      },
+    );
+    await refreshJourney();
   }
 
   Future<void> _resumePayment(int? paymentId) async {
@@ -314,6 +452,13 @@ class PaymentJourneyController extends GetxController
   Future<void> _retryPayment(int? paymentId) async {
     if (paymentId == null) {
       BotToast.showText(text: 'Payment reference is missing.');
+      return;
+    }
+    if (journey != null && _mustNotChargeFinalPaymentAgain(journey!)) {
+      BotToast.showText(
+        text:
+            'Final payment already succeeded. Organizer transfer recovery is handled by Groovkin support.',
+      );
       return;
     }
     final payment = _paymentController();
@@ -349,10 +494,19 @@ class PaymentJourneyController extends GetxController
         return 'This payment step is not available right now.';
       case 'completion_not_available':
         return 'Completion is not available for this event yet.';
+      case 'completion_amount_prohibited':
+        return 'Completion cannot include an amount. Approve or counter instead.';
       case 'counter_active':
         return 'A counter is already open for this event.';
       case 'counter_expired':
         return 'This counter has expired.';
+      case 'counter_amount_exceeds_event_principal':
+        return 'Counter amount cannot exceed the agreed event total.';
+      case 'payment_already_processing':
+      case 'payment_already_succeeded':
+        return 'This payment is already being handled. Refreshing status...';
+      case 'payment_attempt_parameter_conflict':
+        return 'Something changed on this payment. Refresh and try again.';
       case 'manual_review_required':
         return 'This event needs manual review before it can continue.';
       default:

@@ -5,6 +5,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:intl/intl.dart';
 import '../payment_models.dart';
+import 'completion_review_widgets.dart';
 import 'payment_journey_controller.dart';
 import 'payment_journey_mapper.dart';
 import 'payment_journey_models.dart';
@@ -173,27 +174,34 @@ class PaymentJourneyCard extends StatelessWidget {
                 journey.finalPayment.transferStatus != null)
               _MoneyRow(
                 label: 'Transfer status',
-                value: journey.finalPayment.transferStatus ??
-                    journey.downPayment.transferStatus ??
-                    '--',
+                value: PaymentJourneyMapper.friendlyTransferStatusLabel(
+                  journey.finalPayment.transferStatus ??
+                      journey.downPayment.transferStatus,
+                ),
+              ),
+            if (journey.totals.eoProceedsTransferredMinor != null)
+              _MoneyRow(
+                label: 'Transferred to Stripe account',
+                value: money.formatMinor(
+                  journey.totals.eoProceedsTransferredMinor,
+                  currency: currency,
+                ),
               ),
           ],
           if (journey.settlementStatus != null) ...[
             const SizedBox(height: 4),
             _MoneyRow(
               label: 'Settlement status',
-              value: journey.settlementStatus!.replaceAll('_', ' '),
+              value: PaymentJourneyMapper.friendlySettlementStatusLabel(
+                journey.settlementStatus,
+              ),
             ),
           ],
           if (journey.completion.autoApproveSecondsRemaining != null) ...[
             const SizedBox(height: 8),
-            Text(
-              'Auto-approval: ${PaymentJourneyMapper.formatCountdown(journey.completion.autoApproveSecondsRemaining)}',
-              style: poppinsRegularStyle(
-                context: context,
-                fontSize: 12,
-                color: DynamicColor.yellowClr,
-              ),
+            JourneyCountdownText(
+              secondsRemaining: journey.completion.autoApproveSecondsRemaining,
+              prefix: 'Auto-approval: ',
             ),
             if (journey.completion.requestedAt != null)
               Text(
@@ -207,15 +215,7 @@ class PaymentJourneyCard extends StatelessWidget {
           ],
           if (journey.completion.latestCounter?.id != null) ...[
             const SizedBox(height: 10),
-            _CounterBlock(
-              counter: journey.completion.latestCounter!,
-              currency: currency,
-              permissions: journey.permissions,
-              onAccept: () => controller
-                  .acceptCounter(journey.completion.latestCounter!.id!),
-              onReject: () => controller
-                  .rejectCounter(journey.completion.latestCounter!.id!),
-            ),
+            CounterReviewCard(controller: controller),
           ],
           if (journey.timeline.isNotEmpty) ...[
             const SizedBox(height: 12),
@@ -247,7 +247,6 @@ class PaymentJourneyCard extends StatelessWidget {
                 Expanded(
                   child: CustomButton(
                     heights: 45,
-
                     borderClr: Colors.transparent,
                     onTap: controller.actionInFlight
                         ? null
@@ -259,6 +258,18 @@ class PaymentJourneyCard extends StatelessWidget {
                 ),
             ],
           ),
+          if (ui.secondaryActionLabel != null) ...[
+            const SizedBox(height: 8),
+            CustomButton(
+              heights: 40,
+              borderClr: DynamicColor.yellowClr,
+              backgroundClr: false,
+              onTap: controller.actionInFlight
+                  ? null
+                  : controller.updatePaymentMethod,
+              text: ui.secondaryActionLabel!,
+            ),
+          ],
           if (journey.permissions.canSubmitCompletion &&
               journey.nextAction.code !=
                   PaymentNextActionCode.submitCompletion) ...[
@@ -283,6 +294,21 @@ class PaymentJourneyCard extends StatelessWidget {
               text: 'Approve Completion',
             ),
           ],
+          if (journey.permissions.canCreateCounter) ...[
+            const SizedBox(height: 8),
+            CustomButton(
+              heights: 40,
+              borderClr: DynamicColor.yellowClr,
+              backgroundClr: false,
+              onTap: controller.actionInFlight
+                  ? null
+                  : () => showCounterFormSheet(
+                        context: context,
+                        controller: controller,
+                      ),
+              text: 'Counter Amount',
+            ),
+          ],
         ],
       ),
     );
@@ -290,112 +316,6 @@ class PaymentJourneyCard extends StatelessWidget {
 
   String _formatTime(DateTime value) {
     return DateFormat.yMMMd().add_jm().format(value.toLocal());
-  }
-}
-
-class _CounterBlock extends StatelessWidget {
-  const _CounterBlock({
-    required this.counter,
-    required this.currency,
-    required this.permissions,
-    required this.onAccept,
-    required this.onReject,
-  });
-
-  final JourneyCounter counter;
-  final String currency;
-  final JourneyPermissions permissions;
-  final VoidCallback onAccept;
-  final VoidCallback onReject;
-
-  @override
-  Widget build(BuildContext context) {
-    final money = MoneyFormatter();
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.25),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Open counter',
-            style: poppinsMediumStyle(
-              context: context,
-              fontSize: 14,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'Proposed: ${money.formatMinor(counter.proposedPrincipalMinor, currency: currency)}',
-            style: poppinsRegularStyle(
-              context: context,
-              fontSize: 13,
-              color: DynamicColor.whiteClr,
-            ),
-          ),
-          if (counter.originalPrincipalMinor != null)
-            Text(
-              'Original: ${money.formatMinor(counter.originalPrincipalMinor, currency: currency)}',
-              style: poppinsRegularStyle(
-                context: context,
-                fontSize: 12,
-                color: DynamicColor.grayClr,
-              ),
-            ),
-          if (counter.message != null && counter.message!.isNotEmpty)
-            Text(
-              counter.message!,
-              style: poppinsRegularStyle(
-                context: context,
-                fontSize: 12,
-                color: DynamicColor.grayClr,
-              ),
-            ),
-          if (counter.counterSecondsRemaining != null)
-            Text(
-              PaymentJourneyMapper.formatCountdown(
-                counter.counterSecondsRemaining,
-              ),
-              style: poppinsRegularStyle(
-                context: context,
-                fontSize: 12,
-                color: DynamicColor.yellowClr,
-              ),
-            ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              if (permissions.canAcceptCounter)
-                Expanded(
-                  child: CustomButton(
-                    heights: 36,
-                    borderClr: Colors.transparent,
-                    onTap: onAccept,
-                    text: 'Accept',
-                  ),
-                ),
-              if (permissions.canAcceptCounter && permissions.canRejectCounter)
-                const SizedBox(width: 8),
-              if (permissions.canRejectCounter)
-                Expanded(
-                  child: CustomButton(
-                    heights: 36,
-                    borderClr: DynamicColor.yellowClr,
-                    backgroundClr: false,
-                    onTap: onReject,
-                    text: 'Reject',
-                  ),
-                ),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 }
 

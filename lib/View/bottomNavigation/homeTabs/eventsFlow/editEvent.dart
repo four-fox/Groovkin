@@ -218,7 +218,8 @@ class EditEventScreen extends StatelessWidget {
                   resetIcon: null,
                   format: format,
                   onShowPicker: (context, currentValue) async {
-                    controller.proposedTimeWindowsController.clear();
+                    final previous =
+                        controller.proposedTimeWindowsController.text;
                     final time = await showTimePicker(
                       initialEntryMode: TimePickerEntryMode.dial,
                       builder: (context, child) {
@@ -240,7 +241,10 @@ class EditEventScreen extends StatelessWidget {
                             child: child!);
                       },
                       context: context,
-                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                      initialTime: EventController.eventTimePickerInitial(
+                        isEnd: false,
+                        displayText: previous,
+                      ),
                     );
                     print(
                         "selected time--------->${DateTimeField.convert(time).toString()}");
@@ -292,7 +296,7 @@ class EditEventScreen extends StatelessWidget {
                   resetIcon: null,
                   format: format,
                   onShowPicker: (context, currentValue) async {
-                    controller.endTimeController.clear();
+                    final previous = controller.endTimeController.text;
                     final time = await showTimePicker(
                       initialEntryMode: TimePickerEntryMode.dial,
                       builder: (context, child) {
@@ -314,7 +318,10 @@ class EditEventScreen extends StatelessWidget {
                             child: child!);
                       },
                       context: context,
-                      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+                      initialTime: EventController.eventTimePickerInitial(
+                        isEnd: true,
+                        displayText: previous,
+                      ),
                     );
                     print(
                         "selected time--------->${DateTimeField.convert(time).toString()}");

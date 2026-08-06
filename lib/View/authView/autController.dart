@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
@@ -47,6 +49,17 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import '../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 
 enum ChangeRole { user, organizer, manager }
+
+/// Locked portrait flyer crop ratio for create-event banners.
+class _EventBannerAspectRatioPreset implements CropAspectRatioPresetData {
+  const _EventBannerAspectRatioPreset();
+
+  @override
+  String get name => '3x4';
+
+  @override
+  (int, int)? get data => (3, 4);
+}
 
 class AuthController extends GetxController {
   String? accessToken;
@@ -318,6 +331,8 @@ class AuthController extends GetxController {
 
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
+      API().sp.write("isCompleteProfile",
+          response.data['data']['user_details']['profile'] == null?0:response.data['data']['user_details']['profile']['id'] == null?0:1);
       API().sp.remove("currentRole");
       API().sp.remove("role");
       await configureSDK();
@@ -502,39 +517,140 @@ class AuthController extends GetxController {
   File? profileImage;
   RxBool imageLoaders = true.obs;
 
+  /// Create-event banner size rules (portrait flyer 3:4).
+  /// Minimum / maximum pixel bounds for the cropped banner.
+  static const int eventBannerMinWidth = 600;
+  static const int eventBannerMinHeight = 800;
+  static const int eventBannerMaxWidth = 2400;
+  static const int eventBannerMaxHeight = 3200;
+  static const double eventBannerAspectRatio = 3 / 4;
+
   cameraImage(context, source, {String? type}) async {
     try {
       imageLoaders(false);
+      final isEventBanner = type == 'event';
       files = await _picker.pickImage(
         source: source,
-        imageQuality: 50,
+        imageQuality: isEventBanner ? 85 : 50,
+        // Cap pick size at the max only — do not shrink below the minimum.
+        maxWidth: isEventBanner ? eventBannerMaxWidth.toDouble() : null,
+        maxHeight: isEventBanner ? eventBannerMaxHeight.toDouble() : null,
       );
+      if (files == null) {
+        imageLoaders(true);
+        update();
+        return;
+      }
+
       CroppedFile? file;
-      if (type == "event") {
+      if (isEventBanner) {
+        final sourceError =
+            await _eventBannerDimensionError(files!.path, forSource: true);
+        if (sourceError != null) {
+          bottomToast(text: sourceError);
+          imageLoaders(true);
+          update();
+          return;
+        }
+
         file = await ImageCropper().cropImage(
           sourcePath: files!.path,
-          // aspectRatio: CropAspectRatio(ratioX: 3, ratioY: 4),
+          // Crop is locked to portrait flyer 3:4.
+          aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4),
+          maxWidth: eventBannerMaxWidth,
+          maxHeight: eventBannerMaxHeight,
+          compressQuality: 85,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Crop banner (3:4)',
+              lockAspectRatio: true,
+              hideBottomControls: true,
+              initAspectRatio: const _EventBannerAspectRatioPreset(),
+              aspectRatioPresets: const [
+                _EventBannerAspectRatioPreset(),
+              ],
+            ),
+            IOSUiSettings(
+              title: 'Crop banner (3:4)',
+              aspectRatioLockEnabled: true,
+              resetAspectRatioEnabled: false,
+              aspectRatioPickerButtonHidden: true,
+              aspectRatioLockDimensionSwapEnabled: false,
+              minimumAspectRatio: eventBannerAspectRatio,
+              aspectRatioPresets: const [
+                _EventBannerAspectRatioPreset(),
+              ],
+            ),
+          ],
         );
-        if (file != null) {
-          await imageValidator(file.path);
+        if (file == null) {
+          imageLoaders(true);
+          update();
+          return;
         }
+        final cropError = await _eventBannerDimensionError(file.path);
+        if (cropError != null) {
+          bottomToast(text: cropError);
+          imageLoaders(true);
+          update();
+          return;
+        }
+        await imageValidator(file.path);
       } else {
         file = await ImageCropper().cropImage(
           sourcePath: files!.path,
         );
-        if (files != null) {
-          if (file != null) {
-            imageBytes = file.path;
-          } else {
-            imageBytes = files!.path;
-          }
+        if (file != null) {
+          imageBytes = file.path;
+        } else {
+          imageBytes = files!.path;
         }
         imageLoaders(true);
         update();
       }
     } catch (e) {
       imageLoaders(true);
+      update();
       // BotToast.showText(text: e.toString());
+    }
+  }
+
+  /// Validates banner dimensions + 3:4 crop. Returns an error, or null if OK.
+  ///
+  /// For [forSource], only checks that the image is large enough to crop a
+  /// 600×800 portrait region. After crop, min/max and 3:4 are enforced.
+  Future<String?> _eventBannerDimensionError(
+    String path, {
+    bool forSource = false,
+  }) async {
+    try {
+      final bytes = await File(path).readAsBytes();
+      final codec = await ui.instantiateImageCodec(bytes);
+      final frame = await codec.getNextFrame();
+      final width = frame.image.width;
+      final height = frame.image.height;
+      frame.image.dispose();
+
+      if (width < eventBannerMinWidth || height < eventBannerMinHeight) {
+        return forSource
+            ? 'Banner too small. Choose an image at least $eventBannerMinWidth × $eventBannerMinHeight pixels (portrait flyer, 3:4).'
+            : 'Invalid banner dimensions. Minimum is $eventBannerMinWidth × $eventBannerMinHeight pixels (portrait flyer, 3:4).';
+      }
+      if (!forSource &&
+          (width > eventBannerMaxWidth || height > eventBannerMaxHeight)) {
+        return 'Banner too large. Maximum is $eventBannerMaxWidth × $eventBannerMaxHeight pixels.';
+      }
+      if (!forSource && height > 0) {
+        final ratio = width / height;
+        // Allow a tiny decode/compress tolerance around exact 3:4.
+        if ((ratio - eventBannerAspectRatio).abs() > 0.03) {
+          return 'Crop must be 3:4 portrait flyer shape.';
+        }
+      }
+      return null;
+    } catch (_) {
+      // If decode fails, let the backend validator decide.
+      return null;
     }
   }
 
@@ -557,11 +673,11 @@ class AuthController extends GetxController {
         form.FormData.fromMap({"banner_image": multiPartingImage(img)});
     final response =
         await API().imagePostApi(formData, "validate-event-banner");
-    if (response.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       imageBytes = img;
-      imageLoaders(true);
-      update();
     }
+    imageLoaders(true);
+    update();
   }
 
   profileDataBind() async {
@@ -571,7 +687,7 @@ class AuthController extends GetxController {
     companyNameController.text =
         userData!.data!.profile!.companyName.toString();
     emailController.text = userData!.data!.email.toString();
-    aboutController.text = userData!.data!.profile!.about.toString();
+    aboutController.text = userData?.data?.profile?.about ??"";
     dobController.text = userData?.data?.profile?.birthYear ?? "";
     phoneNumController.text = userData!.data!.profile!.phoneNumber.toString();
     if (userData!.data!.profile!.selectState != null) {
@@ -669,9 +785,9 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     final repsposne = await API().postApi({}, "logout");
     if (repsposne.statusCode == 200) {
-      try{
+      try {
         await StripeConfigService().resetCustomer();
-      }catch(e){
+      } catch (e) {
         print(e);
       }
       API().sp.erase();
@@ -689,7 +805,12 @@ class AuthController extends GetxController {
   List<CategoryItem> musicGenre = [];
   SurveyModel? surveyData;
 
-  getLifeStyle({surveyType, bool mygrookinHit = false}) async {
+  getLifeStyle({
+    surveyType,
+    bool mygrookinHit = false,
+    /// Create-event music genre step: never inherit registration/profile ticks.
+    bool startEmptyForEvent = false,
+  }) async {
     getLifeStyleLoader(false);
     var response =
         await API().getApi(url: "show-category-with-items?type=$surveyType");
@@ -702,8 +823,16 @@ class AuthController extends GetxController {
         return;
       }
 
-      final EventController eventController = Get.find();
-      if (eventController.eventDetail != null) {
+      final EventController eventController = Get.isRegistered<EventController>()
+          ? Get.find<EventController>()
+          : Get.put(EventController());
+
+      final isEditingExistingEvent = eventController.eventDetail != null &&
+          !eventController.duplicateValue.value &&
+          !eventController.draftValue.value;
+
+      if (isEditingExistingEvent) {
+        // Edit existing event: bind that event's genres (not EO profile).
         List musicGenreId = [];
 
         for (var action in eventController.eventDetail!.data!.musicGenre!) {
@@ -713,7 +842,6 @@ class AuthController extends GetxController {
             }
           }
         }
-        print(musicGenreId.length);
         for (var element in surveyData!.data!) {
           for (var ele in element.categoryItems!) {
             if (musicGenreId.contains(ele.id)) {
@@ -725,13 +853,24 @@ class AuthController extends GetxController {
             }
           }
         }
-
-        update();
-        print(surveyData!.data);
+      } else if (startEmptyForEvent) {
+        // New event create: never inherit registration/profile ticks
+        // (API may return selected:true from the EO profile).
+        _clearSurveySelections();
       }
       if (mygrookinHit != true) {
         getLifeStyleLoader(true);
         update();
+      }
+    }
+  }
+
+  void _clearSurveySelections() {
+    itemsList.clear();
+    final surveys = surveyData?.data ?? [];
+    for (final element in surveys) {
+      for (final ele in element.categoryItems ?? []) {
+        ele.selectedItem?.value = false;
       }
     }
   }

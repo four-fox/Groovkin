@@ -6,6 +6,8 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'event_acceptance_coordinator.dart';
+import 'journey/completion_review_widgets.dart';
+import 'journey/payment_journey_controller.dart';
 import 'payment_controller.dart';
 import 'payment_models.dart';
 import 'payment_widgets.dart';
@@ -330,6 +332,18 @@ class _EventAcceptPaymentScreenState extends State<EventAcceptPaymentScreen> {
   EventAcceptanceBlocker blocker = EventAcceptanceBlocker.none;
   bool accepting = false;
 
+  // Whether the current failure came from an attempted accept/payment
+  // submission (vs. readiness/summary loading). Drives whether "Retry"
+  // resubmits the accept attempt or just reloads readiness data.
+  bool _lastFailureFromAcceptAttempt = false;
+
+  static const _acceptAttemptFailureBlockers = {
+    EventAcceptanceBlocker.networkError,
+    EventAcceptanceBlocker.unauthorized,
+    EventAcceptanceBlocker.validationError,
+    EventAcceptanceBlocker.retryableFailure,
+  };
+
   @override
   void initState() {
     super.initState();
@@ -344,7 +358,10 @@ class _EventAcceptPaymentScreenState extends State<EventAcceptPaymentScreen> {
       vmStatus: connectController.status,
       paymentMethods: paymentController.paymentMethods,
     );
-    setState(() => blocker = readiness);
+    setState(() {
+      blocker = readiness;
+      _lastFailureFromAcceptAttempt = false;
+    });
   }
 
   Future<void> _acceptEvent() async {
@@ -358,6 +375,8 @@ class _EventAcceptPaymentScreenState extends State<EventAcceptPaymentScreen> {
     setState(() {
       accepting = false;
       blocker = result;
+      _lastFailureFromAcceptAttempt =
+          _acceptAttemptFailureBlockers.contains(result);
     });
 
     if (result == EventAcceptanceBlocker.none &&
@@ -365,6 +384,14 @@ class _EventAcceptPaymentScreenState extends State<EventAcceptPaymentScreen> {
             paymentController.state == PaymentWorkflowState.processing)) {
       Get.back(result: true);
     }
+  }
+
+  Future<void> _handleGenericRetry() {
+    // A failure from the accept/payment attempt itself must resubmit the
+    // attempt (with a freshly-minted idempotency key) rather than just
+    // reloading readiness, otherwise the user is stuck with no way to
+    // actually retry the payment.
+    return _lastFailureFromAcceptAttempt ? _acceptEvent() : _loadReadiness();
   }
 
   @override
@@ -433,7 +460,7 @@ class _EventAcceptPaymentScreenState extends State<EventAcceptPaymentScreen> {
           return PaymentStateView(
             state: controller.state,
             message: controller.errorMessage,
-            onRetry: _loadReadiness,
+            onRetry: _handleGenericRetry,
             child: RefreshIndicator(
               onRefresh: _loadReadiness,
               child: ListView(
@@ -534,6 +561,9 @@ class PaymentStatusScreen extends StatelessWidget {
   }
 }
 
+/// Completion "Approve vs Counter" screen for VM + EO. Everything renders
+/// from GET /api/events/{event}/payment-journey permissions — no role or
+/// status heuristics.
 class CompletionWorkflowScreen extends StatefulWidget {
   const CompletionWorkflowScreen({super.key});
 
@@ -544,77 +574,96 @@ class CompletionWorkflowScreen extends StatefulWidget {
 
 class _CompletionWorkflowScreenState extends State<CompletionWorkflowScreen> {
   final int eventId = Get.arguments?['eventId'];
-  final PaymentController controller = _paymentController();
-  final proposedPrincipalMinorController = TextEditingController();
-  final messageController = TextEditingController();
+  late final PaymentJourneyController controller;
 
   @override
-  void dispose() {
-    proposedPrincipalMinorController.dispose();
-    messageController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    controller = paymentJourneyController(eventId);
+    // Always re-sync when the screen opens (spec: refresh on open).
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.refreshJourney(silent: controller.journey != null);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: 'Completion'),
-      body: GetBuilder<PaymentController>(
-        initState: (_) {
-          controller.loadCompletionStatus(eventId);
-          controller.loadCompletionHistory(eventId);
-        },
+      appBar: customAppBar(theme: theme, text: 'Event Completion'),
+      body: GetBuilder<PaymentJourneyController>(
+        tag: 'payment_journey_$eventId',
         builder: (controller) {
-          final status = controller.completionStatus;
-          return PaymentStateView(
-            state: controller.state,
-            message: controller.errorMessage,
-            onRetry: () => controller.loadCompletionStatus(eventId),
+          final journey = controller.journey;
+          if (controller.state == PaymentWorkflowState.authorizationError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text(
+                  controller.errorMessage ??
+                      'You are not authorized to view this event\'s payments.',
+                  textAlign: TextAlign.center,
+                  style: poppinsRegularStyle(
+                    context: context,
+                    fontSize: 14,
+                    color: theme.primaryColor,
+                  ),
+                ),
+              ),
+            );
+          }
+          if (journey == null) {
+            if (controller.state == PaymentWorkflowState.loading ||
+                controller.state == PaymentWorkflowState.initial) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: DynamicColor.yellowClr,
+                ),
+              );
+            }
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    controller.errorMessage ?? 'Unable to load payment status.',
+                    textAlign: TextAlign.center,
+                    style: poppinsRegularStyle(
+                      context: context,
+                      fontSize: 14,
+                      color: theme.primaryColor,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: controller.refreshJourney,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+          return RefreshIndicator(
+            color: DynamicColor.yellowClr,
+            onRefresh: () => controller.refreshJourney(silent: true),
             child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(14),
               children: [
-                StatusChip(label: status?.status.name ?? 'unknown'),
-                const SizedBox(height: 10),
-                _statusLine('Auto approval countdown',
-                    _seconds(status?.autoApproveSecondsRemaining)),
-                _statusLine('Counter countdown',
-                    _seconds(status?.counterSecondsRemaining)),
-                const SizedBox(height: 12),
-                _numberField(
-                  context,
-                  proposedPrincipalMinorController,
-                  'Counter proposed principal minor',
-                ),
-                const SizedBox(height: 8),
-                _textField(context, messageController, 'Counter message'),
-                const SizedBox(height: 12),
-                CustomButton(
-                  borderClr: Colors.transparent,
-                  onTap: () {
-                    final proposedPrincipalMinor =
-                        int.tryParse(proposedPrincipalMinorController.text);
-                    if (proposedPrincipalMinor == null) return;
-                    controller.createCounter(
-                      eventId,
-                      proposedPrincipalMinor: proposedPrincipalMinor,
-                      message: messageController.text,
-                    );
-                  },
-                  text: 'Create Counter',
-                ),
-                const SizedBox(height: 8),
-                CustomButton(
-                  borderClr: Colors.transparent,
-                  onTap: () => controller.submitCompletion(eventId),
-                  text: 'Mark Event Complete',
-                ),
-                const SizedBox(height: 8),
-                CustomButton(
-                  borderClr: Colors.transparent,
-                  onTap: () => controller.approveCompletion(eventId),
-                  text: 'Approve Completion',
-                ),
+                CounterReviewCard(controller: controller),
+                CompletionReviewCard(controller: controller),
+                FinalPaymentStatusCard(controller: controller),
+                if (journey.permissions.canSubmitCompletion) ...[
+                  CustomButton(
+                    heights: 44,
+                    borderClr: Colors.transparent,
+                    onTap: controller.actionInFlight
+                        ? null
+                        : controller.submitCompletion,
+                    text: 'Mark Event Complete',
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                CompletionHistoryList(eventId: eventId),
               ],
             ),
           );
@@ -775,26 +824,6 @@ Widget _textField(
   );
 }
 
-Widget _numberField(
-  BuildContext context,
-  TextEditingController controller,
-  String hint,
-) {
-  return TextField(
-    controller: controller,
-    keyboardType: TextInputType.number,
-    style: poppinsRegularStyle(
-      context: context,
-      fontSize: 14,
-      color: Theme.of(context).primaryColor,
-    ),
-    decoration: InputDecoration(
-      hintText: hint,
-      border: const OutlineInputBorder(),
-    ),
-  );
-}
-
 Widget _statusLine(String label, String value) {
   return Builder(
     builder: (context) => Padding(
@@ -827,12 +856,4 @@ Widget _statusLine(String label, String value) {
       ),
     ),
   );
-}
-
-String _seconds(int? value) {
-  if (value == null) return '--';
-  final duration = Duration(seconds: value);
-  final hours = duration.inHours;
-  final minutes = duration.inMinutes.remainder(60);
-  return '${hours}h ${minutes}m';
 }

@@ -206,10 +206,6 @@ class AppPages {
       page: () => const CancellationWorkflowScreen(),
     ),
     GetPage(
-      name: _Path.transactionScreen,
-      page: () => WalletHomeScreen(),
-    ),
-    GetPage(
       name: _Path.walletHomeScreen,
       page: () => WalletHomeScreen(),
     ),

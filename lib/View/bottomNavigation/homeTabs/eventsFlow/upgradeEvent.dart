@@ -54,22 +54,42 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
         : Get.put(EventController());
 
     final now = DateTime.now();
-    _initialTime = _displayTimeFormat.format(
-      DateTime(now.year, now.month, now.day, 12),
-    );
-    _initialEndTime = _displayTimeFormat.format(
-      DateTime(now.year, now.month, now.day, 24),
-    );
+    // Static defaults (8:00 PM / 12:00 AM) — not relative to "now" minutes.
+    _initialTime = _displayTimeFormat.format(DateTime(
+      now.year,
+      now.month,
+      now.day,
+      EventController.defaultEventStartHour,
+      EventController.defaultEventStartMinute,
+    ));
+    _initialEndTime = _displayTimeFormat.format(DateTime(
+      now.year,
+      now.month,
+      now.day,
+      EventController.defaultEventEndHour,
+      EventController.defaultEventEndMinute,
+    ));
 
     if (_eventController.proposedTimeWindowsController.text.isEmpty) {
       _eventController.proposedTimeWindowsController.text = _initialTime;
+      _eventController.postTime = _postTimeFormat.format(DateTime(
+        now.year,
+        now.month,
+        now.day,
+        EventController.defaultEventStartHour,
+        EventController.defaultEventStartMinute,
+      ));
     }
     if (_eventController.endTimeController.text.isEmpty) {
       _eventController.endTimeController.text = _initialEndTime;
+      _eventController.postEndTime = _postTimeFormat.format(DateTime(
+        now.year,
+        now.month,
+        now.day,
+        EventController.defaultEventEndHour,
+        EventController.defaultEventEndMinute,
+      ));
     }
-
-    _eventController.postTime = _initialTime;
-    _eventController.postEndTime = _initialEndTime;
 
     if (_eventController.downPaymentController.text.isEmpty) {
       _eventController.downPaymentController.text =
@@ -115,11 +135,20 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
         ),
       );
 
-  /// Opens a styled time picker and returns the picked [TimeOfDay] or null.
-  Future<TimeOfDay?> _pickTime(BuildContext context) => showTimePicker(
+  /// Opens a styled time picker. Initial time is static (8 PM / 12 AM) or the
+  /// already-selected field value — never wall-clock "now" minutes.
+  Future<TimeOfDay?> _pickTime(
+    BuildContext context, {
+    required bool isEnd,
+    String? currentDisplay,
+  }) =>
+      showTimePicker(
         context: context,
         initialEntryMode: TimePickerEntryMode.dial,
-        initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+        initialTime: EventController.eventTimePickerInitial(
+          isEnd: isEnd,
+          displayText: currentDisplay,
+        ),
         builder: (ctx, child) => Theme(
           data: Theme.of(ctx).copyWith(
             colorScheme: const ColorScheme.light(
@@ -275,7 +304,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       controller: controller.proposedTimeWindowsController,
                       format: _timeFormat,
                       onPick: () async {
-                        final time = await _pickTime(context);
+                        final time = await _pickTime(
+                          context,
+                          isEnd: false,
+                          currentDisplay:
+                              controller.proposedTimeWindowsController.text,
+                        );
                         if (time != null) {
                           final selected = _timeOfDayToDateTime(time);
                           controller.proposedTimeWindowsController.text =
@@ -293,7 +327,11 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       controller: controller.endTimeController,
                       format: _timeFormat,
                       onPick: () async {
-                        final time = await _pickTime(context);
+                        final time = await _pickTime(
+                          context,
+                          isEnd: true,
+                          currentDisplay: controller.endTimeController.text,
+                        );
                         if (time != null) {
                           final selected = _timeOfDayToDateTime(time);
                           controller.endTimeController.text =

@@ -248,11 +248,6 @@ class _WalletTransactionDetailScreenState
                       currency: detail.currency),
                 ),
                 _DetailRow(
-                  'Groovkin commission',
-                  money.formatMinor(detail.groovkinCommissionMinor,
-                      currency: detail.currency),
-                ),
-                _DetailRow(
                   'Net',
                   money.formatMinor(detail.netMinor, currency: detail.currency),
                 ),
@@ -332,10 +327,6 @@ class _SummarySection extends StatelessWidget {
         _SummaryCardData(
             'Pending transfer',
             money.formatMinor(summary.pendingTransferMinor,
-                currency: summary.currency)),
-        _SummaryCardData(
-            'Groovkin commission',
-            money.formatMinor(summary.groovkinCommissionMinor,
                 currency: summary.currency)),
         _SummaryCardData(
             'Refunded / reversed',

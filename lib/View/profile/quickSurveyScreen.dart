@@ -96,6 +96,8 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
           _controller.getLifeStyle(
             surveyType: "music_genre",
             mygrookinHit: isFromGroovkin,
+            // Create-event music step must start empty (ticket: no profile prefill).
+            startEmptyForEvent: isFromEvent && createEvent,
           );
         },
         builder: (controller) {
@@ -142,12 +144,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
       child: Column(
         children: [
           Text(
-            isFromEvent
-                ? "Update your profile with the \ntype of music you offer to play at events."
-                : ((addMoreSurvey == 1) &&
-                        (sp.read("role") == "eventOrganizer"))
-                    ? "Let us know more about\nyour lifestyle preference"
-                    : "Music Genre",
+            _musicGenreHeaderTitle(),
             textAlign: TextAlign.center,
             style: poppinsRegularStyle(
               fontSize: 16,
@@ -156,7 +153,9 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
             ),
           ),
           Text(
-            "Please select from given option.",
+            isFromEvent
+                ? "Choose genres for this event only."
+                : "Please select from given option.",
             style: poppinsRegularStyle(
               fontSize: 12,
               context: context,
@@ -166,6 +165,21 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
         ],
       ),
     );
+  }
+
+  /// Registration / profile vs create-event use the same widget with
+  /// different copy so EO is never shown event wording on registration.
+  String _musicGenreHeaderTitle() {
+    if (isFromEvent) {
+      return 'Proposed music genres\nfor this event.';
+    }
+    if (addMoreSurvey == 1 && sp.read('role') == 'eventOrganizer') {
+      return 'Let us know more about\nyour lifestyle preference';
+    }
+    if (sp.read('role') == 'eventOrganizer') {
+      return 'Update your profile with the\ntype of music you offer to play at events.';
+    }
+    return 'Music Genre';
   }
 
   Widget _buildSurveyList(

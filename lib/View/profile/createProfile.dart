@@ -526,7 +526,7 @@ class _CreateProfileState extends State<CreateProfile> {
                         keyBoardType: true,
                       ),
 
-                      if (socialType == null) ...[
+                      if (socialType == null && sp.read("role") != "User") ...[
                         const SizedBox(
                           height: 15,
                         ),

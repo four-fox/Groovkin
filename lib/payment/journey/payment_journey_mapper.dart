@@ -9,6 +9,7 @@ class JourneyUiState {
     required this.icon,
     required this.badge,
     this.primaryActionLabel,
+    this.secondaryActionLabel,
   });
 
   final String title;
@@ -16,12 +17,75 @@ class JourneyUiState {
   final IconData icon;
   final String badge;
   final String? primaryActionLabel;
+  final String? secondaryActionLabel;
 }
 
 class PaymentJourneyMapper {
+  /// Resolves display state from settlement_status + journey_stage + transfer.
+  /// Never treats final_payment.status == succeeded as financially settled.
+  ///
+  /// `final_transfer_pending` and `manual_review` are **not errors** — the
+  /// backend automatically retries/reconciles the EO Stripe Connect transfer
+  /// and the journey self-resolves to `financially_settled` in the background
+  /// (typically within ~10 minutes). The user must never see a failure state,
+  /// a retry button, or a "contact support" prompt for these two stages.
   static JourneyUiState uiFor(PaymentJourney journey) {
     final actionLabel =
         labelForNextAction(journey.nextAction.code) ?? journey.nextAction.label;
+    final transferStatus = journey.finalPayment.transferStatus;
+    final settled = isFinanciallySettled(journey.settlementStatus);
+
+    // G — settlement_status is the only source of "Payment complete".
+    if (settled) {
+      return JourneyUiState(
+        title: 'Payment complete',
+        explanation: 'The event payment has been financially settled.',
+        icon: Iconsax.tick_circle,
+        badge: 'Settled',
+        primaryActionLabel: actionLabel ??
+            (journey.nextAction.code == PaymentNextActionCode.viewSettlement
+                ? 'View Settlement'
+                : null),
+      );
+    }
+
+    // F — EO transfer to Stripe Connect already succeeded (checked before the
+    // generic "finalizing" copy below, since transfer_status can resolve
+    // slightly ahead of journey_stage moving off final_transfer_pending).
+    if (isEoTransferSucceeded(transferStatus)) {
+      return const JourneyUiState(
+        title: 'Transferred to Stripe account',
+        explanation:
+            'The organizer proceeds were transferred to the connected Stripe account.',
+        icon: Iconsax.card_tick,
+        badge: 'Transferred',
+      );
+    }
+
+    // E — payout reconciliation in progress. Self-resolving; no user action.
+    if (journey.journeyStage == PaymentJourneyStage.manualReview ||
+        journey.settlementStatus == 'manual_review') {
+      return const JourneyUiState(
+        title: 'Payment completed',
+        explanation:
+            'Your payout is being finalized. This resolves automatically — no action is needed.',
+        icon: Iconsax.wallet_check,
+        badge: 'Finalizing',
+      );
+    }
+
+    // D — final payment succeeded, EO Connect transfer still finalizing.
+    // Also self-resolving; no user action even if a transient transfer
+    // failure is reported mid-flight, since the backend auto-retries.
+    if (journey.journeyStage == PaymentJourneyStage.finalTransferPending) {
+      return const JourneyUiState(
+        title: 'Payment successful',
+        explanation:
+            'Finalizing payout to the organizer. This resolves automatically — no action is needed.',
+        icon: Iconsax.send_2,
+        badge: 'Finalizing',
+      );
+    }
 
     switch (journey.journeyStage) {
       case PaymentJourneyStage.proposalCreated:
@@ -84,6 +148,7 @@ class PaymentJourneyMapper {
           icon: Iconsax.close_circle,
           badge: 'Failed',
           primaryActionLabel: actionLabel ?? 'Retry Payment',
+          secondaryActionLabel: 'Update Payment Method',
         );
       case PaymentJourneyStage.eventInProgress:
         return JourneyUiState(
@@ -139,6 +204,7 @@ class PaymentJourneyMapper {
           primaryActionLabel: actionLabel,
         );
       case PaymentJourneyStage.finalPaymentProcessing:
+        // A
         return JourneyUiState(
           title: 'Final payment processing',
           explanation: 'The remaining event balance is being processed.',
@@ -147,6 +213,7 @@ class PaymentJourneyMapper {
           primaryActionLabel: actionLabel,
         );
       case PaymentJourneyStage.finalPaymentRequiresAction:
+        // B
         return JourneyUiState(
           title: 'Payment authentication required',
           explanation:
@@ -156,30 +223,32 @@ class PaymentJourneyMapper {
           primaryActionLabel: actionLabel ?? 'Complete Payment',
         );
       case PaymentJourneyStage.finalPaymentFailed:
+        // C
         return JourneyUiState(
           title: 'Final payment failed',
-          explanation:
-              'The remaining balance could not be charged. Update your payment method or retry.',
+          explanation: 'Update your payment method or retry the payment.',
           icon: Iconsax.close_circle,
           badge: 'Failed',
           primaryActionLabel: actionLabel ?? 'Retry Payment',
+          secondaryActionLabel: 'Update Payment Method',
         );
       case PaymentJourneyStage.finalTransferPending:
-        return JourneyUiState(
-          title: 'Organizer transfer pending',
+        return const JourneyUiState(
+          title: 'Payment successful',
           explanation:
-              'Final payment succeeded. Organizer proceeds are being transferred to Stripe.',
+              'Finalizing payout to the organizer. This resolves automatically — no action is needed.',
           icon: Iconsax.send_2,
-          badge: 'Transfer pending',
-          primaryActionLabel: actionLabel,
+          badge: 'Finalizing',
         );
       case PaymentJourneyStage.financiallySettled:
-        return JourneyUiState(
-          title: 'Financially settled',
-          explanation: 'Payments and transfers for this event are complete.',
-          icon: Iconsax.tick_circle,
-          badge: 'Settled',
-          primaryActionLabel: actionLabel,
+        // Stage alone is not authoritative — settlement_status gates copy above.
+        // If we reach here, settlement_status was not financially_settled.
+        return const JourneyUiState(
+          title: 'Transferred to Stripe account',
+          explanation:
+              'The organizer proceeds were transferred to the connected Stripe account.',
+          icon: Iconsax.card_tick,
+          badge: 'Transferred',
         );
       case PaymentJourneyStage.cancellationProcessing:
         return JourneyUiState(
@@ -200,13 +269,12 @@ class PaymentJourneyMapper {
           primaryActionLabel: actionLabel,
         );
       case PaymentJourneyStage.manualReview:
-        return JourneyUiState(
-          title: 'Manual review',
+        return const JourneyUiState(
+          title: 'Payment completed',
           explanation:
-              'This payment needs manual review before it can continue.',
-          icon: Iconsax.info_circle,
-          badge: 'Review',
-          primaryActionLabel: actionLabel,
+              'Your payout is being finalized. This resolves automatically — no action is needed.',
+          icon: Iconsax.wallet_check,
+          badge: 'Finalizing',
         );
       case PaymentJourneyStage.disputed:
         return JourneyUiState(
@@ -271,6 +339,36 @@ class PaymentJourneyMapper {
     if (days > 0) return '${days}d ${hours}h remaining';
     if (hours > 0) return '${hours}h ${minutes}m remaining';
     return '${minutes}m remaining';
+  }
+
+  /// Friendly copy for raw backend status strings. Never surface technical
+  /// codes like "manual_review" or "final_transfer_pending" directly.
+  static String friendlySettlementStatusLabel(String? settlementStatus) {
+    switch (settlementStatus) {
+      case 'financially_settled':
+        return 'Financially settled';
+      case 'manual_review':
+        return 'Finalizing payout';
+      case 'final_transfer_pending':
+        return 'Finalizing payout';
+      case null:
+        return '--';
+      default:
+        return settlementStatus.replaceAll('_', ' ');
+    }
+  }
+
+  static String friendlyTransferStatusLabel(String? transferStatus) {
+    if (transferStatus == null) return '--';
+    if (isEoTransferSucceeded(transferStatus)) return 'Transferred';
+    if (isEoTransferFailed(transferStatus)) return 'Finalizing';
+    switch (transferStatus) {
+      case 'pending':
+      case 'processing':
+        return 'Finalizing';
+      default:
+        return transferStatus.replaceAll('_', ' ');
+    }
   }
 
   static String percentageLabel(String? raw) {

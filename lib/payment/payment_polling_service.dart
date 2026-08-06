@@ -10,6 +10,7 @@ class PaymentPollingService<T> {
     required bool Function(T value) isTerminal,
     required void Function(T value) onValue,
     void Function(Object error)? onError,
+    void Function()? onComplete,
     Duration initialDelay = const Duration(seconds: 2),
     Duration maxDelay = const Duration(seconds: 20),
     Duration maxDuration = const Duration(minutes: 3),
@@ -19,14 +20,20 @@ class PaymentPollingService<T> {
 
     Future<void> tick() async {
       if (_disposed) return;
+      var terminal = false;
       try {
         final value = await fetch();
         onValue(value);
-        if (isTerminal(value)) return;
+        terminal = isTerminal(value);
+        if (terminal) {
+          onComplete?.call();
+          return;
+        }
       } catch (error) {
         onError?.call(error);
       }
       if (_disposed || DateTime.now().difference(startedAt) >= maxDuration) {
+        onComplete?.call();
         return;
       }
       _attempt += 1;

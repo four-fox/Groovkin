@@ -381,29 +381,52 @@ class EventController extends GetxController {
   }
 
   void _bindSelectedCollectionsFromEventIfNeeded() {
-    if (eventDetail == null || selectedOrganizerCollections.isNotEmpty) return;
-    final collections = eventDetail!.data!.hashtagCollections;
-    if (collections == null || collections.isEmpty) return;
-    selectedOrganizerCollections = collections
-        .map((collection) => HashtagCollection(
-              id: collection.id,
-              title: collection.title ?? '',
-              type: collection.type,
-              hashtags: collection.hashtags
-                  .map((tag) => HashtagCollectionItem(
-                        name: tag.name,
-                        displayName: tag.displayName,
-                      ))
-                  .toList(),
-            ))
-        .toList();
-    manualHashtags = eventDetail!.data!.manualHashtags
-            ?.map((tag) => tag.name)
+    if (eventDetail == null) return;
+
+    // Collections and manual hashtags are independent. Previously this
+    // returned early when collections were empty, so edit-event never
+    // seeded manual-only hashtags into the editor.
+    if (selectedOrganizerCollections.isEmpty) {
+      final collections = eventDetail!.data!.hashtagCollections;
+      if (collections != null && collections.isNotEmpty) {
+        selectedOrganizerCollections = collections
+            .map((collection) => HashtagCollection(
+                  id: collection.id,
+                  title: collection.title ?? '',
+                  type: collection.type,
+                  hashtags: collection.hashtags
+                      .map((tag) => HashtagCollectionItem(
+                            name: tag.name,
+                            displayName: tag.displayName,
+                          ))
+                      .toList(),
+                ))
+            .toList();
+        collectionSelectionChanged = false;
+      }
+    }
+
+    if (manualHashtags.isEmpty && !manualHashtagsChanged) {
+      final manuals = eventDetail!.data!.manualHashtags;
+      if (manuals != null && manuals.isNotEmpty) {
+        manualHashtags = manuals
+            .map((tag) => tag.name)
             .where((tag) => tag.isNotEmpty)
-            .toList() ??
-        [];
+            .toList();
+        manualHashtagsChanged = false;
+      }
+    }
+  }
+
+  /// Clears in-memory hashtag editor state and reloads from [eventDetail].
+  /// Call when starting an edit so leftover create/edit state cannot hide
+  /// the event's saved manual hashtags.
+  void seedHashtagsFromEventDetail() {
+    selectedOrganizerCollections.clear();
+    manualHashtags.clear();
     manualHashtagsChanged = false;
     collectionSelectionChanged = false;
+    _bindSelectedCollectionsFromEventIfNeeded();
   }
 
   ///>>>>>>>>>>>>>>>>>>>> tag list fill check box function
@@ -507,6 +530,73 @@ class EventController extends GetxController {
 
   String? postTime;
   String? postEndTime;
+
+  /// Static event time defaults for the picker (not wall-clock "now").
+  /// Avoids the dial landing on the current minute (e.g. 3:47 → :47).
+  static const int defaultEventStartHour = 20; // 8:00 PM
+  static const int defaultEventStartMinute = 0;
+  static const int defaultEventEndHour = 0; // 12:00 AM
+  static const int defaultEventEndMinute = 0;
+
+  static TimeOfDay get defaultEventStartTimeOfDay => const TimeOfDay(
+        hour: defaultEventStartHour,
+        minute: defaultEventStartMinute,
+      );
+
+  static TimeOfDay get defaultEventEndTimeOfDay => const TimeOfDay(
+        hour: defaultEventEndHour,
+        minute: defaultEventEndMinute,
+      );
+
+  /// Picker initial: already-chosen field value, else static start/end default.
+  static TimeOfDay eventTimePickerInitial({
+    required bool isEnd,
+    String? displayText,
+  }) {
+    final parsed = tryParseEventDisplayTime(displayText);
+    if (parsed != null) return parsed;
+    return isEnd ? defaultEventEndTimeOfDay : defaultEventStartTimeOfDay;
+  }
+
+  static TimeOfDay? tryParseEventDisplayTime(String? text) {
+    if (text == null || text.trim().isEmpty) return null;
+    final trimmed = text.trim();
+    for (final format in <DateFormat>[
+      DateFormat.jm(),
+      DateFormat('hh:mm a'),
+      DateFormat('HH:mm'),
+      DateFormat('HH:mm:ss'),
+    ]) {
+      try {
+        final dt = format.parse(trimmed);
+        return TimeOfDay(hour: dt.hour, minute: dt.minute);
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  /// Display string for the static default (jm style, e.g. "8:00 PM").
+  static String defaultEventStartDisplay() {
+    final now = DateTime.now();
+    return DateFormat.jm().format(DateTime(
+      now.year,
+      now.month,
+      now.day,
+      defaultEventStartHour,
+      defaultEventStartMinute,
+    ));
+  }
+
+  static String defaultEventEndDisplay() {
+    final now = DateTime.now();
+    return DateFormat.jm().format(DateTime(
+      now.year,
+      now.month,
+      now.day,
+      defaultEventEndHour,
+      defaultEventEndMinute,
+    ));
+  }
 
   postEventFunction(context, theme, {location, bool draft = false}) async {
     print(
@@ -1097,9 +1187,12 @@ class EventController extends GetxController {
   }
 
   List imageListtt = [];
-
+  // downPayment = "396.00"
+  // balanceDue = "3564.00"
+  // totalAmount = "4752.00"
   assignValueForUpdate() async {
     eventTitleController.text = eventDetail!.data!.eventTitle.toString();
+    // downPaymentController.text = eventDetail!.data!.downPayment.toString();
     featuringController.text = eventDetail!.data!.featuring.toString();
     aboutController.text = eventDetail!.data!.about.toString();
     themeOfEventController.text = eventDetail!.data!.themeOfEvent.toString();
@@ -1121,23 +1214,22 @@ class EventController extends GetxController {
 
     if (eventDetail!.data!.rateType == "hourly") {
       eventRateHourly.value = 0;
+      rateType!.value = "hourly";
     } else {
       eventRateHourly.value = 1;
+      rateType!.value = "flat";
     }
     hourlyRateController.text = eventDetail!.data!.rate.toString();
-    // if (eventDetail!.data!.paymentSchedule == "25") {
-    //   paymentSchedule!.value = "25";
-    //   paymentScheduleValue.value = 0;
-    // } else if (eventDetail!.data!.paymentSchedule == "50") {
-    //   paymentSchedule!.value = "50";
-    //   paymentScheduleValue.value = 1;
-    // } else {
-    //   paymentSchedule!.value = "70";
-    //   paymentScheduleValue.value = 2;
-    // }
+    final existingSchedule =
+        double.tryParse(eventDetail!.data!.paymentSchedule?.toString() ?? "");
+    if (existingSchedule != null) {
+      paymentSchedule!.value = existingSchedule.round().toString();
+      downPaymentController.text = paymentSchedule!.value;
+    }
     if (eventDetail!.data!.comment != null) {
       commentsController.text = eventDetail!.data!.comment.toString();
     }
+    seedHashtagsFromEventDetail();
     Get.toNamed(Routes.upGradeEvents);
   }
 

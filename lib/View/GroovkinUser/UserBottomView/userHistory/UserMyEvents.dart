@@ -133,11 +133,10 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
             alignment: Alignment.topRight,
             children: [
               const TabBarView(
+
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  // UpComingEventView(historyVal: true,selectedValue: homeController.selectedFilters.value,),
-                  // PastEventView(),
-                  // UpComingEventView(historyVal: false, selectedValue: 0,),
+
                   UpcomingEvent(),
                   HistoryTab(),
                 ],
@@ -162,147 +161,12 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  controller.selectedFilters.value = 0;
-                                  showFilter.value = false;
-                                  if (tabValue.value == 0) {
-                                    await controller.getRecommended(
-                                        url: "user-upcoming-events",
-                                        filter: "this_week");
-                                  }
-
-                                  if (tabValue.value == 1 &&
-                                      controller.recommendedVal.value == true) {
-                                    await controller.userPastEventHistory(
-                                        filter: "recent");
-                                  }
-
-                                  if (tabValue.value == 1 &&
-                                      controller.cancelledVal.value == true) {
-                                    await controller.cancelEventUserHistory(
-                                        filter: "recent");
-                                  }
-                                },
-                                child: Container(
-                                  width: Get.width,
-                                  height: 35,
-                                  padding: const EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color:
-                                          controller.selectedFilters.value != 0
-                                              ? Colors.transparent
-                                              : DynamicColor.yellowClr),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      tabValue.value == 0
-                                          ? "This Week"
-                                          : "Recent (Last 7 Days)",
-                                      style: poppinsMediumStyle(
-                                          fontSize: 14,
-                                          color: theme.scaffoldBackgroundColor,
-                                          context: context),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  controller.selectedFilters.value = 1;
-                                  showFilter.value = false;
-                                  if (tabValue.value == 0) {
-                                    await controller.getRecommended(
-                                        url: "user-upcoming-events",
-                                        filter: "next_7_days");
-                                  }
-
-                                  if (tabValue.value == 1 &&
-                                      controller.recommendedVal.value == true) {
-                                    await controller.userPastEventHistory(
-                                        filter: "past_week");
-                                  }
-
-                                  if (tabValue.value == 1 &&
-                                      controller.cancelledVal.value == true) {
-                                    await controller.cancelEventUserHistory(
-                                        filter: "past_week");
-                                  }
-                                },
-                                child: Container(
-                                  width: Get.width,
-                                  height: 35,
-                                  padding: const EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color:
-                                          controller.selectedFilters.value != 1
-                                              ? Colors.transparent
-                                              : DynamicColor.yellowClr),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      tabValue.value == 0
-                                          ? "Next 7 Days"
-                                          : "Past Week",
-                                      style: poppinsMediumStyle(
-                                          fontSize: 14,
-                                          color: theme.scaffoldBackgroundColor,
-                                          context: context),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  controller.selectedFilters.value = 2;
-                                  showFilter.value = false;
-                                  if (tabValue.value == 0) {
-                                    await controller.getRecommended(
-                                        url: "user-upcoming-events",
-                                        filter: "one_month_plus");
-                                  }
-                                  if (tabValue.value == 1 &&
-                                      controller.recommendedVal.value == true) {
-                                    await controller.userPastEventHistory(
-                                        filter: "older_than_month");
-                                  }
-                                  if (tabValue.value == 1 &&
-                                      controller.cancelledVal.value == true) {
-                                    await controller.cancelEventUserHistory(
-                                        filter: "older_than_month");
-                                  }
-                                },
-                                child: Container(
-                                  width: Get.width,
-                                  height: 35,
-                                  padding: const EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color:
-                                          controller.selectedFilters.value != 2
-                                              ? Colors.transparent
-                                              : DynamicColor.yellowClr),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      tabValue.value == 0
-                                          ? "1+ Month Away"
-                                          : "Older Than 1 Month",
-                                      style: poppinsMediumStyle(
-                                          fontSize: 14,
-                                          color: theme.scaffoldBackgroundColor,
-                                          context: context),
-                                    ),
-                                  ),
-                                ),
+                              ..._buildFilterOptions(
+                                context: context,
+                                theme: theme,
+                                controller: controller,
+                                tabValue: tabValue.value,
+                                showFilter: showFilter,
                               ),
                             ],
                           ),
@@ -315,6 +179,83 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildFilterOptions({
+    required BuildContext context,
+    required ThemeData theme,
+    required HomeController controller,
+    required int tabValue,
+    required RxBool showFilter,
+  }) {
+    final upcomingOptions = <({String label, String? filter, int index})>[
+      (label: "All Upcoming", filter: null, index: 0),
+      (label: "This Week", filter: "this_week", index: 1),
+      (label: "Next 7 Days", filter: "next_7_days", index: 2),
+      (label: "1+ Month Away", filter: "one_month_plus", index: 3),
+    ];
+    final historyOptions = <({String label, String filter, int index})>[
+      (label: "Recent (Last 7 Days)", filter: "recent", index: 0),
+      (label: "Past Week", filter: "past_week", index: 1),
+      (label: "Older Than 1 Month", filter: "older_than_month", index: 2),
+    ];
+
+    final options = tabValue == 0
+        ? upcomingOptions
+            .map((o) => (label: o.label, filter: o.filter, index: o.index))
+            .toList()
+        : historyOptions
+            .map((o) =>
+                (label: o.label, filter: o.filter as String?, index: o.index))
+            .toList();
+
+    return [
+      for (var i = 0; i < options.length; i++) ...[
+        if (i > 0) const SizedBox(height: 5),
+        GestureDetector(
+          onTap: () async {
+            final option = options[i];
+            controller.selectedFilters.value = option.index;
+            showFilter.value = false;
+            if (tabValue == 0) {
+              await controller.getRecommended(
+                url: "user-upcoming-events",
+                filter: option.filter,
+              );
+              return;
+            }
+            if (controller.recommendedVal.value == true) {
+              await controller.userPastEventHistory(filter: option.filter);
+            }
+            if (controller.cancelledVal.value == true) {
+              await controller.cancelEventUserHistory(filter: option.filter);
+            }
+          },
+          child: Container(
+            width: Get.width,
+            height: 35,
+            padding: const EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: controller.selectedFilters.value != options[i].index
+                  ? Colors.transparent
+                  : DynamicColor.yellowClr,
+            ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                options[i].label,
+                style: poppinsMediumStyle(
+                  fontSize: 14,
+                  color: theme.scaffoldBackgroundColor,
+                  context: context,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    ];
   }
 }
 
@@ -682,71 +623,84 @@ class _UpcomingEventState extends State<UpcomingEvent> {
         return false;
       },
       child: GetBuilder<HomeController>(initState: (v) {
-        _controller.getRecommended(
-            url: "user-upcoming-events", filter: "this_week");
+        // Default: all upcoming (no date filter) so Going events outside
+        // "this week" still appear after Accept / Going.
+        _controller.getRecommended(url: "user-upcoming-events");
       }, builder: (controller) {
         return controller.getRecommendedLoader.value == false
             ? const SizedBox.shrink()
             : controller.recommendedEventData!.data!.data!.isEmpty
                 ? API().sp.read("role") == "User"
                     ? Center(
-                        child: Text(
-                          "Events you’re scheduled to attend in the future",
-                          style: poppinsMediumStyle(
-                            fontSize: 16,
-                            context: context,
-                            color: theme.primaryColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            controller.selectedFilters.value == 0
+                                ? "No upcoming events yet. Events you mark as Going will show here."
+                                : "No events in this filter. Try “All Upcoming” to see every Going event.",
+                            style: poppinsMediumStyle(
+                              fontSize: 16,
+                              context: context,
+                              color: theme.primaryColor,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       )
                     : noData(context: context, theme: theme)
-                : Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 8),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: DynamicColor.darkGrayClr),
-                      child: ListView.builder(
-                          itemCount: controller
-                              .recommendedEventData!.data!.data!.length,
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context, index) {
-                            EventData singleEventData = controller
-                                .recommendedEventData!.data!.data![index];
-                            return userCustomEvent(
-                                isDelete: singleEventData.user?.isDelete == null
-                                    ? false
-                                    : true,
-                                dayy: DateFormat.MMM()
-                                    .format(singleEventData.startDateTime!),
-                                datee:
-                                    "${singleEventData.startDateTime!.day}\n",
-                                networkImg: singleEventData.bannerImage == null
-                                    ? false
-                                    : true,
-                                img: singleEventData.bannerImage?.mediaPath
-                                    .toString(),
-                                title: singleEventData.eventTitle.toString(),
-                                location: singleEventData.location,
-                                subtitle:
-                                    singleEventData.venue!.venueName.toString(),
-                                onTap: () {
-                                  Get.toNamed(Routes.userEventDetailsScreen,
-                                      arguments: {
-                                        "notify": true,
-                                        "notifyBackBtn": true,
-                                        'appBarTitle': "Event Preview",
-                                        "statusText":
-                                            singleEventData.id.toString()
-                                      });
-                                },
-                                context: context,
-                                theme: theme);
-                          }),
+                : Align(
+                    alignment: Alignment.topCenter,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 8),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: DynamicColor.darkGrayClr),
+                        child: ListView.builder(
+                            itemCount: controller
+                                .recommendedEventData!.data!.data!.length,
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, index) {
+                              EventData singleEventData = controller
+                                  .recommendedEventData!.data!.data![index];
+                              return userCustomEvent(
+                                  isDelete:
+                                      singleEventData.user?.isDelete == null
+                                          ? false
+                                          : true,
+                                  dayy: DateFormat.MMM()
+                                      .format(singleEventData.startDateTime!),
+                                  datee:
+                                      "${singleEventData.startDateTime!.day}\n",
+                                  networkImg:
+                                      singleEventData.bannerImage == null
+                                          ? false
+                                          : true,
+                                  img: singleEventData.bannerImage?.mediaPath
+                                      .toString(),
+                                  title: singleEventData.eventTitle.toString(),
+                                  location: singleEventData.location,
+                                  subtitle: singleEventData.venue!.venueName
+                                      .toString(),
+                                  onTap: () {
+                                    Get.toNamed(Routes.userEventDetailsScreen,
+                                        arguments: {
+                                          "notify": true,
+                                          "notifyBackBtn": true,
+                                          'appBarTitle': "Event Preview",
+                                          "statusText":
+                                              singleEventData.id.toString()
+                                        });
+                                  },
+                                  context: context,
+                                  theme: theme);
+                            }),
+                      ),
                     ),
                   );
       }),

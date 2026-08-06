@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
@@ -53,6 +54,39 @@ class _CounterScreenState extends State<CounterScreen> {
         appBar: customAppBar(
           theme: theme,
           text: "Counters",
+          actions: [
+            GetBuilder<EventController>(builder: (eventController) {
+              final detail = eventController.eventDetail?.data;
+              // Edit Event Request: EO-owned events still in the
+              // pre-accept negotiation stage only.
+              final canEdit = API().sp.read("role") == "eventOrganizer" &&
+                  detail != null &&
+                  detail.status == "pending" &&
+                  (eventId == null || detail.id == eventId);
+              if (!canEdit) return const SizedBox.shrink();
+              return Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    eventController.duplicateValue.value = false;
+                    eventController.draftValue.value = false;
+                    eventController.assignValueForUpdate();
+                    eventController.showEditPreviewScreen.value = true;
+                    eventController.update();
+                  },
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Edit"),
+                      SizedBox(width: 6),
+                      Icon(Icons.edit),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ],
         ),
         body: Stack(
           alignment: Alignment.bottomCenter,

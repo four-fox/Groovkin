@@ -18,8 +18,6 @@ class _SplashScreenState extends State<SplashScreen> {
       if (API().sp.read("intro") == true) {
         if (API().sp.read("token") != null) {
           if (API().sp.read("signupPlatform") != "app") {
-            print(API().sp.read("isCompleteProfile"));
-            print(API().sp.read("signupPlatform"));
             if (API().sp.read("isCompleteProfile") == 0) {
               // Get.toNamed(Routes.createProfile, arguments: {
               //   "socialType": API().sp.read("socialType"),

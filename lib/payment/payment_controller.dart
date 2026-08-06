@@ -190,39 +190,52 @@ class PaymentController extends GetxController {
     await _guard(() async {
       state = PaymentWorkflowState.submitting;
       update();
-      final result = await repository.acceptEvent(
-        eventId,
-        paymentMethodId: paymentMethodId,
-        idempotencyKey: repository.idempotencyKey('accept_event', eventId),
-      );
-      paymentSummary = result.summary ?? paymentSummary;
-      if (!result.paymentRequired) {
-        currentPayment = result.payment;
-        state = PaymentWorkflowState.success;
-        repository.clearIdempotencyKey('accept_event', eventId);
-        return;
-      }
-      final clientSecret = result.clientSecret;
-      final publishableKey = result.publishableKey;
-      final paymentId = result.payment?.id;
-      if (clientSecret == null || publishableKey == null || paymentId == null) {
-        throw PaymentApiException(
-          message: 'Payment response was incomplete.',
-          retryable: true,
+      try {
+        final result = await repository.acceptEvent(
+          eventId,
+          paymentMethodId: paymentMethodId,
+          idempotencyKey: repository.idempotencyKey('accept_event', eventId),
         );
+        paymentSummary = result.summary ?? paymentSummary;
+        if (!result.paymentRequired) {
+          currentPayment = result.payment;
+          state = PaymentWorkflowState.success;
+          repository.clearIdempotencyKey('accept_event', eventId);
+          return;
+        }
+        final clientSecret = result.clientSecret;
+        final publishableKey = result.publishableKey;
+        final paymentId = result.payment?.id;
+        if (clientSecret == null ||
+            publishableKey == null ||
+            paymentId == null) {
+          throw PaymentApiException(
+            message: 'Payment response was incomplete.',
+            retryable: true,
+          );
+        }
+        await stripeConfigService.configureStripe(
+            publishableKey: publishableKey);
+        await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            merchantDisplayName: 'Groovkin',
+            paymentIntentClientSecret: clientSecret,
+            returnURL: StripeConfigService.returnUrl,
+          ),
+        );
+        await Stripe.instance.presentPaymentSheet();
+        state = PaymentWorkflowState.processing;
+        update();
+        _pollPayment(paymentId);
+      } on PaymentApiException {
+        // The backend returned a definitive response (including a Stripe
+        // idempotency-key conflict on a stale attempt). Mint a fresh
+        // idempotency key so the user's next explicit retry is treated as a
+        // brand-new attempt instead of replaying a request whose computed
+        // parameters may no longer match what was originally sent.
+        repository.clearIdempotencyKey('accept_event', eventId);
+        rethrow;
       }
-      await stripeConfigService.configureStripe(publishableKey: publishableKey);
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          merchantDisplayName: 'Groovkin',
-          paymentIntentClientSecret: clientSecret,
-          returnURL: StripeConfigService.returnUrl,
-        ),
-      );
-      await Stripe.instance.presentPaymentSheet();
-      state = PaymentWorkflowState.processing;
-      update();
-      _pollPayment(paymentId);
     });
   }
 
@@ -259,11 +272,18 @@ class PaymentController extends GetxController {
     await _guard(() async {
       state = PaymentWorkflowState.submitting;
       update();
-      currentPayment = await repository.retryPayment(
-        paymentId,
-        repository.idempotencyKey('retry_payment', paymentId),
-      );
-      _pollPayment(paymentId);
+      try {
+        currentPayment = await repository.retryPayment(
+          paymentId,
+          repository.idempotencyKey('retry_payment', paymentId),
+        );
+        _pollPayment(paymentId);
+      } on PaymentApiException {
+        // See acceptEvent: a definitive error response means the next
+        // explicit retry should use a fresh idempotency key.
+        repository.clearIdempotencyKey('retry_payment', paymentId);
+        rethrow;
+      }
     });
   }
 
@@ -376,15 +396,21 @@ class PaymentController extends GetxController {
     await _guard(() async {
       state = PaymentWorkflowState.submitting;
       update();
-      cancellationDetail = await repository.confirmCancellation(
-        quoteId,
-        repository.idempotencyKey('confirm_cancellation', quoteId),
-      );
-      state = _stateForCancellation(cancellationDetail!.status);
-      final paymentId = cancellationDetail?.payment?.id;
-      if (paymentId != null &&
-          cancellationDetail!.status == CancellationStatus.paymentProcessing) {
-        _pollCancellation(quoteId);
+      try {
+        cancellationDetail = await repository.confirmCancellation(
+          quoteId,
+          repository.idempotencyKey('confirm_cancellation', quoteId),
+        );
+        state = _stateForCancellation(cancellationDetail!.status);
+        final paymentId = cancellationDetail?.payment?.id;
+        if (paymentId != null &&
+            cancellationDetail!.status ==
+                CancellationStatus.paymentProcessing) {
+          _pollCancellation(quoteId);
+        }
+      } on PaymentApiException {
+        repository.clearIdempotencyKey('confirm_cancellation', quoteId);
+        rethrow;
       }
     });
   }
@@ -428,11 +454,16 @@ class PaymentController extends GetxController {
 
   Future<void> retryCancellationPayment(int cancellationId) async {
     await _guard(() async {
-      cancellationDetail = await repository.retryCancellationPayment(
-        cancellationId,
-        repository.idempotencyKey('retry_cancellation', cancellationId),
-      );
-      _pollCancellation(cancellationId);
+      try {
+        cancellationDetail = await repository.retryCancellationPayment(
+          cancellationId,
+          repository.idempotencyKey('retry_cancellation', cancellationId),
+        );
+        _pollCancellation(cancellationId);
+      } on PaymentApiException {
+        repository.clearIdempotencyKey('retry_cancellation', cancellationId);
+        rethrow;
+      }
     });
   }
 
