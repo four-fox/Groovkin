@@ -22,11 +22,9 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   final EventController _controller = Get.find();
 
   num? downPayment;
-  num? tax;
-  num? groovkinTax;
-  num? stripeTax;
+  num? groovkinFee;
   num? balanceDue;
-  num? subTotalWithTax;
+  num? totalAmount;
   num? subTotal;
   double? hoursDifference;
   DateFormat format = DateFormat("yyyy-MM-dd");
@@ -130,77 +128,45 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
 
   void calcPerHour() {
     log("In Hourly Rate");
-    // subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
-    //     0 * hoursDifference!;
-
     subTotal = ((double.tryParse(_controller.hourlyRateController.text) ?? 0) *
         CalculateHoursFromDate());
-    log(
-      "per hour rate : ${double.tryParse(_controller.hourlyRateController.text)}",
-    );
-
+    log("per hour rate : ${double.tryParse(_controller.hourlyRateController.text)}");
     log("total hours : ${CalculateHoursFromDate()}");
-
     log("subTotal : $subTotal");
-    // log("subTotal : ${12.0 * 5.0}");
 
-    stripeTax = 0.10 * subTotal!;
-    log("stripeTax: $stripeTax");
+    groovkinFee = 0.1 * subTotal!;
+    log("groovkinFee: $groovkinFee");
 
-    groovkinTax = 0.05 * subTotal!;
-    log("groovkinTax: $groovkinTax");
+    totalAmount = subTotal! + groovkinFee!;
+    log("totalAmount: $totalAmount");
 
-    subTotalWithTax = subTotal! + (0.20 * subTotal!);
-    log("subTotalWithTax: $subTotalWithTax");
-
-    tax = 0.05 * subTotal!;
-    log("tax: $tax");
-
-    // double downPayment = (subTotalWithTax! *
-    //     (double.parse(_controller.paymentSchedule!.value) / 100));
-    downPayment = (subTotalWithTax! / 100) *
-        (double.parse(_controller.paymentSchedule!.value));
+    double schedulePercent =
+        double.tryParse(_controller.paymentSchedule?.value ?? "0") ?? 0;
+    downPayment = (subTotal! / 100) * schedulePercent;
     log("downPayment: $downPayment");
 
-    balanceDue = subTotalWithTax! - downPayment!;
+    balanceDue = totalAmount! - downPayment!;
     log("balanceDue: $balanceDue");
   }
 
   void calcFlatRate() {
     log("In Flat Rate");
-    // subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
-    //     0 * hoursDifference!;
-
     subTotal = (double.tryParse(_controller.hourlyRateController.text) ?? 0);
-
-    log(
-      "per hour rate : ${double.tryParse(_controller.hourlyRateController.text)}",
-    );
-
-    log("total hours : ${CalculateHoursFromDate()}");
-
+    log("flat rate : ${double.tryParse(_controller.hourlyRateController.text)}");
     log("subTotal : $subTotal");
-    // log("subTotal : ${12.0 * 5.0}");
 
-    stripeTax = 0.10 * subTotal!;
-    log("stripeTax: $stripeTax");
+    groovkinFee = 0.1 * subTotal!;
+    log("groovkinFee: $groovkinFee");
 
-    groovkinTax = 0.05 * subTotal!;
-    log("groovkinTax: $groovkinTax");
+    totalAmount = subTotal! + groovkinFee!;
+    log("totalAmount: $totalAmount");
 
-    subTotalWithTax = subTotal! + (0.20 * subTotal!);
-    log("subTotalWithTax: $subTotalWithTax");
-
-    tax = 0.05 * subTotal!;
-    log("tax: $tax");
-
-    // double downPayment = (subTotalWithTax! *
-    //     (double.parse(_controller.paymentSchedule!.value) / 100));
-    downPayment = (subTotalWithTax! / 100) *
-        (double.parse(_controller.paymentSchedule!.value));
+    double schedulePercent =
+        double.tryParse(_controller.paymentSchedule?.value ?? "0") ?? 0;
+    downPayment = (subTotal! / 100) * schedulePercent;
     log("downPayment: $downPayment");
 
-    balanceDue = subTotalWithTax! - downPayment!;
+    balanceDue = totalAmount! - downPayment!;
     log("balanceDue: $balanceDue");
   }
 
@@ -208,6 +174,15 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   Widget build(BuildContext context) {
     // print("Hours: ${hoursDifference!.toInt()}");
     var theme = Theme.of(context);
+    final selectedVenue = _controller.selectedVenue;
+    final detail = _controller.eventDetail?.data;
+    final venueName =
+        selectedVenue?.venueName ?? detail?.venue?.venueName ?? '';
+    final venueLocation = selectedVenue == null
+        ? (detail?.venue?.location ?? detail?.location ?? '')
+        : (selectedVenue.addressLabel.isNotEmpty
+            ? selectedVenue.addressLabel
+            : selectedVenue.location ?? '');
     return Scaffold(
       appBar: customAppBar(
         theme: theme,
@@ -236,10 +211,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
             // customWidget(theme: theme,context: context),
             const SizedBox(height: 10),
             Text(
-              ((_controller.eventDetail != null) &&
-                      (_controller.eventDetail!.data!.venue != null))
-                  ? _controller.eventDetail!.data!.venue!.venueName!
-                  : _controller.venuesDetails!.venueName!,
+              venueName,
               style: poppinsRegularStyle(
                 fontSize: 14,
                 context: context,
@@ -247,10 +219,7 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
               ),
             ),
             Text(
-              ((_controller.eventDetail != null) &&
-                      (_controller.eventDetail!.data!.venue != null))
-                  ? _controller.eventDetail!.data!.venue!.location!
-                  : _controller.venuesDetails!.location!,
+              venueLocation,
               style: poppinsRegularStyle(
                 fontSize: 14,
                 context: context,
@@ -299,54 +268,36 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
               theme: theme,
               context: context,
               title: "Subtotal",
-
-              // value:
-              //     "\$ ${(double.parse(_controller.hourlyRateController.text) * CalculateHoursFromDate()).toStringAsFixed(2)}"
-              value: "\$ ${subTotal}",
-            ),
-            const SizedBox(height: 10),
-
-            customWidget(
-              theme: theme,
-              context: context,
-              title: "Tax (5%) ",
-              value: "\$${tax?.toStringAsFixed(2)}",
+              value: "\$ ${subTotal?.toStringAsFixed(2) ?? "0.00"}",
             ),
             const SizedBox(height: 10),
             customWidget(
               theme: theme,
               context: context,
-              title: "Groovkin Tax(5%)",
-              value: "\$${groovkinTax?.toStringAsFixed(2)}",
-            ),
-            const SizedBox(height: 10),
-            customWidget(
-              theme: theme,
-              context: context,
-              title: "Stripe Tax(10%)",
-              value: "\$${stripeTax?.toStringAsFixed(2)}",
+              title: "Groovkin Fee (10%)",
+              value: "\$${groovkinFee?.toStringAsFixed(2) ?? "0.00"}",
             ),
             const SizedBox(height: 10),
             customWidget(
               theme: theme,
               context: context,
               title: "Total",
-              value: "\$${subTotalWithTax?.toStringAsFixed(2)}",
+              value: "\$${totalAmount?.toStringAsFixed(2) ?? "0.00"}",
             ),
             const SizedBox(height: 10),
             customWidget(
               theme: theme,
               context: context,
-              title: "Down Payment Inc. Tax",
-              value: "\$${downPayment?.toStringAsFixed(2) ?? "0"}",
+              title:
+                  "Down Payment (${_controller.paymentSchedule?.value ?? "0"}%)",
+              value: "\$${downPayment?.toStringAsFixed(2) ?? "0.00"}",
             ),
-
             const SizedBox(height: 10),
             customWidget(
               theme: theme,
               context: context,
               title: "Balance Due",
-              value: "\$${balanceDue?.toStringAsFixed(2)}",
+              value: "\$${balanceDue?.toStringAsFixed(2) ?? "0.00"}",
             ),
             const SizedBox(height: 10),
             Divider(color: DynamicColor.grayClr),

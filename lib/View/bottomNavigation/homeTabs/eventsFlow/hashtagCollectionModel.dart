@@ -326,18 +326,18 @@ class EventHashtagPayload {
       for (final tag in manualHashtags!) {
         data.fields.add(MapEntry('manual_hashtags[]', cleanHashtag(tag)));
       }
-      // if (manualHashtags!.isEmpty) {
-      //   data.fields.add(const MapEntry('manual_hashtags', '[]'));
-      // }
+      if (manualHashtags!.isEmpty) {
+        data.fields.add(const MapEntry('manual_hashtags', '[]'));
+      }
     }
 
     if (collectionIds != null) {
       for (final id in collectionIds!) {
         data.fields.add(MapEntry('collection_ids[]', id.toString()));
       }
-      // if (collectionIds!.isEmpty) {
-      //   data.fields.add(const MapEntry('collection_ids', '[]'));
-      // }
+      if (collectionIds!.isEmpty) {
+        data.fields.add(const MapEntry('collection_ids', '[]'));
+      }
     }
   }
 }

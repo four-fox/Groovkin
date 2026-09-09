@@ -66,6 +66,7 @@ import 'package:groovkin/View/bottomNavigation/AnalyticFlowBottomBar/analyticFil
 import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/cancelResonScreen.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/commentsAndAttechment.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/registeredVenuePickerScreen.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/confimationEvent.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/disclaimerScreen.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/editEvent.dart';
@@ -549,7 +550,7 @@ class AppPages {
     ),
     GetPage(
       name: _Path.listOfVenuesScreen,
-      page: () => ListOfVenuesScreen(),
+      page: () => const RegisteredVenuePickerScreen(),
     ),
     GetPage(
       name: _Path.addLocationScreen,

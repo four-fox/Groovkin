@@ -4,6 +4,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/Network/backend_error.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 
 import '../colors.dart';
@@ -32,7 +33,7 @@ class InterceptorsServices extends Interceptor {
 
     if (response.statusCode! > 400) {
       BotToast.closeAllLoading();
-      BotToast.showText(text: response.data["data"]);
+      BotToast.showText(text: backendErrorMessage(response));
     }
 
     log(response.data.toString());

@@ -60,33 +60,104 @@ class HomeController extends GetxController {
   RecommendedEventsModel? recommendedEventData;
   RxBool getRecommendedLoader = true.obs;
   bool newsFeedWait = false;
+  int _recommendationRequestGeneration = 0;
+  int recommendedRadius = 25;
+
+  bool get hasMoreRecommendations {
+    final page = recommendedEventData?.data;
+    return (page?.currentPage ?? 0) < (page?.lastPage ?? 0);
+  }
 
   getRecommended(
       {fullUrl,
       String url = 'recommended-for-you-events',
-      String? filter}) async {
+      String? filter,
+      int page = 1,
+      bool refresh = false}) async {
+    final isRecommendation = url == 'recommended-for-you-events' &&
+        (fullUrl == null ||
+            fullUrl.toString().contains('recommended-for-you-events'));
+    final generation = isRecommendation
+        ? (refresh || page == 1
+            ? ++_recommendationRequestGeneration
+            : _recommendationRequestGeneration)
+        : 0;
     getRecommendedLoader(false);
+    final query = <String, dynamic>{};
+    if (filter != null) query['filter'] = filter;
+    if (isRecommendation) {
+      query['page'] = page;
+      query['radius'] = recommendedRadius.clamp(1, 50);
+      final point = locationLatLng;
+      if (point != null &&
+          !(point.latitude == 0 && point.longitude == 0) &&
+          point.latitude >= -90 &&
+          point.latitude <= 90 &&
+          point.longitude >= -180 &&
+          point.longitude <= 180) {
+        query['latitude'] = point.latitude;
+        query['longitude'] = point.longitude;
+      }
+    }
     var response = await API().getApi(
         url: url,
         fullUrl: fullUrl,
-        queryParameters: filter != null
-            ? {
-                "filter": filter,
-              }
-            : null);
+        isLoader: false,
+        queryParameters: query.isEmpty ? null : query);
+    if (isRecommendation && generation != _recommendationRequestGeneration) {
+      return;
+    }
     if (response.statusCode == 200) {
-      if (fullUrl == null) {
-        recommendedEventData = RecommendedEventsModel.fromJson(response.data);
+      final incoming = RecommendedEventsModel.fromJson(response.data);
+      if (fullUrl == null || (isRecommendation && page == 1)) {
+        recommendedEventData = incoming;
       } else {
-        recommendedEventData!.data!.data!
-            .addAll(RecommendedEventsModel.fromJson(response.data).data!.data!);
-        recommendedEventData!.data!.nextPageUrl =
-            RecommendedEventsModel.fromJson(response.data).data!.nextPageUrl;
+        final existing = recommendedEventData!.data!.data!;
+        final existingIds = existing.map((event) => event.id).toSet();
+        existing.addAll(
+          incoming.data!.data!
+              .where((event) => !existingIds.contains(event.id)),
+        );
+        recommendedEventData!.data!
+          ..currentPage = incoming.data!.currentPage
+          ..lastPage = incoming.data!.lastPage
+          ..nextPageUrl = incoming.data!.nextPageUrl
+          ..total = incoming.data!.total;
         newsFeedWait = false;
       }
-      getRecommendedLoader(true);
-      update();
     }
+    getRecommendedLoader(true);
+    newsFeedWait = false;
+    update();
+  }
+
+  Future<void> loadNextRecommended() async {
+    if (newsFeedWait || !hasMoreRecommendations) return;
+    newsFeedWait = true;
+    final nextPage = (recommendedEventData?.data?.currentPage ?? 0) + 1;
+    await getRecommended(page: nextPage);
+  }
+
+  Future<void> invalidateRecommendations({bool refetch = true}) async {
+    _recommendationRequestGeneration++;
+    recommendedEventData = null;
+    if (refetch) await getRecommended(refresh: true);
+  }
+
+  Future<void> setRecommendationRadius(int value) async {
+    if (!const {10, 25, 50}.contains(value) || value == recommendedRadius) {
+      return;
+    }
+    recommendedRadius = value;
+    await invalidateRecommendations();
+  }
+
+  Future<void> setRecommendationLocation(LatLng? value) async {
+    final unchanged = locationLatLng?.latitude == value?.latitude &&
+        locationLatLng?.longitude == value?.longitude;
+    if (unchanged) return;
+    locationLatLng = value;
+    await invalidateRecommendations();
   }
 
   /// >>>>>>>>>>>>>>>>>>>>> get event near by me
@@ -457,6 +528,7 @@ class HomeController extends GetxController {
         if (isFromLifeStyle == true) {
           await fetchLifeSyle();
         }
+        await invalidateRecommendations();
         update();
         Get.back();
       }

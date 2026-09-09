@@ -29,6 +29,20 @@ class EventPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    final selectedVenue = _controller.selectedVenue;
+    final detail = _controller.eventDetail?.data;
+    final venueName = selectedVenue?.venueName ??
+        detail?.venue?.venueName ??
+        'Registered Groovkin venue';
+    final venueLocation = selectedVenue == null
+        ? (detail?.venue?.location ?? detail?.location ?? '')
+        : (selectedVenue.addressLabel.isNotEmpty
+            ? selectedVenue.addressLabel
+            : selectedVenue.location ?? '');
+    final venueLat = selectedVenue?.latitude ??
+        double.tryParse(detail?.venue?.latitude ?? detail?.latitude ?? '');
+    final venueLng = selectedVenue?.longitude ??
+        double.tryParse(detail?.venue?.longitude ?? detail?.longitude ?? '');
     return Scaffold(
       appBar: customAppBar(theme: theme, text: "Event Preview", actions: [
         ((_controller.eventDetail == null) &&
@@ -76,10 +90,7 @@ class EventPreview extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                ((_controller.eventDetail != null) &&
-                        (_controller.eventDetail!.data!.venue != null))
-                    ? _controller.eventDetail!.data!.venue!.venueName!
-                    : _controller.venuesDetails!.venueName.toString(),
+                venueName,
                 textAlign: TextAlign.center,
                 style: poppinsMediumStyle(
                   fontSize: 17,
@@ -122,10 +133,7 @@ class EventPreview extends StatelessWidget {
               img: "assets/calender.png",
               icon: true,
               iconSize: 17,
-              text: ((_controller.eventDetail != null) &&
-                      (_controller.eventDetail!.data!.venue != null))
-                  ? _controller.eventDetail!.data!.venue!.location!
-                  : _managerController.venueDetails!.data!.location.toString(),
+              text: venueLocation,
             ),
 
             /// event organizer details
@@ -166,7 +174,7 @@ class EventPreview extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  _managerController.addressController.text,
+                  venueLocation,
                   style: poppinsRegularStyle(
                     fontSize: 15,
                     context: context,
@@ -179,16 +187,8 @@ class EventPreview extends StatelessWidget {
               height: 10,
             ),
 
-            ShowCustomMap(
-              lat: double.parse(((_controller.eventDetail != null) &&
-                      (_controller.eventDetail!.data!.venue != null))
-                  ? _controller.eventDetail!.data!.venue!.latitude!
-                  : _managerController.lat),
-              lng: double.parse(((_controller.eventDetail != null) &&
-                      (_controller.eventDetail!.data!.venue != null))
-                  ? _controller.eventDetail!.data!.venue!.longitude!
-                  : _managerController.lng),
-            ),
+            if (venueLat != null && venueLng != null)
+              ShowCustomMap(lat: venueLat, lng: venueLng),
 
             // Obx(() =>    ourGuestWidget(theme: theme,context: context,rowPadding: 0.0,
             //     avatarPadding: 8,

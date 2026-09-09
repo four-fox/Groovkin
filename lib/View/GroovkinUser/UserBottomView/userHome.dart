@@ -289,6 +289,26 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           ),
                         ],
                       ),
+                      if (recommendedVal.value)
+                        Row(
+                          children: [10, 25, 50]
+                              .map(
+                                (radius) => Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 2),
+                                    child: ChoiceChip(
+                                      label: Text('$radius mi'),
+                                      selected: controller.recommendedRadius ==
+                                          radius,
+                                      onSelected: (_) => controller
+                                          .setRecommendationRadius(radius),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
                       controller.getRecommendedLoader.value == false
                           ? const SizedBox.shrink()
                           : Visibility(
@@ -329,35 +349,33 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                           null
                                                       ? false
                                                       : true,
-                                                  dayy: DateFormat
-                                                          .MMM()
-                                                      .format(
-                                                          singleEventData
-                                                              .startDateTime!),
+                                                  dayy: DateFormat.MMM().format(
+                                                      singleEventData
+                                                          .startDateTime!),
                                                   datee:
                                                       "${singleEventData.startDateTime!.day}\n",
-                                                  networkImg: singleEventData
-                                                              .bannerImage ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  img: singleEventData
-                                                              .bannerImage ==
+                                                  networkImg:
+                                                      singleEventData.bannerImage == null
+                                                          ? false
+                                                          : true,
+                                                  img: singleEventData.bannerImage ==
                                                           null
                                                       ? null
                                                       : singleEventData
                                                           .bannerImage!
                                                           .mediaPath
                                                           .toString(),
-                                                  title:
-                                                      singleEventData
-                                                          .eventTitle
-                                                          .toString(),
+                                                  title: singleEventData.eventTitle
+                                                      .toString(),
                                                   location:
                                                       singleEventData.location,
                                                   subtitle: singleEventData
-                                                      .venue!.venueName
-                                                      .toString(),
+                                                          .venue?.venueName ??
+                                                      '',
+                                                  recommendationText:
+                                                      singleEventData
+                                                          .recommendation
+                                                          ?.displayReason,
                                                   onTap: () {
                                                     Get.toNamed(
                                                         Routes

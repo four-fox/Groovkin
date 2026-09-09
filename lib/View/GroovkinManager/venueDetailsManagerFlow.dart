@@ -613,8 +613,7 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                   // long: double.parse(eventData.longitude.toString()),
                                   minMaxZoomPreference:
                                       const MinMaxZoomPreference(0, 16),
-                                  apiKey:
-                                      "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                                  apiKey:"AIzaSyBheknVQ8Fbi69rMtaEKP6asKoXljFB3a4",
                                   // canPopOnNextButtonTaped: true,
                                   canPopOnNextButtonTaped: true,
                                   searchHintText: controller.address != "null"

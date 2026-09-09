@@ -14,6 +14,7 @@ userCustomEvent(
     title,
     subtitle,
     location,
+    recommendationText,
     bool networkImg = false,
     datee,
     dayy,
@@ -74,7 +75,6 @@ userCustomEvent(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ImageIcon(
-
                             const AssetImage("assets/location.png"),
                             color: DynamicColor.grayClr,
                           ),
@@ -94,6 +94,21 @@ userCustomEvent(
                         ],
                       ),
                     ),
+                    if (recommendationText != null &&
+                        recommendationText.toString().trim().isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Text(
+                          recommendationText.toString(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: poppinsRegularStyle(
+                            fontSize: 11,
+                            context: context,
+                            color: DynamicColor.yellowClr,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'event_acceptance_coordinator.dart';
 import 'journey/completion_review_widgets.dart';
@@ -382,6 +383,12 @@ class _EventAcceptPaymentScreenState extends State<EventAcceptPaymentScreen> {
     if (result == EventAcceptanceBlocker.none &&
         (paymentController.state == PaymentWorkflowState.success ||
             paymentController.state == PaymentWorkflowState.processing)) {
+      if (Get.isRegistered<EventController>()) {
+        final eventController = Get.find<EventController>();
+        await eventController.getAllEvents(loader: false);
+        await eventController.getUpcomingEvents();
+        eventController.update();
+      }
       Get.back(result: true);
     }
   }

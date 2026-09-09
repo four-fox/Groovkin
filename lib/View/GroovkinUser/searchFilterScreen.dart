@@ -201,7 +201,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                                 minMaxZoomPreference:
                                     const MinMaxZoomPreference(0, 15),
                                 apiKey:
-                                    "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
+                                    "AIzaSyBheknVQ8Fbi69rMtaEKP6asKoXljFB3a4",
                                 canPopOnNextButtonTaped: true,
                                 searchHintText:
                                     homeController.locationController.text !=
@@ -227,7 +227,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                                       LatLng latLng =
                                           LatLng(latitude, longitude);
 
-                                      homeController.locationLatLng = latLng;
+                                      await homeController
+                                          .setRecommendationLocation(latLng);
 
                                       homeController.update();
                                       // Get.back();
@@ -351,7 +352,7 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
             if (homeController.isFiltered == true) {
               homeController.firstDate = null;
               homeController.secondDate = null;
-              homeController.locationLatLng = null;
+              await homeController.setRecommendationLocation(null);
               homeController.currentSliderValue = 20;
               homeController.isFiltered = false;
               homeController.locationController.clear();

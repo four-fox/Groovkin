@@ -14,7 +14,6 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 import 'package:groovkin/utils/utils.dart';
-import 'package:map_location_picker/map_location_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../Components/Network/Url.dart';
@@ -27,12 +26,6 @@ class CommentsAndAttachment extends StatefulWidget {
 }
 
 class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
-  String address = "null";
-
-  String autocompletePlace = "null";
-
-  Prediction? initialValue;
-
   AuthController authController = Get.find();
 
   final EventController _controller = Get.find();
@@ -242,7 +235,9 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
             borderClr: Colors.transparent,
             onTap: () {
               if (commentsForm.currentState!.validate()) {
-                if (_controller.showEditPreviewScreen.value == true) {
+                if (_controller.showEditPreviewScreen.value == true ||
+                    (_controller.publishingDraft &&
+                        _controller.eventDetail?.data?.venueId != null)) {
                   Get.toNamed(Routes.eventPreview,
                       arguments: {"viewDetails": 1});
                 } else {
@@ -252,82 +247,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                   //   Get.toNamed(Routes.eventPreview,
                   //       arguments: {"viewDetails": 1});
                   // } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return MapLocationPicker(
-                          isDarkMode:
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? true
-                                  : false,
-                          onTappp: () {
-                            print(managerController.lat);
-                            print(managerController.lng);
-                            Get.toNamed(Routes.listOfVenuesScreen);
-                          },
-                          // onTapShow: true,
-                          // hideLocation: true,
-                          // lat: double.parse(eventData.latitude.toString()),
-                          // long: double.parse(eventData.longitude.toString()),
-                          minMaxZoomPreference:
-                              const MinMaxZoomPreference(0, 15),
-                          apiKey: "AIzaSyC_-hLFYGAJC_IBMnFBKZLq2IS1qr7tJgQ",
-                          canPopOnNextButtonTaped: true,
-                          searchHintText: managerController.address != "null"
-                              ? managerController.address
-                              : "Start typing to search",
-                          // canPopOnNextButtonTaped: true,
-                          latLng: managerController.latLng,
-                          initAddress: managerController.address,
-                          nextPage: () {
-                            Get.toNamed(Routes.listOfVenuesScreen);
-                            managerController.update();
-                          },
-                          onNext: (GeocodingResult? result) {
-                            if (result != null) {
-                              managerController.lat =
-                                  result.geometry.location.lat.toString();
-                              managerController.lng =
-                                  result.geometry.location.lng.toString();
-                              managerController.address =
-                                  result.formattedAddress ?? "";
-                              managerController.latLng = LatLng(
-                                  result.geometry.location.lat,
-                                  result.geometry.location.lng);
-                              managerController.addressController.text =
-                                  result.formattedAddress!;
-                              Get.toNamed(Routes.listOfVenuesScreen);
-                              managerController.update();
-                            }
-                          },
-                          onSuggestionSelected:
-                              (PlacesDetailsResponse? result) {
-                            if (result != null) {
-                              managerController.lat = result
-                                  .result.geometry!.location.lat
-                                  .toString();
-                              managerController.lng = result
-                                  .result.geometry!.location.lng
-                                  .toString();
-                              managerController.autocompletePlace =
-                                  result.result.formattedAddress ?? "";
-                              managerController.address =
-                                  result.result.formattedAddress ?? "";
-                              managerController.latLng = LatLng(
-                                  result.result.geometry!.location.lat,
-                                  result.result.geometry!.location.lng);
-                              managerController.addressController.text =
-                                  result.result.formattedAddress!;
-
-                              Get.toNamed(Routes.listOfVenuesScreen);
-                              managerController.update();
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  );
+                  Get.toNamed(Routes.listOfVenuesScreen);
                 }
               }
               // }

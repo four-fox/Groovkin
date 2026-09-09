@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' as form;
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/Network/backend_error.dart';
 import 'hashtagCollectionModel.dart';
 
 class HashtagCollectionRepository {
@@ -69,6 +70,28 @@ class HashtagCollectionRepository {
     }
     throw HashtagApiException.fromResponse(response);
   }
+
+  Future<Map<String, dynamic>?> removeEventHashtag({
+    required int eventId,
+    required String name,
+  }) async {
+    final response = await API().postApi(
+      form.FormData.fromMap({
+        'event_id': eventId,
+        'name': cleanHashtag(name),
+      }),
+      'remove-event-hashtag',
+      showProgress: false,
+    );
+    if (response.statusCode == 200) {
+      final data = response.data is Map ? response.data['data'] : null;
+      return data is Map ? Map<String, dynamic>.from(data) : null;
+    }
+    throw HashtagApiException(
+      backendErrorMessage(response, field: 'hashtags'),
+      statusCode: response.statusCode,
+    );
+  }
 }
 
 class HashtagApiException implements Exception {
@@ -78,20 +101,10 @@ class HashtagApiException implements Exception {
   final int? statusCode;
 
   factory HashtagApiException.fromResponse(dynamic response) {
-    final data = response?.data;
-    String message = 'Something went wrong. Please try again.';
-    if (data is Map) {
-      final errors = data['errors'];
-      if (errors is Map && errors.isNotEmpty) {
-        final first = errors.values.first;
-        message = first is List ? first.first.toString() : first.toString();
-      } else if (data['data'] != null) {
-        message = data['data'].toString();
-      } else if (data['message'] != null) {
-        message = data['message'].toString();
-      }
-    }
-    return HashtagApiException(message, statusCode: response?.statusCode);
+    return HashtagApiException(
+      backendErrorMessage(response),
+      statusCode: response?.statusCode,
+    );
   }
 
   @override

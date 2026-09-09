@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:app_settings/app_settings.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 import 'package:get/get.dart';
 import 'package:groovkin/Components/CustomMultipart.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/Network/backend_error.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
@@ -26,6 +31,20 @@ import 'package:dio/dio.dart' as form;
 import 'hashtagCollectionModel.dart';
 import 'hashtagCollectionRepository.dart';
 import 'ongoingEvents/ongoingEventsModel.dart';
+import 'venueDiscoveryModel.dart';
+import 'venueDiscoveryRepository.dart';
+
+enum VenuePickerViewMode { list, map }
+
+enum VenueLocationState {
+  initial,
+  loading,
+  available,
+  denied,
+  deniedForever,
+  serviceDisabled,
+  unavailable,
+}
 
 class EventController extends GetxController {
   late AuthController _authController;
@@ -198,6 +217,7 @@ class EventController extends GetxController {
   List<String> manualHashtags = [];
   bool manualHashtagsChanged = false;
   bool collectionSelectionChanged = false;
+  final Set<String> removingEventHashtags = {};
 
   List<HashtagCollection> get activeOrganizerCollections =>
       organizerCollections.where((element) => element.isActive).toList();
@@ -347,9 +367,39 @@ class EventController extends GetxController {
     update();
   }
 
-  void removeManualHashtag(String value) {
+  Future<void> removeManualHashtag(String value) async {
+    final normalized = normalizeHashtag(value);
+    if (removingEventHashtags.contains(normalized)) return;
+    final eventId = eventDetail?.data?.id;
+    final isAttachedToSavedEvent = eventId != null &&
+        (eventDetail?.data?.manualHashtags ?? const []).any(
+          (tag) => normalizeHashtag(tag.name) == normalized,
+        );
+    if (isAttachedToSavedEvent) {
+      removingEventHashtags.add(normalized);
+      update();
+      try {
+        await hashtagCollectionRepository.removeEventHashtag(
+          eventId: eventId,
+          name: value,
+        );
+      } on HashtagApiException catch (error) {
+        BotToast.showText(text: error.message);
+        if (error.statusCode == 404) {
+          await eventDetails(eventId: eventId);
+          seedHashtagsFromEventDetail();
+        }
+        removingEventHashtags.remove(normalized);
+        update();
+        return;
+      }
+      removingEventHashtags.remove(normalized);
+      if (Get.isRegistered<HomeController>()) {
+        await homeController.invalidateRecommendations();
+      }
+    }
     manualHashtags.removeWhere(
-      (tag) => normalizeHashtag(tag) == normalizeHashtag(value),
+      (tag) => normalizeHashtag(tag) == normalized,
     );
     manualHashtagsChanged = true;
     update();
@@ -431,6 +481,9 @@ class EventController extends GetxController {
 
   ///>>>>>>>>>>>>>>>>>>>> tag list fill check box function
   List<CategoryItem> tagListPost = [];
+  bool musicChoiceChanged = false;
+  bool activityChoiceChanged = false;
+  bool musicGenreChanged = false;
   tagAddFtn({
     CategoryItem? items,
     value,
@@ -441,6 +494,7 @@ class EventController extends GetxController {
     } else {
       tagListPost.remove(items);
     }
+    musicChoiceChanged = true;
     update();
   }
 
@@ -456,9 +510,238 @@ class EventController extends GetxController {
     } else {
       activityListPost.remove(items);
     }
+    activityChoiceChanged = true;
     update();
   }
 
+  /// Registered Groovkin venue picker (Event Organizer only).
+  final VenueDiscoveryRepository venueDiscoveryRepository =
+      VenueDiscoveryRepository();
+  VenuePickerViewMode venuePickerViewMode = VenuePickerViewMode.list;
+  VenueLocationState venueLocationState = VenueLocationState.initial;
+  double? venueOriginLatitude;
+  double? venueOriginLongitude;
+  int venueRadius = 10;
+  String venueSearchQuery = '';
+  List<CompactVenue> discoveredVenues = [];
+  List<CompactVenue> venueMarkers = [];
+  CompactVenue? selectedVenue;
+  int venueCurrentPage = 1;
+  int venueLastPage = 1;
+  bool venueListLoading = false;
+  bool venueMapLoading = false;
+  bool venuePaginationLoading = false;
+  bool venueRefreshing = false;
+  bool venueMarkersTruncated = false;
+  String? venueDiscoveryError;
+  int _venueRequestGeneration = 0;
+  Timer? _venueSearchDebounce;
+
+  bool get hasVenueLocation =>
+      venueOriginLatitude != null &&
+      venueOriginLongitude != null &&
+      !(venueOriginLatitude == 0 && venueOriginLongitude == 0);
+
+  bool get canDiscoverVenues =>
+      hasVenueLocation || venueSearchQuery.trim().length >= 2;
+
+  bool get hasMoreVenuePages => venueCurrentPage < venueLastPage;
+
+  Future<void> initializeVenuePicker() async {
+    if (hasVenueLocation) {
+      await refreshVenueDiscovery();
+      return;
+    }
+    await acquireVenueLocation();
+  }
+
+  Future<void> acquireVenueLocation() async {
+    venueLocationState = VenueLocationState.loading;
+    venueDiscoveryError = null;
+    update();
+    try {
+      if (!await geo.Geolocator.isLocationServiceEnabled()) {
+        venueLocationState = VenueLocationState.serviceDisabled;
+        update();
+        return;
+      }
+      var permission = await geo.Geolocator.checkPermission();
+      if (permission == geo.LocationPermission.denied) {
+        permission = await geo.Geolocator.requestPermission();
+      }
+      if (permission == geo.LocationPermission.deniedForever) {
+        venueLocationState = VenueLocationState.deniedForever;
+        update();
+        return;
+      }
+      if (permission == geo.LocationPermission.denied) {
+        venueLocationState = VenueLocationState.denied;
+        update();
+        return;
+      }
+      final position = await geo.Geolocator.getCurrentPosition(
+        locationSettings:
+            const geo.LocationSettings(accuracy: geo.LocationAccuracy.high),
+      ).timeout(const Duration(seconds: 15));
+      if (position.latitude == 0 && position.longitude == 0) {
+        venueLocationState = VenueLocationState.unavailable;
+        update();
+        return;
+      }
+      venueOriginLatitude = position.latitude;
+      venueOriginLongitude = position.longitude;
+      venueLocationState = VenueLocationState.available;
+      await refreshVenueDiscovery();
+    } catch (_) {
+      venueLocationState = VenueLocationState.unavailable;
+      venueDiscoveryError =
+          'Your location is unavailable. Search Groovkin venues by name.';
+      update();
+    }
+  }
+
+  Future<void> openVenueLocationSettings() =>
+      AppSettings.openAppSettings(type: AppSettingsType.location);
+
+  void setVenuePickerViewMode(VenuePickerViewMode mode) {
+    if (venuePickerViewMode == mode) return;
+    venuePickerViewMode = mode;
+    update();
+  }
+
+  Future<void> setVenueRadius(int radius) async {
+    if (!const {10, 25, 50}.contains(radius) || venueRadius == radius) return;
+    venueRadius = radius;
+    await refreshVenueDiscovery();
+  }
+
+  void setVenueSearch(String value) {
+    venueSearchQuery = value.trim();
+    _venueSearchDebounce?.cancel();
+    _venueSearchDebounce = Timer(const Duration(milliseconds: 400), () {
+      refreshVenueDiscovery();
+    });
+    update();
+  }
+
+  Future<void> refreshVenueDiscovery() async {
+    _venueSearchDebounce?.cancel();
+    final generation = ++_venueRequestGeneration;
+    venueCurrentPage = 1;
+    venueLastPage = 1;
+    venueDiscoveryError = null;
+    if (!canDiscoverVenues) {
+      discoveredVenues = [];
+      venueMarkers = [];
+      update();
+      return;
+    }
+    venueListLoading = true;
+    venueMapLoading = true;
+    venueRefreshing = true;
+    update();
+
+    final results = await Future.wait<Object?>([
+      venueDiscoveryRepository
+          .discover(
+            latitude: hasVenueLocation ? venueOriginLatitude : null,
+            longitude: hasVenueLocation ? venueOriginLongitude : null,
+            radius: venueRadius,
+            search: venueSearchQuery,
+          )
+          .then<Object?>((value) => value)
+          .catchError((Object error) => error),
+      venueDiscoveryRepository
+          .markers(
+            latitude: hasVenueLocation ? venueOriginLatitude : null,
+            longitude: hasVenueLocation ? venueOriginLongitude : null,
+            radius: venueRadius,
+            search: venueSearchQuery,
+          )
+          .then<Object?>((value) => value)
+          .catchError((Object error) => error),
+    ]);
+    if (generation != _venueRequestGeneration) return;
+    final page = results[0] is VenueDiscoveryPage
+        ? results[0] as VenueDiscoveryPage
+        : null;
+    final markers = results[1] is VenueMarkerResult
+        ? results[1] as VenueMarkerResult
+        : null;
+    if (page != null) {
+      discoveredVenues = page.venues;
+      venueCurrentPage = page.currentPage;
+      venueLastPage = page.lastPage;
+    }
+    if (markers != null) {
+      venueMarkers = markers.venues
+          .where((venue) => venue.latitude != null && venue.longitude != null)
+          .toList();
+      venueMarkersTruncated = markers.truncated;
+    }
+    final error = page == null
+        ? results[0]
+        : markers == null
+            ? results[1]
+            : null;
+    if (error != null) venueDiscoveryError = error.toString();
+    final selectedId = selectedVenue?.id;
+    if (selectedId != null &&
+        !discoveredVenues.any((venue) => venue.id == selectedId) &&
+        !venueMarkers.any((venue) => venue.id == selectedId)) {
+      selectedVenue = null;
+    }
+    venueListLoading = false;
+    venueMapLoading = false;
+    venueRefreshing = false;
+    update();
+  }
+
+  Future<void> loadMoreVenues() async {
+    if (venuePaginationLoading || !hasMoreVenuePages || !canDiscoverVenues) {
+      return;
+    }
+    final generation = _venueRequestGeneration;
+    venuePaginationLoading = true;
+    update();
+    try {
+      final page = await venueDiscoveryRepository.discover(
+        latitude: hasVenueLocation ? venueOriginLatitude : null,
+        longitude: hasVenueLocation ? venueOriginLongitude : null,
+        radius: venueRadius,
+        search: venueSearchQuery,
+        page: venueCurrentPage + 1,
+      );
+      if (generation != _venueRequestGeneration) return;
+      final ids = discoveredVenues.map((venue) => venue.id).toSet();
+      discoveredVenues.addAll(
+        page.venues.where((venue) => !ids.contains(venue.id)),
+      );
+      venueCurrentPage = page.currentPage;
+      venueLastPage = page.lastPage;
+    } catch (error) {
+      if (generation == _venueRequestGeneration) {
+        venueDiscoveryError = error.toString();
+      }
+    } finally {
+      if (generation == _venueRequestGeneration) {
+        venuePaginationLoading = false;
+        update();
+      }
+    }
+  }
+
+  void selectVenue(CompactVenue venue) {
+    selectedVenue = venue;
+    update();
+  }
+
+  void clearSelectedVenue() {
+    selectedVenue = null;
+    update();
+  }
+
+  /// Legacy venue state remains for old screens outside the new EO picker.
   ///get list of venues as lat lng
   RxBool getVenuesLatLngLoader = true.obs;
   VenueListModel? allVenueList;
@@ -598,10 +881,15 @@ class EventController extends GetxController {
     ));
   }
 
-  postEventFunction(context, theme, {location, bool draft = false}) async {
+  postEventFunction(context, theme, {bool draft = false}) async {
     print(
         "lora lae $datePost ${postTime.toString().split(" ")[0]} $endDatePost $postEndTime");
 
+    if (!draft && selectedVenue == null) {
+      BotToast.showText(text: 'Select a registered Groovkin venue.');
+      Get.toNamed(Routes.listOfVenuesScreen);
+      return;
+    }
     AuthController authController = Get.find();
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
@@ -626,7 +914,6 @@ class EventController extends GetxController {
       var a = multiPartingImage(authController.imageBytes);
       imageList.add(a);
     }
-    print(location);
     form.FormData formData = form.FormData.fromMap({
       "event_title": eventTitleController.text,
       "featuring": featuringController.text,
@@ -642,24 +929,9 @@ class EventController extends GetxController {
       "payment_schedule": int.parse(paymentSchedule!.value.toString()),
       if (commentsController.text.isNotEmpty)
         "comment": commentsController.text,
-      if (venuesDetails != null || location != null)
-        "location":
-            location == null ? venuesDetails!.location : location.data.location,
-      if (venuesDetails != null || location != null)
-        "latitude": double.parse(
-            location == null ? managerController.lat : location.data.latitude),
-      if (venuesDetails != null || location != null)
-        "longitude": double.parse(
-            location == null ? managerController.lng : location.data.longitude),
-      if (venuesDetails != null || location != null)
-        "venue_id":
-            location == null ? venuesDetails!.id : location.data.venueId,
+      if (selectedVenue != null) "venue_id": selectedVenue!.id,
       if (mediaList.isNotEmpty) "image[]": mediaList,
       "banner_image[]": imageList,
-      if (venuesDetails != null || location != null)
-        "venue_user_id": location == null
-            ? managerController.venueDetails!.data!.userId
-            : location.data.userId,
       "save_draft": draft
     });
 
@@ -809,7 +1081,7 @@ class EventController extends GetxController {
                         ),
                       ),
                       Text(
-                        'The proposal has been sent to\nthe Venue Manager',
+                        'Venue request sent\nWaiting for the Venue Manager to respond',
                         style: poppinsRegularStyle(
                           fontSize: 16,
                           context: context,
@@ -832,12 +1104,28 @@ class EventController extends GetxController {
         Get.offAllNamed(Routes.bottomNavigationView,
             arguments: {"indexValue": 0});
       }
+    } else {
+      final message = backendErrorMessage(response, field: 'venue_id');
+      BotToast.showText(text: message);
+      if (response.statusCode == 422 &&
+          message.toLowerCase().contains('not available')) {
+        clearSelectedVenue();
+        await refreshVenueDiscovery();
+        Get.offNamed(Routes.listOfVenuesScreen);
+      }
     }
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
   editEventFunction() async {
     AuthController authController = Get.find();
+    final publishVenueId = selectedVenue?.id ?? eventDetail?.data?.venueId;
+    if (publishingDraft && publishVenueId == null) {
+      BotToast.showText(
+          text: 'Select a registered Groovkin venue before publishing.');
+      Get.toNamed(Routes.listOfVenuesScreen);
+      return;
+    }
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
       if (element.thumbnail != null) {
@@ -882,9 +1170,8 @@ class EventController extends GetxController {
       if (mediaList.isNotEmpty) "image[]": mediaList,
       if (imageList.isNotEmpty) "banner_image[]": imageList,
       "service_id[]": service,
-      "venue_id": eventDetail!.data!.venue == null
-          ? managerController.venueDetails!.data!.id
-          : eventDetail!.data!.venueId
+      if (publishingDraft) "venue_id": publishVenueId,
+      if (publishingDraft) "save_draft": false,
     });
 
     /// todo hardware params
@@ -911,24 +1198,27 @@ class EventController extends GetxController {
 
     /// todo hardware params
     /// todo life Style params
-    int? indexVaal = -1;
-    int? iiad = -1;
-    int genreIndex = -1;
-    print(authController.itemsList.length);
-    for (var a = 0; a <= authController.itemsList.length; a++) {
-      if (a != authController.itemsList.length) {
-        if (iiad != authController.itemsList[a].categoryId) {
-          indexVaal = indexVaal! + 1;
-          genreIndex = -1;
-          formData.fields.add(MapEntry('music_genre[$indexVaal]',
-              authController.itemsList[a].categoryId.toString()));
-        }
-        if (authController.itemsList[a].selectedItem!.value == true) {
-          iiad = authController.itemsList[a].categoryId;
-          genreIndex = genreIndex + 1;
-          formData.fields.add(MapEntry(
-              'music_genre_item_ids[$indexVaal][$genreIndex]',
-              authController.itemsList[a].id.toString()));
+    if (musicGenreChanged) {
+      if (authController.itemsList.isEmpty) {
+        formData.fields.add(const MapEntry('music_genre', '[]'));
+      } else {
+        int? indexVaal = -1;
+        int? iiad = -1;
+        int genreIndex = -1;
+        for (var a = 0; a < authController.itemsList.length; a++) {
+          if (iiad != authController.itemsList[a].categoryId) {
+            indexVaal = indexVaal! + 1;
+            genreIndex = -1;
+            formData.fields.add(MapEntry('music_genre[$indexVaal]',
+                authController.itemsList[a].categoryId.toString()));
+          }
+          if (authController.itemsList[a].selectedItem!.value == true) {
+            iiad = authController.itemsList[a].categoryId;
+            genreIndex++;
+            formData.fields.add(MapEntry(
+                'music_genre_item_ids[$indexVaal][$genreIndex]',
+                authController.itemsList[a].id.toString()));
+          }
         }
       }
     }
@@ -936,23 +1226,29 @@ class EventController extends GetxController {
     /// todo life Style params
 
     /// todo music choice params
-    int? indexVall = -1;
-    int? iiidd = -1;
-    int musicChoiceIndex = -1;
-    for (var a = 0; a <= tagListPost.length; a++) {
-      if (a != tagListPost.length) {
-        if (iiidd != tagListPost[a].eventTagId) {
-          indexVall = indexVall! + 1;
-          musicChoiceIndex = -1;
-          formData.fields.add(MapEntry('music_choice_tag[$indexVall]',
-              tagListPost[a].eventTagId.toString()));
-        }
-        if (tagListPost[a].selected!.value == true) {
-          iiidd = tagListPost[a].eventTagId;
-          musicChoiceIndex = musicChoiceIndex + 1;
-          formData.fields.add(MapEntry(
-              'music_choice_tag_item_ids[$indexVall][$musicChoiceIndex]',
-              tagListPost[a].id.toString()));
+    if (musicChoiceChanged) {
+      if (tagListPost.isEmpty) {
+        formData.fields
+          ..add(const MapEntry('music_choice_tag', '[]'))
+          ..add(const MapEntry('music_choice_tag_item_ids', '[]'));
+      } else {
+        int? indexVall = -1;
+        int? iiidd = -1;
+        int musicChoiceIndex = -1;
+        for (var a = 0; a < tagListPost.length; a++) {
+          if (iiidd != tagListPost[a].eventTagId) {
+            indexVall = indexVall! + 1;
+            musicChoiceIndex = -1;
+            formData.fields.add(MapEntry('music_choice_tag[$indexVall]',
+                tagListPost[a].eventTagId.toString()));
+          }
+          if (tagListPost[a].selected!.value == true) {
+            iiidd = tagListPost[a].eventTagId;
+            musicChoiceIndex++;
+            formData.fields.add(MapEntry(
+                'music_choice_tag_item_ids[$indexVall][$musicChoiceIndex]',
+                tagListPost[a].id.toString()));
+          }
         }
       }
     }
@@ -960,23 +1256,29 @@ class EventController extends GetxController {
     /// todo life Style params
 
     /// todo activity choice
-    int? indexValll = -1;
-    int? iiiddd = -1;
-    int activityChoiceIndex = -1;
-    for (var a = 0; a <= activityListPost.length; a++) {
-      if (a != activityListPost.length) {
-        if (iiiddd != activityListPost[a].eventTagId) {
-          indexValll = indexValll! + 1;
-          activityChoiceIndex = -1;
-          formData.fields.add(MapEntry('activity_choice_tag[$indexValll]',
-              activityListPost[a].eventTagId.toString()));
-        }
-        if (activityListPost[a].selected!.value == true) {
-          iiiddd = activityListPost[a].eventTagId;
-          activityChoiceIndex = activityChoiceIndex + 1;
-          formData.fields.add(MapEntry(
-              'activity_choice_tag_item_ids[$indexValll][$activityChoiceIndex]',
-              activityListPost[a].id.toString()));
+    if (activityChoiceChanged) {
+      if (activityListPost.isEmpty) {
+        formData.fields
+          ..add(const MapEntry('activity_choice_tag', '[]'))
+          ..add(const MapEntry('activity_choice_tag_item_ids', '[]'));
+      } else {
+        int? indexValll = -1;
+        int? iiiddd = -1;
+        int activityChoiceIndex = -1;
+        for (var a = 0; a < activityListPost.length; a++) {
+          if (iiiddd != activityListPost[a].eventTagId) {
+            indexValll = indexValll! + 1;
+            activityChoiceIndex = -1;
+            formData.fields.add(MapEntry('activity_choice_tag[$indexValll]',
+                activityListPost[a].eventTagId.toString()));
+          }
+          if (activityListPost[a].selected!.value == true) {
+            iiiddd = activityListPost[a].eventTagId;
+            activityChoiceIndex++;
+            formData.fields.add(MapEntry(
+                'activity_choice_tag_item_ids[$indexValll][$activityChoiceIndex]',
+                activityListPost[a].id.toString()));
+          }
         }
       }
     }
@@ -1004,12 +1306,23 @@ class EventController extends GetxController {
 
     var response = await API().postApi(formData, "update-event");
     if (response.statusCode == 200) {
+      await homeController.invalidateRecommendations();
       showEditPreviewScreen.value = false;
+      publishingDraft = false;
       update();
       BotToast.showText(text: response.data['message']);
       clearFields();
       Get.offAllNamed(Routes.bottomNavigationView,
           arguments: {"indexValue": 0});
+    } else {
+      final message = backendErrorMessage(response, field: 'venue_id');
+      BotToast.showText(text: message);
+      if (response.statusCode == 422 &&
+          message.toLowerCase().contains('not available')) {
+        clearSelectedVenue();
+        await refreshVenueDiscovery();
+        Get.offNamed(Routes.listOfVenuesScreen);
+      }
     }
   }
 
@@ -1070,6 +1383,11 @@ class EventController extends GetxController {
     collectionSelectionChanged = false;
     activityListPost.clear();
     tagListPost.clear();
+    selectedVenue = null;
+    publishingDraft = false;
+    musicGenreChanged = false;
+    musicChoiceChanged = false;
+    activityChoiceChanged = false;
     eventDateController.clear();
     eventEndDateController.clear();
     proposedTimeWindowsController.clear();
@@ -1168,6 +1486,7 @@ class EventController extends GetxController {
   List<String> venueImageList = [];
   RxBool duplicateValue = false.obs;
   RxBool draftValue = false.obs;
+  bool publishingDraft = false;
   RxBool showEditPreviewScreen = false.obs;
 
   eventDetails({eventId}) async {
@@ -1191,6 +1510,9 @@ class EventController extends GetxController {
   // balanceDue = "3564.00"
   // totalAmount = "4752.00"
   assignValueForUpdate() async {
+    musicGenreChanged = false;
+    musicChoiceChanged = false;
+    activityChoiceChanged = false;
     eventTitleController.text = eventDetail!.data!.eventTitle.toString();
     // downPaymentController.text = eventDetail!.data!.downPayment.toString();
     featuringController.text = eventDetail!.data!.featuring.toString();
@@ -1489,6 +1811,12 @@ class EventController extends GetxController {
       pastEventData = PastEventModel.fromJson(response.data);
       update();
     }
+  }
+
+  @override
+  void onClose() {
+    _venueSearchDebounce?.cancel();
+    super.onClose();
   }
 
   /// todo create event functionality

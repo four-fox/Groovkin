@@ -18,6 +18,7 @@ import 'package:groovkin/View/GroovkinManager/venueListManagerModel.dart';
 import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/counters/messagesModel.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/payment/event_acceptance_coordinator.dart';
 import 'package:http_parser/http_parser.dart';
@@ -776,6 +777,12 @@ class ManagerController extends GetxController {
           ?.removeWhere((event) => event.id == eventId);
       checkBoxValue.value = false;
       bottomToast(text: 'Event accepted successfully.');
+      if (Get.isRegistered<EventController>()) {
+        final eventController = Get.find<EventController>();
+        await eventController.getAllEvents(loader: false);
+        await eventController.getUpcomingEvents();
+        eventController.update();
+      }
       update();
       if (Get.currentRoute != Routes.bottomNavigationView) {
         Get.back();
@@ -792,6 +799,12 @@ class ManagerController extends GetxController {
       checkBoxValue.value = false;
       print(response.data['message']);
       bottomToast(text: response.data['message']);
+      if (Get.isRegistered<EventController>()) {
+        final eventController = Get.find<EventController>();
+        await eventController.getAllEvents(loader: false);
+        await eventController.getUpcomingEvents();
+        eventController.update();
+      }
       update();
       Get.back();
     }

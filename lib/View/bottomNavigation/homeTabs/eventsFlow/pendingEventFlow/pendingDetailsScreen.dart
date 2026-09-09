@@ -256,9 +256,7 @@ String _formatEventPrice({
       currency: summary.currency,
     );
   }
-  if (totalAmount != null &&
-      totalAmount.isNotEmpty &&
-      totalAmount != 'null') {
+  if (totalAmount != null && totalAmount.isNotEmpty && totalAmount != 'null') {
     final parsed = double.tryParse(totalAmount);
     if (parsed != null) {
       return NumberFormat.simpleCurrency(name: 'USD').format(parsed);
@@ -370,8 +368,11 @@ Widget pendingDetailsWidget(
                                         fit: BoxFit.fill)),
                                 child: Center(
                                   child: Text(
-                                    // "Pending",
-                                    event.status.toString(),
+                                    event.status == 'declined'
+                                        ? 'Venue request declined'
+                                        : event.status == 'pending'
+                                            ? 'Venue request pending'
+                                            : event.status.toString(),
                                     style: poppinsRegularStyle(
                                       fontSize: 11,
                                       context: context,
@@ -465,8 +466,13 @@ Widget pendingDetailsWidget(
                                             cancelEventWidget(
                                                 context: context,
                                                 theme: theme,
-                                                onTap: () {
+                                                onTap: () async {
                                                   Get.back();
+                                                  await _controller
+                                                      .eventAcceptDeclineFtn(
+                                                    status: 'declined',
+                                                    id: event.id,
+                                                  );
                                                 });
                                           }
                                         : () {
@@ -572,12 +578,14 @@ Widget pendingDetailsWidget(
                                                                     ),
                                                                   ),
                                                                   Flexible(
-                                                                    child: Padding(
+                                                                    child:
+                                                                        Padding(
                                                                       padding: const EdgeInsets
                                                                           .only(
                                                                           left:
                                                                               2.0),
-                                                                      child: Text(
+                                                                      child:
+                                                                          Text(
                                                                         'i have read and agree to the terms and conditions',
                                                                         style:
                                                                             poppinsRegularStyle(
@@ -585,8 +593,8 @@ Widget pendingDetailsWidget(
                                                                               13,
                                                                           context:
                                                                               context,
-                                                                          color: theme
-                                                                              .primaryColor,
+                                                                          color:
+                                                                              theme.primaryColor,
                                                                         ),
                                                                         maxLines:
                                                                             2,
@@ -658,6 +666,7 @@ Widget pendingDetailsWidget(
                               ),
                             )
                           : (event.status == "cancelled" ||
+                                  event.status == "declined" ||
                                   event.status == "completed" ||
                                   event.status == "acknowledged")
                               ? SizedBox()
@@ -678,14 +687,23 @@ Widget pendingDetailsWidget(
                                             cancelEventWidget(
                                                 context: context,
                                                 theme: theme,
-                                                onTap: () {
+                                                onTap: () async {
                                                   Get.back();
-                                                  Get.toNamed(
-                                                      Routes.cancelReason,
-                                                      arguments: {
-                                                        "eventId": eventId,
-                                                        "doubleBack": true,
-                                                      });
+                                                  if (API().sp.read("role") ==
+                                                      "eventOrganizer") {
+                                                    Get.toNamed(
+                                                        Routes.cancelReason,
+                                                        arguments: {
+                                                          "eventId": eventId,
+                                                          "doubleBack": true,
+                                                        });
+                                                  } else {
+                                                    await _controller
+                                                        .eventAcceptDeclineFtn(
+                                                      status: 'declined',
+                                                      id: event.id,
+                                                    );
+                                                  }
                                                 });
                                           }
                                         : () {
@@ -708,6 +726,7 @@ Widget pendingDetailsWidget(
                               event.isCounterActive!.value == 0)
                           ? const SizedBox.shrink()
                           : (event.status == "cancelled" ||
+                                  event.status == "declined" ||
                                   event.status == "completed" ||
                                   event.status == "acknowledged")
                               ? SizedBox()

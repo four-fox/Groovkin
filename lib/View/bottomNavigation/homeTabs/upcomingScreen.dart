@@ -217,11 +217,16 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                 borderClr: Colors.transparent,
                                                 onTap: () {
                                                   if (appBarTitle != "Drafts") {
+                                                    _controller
+                                                            .publishingDraft =
+                                                        false;
                                                     _controller.duplicateValue
                                                         .value = true;
                                                     _controller.draftValue
                                                         .value = false;
                                                   } else {
+                                                    _controller
+                                                        .publishingDraft = true;
                                                     _controller.draftValue
                                                         .value = false;
                                                     _controller.duplicateValue

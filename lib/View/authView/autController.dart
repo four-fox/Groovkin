@@ -35,6 +35,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart';
 import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
+import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/profile/profileModel.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -331,8 +332,13 @@ class AuthController extends GetxController {
 
       API().sp.write("token", response.data['data']['token']);
       API().sp.write("userId", response.data['data']['user_details']['id']);
-      API().sp.write("isCompleteProfile",
-          response.data['data']['user_details']['profile'] == null?0:response.data['data']['user_details']['profile']['id'] == null?0:1);
+      API().sp.write(
+          "isCompleteProfile",
+          response.data['data']['user_details']['profile'] == null
+              ? 0
+              : response.data['data']['user_details']['profile']['id'] == null
+                  ? 0
+                  : 1);
       API().sp.remove("currentRole");
       API().sp.remove("role");
       await configureSDK();
@@ -687,7 +693,7 @@ class AuthController extends GetxController {
     companyNameController.text =
         userData!.data!.profile!.companyName.toString();
     emailController.text = userData!.data!.email.toString();
-    aboutController.text = userData?.data?.profile?.about ??"";
+    aboutController.text = userData?.data?.profile?.about ?? "";
     dobController.text = userData?.data?.profile?.birthYear ?? "";
     phoneNumController.text = userData!.data!.profile!.phoneNumber.toString();
     if (userData!.data!.profile!.selectState != null) {
@@ -808,6 +814,7 @@ class AuthController extends GetxController {
   getLifeStyle({
     surveyType,
     bool mygrookinHit = false,
+
     /// Create-event music genre step: never inherit registration/profile ticks.
     bool startEmptyForEvent = false,
   }) async {
@@ -823,9 +830,10 @@ class AuthController extends GetxController {
         return;
       }
 
-      final EventController eventController = Get.isRegistered<EventController>()
-          ? Get.find<EventController>()
-          : Get.put(EventController());
+      final EventController eventController =
+          Get.isRegistered<EventController>()
+              ? Get.find<EventController>()
+              : Get.put(EventController());
 
       final isEditingExistingEvent = eventController.eventDetail != null &&
           !eventController.duplicateValue.value &&
@@ -921,6 +929,12 @@ class AuthController extends GetxController {
     } else {
       itemsList.remove(items);
     }
+    if (Get.isRegistered<EventController>()) {
+      final eventController = Get.find<EventController>();
+      if (eventController.eventDetail != null) {
+        eventController.musicGenreChanged = true;
+      }
+    }
     update();
   }
 
@@ -964,6 +978,9 @@ class AuthController extends GetxController {
 
     var response = await API().postApi(data, "create-quick-survey");
     if (response.statusCode == 200) {
+      if (Get.isRegistered<HomeController>()) {
+        await Get.find<HomeController>().invalidateRecommendations();
+      }
       clearLists();
       if (navigation == "survey") {
         Get.offAllNamed(Routes.linkYourAccountSurveyScreen);
@@ -1800,6 +1817,9 @@ class AuthController extends GetxController {
       }
       followingLoader(true);
       update();
+      if (Get.isRegistered<HomeController>()) {
+        await Get.find<HomeController>().invalidateRecommendations();
+      }
     }
   }
 
@@ -1828,6 +1848,9 @@ class AuthController extends GetxController {
       }
       followingLoader(true);
       update();
+      if (Get.isRegistered<HomeController>()) {
+        await Get.find<HomeController>().invalidateRecommendations();
+      }
     }
   }
 

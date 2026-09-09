@@ -149,6 +149,8 @@ class EventData {
   List<EventMusicChoiceTag>? eventMusicChoiceTags;
   List<EventMusicChoiceTag>? eventActivityChoiceTags;
   List<EventHashtag>? hashtags;
+  Recommendation? recommendation;
+  double? distance;
 
   EventData({
     this.id,
@@ -187,6 +189,8 @@ class EventData {
     this.eventMusicChoiceTags,
     this.eventActivityChoiceTags,
     this.hashtags,
+    this.recommendation,
+    this.distance,
   });
 
   factory EventData.fromJson(Map<String, dynamic> json) => EventData(
@@ -253,6 +257,13 @@ class EventData {
             ? []
             : List<EventHashtag>.from(
                 json["hashtags"]!.map((x) => EventHashtag.fromJson(x))),
+        recommendation: json["recommendation"] is Map
+            ? Recommendation.fromJson(
+                Map<String, dynamic>.from(json["recommendation"]))
+            : null,
+        distance: json["distance"] is num
+            ? (json["distance"] as num).toDouble()
+            : double.tryParse(json["distance"]?.toString() ?? ""),
       );
 
   Map<String, dynamic> toJson() => {
@@ -303,8 +314,129 @@ class EventData {
         "hashtags": hashtags == null
             ? []
             : List<dynamic>.from(hashtags!.map((x) => x.toJson())),
+        "recommendation": recommendation?.toJson(),
+        "distance": distance,
       };
 }
+
+class Recommendation {
+  static const knownReasons = <String>{
+    'followed_organizer',
+    'followed_venue',
+    'music_match',
+    'activity_match',
+    'hashtag_match',
+    'nearby',
+  };
+
+  const Recommendation({
+    this.reasons = const [],
+    this.matchedMusic = const [],
+    this.matchedActivities = const [],
+    this.matchedHashtags = const [],
+  });
+
+  final List<String> reasons;
+  final List<MatchedPreference> matchedMusic;
+  final List<MatchedPreference> matchedActivities;
+  final List<MatchedHashtag> matchedHashtags;
+
+  factory Recommendation.fromJson(Map<String, dynamic> json) => Recommendation(
+        reasons: _stringList(json['reasons'])
+            .where(knownReasons.contains)
+            .toList(growable: false),
+        matchedMusic: _modelList(
+          json['matched_music'],
+          MatchedPreference.fromJson,
+        ),
+        matchedActivities: _modelList(
+          json['matched_activities'],
+          MatchedPreference.fromJson,
+        ),
+        matchedHashtags: _modelList(
+          json['matched_hashtags'],
+          MatchedHashtag.fromJson,
+        ),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'reasons': reasons,
+        'matched_music': matchedMusic.map((item) => item.toJson()).toList(),
+        'matched_activities':
+            matchedActivities.map((item) => item.toJson()).toList(),
+        'matched_hashtags':
+            matchedHashtags.map((item) => item.toJson()).toList(),
+      };
+
+  String? get displayReason {
+    if (reasons.contains('music_match') && matchedMusic.isNotEmpty) {
+      return 'Because you like ${matchedMusic.first.name}';
+    }
+    if (reasons.contains('activity_match') && matchedActivities.isNotEmpty) {
+      return 'Matches your ${matchedActivities.first.name} interests';
+    }
+    if (reasons.contains('hashtag_match') && matchedHashtags.isNotEmpty) {
+      return 'Matches ${matchedHashtags.first.displayName}';
+    }
+    if (reasons.contains('followed_organizer')) {
+      return 'From an organizer you follow';
+    }
+    if (reasons.contains('followed_venue')) {
+      return 'From a venue you follow';
+    }
+    if (reasons.contains('nearby')) return 'In your selected area';
+    return null;
+  }
+}
+
+class MatchedPreference {
+  const MatchedPreference({this.id, required this.name});
+
+  final int? id;
+  final String name;
+
+  factory MatchedPreference.fromJson(Map<String, dynamic> json) =>
+      MatchedPreference(
+        id: json['id'] is int
+            ? json['id']
+            : int.tryParse(json['id']?.toString() ?? ''),
+        name: json['name']?.toString() ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+}
+
+class MatchedHashtag {
+  const MatchedHashtag({required this.name, required this.displayName});
+
+  final String name;
+  final String displayName;
+
+  factory MatchedHashtag.fromJson(Map<String, dynamic> json) {
+    final name = json['name']?.toString() ?? '';
+    return MatchedHashtag(
+      name: name,
+      displayName:
+          json['display_name']?.toString() ?? (name.isEmpty ? '' : '#$name'),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {'name': name, 'display_name': displayName};
+}
+
+List<String> _stringList(dynamic value) =>
+    value is List ? value.map((item) => item.toString()).toList() : const [];
+
+List<T> _modelList<T>(
+  dynamic value,
+  T Function(Map<String, dynamic>) fromJson,
+) =>
+    value is List
+        ? value
+            .whereType<Map>()
+            .map((item) => fromJson(Map<String, dynamic>.from(item)))
+            .toList()
+        : const [];
 
 class EventHashtag {
   int? id;

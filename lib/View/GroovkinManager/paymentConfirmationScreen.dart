@@ -7,6 +7,7 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 
 class PaymentConfirmationScreen extends StatelessWidget {
   PaymentConfirmationScreen({super.key});
@@ -110,7 +111,7 @@ class PaymentConfirmationScreen extends StatelessWidget {
               customRow(
                   theme: theme,
                   context: context,
-                  title: "50% Down Payment",
+                  title: "Down Payment (50%)",
                   value: "\$500"),
               const SizedBox(
                 height: 10,
@@ -118,24 +119,8 @@ class PaymentConfirmationScreen extends StatelessWidget {
               customRow(
                   theme: theme,
                   context: context,
-                  title: "Tax (5%)",
+                  title: "Groovkin Fee (10%)",
                   value: "\$50"),
-              const SizedBox(
-                height: 10,
-              ),
-              customRow(
-                  theme: theme,
-                  context: context,
-                  title: "Groovkin Tax(5%)",
-                  value: "\$50"),
-              const SizedBox(
-                height: 10,
-              ),
-              customRow(
-                  theme: theme,
-                  context: context,
-                  title: "Stripe Tax(10%)",
-                  value: "\$100"),
               const SizedBox(
                 height: 10,
               ),
@@ -211,7 +196,13 @@ class PaymentConfirmationScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4.0),
                 child: CustomButton(
                   heights: 50,
-                  onTap: () {
+                  onTap: () async {
+                    if (Get.isRegistered<EventController>()) {
+                      final eventController = Get.find<EventController>();
+                      await eventController.getAllEvents(loader: false);
+                      await eventController.getUpcomingEvents();
+                      eventController.update();
+                    }
                     Future.delayed(const Duration(milliseconds: 2000), () {
                       Get.offAllNamed(Routes.bottomNavigationView,
                           arguments: {"indexValue": 0});
