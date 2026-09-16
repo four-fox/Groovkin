@@ -37,45 +37,17 @@ class GroupScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: ListView.builder(itemBuilder: (BuildContext context, index) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              Get.toNamed(Routes.theSquadScreen);
-            },
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const CircleAvatar(
-                        backgroundImage: AssetImage("assets/profileImg.png"),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: Text(
-                          "The Squad",
-                          style: poppinsRegularStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Divider(
-                    thickness: 0.5,
-                    color: DynamicColor.grayClr,
-                  )
-                ],
-              ),
+        body: Center(
+          child: Text(
+            "No groups yet. Tap + to create one.",
+            style: poppinsRegularStyle(
+              fontSize: 14,
+              context: context,
+              color: theme.primaryColor,
             ),
-          );
-        }));
+            textAlign: TextAlign.center,
+          ),
+        ));
   }
 }
 

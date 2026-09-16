@@ -7,7 +7,9 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 
 class MyUsergroovkinscreen extends StatefulWidget {
-  const MyUsergroovkinscreen({super.key});
+  const MyUsergroovkinscreen({super.key, this.showBack = false});
+
+  final bool showBack;
 
   @override
   State<MyUsergroovkinscreen> createState() => _MyUsergroovkinscreenState();
@@ -37,7 +39,7 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
         appBar: customAppBar(
           theme: theme,
           text: "My Groovkin",
-          backArrow: false,
+          backArrow: widget.showBack,
         ),
         body: (controller.getSurveyLifeStyleLoader.value == false ||
                 controller.getSurveyMusicGenreLoader.value == false)
@@ -46,6 +48,26 @@ class _MyUsergroovkinscreenState extends State<MyUsergroovkinscreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed(Routes.userMyGroovkinScreen);
+                        },
+                        child: Text(
+                          "Music services",
+                          style: poppinsRegularStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: DynamicColor.yellowClr,
+                            context: context,
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),

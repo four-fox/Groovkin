@@ -200,11 +200,29 @@ class AuthController extends GetxController {
         configureSDK();
         API().sp.write("currentRole", "User");
         API().sp.write("role", "User");
+        API().sp.write("isUserCreated",
+            response.data['data']['user_details']['is_user_created']);
+        final profile = response.data["data"]["user_details"]["profile"];
+        if (_socialProfileNeedsCompletion(profile)) {
+          _bindControllersFromProfileMap(profile);
+          emailController.text = API().sp.read("emailSocial") ??
+              emailController.text;
+          if (displayNameController.text.isEmpty) {
+            displayNameController.text =
+                API().sp.read("nameSocial")?.toString() ?? "";
+          }
+          update();
+          Get.offAllNamed(Routes.createProfile, arguments: {
+            "socialType": API().sp.read("socialType"),
+            "accessToken": API().sp.read("accessToken"),
+            "isClear": false,
+            "completeAfterSocial": true,
+          });
+          return;
+        }
         clearTextFields();
-        if (response.data["data"]["user_details"]["profile"]["id"] != null) {
+        if (profile != null && profile["id"] != null) {
           if (API().sp.read("role") == "User") {
-            API().sp.write("isUserCreated",
-                response.data['data']['user_details']['is_user_created']);
             if (response.data['data']['user_details']['is_user_created'] == 0) {
               Get.offAllNamed(Routes.surveyLifeStyleScreen,
                   arguments: {"update": false});
@@ -221,6 +239,8 @@ class AuthController extends GetxController {
           Get.toNamed(Routes.createProfile, arguments: {
             "socialType": API().sp.read("socialType"),
             "accessToken": API().sp.read("accessToken"),
+            "isClear": false,
+            "completeAfterSocial": true,
           });
         }
       }
@@ -488,6 +508,60 @@ class AuthController extends GetxController {
   /// todo forgot password functionality
 
   /// clear signUp and create profile fields
+  bool _isMissingProfileValue(dynamic value) {
+    if (value == null) return true;
+    return value.toString().trim().isEmpty || value.toString() == "null";
+  }
+
+  bool _socialProfileNeedsCompletion(dynamic profile) {
+    if (profile is! Map) return true;
+    return _isMissingProfileValue(profile["birth_year"]) ||
+        _isMissingProfileValue(profile["about"]) ||
+        _isMissingProfileValue(profile["zip_code"]) ||
+        _isMissingProfileValue(profile["select_state"]);
+  }
+
+  void _bindControllersFromProfileMap(dynamic profile) {
+    if (profile is! Map) return;
+    if (!_isMissingProfileValue(profile["first_name"])) {
+      firstNameController.text = profile["first_name"].toString();
+    }
+    if (!_isMissingProfileValue(profile["last_name"])) {
+      lastNameController.text = profile["last_name"].toString();
+    }
+    if (!_isMissingProfileValue(profile["phone_number"])) {
+      phoneNumController.text = profile["phone_number"].toString();
+    }
+    if (!_isMissingProfileValue(profile["birth_year"])) {
+      dobController.text = profile["birth_year"].toString();
+    }
+    if (!_isMissingProfileValue(profile["about"])) {
+      aboutController.text = profile["about"].toString();
+    }
+    if (!_isMissingProfileValue(profile["zip_code"])) {
+      zipController.text = profile["zip_code"].toString();
+    }
+    if (!_isMissingProfileValue(profile["select_state"])) {
+      stateController.text = profile["select_state"].toString();
+    }
+    if (!_isMissingProfileValue(profile["country"])) {
+      countryController.text = profile["country"].toString();
+    } else if (countryController.text.isEmpty) {
+      countryController.text = "United States";
+    }
+  }
+
+  Future<void> continueAfterSocialProfileSave() async {
+    if (API().sp.read("isUserCreated") == 0) {
+      Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
+        "update": false,
+      });
+      return;
+    }
+    selectUserIndexxx.value = 0;
+    Get.offAllNamed(Routes.userBottomNavigationNav);
+  }
+
   clearTextFields() async {
     imageBytes = null;
     firstNameController.clear();
@@ -735,7 +809,7 @@ class AuthController extends GetxController {
   final stateController = TextEditingController();
   String? numberAssign = "+1";
 
-  createProfile({userId}) async {
+  createProfile({userId, bool continueOnboarding = false}) async {
     List imageList = [];
     if (imageBytes != null) {
       var a = multiPartingImage(imageBytes);
@@ -752,15 +826,12 @@ class AuthController extends GetxController {
           (companyNameController.text.isNotEmpty))
         "company_name": companyNameController.text,
       // /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
-      if (API().sp.read("role") == "eventOrganizer" &&
-          stateController.text.isNotEmpty)
-        "select_state": stateController.text,
-      if (API().sp.read("role") == "eventOrganizer" &&
-          countryController.text.isNotEmpty)
-        "country": "United States",
-      // if(API().sp.read("role") == "eventOrganizer") "company_name": "asdf",
+      "select_state": stateController.text,
+      "country": countryController.text.isEmpty
+          ? "United States"
+          : countryController.text,
       if (imageList.isNotEmpty) "image[]": imageList,
-      if (zipController.text.isNotEmpty) "zip_code": zipController.text,
+      "zip_code": zipController.text.trim(),
       if (instagramController.text.isNotEmpty)
         "instagram_link": instagramController.text,
       if (twitterXController.text.isNotEmpty)
@@ -773,6 +844,10 @@ class AuthController extends GetxController {
     var response = await API().postApi(formData, "update-profile/$userId");
     if (response.statusCode == 200) {
       getProfile(userId: userId);
+      if (continueOnboarding) {
+        await continueAfterSocialProfileSave();
+        return;
+      }
       Get.back();
     }
   }
@@ -1562,7 +1637,22 @@ class AuthController extends GetxController {
   ChangeRole? changeRole;
   RxBool switchProfileLoader = false.obs;
 
+  bool canSwitchToRole(ChangeRole changeRole) {
+    final origin = API().sp.read("currentRole");
+    if (origin == "eventOrganizer") {
+      return changeRole == ChangeRole.user ||
+          changeRole == ChangeRole.organizer;
+    }
+    if (origin == "eventManager") {
+      return changeRole == ChangeRole.user || changeRole == ChangeRole.manager;
+    }
+    return false;
+  }
+
   changeRoles(ChangeRole changeRole) async {
+    if (!canSwitchToRole(changeRole)) {
+      return;
+    }
     this.changeRole = changeRole;
     switchProfile();
     update();

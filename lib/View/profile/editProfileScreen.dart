@@ -394,7 +394,8 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    sp.read("role") == "eventOrganizer"
+                    sp.read("role") == "eventOrganizer" ||
+                            sp.read("role") == "User"
                         ? Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
@@ -432,8 +433,10 @@ class _editProfileScreenState extends State<editProfileScreen> {
                           )
                         : const SizedBox.shrink(),
                     SizedBox(
-                      height:
-                          API().sp.read("role") == "eventOrganizer" ? 15 : 0,
+                      height: (API().sp.read("role") == "eventOrganizer" ||
+                              API().sp.read("role") == "User")
+                          ? 15
+                          : 0,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -579,6 +582,9 @@ class _editProfileScreenState extends State<editProfileScreen> {
                             iconShow: false,
                             readOnly: false,
                             controller: controller.zipController,
+                            validationError: "zip code",
+                            isOptional: false,
+                            keyBoardType: true,
                             labelStyling: poppinsRegularStyle(
                                 context: context,
                                 fontSize: 14,

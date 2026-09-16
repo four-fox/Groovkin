@@ -27,6 +27,7 @@ class _MyEventsScreenState extends State<MyEventsScreen> {
   void initState() {
     super.initState();
     tabValue.value = 0;
+    homeController.selectedFilters.value = 0;
   }
 
   RxBool recommendedVal = false.obs;
@@ -623,8 +624,7 @@ class _UpcomingEventState extends State<UpcomingEvent> {
         return false;
       },
       child: GetBuilder<HomeController>(initState: (v) {
-        // Default: all upcoming (no date filter) so Going events outside
-        // "this week" still appear after Accept / Going.
+        _controller.selectedFilters.value = 0;
         _controller.getRecommended(url: "user-upcoming-events");
       }, builder: (controller) {
         return controller.getRecommendedLoader.value == false

@@ -15,6 +15,7 @@ import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/theme_controller.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
+import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroovkinScreen.dart';
 import 'package:groovkin/View/profile/createProfile.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/model/single_ton_data.dart';
@@ -55,20 +56,58 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   String switchRoleText() {
-    String title = (API().sp.read("role") == "eventOrganizer" &&
-            API().sp.read("currentRole") == "eventOrganizer")
-        ? "Switch Role to User"
-        : (API().sp.read("role") == "User" &&
-                API().sp.read("currentRole") == "eventOrganizer")
-            ? "Switch Role to Event Organizer"
-            : (API().sp.read("role") == "eventManager" &&
-                    API().sp.read("currentRole") == "eventManager")
-                ? "Switch Role to User"
-                : (API().sp.read("role") == "User" &&
-                        API().sp.read("currentRole") == "eventManager")
-                    ? "Switch Role to Venue Manager"
-                    : "Switch Role";
-    return title;
+    final origin = API().sp.read("currentRole");
+    final active = API().sp.read("role");
+    if (origin == "eventOrganizer") {
+      return active == "User"
+          ? "Switch Role to Event Organizer"
+          : "Switch Role to User";
+    }
+    if (origin == "eventManager") {
+      return active == "User"
+          ? "Switch Role to Venue Manager"
+          : "Switch Role to User";
+    }
+    return "Switch Role";
+  }
+
+  bool _canUseComplimentaryRoleSwitch() {
+    final origin = API().sp.read("currentRole");
+    return origin == "eventOrganizer" || origin == "eventManager";
+  }
+
+  Future<void> _switchComplimentaryRole() async {
+    if (!_canUseComplimentaryRoleSwitch()) {
+      BotToast.showText(
+          text: "This account type cannot change to another role.");
+      return;
+    }
+    _themeController.update();
+    final origin = API().sp.read("currentRole");
+    final active = API().sp.read("role");
+    if (origin == "eventOrganizer") {
+      if (active == "eventOrganizer") {
+        _authController.changeRoles(ChangeRole.user);
+        BotToast.showText(text: "Change Role to User");
+        await _themeController.fetchUserTheme("User");
+      } else if (active == "User") {
+        _authController.changeRoles(ChangeRole.organizer);
+        BotToast.showText(text: "Change Role to Event Organizer");
+        await _themeController.fetchUserTheme("eventOrganizer");
+      }
+      return;
+    }
+    if (origin == "eventManager") {
+      if (active == "eventManager") {
+        _authController.changeRoles(ChangeRole.user);
+        BotToast.showText(text: "Change Role to User");
+        await _themeController.fetchUserTheme("User");
+      } else if (active == "User") {
+        _authController.changeRoles(ChangeRole.manager);
+        BotToast.showText(text: "Change Role to Venue Manager");
+        await _themeController.fetchUserTheme("eventManager");
+      }
+    }
   }
 
   @override
@@ -245,7 +284,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 _themeController.toggleTheme("eventManager");
                               }),
 
-                        if (API().sp.read("currentRole") != "User")
+                        if (_canUseComplimentaryRoleSwitch())
                           customWidget(
                               context: context,
                               img: "assets/switchIcon.png",
@@ -253,97 +292,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   ? "Switching"
                                   : switchRoleText(),
                               onTap: () async {
-                                if (API().sp.read("role") == "User") {
-                                  _themeController.update();
-                                  print(API().sp.read("role"));
-                                  print(API().sp.read("currentRole"));
-                                  if (API().sp.read("role") ==
-                                          "eventOrganizer" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventOrganizer") {
-                                    controller.changeRoles(ChangeRole.user);
-                                    BotToast.showText(
-                                        text: "Change Role to User");
-                                    await _themeController
-                                        .fetchUserTheme("User");
-                                  } else if (API().sp.read("role") == "User" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventOrganizer") {
-                                    controller
-                                        .changeRoles(ChangeRole.organizer);
-                                    BotToast.showText(
-                                        text: "Change Role to Event Organizer");
-                                    await _themeController
-                                        .fetchUserTheme("eventOrganizer");
-                                  }
-                                  if (API().sp.read("role") == "eventManager" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventManager") {
-                                    controller.changeRoles(ChangeRole.user);
-                                    BotToast.showText(
-                                        text: "Change Role to User");
-                                    await _themeController
-                                        .fetchUserTheme("User");
-                                  } else if (API().sp.read("role") == "User" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventManager") {
-                                    controller.changeRoles(ChangeRole.manager);
-                                    BotToast.showText(
-                                        text: "Change Role to Venue Manager");
-                                    await _themeController
-                                        .fetchUserTheme("eventManager");
-                                  }
-
-                                  // await showModalBottomSheet(
-                                  //     context: context,
-                                  //     isScrollControlled: true,
-                                  //     shape: RoundedRectangleBorder(
-                                  //         borderRadius:
-                                  //             BorderRadius.circular(12.0)),
-                                  //     builder: (ctx) {
-                                  //       return roleSwitchSheet(controller, ctx);
-                                  //     });
-                                } else {
-                                  _themeController.update();
-                                  print(API().sp.read("role"));
-                                  print(API().sp.read("currentRole"));
-                                  if (API().sp.read("role") ==
-                                          "eventOrganizer" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventOrganizer") {
-                                    controller.changeRoles(ChangeRole.user);
-                                    BotToast.showText(
-                                        text: "Change Role to User");
-                                    await _themeController
-                                        .fetchUserTheme("User");
-                                  } else if (API().sp.read("role") == "User" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventOrganizer") {
-                                    controller
-                                        .changeRoles(ChangeRole.organizer);
-                                    BotToast.showText(
-                                        text: "Change Role to Event Organizer");
-                                    await _themeController
-                                        .fetchUserTheme("eventOrganizer");
-                                  }
-                                  if (API().sp.read("role") == "eventManager" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventManager") {
-                                    controller.changeRoles(ChangeRole.user);
-                                    BotToast.showText(
-                                        text: "Change Role to User");
-                                    await _themeController
-                                        .fetchUserTheme("User");
-                                  } else if (API().sp.read("role") == "User" &&
-                                      API().sp.read("currentRole") ==
-                                          "eventManager") {
-                                    controller.changeRoles(ChangeRole.manager);
-                                    BotToast.showText(
-                                        text: "Change Role to Venue Manager");
-                                    await _themeController
-                                        .fetchUserTheme("eventManager");
-                                  }
-                                }
+                                await _switchComplimentaryRole();
                               }),
 
                         API().sp.read("role") != "User"
@@ -362,7 +311,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 img: "assets/groovkin.png",
                                 text: "My Groovkin",
                                 onTap: () {
-                                  Get.toNamed(Routes.userMyGroovkinScreen);
+                                  Get.to(() => const MyUsergroovkinscreen(
+                                        showBack: true,
+                                      ));
                                 })
                             : const SizedBox.shrink(),
 
@@ -728,39 +679,8 @@ class _SettingScreenState extends State<SettingScreen> {
                         fontSized: 12,
                         onTap: () async {
                           if (switchRoleForm.currentState!.validate()) {
-                            _themeController.update();
-                            print(API().sp.read("role"));
-                            print(API().sp.read("currentRole"));
-                            if (API().sp.read("role") == "eventOrganizer" &&
-                                API().sp.read("currentRole") ==
-                                    "eventOrganizer") {
-                              controller.changeRoles(ChangeRole.user);
-                              BotToast.showText(text: "Change Role to User");
-                              await _themeController.fetchUserTheme("User");
-                            } else if (API().sp.read("role") == "User" &&
-                                API().sp.read("currentRole") ==
-                                    "eventOrganizer") {
-                              controller.changeRoles(ChangeRole.organizer);
-                              BotToast.showText(
-                                  text: "Change Role to Event Organizer");
-                              await _themeController
-                                  .fetchUserTheme("eventOrganizer");
-                            }
-                            if (API().sp.read("role") == "eventManager" &&
-                                API().sp.read("currentRole") ==
-                                    "eventManager") {
-                              controller.changeRoles(ChangeRole.user);
-                              BotToast.showText(text: "Change Role to User");
-                              await _themeController.fetchUserTheme("User");
-                            } else if (API().sp.read("role") == "User" &&
-                                API().sp.read("currentRole") ==
-                                    "eventManager") {
-                              controller.changeRoles(ChangeRole.manager);
-                              BotToast.showText(
-                                  text: "Change Role to Venue Manager");
-                              await _themeController
-                                  .fetchUserTheme("eventManager");
-                            }
+                            Get.back();
+                            await _switchComplimentaryRole();
                           }
                         },
                         text: "Submit",

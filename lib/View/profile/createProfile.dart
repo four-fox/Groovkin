@@ -37,6 +37,8 @@ class _CreateProfileState extends State<CreateProfile> {
   final bool isClear = Get.arguments?["isClear"] ?? true;
 
   final String? socialType = Get.arguments?["socialType"];
+  final bool completeAfterSocial =
+      Get.arguments?["completeAfterSocial"] == true;
 
   final inviteCodeMaskFormatter = MaskTextInputFormatter(
     mask: '####-####',
@@ -104,21 +106,25 @@ class _CreateProfileState extends State<CreateProfile> {
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: theme.scaffoldBackgroundColor,
-              leading: GestureDetector(
-                onTap: () {
-                  API().sp.write("nameSocial", null);
-                  _controller.displayNameController.clear();
-                  Get.back();
-                },
-                child: ImageIcon(
-                  const AssetImage('assets/backArrow.png'),
-                  size: 32,
-                  color: theme.primaryColor,
-                ),
-              ),
+              leading: completeAfterSocial
+                  ? const SizedBox.shrink()
+                  : GestureDetector(
+                      onTap: () {
+                        API().sp.write("nameSocial", null);
+                        _controller.displayNameController.clear();
+                        Get.back();
+                      },
+                      child: ImageIcon(
+                        const AssetImage('assets/backArrow.png'),
+                        size: 32,
+                        color: theme.primaryColor,
+                      ),
+                    ),
               centerTitle: true,
               title: Text(
-                sp.read("role") == "User"
+                completeAfterSocial
+                    ? "Complete your profile"
+                    : sp.read("role") == "User"
                     ? "Create your user account"
                     : "Create your account",
                 style: poppinsMediumStyle(
@@ -621,6 +627,21 @@ class _CreateProfileState extends State<CreateProfile> {
                   borderClr: Colors.transparent,
                   onTap: () {
                     if (createProfileForm.currentState!.validate()) {
+                      if (_controller.dobController.text.trim().isEmpty) {
+                        bottomToast(text: "Please enter birth year");
+                        return;
+                      }
+                      if (_controller.stateController.text.trim().isEmpty) {
+                        bottomToast(text: "Please select state");
+                        return;
+                      }
+                      if (completeAfterSocial) {
+                        _controller.createProfile(
+                          userId: API().sp.read("userId"),
+                          continueOnboarding: true,
+                        );
+                        return;
+                      }
                       if (API().sp.read("role") == "eventOrganizer") {
                         showDialog(
                             barrierColor: Colors.transparent,
