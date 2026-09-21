@@ -7,15 +7,30 @@ import 'package:groovkin/View/GroovkinUser/UserBottomView/topRatedEventUserModel
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/userPastEventHistory.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userOngoingEventsModel.dart';
 import 'package:groovkin/View/GroovkinUser/survey/surveyModel.dart';
+import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistoryModel.dart';
 import 'package:dio/dio.dart' as form;
 import 'package:groovkin/model/analytic_list_model.dart';
 import 'package:groovkin/model/analytic_model.dart';
+import 'package:groovkin/utils/search_radius.dart';
 import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import '../../model/my_groovkin_model.dart' as groovkin_model;
 
 class HomeController extends GetxController {
+  @override
+  void onInit() {
+    super.onInit();
+    final stored = API().sp.read('searchRadiusMiles');
+    final storedAllowed = API().sp.read('allowedSearchRadii');
+    if (storedAllowed is List) {
+      allowedSearchRadii = parseAllowedSearchRadii(storedAllowed);
+    }
+    recommendedRadius =
+        sanitizeSearchRadius(stored, allowed: allowedSearchRadii);
+    currentSliderValue = recommendedRadius.toDouble();
+  }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> home functionality
   RxBool showFilter = false.obs;
   RxInt selectedFilter = 0.obs;
@@ -62,6 +77,9 @@ class HomeController extends GetxController {
   bool newsFeedWait = false;
   int _recommendationRequestGeneration = 0;
   int recommendedRadius = 25;
+  List<int> allowedSearchRadii = List<int>.from(kDefaultSearchRadiiMiles);
+  String nearbySectionLabel = kNearbyThisWeekLabel;
+  RxBool savingSurvey = false.obs;
 
   bool get hasMoreRecommendations {
     final page = recommendedEventData?.data;
@@ -87,7 +105,7 @@ class HomeController extends GetxController {
     if (filter != null) query['filter'] = filter;
     if (isRecommendation) {
       query['page'] = page;
-      query['radius'] = recommendedRadius.clamp(1, 50);
+      query['radius'] = recommendedRadius;
       final point = locationLatLng;
       if (point != null &&
           !(point.latitude == 0 && point.longitude == 0) &&
@@ -144,12 +162,32 @@ class HomeController extends GetxController {
     if (refetch) await getRecommended(refresh: true);
   }
 
-  Future<void> setRecommendationRadius(int value) async {
-    if (!const {10, 25, 50}.contains(value) || value == recommendedRadius) {
-      return;
+  Future<void> syncSearchRadius(
+    int value, {
+    List<int>? allowed,
+    bool persist = true,
+  }) async {
+    if (allowed != null && allowed.isNotEmpty) {
+      allowedSearchRadii = allowed;
     }
-    recommendedRadius = value;
-    await invalidateRecommendations();
+    final sanitized = sanitizeSearchRadius(value, allowed: allowedSearchRadii);
+    final changed = sanitized != recommendedRadius;
+    recommendedRadius = sanitized;
+    currentSliderValue = sanitized.toDouble();
+    API().sp.write('searchRadiusMiles', sanitized);
+    if (changed && persist) {
+      if (Get.isRegistered<AuthController>()) {
+        await Get.find<AuthController>().persistSearchRadius(sanitized);
+      }
+      await invalidateRecommendations();
+      await getEventNearByMe();
+    } else {
+      update();
+    }
+  }
+
+  Future<void> setRecommendationRadius(int value) async {
+    await syncSearchRadius(value);
   }
 
   Future<void> setRecommendationLocation(LatLng? value) async {
@@ -193,7 +231,9 @@ class HomeController extends GetxController {
     }
 
     if (currentSliderValue > 0) {
-      query["miles"] = currentSliderValue;
+      query["miles"] = currentSliderValue.round();
+    } else {
+      query["miles"] = recommendedRadius;
     }
 
     var response = await API().getApi(
@@ -202,9 +242,9 @@ class HomeController extends GetxController {
     );
     if (response.statusCode == 200) {
       eventNearByMe = NearByEventsModel.fromJson(response.data);
-      getEventNearByMeLoader(true);
-      update();
     }
+    getEventNearByMeLoader(true);
+    update();
   }
 
   ///>>>>>>>>>>>>>>>>>>> get top rated events
@@ -215,9 +255,9 @@ class HomeController extends GetxController {
     var response = await API().getApi(url: "top-rated-events");
     if (response.statusCode == 200) {
       topRatingData = TopRatedEventModel.fromJson(response.data);
-      getTopRatedEventLoader(true);
-      update();
     }
+    getTopRatedEventLoader(true);
+    update();
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> todo get user history functionality
@@ -447,6 +487,9 @@ class HomeController extends GetxController {
 
   Future<void> updateSurvey(
       {bool isFromLifeStyle = false, bool isFromMusicGenre = false}) async {
+    if (savingSurvey.value) return;
+    savingSurvey(true);
+    update();
     try {
       form.FormData formData = form.FormData();
 
@@ -529,11 +572,16 @@ class HomeController extends GetxController {
           await fetchLifeSyle();
         }
         await invalidateRecommendations();
+        await getEventNearByMe();
+        await getTopRatedEvent();
         update();
         Get.back();
       }
     } catch (e) {
       print(e);
+    } finally {
+      savingSurvey(false);
+      update();
     }
 
     // if (isFromMusicGenre == true) {

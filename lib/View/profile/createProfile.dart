@@ -13,6 +13,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/profile/editProfileScreen.dart';
+import 'package:groovkin/Components/searchRadiusSelector.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -62,11 +63,17 @@ class _CreateProfileState extends State<CreateProfile> {
     }
     _controller.countryController.text = "United States";
 
-    _controller.getCurrentLocation(true);
+    // Never GPS-fill zip on create-account. AuthController is a GetX
+    // singleton, so reverse-geocode into zipController showed a real
+    // postal code (e.g. NJ 07530 rendered as 7530) on first install and
+    // on every other screen sharing that controller — after clear() raced
+    // the async geocode.
+    _controller.zipController.clear();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (isClear) {
         clear();
       }
+      _controller.zipController.clear();
     });
   }
 
@@ -125,8 +132,8 @@ class _CreateProfileState extends State<CreateProfile> {
                 completeAfterSocial
                     ? "Complete your profile"
                     : sp.read("role") == "User"
-                    ? "Create your user account"
-                    : "Create your account",
+                        ? "Create your user account"
+                        : "Create your account",
                 style: poppinsMediumStyle(
                   fontSize: 16,
                   color: sp.read("role") == "User"
@@ -137,10 +144,11 @@ class _CreateProfileState extends State<CreateProfile> {
               ),
             ),
             body: GetBuilder<AuthController>(initState: (v) {
-              for (int a = DateTime.now().year - 18; a >= 1950; a--) {
-                dobYear.add(a);
+              if (dobYear.isEmpty) {
+                for (int a = DateTime.now().year - 18; a >= 1950; a--) {
+                  dobYear.add(a);
+                }
               }
-              _controller.dobController.clear();
             }, builder: (controller) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -526,10 +534,34 @@ class _CreateProfileState extends State<CreateProfile> {
 
                       CustomTextFields(
                         labelText: "Zip Code",
+                        hintText: "Zip Code",
                         controller: controller.zipController,
                         validationError: "zip code",
                         isOptional: false,
                         keyBoardType: true,
+                        autofillHints: const [],
+                      ),
+                      const SizedBox(height: 15),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Search radius",
+                          style: poppinsRegularStyle(
+                            context: context,
+                            fontSize: 14,
+                            color: DynamicColor.grayClr,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      SearchRadiusSelector(
+                        selected: controller.searchRadiusMiles,
+                        options: controller.allowedSearchRadii,
+                        enabled: !controller.savingProfile.value,
+                        onSelected: (value) {
+                          controller.searchRadiusMiles = value;
+                          controller.update();
+                        },
                       ),
 
                       if (socialType == null && sp.read("role") != "User") ...[
@@ -602,6 +634,7 @@ class _CreateProfileState extends State<CreateProfile> {
                         maxLine: 5,
                         controller: controller.aboutController,
                         validationError: "about us",
+                        isOptional: true,
                       ),
                       const SizedBox(
                         height: 15,
@@ -625,14 +658,20 @@ class _CreateProfileState extends State<CreateProfile> {
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: CustomButton(
                   borderClr: Colors.transparent,
-                  onTap: () {
+                  onTap: () async {
+                    if (_controller.savingProfile.value) return;
                     if (createProfileForm.currentState!.validate()) {
-                      if (_controller.dobController.text.trim().isEmpty) {
+                      if (!completeAfterSocial &&
+                          _controller.dobController.text.trim().isEmpty) {
                         bottomToast(text: "Please enter birth year");
                         return;
                       }
                       if (_controller.stateController.text.trim().isEmpty) {
                         bottomToast(text: "Please select state");
+                        return;
+                      }
+                      if (_controller.zipController.text.trim().isEmpty) {
+                        bottomToast(text: "Please enter zip code");
                         return;
                       }
                       if (completeAfterSocial) {
@@ -642,6 +681,19 @@ class _CreateProfileState extends State<CreateProfile> {
                         );
                         return;
                       }
+                      Future<void> submitRegistration({String? role}) async {
+                        if (API().sp.read("role") != "User") {
+                          final valid = await _controller.validateInviteCode();
+                          if (!valid) return;
+                        }
+                        await _controller.sigUp(
+                          context,
+                          role: role,
+                          signUpPlatform: socialType,
+                          platformId: accessToken,
+                        );
+                      }
+
                       if (API().sp.read("role") == "eventOrganizer") {
                         showDialog(
                             barrierColor: Colors.transparent,
@@ -704,16 +756,11 @@ class _CreateProfileState extends State<CreateProfile> {
                                                 widths: Get.width / 3.25,
                                                 heights: 30,
                                                 fontSized: 12,
-                                                onTap: () {
-                                                  // if(_controller.imageBytes != null){
-                                                  _controller.sigUp(context,
-                                                      role: "eventOrganizer",
-                                                      signUpPlatform:
-                                                          socialType,
-                                                      platformId: accessToken);
-                                                  // }else{
-                                                  //   bottomToast(text: "Please upload profile image");
-                                                  // }
+                                                onTap: () async {
+                                                  Get.back();
+                                                  await submitRegistration(
+                                                    role: "eventOrganizer",
+                                                  );
                                                 },
                                                 text: "Accept",
                                               ),
@@ -725,21 +772,20 @@ class _CreateProfileState extends State<CreateProfile> {
                                   ));
                             });
                       } else {
-                        // if(_controller.imageBytes != null){
-                        _controller.sigUp(context,
-                            role: API().sp.read("role") == "User"
-                                ? null
-                                : API().sp.read("role"),
-                            signUpPlatform: socialType,
-                            platformId: accessToken);
-                        // }else{
-                        //   bottomToast(text: "Please upload profile image");
-                        // }
+                        await submitRegistration(
+                          role: API().sp.read("role") == "User"
+                              ? null
+                              : API().sp.read("role"),
+                        );
                       }
                     }
                     // Get.offAllNamed(Routes.welComeScreen);
                   },
-                  text: "Next",
+                  text: _controller.savingProfile.value
+                      ? "Saving..."
+                      : completeAfterSocial
+                          ? "Save"
+                          : "Next",
                 ),
               ),
             ),

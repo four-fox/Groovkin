@@ -18,13 +18,17 @@ class _SplashScreenState extends State<SplashScreen> {
       if (API().sp.read("intro") == true) {
         if (API().sp.read("token") != null) {
           if (API().sp.read("signupPlatform") != "app") {
-            if (API().sp.read("isCompleteProfile") == 0) {
-              // Get.toNamed(Routes.createProfile, arguments: {
-              //   "socialType": API().sp.read("socialType"),
-              //   "accessToken": API().sp.read("accessToken"),
-              // });
-              Get.offAllNamed(Routes.loginSelection);
-              API().sp.remove("token");
+            final incomplete =
+                API().sp.read("requiresProfileCompletion") == true ||
+                    API().sp.read("isCompleteProfile") == 0 ||
+                    API().sp.read("isCompleteProfile") == false;
+            if (incomplete) {
+              Get.offAllNamed(Routes.createProfile, arguments: {
+                "socialType": API().sp.read("socialType"),
+                "accessToken": API().sp.read("accessToken"),
+                "isClear": false,
+                "completeAfterSocial": true,
+              });
             } else {
               if (API().sp.read("role") == "User") {
                 if (API().sp.read("isUserCreated") == 0) {

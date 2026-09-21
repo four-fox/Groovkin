@@ -11,6 +11,7 @@ import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/hashtagCollectionModel.dart'
     as hashtag_model;
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+import 'package:groovkin/utils/json_parsers.dart';
 
 UserEventDetailsModel userEventDetailsModelFromJson(String str) =>
     UserEventDetailsModel.fromJson(json.decode(str));
@@ -76,6 +77,13 @@ class EventDetails {
   RxInt? eventGoingOrInterested;
   RxInt? isEventComplete;
   RxInt? isCounterActive;
+  String? requestStatus;
+  bool canReviseRequest;
+  bool canResubmitRequest;
+  bool canCounterRequest;
+  bool canEditRequest;
+  String? negotiationStage;
+  String? counterComment;
   Venue? venue;
   List<BannerImage>? profilePicture;
   BannerImage? bannerImage;
@@ -121,6 +129,13 @@ class EventDetails {
     this.eventGoingOrInterested,
     this.isEventComplete,
     this.isCounterActive,
+    this.requestStatus,
+    this.canReviseRequest = false,
+    this.canResubmitRequest = false,
+    this.canCounterRequest = false,
+    this.canEditRequest = false,
+    this.negotiationStage,
+    this.counterComment,
     this.venue,
     this.profilePicture,
     this.bannerImage,
@@ -145,10 +160,10 @@ class EventDetails {
         themeOfEvent: json["theme_of_event"],
         startDateTime: json["start_date_time"] == null
             ? null
-            : DateTime.parse(json["start_date_time"]),
+            : DateTime.tryParse(json["start_date_time"].toString()),
         endDateTime: json["end_date_time"] == null
             ? null
-            : DateTime.parse(json["end_date_time"]),
+            : DateTime.tryParse(json["end_date_time"].toString()),
         ratingAvgRateNum: json["ratings_avg_rate_num"] ?? 0,
         maxCapacity: json["max_capacity"],
         rate: json["rate"],
@@ -169,15 +184,24 @@ class EventDetails {
         status: json["status"],
         createdAt: json["created_at"] == null
             ? null
-            : DateTime.parse(json["created_at"]),
+            : DateTime.tryParse(json["created_at"].toString()),
         updatedAt: json["updated_at"] == null
             ? null
-            : DateTime.parse(json["updated_at"]),
+            : DateTime.tryParse(json["updated_at"].toString()),
         eventsGoingCount: json["events_going_count"],
         eventsInterestedCount: json["events_interested_count"],
-        eventGoingOrInterested: RxInt(json["event_going_or_interested"]),
-        isEventComplete: RxInt(json["is_event_complete"]),
-        isCounterActive: RxInt(json["is_counter_active"]),
+        eventGoingOrInterested:
+            RxInt(parseInt(json["event_going_or_interested"]) ?? 0),
+        isEventComplete: RxInt(parseInt(json["is_event_complete"]) ?? 0),
+        isCounterActive: RxInt(parseInt(json["is_counter_active"]) ?? 0),
+        requestStatus:
+            parseString(json["request_status"]) ?? parseString(json["status"]),
+        canReviseRequest: parseBool(json["can_revise_request"]),
+        canResubmitRequest: parseBool(json["can_resubmit_request"]),
+        canCounterRequest: parseBool(json["can_counter_request"]),
+        canEditRequest: parseBool(json["can_edit_request"]),
+        negotiationStage: parseString(json["negotiation_stage"]),
+        counterComment: parseString(json["counter_comment"]),
         venue: json["venue"] == null ? null : Venue.fromJson(json["venue"]),
         profilePicture: json["profile_picture"] == null
             ? []
@@ -217,12 +241,8 @@ class EventDetails {
                 json["hashtag_collections"]!.map((x) =>
                     hashtag_model.EventHashtagCollection.fromJson(
                         Map<String, dynamic>.from(x)))),
-        manualHashtags: json["manual_hashtags"] == null
-            ? []
-            : List<hashtag_model.EventManualHashtag>.from(
-                json["manual_hashtags"]!.map((x) =>
-                    hashtag_model.EventManualHashtag.fromJson(
-                        Map<String, dynamic>.from(x)))),
+        manualHashtags:
+            hashtag_model.parseManualHashtags(json["manual_hashtags"]),
         rating: json["ratings"] == null
             ? []
             : List<Rating>.from(

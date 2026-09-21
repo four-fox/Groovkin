@@ -16,8 +16,8 @@ import '../../organizerHomeModel/alleventsModel.dart';
 class UpcomingEvents extends StatelessWidget {
   UpcomingEvents({super.key});
 
-  RxBool recommendedVal = false.obs;
-  RxBool ongoingVal = false.obs;
+  RxBool recommendedVal = true.obs;
+  RxBool ongoingVal = true.obs;
   RxBool pastVal = false.obs;
 
   final EventController _eventController = Get.find<EventController>();
@@ -27,7 +27,8 @@ class UpcomingEvents extends StatelessWidget {
     var theme = Theme.of(context);
     return GetBuilder<EventController>(initState: (v) {
       if (API().sp.read('role') == "eventOrganizer") {
-        _eventController.getAllEvents();
+        _eventController.getUpcomingEvents();
+        _eventController.getAllOngoingEvents();
       }
     }, builder: (controller) {
       return SingleChildScrollView(

@@ -1,6 +1,7 @@
 // ignore_for_file: iterable_contains_unrelated_type
 
 import 'dart:io';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,8 +20,10 @@ import 'package:groovkin/View/bottomNavigation/bottomNavigation.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/counters/messagesModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/payment/event_acceptance_coordinator.dart';
+import 'package:groovkin/Components/Network/backend_error.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -477,8 +480,6 @@ class ManagerController extends GetxController {
           "instagram_link": instagramController1.text,
         if (facebookController.text.isNotEmpty)
           "facebook_link": facebookController.text,
-        if (websiteController1.text.isNotEmpty)
-          "website": websiteController1.text,
       });
       print(formData);
       var response =
@@ -592,8 +593,6 @@ class ManagerController extends GetxController {
         "instagram_link": instagramController1.text,
       if (facebookController.text.isNotEmpty)
         "facebook_link": facebookController.text,
-      if (websiteController1.text.isNotEmpty)
-        "website": websiteController1.text,
     });
     print(formData);
     var response =
@@ -740,8 +739,52 @@ class ManagerController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>> event manager get all pending events
   RxBool getAllPendingEventsLoader = true.obs;
   ManagerPendingEventsModel? managerPendingEvents;
+  String? pendingEventsError;
+  EventsListModel? scheduledEvents;
+  RxBool scheduledLoader = true.obs;
+  String? scheduledError;
+  EventsListModel? historyEvents;
+  RxBool historyLoader = true.obs;
+  String? historyError;
+  RxBool counteringRequest = false.obs;
+
+  getScheduledEvents() async {
+    scheduledLoader(false);
+    scheduledError = null;
+    var response = await API().getApi(
+      url: "show-venue-my-events",
+      queryParameters: {"section": "scheduled"},
+      isLoader: false,
+    );
+    if (response.statusCode == 200) {
+      scheduledEvents = EventsListModel.fromJson(response.data);
+    } else {
+      scheduledError = backendErrorMessage(response);
+    }
+    scheduledLoader(true);
+    update();
+  }
+
+  getHistoryEvents() async {
+    historyLoader(false);
+    historyError = null;
+    var response = await API().getApi(
+      url: "show-venue-my-events",
+      queryParameters: {"section": "history"},
+      isLoader: false,
+    );
+    if (response.statusCode == 200) {
+      historyEvents = EventsListModel.fromJson(response.data);
+    } else {
+      historyError = backendErrorMessage(response);
+    }
+    historyLoader(true);
+    update();
+  }
+
   getAllPendingEvents() async {
     getAllPendingEventsLoader(false);
+    pendingEventsError = null;
     var response = await API()
         .getApi(url: "show-venue-requested-events", queryParameters: {
       "filter": (homeController.showIndexValue == 1 &&
@@ -752,16 +795,13 @@ class ManagerController extends GetxController {
               ? "past_week"
               : "older_than_1_month",
     });
-    final token = await API().sp.read("token");
-    final userId = await API().sp.read("userId");
-    print(token);
     if (response.statusCode == 200) {
       managerPendingEvents = ManagerPendingEventsModel.fromJson(response.data);
-      print(userId);
-
-      getAllPendingEventsLoader(true);
-      update();
+    } else {
+      pendingEventsError = backendErrorMessage(response);
     }
+    getAllPendingEventsLoader(true);
+    update();
   }
 
   ///>>>>>>>>>>>>>>>>>>>> venue manager decline or accept event function
@@ -778,10 +818,20 @@ class ManagerController extends GetxController {
       checkBoxValue.value = false;
       bottomToast(text: 'Event accepted successfully.');
       if (Get.isRegistered<EventController>()) {
-        final eventController = Get.find<EventController>();
-        await eventController.getAllEvents(loader: false);
-        await eventController.getUpcomingEvents();
-        eventController.update();
+        await Get.find<EventController>().refreshListsAfterMutation(
+          extraKeys: [
+            'upcoming-events',
+            'on-going-events',
+            'show-requested-events',
+            'show-venue-requested-events',
+            'scheduled',
+            'history',
+          ],
+        );
+      } else {
+        await getScheduledEvents();
+        await getAllPendingEvents();
+        await getHistoryEvents();
       }
       update();
       if (Get.currentRoute != Routes.bottomNavigationView) {
@@ -790,23 +840,56 @@ class ManagerController extends GetxController {
     }
   }
 
-  Future<void> eventAcceptDeclineFtn({status, int? id}) async {
-    var formData = form.FormData.fromMap({"event_id": id, "status": status});
+  Future<void> eventAcceptDeclineFtn({status, int? id, String? comment}) async {
+    var formData = form.FormData.fromMap({
+      "event_id": id,
+      "status": status,
+      if (comment != null && comment.trim().isNotEmpty) "comment": comment,
+    });
     var response = await API().postApi(formData, "accept-event-request");
     if (response.statusCode == 200) {
-      // managerPendingEvents!.data!.data!.remove(event);
-      managerPendingEvents!.data!.data!.removeWhere((e) => e.id == id);
+      if (status != 'countered') {
+        managerPendingEvents?.data?.data?.removeWhere((e) => e.id == id);
+      }
       checkBoxValue.value = false;
-      print(response.data['message']);
       bottomToast(text: response.data['message']);
       if (Get.isRegistered<EventController>()) {
         final eventController = Get.find<EventController>();
-        await eventController.getAllEvents(loader: false);
-        await eventController.getUpcomingEvents();
-        eventController.update();
+        if (id != null) {
+          await eventController.eventDetails(eventId: id);
+        }
+        await eventController.refreshListsAfterMutation(response: response);
+      } else {
+        await getScheduledEvents();
+        await getAllPendingEvents();
+        await getHistoryEvents();
       }
       update();
-      Get.back();
+      if (status != 'countered' &&
+          Get.currentRoute != Routes.bottomNavigationView) {
+        Get.back();
+      }
+    } else {
+      BotToast.showText(text: backendErrorMessage(response));
+    }
+  }
+
+  Future<void> counterEventRequest({
+    required int eventId,
+    String? comment,
+  }) async {
+    if (counteringRequest.value) return;
+    counteringRequest(true);
+    update();
+    try {
+      await eventAcceptDeclineFtn(
+        status: 'countered',
+        id: eventId,
+        comment: comment,
+      );
+    } finally {
+      counteringRequest(false);
+      update();
     }
   }
 
@@ -871,7 +954,6 @@ class ManagerController extends GetxController {
       multiPartImg.clear();
       mediaClass.clear();
       profilePictures.clear();
-
       update();
     }
   }

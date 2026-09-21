@@ -21,6 +21,7 @@ import 'package:groovkin/payment/journey/payment_journey_widgets.dart';
 import 'package:groovkin/payment/payment_controller.dart';
 import 'package:groovkin/payment/payment_models.dart';
 import 'package:groovkin/payment/payment_widgets.dart';
+import 'package:groovkin/utils/backend_contract.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:intl/intl.dart';
 
@@ -92,6 +93,27 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
     }, builder: (controller) {
       if (controller.eventDetailsLoader.value == false) {
         return const SizedBox.shrink();
+      }
+      if (controller.eventDetailsError != null ||
+          controller.eventDetail?.data == null) {
+        return Scaffold(
+          appBar: customAppBar(theme: theme, text: titleText),
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Text(
+                controller.eventDetailsError ??
+                    'You do not have access to this event.',
+                textAlign: TextAlign.center,
+                style: poppinsRegularStyle(
+                  context: context,
+                  fontSize: 14,
+                  color: theme.primaryColor,
+                ),
+              ),
+            ),
+          ),
+        );
       }
       final event = controller.eventDetail!.data!;
       return Scaffold(
@@ -722,14 +744,11 @@ Widget pendingDetailsWidget(
                       const SizedBox(
                         height: 8,
                       ),
-                      (API().sp.read("role") == "eventOrganizer" &&
-                              event.isCounterActive!.value == 0)
-                          ? const SizedBox.shrink()
-                          : (event.status == "cancelled" ||
-                                  event.status == "declined" ||
-                                  event.status == "completed" ||
-                                  event.status == "acknowledged")
-                              ? SizedBox()
+                      (event.status == "cancelled" ||
+                              event.status == "declined" ||
+                              event.status == "completed" ||
+                              event.status == "acknowledged")
+                          ? const SizedBox()
                               : Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
@@ -774,7 +793,9 @@ Widget pendingDetailsWidget(
                                       //   height: 5,
                                       // ),
                                       if (sp.read("role") == "eventManager" &&
-                                          event.status == "pending")
+                                          (event.status == "pending" ||
+                                              event.status == "requested" ||
+                                              event.status == "countered"))
                                         CustomButton(
                                           heights: 39,
                                           text: "Accept",
@@ -969,7 +990,12 @@ Widget pendingDetailsWidget(
                       ),
                       (flowBtn == 1 ||
                               API().sp.read("role") != "eventOrganizer" ||
-                              event.status != "pending")
+                              !shouldShowEoRevise(
+                                canReviseRequest: event.canReviseRequest,
+                                canEditRequest: event.canEditRequest,
+                                status: event.status,
+                                requestStatus: event.requestStatus,
+                              ))
                           ? const SizedBox.shrink()
                           : Padding(
                               padding:
@@ -982,6 +1008,7 @@ Widget pendingDetailsWidget(
                                   color: theme.primaryColor,
                                 ),
                                 onTap: () {
+                                  if (controller.savingEvent.value) return;
                                   controller.duplicateValue.value = false;
                                   controller.draftValue.value = false;
                                   controller.assignValueForUpdate();
@@ -992,9 +1019,39 @@ Widget pendingDetailsWidget(
                                 borderClr: Colors.transparent,
                                 color2: DynamicColor.greenClr,
                                 color1: DynamicColor.greenClr,
-                                text: "Edit Event Request",
+                                text: event.canReviseRequest ||
+                                        event.canEditRequest ||
+                                        event.status == "countered" ||
+                                        event.requestStatus == "countered"
+                                    ? "Revise Event Request"
+                                    : "Edit Event Request",
                               ),
                             ),
+                      if (API().sp.read("role") == "eventOrganizer" &&
+                          event.canResubmitRequest)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                          child: CustomButton(
+                            heights: 39,
+                            style: poppinsMediumStyle(
+                              fontSize: 13,
+                              context: context,
+                              color: theme.primaryColor,
+                            ),
+                            onTap: () {
+                              if (controller.resubmittingRequest.value) return;
+                              controller.resubmitEventRequest(
+                                  eventId: event.id);
+                            },
+                            backgroundClr: false,
+                            borderClr: Colors.transparent,
+                            color2: DynamicColor.lightYellowClr,
+                            color1: DynamicColor.lightYellowClr,
+                            text: controller.resubmittingRequest.value
+                                ? "Resubmitting..."
+                                : "Resubmit to Venue",
+                          ),
+                        ),
                       const SizedBox(
                         height: 8,
                       ),
@@ -1005,9 +1062,11 @@ Widget pendingDetailsWidget(
               const SizedBox(
                 height: 20,
               ),
-              flowBtn == 1
-                  ? const SizedBox.shrink()
-                  : Padding(
+              shouldShowPreApprovalCounter(
+                      canCounterRequest: event.canCounterRequest,
+                      status: event.status,
+                    )
+                  ? Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: CustomButton(
                         heights: 33,
@@ -1016,15 +1075,24 @@ Widget pendingDetailsWidget(
                         backgroundClr: false,
                         borderClr: Colors.transparent,
                         onTap: () {
+                          int? userId;
+                          if (event.userId == API().sp.read("userId")) {
+                            userId = event.venue?.userId;
+                          } else {
+                            userId = event.userId;
+                          }
                           Get.toNamed(Routes.counterScreen, arguments: {
                             "textField": true,
                             "acceptVal": false,
+                            "userId": userId,
+                            "eventId": eventId,
                           });
                         },
                         textClr: theme.scaffoldBackgroundColor,
                         text: "Counter",
                       ),
-                    ),
+                    )
+                  : const SizedBox.shrink(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
@@ -1075,6 +1143,17 @@ Widget pendingDetailsWidget(
               ),
               customWidget(context, theme,
                   title: "Event Comments", value: event.comment.toString()),
+              if ((event.counterComment != null &&
+                      event.counterComment!.isNotEmpty) ||
+                  (event.status == "countered" ||
+                      event.requestStatus == "countered" ||
+                      event.isCounterActive?.value == 1))
+                customWidget(
+                  context,
+                  theme,
+                  title: "Venue Counter",
+                  value: event.counterComment ?? event.comment ?? '',
+                ),
               customWidget(context, theme,
                   title: "Event About", value: event.about.toString()),
               customWidget(context, theme,

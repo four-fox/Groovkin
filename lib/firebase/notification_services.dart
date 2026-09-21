@@ -304,6 +304,19 @@ class NotificationService {
     EventController controller = Get.find();
     ManagerController managerController = Get.find();
     HomeController homeController = Get.find();
+    const eventListNotificationTypes = {
+      'event_created',
+      'event_countered',
+      'event_resubmitted',
+      'event_accept',
+      'event_declined',
+      'event_cancelled',
+      'event_complete',
+      'event_acknowledged',
+    };
+    if (eventListNotificationTypes.contains(data["type"]?.toString())) {
+      controller.refreshListsAfterMutation();
+    }
     if (message.data["type"] == "send_message") {
       controller.eventDetails(eventId: data["source_id"]);
       managerController.getAllMessages(
@@ -397,6 +410,20 @@ class NotificationService {
         // "appBarTitle": "Completed",
         "isComingFromNotification": true,
         "appBarTitle": "About Event",
+      });
+    } else if (data["type"] == "event_countered") {
+      Get.toNamed(Routes.pendingEventDetails, arguments: {
+        "eventId": int.parse(data["source_id"].toString()),
+        "notInterestedBtn": 0,
+        "title": "Event Details",
+        "type": "event",
+      });
+    } else if (data["type"] == "event_resubmitted") {
+      Get.toNamed(Routes.pendingEventDetails, arguments: {
+        "eventId": int.parse(data["source_id"].toString()),
+        "notInterestedBtn": 1,
+        "title": "About Event",
+        "type": "event",
       });
     } else if (data.type == "event_reschedule") {
       Get.toNamed(Routes.upcomingScreen, arguments: {

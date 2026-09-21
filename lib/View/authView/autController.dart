@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/allUnfollowerModel.dart';
@@ -28,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/CustomMultipart.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/Components/Network/backend_error.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -41,8 +41,12 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import '../../model/invite_model.dart';
 import '../../model/single_ton_data.dart';
 import '../../model/switch_model.dart';
+import '../../utils/backend_contract.dart';
+import '../../utils/json_parsers.dart';
+import '../../utils/search_radius.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
 import '../GroovkinUser/UserBottomView/userBottomNav.dart';
 import 'package:geolocator/geolocator.dart' as geo;
@@ -98,6 +102,12 @@ class AuthController extends GetxController {
   get index => _index.value;
 
   RxInt radioValue = 6.obs;
+  RxBool savingProfile = false.obs;
+  RxBool savingSurvey = false.obs;
+  List<int> allowedSearchRadii = List<int>.from(kDefaultSearchRadiiMiles);
+  int searchRadiusMiles = 25;
+  List<String> missingProfileFields = [];
+  bool requiresProfileCompletion = false;
 
   ///quick survey condition Value
 
@@ -179,34 +189,29 @@ class AuthController extends GetxController {
         "invite_code": inviteCodeController.text
     });
 
-    log(formData.toString());
     var response = await API().postApi(formData, "register",
         multiPart: imageList.isNotEmpty ? true : false);
 
     if (response.statusCode == 200) {
+      inviteCodeController.clear();
       if (response.data["data"]["user_details"]["signup_platform"] == "app") {
         if (response.data["data"]["user_details"]["otp_status"] == 0) {
           API().sp.write("email", emailController.text);
+          _applyBackendRoles(response.data['data']);
           Get.offAllNamed(Routes.emailVerifiedOtpScreen);
         }
       } else {
         API().sp.write("socialType", signUpPlatform);
-        API().sp.write("token", response.data['data']['token']);
-        API().sp.write("userId", response.data['data']['user_details']['id']);
-        API().sp.write("isCompleteProfile",
-            response.data['data']['user_details']['is_complete_profile']);
-        API().sp.write("signupPlatform",
-            response.data['data']['user_details']['signup_platform']);
+        _persistAuthUser(response.data['data']);
         configureSDK();
         API().sp.write("currentRole", "User");
         API().sp.write("role", "User");
         API().sp.write("isUserCreated",
             response.data['data']['user_details']['is_user_created']);
-        final profile = response.data["data"]["user_details"]["profile"];
-        if (_socialProfileNeedsCompletion(profile)) {
-          _bindControllersFromProfileMap(profile);
-          emailController.text = API().sp.read("emailSocial") ??
-              emailController.text;
+        if (requiresProfileCompletion) {
+          _bindControllersFromAuthPayload(response.data['data']);
+          emailController.text =
+              API().sp.read("emailSocial") ?? emailController.text;
           if (displayNameController.text.isEmpty) {
             displayNameController.text =
                 API().sp.read("nameSocial")?.toString() ?? "";
@@ -221,6 +226,7 @@ class AuthController extends GetxController {
           return;
         }
         clearTextFields();
+        final profile = response.data["data"]["user_details"]["profile"];
         if (profile != null && profile["id"] != null) {
           if (API().sp.read("role") == "User") {
             if (response.data['data']['user_details']['is_user_created'] == 0) {
@@ -269,14 +275,7 @@ class AuthController extends GetxController {
           API().sp.write("signupPlatform",
               response.data['data']['user_details']['signup_platform']);
           configureSDK();
-          if (response.data["data"]["user_details"]["current_role"] == "user") {
-            API().sp.write("currentRole", "User");
-          } else if (response.data["data"]["user_details"]["current_role"] ==
-              "event_owner") {
-            API().sp.write("currentRole", "eventOrganizer");
-          } else {
-            API().sp.write("currentRole", "eventManager");
-          }
+          _applyBackendRoles(response.data['data']);
           clearTextFields();
           if (API().sp.read("role") == "User") {
             API().sp.write("isUserCreated",
@@ -301,26 +300,56 @@ class AuthController extends GetxController {
     } catch (e) {}
   }
 
-  validateInviteCode(String inviteCode) async {
-    try {
-      var formData = {
-        "invite_code": inviteCode,
-        "role": API().sp.read("role") == "eventManager"
-            ? "venue_manager"
-            : "event_owner",
-        "email": emailController.text.trim()
-      };
+  RxBool validatingInvite = false.obs;
 
-      log("body ${formData}");
-
-      var response = await API().postApi(
-        formData,
-        "validate-invite-code",
+  Future<bool> validateInviteCode({
+    String? inviteCode,
+    String? email,
+    String? role,
+  }) async {
+    final code = (inviteCode ?? inviteCodeController.text).trim();
+    final selectedRole =
+        role ?? backendRoleFromStorage(API().sp.read("role")?.toString());
+    final selectedEmail = (email ?? emailController.text).trim();
+    if (code.isEmpty) {
+      BotToast.showText(
+        text: messageForErrorCode('invite_required') ??
+            'A valid invite code is required for this account type.',
       );
-
-      log("response ${response}");
-    } catch (e) {
-      log("invite code exception  ${e.toString()}");
+      return false;
+    }
+    if (selectedRole == kRoleVenueManager && selectedEmail.isEmpty) {
+      BotToast.showText(
+        text: messageForErrorCode('invite_email_required') ??
+            'Email is required.',
+      );
+      return false;
+    }
+    validatingInvite(true);
+    update();
+    try {
+      final response = await API().postApi(
+        {
+          "invite_code": code,
+          "role": selectedRole,
+          "email": selectedEmail,
+        },
+        "validate-invite-code",
+        auth: false,
+      );
+      if (isBackendSuccess(response)) {
+        return true;
+      }
+      BotToast.showText(text: backendErrorMessage(response));
+      return false;
+    } catch (_) {
+      BotToast.showText(
+        text: 'Unable to validate invite code. Please try again.',
+      );
+      return false;
+    } finally {
+      validatingInvite(false);
+      update();
     }
   }
 
@@ -339,7 +368,6 @@ class AuthController extends GetxController {
       // "device_token": "tok-jdibvhrjbvjrbv489hcn",
     };
 
-    log("login body data :: ${formData}");
     var response = await API().postApi(formData, "login");
 
     if (response.statusCode == 200) {
@@ -351,14 +379,7 @@ class AuthController extends GetxController {
       }
 
       API().sp.write("token", response.data['data']['token']);
-      API().sp.write("userId", response.data['data']['user_details']['id']);
-      API().sp.write(
-          "isCompleteProfile",
-          response.data['data']['user_details']['profile'] == null
-              ? 0
-              : response.data['data']['user_details']['profile']['id'] == null
-                  ? 0
-                  : 1);
+      _persistAuthUser(response.data['data']);
       API().sp.remove("currentRole");
       API().sp.remove("role");
       await configureSDK();
@@ -367,24 +388,20 @@ class AuthController extends GetxController {
         restore();
         logInWithRevenueCat();
         checkUserSubscriptionIsActive();
-        if (response.data["data"]["user_details"]["current_role"] == "user") {
-          API().sp.write("currentRole", "User");
-        } else if (response.data["data"]["user_details"]["current_role"] ==
-            "event_owner") {
-          API().sp.write("currentRole", "eventOrganizer");
-        } else if (response.data["data"]["user_details"]["current_role"] ==
-            "venue_manager") {
-          API().sp.write("currentRole", "eventManager");
-        }
-        if (response.data['data']['user_details']['active_role'] ==
-            'venue_manager') {
-          API().sp.write("role", 'eventManager');
-        } else if (response.data['data']['user_details']['active_role'] ==
-            'user') {
-          API().sp.write("role", 'User');
-        } else if (response.data['data']['user_details']['active_role'] ==
-            "event_owner") {
-          API().sp.write('role', 'eventOrganizer');
+        _applyBackendRoles(response.data['data']);
+        if (requiresProfileCompletion &&
+            (API().sp.read("role") == "User" ||
+                response.data['data']['user_details']['active_role'] ==
+                    'user')) {
+          _bindControllersFromAuthPayload(response.data['data']);
+          Get.offAllNamed(Routes.createProfile, arguments: {
+            "socialType": API().sp.read("socialType") ??
+                response.data['data']['user_details']['signup_platform'],
+            "accessToken": API().sp.read("accessToken"),
+            "isClear": false,
+            "completeAfterSocial": true,
+          });
+          return;
         }
         if (sp.read("role") == "User") {
           API().sp.write("isUserCreated",
@@ -513,12 +530,133 @@ class AuthController extends GetxController {
     return value.toString().trim().isEmpty || value.toString() == "null";
   }
 
-  bool _socialProfileNeedsCompletion(dynamic profile) {
-    if (profile is! Map) return true;
-    return _isMissingProfileValue(profile["birth_year"]) ||
-        _isMissingProfileValue(profile["about"]) ||
-        _isMissingProfileValue(profile["zip_code"]) ||
-        _isMissingProfileValue(profile["select_state"]);
+  bool _isRequiredProfileField(String field) {
+    const required = {'display_name', 'zip_code', 'select_state'};
+    return required.contains(field);
+  }
+
+  bool evaluateProfileCompletion({
+    dynamic userDetails,
+    dynamic profile,
+  }) {
+    final details = parseMap(userDetails) ?? {};
+    final profileMap = parseMap(profile) ?? parseMap(details['profile']) ?? {};
+
+    missingProfileFields = parseStringList(
+      details['missing_profile_fields'] ?? profileMap['missing_profile_fields'],
+    );
+    final completionFields = parseStringList(
+      details['profile_completion_fields'] ??
+          profileMap['profile_completion_fields'],
+    );
+
+    if (details.containsKey('requires_profile_completion') ||
+        profileMap.containsKey('requires_profile_completion')) {
+      requiresProfileCompletion = parseBool(
+        details['requires_profile_completion'] ??
+            profileMap['requires_profile_completion'],
+      );
+    } else if (details.containsKey('is_complete_profile') ||
+        profileMap.containsKey('is_complete_profile')) {
+      requiresProfileCompletion = !parseBool(
+        details['is_complete_profile'] ?? profileMap['is_complete_profile'],
+        fallback: true,
+      );
+    } else if (missingProfileFields.isNotEmpty) {
+      requiresProfileCompletion =
+          missingProfileFields.any(_isRequiredProfileField);
+    } else {
+      requiresProfileCompletion = _isMissingProfileValue(
+            details['name'] ?? profileMap['display_name'],
+          ) ||
+          _isMissingProfileValue(profileMap['zip_code']) ||
+          _isMissingProfileValue(profileMap['select_state']);
+    }
+
+    if (completionFields.isNotEmpty && !requiresProfileCompletion) {
+      requiresProfileCompletion = completionFields.any((field) {
+        if (!_isRequiredProfileField(field)) return false;
+        if (field == 'display_name') {
+          return _isMissingProfileValue(details['name']) &&
+              _isMissingProfileValue(profileMap['display_name']);
+        }
+        return _isMissingProfileValue(profileMap[field]);
+      });
+    }
+
+    API().sp.write("requiresProfileCompletion", requiresProfileCompletion);
+    API().sp.write("isCompleteProfile", requiresProfileCompletion ? 0 : 1);
+    return requiresProfileCompletion;
+  }
+
+  void _persistAuthUser(dynamic payload) {
+    final data = parseMap(payload) ?? {};
+    final details = parseMap(data['user_details']) ?? data;
+    if (data['token'] != null) {
+      API().sp.write("token", data['token']);
+    }
+    if (details['id'] != null) {
+      API().sp.write("userId", details['id']);
+    }
+    if (details['signup_platform'] != null) {
+      API().sp.write("signupPlatform", details['signup_platform']);
+    }
+    evaluateProfileCompletion(userDetails: details);
+    _applySearchRadiusFromPayload(details);
+  }
+
+  void _applyBackendRoles(dynamic payload) {
+    final data = parseMap(payload) ?? {};
+    final details = parseMap(data['user_details']) ?? data;
+    final active = parseString(details['active_role'] ?? data['active_role']);
+    final mappedActive = storageRoleFromBackend(active);
+    if (mappedActive != null) {
+      API().sp.write('role', mappedActive);
+    }
+    final current =
+        parseString(details['current_role'] ?? data['current_role']);
+    final mappedCurrent = storageRoleFromBackend(current);
+    if (mappedCurrent != null) {
+      API().sp.write('currentRole', mappedCurrent);
+    }
+  }
+
+  void _applySearchRadiusFromPayload(dynamic payload) {
+    final data = parseMap(payload) ?? {};
+    final profile = parseMap(data['profile']) ?? {};
+    allowedSearchRadii = parseAllowedSearchRadii(
+      data['allowed_search_radii_miles'] ??
+          profile['allowed_search_radii_miles'] ??
+          API().sp.read('allowedSearchRadii'),
+    );
+    searchRadiusMiles = sanitizeSearchRadius(
+      data['search_radius_miles'] ??
+          profile['search_radius_miles'] ??
+          API().sp.read('searchRadiusMiles'),
+      allowed: allowedSearchRadii,
+    );
+    API().sp.write('allowedSearchRadii', allowedSearchRadii);
+    API().sp.write('searchRadiusMiles', searchRadiusMiles);
+    if (Get.isRegistered<HomeController>()) {
+      Get.find<HomeController>().syncSearchRadius(
+        searchRadiusMiles,
+        allowed: allowedSearchRadii,
+        persist: false,
+      );
+    }
+  }
+
+  void _bindControllersFromAuthPayload(dynamic payload) {
+    final data = parseMap(payload) ?? {};
+    final details = parseMap(data['user_details']) ?? data;
+    final profile = parseMap(details['profile']);
+    if (!_isMissingProfileValue(details['name'])) {
+      displayNameController.text = details['name'].toString();
+    }
+    if (!_isMissingProfileValue(details['email'])) {
+      emailController.text = details['email'].toString();
+    }
+    _bindControllersFromProfileMap(profile);
   }
 
   void _bindControllersFromProfileMap(dynamic profile) {
@@ -529,6 +667,9 @@ class AuthController extends GetxController {
     if (!_isMissingProfileValue(profile["last_name"])) {
       lastNameController.text = profile["last_name"].toString();
     }
+    if (!_isMissingProfileValue(profile["display_name"])) {
+      displayNameController.text = profile["display_name"].toString();
+    }
     if (!_isMissingProfileValue(profile["phone_number"])) {
       phoneNumController.text = profile["phone_number"].toString();
     }
@@ -538,8 +679,8 @@ class AuthController extends GetxController {
     if (!_isMissingProfileValue(profile["about"])) {
       aboutController.text = profile["about"].toString();
     }
-    if (!_isMissingProfileValue(profile["zip_code"])) {
-      zipController.text = profile["zip_code"].toString();
+    if (!_isMissingProfileValue(profile["zip_code"] ?? profile["zip"])) {
+      zipController.text = (profile["zip_code"] ?? profile["zip"]).toString();
     }
     if (!_isMissingProfileValue(profile["select_state"])) {
       stateController.text = profile["select_state"].toString();
@@ -552,6 +693,15 @@ class AuthController extends GetxController {
   }
 
   Future<void> continueAfterSocialProfileSave() async {
+    if (requiresProfileCompletion) {
+      Get.offAllNamed(Routes.createProfile, arguments: {
+        "socialType": API().sp.read("socialType"),
+        "accessToken": API().sp.read("accessToken"),
+        "isClear": false,
+        "completeAfterSocial": true,
+      });
+      return;
+    }
     if (API().sp.read("isUserCreated") == 0) {
       Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
         "update": false,
@@ -743,6 +893,11 @@ class AuthController extends GetxController {
     var response = await API().getApi(url: "user-profile/$userId");
     if (response.statusCode == 200) {
       userData = ProfileModel.fromJson(response.data);
+      evaluateProfileCompletion(
+        userDetails: response.data['data'],
+        profile: response.data['data']?['profile'],
+      );
+      _applySearchRadiusFromPayload(response.data['data']);
       getProfileLoader(true);
       update();
     }
@@ -760,7 +915,7 @@ class AuthController extends GetxController {
     update();
   }
 
-  profileDataBind() async {
+  profileDataBind({bool scrollToZip = false}) async {
     firstNameController.text = userData!.data!.profile!.firstName.toString();
     lastNameController.text = userData!.data!.profile!.lastName.toString();
     displayNameController.text = userData!.data!.name.toString();
@@ -777,9 +932,19 @@ class AuthController extends GetxController {
       countryController.text = userData!.data!.profile!.country.toString();
     }
 
-    if (userData!.data!.profile!.zipCode != null) {
-      zipController.text = userData!.data!.profile!.zipCode.toString();
+    final zip = userData!.data!.profile!.zipCode;
+    if (zip != null && zip.toString().trim().isNotEmpty) {
+      zipController.text = zip.toString();
     }
+    searchRadiusMiles = sanitizeSearchRadius(
+      userData!.data!.searchRadiusMiles ??
+          userData!.data!.profile!.searchRadiusMiles ??
+          searchRadiusMiles,
+      allowed: userData!.data!.allowedSearchRadiiMiles,
+    );
+    allowedSearchRadii = userData!.data!.allowedSearchRadiiMiles.isEmpty
+        ? List<int>.from(kDefaultSearchRadiiMiles)
+        : userData!.data!.allowedSearchRadiiMiles;
     if (userData!.data!.socialLink != null) {
       if (userData!.data!.socialLink!.instagram != null) {
         instagramController.text =
@@ -794,7 +959,10 @@ class AuthController extends GetxController {
       }
     }
 
-    Get.toNamed(Routes.profileScreen);
+    Get.toNamed(
+      Routes.profileScreen,
+      arguments: scrollToZip ? {'scrollToZip': true} : null,
+    );
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo create profile functionality
@@ -810,45 +978,89 @@ class AuthController extends GetxController {
   String? numberAssign = "+1";
 
   createProfile({userId, bool continueOnboarding = false}) async {
-    List imageList = [];
-    if (imageBytes != null) {
-      var a = multiPartingImage(imageBytes);
-      imageList.add(a);
-    }
-    var formData = form.FormData.fromMap({
-      "first_name": firstNameController.text,
-      "last_name": lastNameController.text,
-      "display_name": displayNameController.text,
-      "phone_number": phoneNumController.text,
-      "birth_year": dobController.text,
-      "about": aboutController.text,
-      if ((API().sp.read("role") == "eventManager") &&
-          (companyNameController.text.isNotEmpty))
-        "company_name": companyNameController.text,
-      // /*if(API().sp.read("role") == "User")*/ "birth_year": dobController.text,
-      "select_state": stateController.text,
-      "country": countryController.text.isEmpty
-          ? "United States"
-          : countryController.text,
-      if (imageList.isNotEmpty) "image[]": imageList,
-      "zip_code": zipController.text.trim(),
-      if (instagramController.text.isNotEmpty)
-        "instagram_link": instagramController.text,
-      if (twitterXController.text.isNotEmpty)
-        "twitter_link": twitterXController.text,
-      if (youtubeController.text.isNotEmpty)
-        "youtube_link": youtubeController.text,
-
-      ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> che kala profile create kege nu da da haghai ftn d
-    });
-    var response = await API().postApi(formData, "update-profile/$userId");
-    if (response.statusCode == 200) {
-      getProfile(userId: userId);
-      if (continueOnboarding) {
-        await continueAfterSocialProfileSave();
-        return;
+    if (savingProfile.value) return;
+    savingProfile(true);
+    update();
+    try {
+      List imageList = [];
+      if (imageBytes != null) {
+        var a = multiPartingImage(imageBytes);
+        imageList.add(a);
       }
-      Get.back();
+      final zip = zipController.text.trim();
+      final existingZip = userData?.data?.profile?.zipCode?.toString().trim();
+      final payload = <String, dynamic>{
+        "first_name": firstNameController.text,
+        "last_name": lastNameController.text,
+        "display_name": displayNameController.text,
+        "phone_number": phoneNumController.text,
+        "birth_year": dobController.text,
+        "about": aboutController.text,
+        if ((API().sp.read("role") == "eventManager") &&
+            (companyNameController.text.isNotEmpty))
+          "company_name": companyNameController.text,
+        "select_state": stateController.text,
+        "country": countryController.text.isEmpty
+            ? "United States"
+            : countryController.text,
+        if (imageList.isNotEmpty) "image[]": imageList,
+        if (instagramController.text.isNotEmpty)
+          "instagram_link": instagramController.text,
+        if (twitterXController.text.isNotEmpty)
+          "twitter_link": twitterXController.text,
+        if (youtubeController.text.isNotEmpty)
+          "youtube_link": youtubeController.text,
+        "search_radius_miles": searchRadiusMiles,
+      };
+      if (zip.isNotEmpty) {
+        payload["zip_code"] = zip;
+      } else if (existingZip != null && existingZip.isNotEmpty) {
+        payload["zip_code"] = existingZip;
+      }
+      var formData = form.FormData.fromMap(payload);
+      var response = await API().postApi(formData, "update-profile/$userId");
+      if (response.statusCode == 200) {
+        _persistAuthUser(response.data['data'] ?? response.data);
+        await getProfile(userId: userId);
+        if (Get.isRegistered<HomeController>()) {
+          final home = Get.find<HomeController>();
+          await home.syncSearchRadius(
+            searchRadiusMiles,
+            allowed: allowedSearchRadii,
+            persist: false,
+          );
+          await home.invalidateRecommendations();
+          await home.getEventNearByMe();
+          await home.getTopRatedEvent();
+        }
+        if (continueOnboarding) {
+          await continueAfterSocialProfileSave();
+          return;
+        }
+        Get.back();
+      } else {
+        final message = backendErrorMessage(response, field: 'zip_code');
+        BotToast.showText(text: message);
+      }
+    } finally {
+      savingProfile(false);
+      update();
+    }
+  }
+
+  Future<void> persistSearchRadius(int miles) async {
+    final sanitized = sanitizeSearchRadius(miles, allowed: allowedSearchRadii);
+    searchRadiusMiles = sanitized;
+    final userId = API().sp.read("userId");
+    if (userId == null) return;
+    final response = await API().postApi(
+      form.FormData.fromMap({"search_radius_miles": sanitized}),
+      "update-profile/$userId",
+    );
+    if (response.statusCode == 200) {
+      _applySearchRadiusFromPayload(
+          response.data['data'] ?? response.data['user_details']);
+      API().sp.write('searchRadiusMiles', sanitized);
     }
   }
 
@@ -910,9 +1122,7 @@ class AuthController extends GetxController {
               ? Get.find<EventController>()
               : Get.put(EventController());
 
-      final isEditingExistingEvent = eventController.eventDetail != null &&
-          !eventController.duplicateValue.value &&
-          !eventController.draftValue.value;
+      final isEditingExistingEvent = eventController.isPersistedEventEdit;
 
       if (isEditingExistingEvent) {
         // Edit existing event: bind that event's genres (not EO profile).
@@ -1019,50 +1229,60 @@ class AuthController extends GetxController {
   }
 
   makeMethodHit({navigation}) async {
+    if (savingSurvey.value) return;
     for (var element in itemsList) {
       if (catTemList.contains(element.categoryId)) {
       } else {
         catTemList.add(element.categoryId);
       }
     }
-    surveyPost(navigation: navigation);
+    await surveyPost(navigation: navigation);
   }
 
   surveyPost({navigation}) async {
-    form.FormData data = form.FormData();
-    int? indexVal = -1;
-    for (var i = 0; i <= catTemList.length; i++) {
-      if (i != catTemList.length) {
-        data.fields.add(
-            MapEntry('categories[$i][category_id]', catTemList[i].toString()));
+    if (savingSurvey.value) return;
+    savingSurvey(true);
+    update();
+    try {
+      form.FormData data = form.FormData();
+      int? indexVal = -1;
+      for (var i = 0; i <= catTemList.length; i++) {
+        if (i != catTemList.length) {
+          data.fields.add(MapEntry(
+              'categories[$i][category_id]', catTemList[i].toString()));
+        }
       }
-    }
-    for (var element in surveyData!.data!) {
-      if (catTemList.contains(element.id)) {
-        indexVal = indexVal! + 1;
-      }
-      for (var a = 0; a <= element.categoryItems!.length; a++) {
-        if (a != element.categoryItems!.length) {
-          if (element.categoryItems![a].selectedItem!.value == true) {
-            data.fields.add(MapEntry('categories[$indexVal][item_ids][]',
-                element.categoryItems![a].id.toString()));
+      for (var element in surveyData!.data!) {
+        if (catTemList.contains(element.id)) {
+          indexVal = indexVal! + 1;
+        }
+        for (var a = 0; a <= element.categoryItems!.length; a++) {
+          if (a != element.categoryItems!.length) {
+            if (element.categoryItems![a].selectedItem!.value == true) {
+              data.fields.add(MapEntry('categories[$indexVal][item_ids][]',
+                  element.categoryItems![a].id.toString()));
+            }
           }
         }
       }
-    }
 
-    var response = await API().postApi(data, "create-quick-survey");
-    if (response.statusCode == 200) {
-      if (Get.isRegistered<HomeController>()) {
-        await Get.find<HomeController>().invalidateRecommendations();
+      var response = await API().postApi(data, "create-quick-survey");
+      if (response.statusCode == 200) {
+        if (Get.isRegistered<HomeController>()) {
+          await Get.find<HomeController>().invalidateRecommendations();
+          await Get.find<HomeController>().getEventNearByMe();
+        }
+        clearLists();
+        if (navigation == "survey") {
+          Get.offAllNamed(Routes.linkYourAccountSurveyScreen);
+        } else {
+          API().sp.write('isUserCreated', 1);
+          Get.offAllNamed(Routes.userBottomNavigationNav);
+        }
       }
-      clearLists();
-      if (navigation == "survey") {
-        Get.offAllNamed(Routes.linkYourAccountSurveyScreen);
-      } else {
-        API().sp.write('isUserCreated', 1);
-        Get.offAllNamed(Routes.userBottomNavigationNav);
-      }
+    } finally {
+      savingSurvey(false);
+      update();
     }
   }
 
@@ -1080,8 +1300,23 @@ class AuthController extends GetxController {
 
   getAllService({type, bool mygrookinHit = false}) async {
     getAllServiceLoader(false);
-    var response =
-        await API().getApi(url: "show-event-with-sub-items?type=$type");
+    final query = eventCreateCatalogQuery(
+      type: type.toString(),
+      eventId: Get.isRegistered<EventController>()
+          ? Get.find<EventController>().eventDetail?.data?.id
+          : null,
+      isPersistedEdit: Get.isRegistered<EventController>() &&
+          Get.find<EventController>().isPersistedEventEdit &&
+          !mygrookinHit,
+    );
+    if (mygrookinHit) {
+      query.remove('context');
+      query.remove('event_id');
+    }
+    var response = await API().getApi(
+      url: "show-event-with-sub-items",
+      queryParameters: query,
+    );
     if (response.statusCode == 200) {
       surveyData = SurveyModel.fromJson(response.data);
       if (type == "services") {
@@ -1094,7 +1329,7 @@ class AuthController extends GetxController {
           myGroovkinListFtn(myGroovkinServiceListing);
         }
         final EventController eventController = Get.find();
-        if (eventController.eventDetail != null) {
+        if (eventController.isPersistedEventEdit) {
           List serviceLista = [];
           for (var action in eventController.eventDetail!.data!.services!) {
             serviceLista.add(action.eventItemId);
@@ -1103,10 +1338,15 @@ class AuthController extends GetxController {
             if (serviceLista.contains(service.id)) {
               service.showItems!.value = true;
               serviceList.add(service);
-              // _authController.serviceAddFtn(items: service);
+            } else {
+              service.showItems!.value = false;
             }
           }
-          // _eventController.checkServices();
+        } else if (!mygrookinHit) {
+          serviceList.clear();
+          for (var service in serviceListing) {
+            service.showItems!.value = false;
+          }
         }
       } else if (type == "hardware_provided") {
         hardwareListing.clear();
@@ -1120,11 +1360,10 @@ class AuthController extends GetxController {
         }
 
         final EventController eventController = Get.find();
-        if (eventController.eventDetail != null) {
+        if (eventController.isPersistedEventEdit) {
           List<String> temp = [];
           for (var element
               in eventController.eventDetail!.data!.hardwareProvide!) {
-            print("object");
             for (var data in element.hardwareItems!) {
               if (data.selected == true) {
                 temp.add(data.id.toString());
@@ -1132,11 +1371,6 @@ class AuthController extends GetxController {
             }
           }
           for (var action in hardwareListing) {
-            // if (temp2.contains(action.id.toString())) {
-            //   action.showItems!.value = true;
-            // } else {
-            //   action.showItems!.value = false;
-            // }
             for (var items in action.categoryItems!) {
               if (temp.contains(items.id.toString())) {
                 action.showItems!.value = true;
@@ -1147,6 +1381,14 @@ class AuthController extends GetxController {
               }
             }
           }
+        } else if (!mygrookinHit) {
+          eventItemsList.clear();
+          for (var action in hardwareListing) {
+            action.showItems!.value = false;
+            for (var items in action.categoryItems ?? []) {
+              items.selectedItem?.value = false;
+            }
+          }
         }
       } else {
         lifeStyleItemsList.clear();
@@ -1155,7 +1397,7 @@ class AuthController extends GetxController {
           lifeStyleListing.add(element);
         }
         final EventController eventController = Get.find();
-        if (eventController.eventDetail != null) {
+        if (eventController.isPersistedEventEdit) {
           List musicGenreId = [];
           for (var action in eventController.eventDetail!.data!.musicGenre!) {
             action.musicGenreItems!.map((data) => musicGenreId.add(data.id));
@@ -1611,26 +1853,7 @@ class AuthController extends GetxController {
     );
 
     this.position = position;
-
-    if (getZipCode) {
-      getZipCodes();
-    }
     update();
-  }
-
-  getZipCodes() async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        position?.latitude ?? 0.0, position?.longitude ?? 0.0);
-    if (placemarks.isNotEmpty) {
-      Placemark placemark = placemarks.first;
-      print("Country: ${placemark.country}");
-      print("State: ${placemark.administrativeArea}");
-      print("ZIP Code ${placemark.postalCode}");
-      if (placemark.postalCode != null && placemark.postalCode!.isNotEmpty) {
-        zipController.text = placemark.postalCode!;
-        update();
-      }
-    }
   }
 
   // todo Change Role
@@ -1683,58 +1906,46 @@ class AuthController extends GetxController {
     log("user role :: ${userType}");
     dynamic dd = {
       "role": userType,
-      //  "invite_code": "DNCS-8HPJ"
     };
-    // if (API().sp.read("role") == "User") {
-    //   dd['invite_code'] = inviteCodeController.text;
-    // }
 
     var formData = form.FormData.fromMap(dd);
-
-    log("switch user body :: $dd");
 
     final response = await API().postApi(formData, "switch-profile");
     if (response.statusCode == 200) {
       inviteCodeController.clear();
       final data = SwitchProfile.fromJson(response.data);
-      print("Token:${data.data!.token}");
-      API().sp.write("token", data.data!.token);
-      API().sp.write("userId", data.data!.profile!.userId);
-      String userTypeInital = await API().sp.read("role");
-      print(userTypeInital);
-      if (userType == "event_owner") {
+      if (data.data?.token != null) {
+        API().sp.write("token", data.data!.token);
+      }
+      if (data.data?.profile?.userId != null) {
+        API().sp.write("userId", data.data!.profile!.userId);
+      }
+      _applyBackendRoles(response.data['data']);
+      if (parseString(data.data?.activeRole) == null) {
+        final fallback = storageRoleFromBackend(userType);
+        if (fallback != null) API().sp.write('role', fallback);
+      }
+      final appliedRole =
+          API().sp.read("role") ?? storageRoleFromBackend(userType);
+      String userTypeInital = appliedRole ?? userType;
+      if (appliedRole == "eventOrganizer") {
         if (data.data!.isEventCreated == 0) {
-          API().sp.write('role', 'eventOrganizer');
           Get.offAllNamed(Routes.welComeScreen, arguments: {
             "userType": userTypeInital,
           });
         } else {
-          API().sp.write('role', 'eventOrganizer');
           selectIndexxx.value = 0;
           Get.offAllNamed(Routes.bottomNavigationView);
         }
-      } else if (userType == "venue_manager") {
-        // if (data.data!.isManagerCreated == 0) {
-        //   API().sp.write("role", 'eventManager');
-        //   Get.offAllNamed(Routes.welComeScreen, arguments: {
-        //     "userType": userTypeInital,
-        //   });
-        // } else {
-        //   API().sp.write("role", 'eventManager');
-        //   selectIndexxx.value = 0;
-        //   Get.offAllNamed(Routes.bottomNavigationView);
-        // }
-        API().sp.write("role", 'eventManager');
+      } else if (appliedRole == "eventManager") {
         selectIndexxx.value = 0;
         Get.offAllNamed(Routes.bottomNavigationView);
       } else {
         if (data.data!.isUserCreated == 0) {
-          API().sp.write("role", 'User');
           Get.offAllNamed(Routes.welComeScreen, arguments: {
             "userType": userTypeInital,
           });
         } else {
-          API().sp.write("role", 'User');
           selectUserIndexxx.value = 0;
           Get.offAllNamed(Routes.userBottomNavigationNav);
         }
@@ -1779,6 +1990,84 @@ class AuthController extends GetxController {
 
   RxBool sendingEmailLoader = true.obs;
   List<UserClass> invitationList = [];
+  InviteUiState inviteUiState = InviteUiState.idle;
+  InviteRecord? lastCreatedInvite;
+  String? inviteError;
+  String selectedInviteType = kInviteTypeRegularUser;
+  final regularUserInviteEmailController = TextEditingController();
+  final venueManagerInviteEmailController = TextEditingController();
+  List<InviteRecord> inviteHistory = [];
+
+  void selectInviteType(String type) {
+    selectedInviteType = type;
+    inviteUiState = InviteUiState.idle;
+    inviteError = null;
+    update();
+  }
+
+  void resetInviteUi() {
+    inviteUiState = InviteUiState.idle;
+    lastCreatedInvite = null;
+    inviteError = null;
+    regularUserInviteEmailController.clear();
+    venueManagerInviteEmailController.clear();
+    inviteHistory.clear();
+    selectedInviteType = kInviteTypeRegularUser;
+    update();
+  }
+
+  Future<void> loadInviteHistory() async {
+    final response = await API().getApi(url: "invites", isLoader: false);
+    if (isBackendSuccess(response)) {
+      inviteHistory = parseInviteList(response.data);
+    }
+    update();
+  }
+
+  Future<void> createRegularUserInvite({String? email}) async {
+    await _createInvite(
+      url: "invites/regular-user",
+      body: {
+        if ((email ?? regularUserInviteEmailController.text).trim().isNotEmpty)
+          "email": (email ?? regularUserInviteEmailController.text).trim(),
+      },
+    );
+  }
+
+  Future<void> createVenueManagerInvite({String? email}) async {
+    final value = (email ?? venueManagerInviteEmailController.text).trim();
+    if (value.isEmpty) {
+      inviteUiState = InviteUiState.failure;
+      inviteError = messageForErrorCode('invite_email_required');
+      BotToast.showText(text: inviteError!);
+      update();
+      return;
+    }
+    await _createInvite(
+      url: "invites/venue-manager",
+      body: {"email": value},
+    );
+  }
+
+  Future<void> _createInvite({
+    required String url,
+    required Map<String, dynamic> body,
+  }) async {
+    inviteUiState = InviteUiState.loading;
+    inviteError = null;
+    update();
+    final response = await API().postApi(body, url);
+    if (isBackendSuccess(response)) {
+      lastCreatedInvite = parseInviteRecord(response.data);
+      inviteUiState = InviteUiState.success;
+      await loadInviteHistory();
+    } else {
+      lastCreatedInvite = null;
+      inviteUiState = InviteUiState.failure;
+      inviteError = backendErrorMessage(response);
+    }
+    update();
+  }
 
   sendEmail(BuildContext context) async {
     sendingEmailLoader.value = false;

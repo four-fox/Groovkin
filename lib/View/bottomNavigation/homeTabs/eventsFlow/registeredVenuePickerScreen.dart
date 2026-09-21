@@ -10,6 +10,9 @@ import 'package:map_location_picker/map_location_picker.dart';
 
 import 'eventController.dart';
 import 'venueDiscoveryModel.dart';
+import 'package:groovkin/Components/searchRadiusSelector.dart';
+import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/utils/search_radius.dart';
 
 class RegisteredVenuePickerScreen extends StatefulWidget {
   const RegisteredVenuePickerScreen({super.key});
@@ -67,22 +70,13 @@ class _RegisteredVenuePickerScreenState
             _LocationMessage(state: state),
             if (state.hasVenueLocation)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  children: [10, 25, 50]
-                      .map(
-                        (radius) => Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            child: ChoiceChip(
-                              label: Text('$radius mi'),
-                              selected: state.venueRadius == radius,
-                              onSelected: (_) => state.setVenueRadius(radius),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                child: SearchRadiusSelector(
+                  selected: state.venueRadius,
+                  options: Get.isRegistered<AuthController>()
+                      ? Get.find<AuthController>().allowedSearchRadii
+                      : kDefaultSearchRadiiMiles,
+                  onSelected: state.setVenueRadius,
                 ),
               ),
             Padding(

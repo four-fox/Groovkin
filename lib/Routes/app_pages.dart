@@ -9,8 +9,6 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/GroovkinManager/managerUpcomingEventScreen.dart';
 import 'package:groovkin/View/GroovkinManager/paymentConfirmationScreen.dart';
 import 'package:groovkin/View/GroovkinManager/venueDetailsManagerFlow.dart';
-import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/groupScreen.dart';
-import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/theSquadScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroonvkinMusicGenreScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroovkinLifeStyleScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userEventDetailsScreen.dart';
@@ -460,22 +458,6 @@ class AppPages {
       name: _Path.calenderView,
       page: () => calenderView(),
     ),
-    GetPage(
-      name: _Path.createNewGroup,
-      page: () => CreateNewGroup(),
-    ),
-    GetPage(
-      name: _Path.viewCreatedGroup,
-      page: () => const ViewCreatedGroup(),
-    ),
-    // GetPage(
-    //   name: _Path.inviteFriendsInGroups,
-    //   page: () => InviteFriendsInGroups(),
-    // ),
-    GetPage(
-      name: _Path.theSquadScreen,
-      page: () => TheSquadScreen(),
-    ),
 
     ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manager
     GetPage(
@@ -524,10 +506,6 @@ class AppPages {
       page: () => ManagerUpcomingEventScreen(),
       binding: EventBinding(),
     ),
-    // GetPage(
-    //   name: _Path.groupScreen,
-    //   page: () => GroupScreen(),
-    // ),
     GetPage(
       name: _Path.groovkinPreferenceDetails,
       page: () => GroovkinPreferenceDetails(),

@@ -98,7 +98,6 @@ class API {
     /*required RoundedLoadingButtonController postButton*/
   }) async {
     print(Url().baseUrl + url);
-    print(sp.read('token'));
 
     try {
       if (auth == true) {

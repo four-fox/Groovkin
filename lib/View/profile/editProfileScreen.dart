@@ -11,6 +11,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/Components/searchRadiusSelector.dart';
 import 'package:groovkin/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +30,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
   PhoneNumber number = PhoneNumber(isoCode: 'US');
 
   final AuthController _controller = Get.find();
+  final GlobalKey _zipFieldKey = GlobalKey();
 
   @override
   void initState() {
@@ -36,6 +38,25 @@ class _editProfileScreenState extends State<editProfileScreen> {
     //     controller.editProfileNameController.text;
     super.initState();
     extractNumber(_controller.phoneNumController.text);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToZipIfRequested();
+    });
+  }
+
+  void _scrollToZipIfRequested() {
+    final args = Get.arguments;
+    final scrollToZip = args is Map && args['scrollToZip'] == true;
+    if (!scrollToZip) return;
+    Future.delayed(const Duration(milliseconds: 250), () {
+      final zipContext = _zipFieldKey.currentContext;
+      if (zipContext != null && mounted) {
+        Scrollable.ensureVisible(
+          zipContext,
+          duration: const Duration(milliseconds: 300),
+          alignment: 0.15,
+        );
+      }
+    });
   }
 
   extractNumber(String phone) async {
@@ -147,13 +168,23 @@ class _editProfileScreenState extends State<editProfileScreen> {
                                     heights: 27,
                                     widths: 100,
                                     onTap: () {
+                                      if (controller.savingProfile.value) {
+                                        return;
+                                      }
                                       if (editProfileForm.currentState!
                                           .validate()) {
+                                        if (controller.stateController.text
+                                            .trim()
+                                            .isEmpty) {
+                                          return;
+                                        }
                                         controller.createProfile(
                                             userId: API().sp.read("userId"));
                                       }
                                     },
-                                    text: "Save changes",
+                                    text: controller.savingProfile.value
+                                        ? "Saving..."
+                                        : "Save changes",
                                     style: poppinsMediumStyle(
                                         context: context,
                                         fontSize: 10,
@@ -574,22 +605,51 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     //   ),
                     // ),
                     Column(
+                      key: _zipFieldKey,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: CustomTextFields(
                             labelText: "Zip Code",
+                            hintText: "Zip Code",
                             iconShow: false,
                             readOnly: false,
                             controller: controller.zipController,
                             validationError: "zip code",
                             isOptional: false,
                             keyBoardType: true,
+                            autofillHints: const [],
                             labelStyling: poppinsRegularStyle(
                                 context: context,
                                 fontSize: 14,
                                 color: DynamicColor.grayClr),
-                            // readOnly: email.value,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Search radius",
+                              style: poppinsRegularStyle(
+                                context: context,
+                                fontSize: 14,
+                                color: DynamicColor.grayClr,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                          child: SearchRadiusSelector(
+                            selected: controller.searchRadiusMiles,
+                            options: controller.allowedSearchRadii,
+                            enabled: !controller.savingProfile.value,
+                            onSelected: (value) {
+                              controller.searchRadiusMiles = value;
+                              controller.update();
+                            },
                           ),
                         ),
                         const SizedBox(
@@ -676,6 +736,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                         labelText: "about",
                         iconShow: false,
                         validationError: "about",
+                        isOptional: true,
                         maxLine: 5,
                         controller: controller.aboutController,
                         // style: poppinsRegularStyle(

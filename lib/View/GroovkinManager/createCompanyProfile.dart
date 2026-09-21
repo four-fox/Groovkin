@@ -721,17 +721,6 @@ class _CreateCompanyProfileScreenState
                     height: 20,
                   ),
 
-                  CustomTextFields(
-                    labelText: "Website (Optional)",
-                    controller: controller.websiteController1,
-                    validationError: "Website",
-                    isOptional: true,
-                  ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -962,9 +951,11 @@ class _CreateCompanyProfileScreenState
 
                   CustomTextFields(
                     labelText: "Zip Code",
+                    hintText: "Zip Code",
                     controller: controller.zipController,
                     validationError: "zip code",
                     keyBoardType: true,
+                    autofillHints: const [],
                   ),
 
                   Row(
@@ -1112,14 +1103,10 @@ class _CreateCompanyProfileScreenState
                           } else if (!controller.termsConditionAgree.value) {
                             bottomToast(
                                 text: "Please accept terms and condition");
-                          } else if
-                              // ✅ check only if user entered something
-                              (!isValidUrl(
-                                      controller.websiteController1.text) ||
-                                  !isValidUrl(
-                                      controller.facebookController.text) ||
-                                  !isValidUrl(
-                                      controller.instagramController1.text)) {
+                          } else if (!isValidUrl(
+                                  controller.facebookController.text) ||
+                              !isValidUrl(
+                                  controller.instagramController1.text)) {
                             bottomToast(
                                 text:
                                     "Please enter valid links (must start with http:// or https://)");

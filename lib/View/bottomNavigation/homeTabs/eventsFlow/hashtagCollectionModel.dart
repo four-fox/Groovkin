@@ -254,6 +254,32 @@ class EventManualHashtag extends EventHashtag {
       normalizedName: json['normalized_name']?.toString(),
     );
   }
+
+  factory EventManualHashtag.fromDynamic(dynamic value) {
+    if (value is String) {
+      final name = cleanHashtag(value);
+      return EventManualHashtag(
+        name: name,
+        displayName: name.isEmpty ? '' : '#$name',
+      );
+    }
+    if (value is Map) {
+      return EventManualHashtag.fromJson(Map<String, dynamic>.from(value));
+    }
+    final name = cleanHashtag(value?.toString() ?? '');
+    return EventManualHashtag(
+      name: name,
+      displayName: name.isEmpty ? '' : '#$name',
+    );
+  }
+}
+
+List<EventManualHashtag> parseManualHashtags(dynamic raw) {
+  if (raw is! List) return const [];
+  return raw
+      .map(EventManualHashtag.fromDynamic)
+      .where((tag) => tag.name.trim().isNotEmpty)
+      .toList();
 }
 
 class CreateHashtagCollectionRequest {

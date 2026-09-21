@@ -1,3 +1,5 @@
+import 'package:groovkin/utils/backend_contract.dart';
+
 String backendErrorMessage(
   dynamic response, {
   String? field,
@@ -12,6 +14,9 @@ String backendErrorMessage(
     }
   }
   if (body is! Map) return fallback;
+
+  final mapped = messageForErrorCode(backendErrorCode(body));
+  if (mapped != null) return mapped;
 
   final errors = body['errors'];
   if (errors is Map) {

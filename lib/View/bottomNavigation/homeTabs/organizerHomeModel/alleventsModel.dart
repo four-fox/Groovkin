@@ -151,6 +151,12 @@ class EventData {
   List<EventHashtag>? hashtags;
   Recommendation? recommendation;
   double? distance;
+  String? requestStatus;
+  bool canReviseRequest;
+  bool canResubmitRequest;
+  bool canCounterRequest;
+  bool canEditRequest;
+  String? counterComment;
 
   EventData({
     this.id,
@@ -191,6 +197,12 @@ class EventData {
     this.hashtags,
     this.recommendation,
     this.distance,
+    this.requestStatus,
+    this.canReviseRequest = false,
+    this.canResubmitRequest = false,
+    this.canCounterRequest = false,
+    this.canEditRequest = false,
+    this.counterComment,
   });
 
   factory EventData.fromJson(Map<String, dynamic> json) => EventData(
@@ -222,6 +234,17 @@ class EventData {
         acceptedBy: json["accepted_by"],
         saveDraft: json["save_draft"],
         status: json["status"],
+        requestStatus:
+            json["request_status"]?.toString() ?? json["status"]?.toString(),
+        canReviseRequest: json["can_revise_request"] == true ||
+            json["can_revise_request"] == 1,
+        canResubmitRequest: json["can_resubmit_request"] == true ||
+            json["can_resubmit_request"] == 1,
+        canCounterRequest: json["can_counter_request"] == true ||
+            json["can_counter_request"] == 1,
+        canEditRequest: json["can_edit_request"] == true ||
+            json["can_edit_request"] == 1,
+        counterComment: json["counter_comment"]?.toString(),
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
         venue: json["venue"] == null ? null : Venue.fromJson(json["venue"]),

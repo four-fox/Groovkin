@@ -15,6 +15,9 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
+import 'package:groovkin/Components/searchRadiusSelector.dart';
+import 'package:groovkin/Components/zipCodeShortcut.dart';
+import 'package:groovkin/utils/search_radius.dart';
 import 'package:intl/intl.dart';
 
 import '../../bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
@@ -113,15 +116,18 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             ),
             Row(
               children: [
-                Text(
-                  "Welcome to Groovkin",
-                  style: poppinsMediumStyle(
-                    fontSize: 16,
-                    context: context,
-                    color: DynamicColor.lightYellowClr,
+                Expanded(
+                  child: Text(
+                    "Welcome to Groovkin",
+                    style: poppinsMediumStyle(
+                      fontSize: 16,
+                      context: context,
+                      color: DynamicColor.lightYellowClr,
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const ZipCodeShortcut(compact: true),
+                const SizedBox(width: 10),
                 GestureDetector(
                   onTap: () {
                     Get.toNamed(Routes.notificationScreen);
@@ -174,680 +180,702 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         ),
       ),
       body: GetBuilder<HomeController>(builder: (controller) {
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // GestureDetector(
-              //   onTap: () {
-              //     Get.toNamed(Routes.userMyGroovkinScreen);
-              //   },
-              //   child: Container(
-              //     height: kToolbarHeight * 2,
-              //     width: double.infinity,
-              //     decoration: const BoxDecoration(
-              //         image: DecorationImage(
-              //       image: AssetImage("assets/myGroovkin.png"),
-              //       fit: BoxFit.fill,
-              //     )),
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         Text(
-              //           "My Groovkin",
-              //           style: poppinsMediumStyle(
-              //             fontSize: 17,
-              //             fontWeight: FontWeight.w700,
-              //             context: context,
-              //             latterSpacing: 1.1,
-              //             color: theme.primaryColor,
-              //           ),
-              //         ),
-              //         Padding(
-              //           padding: const EdgeInsets.only(top: 12.0),
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               CircleAvatar(
-              //                 backgroundColor:
-              //                     DynamicColor.yellowClr.withValues(alpha: 0.7),
-              //                 child: ImageIcon(
-              //                   const AssetImage("assets/groupIcons.png"),
-              //                   color: theme.primaryColor,
-              //                 ),
-              //               ),
-              //               Padding(
-              //                 padding:
-              //                     const EdgeInsets.symmetric(horizontal: 30.0),
-              //                 child: CircleAvatar(
-              //                   backgroundColor: DynamicColor.yellowClr
-              //                       .withValues(alpha: 0.7),
-              //                   child: ImageIcon(
-              //                     const AssetImage("assets/musicIcons.png"),
-              //                     color: theme.primaryColor,
-              //                   ),
-              //                 ),
-              //               ),
-              //               CircleAvatar(
-              //                 backgroundColor:
-              //                     DynamicColor.yellowClr.withValues(alpha: 0.7),
-              //                 child: ImageIcon(
-              //                   const AssetImage("assets/supportIcon.png"),
-              //                   color: theme.primaryColor,
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.invalidateRecommendations();
+            await controller.getEventNearByMe();
+            await controller.getTopRatedEvent();
+            await controller.getOngoingEventUser();
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.toNamed(Routes.userMyGroovkinScreen);
+                //   },
+                //   child: Container(
+                //     height: kToolbarHeight * 2,
+                //     width: double.infinity,
+                //     decoration: const BoxDecoration(
+                //         image: DecorationImage(
+                //       image: AssetImage("assets/myGroovkin.png"),
+                //       fit: BoxFit.fill,
+                //     )),
+                //     child: Column(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Text(
+                //           "My Groovkin",
+                //           style: poppinsMediumStyle(
+                //             fontSize: 17,
+                //             fontWeight: FontWeight.w700,
+                //             context: context,
+                //             latterSpacing: 1.1,
+                //             color: theme.primaryColor,
+                //           ),
+                //         ),
+                //         Padding(
+                //           padding: const EdgeInsets.only(top: 12.0),
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               CircleAvatar(
+                //                 backgroundColor:
+                //                     DynamicColor.yellowClr.withValues(alpha: 0.7),
+                //                 child: ImageIcon(
+                //                   const AssetImage("assets/groupIcons.png"),
+                //                   color: theme.primaryColor,
+                //                 ),
+                //               ),
+                //               Padding(
+                //                 padding:
+                //                     const EdgeInsets.symmetric(horizontal: 30.0),
+                //                 child: CircleAvatar(
+                //                   backgroundColor: DynamicColor.yellowClr
+                //                       .withValues(alpha: 0.7),
+                //                   child: ImageIcon(
+                //                     const AssetImage("assets/musicIcons.png"),
+                //                     color: theme.primaryColor,
+                //                   ),
+                //                 ),
+                //               ),
+                //               CircleAvatar(
+                //                 backgroundColor:
+                //                     DynamicColor.yellowClr.withValues(alpha: 0.7),
+                //                 child: ImageIcon(
+                //                   const AssetImage("assets/supportIcon.png"),
+                //                   color: theme.primaryColor,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // ),
 
-              const SizedBox(
-                height: 10,
-              ),
+                const SizedBox(
+                  height: 10,
+                ),
 // Recommended Event
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Recommended for you",
-                            style: poppinsMediumStyle(
-                              fontSize: 14,
-                              context: context,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (recommendedVal.value == false) {
-                                controller.getRecommended();
-                                recommendedVal.value = true;
-                              } else {
-                                recommendedVal.value = false;
-                                controller.update();
-                              }
-                            },
-                            child: Icon(
-                              recommendedVal.value == false
-                                  ? Icons.keyboard_arrow_down
-                                  : Icons.keyboard_arrow_up_outlined,
-                              size: 35,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (recommendedVal.value)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: DynamicColor.darkGrayClr),
+                    child: Column(
+                      children: [
                         Row(
-                          children: [10, 25, 50]
-                              .map(
-                                (radius) => Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 2),
-                                    child: ChoiceChip(
-                                      label: Text('$radius mi'),
-                                      selected: controller.recommendedRadius ==
-                                          radius,
-                                      onSelected: (_) => controller
-                                          .setRecommendationRadius(radius),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Recommended for you",
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (recommendedVal.value == false) {
+                                  controller.getRecommended();
+                                  recommendedVal.value = true;
+                                } else {
+                                  recommendedVal.value = false;
+                                  controller.update();
+                                }
+                              },
+                              child: Icon(
+                                recommendedVal.value == false
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_up_outlined,
+                                size: 35,
+                                color: theme.primaryColor,
+                              ),
+                            ),
+                          ],
                         ),
-                      controller.getRecommendedLoader.value == false
-                          ? const SizedBox.shrink()
-                          : Visibility(
-                              visible: recommendedVal.value,
-                              child: controller.recommendedEventData == null ||
-                                      controller.recommendedEventData!.data!
-                                          .data!.isEmpty
-                                  ? noData(theme: theme, context: context)
-                                  : Column(
-                                      children: [
-                                        ListView.builder(
-                                            itemCount: controller
-                                                        .recommendedEventData!
-                                                        .data!
-                                                        .data!
-                                                        .length >
-                                                    4
-                                                ? 4
-                                                : controller
-                                                    .recommendedEventData!
-                                                    .data!
-                                                    .data!
-                                                    .length,
-                                            shrinkWrap: true,
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder:
-                                                (BuildContext context, index) {
-                                              EventData singleEventData =
-                                                  controller
+                        if (recommendedVal.value)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: SearchRadiusSelector(
+                              selected: controller.recommendedRadius,
+                              options: controller.allowedSearchRadii,
+                              onSelected: controller.setRecommendationRadius,
+                            ),
+                          ),
+                        controller.getRecommendedLoader.value == false
+                            ? const SizedBox.shrink()
+                            : Visibility(
+                                visible: recommendedVal.value,
+                                child: controller.recommendedEventData ==
+                                            null ||
+                                        controller.recommendedEventData!.data!
+                                            .data!.isEmpty
+                                    ? noData(theme: theme, context: context)
+                                    : Column(
+                                        children: [
+                                          ListView.builder(
+                                              itemCount: controller
+                                                          .recommendedEventData!
+                                                          .data!
+                                                          .data!
+                                                          .length >
+                                                      4
+                                                  ? 4
+                                                  : controller
                                                       .recommendedEventData!
                                                       .data!
-                                                      .data![index];
-                                              return userCustomEvent(
-                                                  isDelete: singleEventData
-                                                              .user?.isDelete ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  dayy: DateFormat.MMM().format(
-                                                      singleEventData
-                                                          .startDateTime!),
-                                                  datee:
-                                                      "${singleEventData.startDateTime!.day}\n",
-                                                  networkImg:
-                                                      singleEventData.bannerImage == null
-                                                          ? false
-                                                          : true,
-                                                  img: singleEventData.bannerImage ==
-                                                          null
-                                                      ? null
-                                                      : singleEventData
-                                                          .bannerImage!
-                                                          .mediaPath
-                                                          .toString(),
-                                                  title: singleEventData.eventTitle
-                                                      .toString(),
-                                                  location:
-                                                      singleEventData.location,
-                                                  subtitle: singleEventData
-                                                          .venue?.venueName ??
-                                                      '',
-                                                  recommendationText:
-                                                      singleEventData
-                                                          .recommendation
-                                                          ?.displayReason,
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                        Routes
-                                                            .userEventDetailsScreen,
-                                                        arguments: {
-                                                          "notify": true,
-                                                          "notifyBackBtn": true,
-                                                          'appBarTitle':
-                                                              "Event Preview",
-                                                          "statusText":
-                                                              singleEventData.id
-                                                                  .toString()
-                                                        });
-                                                  },
-                                                  context: context,
-                                                  theme: theme);
-                                            }),
-                                        CustomButton(
-                                          onTap: () {
-                                            Get.toNamed(
-                                                Routes.viewAllRecommendedScreen,
-                                                arguments: {
-                                                  "urlText":
-                                                      "recommended-for-you-events",
-                                                  "appBarText":
-                                                      "All Recommended Event"
-                                                });
-                                          },
-                                          borderClr: Colors.transparent,
-                                          text: "View All ",
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                    ],
+                                                      .data!
+                                                      .length,
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.zero,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      index) {
+                                                EventData singleEventData =
+                                                    controller
+                                                        .recommendedEventData!
+                                                        .data!
+                                                        .data![index];
+                                                return userCustomEvent(
+                                                    isDelete: singleEventData
+                                                                .user?.isDelete ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    dayy: DateFormat
+                                                            .MMM()
+                                                        .format(
+                                                            singleEventData
+                                                                .startDateTime!),
+                                                    datee:
+                                                        "${singleEventData.startDateTime!.day}\n",
+                                                    networkImg: singleEventData
+                                                                .bannerImage ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    img: singleEventData
+                                                                .bannerImage ==
+                                                            null
+                                                        ? null
+                                                        : singleEventData
+                                                            .bannerImage!
+                                                            .mediaPath
+                                                            .toString(),
+                                                    title:
+                                                        singleEventData.eventTitle
+                                                            .toString(),
+                                                    location: singleEventData
+                                                        .location,
+                                                    subtitle: singleEventData
+                                                            .venue?.venueName ??
+                                                        '',
+                                                    recommendationText:
+                                                        singleEventData
+                                                            .recommendation
+                                                            ?.displayReason,
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                          Routes
+                                                              .userEventDetailsScreen,
+                                                          arguments: {
+                                                            "notify": true,
+                                                            "notifyBackBtn":
+                                                                true,
+                                                            'appBarTitle':
+                                                                "Event Preview",
+                                                            "statusText":
+                                                                singleEventData
+                                                                    .id
+                                                                    .toString()
+                                                          });
+                                                    },
+                                                    context: context,
+                                                    theme: theme);
+                                              }),
+                                          CustomButton(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  Routes
+                                                      .viewAllRecommendedScreen,
+                                                  arguments: {
+                                                    "urlText":
+                                                        "recommended-for-you-events",
+                                                    "appBarText":
+                                                        "All Recommended Event"
+                                                  });
+                                            },
+                                            borderClr: Colors.transparent,
+                                            text: "View All ",
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              const SizedBox(
-                height: 10,
-              ), // Happening Now Event
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            // "Ongoing Events",
-                            "Happening Now",
-                            style: poppinsMediumStyle(
-                              fontSize: 14,
-                              context: context,
-                              color: theme.primaryColor,
+                const SizedBox(
+                  height: 10,
+                ), // Happening Now Event
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: DynamicColor.darkGrayClr),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              // "Ongoing Events",
+                              "Happening Now",
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (ongoingVal.value == false) {
-                                controller.getOngoingEventUser();
-                                ongoingVal.value = true;
-                              } else {
-                                ongoingVal.value = false;
-                                controller.update();
-                              }
-                            },
-                            child: Icon(
-                              ongoingVal.value == false
-                                  ? Icons.keyboard_arrow_down
-                                  : Icons.keyboard_arrow_up_outlined,
-                              size: 35,
-                              color: theme.primaryColor,
+                            GestureDetector(
+                              onTap: () {
+                                if (ongoingVal.value == false) {
+                                  controller.getOngoingEventUser();
+                                  ongoingVal.value = true;
+                                } else {
+                                  ongoingVal.value = false;
+                                  controller.update();
+                                }
+                              },
+                              child: Icon(
+                                ongoingVal.value == false
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_up_outlined,
+                                size: 35,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      controller.userOngoingLoader.value == false
-                          ? const SizedBox.shrink()
-                          : Visibility(
-                              visible: ongoingVal.value,
-                              child: controller.userOngoing == null ||
-                                      controller
-                                          .userOngoing!.data!.data!.isEmpty
-                                  ? noData(theme: theme, context: context)
-                                  : Column(
-                                      children: [
-                                        ListView.builder(
-                                            itemCount: controller.userOngoing!
-                                                        .data!.data!.length >
-                                                    4
-                                                ? 4
-                                                : controller.userOngoing!.data!
-                                                    .data!.length,
-                                            shrinkWrap: true,
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder:
-                                                (BuildContext context, index) {
-                                              EventData singleEvent = controller
-                                                  .userOngoing!
-                                                  .data!
-                                                  .data![index];
-                                              return userCustomEvent(
-                                                  isDelete: singleEvent
-                                                              .user?.isDelete ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  dayy: DateFormat
-                                                          .MMM()
-                                                      .format(
-                                                          singleEvent
-                                                              .startDateTime!),
-                                                  datee:
-                                                      "${singleEvent.startDateTime!.day}\n",
-                                                  networkImg: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  img: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? null
-                                                      : singleEvent.bannerImage!
-                                                          .mediaPath
-                                                          .toString(),
-                                                  title: singleEvent.eventTitle
-                                                      .toString(),
-                                                  location:
-                                                      singleEvent.location,
-                                                  subtitle: singleEvent
-                                                      .venue!.venueName
-                                                      .toString(),
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                        Routes
-                                                            .userEventDetailsScreen,
-                                                        arguments: {
-                                                          "notify": true,
-                                                          "notifyBackBtn": true,
-                                                          'appBarTitle':
-                                                              "Event Preview",
-                                                          "statusText":
-                                                              singleEvent.id
-                                                                  .toString()
-                                                        });
-                                                  },
-                                                  context: context,
-                                                  theme: theme);
-                                            }),
-                                        CustomButton(
-                                          onTap: () {
-                                            Get.toNamed(
-                                                Routes.viewAllRecommendedScreen,
-                                                arguments: {
-                                                  "urlText":
-                                                      "user-interested-on-going-list",
-                                                  "appBarText": "OnGoing Events"
-                                                });
-                                          },
-                                          borderClr: Colors.transparent,
-                                          text: "View All ",
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                    ],
+                          ],
+                        ),
+                        controller.userOngoingLoader.value == false
+                            ? const SizedBox.shrink()
+                            : Visibility(
+                                visible: ongoingVal.value,
+                                child: controller.userOngoing == null ||
+                                        controller
+                                            .userOngoing!.data!.data!.isEmpty
+                                    ? noData(theme: theme, context: context)
+                                    : Column(
+                                        children: [
+                                          ListView.builder(
+                                              itemCount: controller.userOngoing!
+                                                          .data!.data!.length >
+                                                      4
+                                                  ? 4
+                                                  : controller.userOngoing!
+                                                      .data!.data!.length,
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.zero,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      index) {
+                                                EventData singleEvent =
+                                                    controller.userOngoing!
+                                                        .data!.data![index];
+                                                return userCustomEvent(
+                                                    isDelete: singleEvent.user
+                                                                ?.isDelete ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    dayy: DateFormat.MMM()
+                                                        .format(
+                                                            singleEvent
+                                                                .startDateTime!),
+                                                    datee:
+                                                        "${singleEvent.startDateTime!.day}\n",
+                                                    networkImg: singleEvent
+                                                                .bannerImage ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    img: singleEvent
+                                                                .bannerImage ==
+                                                            null
+                                                        ? null
+                                                        : singleEvent
+                                                            .bannerImage!.mediaPath
+                                                            .toString(),
+                                                    title: singleEvent
+                                                        .eventTitle
+                                                        .toString(),
+                                                    location:
+                                                        singleEvent.location,
+                                                    subtitle: singleEvent
+                                                        .venue!.venueName
+                                                        .toString(),
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                          Routes
+                                                              .userEventDetailsScreen,
+                                                          arguments: {
+                                                            "notify": true,
+                                                            "notifyBackBtn":
+                                                                true,
+                                                            'appBarTitle':
+                                                                "Event Preview",
+                                                            "statusText":
+                                                                singleEvent.id
+                                                                    .toString()
+                                                          });
+                                                    },
+                                                    context: context,
+                                                    theme: theme);
+                                              }),
+                                          CustomButton(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  Routes
+                                                      .viewAllRecommendedScreen,
+                                                  arguments: {
+                                                    "urlText":
+                                                        "user-interested-on-going-list",
+                                                    "appBarText":
+                                                        "OnGoing Events"
+                                                  });
+                                            },
+                                            borderClr: Colors.transparent,
+                                            text: "View All ",
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              // Nearby Event
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Nearby",
-                            style: poppinsMediumStyle(
-                              fontSize: 14,
-                              context: context,
-                              color: theme.primaryColor,
+                const SizedBox(
+                  height: 10,
+                ),
+                // Nearby Event
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: DynamicColor.darkGrayClr),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              kNearbyThisWeekLabel,
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (controller.nearbyVal.value == false) {
-                                controller.getEventNearByMe();
-                                controller.nearbyVal.value = true;
-                              } else {
-                                controller.nearbyVal.value = false;
-                                controller.update();
-                              }
-                            },
-                            child: Icon(
-                              controller.nearbyVal.value == false
-                                  ? Icons.keyboard_arrow_down
-                                  : Icons.keyboard_arrow_up_outlined,
-                              size: 35,
-                              color: theme.primaryColor,
+                            GestureDetector(
+                              onTap: () {
+                                if (controller.nearbyVal.value == false) {
+                                  controller.getEventNearByMe();
+                                  controller.nearbyVal.value = true;
+                                } else {
+                                  controller.nearbyVal.value = false;
+                                  controller.update();
+                                }
+                              },
+                              child: Icon(
+                                controller.nearbyVal.value == false
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_up_outlined,
+                                size: 35,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      controller.getEventNearByMeLoader.value == false
-                          ? const SizedBox.shrink()
-                          : Visibility(
-                              visible: controller.nearbyVal.value,
-                              child: controller.eventNearByMe == null ||
-                                      controller
-                                          .eventNearByMe!.data!.data!.isEmpty
-                                  ? noData(theme: theme, context: context)
-                                  : Column(
-                                      children: [
-                                        ListView.builder(
-                                            itemCount: controller.eventNearByMe!
-                                                        .data!.data!.length >
-                                                    4
-                                                ? 4
-                                                : controller.eventNearByMe!
-                                                    .data!.data!.length,
-                                            shrinkWrap: true,
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder:
-                                                (BuildContext context, index) {
-                                              EventData singleEvent = controller
-                                                  .eventNearByMe!
-                                                  .data!
-                                                  .data![index];
-                                              return userCustomEvent(
-                                                  isDelete: singleEvent
-                                                              .user?.isDelete ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  dayy: DateFormat
-                                                          .MMM()
-                                                      .format(
-                                                          singleEvent
-                                                              .startDateTime!),
-                                                  datee:
-                                                      "${singleEvent.startDateTime!.day}\n",
-                                                  networkImg: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  img: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? null
-                                                      : singleEvent.bannerImage!
-                                                          .mediaPath
-                                                          .toString(),
-                                                  title: singleEvent.eventTitle
-                                                      .toString(),
-                                                  location:
-                                                      singleEvent.location,
-                                                  subtitle: singleEvent
-                                                      .venue!.venueName
-                                                      .toString(),
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                        Routes
-                                                            .userEventDetailsScreen,
-                                                        arguments: {
-                                                          "notify": true,
-                                                          "notifyBackBtn": true,
-                                                          'appBarTitle':
-                                                              "Event Preview",
-                                                          "statusText":
-                                                              singleEvent.id
-                                                                  .toString()
-                                                        });
-                                                  },
-                                                  context: context,
-                                                  theme: theme);
-                                            }),
-                                        CustomButton(
-                                          onTap: () {
-                                            Get.toNamed(
-                                                Routes.viewAllRecommendedScreen,
-                                                arguments: {
-                                                  "urlText": "near-by-events",
-                                                  "appBarText":
-                                                      "All Near By Event"
-                                                });
-                                          },
-                                          borderClr: Colors.transparent,
-                                          text: "View All ",
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                    ],
+                          ],
+                        ),
+                        controller.getEventNearByMeLoader.value == false
+                            ? const SizedBox.shrink()
+                            : Visibility(
+                                visible: controller.nearbyVal.value,
+                                child: controller.eventNearByMe == null ||
+                                        controller
+                                            .eventNearByMe!.data!.data!.isEmpty
+                                    ? noData(theme: theme, context: context)
+                                    : Column(
+                                        children: [
+                                          ListView.builder(
+                                              itemCount: controller
+                                                          .eventNearByMe!
+                                                          .data!
+                                                          .data!
+                                                          .length >
+                                                      4
+                                                  ? 4
+                                                  : controller.eventNearByMe!
+                                                      .data!.data!.length,
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.zero,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      index) {
+                                                EventData singleEvent =
+                                                    controller.eventNearByMe!
+                                                        .data!.data![index];
+                                                return userCustomEvent(
+                                                    isDelete: singleEvent.user
+                                                                ?.isDelete ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    dayy: DateFormat.MMM()
+                                                        .format(
+                                                            singleEvent
+                                                                .startDateTime!),
+                                                    datee:
+                                                        "${singleEvent.startDateTime!.day}\n",
+                                                    networkImg: singleEvent
+                                                                .bannerImage ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    img: singleEvent
+                                                                .bannerImage ==
+                                                            null
+                                                        ? null
+                                                        : singleEvent
+                                                            .bannerImage!.mediaPath
+                                                            .toString(),
+                                                    title: singleEvent
+                                                        .eventTitle
+                                                        .toString(),
+                                                    location:
+                                                        singleEvent.location,
+                                                    subtitle: singleEvent
+                                                        .venue!.venueName
+                                                        .toString(),
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                          Routes
+                                                              .userEventDetailsScreen,
+                                                          arguments: {
+                                                            "notify": true,
+                                                            "notifyBackBtn":
+                                                                true,
+                                                            'appBarTitle':
+                                                                "Event Preview",
+                                                            "statusText":
+                                                                singleEvent.id
+                                                                    .toString()
+                                                          });
+                                                    },
+                                                    context: context,
+                                                    theme: theme);
+                                              }),
+                                          CustomButton(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  Routes
+                                                      .viewAllRecommendedScreen,
+                                                  arguments: {
+                                                    "urlText": "near-by-events",
+                                                    "appBarText":
+                                                        kNearbyThisWeekLabel
+                                                  });
+                                            },
+                                            borderClr: Colors.transparent,
+                                            text: "View All ",
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              const SizedBox(
-                height: 10,
-              ),
-              // Top Rated Event
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Top rated",
-                            style: poppinsMediumStyle(
-                              fontSize: 14,
-                              context: context,
-                              color: theme.primaryColor,
+                const SizedBox(
+                  height: 10,
+                ),
+                // Top Rated Event
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: DynamicColor.darkGrayClr),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Top rated",
+                              style: poppinsMediumStyle(
+                                fontSize: 14,
+                                context: context,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              if (topRatedVal.value == false) {
-                                controller.getTopRatedEvent();
-                                topRatedVal.value = true;
-                              } else {
-                                topRatedVal.value = false;
-                                controller.update();
-                              }
-                            },
-                            child: Icon(
-                              topRatedVal.value == false
-                                  ? Icons.keyboard_arrow_down
-                                  : Icons.keyboard_arrow_up_outlined,
-                              size: 35,
-                              color: theme.primaryColor,
+                            GestureDetector(
+                              onTap: () {
+                                if (topRatedVal.value == false) {
+                                  controller.getTopRatedEvent();
+                                  topRatedVal.value = true;
+                                } else {
+                                  topRatedVal.value = false;
+                                  controller.update();
+                                }
+                              },
+                              child: Icon(
+                                topRatedVal.value == false
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_up_outlined,
+                                size: 35,
+                                color: theme.primaryColor,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      controller.getTopRatedEventLoader.value == false
-                          ? const SizedBox.shrink()
-                          : Visibility(
-                              visible: topRatedVal.value,
-                              child: controller.topRatingData == null ||
-                                      controller
-                                          .topRatingData!.data!.data!.isEmpty
-                                  ? noData(theme: theme, context: context)
-                                  : Column(
-                                      children: [
-                                        ListView.builder(
-                                            itemCount: controller.topRatingData!
-                                                        .data!.data!.length >
-                                                    4
-                                                ? 4
-                                                : controller.topRatingData!
-                                                    .data!.data!.length,
-                                            shrinkWrap: true,
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder:
-                                                (BuildContext context, index) {
-                                              EventData singleEvent = controller
-                                                  .topRatingData!
-                                                  .data!
-                                                  .data![index];
-                                              return userCustomEvent(
-                                                  isDelete: singleEvent
-                                                              .user?.isDelete ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  dayy: DateFormat
-                                                          .MMM()
-                                                      .format(
-                                                          singleEvent
-                                                              .startDateTime!),
-                                                  datee:
-                                                      "${singleEvent.startDateTime!.day}\n",
-                                                  networkImg: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? false
-                                                      : true,
-                                                  img: singleEvent
-                                                              .bannerImage ==
-                                                          null
-                                                      ? null
-                                                      : singleEvent.bannerImage!
-                                                          .mediaPath
-                                                          .toString(),
-                                                  title: singleEvent.eventTitle
-                                                      .toString(),
-                                                  location:
-                                                      singleEvent.location,
-                                                  subtitle: singleEvent
-                                                      .venue!.venueName
-                                                      .toString(),
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                        Routes
-                                                            .userEventDetailsScreen,
-                                                        arguments: {
-                                                          "notify": true,
-                                                          "notifyBackBtn": true,
-                                                          'appBarTitle':
-                                                              "Event Preview",
-                                                          "statusText":
-                                                              singleEvent.id
-                                                                  .toString()
-                                                        });
-                                                  },
-                                                  context: context,
-                                                  theme: theme);
-                                            }),
-                                        CustomButton(
-                                          onTap: () {
-                                            Get.toNamed(
-                                                Routes.viewAllRecommendedScreen,
-                                                arguments: {
-                                                  "urlText": "top-rated-events",
-                                                  "appBarText":
-                                                      "All Top Rated Event"
-                                                });
-                                          },
-                                          borderClr: Colors.transparent,
-                                          text: "View All ",
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                    ],
+                          ],
+                        ),
+                        controller.getTopRatedEventLoader.value == false
+                            ? const SizedBox.shrink()
+                            : Visibility(
+                                visible: topRatedVal.value,
+                                child: controller.topRatingData == null ||
+                                        controller
+                                            .topRatingData!.data!.data!.isEmpty
+                                    ? noData(theme: theme, context: context)
+                                    : Column(
+                                        children: [
+                                          ListView.builder(
+                                              itemCount: controller
+                                                          .topRatingData!
+                                                          .data!
+                                                          .data!
+                                                          .length >
+                                                      4
+                                                  ? 4
+                                                  : controller.topRatingData!
+                                                      .data!.data!.length,
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.zero,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      index) {
+                                                EventData singleEvent =
+                                                    controller.topRatingData!
+                                                        .data!.data![index];
+                                                return userCustomEvent(
+                                                    isDelete: singleEvent.user
+                                                                ?.isDelete ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    dayy: DateFormat.MMM()
+                                                        .format(
+                                                            singleEvent
+                                                                .startDateTime!),
+                                                    datee:
+                                                        "${singleEvent.startDateTime!.day}\n",
+                                                    networkImg: singleEvent
+                                                                .bannerImage ==
+                                                            null
+                                                        ? false
+                                                        : true,
+                                                    img: singleEvent
+                                                                .bannerImage ==
+                                                            null
+                                                        ? null
+                                                        : singleEvent
+                                                            .bannerImage!.mediaPath
+                                                            .toString(),
+                                                    title: singleEvent
+                                                        .eventTitle
+                                                        .toString(),
+                                                    location:
+                                                        singleEvent.location,
+                                                    subtitle: singleEvent
+                                                        .venue!.venueName
+                                                        .toString(),
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                          Routes
+                                                              .userEventDetailsScreen,
+                                                          arguments: {
+                                                            "notify": true,
+                                                            "notifyBackBtn":
+                                                                true,
+                                                            'appBarTitle':
+                                                                "Event Preview",
+                                                            "statusText":
+                                                                singleEvent.id
+                                                                    .toString()
+                                                          });
+                                                    },
+                                                    context: context,
+                                                    theme: theme);
+                                              }),
+                                          CustomButton(
+                                            onTap: () {
+                                              Get.toNamed(
+                                                  Routes
+                                                      .viewAllRecommendedScreen,
+                                                  arguments: {
+                                                    "urlText":
+                                                        "top-rated-events",
+                                                    "appBarText":
+                                                        "All Top Rated Event"
+                                                  });
+                                            },
+                                            borderClr: Colors.transparent,
+                                            text: "View All ",
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              const SizedBox(
-                height: 10,
-              ),
+                const SizedBox(
+                  height: 10,
+                ),
 
-              const SizedBox(
-                height: kToolbarHeight * 1.3,
-              ),
-            ],
+                const SizedBox(
+                  height: kToolbarHeight * 1.3,
+                ),
+              ],
+            ),
           ),
         );
       }),

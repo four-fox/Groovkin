@@ -75,7 +75,7 @@ class VenueDiscoveryRepository {
       query
         ..['latitude'] = latitude
         ..['longitude'] = longitude
-        ..['radius'] = radius.clamp(1, 50);
+        ..['radius'] = radius;
     }
     final cleanSearch = search?.trim() ?? '';
     if (cleanSearch.length >= 2) query['search'] = cleanSearch;

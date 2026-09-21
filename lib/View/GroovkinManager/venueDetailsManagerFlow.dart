@@ -104,24 +104,6 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                   text: controller.addressController.text,
                   image: "assets/location.png",
                   iconClr: theme.primaryColor.withValues(alpha: 0.7)),
-              if (controller.websiteController1.text.isNotEmpty)
-                Column(
-                  children: [
-                    eventDateTime(
-                      theme: theme,
-                      context: context,
-                      iconBgClr:
-                          DynamicColor.avatarBgClr.withValues(alpha: 0.8),
-                      iconClr: theme.primaryColor.withValues(alpha: 0.7),
-                      icon: true,
-                      Iconss: Icons.public,
-                      text: controller.websiteController1.text.toString(),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                  ],
-                ),
               if (controller.facebookController.text.isNotEmpty)
                 Column(
                   children: [
@@ -613,7 +595,8 @@ class VenueDetailsManagerScreen extends StatelessWidget {
                                   // long: double.parse(eventData.longitude.toString()),
                                   minMaxZoomPreference:
                                       const MinMaxZoomPreference(0, 16),
-                                  apiKey:"AIzaSyBheknVQ8Fbi69rMtaEKP6asKoXljFB3a4",
+                                  apiKey:
+                                      "AIzaSyBheknVQ8Fbi69rMtaEKP6asKoXljFB3a4",
                                   // canPopOnNextButtonTaped: true,
                                   canPopOnNextButtonTaped: true,
                                   searchHintText: controller.address != "null"

@@ -9,6 +9,7 @@ import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
+import 'package:groovkin/Components/searchRadiusSelector.dart';
 import 'package:intl/intl.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
@@ -285,45 +286,14 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    SizedBox(
-                      height: 20,
-                      child: Slider(
-                        value: homeController.currentSliderValue,
-                        activeColor: DynamicColor.lightRedClr,
-                        secondaryActiveColor: DynamicColor.grayClr,
-                        thumbColor: theme.primaryColor,
-                        max: 100,
-                        min: 1,
-                        divisions: 5,
-                        label: homeController.currentSliderValue
-                            .round()
-                            .toString(),
-                        onChanged: (double value) {
-                          homeController.currentSliderValue = value;
-                          homeController.update();
-                        },
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "${homeController.currentSliderValue.round().toInt()} mile",
-                          style: poppinsRegularStyle(
-                            fontSize: 10,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                        Text(
-                          "${homeController.currentSliderValue.round().toInt()} mile",
-                          style: poppinsRegularStyle(
-                            fontSize: 10,
-                            context: context,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      ],
+                    SearchRadiusSelector(
+                      selected: homeController.currentSliderValue.round(),
+                      options: homeController.allowedSearchRadii,
+                      onSelected: (value) {
+                        homeController.currentSliderValue = value.toDouble();
+                        homeController.recommendedRadius = value;
+                        homeController.update();
+                      },
                     ),
                     const SizedBox(
                       height: 12,
@@ -353,7 +323,8 @@ class _SearchFilterScreenState extends State<SearchFilterScreen> {
               homeController.firstDate = null;
               homeController.secondDate = null;
               await homeController.setRecommendationLocation(null);
-              homeController.currentSliderValue = 20;
+              homeController.currentSliderValue =
+                  homeController.recommendedRadius.toDouble();
               homeController.isFiltered = false;
               homeController.locationController.clear();
               homeController.update();

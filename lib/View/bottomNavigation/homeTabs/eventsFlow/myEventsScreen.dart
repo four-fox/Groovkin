@@ -267,11 +267,9 @@ class MyEventsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           child: CustomButton(
-            onTap: () {
+            onTap: () async {
               EventController eventController = Get.find();
-              eventController.eventDetail = null;
-              eventController.clearFields();
-              eventController.draftCondition(true);
+              await eventController.prepareNewEventForm();
               Get.toNamed(Routes.upGradeEvents);
             },
             borderClr: Colors.transparent,

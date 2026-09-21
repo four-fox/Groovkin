@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
-import 'package:groovkin/View/GroovkinUser/UserBottomView/groupFlow/groupScreen.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHistory/UserMyEvents.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/userHome.dart';
 import 'package:groovkin/View/bottomNavigation/settingView/settingScreen.dart';
@@ -36,7 +35,6 @@ class UserBottomNavigationNav extends StatelessWidget {
     final bodyContent = [
       const UserHomeScreen(),
       const MyEventsScreen(),
-      const GroupScreen(),
       const SettingScreen(),
     ];
 
@@ -115,22 +113,6 @@ class UserBottomNavigationNav extends StatelessWidget {
                     ),
                   ),
                   BottomBarItem(
-                    label: "Groups",
-                    labelTextStyle: poppinsMediumStyle(
-                        fontSize: 12,
-                        context: context,
-                        color: theme.scaffoldBackgroundColor),
-                    iconBuilder: Padding(
-                      padding: const EdgeInsets.only(bottom: 6.0),
-                      child: ImageIcon(
-                        const AssetImage("assets/groups.png"),
-                        color: selectUserIndexxx.value == 2
-                            ? DynamicColor.yellowClr
-                            : DynamicColor.grayClr,
-                      ),
-                    ),
-                  ),
-                  BottomBarItem(
                     label: "Settings",
                     labelTextStyle: poppinsMediumStyle(
                         fontSize: 12,
@@ -140,7 +122,7 @@ class UserBottomNavigationNav extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 6.0),
                       child: ImageIcon(
                         const AssetImage("assets/settingIcon.png"),
-                        color: selectUserIndexxx.value == 3
+                        color: selectUserIndexxx.value == 2
                             ? DynamicColor.yellowClr
                             : DynamicColor.grayClr,
                       ),

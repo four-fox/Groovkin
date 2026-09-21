@@ -503,9 +503,7 @@ class ActivityChoiceScreen extends StatelessWidget {
         actions: [_draftAction(_controller, context, theme)],
       ),
       body: GetBuilder<EventController>(
-        initState: (_) => _controller.eventDetail != null
-            ? _controller.activityChoice()
-            : _controller.getMusicTag(type: 'activity_choice'),
+        initState: (_) => _controller.getMusicTag(type: 'activity_choice'),
         builder: (controller) {
           if (!controller.getMusicTagLoader.value) {
             return const SizedBox.shrink();

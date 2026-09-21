@@ -109,7 +109,10 @@ class PendingScreen extends StatelessWidget {
                                               ),
                                           child: Center(
                                             child: Text(
-                                              "Pending",
+                                              eventData.status
+                                                      ?.toString()
+                                                      .capitalize ??
+                                                  "Pending",
                                               style: poppinsRegularStyle(
                                                 fontSize: 11,
                                                 context: context,

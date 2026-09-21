@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/textFields.dart';
+import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/model/invite_model.dart';
+import 'package:groovkin/utils/backend_contract.dart';
 
 class GroovkinInviteScreen extends StatefulWidget {
   const GroovkinInviteScreen({super.key});
@@ -15,6 +20,7 @@ class GroovkinInviteScreen extends StatefulWidget {
 
 class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
   late AuthController _authController;
+  final invitationForm = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -24,12 +30,13 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
     } else {
       _authController = Get.put<AuthController>(AuthController());
     }
-    _authController.invitationList.add(UserClass(
-        emailController: TextEditingController(), selectedVal: false.obs));
-    setState(() {});
+    _authController.resetInviteUi();
+    if (API().sp.read("role") == "eventOrganizer") {
+      _authController.loadInviteHistory();
+    }
   }
 
-  final invitationForm = GlobalKey<FormState>();
+  bool get _isEventOrganizer => API().sp.read("role") == "eventOrganizer";
 
   @override
   Widget build(BuildContext context) {
@@ -37,217 +44,268 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
     return GetBuilder<AuthController>(builder: (controller) {
       return Scaffold(
         appBar: customAppBar(
-            theme: theme,
-            text: "Groovkin Invites",
-            onTap: () {
-              _authController.invitationList.clear();
-              Get.back();
-            }),
+          theme: theme,
+          text: "Groovkin Invites",
+          onTap: () {
+            controller.resetInviteUi();
+            Get.back();
+          },
+        ),
         body: PopScope(
-            canPop: false,
-            onPopInvokedWithResult: (didPop, result) {
-              if (!didPop) {
-                _authController.invitationList.clear();
-                Get.back();
-              }
-            },
-            child: Form(
-              key: invitationForm,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: 10,
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (!didPop) {
+              controller.resetInviteUi();
+              Get.back();
+            }
+          },
+          child: Form(
+            key: invitationForm,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16),
+                    if (_isEventOrganizer) ...[
+                      Text(
+                        'Choose an invitation type',
+                        style: poppinsMediumStyle(
+                          fontSize: 16,
+                          context: context,
+                          color: theme.primaryColor,
                         ),
-                        ListView.builder(
-                          itemCount: _authController.invitationList.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: CustomTextFields(
-                                validationError: "email",
-                                isEmail: true,
-                                controller: controller
-                                    .invitationList[index].emailController,
-                                suffixWidget: GestureDetector(
-                                  onTap: () {
-                                    if (_authController.invitationList[index]
-                                            .selectedVal!.value ==
-                                        true) {
-                                      _authController.invitationList.remove(
-                                          _authController
-                                              .invitationList[index]);
-                                      controller.update();
-                                    }
-                                  },
-                                  child: Icon(
-                                    Icons.delete_forever,
-                                    color: DynamicColor.grayClr,
-                                  ),
-                                ),
-                                iconShow: _authController.invitationList[index]
-                                            .selectedVal!.value ==
-                                        false
-                                    ? false
-                                    : true,
-                                labelText: "email",
-                              ),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomButton(
-                                borderClr: Colors.transparent,
-                                color1: DynamicColor.blackClr,
-                                color2: DynamicColor.blackClr,
-                                widths: Get.width / 2.3,
-                                onTap: () {
-                                  if (invitationForm.currentState!.validate()) {
-                                    controller.sendEmail(context);
-                                  }
-                                },
-                                text: /*sp.read("role") == "eventOrganizer"? "Groovkin Venue Manager":*/
-                                    "Send",
-                              ),
-                              CustomButton(
-                                borderClr: Colors.transparent,
-                                backgroundClr: false,
-                                color1: DynamicColor.lightWhite,
-                                color2: DynamicColor.lightWhite,
-                                textClr: theme.scaffoldBackgroundColor,
-                                widths: Get.width / 2.3,
-                                onTap: () {
-                                  _authController.invitationList.add(UserClass(
-                                    emailController: TextEditingController(),
-                                    selectedVal: true.obs,
-                                  ));
-                                  controller.update();
-                                  // if(sp.read("role") !="User"){
-                                  //   Get.toNamed(Routes.groovkinManagerScreen);
-                                  // }else{
-                                  //   Get.toNamed(Routes.sendInvitationScreen);
-                                  //   // Get.back();
-                                  // }
-                                },
-                                text: "Add",
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      ),
+                      const SizedBox(height: 12),
+                      CustomButton(
+                        borderClr: Colors.transparent,
+                        color1: controller.selectedInviteType ==
+                                kInviteTypeRegularUser
+                            ? DynamicColor.blackClr
+                            : DynamicColor.lightWhite,
+                        color2: controller.selectedInviteType ==
+                                kInviteTypeRegularUser
+                            ? DynamicColor.blackClr
+                            : DynamicColor.lightWhite,
+                        textClr: controller.selectedInviteType ==
+                                kInviteTypeRegularUser
+                            ? null
+                            : theme.scaffoldBackgroundColor,
+                        onTap: () =>
+                            controller.selectInviteType(kInviteTypeRegularUser),
+                        text: "Regular User Invite",
+                      ),
+                      const SizedBox(height: 10),
+                      CustomButton(
+                        borderClr: Colors.transparent,
+                        color1: controller.selectedInviteType ==
+                                kInviteTypeVenueManager
+                            ? DynamicColor.blackClr
+                            : DynamicColor.lightWhite,
+                        color2: controller.selectedInviteType ==
+                                kInviteTypeVenueManager
+                            ? DynamicColor.blackClr
+                            : DynamicColor.lightWhite,
+                        textClr: controller.selectedInviteType ==
+                                kInviteTypeVenueManager
+                            ? null
+                            : theme.scaffoldBackgroundColor,
+                        onTap: () => controller
+                            .selectInviteType(kInviteTypeVenueManager),
+                        text: "Venue Manager Invite",
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                    if (controller.selectedInviteType ==
+                            kInviteTypeVenueManager &&
+                        _isEventOrganizer)
+                      CustomTextFields(
+                        validationError: "email",
+                        isEmail: true,
+                        controller:
+                            controller.venueManagerInviteEmailController,
+                        labelText: "Venue Manager email",
+                      )
+                    else
+                      CustomTextFields(
+                        validationError: "email",
+                        isEmail: true,
+                        isOptional: true,
+                        controller:
+                            controller.regularUserInviteEmailController,
+                        labelText: "email (optional)",
+                      ),
+                    const SizedBox(height: 20),
+                    CustomButton(
+                      borderClr: Colors.transparent,
+                      color1: DynamicColor.blackClr,
+                      color2: DynamicColor.blackClr,
+                      onTap: controller.inviteUiState == InviteUiState.loading
+                          ? () {}
+                          : () {
+                              if (controller.selectedInviteType ==
+                                      kInviteTypeVenueManager &&
+                                  _isEventOrganizer) {
+                                if (invitationForm.currentState!.validate()) {
+                                  controller.createVenueManagerInvite();
+                                }
+                              } else {
+                                controller.createRegularUserInvite();
+                              }
+                            },
+                      text: controller.inviteUiState == InviteUiState.loading
+                          ? "Creating..."
+                          : "Create Invite",
                     ),
-                  ),
-
-                  // list.isEmpty?SizedBox(
-                  //   height: double.infinity,
-                  //   width: double.infinity,
-                  //   child: Image(image: AssetImage("assets/inviteGroovkin.png"),),
-                  // ):
-                  // ListView.builder(
-                  //     itemCount: list.length,
-                  //     shrinkWrap: true,
-                  //     physics: AlwaysScrollableScrollPhysics(),
-                  //     itemBuilder: (BuildContext context,index){
-                  //       return Obx(
-                  //         ()=> Padding(
-                  //           padding: EdgeInsets.symmetric(vertical: 4.0),
-                  //           child: Row(
-                  //             crossAxisAlignment: CrossAxisAlignment.center,
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Container(
-                  //                 height:35,
-                  //                 // width:width?? 100,
-                  //                 padding: EdgeInsets.symmetric(horizontal: 8,vertical: 6),
-                  //                 decoration: BoxDecoration(
-                  //                   color:DynamicColor.lightBlackClr.withValues(0.8),
-                  //                   borderRadius: BorderRadius.circular(8),
-                  //                 ),
-                  //                 child:Row(
-                  //                   crossAxisAlignment: CrossAxisAlignment.center,
-                  //                   children: [
-                  //                     Text(list[index].name!,
-                  //                       style: poppinsRegularStyle(
-                  //                           fontSize: 12,
-                  //                           context: context,
-                  //                           color:DynamicColor.whiteClr
-                  //                       ),
-                  //                     ),
-                  //                     SizedBox(
-                  //                       width: list[index].selectedVal!.value !=true?0:10,
-                  //                     ),
-                  //                     list[index].selectedVal!.value !=true?SizedBox.shrink():  GestureDetector(
-                  //                       onTap: (){
-                  //                         list[index].selectedVal!.value = !list[index].selectedVal!.value;
-                  //                       },
-                  //                       child: CircleAvatar(
-                  //                         radius: 8,
-                  //                         backgroundColor: DynamicColor.lightWhite,
-                  //                         child: Icon(Icons.clear,
-                  //                           size: 10,
-                  //                         ),
-                  //                       ),
-                  //                     )
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               list[index].selectedVal!.value==true?SizedBox.shrink(): GestureDetector(
-                  //                 onTap: (){
-                  //                   list[index].selectedVal!.value = !list[index].selectedVal!.value;
-                  //                 },
-                  //                 child: Container(
-                  //                   height:30,
-                  //                   // width:width?? 100,
-                  //                   padding: EdgeInsets.symmetric(horizontal: 6,vertical: 3),
-                  //                   decoration: BoxDecoration(
-                  //                     color:DynamicColor.lightBlackClr.withValues(0.8),
-                  //                     borderRadius: BorderRadius.circular(8),
-                  //                   ),
-                  //                   child:Row(
-                  //                     crossAxisAlignment: CrossAxisAlignment.center,
-                  //                     children: [
-                  //                       Icon(Icons.add,
-                  //                         size: 18,
-                  //                         color: theme.primaryColor,,
-                  //                       ),
-                  //                       SizedBox(
-                  //                         width: 2,
-                  //                       ),
-                  //                       Text("Add",
-                  //                         style: poppinsRegularStyle(
-                  //                             fontSize: 12,
-                  //                             context: context,
-                  //                             color:DynamicColor.whiteClr
-                  //                         ),
-                  //                       ),
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       );
-                  //     }),
+                    if (controller.inviteError != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        controller.inviteError!,
+                        style: poppinsRegularStyle(
+                          fontSize: 13,
+                          context: context,
+                          color: DynamicColor.lightRedClr,
+                        ),
+                      ),
+                    ],
+                    if (controller.inviteUiState == InviteUiState.success &&
+                        controller.lastCreatedInvite != null)
+                      _InviteSuccessCard(
+                        invite: controller.lastCreatedInvite!,
+                        theme: theme,
+                      ),
+                    if (controller.inviteHistory.isNotEmpty) ...[
+                      const SizedBox(height: 24),
+                      Text(
+                        'Recent invites',
+                        style: poppinsMediumStyle(
+                          fontSize: 16,
+                          context: context,
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ...controller.inviteHistory.take(8).map(
+                            (invite) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Text(
+                                '${invite.inviteType ?? ''} • ${invite.email ?? 'no email'} • ${invite.status ?? ''}',
+                                style: poppinsRegularStyle(
+                                  fontSize: 12,
+                                  context: context,
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                    ],
+                  ],
                 ),
               ),
-            )),
+            ),
+          ),
+        ),
       );
     });
+  }
+}
+
+class _InviteSuccessCard extends StatelessWidget {
+  const _InviteSuccessCard({
+    required this.invite,
+    required this.theme,
+  });
+
+  final InviteRecord invite;
+  final ThemeData theme;
+
+  Future<void> _copy(String? value, String label) async {
+    if (value == null || value.isEmpty) return;
+    await Clipboard.setData(ClipboardData(text: value));
+    bottomToast(text: '$label copied');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: DynamicColor.grayClr.withValues(alpha: 0.5)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Invite created successfully',
+              style: poppinsMediumStyle(
+                fontSize: 16,
+                context: context,
+                color: theme.primaryColor,
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (invite.code != null)
+              Text(
+                'Code: ${invite.code}',
+                style: poppinsRegularStyle(
+                  fontSize: 14,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+              ),
+            if (invite.expiresAt != null)
+              Text(
+                'Expires: ${invite.expiresAt}',
+                style: poppinsRegularStyle(
+                  fontSize: 12,
+                  context: context,
+                  color: DynamicColor.grayClr,
+                ),
+              ),
+            const SizedBox(height: 8),
+            Text(
+              invite.emailSent
+                  ? 'Invitation email was sent.'
+                  : (invite.emailError ??
+                      'Invite created successfully, but email could not be sent. You can copy and share the invite code manually.'),
+              style: poppinsRegularStyle(
+                fontSize: 12,
+                context: context,
+                color: invite.emailSent
+                    ? DynamicColor.greenClr
+                    : DynamicColor.lightYellowClr,
+              ),
+            ),
+            const SizedBox(height: 16),
+            CustomButton(
+              borderClr: Colors.transparent,
+              color1: DynamicColor.blackClr,
+              color2: DynamicColor.blackClr,
+              onTap: () => _copy(invite.code, 'Invite code'),
+              text: "Copy Code",
+            ),
+            const SizedBox(height: 10),
+            CustomButton(
+              borderClr: Colors.transparent,
+              backgroundClr: false,
+              color1: DynamicColor.lightWhite,
+              color2: DynamicColor.lightWhite,
+              textClr: theme.scaffoldBackgroundColor,
+              onTap: () => _copy(
+                invite.shareText ?? invite.code,
+                'Invite text',
+              ),
+              text: "Copy Invite Text",
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -171,7 +171,9 @@ class CategoryItem {
         id: json["id"],
         eventTagId: json["event_tag_id"],
         name: json["name"],
-        selected: json["selected"] ?? false.obs,
+        selected:
+            ((json["selected"] == true || json["selected"] == 1) ? true : false)
+                .obs,
         type: json["type"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],

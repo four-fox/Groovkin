@@ -82,10 +82,6 @@ abstract class Routes {
   static const venueMoreImageScreen = _Path.venueMoreImageScreen;
   static const eventOrganizerScreen = _Path.eventOrganizerScreen;
   static const searchFilterScreen = _Path.searchFilterScreen;
-  static const createNewGroup = _Path.createNewGroup;
-  static const viewCreatedGroup = _Path.viewCreatedGroup;
-  // static const inviteFriendsInGroups = _Path.inviteFriendsInGroups;
-  static const theSquadScreen = _Path.theSquadScreen;
   static const emailVerifiedOtpScreen = _Path.emailVerifiedOtpScreen;
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Groovkin manger
@@ -101,7 +97,6 @@ abstract class Routes {
   static const successPaymentScreen = _Path.successPaymentScreen;
   static const viewOtherEventsDetails = _Path.viewOtherEventsDetails;
   static const managerUpcomingEventScreen = _Path.managerUpcomingEventScreen;
-  // static const groupScreen = _Path.groupScreen;
   static const groovkinPreferenceDetails = _Path.groovkinPreferenceDetails;
   static const notifyScreen = _Path.notifyScreen;
   static const counterScreen = _Path.counterScreen;
@@ -217,11 +212,7 @@ abstract class _Path {
   static const venueMoreImageScreen = "/VenueMoreImageScreen";
   static const eventOrganizerScreen = "/EventOrganizerScreen";
   static const searchFilterScreen = "/SearchFilterScreen";
-  static const createNewGroup = "/CreateNewGroup";
   static const calenderView = "/calenderView";
-  static const viewCreatedGroup = "/ViewCreatedGroup";
-  // static const inviteFriendsInGroups = "/InviteFriendsInGroups";
-  static const theSquadScreen = "/TheSquadScreen";
   static const settingNotificationScreen = "/settingNotificationScreen";
   static const editUserLifeStyleScreen = "/editUserLifeStyleScreen";
   static const emailVerifiedOtpScreen = "/emailVerifiedOtpScreen";
@@ -238,7 +229,6 @@ abstract class _Path {
   static const successPaymentScreen = "/SuccessPaymentScreen";
   static const viewOtherEventsDetails = "/ViewOtherEventsDetails";
   static const managerUpcomingEventScreen = "/managerUpcomingEventScreen";
-  // static const groupScreen = "/GroupScreen";
   static const groovkinPreferenceDetails = "/GroovkinPreferenceDetails";
   static const notifyScreen = "/NotifyScreen";
   static const counterScreen = "/CounterScreen";

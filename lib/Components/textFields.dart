@@ -32,6 +32,7 @@ class CustomTextFields extends StatelessWidget {
       this.onChanged,
       this.ignoredValidation = false,
       this.hintText,
+      this.autofillHints,
       this.disabled,
       this.prefixWidget,
       this.isOptional = false,
@@ -61,6 +62,7 @@ class CustomTextFields extends StatelessWidget {
   bool? isLink = false;
   final ValueChanged<String>? onChanged;
   String? hintText;
+  Iterable<String>? autofillHints;
   List<TextInputFormatter>? inputFormatter;
 
   @override
@@ -78,6 +80,7 @@ class CustomTextFields extends StatelessWidget {
         obscureText: obscureText,
         onChanged: onChanged,
         inputFormatters: inputFormatter,
+        autofillHints: autofillHints,
         keyboardType:
             keyBoardType == false ? TextInputType.text : TextInputType.number,
         decoration: InputDecoration(

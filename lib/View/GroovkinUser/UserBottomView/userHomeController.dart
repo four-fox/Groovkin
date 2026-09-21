@@ -71,32 +71,6 @@ class UserHomeController extends GetxController {
   getAllUpcomingEvents() async {}
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo My Events
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo Group
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>get all groups
-  RxBool getAllGroupsLoader = true.obs;
-  getAllGroups() async {}
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get all events of groups
-  RxBool getAllEventsOfGroupsLoader = true.obs;
-  getAllEventsOfGroups() async {
-    /// >>>>>>>>>>>>>>>>>.here is we getting all events of group base
-  }
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> create new group
-  RxBool getAllFollowerLoader = true.obs;
-  getAllFollower() async {}
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> create new group
-  // crateNewGroup() async {
-  //   var formData = form.FormData.fromMap({
-  //     "userLis": [],
-  //     "groupName": "asdf",
-  //   });
-  // }
-
-  ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> toDo Group
 }
 
 class UserHomeBinding implements Bindings {

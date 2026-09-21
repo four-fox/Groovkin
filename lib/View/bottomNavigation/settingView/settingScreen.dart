@@ -16,6 +16,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/theme_controller.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroovkinScreen.dart';
+import 'package:groovkin/Components/zipCodeShortcut.dart';
 import 'package:groovkin/View/profile/createProfile.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/model/single_ton_data.dart';
@@ -122,7 +123,7 @@ class _SettingScreenState extends State<SettingScreen> {
             ? const SizedBox.shrink()
             : Scaffold(
                 appBar: PreferredSize(
-                  preferredSize: const Size.fromHeight(kToolbarHeight * 2.4),
+                  preferredSize: const Size.fromHeight(kToolbarHeight * 2.7),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: sp.read("role") == "User"
@@ -188,6 +189,10 @@ class _SettingScreenState extends State<SettingScreen> {
                                   color: DynamicColor.grayClr
                                       .withValues(alpha: 0.9)),
                             ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 4),
+                            child: ZipCodeShortcut(),
+                          ),
                         ],
                       ),
                     ),
@@ -295,7 +300,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 await _switchComplimentaryRole();
                               }),
 
-                        API().sp.read("role") != "User"
+                        API().sp.read("role") == "eventOrganizer"
                             ? customWidget(
                                 context: context,
                                 img: "assets/groovkinInvite.png",

@@ -152,9 +152,10 @@ class _MyusergroonvkinmusicgenrescreenState
           margin: EdgeInsets.all(10),
           child: CustomButton(
             onTap: () async {
+              if (controller.savingSurvey.value) return;
               await controller.updateSurvey(isFromMusicGenre: true);
             },
-            text: "Update",
+            text: controller.savingSurvey.value ? "Updating..." : "Update",
           ),
         )),
       );

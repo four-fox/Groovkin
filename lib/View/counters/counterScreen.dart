@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
+import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/counters/bottomTextFields.dart';
 import 'package:groovkin/View/counters/messagesListWidget.dart';
+import 'package:groovkin/utils/backend_contract.dart';
 
 class CounterScreen extends StatefulWidget {
   const CounterScreen({super.key});
@@ -16,8 +18,6 @@ class CounterScreen extends StatefulWidget {
 }
 
 class _CounterScreenState extends State<CounterScreen> {
-  RxBool textFieldShow = false.obs;
-  bool accept = Get.arguments['acceptVal'];
   int? receiverId = Get.arguments["receiverId"];
   int? sourceId = Get.arguments["sourceId"];
 
@@ -25,6 +25,7 @@ class _CounterScreenState extends State<CounterScreen> {
   int? eventId = Get.arguments['eventId'];
 
   final ManagerController _controller = Get.find();
+  final TextEditingController _counterTextController = TextEditingController();
 
   @override
   void initState() {
@@ -32,16 +33,26 @@ class _CounterScreenState extends State<CounterScreen> {
     _controller.mediaClass.clear();
     _controller.multiPartImg.clear();
     if (receiverId != null && sourceId != null) {
-      // _controller.getAllMessages(userId: receiverId, sourceId: sourceId);
+      _controller.getAllMessages(userId: receiverId, sourceId: sourceId);
     } else {
       _controller.getAllMessages(userId: userId, sourceId: eventId);
     }
   }
 
   @override
-  void didUpdateWidget(covariant CounterScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print("DIDUPDAED");
+  void dispose() {
+    _counterTextController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitCounter(EventController eventController) async {
+    final id = eventId ?? eventController.eventDetail?.data?.id;
+    if (id == null) return;
+    await _controller.counterEventRequest(
+      eventId: id,
+      comment: _counterTextController.text.trim(),
+    );
+    if (mounted) Get.back();
   }
 
   @override
@@ -57,11 +68,14 @@ class _CounterScreenState extends State<CounterScreen> {
           actions: [
             GetBuilder<EventController>(builder: (eventController) {
               final detail = eventController.eventDetail?.data;
-              // Edit Event Request: EO-owned events still in the
-              // pre-accept negotiation stage only.
               final canEdit = API().sp.read("role") == "eventOrganizer" &&
                   detail != null &&
-                  detail.status == "pending" &&
+                  shouldShowEoRevise(
+                    canReviseRequest: detail.canReviseRequest,
+                    canEditRequest: detail.canEditRequest,
+                    status: detail.status,
+                    requestStatus: detail.requestStatus,
+                  ) &&
                   (eventId == null || detail.id == eventId);
               if (!canEdit) return const SizedBox.shrink();
               return Padding(
@@ -75,12 +89,16 @@ class _CounterScreenState extends State<CounterScreen> {
                     eventController.showEditPreviewScreen.value = true;
                     eventController.update();
                   },
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Edit"),
-                      SizedBox(width: 6),
-                      Icon(Icons.edit),
+                      Text(
+                        detail.canReviseRequest || detail.canEditRequest
+                            ? "Revise"
+                            : "Edit",
+                      ),
+                      const SizedBox(width: 6),
+                      const Icon(Icons.edit),
                     ],
                   ),
                 ),
@@ -98,30 +116,77 @@ class _CounterScreenState extends State<CounterScreen> {
             Positioned(
                 bottom: 0,
                 child: GetBuilder<EventController>(builder: (controller) {
-                  if (controller.eventDetail == null) {
+                  final detail = controller.eventDetail?.data;
+                  if (detail == null) {
                     return const SizedBox();
                   }
-                  return ((textFieldShow.value == false) &&
-                          (controller.eventDetail!.data!.status != "completed"))
-                      ? Padding(
+                  final showCounter = shouldShowPreApprovalCounter(
+                    canCounterRequest: detail.canCounterRequest,
+                    status: detail.status,
+                    chatExists: (_controller.chatData?.data?.data ?? [])
+                        .isNotEmpty,
+                  );
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (showCounter)
+                        Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: CustomButton(
                             widths: Get.width,
                             heights: 37,
                             borderClr: Colors.transparent,
-                            text: "Counter",
+                            text: _controller.counteringRequest.value
+                                ? "Sending..."
+                                : "Counter",
                             onTap: () {
-                              textFieldShow.value = !textFieldShow.value;
-                              setState(() {});
+                              showDialog(
+                                context: context,
+                                builder: (dialogContext) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      'Send Counter',
+                                      style: poppinsMediumStyle(
+                                        context: dialogContext,
+                                        fontSize: 16,
+                                        color: theme.primaryColor,
+                                      ),
+                                    ),
+                                    content: TextField(
+                                      controller: _counterTextController,
+                                      maxLines: 4,
+                                      decoration: const InputDecoration(
+                                        hintText:
+                                            'Please lower the hourly rate to 80',
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(dialogContext),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          Navigator.pop(dialogContext);
+                                          await _submitCounter(controller);
+                                        },
+                                        child: const Text('Submit'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             },
                           ),
-                        )
-                      : controller.eventDetail!.data!.status == "completed"
-                          ? const SizedBox.shrink()
-                          : BottomTextFields(
-                              userId: userId,
-                              eventId: eventId,
-                            );
+                        ),
+                      if (detail.status != "completed")
+                        BottomTextFields(
+                          userId: userId,
+                          eventId: eventId,
+                        ),
+                    ],
+                  );
                 })),
           ],
         ),

@@ -97,7 +97,7 @@ class _QuickSurveyScreenState extends State<QuickSurveyScreen> {
             surveyType: "music_genre",
             mygrookinHit: isFromGroovkin,
             // Create-event music step must start empty (ticket: no profile prefill).
-            startEmptyForEvent: isFromEvent && createEvent,
+            startEmptyForEvent: isFromEvent,
           );
         },
         builder: (controller) {

@@ -33,6 +33,9 @@ import 'hashtagCollectionRepository.dart';
 import 'ongoingEvents/ongoingEventsModel.dart';
 import 'venueDiscoveryModel.dart';
 import 'venueDiscoveryRepository.dart';
+import 'package:groovkin/utils/backend_contract.dart';
+import 'package:groovkin/utils/json_parsers.dart';
+import 'package:groovkin/utils/search_radius.dart';
 
 enum VenuePickerViewMode { list, map }
 
@@ -185,7 +188,15 @@ class EventController extends GetxController {
 
   getMusicTag({type}) async {
     getMusicTagLoader(false);
-    var response = await API().getApi(url: "event-tags?type=$type");
+    final query = eventCreateCatalogQuery(
+      type: type.toString(),
+      eventId: eventDetail?.data?.id,
+      isPersistedEdit: isPersistedEventEdit,
+    );
+    var response = await API().getApi(
+      url: "event-tags",
+      queryParameters: query,
+    );
     if (response.statusCode == 200) {
       addMusicTag = MusicTagModel.fromJson(response.data);
       if (type == "music_choice") {
@@ -196,6 +207,13 @@ class EventController extends GetxController {
         activityListPost.clear();
         activityList.clear();
         activityList.addAll(MusicTagModel.fromJson(response.data).data!);
+      }
+      if (!isPersistedEventEdit) {
+        _clearEventChoiceSelections(type == "music_choice");
+      } else if (type == "music_choice") {
+        await musicChoiceBinding();
+      } else {
+        await activityChoice();
       }
       getMusicTagLoader(true);
       update();
@@ -371,10 +389,21 @@ class EventController extends GetxController {
     final normalized = normalizeHashtag(value);
     if (removingEventHashtags.contains(normalized)) return;
     final eventId = eventDetail?.data?.id;
-    final isAttachedToSavedEvent = eventId != null &&
+    final usesSourceEventId = duplicateSourceEventId != null &&
+        eventId != null &&
+        eventId == duplicateSourceEventId;
+    if (eventId == null || usesSourceEventId) {
+      manualHashtags.removeWhere(
+        (tag) => normalizeHashtag(tag) == normalized,
+      );
+      manualHashtagsChanged = true;
+      update();
+      return;
+    }
+    final isAttachedToSavedEvent =
         (eventDetail?.data?.manualHashtags ?? const []).any(
-          (tag) => normalizeHashtag(tag.name) == normalized,
-        );
+      (tag) => normalizeHashtag(tag.name) == normalized,
+    );
     if (isAttachedToSavedEvent) {
       removingEventHashtags.add(normalized);
       update();
@@ -610,7 +639,10 @@ class EventController extends GetxController {
   }
 
   Future<void> setVenueRadius(int radius) async {
-    if (!const {10, 25, 50}.contains(radius) || venueRadius == radius) return;
+    final allowed = Get.isRegistered<AuthController>()
+        ? Get.find<AuthController>().allowedSearchRadii
+        : kDefaultSearchRadiiMiles;
+    if (!allowed.contains(radius) || venueRadius == radius) return;
     venueRadius = radius;
     await refreshVenueDiscovery();
   }
@@ -919,11 +951,16 @@ class EventController extends GetxController {
       "featuring": featuringController.text,
       "about": aboutController.text,
       "theme_of_event": themeOfEventController.text,
-      "start_date_time":
-          "$datePost ${postTime.toString().split(" ")[0]}" /*datePost*/,
-      // "check_in": postTime,
-      "end_date_time": "$endDatePost ${postEndTime.toString().split(" ")[0]}",
-      // "max_capacity": maxCapacityController.text,
+      "start_date_time": combineBackendDateTime(
+            dateYmd: datePost?.toString(),
+            timeText: postTime?.toString(),
+          ) ??
+          "",
+      "end_date_time": combineBackendDateTime(
+            dateYmd: endDatePost?.toString(),
+            timeText: postEndTime?.toString(),
+          ) ??
+          "",
       "rate": hourlyRateController.text,
       "rate_type": rateType!.value,
       "payment_schedule": int.parse(paymentSchedule!.value.toString()),
@@ -1048,8 +1085,16 @@ class EventController extends GetxController {
     }
 
     print(formData);
+    if (savingEvent.value) return;
+    savingEvent(true);
+    update();
     var response = await API().postApi(formData, 'create-event');
+    savingEvent(false);
+    update();
     if (response.statusCode == 200) {
+      duplicateValue(false);
+      duplicateSourceEventId = null;
+      await refreshListsAfterMutation(response: response);
       if (draft == false) {
         Get.back();
         Future.delayed(const Duration(seconds: 2), () {
@@ -1118,11 +1163,16 @@ class EventController extends GetxController {
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
   editEventFunction() async {
+    if (savingEvent.value) return;
+    savingEvent(true);
+    update();
     AuthController authController = Get.find();
     final publishVenueId = selectedVenue?.id ?? eventDetail?.data?.venueId;
     if (publishingDraft && publishVenueId == null) {
       BotToast.showText(
           text: 'Select a registered Groovkin venue before publishing.');
+      savingEvent(false);
+      update();
       Get.toNamed(Routes.listOfVenuesScreen);
       return;
     }
@@ -1158,10 +1208,16 @@ class EventController extends GetxController {
       "featuring": featuringController.text,
       "about": aboutController.text,
       "theme_of_event": themeOfEventController.text,
-      "start_date_time": "$datePost $postTime" /*datePost*/,
-      // "check_in": postTime,
-      "end_date_time": "$endDatePost $postEndTime",
-      // "max_capacity": maxCapacityController.text,
+      "start_date_time": combineBackendDateTime(
+            dateYmd: datePost?.toString(),
+            timeText: postTime?.toString(),
+          ) ??
+          "",
+      "end_date_time": combineBackendDateTime(
+            dateYmd: endDatePost?.toString(),
+            timeText: postEndTime?.toString(),
+          ) ??
+          "",
       "rate": hourlyRateController.text,
       "rate_type": rateType!.value,
       "payment_schedule": int.parse(paymentSchedule!.value.toString()),
@@ -1297,6 +1353,8 @@ class EventController extends GetxController {
         text:
             'Add at least one manual hashtag or select at least one hashtag collection before submitting this event.',
       );
+      savingEvent(false);
+      update();
       return;
     }
     EventHashtagPayload(
@@ -1306,14 +1364,25 @@ class EventController extends GetxController {
 
     var response = await API().postApi(formData, "update-event");
     if (response.statusCode == 200) {
-      await homeController.invalidateRecommendations();
+      await refreshListsAfterMutation(response: response);
       showEditPreviewScreen.value = false;
       publishingDraft = false;
       update();
       BotToast.showText(text: response.data['message']);
-      clearFields();
-      Get.offAllNamed(Routes.bottomNavigationView,
-          arguments: {"indexValue": 0});
+      final updatedId = eventDetail?.data?.id;
+      if (updatedId != null) {
+        await eventDetails(eventId: updatedId);
+        Get.offNamed(Routes.pendingEventDetails, arguments: {
+          "eventId": updatedId,
+          "notInterestedBtn": 0,
+          "title": "Event Details",
+          "type": "event",
+        });
+      } else {
+        clearFields();
+        Get.offAllNamed(Routes.bottomNavigationView,
+            arguments: {"indexValue": 0});
+      }
     } else {
       final message = backendErrorMessage(response, field: 'venue_id');
       BotToast.showText(text: message);
@@ -1324,6 +1393,8 @@ class EventController extends GetxController {
         Get.offNamed(Routes.listOfVenuesScreen);
       }
     }
+    savingEvent(false);
+    update();
   }
 
   ///delete image
@@ -1350,7 +1421,248 @@ class EventController extends GetxController {
     }
   }
 
-  /// clear fields
+  Future<void> _clearEventChoiceSelections(bool music) async {
+    if (music) {
+      tagListPost.clear();
+      for (final ele in tagList) {
+        ele.showSubCat?.value = false;
+        for (final item in ele.categoryItems ?? []) {
+          item.selected?.value = false;
+        }
+      }
+      musicChoiceChanged = false;
+    } else {
+      activityListPost.clear();
+      for (final ele in activityList) {
+        ele.showSubCat?.value = false;
+        for (final item in ele.categoryItems ?? []) {
+          item.selected?.value = false;
+        }
+      }
+      activityChoiceChanged = false;
+    }
+    update();
+  }
+
+  Future<void> refreshListsAfterMutation({
+    dynamic response,
+    List<String>? extraKeys,
+  }) async {
+    final keys = <String>[
+      ...parseInvalidateLists(response?.data ?? response),
+      ...?extraKeys,
+    ];
+    final role = API().sp.read('role');
+    if (role == 'User') {
+      await homeController.invalidateRecommendations();
+      await homeController.getEventNearByMe();
+      await homeController.getTopRatedEvent();
+      return;
+    }
+    final joined = keys.map((key) => key.toLowerCase()).join(' ');
+    final refreshUpcoming = keys.isEmpty ||
+        joined.contains('upcoming') ||
+        joined.contains('eo_upcoming');
+    final refreshOngoing = keys.isEmpty ||
+        joined.contains('on-going') ||
+        joined.contains('ongoing') ||
+        joined.contains('happening');
+    final refreshRequested = keys.isEmpty ||
+        joined.contains('requested') ||
+        joined.contains('request');
+    final refreshScheduled = keys.isEmpty || joined.contains('scheduled');
+    final refreshHistory = keys.isEmpty || joined.contains('history');
+
+    if (refreshUpcoming) await getUpcomingEvents();
+    if (refreshOngoing) await getAllOngoingEvents();
+    if (role == 'eventOrganizer' && refreshRequested) {
+      await getAllSendingRequest();
+    }
+    if (role == 'eventManager') {
+      if (refreshScheduled) await managerController.getScheduledEvents();
+      if (refreshRequested) await managerController.getAllPendingEvents();
+      if (refreshHistory) await managerController.getHistoryEvents();
+    } else if (keys.isNotEmpty && Get.isRegistered<ManagerController>()) {
+      if (refreshScheduled) await managerController.getScheduledEvents();
+      if (refreshRequested) await managerController.getAllPendingEvents();
+      if (refreshHistory) await managerController.getHistoryEvents();
+    }
+  }
+
+  Future<void> prepareNewEventForm() async {
+    eventDetail = null;
+    eventDetailsError = null;
+    duplicateSourceEventId = null;
+    await clearFields();
+    draftCondition(true);
+    duplicateValue(false);
+    draftValue(true);
+    await _applyEventFormDefaults();
+    _resetEventSpecificChoices();
+    update();
+  }
+
+  Future<void> _applyEventFormDefaults() async {
+    final response = await API().getApi(
+      url: "event-form-defaults",
+      isLoader: false,
+    );
+    if (!isBackendSuccess(response)) {
+      _resetEventSpecificChoices();
+      return;
+    }
+    final data = parseMap(response.data['data']) ?? {};
+    if (parseBool(data['reset_event_choices'] ?? data['is_new_event'],
+        fallback: true)) {
+      _resetEventSpecificChoices();
+    }
+  }
+
+  void _resetEventSpecificChoices() {
+    _authController.serviceList.clear();
+    for (final service in _authController.serviceListing) {
+      service.showItems?.value = false;
+    }
+    tagListPost.clear();
+    activityListPost.clear();
+    _clearEventChoiceSelections(true);
+    _clearEventChoiceSelections(false);
+    musicChoiceChanged = false;
+    activityChoiceChanged = false;
+  }
+
+  /// Duplicate a persisted event into an independent backend draft.
+  Future<void> loadDuplicatePrefill(int eventId) async {
+    eventDetailsLoader(false);
+    eventDetailsError = null;
+    duplicateValue(true);
+    draftValue(true);
+    publishingDraft = false;
+    duplicateSourceEventId = eventId;
+    showEditPreviewScreen.value = false;
+    var response = await API().postApi({}, "duplicate-event/$eventId");
+    if (isBackendSuccess(response)) {
+      final body = parseMap(response.data) ?? {};
+      final data = parseMap(body['data']) ?? body;
+      final eventJson = parseMap(data['event']) ?? data;
+      eventDetail = UserEventDetailsModel(
+        status: body['status'] == true,
+        data: EventDetails.fromJson(eventJson),
+        message: body['message']?.toString(),
+      );
+      final newId = eventDetail?.data?.id;
+      if (newId == null || newId == eventId) {
+        BotToast.showText(
+          text: 'Duplicate did not return a new event id.',
+        );
+        duplicateValue(false);
+        duplicateSourceEventId = null;
+        eventDetailsLoader(true);
+        update();
+        return;
+      }
+      eventDetail!.data!.eventMusicChoiceTags = [];
+      eventDetail!.data!.eventActivityChoiceTags = [];
+      eventDetail!.data!.services = [];
+      eventDetail!.data!.hardwareProvide = [];
+      eventDetail!.data!.musicGenre = [];
+      selectedOrganizerCollections.clear();
+      seedHashtagsFromEventDetail();
+      manualHashtagsChanged = true;
+      collectionSelectionChanged = false;
+      _bindSelectedCollectionsFromEventIfNeeded();
+      _resetEventSpecificChoices();
+      duplicateValue(false);
+      draftValue(true);
+      venueImageList.clear();
+      for (var element in eventDetail!.data!.profilePicture ?? []) {
+        venueImageList.add(element.mediaPath!);
+      }
+      eventDetailsLoader(true);
+      await assignValueForDuplicate();
+    } else {
+      duplicateValue(false);
+      duplicateSourceEventId = null;
+      eventDetailsLoader(true);
+      BotToast.showText(
+        text: backendErrorMessage(response),
+      );
+    }
+    update();
+  }
+
+  Future<void> assignValueForDuplicate() async {
+    musicGenreChanged = false;
+    musicChoiceChanged = false;
+    activityChoiceChanged = false;
+    eventTitleController.text = eventDetail?.data?.eventTitle ?? '';
+    featuringController.text = eventDetail?.data?.featuring ?? '';
+    aboutController.text = eventDetail?.data?.about ?? '';
+    themeOfEventController.text = eventDetail?.data?.themeOfEvent ?? '';
+    maxCapacityController.text = eventDetail?.data?.maxCapacity ?? '';
+    if (eventDetail?.data?.startDateTime != null) {
+      eventDateController.text =
+          DateFormat('dd-MM-yyyy').format(eventDetail!.data!.startDateTime!);
+      proposedTimeWindowsController.text =
+          DateFormat("HH:mm a").format(eventDetail!.data!.startDateTime!);
+      postTime = proposedTimeWindowsController.text;
+      datePost =
+          DateFormat('yyyy-MM-dd').format(eventDetail!.data!.startDateTime!);
+    }
+    if (eventDetail?.data?.endDateTime != null) {
+      eventEndDateController.text =
+          DateFormat('dd-MM-yyyy').format(eventDetail!.data!.endDateTime!);
+      endTimeController.text =
+          DateFormat("HH:mm a").format(eventDetail!.data!.endDateTime!);
+      postEndTime = endTimeController.text;
+      endDatePost =
+          DateFormat('yyyy-MM-dd').format(eventDetail!.data!.endDateTime!);
+    }
+    if (eventDetail?.data?.rateType == "hourly") {
+      eventRateHourly.value = 0;
+      rateType!.value = "hourly";
+    } else {
+      eventRateHourly.value = 1;
+      rateType!.value = "flat";
+    }
+    hourlyRateController.text = eventDetail?.data?.rate?.toString() ?? '';
+    final existingSchedule =
+        double.tryParse(eventDetail?.data?.paymentSchedule?.toString() ?? "");
+    if (existingSchedule != null) {
+      paymentSchedule!.value = existingSchedule.round().toString();
+      downPaymentController.text = paymentSchedule!.value;
+    }
+    commentsController.clear();
+    selectedVenue = null;
+    Get.toNamed(Routes.upGradeEvents);
+  }
+
+  Future<void> resubmitEventRequest({int? eventId}) async {
+    final id = eventId ?? eventDetail?.data?.id;
+    if (id == null || resubmittingRequest.value) return;
+    resubmittingRequest(true);
+    update();
+    try {
+      final response = await API().postApi(
+        form.FormData.fromMap({"event_id": id}),
+        "resubmit-event-request",
+      );
+      if (response.statusCode == 200) {
+        BotToast.showText(
+          text: response.data['message']?.toString() ?? 'Request resubmitted',
+        );
+        await eventDetails(eventId: id);
+        await refreshListsAfterMutation(response: response);
+      } else {
+        BotToast.showText(text: backendErrorMessage(response));
+      }
+    } finally {
+      resubmittingRequest(false);
+      update();
+    }
+  }
+
+  ///clear fields
   RxBool draftCondition = false.obs;
   clearFields() async {
     // draftCondition(true);
@@ -1400,10 +1712,15 @@ class EventController extends GetxController {
   RxBool getAllEventsLoader = true.obs;
   bool getAllEventWaiting = false;
 
-  getAllEvents({nextUrl, loader = true}) async {
+  getAllEvents({nextUrl, loader = true, String? section}) async {
     getAllEventsLoader(false);
+    final query = <String, dynamic>{};
+    if (section != null) query['section'] = section;
     var response = await API().getApi(
-        url: "show-venue-my-events", fullUrl: nextUrl, isLoader: loader);
+        url: "show-venue-my-events",
+        fullUrl: nextUrl,
+        isLoader: loader,
+        queryParameters: query.isEmpty ? null : query);
     if (response.statusCode == 200) {
       if (nextUrl == null) {
         getAllEventWaiting = false;
@@ -1482,24 +1799,42 @@ class EventController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get details of event details
   ///
   UserEventDetailsModel? eventDetail;
+  String? eventDetailsError;
   RxBool eventDetailsLoader = true.obs;
   List<String> venueImageList = [];
   RxBool duplicateValue = false.obs;
   RxBool draftValue = false.obs;
+  RxBool savingEvent = false.obs;
+  RxBool resubmittingRequest = false.obs;
+  int? duplicateSourceEventId;
+
+  bool get isPersistedEventEdit =>
+      eventDetail?.data?.id != null &&
+      !duplicateValue.value &&
+      !draftValue.value;
   bool publishingDraft = false;
   RxBool showEditPreviewScreen = false.obs;
 
   eventDetails({eventId}) async {
     eventDetailsLoader(false);
+    eventDetailsError = null;
     duplicateValue(false);
     draftValue(false);
+    duplicateSourceEventId = null;
     var response = await API().getApi(url: "event-details/$eventId");
     if (response.statusCode == 200) {
       eventDetail = UserEventDetailsModel.fromJson(response.data);
       venueImageList.clear();
-      for (var element in eventDetail!.data!.profilePicture!) {
-        venueImageList.add(element.mediaPath!);
+      for (var element in eventDetail?.data?.profilePicture ?? []) {
+        if (element.mediaPath != null) {
+          venueImageList.add(element.mediaPath!);
+        }
       }
+      eventDetailsLoader(true);
+      update();
+    } else {
+      eventDetail = null;
+      eventDetailsError = backendErrorMessage(response);
       eventDetailsLoader(true);
       update();
     }
@@ -1721,9 +2056,9 @@ class EventController extends GetxController {
     var response = await API().getApi(url: "upcoming-events");
     if (response.statusCode == 200) {
       upcomingEventData = UpcomingEventsModel.fromJson(response.data);
-      getUpcomingEventsLoader(true);
-      update();
     }
+    getUpcomingEventsLoader(true);
+    update();
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> postponed data assign
@@ -1779,9 +2114,9 @@ class EventController extends GetxController {
     var response = await API().getApi(url: "on-going-events");
     if (response.statusCode == 200) {
       ongoingEvents = OngoingEventModel.fromJson(response.data);
-      getAllOngoingEventsLoader(true);
-      update();
     }
+    getAllOngoingEventsLoader(true);
+    update();
   }
 
   ///complete event and submit rating

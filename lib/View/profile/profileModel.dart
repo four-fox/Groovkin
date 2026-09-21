@@ -4,6 +4,9 @@
 
 import 'dart:convert';
 
+import 'package:groovkin/utils/json_parsers.dart';
+import 'package:groovkin/utils/search_radius.dart';
+
 ProfileModel profileModelFromJson(String str) =>
     ProfileModel.fromJson(json.decode(str));
 
@@ -46,6 +49,13 @@ class Data {
   Profile? profile;
   ProfilePicture? profilePicture;
   SocialLink? socialLink;
+  bool? isCompleteProfile;
+  bool? requiresProfileCompletion;
+  bool? isNewAccount;
+  List<String> missingProfileFields;
+  List<String> profileCompletionFields;
+  List<int> allowedSearchRadiiMiles;
+  int? searchRadiusMiles;
 
   Data({
     this.id,
@@ -60,9 +70,18 @@ class Data {
     this.profilePicture,
     this.activeRole,
     this.socialLink,
+    this.isCompleteProfile,
+    this.requiresProfileCompletion,
+    this.isNewAccount,
+    this.missingProfileFields = const [],
+    this.profileCompletionFields = const [],
+    this.allowedSearchRadiiMiles = kDefaultSearchRadiiMiles,
+    this.searchRadiusMiles,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map<String, dynamic> json) {
+    final profileJson = parseMap(json["profile"]);
+    return Data(
       id: json["id"],
       name: json["name"],
       email: json["email"],
@@ -72,14 +91,33 @@ class Data {
       createdAt: json["created_at"],
       updatedAt: json["updated_at"],
       activeRole: json["active_role"],
-      profile:
-          json["profile"] == null ? null : Profile.fromJson(json["profile"]),
+      profile: profileJson == null ? null : Profile.fromJson(profileJson),
       profilePicture: json["profile_picture"] == null
           ? null
           : ProfilePicture.fromJson(json['profile_picture']),
       socialLink: json["social_links"] == null
           ? null
-          : SocialLink.fromJson(json["social_links"]));
+          : SocialLink.fromJson(json["social_links"]),
+      isCompleteProfile: json["is_complete_profile"] == null
+          ? null
+          : parseBool(json["is_complete_profile"]),
+      requiresProfileCompletion: json["requires_profile_completion"] == null
+          ? null
+          : parseBool(json["requires_profile_completion"]),
+      isNewAccount: json["is_new_account"] == null
+          ? null
+          : parseBool(json["is_new_account"]),
+      missingProfileFields: parseStringList(json["missing_profile_fields"]),
+      profileCompletionFields:
+          parseStringList(json["profile_completion_fields"]),
+      allowedSearchRadiiMiles: parseAllowedSearchRadii(
+        json["allowed_search_radii_miles"] ??
+            profileJson?["allowed_search_radii_miles"],
+      ),
+      searchRadiusMiles: parseInt(json["search_radius_miles"]) ??
+          parseInt(profileJson?["search_radius_miles"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -110,6 +148,7 @@ class Profile {
   dynamic latitude;
   dynamic longitude;
   String? zipCode;
+  int? searchRadiusMiles;
   int? isInsurance;
   int? userId;
   DateTime? createdAt;
@@ -133,6 +172,7 @@ class Profile {
     this.about,
     this.country,
     this.zipCode,
+    this.searchRadiusMiles,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
@@ -149,10 +189,13 @@ class Profile {
         longitude: json["longitude"],
         isInsurance: json["is_insurance"],
         userId: json["user_id"],
-        createdAt: DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.tryParse(json["created_at"].toString()),
         updatedAt: json["updated_at"],
         about: json["about"],
-        zipCode: json["zip_code"],
+        zipCode: parseString(json["zip_code"]) ?? parseString(json["zip"]),
+        searchRadiusMiles: parseInt(json["search_radius_miles"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -173,6 +216,7 @@ class Profile {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt,
         "zip_code": zipCode,
+        "search_radius_miles": searchRadiusMiles,
       };
 }
 

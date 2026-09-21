@@ -220,10 +220,14 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                                                     _controller
                                                             .publishingDraft =
                                                         false;
-                                                    _controller.duplicateValue
-                                                        .value = true;
-                                                    _controller.draftValue
-                                                        .value = false;
+                                                    final eventId = _controller
+                                                        .eventDetail?.data?.id;
+                                                    if (eventId != null) {
+                                                      _controller
+                                                          .loadDuplicatePrefill(
+                                                              eventId);
+                                                    }
+                                                    return;
                                                   } else {
                                                     _controller
                                                         .publishingDraft = true;

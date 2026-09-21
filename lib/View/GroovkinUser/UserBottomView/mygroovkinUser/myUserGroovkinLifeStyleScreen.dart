@@ -157,9 +157,10 @@ class _MyusergroovkinlifestylescreenState
           margin: EdgeInsets.all(10),
           child: CustomButton(
             onTap: () {
+              if (controller.savingSurvey.value) return;
               controller.updateSurvey(isFromLifeStyle: true);
             },
-            text: "Update",
+            text: controller.savingSurvey.value ? "Updating..." : "Update",
           ),
         )),
       );
