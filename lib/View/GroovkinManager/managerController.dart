@@ -848,9 +848,7 @@ class ManagerController extends GetxController {
     });
     var response = await API().postApi(formData, "accept-event-request");
     if (response.statusCode == 200) {
-      if (status != 'countered') {
-        managerPendingEvents?.data?.data?.removeWhere((e) => e.id == id);
-      }
+      managerPendingEvents?.data?.data?.removeWhere((e) => e.id == id);
       checkBoxValue.value = false;
       bottomToast(text: response.data['message']);
       if (Get.isRegistered<EventController>()) {
@@ -865,31 +863,11 @@ class ManagerController extends GetxController {
         await getHistoryEvents();
       }
       update();
-      if (status != 'countered' &&
-          Get.currentRoute != Routes.bottomNavigationView) {
+      if (Get.currentRoute != Routes.bottomNavigationView) {
         Get.back();
       }
     } else {
       BotToast.showText(text: backendErrorMessage(response));
-    }
-  }
-
-  Future<void> counterEventRequest({
-    required int eventId,
-    String? comment,
-  }) async {
-    if (counteringRequest.value) return;
-    counteringRequest(true);
-    update();
-    try {
-      await eventAcceptDeclineFtn(
-        status: 'countered',
-        id: eventId,
-        comment: comment,
-      );
-    } finally {
-      counteringRequest(false);
-      update();
     }
   }
 
@@ -943,7 +921,7 @@ class ManagerController extends GetxController {
       "receiver_id": receiverId,
       if (messageController.text.isNotEmpty) "msg": messageController.text,
       "source_id": eventId,
-      "type": "counter_message",
+      "type": "message",
       if (multiPartImg.isNotEmpty) "media[]": multiPartImg
     });
     var response = await API().postApi(formData, "send-message");

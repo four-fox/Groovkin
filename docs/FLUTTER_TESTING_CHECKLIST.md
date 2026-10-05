@@ -72,6 +72,29 @@ Backend must already own these roles. Do not grant roles locally.
 - **Expected UI:** No Venue Manager Invite action
 - **Pass/Fail:** [ ]
 
+### C6. Canonical invite format (XXXX-XXXX)
+
+- **Expected:** Invite input accepts `9AXG-8JXL` style codes (letters + digits), not numeric-only 8-digit codes
+- **Pass/Fail:** [ ]
+
+### C7. Lowercase and hyphen UX
+
+- **Steps:** Type `nauk-ckz9` or `naukckz9` at VM registration
+- **Expected:** Normalizes/displays `NAUK-CKZ9`. Hyphen is preserved or auto-inserted. Unhyphenated value is never submitted.
+- **Pass/Fail:** [ ]
+
+### C8. Old long code rejected
+
+- **Steps:** Enter `1E1A-540D-C658-5E10`
+- **Expected:** Local rejection (`validation_error` / format message) or backend `validation_error`. No crash.
+- **Pass/Fail:** [ ]
+
+### C9. Backend-returned code is unchanged
+
+- **Steps:** Create VM invite, copy code, validate, register
+- **Expected:** Displayed, copied, validated, and registered code is the exact backend `code` string (e.g. `9AXG-8JXL`)
+- **Pass/Fail:** [ ]
+
 ---
 
 ## D. Registration test cases
@@ -171,31 +194,39 @@ Backend must already own these roles. Do not grant roles locally.
 
 ---
 
-## H. Pre-approval Counter tests
+## H. Structured Counter and Event Details
 
-### H1. VM sees Counter when `can_counter_request=1`
+### H1. Pending VM — one Accept Event, one Counter, one Decline Event
 
-- **Preconditions:** EO submitted a request to the VM venue
-- **Account/role:** Venue Manager for that venue
-- **Steps:** Open Requests → event details
-- **Expected API:** `GET /api/event-details/{id}` includes `can_counter_request=1`
-- **Expected UI:** Counter button visible
-- **Pass/Fail:** [ ]
+- **Expected API:** `GET /api/event-details/{id}` and/or `GET /api/events/{id}/counters` with `data.counter.can_accept_event`, `can_counter`, `can_decline_event`
+- **Expected UI:** Event Details (`PendingEventDetails`) shows each action once in `EventActionBar`. Lifecycle chip is Pending, not Countered.
+- **Pass/Fail:** PASS (widget tests + code audit). Manual device: NOT RUN
 
-### H2. Existing chat does not hide Counter
+### H2. Chat does not control Counter
 
-- **Steps:** Ensure a comment/chat thread exists, reopen details
-- **Expected UI:** Counter remains visible
-- **Pass/Fail:** [ ]
+- **Expected API:** `POST /api/send-message` `type=message` only
+- **Expected UI:** Messages screen is chat. Counter uses `POST /api/events/{id}/counters`
+- **Pass/Fail:** PASS (code). Manual: NOT RUN
 
-### H3. VM can submit a counter comment
+### H3. Create Counter uses minor units
 
-- **Steps:** Counter → enter `Please lower the hourly rate to 80` → Submit
-- **Expected API:** `POST /api/accept-event-request` with `status=countered`
-- **Expected UI:** status `countered`, comment visible, event stays in VM Requests
-- **Pass/Fail:** [ ]
+- **Steps:** Counter → proposed `2700.00` → Submit Counter
+- **Expected API:** `POST /api/events/{id}/counters` `{proposed_principal_minor: 270000}`
+- **Pass/Fail:** PASS (unit conversion tests). Manual API: NOT RUN
+
+### H4. Accept / Reject / Counter Again
+
+- **Expected API:** `POST /api/counters/{id}/accept|reject|counter`
+- **Expected UI:** Max one of each action. Accept Counter does not accept the event or charge final payment.
+- **Pass/Fail:** PASS (widget tests + controller). Manual: NOT RUN
+
+### H5. Duplicate button regression
+
+- **Expected UI:** Pending VM / counter recipient / completion VM never render two copies of the same action
+- **Pass/Fail:** PASS (`test/event_counter_test.dart`)
 
 ---
+
 
 ## I. EO Revise / Resubmit tests
 
@@ -344,17 +375,43 @@ These must keep using completion APIs, not pre-approval Counter.
 
 ---
 
+## U. Event visibility and event-specific hashtags
+
+Manual device cases stay `NOT RUN` until executed on a logged-in build.
+
+- [ ] Edit Music Choices loads event-specific selections — NOT RUN
+- [ ] Edit Activity Choices loads event-specific selections — NOT RUN
+- [ ] Profile preference is not selected unless event selected it — NOT RUN
+- [ ] Main VM heading is My Events — NOT RUN
+- [ ] Future accepted event visible in My Events — NOT RUN
+- [ ] Ongoing event visible in My Events — NOT RUN
+- [ ] Completed-before-end visible in My Events — NOT RUN
+- [ ] Completed-before-end absent from History — NOT RUN
+- [ ] Past completed visible in History — NOT RUN
+- [ ] Past accepted visible in History — NOT RUN
+- [ ] Pending remains Requests — NOT RUN
+- [ ] Counter does not change list classification incorrectly — NOT RUN
+- [ ] Completion Counter before end does not move event to History — NOT RUN
+
+Automated coverage in `test/event_visibility_test.dart` checks catalog `status` 1/0, empty new-event catalog, server-bucket retention, and the My Events heading/endpoints.
+
+---
+
 ## Test results table
 
 Statuses: `PASS`, `FAIL`, `NOT RUN`, `BLOCKED`
 
 | ID | Area | Test | Expected | Result | Notes |
 | -- | ---- | ---- | -------- | ------ | ----- |
-| C1 | Invites | EO two invite actions | Regular User + Venue Manager | NOT RUN | Requires EO account |
+| C1 | Invites | EO two invite actions | Regular User + Venue Manager | NOT RUN | Requires EO login on device |
 | C2 | Invites | Regular User invite | Code + copy/share + email status | NOT RUN | Requires backend |
-| C3 | Invites | SMTP failure still created | Success with manual share | NOT RUN | Requires SMTP-fail fixture |
-| C4 | Invites | VM invite | Code + required email | NOT RUN | Requires backend |
+| C3 | Invites | SMTP failure still created | Success with manual share | PASS | Automated parse: `status=true`, `email_sent=false` |
+| C4 | Invites | VM invite | Canonical `XXXX-XXXX` + required email | NOT RUN | Requires backend |
 | C5 | Invites | User cannot create VM invite | No VM action | NOT RUN | Requires user account |
+| C6 | Invites | Canonical format | Letters+digits `XXXX-XXXX` | PASS | `test/invite_code_test.dart` |
+| C7 | Invites | Lowercase / hyphen | `nauk-ckz9` → `NAUK-CKZ9` | PASS | Automated normalize/format |
+| C8 | Invites | Old long code | Rejected locally | PASS | Automated; paste of 16-char format rejected |
+| C9 | Invites | Returned code unchanged | Display/copy/validate/register same string | NOT RUN | Device + backend |
 | D1 | Registration | Valid VM invite | Validate then register | NOT RUN | Requires unused VM invite |
 | D2 | Registration | Wrong email | `invite_email_mismatch` | NOT RUN | |
 | D3 | Registration | Wrong code | `invite_invalid` | NOT RUN | |
@@ -365,13 +422,15 @@ Statuses: `PASS`, `FAIL`, `NOT RUN`, `BLOCKED`
 | D8 | Registration | Regular User signup | Existing path works | NOT RUN | |
 | E1 | Create Event | Empty choices | Services/music/activities empty | NOT RUN | |
 | E2 | Create Event | No stale carry-over | Second create is empty | NOT RUN | |
-| F1 | Duplicate | New independent event | New id, empty choices | NOT RUN | |
-| G1 | Hashtags | Delete duplicate hashtag | Uses new event id | NOT RUN | |
-| G2 | Hashtags | Source unchanged | Source hashtag remains | NOT RUN | |
-| H1 | Counter | `can_counter_request=1` | Counter visible | NOT RUN | |
-| H2 | Counter | Chat does not hide Counter | Counter still visible | NOT RUN | |
-| H3 | Counter | Submit counter comment | `status=countered`, stays in Requests | NOT RUN | |
-| I1 | Revise | Same event update | pending/resubmitted | NOT RUN | |
+| F1 | Duplicate | New independent event | New id, empty choices | PASS | Automated id parse only; UI NOT RUN |
+| G1 | Hashtags | Delete duplicate hashtag | Uses new event id | PASS | Automated `eventIdForHashtagDeletion` |
+| G2 | Hashtags | Source unchanged | Source id never used | PASS | Automated; live source check NOT RUN |
+| H1 | Counter | Server `can_counter` | One Counter in EventActionBar | PASS | Widget + flags |
+| H2 | Counter | Chat is messages only | No `counter_message` | PASS | Code audit |
+| H3 | Counter | Submit price | `proposed_principal_minor` | PASS | `dollarsToMinorUnits` |
+| H4 | Counter | Accept/Reject/Again | Structured counter routes | PASS | Endpoint tests; UI NOT RUN |
+| H5 | Event Details | Duplicate actions | Each action max once | PASS | `test/event_counter_test.dart` |
+| I1 | Revise | Same event update | pending/resubmitted | PASS | Automated payload parse; UI NOT RUN |
 | I2 | Resubmit | No field changes | `resubmit-event-request` | NOT RUN | |
 | J1 | Approval | Counter again | Repeated negotiation | NOT RUN | |
 | J2 | Approval | Accept + payment | Lists update immediately | NOT RUN | Needs Stripe |
@@ -379,14 +438,24 @@ Statuses: `PASS`, `FAIL`, `NOT RUN`, `BLOCKED`
 | K1 | EO Home | Upcoming | `upcoming-events` | NOT RUN | |
 | K2 | EO Home | Happening Now | `on-going-events` | NOT RUN | Needs in-progress event |
 | K3 | EO Home | Requested | Countered remains | NOT RUN | |
-| L1 | VM Home | Scheduled | Venue-scoped scheduled | NOT RUN | |
-| M1 | VM Home | Requests | pending + countered | NOT RUN | |
-| N1 | VM Home | History | Past approved/completed | NOT RUN | |
+| L1 | VM Home | Scheduled | Venue-scoped scheduled | PASS | Automated endpoint map; UI NOT RUN |
+| M1 | VM Home | Requests | pending + countered | PASS | Automated endpoint map; UI NOT RUN |
+| N1 | VM Home | History | Past approved/completed | PASS | Automated endpoint map; UI NOT RUN |
 | O1 | Security | Unrelated VM | 403 / no protected data | NOT RUN | |
-| P1 | Cache | Mutation refresh | No restart required | NOT RUN | |
+| P1 | Cache | Mutation refresh | No restart required | PASS | Automated `invalidate_lists` parse |
 | Q1 | Notifications | Navigation + Home | Both work | NOT RUN | Needs device |
 | R1 | Closure | Completion counters | Still completion APIs | NOT RUN | |
 | S1 | Regression | Regular User | Existing user flow | NOT RUN | |
-| T1 | Roles | Switch profile | Backend `active_role` | NOT RUN | |
+| T1 | Roles | Switch profile | Backend `active_role` | PASS | Automated role mapping |
+| U1 | Hashtags | Edit music/activity status | `status` 1 selected, 0 not | PASS | `test/event_visibility_test.dart`; device NOT RUN |
+| U2 | VM lists | My Events heading + buckets | Server lists, no local History move | PASS | Automated; device flows NOT RUN |
 
-Automated parsing/state tests were added in `test/backend_contract_test.dart`. Those do not replace the manual backend scenarios above.
+Automated tests live in `test/invite_code_test.dart`, `test/backend_contract_test.dart`, `test/event_counter_test.dart`, `test/event_visibility_test.dart`, and `test/profile_and_event_contract_test.dart`.
+
+`flutter analyze`: PASS (no issues).
+
+`flutter test`: PASS — 138 tests, 0 failed. Device flows in section U remain NOT RUN.
+
+`flutter build apk --debug`: PASS — `build/app/outputs/flutter-apk/app-debug.apk`.
+
+iOS debug build was not run.

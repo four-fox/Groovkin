@@ -18,6 +18,7 @@ const kClosedEventStatuses = {
 };
 
 const kBackendDateTimePattern = 'yyyy-MM-dd HH:mm:ss';
+const kEventClockPattern = 'HH:mm';
 
 const kKnownErrorMessages = <String, String>{
   'invite_invalid': 'Invalid invite code.',
@@ -40,6 +41,21 @@ const kKnownErrorMessages = <String, String>{
       'The requested event action is no longer valid.',
   'venue_access_denied': 'This event does not belong to a venue you manage.',
   'validation_error': 'Please check the highlighted fields and try again.',
+  'counter_not_available': 'Price counter is not available for this event.',
+  'event_already_ongoing': 'This event is already in progress.',
+  'counter_forbidden': 'You cannot submit a price counter for this event.',
+  'counter_not_recipient': 'Only the other party can respond to this counter.',
+  'counter_already_resolved': 'This counter has already been resolved.',
+  'counter_amount_invalid': 'Enter a valid proposed event price.',
+  'active_counter_exists': 'Resolve the active price counter first.',
+  'active_counter_requires_resolution':
+      'An active price counter must be accepted or rejected first.',
+  'event_cost_counter_required':
+      'Event price can only be changed through Counter.',
+  'completion_not_started': 'This event is not ready for completion yet.',
+  'final_price_below_paid':
+      'Settlement adjustment required. The agreed total is lower than the amount already paid.',
+  'counter_not_found': 'This counter could not be found.',
 };
 
 String? backendErrorCode(dynamic response) {
@@ -130,6 +146,18 @@ List<String> parseInvalidateLists(dynamic payload) {
   return parseStringList(raw);
 }
 
+/// Never delete hashtags against the duplicate source event.
+int? eventIdForHashtagDeletion({
+  int? currentEventId,
+  int? sourceEventId,
+}) {
+  if (currentEventId == null) return null;
+  if (sourceEventId != null && currentEventId == sourceEventId) {
+    return null;
+  }
+  return currentEventId;
+}
+
 bool shouldResetEventChoices({
   required bool isNewEvent,
   required bool isDuplicate,
@@ -173,6 +201,67 @@ bool isResubmittedPayload(dynamic payload) {
   return parseBool(data['resubmitted'] ?? root['resubmitted']);
 }
 
+/// Catalog `status` is the event-specific selection flag.
+/// `1` / `true` means selected for this event. Profile preferences are not used.
+int catalogSelectionStatus(dynamic value) {
+  if (value == true || value == 1 || value == '1') return 1;
+  return 0;
+}
+
+bool catalogItemSelected(dynamic status) => catalogSelectionStatus(status) == 1;
+
+/// Update-event always needs `rate`. A locked price sends the stored value.
+String eventUpdateRate({
+  required bool canEditCost,
+  required String formRate,
+  String? storedRate,
+}) {
+  final typed = formRate.trim();
+  final stored = (storedRate ?? '').trim();
+  final storedUsable = stored.isNotEmpty && stored.toLowerCase() != 'null';
+  if (canEditCost && typed.isNotEmpty) return typed;
+  if (storedUsable) return stored;
+  return typed;
+}
+
+/// Update-event always needs `rate_type`. A locked price keeps the stored type.
+String eventUpdateRateType({
+  required bool canEditCost,
+  required String formRateType,
+  String? storedRateType,
+}) {
+  final typed = formRateType.trim();
+  final stored = (storedRateType ?? '').trim();
+  final storedUsable = stored.isNotEmpty && stored.toLowerCase() != 'null';
+  if (canEditCost && typed.isNotEmpty) return typed;
+  if (storedUsable) return stored;
+  return typed.isEmpty ? 'flat' : typed;
+}
+
+/// Display label only. Bucket membership stays with the server list.
+String venueMyEventStatusLabel({
+  String? status,
+  DateTime? start,
+  DateTime? end,
+  DateTime? now,
+}) {
+  final current = now ?? DateTime.now();
+  if (start != null &&
+      end != null &&
+      !current.isBefore(start) &&
+      current.isBefore(end)) {
+    return 'Ongoing';
+  }
+  final raw = (status ?? '').trim();
+  if (raw.isEmpty || raw.toLowerCase() == 'accepted') return 'Scheduled';
+  if (raw.toLowerCase() == 'scheduled') return 'Scheduled';
+  return raw[0].toUpperCase() + raw.substring(1);
+}
+
+/// Render the server bucket as returned. Do not move `completed` into History.
+List<T> retainServerEventBucket<T>(List<T> serverEvents) =>
+    List<T>.from(serverEvents);
+
 Map<String, dynamic> eventCreateCatalogQuery({
   required String type,
   int? eventId,
@@ -212,6 +301,11 @@ String formatBackendDateTime(DateTime dateTime) {
   return DateFormat(kBackendDateTimePattern).format(dateTime);
 }
 
+/// 24-hour event clock. Never appends AM/PM.
+String formatEventClock(DateTime dateTime) {
+  return DateFormat(kEventClockPattern).format(dateTime);
+}
+
 String? combineBackendDateTime({
   String? dateYmd,
   String? timeText,
@@ -230,13 +324,22 @@ String? combineBackendDateTime({
   if (raw.isEmpty) return (0, 0, 0);
 
   DateTime? parsed;
+  final lower = raw.toLowerCase();
+  final hasMeridian = lower.contains('am') || lower.contains('pm');
+  final hourToken = int.tryParse(raw.split(':').first.trim());
+  final already24Hour = hourToken != null && hourToken > 12;
   final formats = <DateFormat>[
+    if (!hasMeridian || already24Hour) ...[
+      DateFormat('HH:mm:ss'),
+      DateFormat('HH:mm'),
+    ],
     DateFormat('h:mm a'),
     DateFormat('hh:mm a'),
     DateFormat.jm(),
-    DateFormat('HH:mm a'),
-    DateFormat('HH:mm:ss'),
-    DateFormat('HH:mm'),
+    if (hasMeridian && !already24Hour) ...[
+      DateFormat('HH:mm:ss'),
+      DateFormat('HH:mm'),
+    ],
   ];
   for (final format in formats) {
     try {
@@ -255,7 +358,7 @@ String? combineBackendDateTime({
     final minute = int.tryParse(parts[1]) ?? 0;
     final second = parts.length > 2 ? int.tryParse(parts[2]) ?? 0 : 0;
     final meridian = raw.toLowerCase();
-    if (meridian.contains('pm') && hour < 12) hour += 12;
+    if (hour <= 12 && meridian.contains('pm') && hour < 12) hour += 12;
     if (meridian.contains('am') && hour == 12) hour = 0;
     return (hour, minute, second);
   }

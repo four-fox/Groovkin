@@ -29,8 +29,8 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
   static final _timeFormat = DateFormat('HH:mm');
   static final _displayDateFormat = DateFormat('dd-MM-yyyy');
   static final _postDateFormat = DateFormat('yyyy-MM-dd');
-  static final _displayTimeFormat = DateFormat.jm();
-  static final _postTimeFormat = DateFormat('HH:mm a');
+  static final _displayTimeFormat = DateFormat('HH:mm');
+  static final _postTimeFormat = DateFormat('HH:mm:ss');
 
   // ─── Controllers ──────────────────────────────────────────────────────────
   final _eventForm = GlobalKey<FormState>();
@@ -145,24 +145,33 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
       showTimePicker(
         context: context,
         initialEntryMode: TimePickerEntryMode.dial,
+
         initialTime: EventController.eventTimePickerInitial(
           isEnd: isEnd,
           displayText: currentDisplay,
         ),
-        builder: (ctx, child) => Theme(
-          data: Theme.of(ctx).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.black,
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
+        builder: (ctx, child) => MediaQuery(
+          data: MediaQuery.of(ctx).copyWith(alwaysUse24HourFormat: true),
+          child: Theme(
+            data: Theme.of(ctx).copyWith(
+              colorScheme: const ColorScheme.light(
+                primary: Colors.black,
+                onPrimary: Colors.white,
+                onSurface: Colors.black,
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(foregroundColor: Colors.red),
+              ),
             ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
-            ),
+            child: child!,
           ),
-          child: child!,
         ),
       );
+
+  bool _costLocked(EventController controller) {
+    return controller.isPersistedEventEdit &&
+        !(controller.eventDetail?.data?.counter.canEditEventCost ?? false);
+  }
 
   void _onContinue(EventController controller) {
     if (!_eventForm.currentState!.validate()) return;
@@ -347,8 +356,21 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       theme: theme,
                       controller: controller,
                       context: context,
+                      enabled: !_costLocked(controller),
                     ),
                     const SizedBox(height: 10),
+                    if (_costLocked(controller))
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Text(
+                          'Event price can only be changed through Counter.',
+                          style: poppinsRegularStyle(
+                            context: context,
+                            fontSize: 13,
+                            color: DynamicColor.grayClr,
+                          ),
+                        ),
+                      ),
                     _buildTextField(
                       theme: theme,
                       labelText:
@@ -356,6 +378,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
                       keyBoardType: true,
                       error: '${controller.rateType!.value} rate',
                       controller: controller.hourlyRateController,
+                      readOnly: _costLocked(controller),
                     ),
                     const SizedBox(height: 15),
 
@@ -442,6 +465,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
     bool keyBoardType = false,
     String? hintText,
     TextEditingController? controller,
+    bool readOnly = false,
   }) {
     return CustomTextFields(
       controller: controller,
@@ -453,6 +477,7 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
       maxLine: maxLine,
       validationError: error,
       hintText: hintText,
+      readOnly: readOnly,
     );
   }
 
@@ -654,13 +679,16 @@ class _RateRadio extends StatelessWidget {
     required this.theme,
     required this.controller,
     required this.context,
+    this.enabled = true,
   });
 
   final ThemeData theme;
   final EventController controller;
   final BuildContext context;
+  final bool enabled;
 
   void _select(String type, int value) {
+    if (!enabled) return;
     controller.rateType!.value = type;
     controller.eventRateHourly.value = value;
     controller.hourlyRateController.clear();
@@ -672,7 +700,7 @@ class _RateRadio extends StatelessWidget {
     return RadioGroup<int>(
       groupValue: controller.eventRateHourly.value,
       onChanged: (value) {
-        if (value == null) return;
+        if (!enabled || value == null) return;
         final type = value == 0 ? 'hourly' : 'flat';
         _select(type, value);
       },

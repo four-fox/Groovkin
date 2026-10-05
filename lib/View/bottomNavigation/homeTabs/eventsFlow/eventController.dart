@@ -36,6 +36,7 @@ import 'venueDiscoveryRepository.dart';
 import 'package:groovkin/utils/backend_contract.dart';
 import 'package:groovkin/utils/json_parsers.dart';
 import 'package:groovkin/utils/search_radius.dart';
+import 'pendingEventFlow/eventCounterRepository.dart';
 
 enum VenuePickerViewMode { list, map }
 
@@ -182,12 +183,14 @@ class EventController extends GetxController {
 
   ///>>>>>>>>>>>>>>>>>  get music tag
   RxBool getMusicTagLoader = true.obs;
+  String? eventTagLoadError;
   MusicTagModel? addMusicTag;
   List<TagObject> tagList = [];
   List<TagObject> activityList = [];
 
   getMusicTag({type}) async {
     getMusicTagLoader(false);
+    eventTagLoadError = null;
     final query = eventCreateCatalogQuery(
       type: type.toString(),
       eventId: eventDetail?.data?.id,
@@ -199,24 +202,54 @@ class EventController extends GetxController {
     );
     if (response.statusCode == 200) {
       addMusicTag = MusicTagModel.fromJson(response.data);
+      final groups = addMusicTag?.data ?? [];
       if (type == "music_choice") {
-        tagListPost.clear();
-        tagList.clear();
-        tagList.addAll(MusicTagModel.fromJson(response.data).data!);
+        tagList
+          ..clear()
+          ..addAll(groups);
+        if (isPersistedEventEdit) {
+          _seedCatalogSelections(tagList, tagListPost);
+          musicChoiceChanged = false;
+        } else {
+          await _clearEventChoiceSelections(true);
+        }
       } else {
-        activityListPost.clear();
-        activityList.clear();
-        activityList.addAll(MusicTagModel.fromJson(response.data).data!);
-      }
-      if (!isPersistedEventEdit) {
-        _clearEventChoiceSelections(type == "music_choice");
-      } else if (type == "music_choice") {
-        await musicChoiceBinding();
-      } else {
-        await activityChoice();
+        activityList
+          ..clear()
+          ..addAll(groups);
+        if (isPersistedEventEdit) {
+          _seedCatalogSelections(activityList, activityListPost);
+          activityChoiceChanged = false;
+        } else {
+          await _clearEventChoiceSelections(false);
+        }
       }
       getMusicTagLoader(true);
       update();
+    } else {
+      eventTagLoadError = eventTagLoadMessage(response);
+      getMusicTagLoader(true);
+      update();
+    }
+  }
+
+  /// Event selections come from catalog `status`, not profile or registration tags.
+  void _seedCatalogSelections(
+    List<TagObject> groups,
+    List<CategoryItem> selected,
+  ) {
+    selected.clear();
+    for (final group in groups) {
+      var any = false;
+      for (final item in group.categoryItems ?? []) {
+        final on = catalogItemSelected(item.status);
+        item.selected?.value = on;
+        if (on) {
+          any = true;
+          selected.add(item);
+        }
+      }
+      group.showSubCat?.value = any;
     }
   }
 
@@ -388,11 +421,11 @@ class EventController extends GetxController {
   Future<void> removeManualHashtag(String value) async {
     final normalized = normalizeHashtag(value);
     if (removingEventHashtags.contains(normalized)) return;
-    final eventId = eventDetail?.data?.id;
-    final usesSourceEventId = duplicateSourceEventId != null &&
-        eventId != null &&
-        eventId == duplicateSourceEventId;
-    if (eventId == null || usesSourceEventId) {
+    final eventId = eventIdForHashtagDeletion(
+      currentEventId: eventDetail?.data?.id,
+      sourceEventId: duplicateSourceEventId,
+    );
+    if (eventId == null) {
       manualHashtags.removeWhere(
         (tag) => normalizeHashtag(tag) == normalized,
       );
@@ -877,8 +910,6 @@ class EventController extends GetxController {
     if (text == null || text.trim().isEmpty) return null;
     final trimmed = text.trim();
     for (final format in <DateFormat>[
-      DateFormat.jm(),
-      DateFormat('hh:mm a'),
       DateFormat('HH:mm'),
       DateFormat('HH:mm:ss'),
     ]) {
@@ -890,10 +921,10 @@ class EventController extends GetxController {
     return null;
   }
 
-  /// Display string for the static default (jm style, e.g. "8:00 PM").
+  /// Display string for the static default, 24-hour (e.g. "20:00").
   static String defaultEventStartDisplay() {
     final now = DateTime.now();
-    return DateFormat.jm().format(DateTime(
+    return DateFormat('HH:mm').format(DateTime(
       now.year,
       now.month,
       now.day,
@@ -904,7 +935,7 @@ class EventController extends GetxController {
 
   static String defaultEventEndDisplay() {
     final now = DateTime.now();
-    return DateFormat.jm().format(DateTime(
+    return DateFormat('HH:mm').format(DateTime(
       now.year,
       now.month,
       now.day,
@@ -1161,6 +1192,20 @@ class EventController extends GetxController {
     }
   }
 
+  /// Pop the create/edit wizard and land on the screen that opened it.
+  void _returnFromEditFlow() {
+    const returnNames = {
+      Routes.pendingEventDetails,
+      Routes.upcomingScreen,
+      Routes.myEventsScreen,
+      Routes.bottomNavigationView,
+    };
+    Get.until((route) {
+      final name = route.settings.name;
+      return returnNames.contains(name) || route.isFirst;
+    });
+  }
+
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>edit Event Function
   editEventFunction() async {
     if (savingEvent.value) return;
@@ -1218,8 +1263,16 @@ class EventController extends GetxController {
             timeText: postEndTime?.toString(),
           ) ??
           "",
-      "rate": hourlyRateController.text,
-      "rate_type": rateType!.value,
+      "rate": eventUpdateRate(
+        canEditCost: eventDetail?.data?.counter.canEditEventCost ?? false,
+        formRate: hourlyRateController.text,
+        storedRate: eventDetail?.data?.rate?.toString(),
+      ),
+      "rate_type": eventUpdateRateType(
+        canEditCost: eventDetail?.data?.counter.canEditEventCost ?? false,
+        formRateType: rateType?.value ?? '',
+        storedRateType: eventDetail?.data?.rateType,
+      ),
       "payment_schedule": int.parse(paymentSchedule!.value.toString()),
       "comment": commentsController.text,
       "event_id": eventDetail!.data!.id,
@@ -1372,12 +1425,7 @@ class EventController extends GetxController {
       final updatedId = eventDetail?.data?.id;
       if (updatedId != null) {
         await eventDetails(eventId: updatedId);
-        Get.offNamed(Routes.pendingEventDetails, arguments: {
-          "eventId": updatedId,
-          "notInterestedBtn": 0,
-          "title": "Event Details",
-          "type": "event",
-        });
+        _returnFromEditFlow();
       } else {
         clearFields();
         Get.offAllNamed(Routes.bottomNavigationView,
@@ -1386,6 +1434,13 @@ class EventController extends GetxController {
     } else {
       final message = backendErrorMessage(response, field: 'venue_id');
       BotToast.showText(text: message);
+      if (backendErrorCode(response) == 'event_cost_counter_required' ||
+          backendErrorCode(response) == 'event_not_editable') {
+        final updatedId = eventDetail?.data?.id;
+        if (updatedId != null) {
+          await eventDetails(eventId: updatedId);
+        }
+      }
       if (response.statusCode == 422 &&
           message.toLowerCase().contains('not available')) {
         clearSelectedVenue();
@@ -1412,8 +1467,16 @@ class EventController extends GetxController {
   ///>>>>>>>>>>>>>>>>>>>>>>> event start and end time are checking
   checkingTime({sta}) async {
     var formData = form.FormData.fromMap({
-      "start_date_time": "$datePost $postTime",
-      "end_date_time": "$endDatePost $postEndTime",
+      "start_date_time": combineBackendDateTime(
+            dateYmd: datePost,
+            timeText: postTime,
+          ) ??
+          "",
+      "end_date_time": combineBackendDateTime(
+            dateYmd: endDatePost,
+            timeText: postEndTime,
+          ) ??
+          "",
     });
     var response = await API().postApi(formData, "check-date-time");
     if (response.statusCode == 200) {
@@ -1545,6 +1608,11 @@ class EventController extends GetxController {
       final body = parseMap(response.data) ?? {};
       final data = parseMap(body['data']) ?? body;
       final eventJson = parseMap(data['event']) ?? data;
+      final creatorJson =
+          parseMap(data['created_by']) ?? parseMap(eventJson['created_by']);
+      if (creatorJson != null) {
+        eventJson['created_by'] = creatorJson;
+      }
       eventDetail = UserEventDetailsModel(
         status: body['status'] == true,
         data: EventDetails.fromJson(eventJson),
@@ -1572,7 +1640,7 @@ class EventController extends GetxController {
       collectionSelectionChanged = false;
       _bindSelectedCollectionsFromEventIfNeeded();
       _resetEventSpecificChoices();
-      duplicateValue(false);
+      duplicateValue(true);
       draftValue(true);
       venueImageList.clear();
       for (var element in eventDetail!.data!.profilePicture ?? []) {
@@ -1604,7 +1672,7 @@ class EventController extends GetxController {
       eventDateController.text =
           DateFormat('dd-MM-yyyy').format(eventDetail!.data!.startDateTime!);
       proposedTimeWindowsController.text =
-          DateFormat("HH:mm a").format(eventDetail!.data!.startDateTime!);
+          formatEventClock(eventDetail!.data!.startDateTime!);
       postTime = proposedTimeWindowsController.text;
       datePost =
           DateFormat('yyyy-MM-dd').format(eventDetail!.data!.startDateTime!);
@@ -1613,7 +1681,7 @@ class EventController extends GetxController {
       eventEndDateController.text =
           DateFormat('dd-MM-yyyy').format(eventDetail!.data!.endDateTime!);
       endTimeController.text =
-          DateFormat("HH:mm a").format(eventDetail!.data!.endDateTime!);
+          formatEventClock(eventDetail!.data!.endDateTime!);
       postEndTime = endTimeController.text;
       endDatePost =
           DateFormat('yyyy-MM-dd').format(eventDetail!.data!.endDateTime!);
@@ -1791,9 +1859,9 @@ class EventController extends GetxController {
             EventsListModel.fromJson(response.data).data!.nextPageUrl;
         requestEventWaiting = false;
       }
-      getAllSendingRequestLoader(true);
-      update();
     }
+    getAllSendingRequestLoader(true);
+    update();
   }
 
   ///>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> get details of event details
@@ -1806,7 +1874,9 @@ class EventController extends GetxController {
   RxBool draftValue = false.obs;
   RxBool savingEvent = false.obs;
   RxBool resubmittingRequest = false.obs;
+  RxBool eventActionBusy = false.obs;
   int? duplicateSourceEventId;
+  final EventCounterRepository _counterRepository = EventCounterRepository();
 
   bool get isPersistedEventEdit =>
       eventDetail?.data?.id != null &&
@@ -1823,7 +1893,15 @@ class EventController extends GetxController {
     duplicateSourceEventId = null;
     var response = await API().getApi(url: "event-details/$eventId");
     if (response.statusCode == 200) {
-      eventDetail = UserEventDetailsModel.fromJson(response.data);
+      try {
+        eventDetail = UserEventDetailsModel.fromJson(response.data);
+      } catch (_) {
+        eventDetail = null;
+        eventDetailsError = 'Unable to open this event.';
+        eventDetailsLoader(true);
+        update();
+        return;
+      }
       venueImageList.clear();
       for (var element in eventDetail?.data?.profilePicture ?? []) {
         if (element.mediaPath != null) {
@@ -1832,12 +1910,101 @@ class EventController extends GetxController {
       }
       eventDetailsLoader(true);
       update();
+      try {
+        final counters = await _counterRepository.fetchCounters(eventId);
+        eventDetail?.data?.counter = counters;
+        update();
+      } catch (_) {}
     } else {
       eventDetail = null;
       eventDetailsError = backendErrorMessage(response);
       eventDetailsLoader(true);
       update();
     }
+  }
+
+  Future<bool> _runCounterMutation(
+    int eventId,
+    Future<void> Function() action,
+  ) async {
+    if (eventActionBusy.value) return false;
+    eventActionBusy(true);
+    update();
+    try {
+      await action();
+      await eventDetails(eventId: eventId);
+      await refreshListsAfterMutation();
+      return true;
+    } on EventCounterException catch (error) {
+      BotToast.showText(text: error.message);
+      await eventDetails(eventId: eventId);
+      return false;
+    } catch (_) {
+      BotToast.showText(text: 'Unable to complete this action. Please try again.');
+      await eventDetails(eventId: eventId);
+      return false;
+    } finally {
+      eventActionBusy(false);
+      update();
+    }
+  }
+
+  Future<bool> createStructuredCounter({
+    required int eventId,
+    required int proposedPrincipalMinor,
+    String? message,
+  }) {
+    return _runCounterMutation(
+      eventId,
+      () => _counterRepository.createCounter(
+        eventId: eventId,
+        proposedPrincipalMinor: proposedPrincipalMinor,
+        message: message,
+      ),
+    );
+  }
+
+  Future<bool> acceptStructuredCounter({
+    required int eventId,
+    required int counterId,
+  }) {
+    return _runCounterMutation(
+      eventId,
+      () => _counterRepository.acceptCounter(counterId),
+    );
+  }
+
+  Future<bool> rejectStructuredCounter({
+    required int eventId,
+    required int counterId,
+  }) {
+    return _runCounterMutation(
+      eventId,
+      () => _counterRepository.rejectCounter(counterId),
+    );
+  }
+
+  Future<bool> counterAgainStructured({
+    required int eventId,
+    required int counterId,
+    required int proposedPrincipalMinor,
+    String? message,
+  }) {
+    return _runCounterMutation(
+      eventId,
+      () => _counterRepository.counterAgain(
+        counterId: counterId,
+        proposedPrincipalMinor: proposedPrincipalMinor,
+        message: message,
+      ),
+    );
+  }
+
+  Future<bool> approveFinalPayment({required int eventId}) {
+    return _runCounterMutation(
+      eventId,
+      () => _counterRepository.approveFinalPayment(eventId),
+    );
   }
 
   List imageListtt = [];
@@ -1859,9 +2026,9 @@ class EventController extends GetxController {
     eventEndDateController.text =
         DateFormat('dd-MM-yyyy').format(eventDetail!.data!.endDateTime!);
     proposedTimeWindowsController.text =
-        DateFormat("HH:mm a").format(eventDetail!.data!.startDateTime!);
+        formatEventClock(eventDetail!.data!.startDateTime!);
     endTimeController.text =
-        DateFormat("HH:mm a").format(eventDetail!.data!.endDateTime!);
+        formatEventClock(eventDetail!.data!.endDateTime!);
     postEndTime = endTimeController.text;
     postTime = proposedTimeWindowsController.text;
     endDatePost =
@@ -2065,23 +2232,17 @@ class EventController extends GetxController {
   ///
   postponedAssign() async {
     proposedTimeWindowsController.text =
-        DateFormat().add_jm().format(eventDetail!.data!.startDateTime!);
+        formatEventClock(eventDetail!.data!.startDateTime!);
     endTimeController.text =
-        DateFormat().add_jm().format(eventDetail!.data!.endDateTime!);
+        formatEventClock(eventDetail!.data!.endDateTime!);
     datePost =
         DateFormat('yyyy-MM-dd').format(eventDetail!.data!.startDateTime!);
     endDatePost =
         DateFormat('yyyy-MM-dd').format(eventDetail!.data!.endDateTime!);
-    postTime = DateFormat("HH:mm")
-        .parse(proposedTimeWindowsController.text)
-        .toString()
-        .replaceRange(0, 11, "")
-        .split(".")[0];
-    postEndTime = DateFormat("HH:mm")
-        .parse(endTimeController.text)
-        .toString()
-        .replaceRange(0, 11, "")
-        .split(".")[0];
+    postTime = DateFormat('HH:mm:ss')
+        .format(eventDetail!.data!.startDateTime!);
+    postEndTime = DateFormat('HH:mm:ss')
+        .format(eventDetail!.data!.endDateTime!);
     Get.toNamed(Routes.editEventScreen,
         arguments: {"eventId": eventDetail!.data!.id});
     update();
@@ -2093,8 +2254,16 @@ class EventController extends GetxController {
   eventPostponed({eventId}) async {
     var formData = form.FormData.fromMap({
       "event_id": eventId,
-      "start_date_time": "$datePost $postTime",
-      "end_date_time": "$endDatePost $postEndTime",
+      "start_date_time": combineBackendDateTime(
+            dateYmd: datePost,
+            timeText: postTime,
+          ) ??
+          "",
+      "end_date_time": combineBackendDateTime(
+            dateYmd: endDatePost,
+            timeText: postEndTime,
+          ) ??
+          "",
       "about": rescheduleDescriptionController.text,
     });
     var response = await API().postApi(formData, "reschedule-event");

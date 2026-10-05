@@ -12,9 +12,14 @@ import 'payment_journey_models.dart';
 
 /// Embeddable "Payment & Event Status" section for Event Detail.
 class EventPaymentJourneySection extends StatelessWidget {
-  const EventPaymentJourneySection({super.key, required this.eventId});
+  const EventPaymentJourneySection({
+    super.key,
+    required this.eventId,
+    this.hideDuplicateActions = false,
+  });
 
   final int eventId;
+  final bool hideDuplicateActions;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +55,10 @@ class EventPaymentJourneySection extends StatelessWidget {
                   onRetry: controller.refreshJourney,
                 )
               else
-                PaymentJourneyCard(controller: controller),
+                PaymentJourneyCard(
+                  controller: controller,
+                  hideDuplicateActions: hideDuplicateActions,
+                ),
             ],
           ),
         );
@@ -60,9 +68,14 @@ class EventPaymentJourneySection extends StatelessWidget {
 }
 
 class PaymentJourneyCard extends StatelessWidget {
-  const PaymentJourneyCard({super.key, required this.controller});
+  const PaymentJourneyCard({
+    super.key,
+    required this.controller,
+    this.hideDuplicateActions = false,
+  });
 
   final PaymentJourneyController controller;
+  final bool hideDuplicateActions;
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +226,8 @@ class PaymentJourneyCard extends StatelessWidget {
                 ),
               ),
           ],
-          if (journey.completion.latestCounter?.id != null) ...[
+          if (!hideDuplicateActions &&
+              journey.completion.latestCounter?.id != null) ...[
             const SizedBox(height: 10),
             CounterReviewCard(controller: controller),
           ],
@@ -232,6 +246,7 @@ class PaymentJourneyCard extends StatelessWidget {
                   (event) => _TimelineTile(event: event),
                 ),
           ],
+          if (!hideDuplicateActions) ...[
           const SizedBox(height: 12),
           Row(
             children: [
@@ -308,6 +323,7 @@ class PaymentJourneyCard extends StatelessWidget {
                       ),
               text: 'Counter Amount',
             ),
+          ],
           ],
         ],
       ),

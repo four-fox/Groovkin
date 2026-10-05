@@ -313,6 +313,14 @@ class NotificationService {
       'event_cancelled',
       'event_complete',
       'event_acknowledged',
+      'counter_created',
+      'counter_offer_created',
+      'counter_accepted',
+      'counter_rejected',
+      'counter_price_agreed',
+      'completion_counter_created',
+      'completion_counter_accepted',
+      'completion_counter_rejected',
     };
     if (eventListNotificationTypes.contains(data["type"]?.toString())) {
       controller.refreshListsAfterMutation();
@@ -411,10 +419,21 @@ class NotificationService {
         "isComingFromNotification": true,
         "appBarTitle": "About Event",
       });
-    } else if (data["type"] == "event_countered") {
+    } else if (data["type"] == "event_countered" ||
+        data["type"] == "counter_created" ||
+        data["type"] == "counter_offer_created" ||
+        data["type"] == "counter_accepted" ||
+        data["type"] == "counter_rejected" ||
+        data["type"] == "counter_price_agreed" ||
+        data["type"] == "completion_counter_created" ||
+        data["type"] == "completion_counter_accepted" ||
+        data["type"] == "completion_counter_rejected") {
+      final eventId = int.parse(
+        (data["event_id"] ?? data["source_id"]).toString(),
+      );
       Get.toNamed(Routes.pendingEventDetails, arguments: {
-        "eventId": int.parse(data["source_id"].toString()),
-        "notInterestedBtn": 0,
+        "eventId": eventId,
+        "notInterestedBtn": 1,
         "title": "Event Details",
         "type": "event",
       });

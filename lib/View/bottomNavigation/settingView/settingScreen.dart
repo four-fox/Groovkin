@@ -17,12 +17,12 @@ import 'package:groovkin/View/authView/theme_controller.dart';
 import 'package:groovkin/View/paymentMethod/subscription_screen_two.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/mygroovkinUser/myUserGroovkinScreen.dart';
 import 'package:groovkin/Components/zipCodeShortcut.dart';
-import 'package:groovkin/View/profile/createProfile.dart';
+import 'package:groovkin/Components/inviteCodeFormatter.dart';
+import 'package:groovkin/utils/invite_code.dart';
 import 'package:groovkin/main.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:intl/intl.dart';
 import 'package:groovkin/payment/stripe_connect_models.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -39,12 +39,7 @@ class _SettingScreenState extends State<SettingScreen> {
   late ThemeController _themeController = Get.find<ThemeController>();
   final switchRoleForm = GlobalKey<FormState>();
 
-  final inviteCodeMaskFormatter = MaskTextInputFormatter(
-    mask: '####-####',
-    filter: {
-      '#': RegExp(r'[A-Za-z0-9]'),
-    },
-  );
+  static const _inviteFormatter = InviteCodeInputFormatter();
 
   @override
   void initState() {
@@ -646,14 +641,13 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   CustomTextFields(
                     labelText: "Invite Code",
+                    hintText: kInviteCodeHint,
                     controller: controller.inviteCodeController,
                     validationError: "Invite code",
                     isOptional: false,
-                    // keyBoardType: true,
-                    inputFormatter: [
-                      UpperCaseTextFormatter(),
-                      inviteCodeMaskFormatter
-                    ],
+                    isInviteCode: true,
+                    keyBoardType: false,
+                    inputFormatter: const [_inviteFormatter],
                   ),
                   const SizedBox(
                     height: 15,

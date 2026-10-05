@@ -223,22 +223,25 @@ class EditEventScreen extends StatelessWidget {
                     final time = await showTimePicker(
                       initialEntryMode: TimePickerEntryMode.dial,
                       builder: (context, child) {
-                        return Theme(
+                        return MediaQuery(
+                          data: MediaQuery.of(context)
+                              .copyWith(alwaysUse24HourFormat: true),
+                          child: Theme(
                             data: Theme.of(context).copyWith(
                               colorScheme: const ColorScheme.light(
-                                primary:
-                                    Colors.black, // header background color
-                                onPrimary: Colors.white, // header text color
-                                onSurface: Colors.black, // body text color
+                                primary: Colors.black,
+                                onPrimary: Colors.white,
+                                onSurface: Colors.black,
                               ),
                               textButtonTheme: TextButtonThemeData(
                                 style: TextButton.styleFrom(
-                                  foregroundColor:
-                                      Colors.red, // button text color
+                                  foregroundColor: Colors.red,
                                 ),
                               ),
                             ),
-                            child: child!);
+                            child: child!,
+                          ),
+                        );
                       },
                       context: context,
                       initialTime: EventController.eventTimePickerInitial(
@@ -251,16 +254,17 @@ class EditEventScreen extends StatelessWidget {
                     if (time != null) {
                       print('time>>>>>>>>>> $time');
                       // var format = DateFormat("HH:mm ss");
+                      final selected = DateTime(
+                        2000,
+                        1,
+                        1,
+                        time.hour,
+                        time.minute,
+                      );
                       controller.proposedTimeWindowsController.text =
-                          DateFormat.jm().format(DateFormat("hh:mm:ss").parse(
-                              DateTimeField.convert(time)
-                                  .toString()
-                                  .replaceRange(0, 11, "")));
-                      controller.postTime = DateFormat("HH:mm")
-                          .parse(controller.proposedTimeWindowsController.text)
-                          .toString()
-                          .replaceRange(0, 11, "")
-                          .split(".")[0];
+                          DateFormat('HH:mm').format(selected);
+                      controller.postTime =
+                          DateFormat('HH:mm:ss').format(selected);
                       print(controller.postTime);
                     }
                     return;
@@ -300,22 +304,25 @@ class EditEventScreen extends StatelessWidget {
                     final time = await showTimePicker(
                       initialEntryMode: TimePickerEntryMode.dial,
                       builder: (context, child) {
-                        return Theme(
+                        return MediaQuery(
+                          data: MediaQuery.of(context)
+                              .copyWith(alwaysUse24HourFormat: true),
+                          child: Theme(
                             data: Theme.of(context).copyWith(
                               colorScheme: const ColorScheme.light(
-                                primary:
-                                    Colors.black, // header background color
-                                onPrimary: Colors.white, // header text color
-                                onSurface: Colors.black, // body text color
+                                primary: Colors.black,
+                                onPrimary: Colors.white,
+                                onSurface: Colors.black,
                               ),
                               textButtonTheme: TextButtonThemeData(
                                 style: TextButton.styleFrom(
-                                  foregroundColor:
-                                      Colors.red, // button text color
+                                  foregroundColor: Colors.red,
                                 ),
                               ),
                             ),
-                            child: child!);
+                            child: child!,
+                          ),
+                        );
                       },
                       context: context,
                       initialTime: EventController.eventTimePickerInitial(
@@ -327,16 +334,17 @@ class EditEventScreen extends StatelessWidget {
                         "selected time--------->${DateTimeField.convert(time).toString()}");
                     if (time != null) {
                       print('time>>>>>>>>>> $time');
-                      controller.endTimeController.text = DateFormat.jm()
-                          .format(DateFormat("hh:mm:ss").parse(
-                              DateTimeField.convert(time)
-                                  .toString()
-                                  .replaceRange(0, 11, "")));
-                      controller.postEndTime = DateFormat("HH:mm")
-                          .parse(controller.endTimeController.text)
-                          .toString()
-                          .replaceRange(0, 11, "")
-                          .split(".")[0];
+                      final selected = DateTime(
+                        2000,
+                        1,
+                        1,
+                        time.hour,
+                        time.minute,
+                      );
+                      controller.endTimeController.text =
+                          DateFormat('HH:mm').format(selected);
+                      controller.postEndTime =
+                          DateFormat('HH:mm:ss').format(selected);
                       print(controller.postEndTime);
                     }
                     return;

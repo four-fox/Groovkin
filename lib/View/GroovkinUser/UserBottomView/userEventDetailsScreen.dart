@@ -59,9 +59,22 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
           _controller.eventDetails(eventId: statusVal);
         }, builder: (controller) {
           print(controller.eventDetail);
-          return controller.eventDetailsLoader.value == false
-              ? const SizedBox.shrink()
-              : SingleChildScrollView(
+          if (controller.eventDetailsLoader.value == false) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (controller.eventDetail?.data == null) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text(
+                  controller.eventDetailsError ??
+                      'Unable to open this event.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+          return SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -240,7 +253,7 @@ class _UserEventDetailsScreenState extends State<UserEventDetailsScreen> {
                       ),
                       eventDateTime(
                           text:
-                              "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
+                              "${DateFormat('HH:mm').format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat('HH:mm').format(controller.eventDetail!.data!.endDateTime!)}",
                           theme: theme,
                           context: context,
                           iconClr: DynamicColor.yellowClr),

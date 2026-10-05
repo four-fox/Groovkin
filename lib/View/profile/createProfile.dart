@@ -14,9 +14,10 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/profile/editProfileScreen.dart';
 import 'package:groovkin/Components/searchRadiusSelector.dart';
+import 'package:groovkin/Components/inviteCodeFormatter.dart';
+import 'package:groovkin/utils/invite_code.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CreateProfile extends StatefulWidget {
   const CreateProfile({super.key});
@@ -41,12 +42,7 @@ class _CreateProfileState extends State<CreateProfile> {
   final bool completeAfterSocial =
       Get.arguments?["completeAfterSocial"] == true;
 
-  final inviteCodeMaskFormatter = MaskTextInputFormatter(
-    mask: '####-####',
-    filter: {
-      '#': RegExp(r'[A-Za-z0-9]'),
-    },
-  );
+  static const _inviteFormatter = InviteCodeInputFormatter();
 
   @override
   void initState() {
@@ -564,20 +560,21 @@ class _CreateProfileState extends State<CreateProfile> {
                         },
                       ),
 
-                      if (socialType == null && sp.read("role") != "User") ...[
+                      if (socialType == null) ...[
                         const SizedBox(
                           height: 15,
                         ),
                         CustomTextFields(
-                          labelText: "Invite Code",
+                          labelText: sp.read("role") == "User"
+                              ? "Invite Code (Optional)"
+                              : "Invite Code",
+                          hintText: kInviteCodeHint,
                           controller: controller.inviteCodeController,
                           validationError: "Invite code",
-                          isOptional: false,
-                          // keyBoardType: true,
-                          inputFormatter: [
-                            UpperCaseTextFormatter(),
-                            inviteCodeMaskFormatter
-                          ],
+                          isOptional: sp.read("role") == "User",
+                          isInviteCode: true,
+                          keyBoardType: false,
+                          inputFormatter: const [_inviteFormatter],
                         ),
                       ],
 
@@ -682,8 +679,13 @@ class _CreateProfileState extends State<CreateProfile> {
                         return;
                       }
                       Future<void> submitRegistration({String? role}) async {
-                        if (API().sp.read("role") != "User") {
-                          final valid = await _controller.validateInviteCode();
+                        final isUser = API().sp.read("role") == "User";
+                        final hasInvite =
+                            _controller.inviteCodeController.text.trim().isNotEmpty;
+                        if (!isUser || hasInvite) {
+                          final valid = await _controller.validateInviteCode(
+                            required: !isUser,
+                          );
                           if (!valid) return;
                         }
                         await _controller.sigUp(

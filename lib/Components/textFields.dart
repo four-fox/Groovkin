@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/utils/invite_code.dart';
 
 String pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
     r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
@@ -29,6 +30,7 @@ class CustomTextFields extends StatelessWidget {
       this.obscureText = false,
       this.validationError,
       this.isEmail = false,
+      this.isInviteCode = false,
       this.onChanged,
       this.ignoredValidation = false,
       this.hintText,
@@ -58,6 +60,7 @@ class CustomTextFields extends StatelessWidget {
   String? validationError;
   bool? ignoredValidation = false;
   bool? isEmail = false;
+  bool isInviteCode = false;
   bool? disabled = true;
   bool? isLink = false;
   final ValueChanged<String>? onChanged;
@@ -133,28 +136,31 @@ class CustomTextFields extends StatelessWidget {
                     DynamicColor.grayClr.withValues(alpha: 0.6)), //<-- SEE HERE
           ),
         ),
-        validator: isOptional
-            ? null
-            : (value) {
-                if (ignoredValidation == false) {
-                  if (value!.isEmpty) {
-                    return 'Please enter $validationError';
-                  } else {
-                    if (isEmail == true) {
-                      RegExp regex = RegExp(pattern);
-                      if (!regex.hasMatch(value)) {
-                        return "Enter a valid email address";
-                      }
-                      return null;
-                    } else if (isLink == true) {
-                      RegExp regex = RegExp(linkPattern);
-                      if (!regex.hasMatch(value)) {
-                        return "Enter a valid social link";
-                      }
-                    }
+        validator: (value) {
+                if (ignoredValidation == true) return null;
+                final text = value ?? '';
+                if (text.isEmpty) {
+                  if (isOptional) return null;
+                  return 'Please enter $validationError';
+                }
+                if (isEmail == true) {
+                  RegExp regex = RegExp(pattern);
+                  if (!regex.hasMatch(text)) {
+                    return "Enter a valid email address";
                   }
-                } else {
                   return null;
+                }
+                if (isInviteCode) {
+                  if (!isCanonicalInviteCode(text)) {
+                    return kInviteCodeFormatError;
+                  }
+                  return null;
+                }
+                if (isLink == true) {
+                  RegExp regex = RegExp(linkPattern);
+                  if (!regex.hasMatch(text)) {
+                    return "Enter a valid social link";
+                  }
                 }
                 return null;
               });

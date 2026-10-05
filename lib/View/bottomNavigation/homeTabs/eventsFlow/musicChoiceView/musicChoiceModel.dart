@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:groovkin/utils/backend_contract.dart';
 
 MusicTagModel musicTagModelFromJson(String str) =>
     MusicTagModel.fromJson(json.decode(str));
@@ -171,13 +172,15 @@ class CategoryItem {
         id: json["id"],
         eventTagId: json["event_tag_id"],
         name: json["name"],
-        selected:
-            ((json["selected"] == true || json["selected"] == 1) ? true : false)
-                .obs,
+        selected: catalogItemSelected(
+          json.containsKey("status") ? json["status"] : json["selected"],
+        ).obs,
         type: json["type"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-        status: json["status"] ?? 0,
+        status: catalogSelectionStatus(
+          json.containsKey("status") ? json["status"] : json["selected"],
+        ),
         userEventTagItems: json["user_event_tag_items"],
       );
 

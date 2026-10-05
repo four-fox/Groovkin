@@ -17,6 +17,7 @@ import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/PostEvents.da
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventHistory.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/upcomingEvents/upcomingEvents.dart';
+import 'package:groovkin/utils/backend_contract.dart';
 import 'package:groovkin/utils/utils.dart';
 import 'package:groovkin/payment/stripe_connect_widgets.dart';
 import 'homeTabs/organizerHomeModel/alleventsModel.dart';
@@ -267,7 +268,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     :  
                                     */
 
-                              "Scheduled",
+                              sp.read("role") == "eventManager"
+                                  ? "My Events"
+                                  : "Scheduled",
                               style: poppinsMediumStyle(
                                 fontSize: 14,
                                 context: context,
@@ -906,15 +909,30 @@ class ManagerScheduledView extends StatefulWidget {
   State<ManagerScheduledView> createState() => _ManagerScheduledViewState();
 }
 
-class _ManagerScheduledViewState extends State<ManagerScheduledView> {
+class _ManagerScheduledViewState extends State<ManagerScheduledView>
+    with WidgetsBindingObserver {
   late ManagerController _controller;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _controller = Get.isRegistered<ManagerController>()
         ? Get.find<ManagerController>()
         : Get.put(ManagerController());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _controller.getScheduledEvents();
+    }
   }
 
   @override
@@ -950,7 +968,11 @@ class _ManagerScheduledViewState extends State<ManagerScheduledView> {
                 context: context,
                 theme: theme,
                 eventData: events[index],
-                statusLabel: events[index].status ?? 'Scheduled',
+                statusLabel: venueMyEventStatusLabel(
+                  status: events[index].status,
+                  start: events[index].startDateTime,
+                  end: events[index].endDateTime,
+                ),
                 onView: () {
                   Get.toNamed(Routes.pendingEventDetails, arguments: {
                     "eventId": events[index].id,
@@ -975,15 +997,30 @@ class ManagerHistoryView extends StatefulWidget {
   State<ManagerHistoryView> createState() => _ManagerHistoryViewState();
 }
 
-class _ManagerHistoryViewState extends State<ManagerHistoryView> {
+class _ManagerHistoryViewState extends State<ManagerHistoryView>
+    with WidgetsBindingObserver {
   late ManagerController _controller;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _controller = Get.isRegistered<ManagerController>()
         ? Get.find<ManagerController>()
         : Get.put(ManagerController());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _controller.getHistoryEvents();
+    }
   }
 
   @override
@@ -1172,13 +1209,15 @@ class ManagerPendingView extends StatefulWidget {
   State<ManagerPendingView> createState() => _ManagerPendingViewState();
 }
 
-class _ManagerPendingViewState extends State<ManagerPendingView> {
+class _ManagerPendingViewState extends State<ManagerPendingView>
+    with WidgetsBindingObserver {
   late ManagerController _controller;
   late HomeController _homeController;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     if (Get.isRegistered<ManagerController>()) {
       _controller = Get.find<ManagerController>();
     } else {
@@ -1187,6 +1226,19 @@ class _ManagerPendingViewState extends State<ManagerPendingView> {
 
     if (Get.isRegistered<HomeController>()) {
       _homeController = Get.find<HomeController>();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _controller.getAllPendingEvents();
     }
   }
 

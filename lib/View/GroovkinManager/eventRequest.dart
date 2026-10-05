@@ -4,9 +4,10 @@ import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/grayClrBgAppBar.dart';
 import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
-import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/main.dart';
+import 'package:groovkin/utils/backend_contract.dart';
 import 'package:intl/intl.dart';
 
 import '../../Routes/app_pages.dart';
@@ -18,22 +19,35 @@ class EventRequests extends StatefulWidget {
   State<EventRequests> createState() => _EventRequestsState();
 }
 
-class _EventRequestsState extends State<EventRequests> {
-  late EventController _eventController;
+class _EventRequestsState extends State<EventRequests>
+    with WidgetsBindingObserver {
   late AuthController _authController;
+  late ManagerController _managerController;
 
   @override
   void initState() {
     super.initState();
-    if (Get.isRegistered<EventController>()) {
-      _eventController = Get.find<EventController>();
-    } else {
-      _eventController = Get.put(EventController());
-    }
+    WidgetsBinding.instance.addObserver(this);
     if (Get.isRegistered<AuthController>()) {
       _authController = Get.find<AuthController>();
     } else {
       _authController = Get.put(AuthController());
+    }
+    _managerController = Get.isRegistered<ManagerController>()
+        ? Get.find<ManagerController>()
+        : Get.put(ManagerController());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _managerController.getScheduledEvents();
     }
   }
 
@@ -41,22 +55,54 @@ class _EventRequestsState extends State<EventRequests> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      appBar: customAppBar(theme: theme, text: "Request", backArrow: false),
-      body: GetBuilder<EventController>(initState: (controller) {
-        _eventController.getAllEvents();
+      appBar: customAppBar(theme: theme, text: "My Events", backArrow: false),
+      body: GetBuilder<ManagerController>(initState: (controller) {
+        _managerController.getScheduledEvents();
       }, builder: (controller) {
-        return _eventController.getAllEventsLoader.value == false
-            ? const SizedBox()
-            : Padding(
+        if (controller.scheduledLoader.value == false) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (controller.scheduledError != null) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    controller.scheduledError!,
+                    textAlign: TextAlign.center,
+                    style: poppinsMediumStyle(
+                      fontSize: 14,
+                      context: context,
+                      color: theme.primaryColor,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: controller.getScheduledEvents,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        final events = retainServerEventBucket(
+          controller.scheduledEvents?.data?.data ?? [],
+        );
+        if (events.isEmpty) {
+          return noData(theme: theme);
+        }
+        return RefreshIndicator(
+          onRefresh: () async => controller.getScheduledEvents(),
+          child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: controller.allEvents!.data!.data.isEmpty
-                    ? noData(theme: theme)
-                    : ListView.builder(
-                        itemCount: controller.allEvents!.data!.data.length,
+                child: ListView.builder(
+                        itemCount: events.length,
                         shrinkWrap: true,
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, index) {
-                          final data = controller.allEvents!.data!.data[index];
+                          final data = events[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: GestureDetector(
@@ -98,11 +144,26 @@ class _EventRequestsState extends State<EventRequests> {
                                         ),
                                       ),
                                     ),
-                                    if (data.startDateTime != null ||
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 4),
+                                      child: Text(
+                                        venueMyEventStatusLabel(
+                                          status: data.status,
+                                          start: data.startDateTime,
+                                          end: data.endDateTime,
+                                        ),
+                                        style: poppinsMediumStyle(
+                                          fontSize: 12,
+                                          context: context,
+                                          color: DynamicColor.lightYellowClr,
+                                        ),
+                                      ),
+                                    ),
+                                    if (data.startDateTime != null &&
                                         data.endDateTime != null)
                                       eventDateTime(
                                         text:
-                                            "${DateFormat.jm().format(data.startDateTime!)} to ${DateFormat.jm().format(data.endDateTime!)}",
+                                            "${DateFormat('HH:mm').format(data.startDateTime!)} to ${DateFormat('HH:mm').format(data.endDateTime!)}",
                                         context: context,
                                         iconBgClr: DynamicColor.darkGrayClr,
                                         theme: theme,
@@ -146,6 +207,9 @@ class _EventRequestsState extends State<EventRequests> {
                                       thickness: 2,
                                       color: DynamicColor.avatarBgClr,
                                     ),
+                                    if (data.user == null)
+                                      const SizedBox.shrink()
+                                    else
                                     GetBuilder<AuthController>(
                                         builder: (contr) {
                                       return ourGuestWidget(
@@ -184,16 +248,15 @@ class _EventRequestsState extends State<EventRequests> {
                                               fromAllUser: false,
                                               fromRequestEvent: true,
                                               eventListModel:
-                                                  controller.allEvents,
+                                                  controller.scheduledEvents,
                                             );
-                                            // _eventController.getAllEvents();
                                           } else {
                                             _authController.unfollow(
                                               userData: data.user,
                                               fromAllUser: false,
                                               fromRequestEvent: true,
                                               eventListModel:
-                                                  controller.allEvents,
+                                                  controller.scheduledEvents,
                                             );
 
                                             // _eventController.getAllEvents();
@@ -208,7 +271,10 @@ class _EventRequestsState extends State<EventRequests> {
                               ),
                             ),
                           );
-                        }));
+                        },
+                      ),
+                ),
+        );
       }),
     );
   }

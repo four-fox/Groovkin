@@ -161,6 +161,18 @@ class VenueDetailsData {
       };
 }
 
+String? _userRoleName(dynamic value) {
+  if (value == null) return null;
+  if (value is String) return value;
+  if (value is Map) return value['name']?.toString();
+  return value.toString();
+}
+
+List<String> _userRoleNames(dynamic value) {
+  if (value is! List) return const [];
+  return value.map(_userRoleName).whereType<String>().toList();
+}
+
 class User {
   int? id;
   String? name;
@@ -208,12 +220,14 @@ class User {
         otp: json["otp"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-        profile:
-            json["profile"] == null ? null : Profile.fromJson(json["profile"]),
-        profilePicture: json["profile_picture"] == null
-            ? null
-            : ProfilePicture.fromJson(json["profile_picture"]),
-        role: json["role"] == null ? null : json["role"]["name"],
+        profile: json["profile"] is Map
+            ? Profile.fromJson(Map<String, dynamic>.from(json["profile"]))
+            : null,
+        profilePicture: json["profile_picture"] is Map
+            ? ProfilePicture.fromJson(
+                Map<String, dynamic>.from(json["profile_picture"]))
+            : null,
+        role: _userRoleName(json["active_role"] ?? json["role"]),
         follower: json["follower"] == null
             ? null
             : Following.fromJson(json["follower"]),
@@ -221,11 +235,7 @@ class User {
             ? null
             : Following.fromJson(json["following"]),
         isDelete: json["deleted_at"],
-        roles: json["roles"] == null
-            ? []
-            : List<String>.from(
-                json["roles"].map((role) => role["name"].toString()),
-              ),
+        roles: _userRoleNames(json["roles"]),
       );
 
   Map<String, dynamic> toJson() => {

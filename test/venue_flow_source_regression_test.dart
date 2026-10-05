@@ -82,7 +82,11 @@ void main() {
     );
 
     expect(pending, contains("status: 'declined'"));
-    expect(pending, contains('Venue request declined'));
+    expect(pending, contains('EventActionBar'));
     expect(pending, isNot(contains("status: 'rejected'")));
+    final actions = source(
+      'lib/View/bottomNavigation/homeTabs/eventsFlow/pendingEventFlow/eventActionBar.dart',
+    );
+    expect(actions, contains('Decline Event'));
   });
 }

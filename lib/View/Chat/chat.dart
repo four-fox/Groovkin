@@ -170,7 +170,7 @@ class ChatCenterScreen extends StatelessWidget {
                           borderClr: Colors.transparent,
                           color2: DynamicColor.lightYellowClr,
                           color1: DynamicColor.lightYellowClr,
-                          text: "Counter",
+                          text: "Message",
                         ),
                       ),
                 const SizedBox(
@@ -186,7 +186,7 @@ class ChatCenterScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Counter  by Michael.",
+                        "Message from Michael.",
                         style: poppinsRegularStyle(
                           context: context,
                           fontSize: 12,

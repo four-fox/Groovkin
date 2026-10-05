@@ -45,6 +45,7 @@ import '../../model/invite_model.dart';
 import '../../model/single_ton_data.dart';
 import '../../model/switch_model.dart';
 import '../../utils/backend_contract.dart';
+import '../../utils/invite_code.dart';
 import '../../utils/json_parsers.dart';
 import '../../utils/search_radius.dart';
 import '../GroovkinManager/venueDetailsModel.dart';
@@ -150,7 +151,7 @@ class AuthController extends GetxController {
       imageList.add(a);
     }
 
-    // var theme = Theme.of(context);
+    final inviteCode = canonicalInviteCodeOrNull(inviteCodeController.text);
     var formData = form.FormData.fromMap({
       "first_name": firstNameController.text,
       "last_name": lastNameController.text,
@@ -185,8 +186,7 @@ class AuthController extends GetxController {
       "twitter_link": twitterXController.text,
       "youtube_link": youtubeController.text,
       "about": aboutController.text,
-      if (API().sp.read("role") != "User")
-        "invite_code": inviteCodeController.text
+      if (inviteCode != null) "invite_code": inviteCode,
     });
 
     var response = await API().postApi(formData, "register",
@@ -306,16 +306,30 @@ class AuthController extends GetxController {
     String? inviteCode,
     String? email,
     String? role,
+    bool required = true,
   }) async {
-    final code = (inviteCode ?? inviteCodeController.text).trim();
+    final raw = inviteCode ?? inviteCodeController.text;
+    if (inviteCodeExceedsCanonicalLength(raw)) {
+      BotToast.showText(text: kInviteCodeFormatError);
+      return false;
+    }
+    final code = canonicalInviteCodeOrNull(raw);
+    if (code != null) {
+      inviteCodeController.text = code;
+    }
     final selectedRole =
         role ?? backendRoleFromStorage(API().sp.read("role")?.toString());
     final selectedEmail = (email ?? emailController.text).trim();
-    if (code.isEmpty) {
+    if (code == null || code.isEmpty) {
+      if (!required) return true;
       BotToast.showText(
         text: messageForErrorCode('invite_required') ??
             'A valid invite code is required for this account type.',
       );
+      return false;
+    }
+    if (!isCanonicalInviteCode(code)) {
+      BotToast.showText(text: kInviteCodeFormatError);
       return false;
     }
     if (selectedRole == kRoleVenueManager && selectedEmail.isEmpty) {

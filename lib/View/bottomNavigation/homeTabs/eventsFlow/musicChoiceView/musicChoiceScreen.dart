@@ -234,7 +234,7 @@ class MusicChoiceScreen extends StatelessWidget {
         },
         builder: (controller) {
           if (!controller.getMusicHashTagLoader.value) {
-            return const SizedBox.shrink();
+            return const Center(child: CircularProgressIndicator());
           }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -506,7 +506,24 @@ class ActivityChoiceScreen extends StatelessWidget {
         initState: (_) => _controller.getMusicTag(type: 'activity_choice'),
         builder: (controller) {
           if (!controller.getMusicTagLoader.value) {
-            return const SizedBox.shrink();
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (controller.eventTagLoadError != null &&
+              controller.activityList.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  controller.eventTagLoadError!,
+                  textAlign: TextAlign.center,
+                  style: poppinsRegularStyle(
+                    fontSize: 14,
+                    context: context,
+                    color: theme.primaryColor,
+                  ),
+                ),
+              ),
+            );
           }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

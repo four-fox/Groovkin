@@ -14,7 +14,7 @@ void main() {
           'invite_type': 'regular_user',
           'role': 'user',
           'email': 'friend@example.com',
-          'code': 'A1B2-C3D4-E5F6-7788',
+          'code': 'A1B2-C3D4',
           'status': 'active',
           'is_active': true,
           'max_uses': 1,
@@ -24,15 +24,15 @@ void main() {
           'email_error':
               'Invite was created but email could not be sent. Copy and share the code instead.',
           'share_text':
-              'Join Groovkin as Regular User. Invite code: A1B2-C3D4-E5F6-7788',
+              'Join Groovkin as Regular User. Invite code: A1B2-C3D4',
         },
       });
 
       expect(isBackendSuccess({'status': true, 'data': invite}), isTrue);
-      expect(invite!.code, 'A1B2-C3D4-E5F6-7788');
+      expect(invite!.code, 'A1B2-C3D4');
       expect(invite.emailSent, isFalse);
       expect(invite.createdSuccessfully, isTrue);
-      expect(invite.shareText, contains('A1B2-C3D4-E5F6-7788'));
+      expect(invite.shareText, contains('A1B2-C3D4'));
     });
 
     test('parses venue manager invite', () {
@@ -42,7 +42,7 @@ void main() {
           'invite_type': 'venue_manager',
           'role': 'venue_manager',
           'email': 'venue.manager@example.com',
-          'code': '9F3A-10BC-44DE-87FF',
+          'code': '9AXG-8JXL',
           'status': 'active',
           'email_sent': true,
         },
@@ -97,6 +97,46 @@ void main() {
       };
       expect(parseEventIdFromPayload(payload), 99);
       expect(parseEventIdFromPayload(payload), isNot(10));
+      expect(
+        eventIdForHashtagDeletion(currentEventId: 99, sourceEventId: 10),
+        99,
+      );
+      expect(
+        eventIdForHashtagDeletion(currentEventId: 10, sourceEventId: 10),
+        isNull,
+      );
+    });
+  });
+
+  group('event update rate', () {
+    test('locked edit still sends the stored rate', () {
+      expect(
+        eventUpdateRate(
+          canEditCost: false,
+          formRate: '',
+          storedRate: '2000.00',
+        ),
+        '2000.00',
+      );
+      expect(
+        eventUpdateRateType(
+          canEditCost: false,
+          formRateType: '',
+          storedRateType: 'flat',
+        ),
+        'flat',
+      );
+    });
+
+    test('editable cost sends the form rate', () {
+      expect(
+        eventUpdateRate(
+          canEditCost: true,
+          formRate: '1800',
+          storedRate: '2000.00',
+        ),
+        '1800',
+      );
     });
   });
 
@@ -240,6 +280,15 @@ void main() {
         '2026-09-22 20:00:00',
       );
       expect(
+        combineBackendDateTime(dateYmd: '2026-09-25', timeText: '18:30:00'),
+        '2026-09-25 18:30:00',
+      );
+      expect(formatEventClock(DateTime(2026, 9, 25, 18, 30)), '18:30');
+      expect(
+        combineBackendDateTime(dateYmd: '2026-09-25', timeText: '18:30 PM'),
+        '2026-09-25 18:30:00',
+      );
+      expect(
         formatBackendDateTime(DateTime(2026, 9, 22, 20, 0, 0)),
         '2026-09-22 20:00:00',
       );
@@ -278,6 +327,37 @@ void main() {
         ),
         isTrue,
       );
+    });
+
+    test('duplicate creator and event price come from the payload', () {
+      final details = EventDetails.fromJson({
+        'id': 9,
+        'rate': '2000',
+        'rate_type': 'flat',
+        'event_price': '2000',
+        'base_amount': '2000',
+        'total_amount': '2400',
+        'duration_hours': 1,
+        'status': 'accepted',
+        'created_by': {
+          'id': 4,
+          'name': 'Original Organizer',
+          'email': 'eo@example.com',
+          'active_role': 'event_owner',
+        },
+        'user': {
+          'id': 99,
+          'name': 'Logged In User',
+          'email': 'me@example.com',
+        },
+      });
+      expect(details.eventPrice, '2000');
+      expect(details.baseAmount, '2000');
+      expect(details.totalAmount, '2400');
+      expect(details.createdBy?.id, 4);
+      expect(details.user?.id, 4);
+      expect(details.user?.name, 'Original Organizer');
+      expect(details.user?.role, 'event_owner');
     });
   });
 

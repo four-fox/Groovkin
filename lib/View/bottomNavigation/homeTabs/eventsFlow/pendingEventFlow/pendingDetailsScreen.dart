@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
-import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/cancelEventWidget.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -15,15 +14,13 @@ import 'package:groovkin/View/GroovkinManager/managerController.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
-import 'package:groovkin/main.dart';
 import 'package:groovkin/payment/journey/payment_journey_controller.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/pendingEventFlow/eventActionBar.dart';
+import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/pendingEventFlow/eventDetailsSections.dart';
+import 'package:groovkin/View/GroovkinUser/UserBottomView/userEventDetailsModel.dart';
+import 'package:groovkin/model/event_counter_model.dart';
 import 'package:groovkin/payment/journey/payment_journey_widgets.dart';
 import 'package:groovkin/payment/payment_controller.dart';
-import 'package:groovkin/payment/payment_models.dart';
-import 'package:groovkin/payment/payment_widgets.dart';
-import 'package:groovkin/utils/backend_contract.dart';
-import 'package:groovkin/utils/utils.dart';
-import 'package:intl/intl.dart';
 
 class PendingEventDetails extends StatefulWidget {
   const PendingEventDetails({super.key});
@@ -85,6 +82,199 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
     super.initState();
   }
 
+  Future<void> _openCounterSheet(
+    BuildContext context,
+    EventDetails event, {
+    required bool again,
+  }) async {
+    await showPriceCounterSheet(
+      context: context,
+      agreedMinor: event.counter.currentAgreedAmountMinor ?? 0,
+      currency: event.counter.currency,
+      again: again,
+      onSubmit: (minor, message) async {
+        if (again) {
+          final id = event.counter.activeCounter?.id;
+          if (id == null) return false;
+          return _eventController.counterAgainStructured(
+            eventId: event.id!,
+            counterId: id,
+            proposedPrincipalMinor: minor,
+            message: message,
+          );
+        }
+        return _eventController.createStructuredCounter(
+          eventId: event.id!,
+          proposedPrincipalMinor: minor,
+          message: message,
+        );
+      },
+    );
+  }
+
+  Future<void> _confirmAcceptEvent(
+    BuildContext context,
+    ThemeData theme,
+    int eventId,
+  ) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Accept Event'),
+        content: const Text(
+          'Accepting this event starts the existing payment flow. Continue?',
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Continue')),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await _controller.beginPaidEventAcceptance(eventId);
+      await _eventController.eventDetails(eventId: eventId);
+    }
+  }
+
+  Future<void> _confirmDecline(
+    BuildContext context,
+    ThemeData theme,
+    int? eventId,
+  ) async {
+    cancelEventWidget(
+      context: context,
+      theme: theme,
+      onTap: () async {
+        Get.back();
+        await _controller.eventAcceptDeclineFtn(
+          status: 'declined',
+          id: eventId,
+        );
+        if (eventId != null) {
+          await _eventController.eventDetails(eventId: eventId);
+        }
+      },
+    );
+  }
+
+  Future<void> _confirmAcceptCounter(
+    BuildContext context,
+    EventDetails event,
+  ) async {
+    final id = event.counter.activeCounter?.id;
+    if (id == null) return;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Accept Counter'),
+        content: const Text(
+          'This updates the agreed event price only. It does not accept the event or charge a final payment.',
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Accept Counter')),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await _eventController.acceptStructuredCounter(
+        eventId: event.id!,
+        counterId: id,
+      );
+    }
+  }
+
+  Future<void> _confirmRejectCounter(
+    BuildContext context,
+    EventDetails event,
+  ) async {
+    final id = event.counter.activeCounter?.id;
+    if (id == null) return;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reject Counter'),
+        content: const Text('Reject this proposed price? The agreed price stays the same.'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Reject Counter')),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await _eventController.rejectStructuredCounter(
+        eventId: event.id!,
+        counterId: id,
+      );
+    }
+  }
+
+  Future<void> _confirmApproveFinalPayment(
+    BuildContext context,
+    int eventId,
+  ) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Approve Final Payment'),
+        content: const Text(
+          'This charges the remaining final payment. It is not the same as accepting a Counter.',
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Approve')),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await _eventController.approveFinalPayment(eventId: eventId);
+    }
+  }
+
+  Future<void> _confirmMarkComplete(
+    BuildContext context,
+    EventDetails event,
+  ) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Mark Complete'),
+        content: const Text(
+          'Mark this event complete so the venue can review final payment?',
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Mark Complete')),
+        ],
+      ),
+    );
+    if (ok == true) {
+      Get.toNamed(Routes.completeOnGoingEventsScreen, arguments: {
+        'eventData': event,
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -116,6 +306,10 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
         );
       }
       final event = controller.eventDetail!.data!;
+      final flags = EventActionFlags.fromCounter(
+        counter: event.counter,
+        eventEnd: event.endDateTime,
+      );
       return Scaffold(
           appBar: customAppBar(theme: theme, text: titleText, actions: [
             flowBtn == 1
@@ -132,7 +326,30 @@ class _PendingEventDetailsState extends State<PendingEventDetails> {
                 : const SizedBox.shrink()
           ]),
           body: pendingDetailsWidget(theme, controller, context, flowBtn,
-              eventId, _controller, _authController, _homeController));
+              eventId, _controller, _authController, _homeController),
+          bottomNavigationBar: EventActionBar(
+            flags: flags,
+            busy: controller.eventActionBusy.value,
+            onAcceptEvent: () =>
+                _confirmAcceptEvent(context, theme, event.id!),
+            onDeclineEvent: () => _confirmDecline(context, theme, event.id),
+            onCounter: () => _openCounterSheet(context, event, again: false),
+            onAcceptCounter: () =>
+                _confirmAcceptCounter(context, event),
+            onRejectCounter: () =>
+                _confirmRejectCounter(context, event),
+            onCounterAgain: () =>
+                _openCounterSheet(context, event, again: true),
+            onEditEvent: () {
+              controller.duplicateValue.value = false;
+              controller.draftValue.value = false;
+              controller.showEditPreviewScreen.value = true;
+              controller.assignValueForUpdate();
+            },
+            onMarkComplete: () => _confirmMarkComplete(context, event),
+            onApproveFinalPayment: () =>
+                _confirmApproveFinalPayment(context, event.id!),
+          ));
     });
   }
 
@@ -240,54 +457,6 @@ Widget customWidget(context, theme, {title, value}) {
   );
 }
 
-customList({String? name, context, theme}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 6),
-    child: Chip(
-      backgroundColor: DynamicColor.lightBlackClr,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      label: Text(
-        name!,
-        style: poppinsRegularStyle(
-          fontSize: 14,
-          context: context,
-          color: theme.primaryColor,
-        ),
-      ),
-    ),
-  );
-}
-
-String _formatEventRate(String? rate, String? rateType) {
-  if (rate == null || rate.isEmpty) return '--';
-  if (rateType == null || rateType.isEmpty) return rate;
-  return '$rate ($rateType)';
-}
-
-/// EO About Event "Price": event value without fees (not balance due).
-String _formatEventPrice({
-  PaymentSummary? summary,
-  String? totalAmount,
-}) {
-  final money = MoneyFormatter();
-  if (summary?.eventPrincipalMinor != null) {
-    return money.formatMinor(
-      summary!.eventPrincipalMinor,
-      currency: summary.currency,
-    );
-  }
-  if (totalAmount != null && totalAmount.isNotEmpty && totalAmount != 'null') {
-    final parsed = double.tryParse(totalAmount);
-    if (parsed != null) {
-      return NumberFormat.simpleCurrency(name: 'USD').format(parsed);
-    }
-    return totalAmount;
-  }
-  return '--';
-}
-
 /// Avoids GetBuilder crash when [pendingDetailsWidget] is opened from
 /// Upcoming (not only [PendingEventDetails]), where PaymentController may
 /// not have been put yet. Also loads summary once per eventId.
@@ -319,10 +488,10 @@ Widget pendingDetailsWidget(
     AuthController _authController,
     HomeController _homeController) {
   final event = controller.eventDetail!.data!;
-  final paymentController = _ensurePaymentControllerForPendingDetails(eventId);
+  _ensurePaymentControllerForPendingDetails(eventId);
   return SafeArea(
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: RefreshIndicator(
         color: DynamicColor.yellowClr,
         onRefresh: () async {
@@ -345,883 +514,55 @@ Widget pendingDetailsWidget(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 15,
+              const SizedBox(height: 12),
+              EventHeroHeader(event: event),
+              const SizedBox(height: 16),
+              EventPriceSummaryCard(
+                counter: event.counter,
+                fallbackTotal: event.totalAmount,
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 0.0, right: 0.0, top: 10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(13),
-                    border: Border.all(
-                        color: DynamicColor.grayClr.withValues(alpha: 0.6)),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: ImageIcon(
-                              const AssetImage("assets/pin.png"),
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              if (event.user!.isDelete != null)
-                                Utils.accountDelete(context),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 13),
-                                decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(10),
-                                        topRight: Radius.circular(10)),
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/topbtnGradent.png"),
-                                        fit: BoxFit.fill)),
-                                child: Center(
-                                  child: Text(
-                                    event.status == 'declined'
-                                        ? 'Venue request declined'
-                                        : event.status == 'pending'
-                                            ? 'Venue request pending'
-                                            : event.status.toString(),
-                                    style: poppinsRegularStyle(
-                                      fontSize: 11,
-                                      context: context,
-                                      color: theme.scaffoldBackgroundColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: event.user!.isDelete == null
-                            ? () {
-                                // Get.toNamed(Routes.eventOrganizerScreen,
-                                //     arguments: {
-                                //       "eventOrganizerValue": 2,
-                                //       'profileImg':
-                                //           "assets/eventOrganizer.png",
-                                //       "manager": "Event Manager"
-                                //     });
-                              }
-                            : () {
-                                Utils.showToast();
-                              },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                          ),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 25,
-                                backgroundImage: event.bannerImage == null
-                                    ? null
-                                    : NetworkImage(
-                                        event.bannerImage!.mediaPath!),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      event.eventTitle!,
-                                      style: poppinsRegularStyle(
-                                          fontSize: 12,
-                                          context: context,
-                                          color: theme.primaryColor,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      'Want to book for an event.',
-                                      style: poppinsRegularStyle(
-                                          fontSize: 12,
-                                          context: context,
-                                          color: DynamicColor.lightRedClr,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      flowBtn != 1
-                          ? Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 8),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomButton(
-                                    heights: 35,
-                                    color2: DynamicColor.redClr
-                                        .withValues(alpha: 0.8),
-                                    color1: DynamicColor.redClr
-                                        .withValues(alpha: 0.8),
-                                    widths: Get.width / 2.4,
-                                    backgroundClr: false,
-                                    fontSized: 12,
-                                    text: "Not interested/decline",
-                                    onTap: event.user!.isDelete == null
-                                        ? () {
-                                            cancelEventWidget(
-                                                context: context,
-                                                theme: theme,
-                                                onTap: () async {
-                                                  Get.back();
-                                                  await _controller
-                                                      .eventAcceptDeclineFtn(
-                                                    status: 'declined',
-                                                    id: event.id,
-                                                  );
-                                                });
-                                          }
-                                        : () {
-                                            Utils.showToast();
-                                          },
-                                    borderClr: Colors.transparent,
-                                  ),
-                                  CustomButton(
-                                    heights: 35,
-                                    text: "Accept",
-                                    fontSized: 12,
-                                    onTap: event.user!.isDelete == null
-                                        ? () {
-                                            _controller.checkBoxValue.value =
-                                                false;
-                                            showDialog(
-                                                barrierColor:
-                                                    Colors.transparent,
-                                                context: context,
-                                                barrierDismissible: true,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertWidget(
-                                                    height: Get.height * .45,
-                                                    container: SizedBox(
-                                                      width: Get.width,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 12.0,
-                                                                horizontal: 4),
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                "Disclaimer",
-                                                                style:
-                                                                    poppinsMediumStyle(
-                                                                  fontSize: 20,
-                                                                  context:
-                                                                      context,
-                                                                  color: theme
-                                                                      .primaryColor,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 15,
-                                                              ),
-                                                              Text(
-                                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-                                                                maxLines: 8,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style:
-                                                                    poppinsMediumStyle(
-                                                                  fontSize: 13,
-                                                                  context:
-                                                                      context,
-                                                                  color: theme
-                                                                      .primaryColor,
-                                                                ),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 15,
-                                                              ),
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Obx(
-                                                                    () => Theme(
-                                                                      data: Theme.of(
-                                                                              context)
-                                                                          .copyWith(
-                                                                        unselectedWidgetColor:
-                                                                            Colors.white,
-                                                                      ),
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            30,
-                                                                        child: Checkbox(
-                                                                            activeColor: DynamicColor.yellowClr,
-                                                                            value: _controller.checkBoxValue.value,
-                                                                            onChanged: (v) {
-                                                                              _controller.checkBoxValue.value = v ?? false;
-                                                                              _controller.update();
-                                                                            }),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  Flexible(
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          left:
-                                                                              2.0),
-                                                                      child:
-                                                                          Text(
-                                                                        'i have read and agree to the terms and conditions',
-                                                                        style:
-                                                                            poppinsRegularStyle(
-                                                                          fontSize:
-                                                                              13,
-                                                                          context:
-                                                                              context,
-                                                                          color:
-                                                                              theme.primaryColor,
-                                                                        ),
-                                                                        maxLines:
-                                                                            2,
-                                                                      ),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              CustomButton(
-                                                                heights: 35,
-                                                                text: "Accept",
-                                                                fontSized: 12,
-                                                                onTap:
-                                                                    () async {
-                                                                  if (!_controller
-                                                                      .checkBoxValue
-                                                                      .value) {
-                                                                    bottomToast(
-                                                                        text:
-                                                                            "Please agree with the disclaimer to accept the event request");
-                                                                    return;
-                                                                  }
-                                                                  final acceptEventId =
-                                                                      event.id!;
-                                                                  Get.back();
-                                                                  await _controller
-                                                                      .beginPaidEventAcceptance(
-                                                                    acceptEventId,
-                                                                  );
-                                                                },
-                                                                color2: DynamicColor
-                                                                    .greenClr
-                                                                    .withValues(
-                                                                        alpha:
-                                                                            0.8),
-                                                                color1: DynamicColor
-                                                                    .greenClr
-                                                                    .withValues(
-                                                                        alpha:
-                                                                            0.8),
-                                                                widths:
-                                                                    Get.width /
-                                                                        1.4,
-                                                                backgroundClr:
-                                                                    false,
-                                                                borderClr: Colors
-                                                                    .transparent,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                });
-                                          }
-                                        : () {
-                                            Utils.showToast();
-                                          },
-                                    color2: DynamicColor.greenClr
-                                        .withValues(alpha: 0.8),
-                                    color1: DynamicColor.greenClr
-                                        .withValues(alpha: 0.8),
-                                    widths: Get.width / 2.4,
-                                    backgroundClr: false,
-                                    borderClr: Colors.transparent,
-                                  ),
-                                ],
-                              ),
-                            )
-                          : (event.status == "cancelled" ||
-                                  event.status == "declined" ||
-                                  event.status == "completed" ||
-                                  event.status == "acknowledged")
-                              ? SizedBox()
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: CustomButton(
-                                    heights: 39,
-                                    widths: /*flowBtn==1? Get.width/1.5:*/
-                                        Get.width / 1.135,
-                                    style: poppinsMediumStyle(
-                                      fontSize: 13,
-                                      context: context,
-                                      color: theme.primaryColor,
-                                    ),
-                                    onTap: event.user!.isDelete == null
-                                        ? () {
-                                            cancelEventWidget(
-                                                context: context,
-                                                theme: theme,
-                                                onTap: () async {
-                                                  Get.back();
-                                                  if (API().sp.read("role") ==
-                                                      "eventOrganizer") {
-                                                    Get.toNamed(
-                                                        Routes.cancelReason,
-                                                        arguments: {
-                                                          "eventId": eventId,
-                                                          "doubleBack": true,
-                                                        });
-                                                  } else {
-                                                    await _controller
-                                                        .eventAcceptDeclineFtn(
-                                                      status: 'declined',
-                                                      id: event.id,
-                                                    );
-                                                  }
-                                                });
-                                          }
-                                        : () {
-                                            Utils.showToast();
-                                          },
-                                    backgroundClr: false,
-                                    borderClr: Colors.transparent,
-                                    color2: DynamicColor.redClr,
-                                    color1: DynamicColor.redClr,
-                                    text: API().sp.read("role") ==
-                                            "eventOrganizer"
-                                        ? "Cancel"
-                                        : "Decline",
-                                  ),
-                                ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      (event.status == "cancelled" ||
-                              event.status == "declined" ||
-                              event.status == "completed" ||
-                              event.status == "acknowledged")
-                          ? const SizedBox()
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Column(
-                                    children: [
-                                      // Counters button hidden for EO + VM (pending About Event).
-                                      // CustomButton(
-                                      //   heights: 39,
-                                      //   onTap: event.user!.isDelete == null
-                                      //       ? () {
-                                      //           int? userId;
-                                      //           if (event.userId ==
-                                      //               API().sp.read("userId")) {
-                                      //             userId = event.venue!.userId;
-                                      //           } else {
-                                      //             userId = event.userId!;
-                                      //           }
-                                      //           Get.toNamed(
-                                      //               Routes.counterScreen,
-                                      //               arguments: {
-                                      //                 "textField": true,
-                                      //                 "acceptVal": true,
-                                      //                 "userId": userId,
-                                      //                 "eventId": eventId,
-                                      //               });
-                                      //         }
-                                      //       : () {
-                                      //           Utils.showToast();
-                                      //         },
-                                      //   style: poppinsMediumStyle(
-                                      //       fontSize: 13,
-                                      //       context: context,
-                                      //       color:
-                                      //           theme.scaffoldBackgroundColor),
-                                      //   backgroundClr: false,
-                                      //   color2: DynamicColor.lightYellowClr,
-                                      //   color1: DynamicColor.lightYellowClr,
-                                      //   borderClr: Colors.transparent,
-                                      //   text: "Counters",
-                                      // ),
-                                      // SizedBox(
-                                      //   height: 5,
-                                      // ),
-                                      if (sp.read("role") == "eventManager" &&
-                                          (event.status == "pending" ||
-                                              event.status == "requested" ||
-                                              event.status == "countered"))
-                                        CustomButton(
-                                          heights: 39,
-                                          text: "Accept",
-                                          fontSized: 12,
-                                          onTap: event.user!.isDelete == null
-                                              ? () {
-                                                  _controller.checkBoxValue
-                                                      .value = false;
-                                                  showDialog(
-                                                      barrierColor:
-                                                          Colors.transparent,
-                                                      context: context,
-                                                      barrierDismissible: true,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertWidget(
-                                                          height:
-                                                              Get.height * .45,
-                                                          container: SizedBox(
-                                                            width: Get.width,
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          12.0,
-                                                                      horizontal:
-                                                                          4),
-                                                              child:
-                                                                  SingleChildScrollView(
-                                                                child: Column(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .start,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Text(
-                                                                      "Disclaimer",
-                                                                      style:
-                                                                          poppinsMediumStyle(
-                                                                        fontSize:
-                                                                            20,
-                                                                        context:
-                                                                            context,
-                                                                        color: theme
-                                                                            .primaryColor,
-                                                                      ),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height:
-                                                                          15,
-                                                                    ),
-                                                                    Text(
-                                                                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
-                                                                      maxLines:
-                                                                          8,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style:
-                                                                          poppinsMediumStyle(
-                                                                        fontSize:
-                                                                            13,
-                                                                        context:
-                                                                            context,
-                                                                        color: theme
-                                                                            .primaryColor,
-                                                                      ),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height:
-                                                                          15,
-                                                                    ),
-                                                                    Row(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        Obx(
-                                                                          () =>
-                                                                              Theme(
-                                                                            data:
-                                                                                Theme.of(context).copyWith(
-                                                                              unselectedWidgetColor: Colors.white,
-                                                                            ),
-                                                                            child:
-                                                                                SizedBox(
-                                                                              width: 30,
-                                                                              child: Checkbox(
-                                                                                  activeColor: DynamicColor.yellowClr,
-                                                                                  value: _controller.checkBoxValue.value,
-                                                                                  onChanged: (v) {
-                                                                                    _controller.checkBoxValue.value = v!;
-                                                                                    controller.update();
-                                                                                  }),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        Flexible(
-                                                                          child:
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.only(left: 2.0),
-                                                                            child:
-                                                                                Text(
-                                                                              'i have read and agree to the terms and conditions',
-                                                                              style: poppinsRegularStyle(
-                                                                                fontSize: 13,
-                                                                                context: context,
-                                                                                color: theme.primaryColor,
-                                                                              ),
-                                                                              maxLines: 2,
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    CustomButton(
-                                                                      heights:
-                                                                          35,
-                                                                      text:
-                                                                          "Accept",
-                                                                      fontSized:
-                                                                          12,
-                                                                      onTap:
-                                                                          () async {
-                                                                        if (!_controller
-                                                                            .checkBoxValue
-                                                                            .value) {
-                                                                          bottomToast(
-                                                                              text: "Please agree with the disclaimer to accept the event request");
-                                                                          return;
-                                                                        }
-                                                                        final acceptEventId =
-                                                                            event.id!;
-                                                                        Get.back();
-                                                                        await _controller
-                                                                            .beginPaidEventAcceptance(
-                                                                          acceptEventId,
-                                                                        );
-                                                                      },
-                                                                      color2: DynamicColor
-                                                                          .greenClr
-                                                                          .withValues(
-                                                                              alpha: 0.8),
-                                                                      color1: DynamicColor
-                                                                          .greenClr
-                                                                          .withValues(
-                                                                              alpha: 0.8),
-                                                                      widths:
-                                                                          Get.width /
-                                                                              1.4,
-                                                                      backgroundClr:
-                                                                          false,
-                                                                      borderClr:
-                                                                          Colors
-                                                                              .transparent,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      });
-                                                }
-                                              : () {
-                                                  Utils.showToast();
-                                                },
-                                          color2: event.user!.isDelete == null
-                                              ? DynamicColor.greenClr
-                                                  .withValues(alpha: 0.8)
-                                              : DynamicColor.disabledColor,
-                                          color1: event.user!.isDelete == null
-                                              ? DynamicColor.greenClr
-                                                  .withValues(alpha: 0.8)
-                                              : DynamicColor.disabledColor,
-                                          // widths: Get.width / 2.4,
-                                          backgroundClr: false,
-                                          borderClr: Colors.transparent,
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      (flowBtn == 1 ||
-                              API().sp.read("role") != "eventOrganizer" ||
-                              !shouldShowEoRevise(
-                                canReviseRequest: event.canReviseRequest,
-                                canEditRequest: event.canEditRequest,
-                                status: event.status,
-                                requestStatus: event.requestStatus,
-                              ))
-                          ? const SizedBox.shrink()
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: CustomButton(
-                                heights: 39,
-                                style: poppinsMediumStyle(
-                                  fontSize: 13,
-                                  context: context,
-                                  color: theme.primaryColor,
-                                ),
-                                onTap: () {
-                                  if (controller.savingEvent.value) return;
-                                  controller.duplicateValue.value = false;
-                                  controller.draftValue.value = false;
-                                  controller.assignValueForUpdate();
-                                  controller.showEditPreviewScreen.value = true;
-                                  controller.update();
-                                },
-                                backgroundClr: false,
-                                borderClr: Colors.transparent,
-                                color2: DynamicColor.greenClr,
-                                color1: DynamicColor.greenClr,
-                                text: event.canReviseRequest ||
-                                        event.canEditRequest ||
-                                        event.status == "countered" ||
-                                        event.requestStatus == "countered"
-                                    ? "Revise Event Request"
-                                    : "Edit Event Request",
-                              ),
-                            ),
-                      if (API().sp.read("role") == "eventOrganizer" &&
-                          event.canResubmitRequest)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                          child: CustomButton(
-                            heights: 39,
-                            style: poppinsMediumStyle(
-                              fontSize: 13,
-                              context: context,
-                              color: theme.primaryColor,
-                            ),
-                            onTap: () {
-                              if (controller.resubmittingRequest.value) return;
-                              controller.resubmitEventRequest(
-                                  eventId: event.id);
-                            },
-                            backgroundClr: false,
-                            borderClr: Colors.transparent,
-                            color2: DynamicColor.lightYellowClr,
-                            color1: DynamicColor.lightYellowClr,
-                            text: controller.resubmittingRequest.value
-                                ? "Resubmitting..."
-                                : "Resubmit to Venue",
-                          ),
-                        ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                    ],
+              ActiveCounterCard(counter: event.counter),
+              EventInfoSection(
+                title: 'Event Information',
+                rows: {
+                  'Capacity': event.maxCapacity ?? '',
+                  'Venue': event.venue?.venueName ?? '',
+                },
+              ),
+              EventInfoSection(
+                title: 'Event Details',
+                rows: {
+                  'Featuring': event.featuring ?? '',
+                  'Theme': event.themeOfEvent ?? '',
+                  'Description': event.about ?? '',
+                  'Comments': event.comment?.toString() ?? '',
+                },
+              ),
+              if (!event.counter.canEditEventCost)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    'Event price can only be changed through Counter.',
+                    style: poppinsRegularStyle(
+                      context: context,
+                      fontSize: 13,
+                      color: DynamicColor.grayClr,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              shouldShowPreApprovalCounter(
-                      canCounterRequest: event.canCounterRequest,
-                      status: event.status,
-                    )
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: CustomButton(
-                        heights: 33,
-                        color1: DynamicColor.lightYellowClr,
-                        color2: DynamicColor.lightYellowClr,
-                        backgroundClr: false,
-                        borderClr: Colors.transparent,
-                        onTap: () {
-                          int? userId;
-                          if (event.userId == API().sp.read("userId")) {
-                            userId = event.venue?.userId;
-                          } else {
-                            userId = event.userId;
-                          }
-                          Get.toNamed(Routes.counterScreen, arguments: {
-                            "textField": true,
-                            "acceptVal": false,
-                            "userId": userId,
-                            "eventId": eventId,
-                          });
-                        },
-                        textClr: theme.scaffoldBackgroundColor,
-                        text: "Counter",
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  event.eventTitle!,
-                  style: poppinsMediumStyle(
-                    fontSize: 19,
-                    context: context,
-                    color: theme.primaryColor,
-                  ),
-                ),
-              ),
-              venueService(
-                theme: theme,
-                context: context,
-                horizontalPadding: 0.0,
-                bgColor: DynamicColor.darkBlueClr,
-                iconPadding: 4,
-                radius: 18,
-                image: "assets/lockIcon.png",
-                text:
-                    "${DateFormat.jm().format(event.startDateTime!)} to ${DateFormat.jm().format(event.endDateTime!)}",
-                icon: true,
-              ),
-              venueService(
-                theme: theme,
-                context: context,
-                horizontalPadding: 0.0,
-                bgColor: DynamicColor.darkBlueClr,
-                iconPadding: 4,
-                radius: 18,
-                image: "assets/calender.png",
-                text: DateFormat.yMMMMEEEEd().format(event.startDateTime!),
-                icon: true,
-              ),
-              venueService(
-                  theme: theme,
-                  context: context,
-                  horizontalPadding: 0.0,
-                  bgColor: DynamicColor.darkBlueClr,
-                  iconPadding: 4,
-                  radius: 18,
-                  image: "assets/location.png",
-                  text: event.location,
-                  icon: false,
-                  iconClr: DynamicColor.yellowClr),
-              const SizedBox(
-                height: 10,
-              ),
-              customWidget(context, theme,
-                  title: "Event Comments", value: event.comment.toString()),
-              if ((event.counterComment != null &&
-                      event.counterComment!.isNotEmpty) ||
-                  (event.status == "countered" ||
-                      event.requestStatus == "countered" ||
-                      event.isCounterActive?.value == 1))
-                customWidget(
-                  context,
-                  theme,
-                  title: "Venue Counter",
-                  value: event.counterComment ?? event.comment ?? '',
-                ),
-              customWidget(context, theme,
-                  title: "Event About", value: event.about.toString()),
-              customWidget(context, theme,
-                  title: "Event theme", value: event.themeOfEvent.toString()),
-              customWidget(context, theme,
-                  title: "Featuring", value: event.featuring.toString()),
-              // VM: replace bare Price/Rating with Rate + the same cost
-              // breakdown shown on Review & Accept. EO keeps Price + Rate.
-              if (API().sp.read('role') == 'eventManager') ...[
-                customWidget(
-                  context,
-                  theme,
-                  title: "Rate",
-                  value: _formatEventRate(event.rate, event.rateType),
-                ),
-                const SizedBox(height: 20),
-                GetBuilder<PaymentController>(
-                  init: paymentController,
-                  builder: (payment) {
-                    if (payment.paymentSummary != null) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: PaymentBreakdownCard(
-                          summary: payment.paymentSummary!,
-                          title: 'Cost breakdown',
-                        ),
-                      );
-                    }
-                    if (payment.state == PaymentWorkflowState.loading) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Center(
-                          child: SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: DynamicColor.yellowClr,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
-              ] else
-                GetBuilder<PaymentController>(
-                  init: paymentController,
-                  builder: (payment) {
-                    return customWidget(
-                      context,
-                      theme,
-                      title: "Price",
-                      value: _formatEventPrice(
-                        summary: payment.paymentSummary,
-                        totalAmount: event.totalAmount,
-                      ),
-                    );
-                  },
-                ),
+              CounterHistorySection(counter: event.counter),
+              EventPreferencesSection(event: event),
+              EventTagsSection(event: event),
               if (API().sp.read('role') == 'eventOrganizer' ||
                   API().sp.read('role') == 'eventManager')
-                EventPaymentJourneySection(eventId: eventId),
+                EventPaymentJourneySection(
+                  eventId: eventId,
+                  hideDuplicateActions: true,
+                ),
               const SizedBox(
                 height: 5,
               ),
-              sp.read('role') == "eventManager"
+              API().sp.read('role') == "eventManager"
                   ? const SizedBox.shrink()
                   : Obx(
                       () => _authController.followingLoader.value == false
@@ -1282,14 +623,14 @@ Widget pendingDetailsWidget(
                                   })
                               : const SizedBox(),
                     ),
-              sp.read('role') == "eventOrganizer"
+              API().sp.read('role') == "eventOrganizer"
                   ? const SizedBox.shrink()
                   : Obx(
                       () => _authController.followingLoader.value == false
                           ? const SizedBox.shrink()
                           : ourGuestWidget(
                               isDelete:
-                                  event.user!.isDelete == null ? false : true,
+                                  event.user?.isDelete == null ? false : true,
                               onTap: () {
                                 Get.toNamed(Routes.viewProfileScreen,
                                     arguments: {
@@ -1297,24 +638,24 @@ Widget pendingDetailsWidget(
                                       "eventId": event.userId
                                     });
                               },
-                              networkImg: event.user!.profilePicture == null
+                              networkImg: event.user?.profilePicture == null
                                   ? groupPlaceholder
-                                  : event.user!.profilePicture!.mediaPath
+                                  : event.user?.profilePicture!.mediaPath
                                       .toString(),
-                              venueOwner: event.user!.name.toString(),
+                              venueOwner: event.user?.name.toString(),
                               theme: theme,
                               context: context,
                               horizontalPadding: 0.0,
                               rowPadding: 0.0,
                               avatarPadding: 6,
                               rowVerticalPadding: 0.0,
-                              followBgClr: event.user!.following != null
+                              followBgClr: event.user?.following != null
                                   ? DynamicColor.grayClr
                                   : DynamicColor.avatarBgClr,
-                              textClr: event.user!.following == null
+                              textClr: event.user?.following == null
                                   ? theme.primaryColor
                                   : theme.scaffoldBackgroundColor,
-                              followText: event.user!.following == null
+                              followText: event.user?.following == null
                                   ? "Follow"
                                   : "Unfollow",
                               followOnTap: () {
@@ -1364,423 +705,7 @@ Widget pendingDetailsWidget(
                   lng: double.parse(event.longitude!),
                 ),
               ],
-              const SizedBox(
-                height: 15,
-              ),
-              if (event.services!.isNotEmpty)
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: DynamicColor.darkGrayClr),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "Service",
-                          style: poppinsRegularStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            context: context,
-                            underline: true,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: kToolbarHeight,
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: event.services!.length,
-                              itemBuilder: (BuildContext context, indx) {
-                                return customList(
-                                    context: context,
-                                    theme: theme,
-                                    name: event.services![indx].eventItem!.name
-                                        .toString());
-                              }),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "Hardware Provided",
-                          style: poppinsRegularStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            context: context,
-                            underline: true,
-                            color: theme.primaryColor,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            itemCount: controller
-                                .eventDetail!.data!.hardwareProvide!.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, index) {
-                              final filterItem = event
-                                  .hardwareProvide![index].hardwareItems!
-                                  .where((data) => data.selected == true)
-                                  .toList();
-                              if (filterItem.isEmpty) return SizedBox();
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text("${"• "}",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: isDark(context)
-                                                ? theme.primaryColor
-                                                : DynamicColor.whiteClr,
-                                          )),
-                                      Text(
-                                        event.hardwareProvide![index].name
-                                            .toString(),
-                                        style: poppinsRegularStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                          context: context,
-                                          underline: true,
-                                          color: theme.primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: kToolbarHeight,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index1) {
-                                        return customList(
-                                            context: context,
-                                            theme: theme,
-                                            name: filterItem[index1]
-                                                .name
-                                                .toString());
-                                      },
-                                      itemCount: filterItem.length,
-                                    ),
-                                  )
-                                ],
-                              );
-                            }),
-                      ),
-                      if (event.musicGenre!.any((genre) =>
-                          genre.musicGenreItems
-                              ?.any((item) => item.selected == true) ??
-                          false))
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            "Music Genre",
-                            style: poppinsRegularStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              context: context,
-                              underline: true,
-                              color: theme.primaryColor,
-                            ),
-                          ),
-                        ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: event.musicGenre!.length,
-                            itemBuilder: (BuildContext context, index) {
-                              final filterItem = event
-                                  .musicGenre![index].musicGenreItems!
-                                  .where((data) => data.selected == true)
-                                  .toList();
-                              if (filterItem.isEmpty) return SizedBox();
-                              return Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text("${"• "}",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: isDark(context)
-                                                ? theme.primaryColor
-                                                : DynamicColor.whiteClr,
-                                          )),
-                                      Text(
-                                        event.musicGenre![index].name
-                                            .toString(),
-                                        style: poppinsRegularStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                          context: context,
-                                          underline: true,
-                                          color: theme.primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: kToolbarHeight,
-                                    child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (context, index1) {
-                                        return customList(
-                                            context: context,
-                                            theme: theme,
-                                            name: filterItem[index1]
-                                                .name
-                                                .toString());
-                                      },
-                                      itemCount: filterItem.length,
-                                    ),
-                                  )
-                                ],
-                              );
-                            }),
-                      ),
-                      if (controller
-                          .eventDetail!.data!.eventMusicChoiceTags!.isNotEmpty)
-                        Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Music Choice",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: controller.eventDetail!.data!
-                                      .eventMusicChoiceTags!.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, index) {
-                                    final filterItem = controller
-                                        .eventDetail!
-                                        .data!
-                                        .eventMusicChoiceTags![index]
-                                        .musicChoiceItems!
-                                        .categoryItems!
-                                        .where((data) =>
-                                            data.userSelection == true)
-                                        .toList();
-                                    if (filterItem.isEmpty) return SizedBox();
-                                    return Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text("${"• "}",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,
-                                                )),
-                                            Text(
-                                              controller
-                                                  .eventDetail!
-                                                  .data!
-                                                  .eventMusicChoiceTags![index]
-                                                  .musicChoiceItems!
-                                                  .name
-                                                  .toString(),
-                                              style: poppinsRegularStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600,
-                                                context: context,
-                                                underline: true,
-                                                color: theme.primaryColor,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: kToolbarHeight,
-                                          child: ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index1) {
-                                              return customList(
-                                                  context: context,
-                                                  theme: theme,
-                                                  name: filterItem[index1]
-                                                      .name
-                                                      .toString());
-                                            },
-                                            itemCount: filterItem.length,
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
-                        ),
-                      if (controller.eventDetail!.data!.eventActivityChoiceTags!
-                          .isNotEmpty)
-                        Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Activity Choice",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount:
-                                      event.eventActivityChoiceTags!.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, index) {
-                                    final filterItem = controller
-                                        .eventDetail!
-                                        .data!
-                                        .eventActivityChoiceTags![index]
-                                        .activityChoiceItems!
-                                        .categoryItems!
-                                        .where((data) =>
-                                            data.userSelection == true)
-                                        .toList();
-                                    if (filterItem.isEmpty) return SizedBox();
-                                    return Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text("${"• "}",
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: isDark(context)
-                                                      ? theme.primaryColor
-                                                      : DynamicColor.whiteClr,
-                                                )),
-                                            Text(
-                                              controller
-                                                  .eventDetail!
-                                                  .data!
-                                                  .eventActivityChoiceTags![
-                                                      index]
-                                                  .activityChoiceItems!
-                                                  .name
-                                                  .toString(),
-                                              style: poppinsRegularStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600,
-                                                context: context,
-                                                underline: true,
-                                                color: theme.primaryColor,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: kToolbarHeight,
-                                          child: ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            scrollDirection: Axis.horizontal,
-                                            itemBuilder: (context, index1) {
-                                              return customList(
-                                                  context: context,
-                                                  theme: theme,
-                                                  name: filterItem[index1]
-                                                      .name
-                                                      .toString());
-                                            },
-                                            itemCount: filterItem.length,
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          ],
-                        ),
-                      if (controller.eventDetail!.data!.hashtags!.isNotEmpty)
-                        Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Organizer Private Hashtags",
-                                style: poppinsRegularStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  context: context,
-                                  underline: true,
-                                  color: theme.primaryColor,
-                                ),
-                              ),
-                            ),
-                            Align(
-                                alignment: Alignment.topLeft,
-                                child: SizedBox(
-                                  height: kToolbarHeight,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      final hashtags = controller
-                                          .eventDetail!.data!.hashtags![index];
-                                      return customList(
-                                          context: context,
-                                          theme: theme,
-                                          name: hashtags.name.toString());
-                                    },
-                                    itemCount: controller
-                                        .eventDetail!.data!.hashtags!.length,
-                                  ),
-                                )),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              const SizedBox(
-                height: 15,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 24),
             ],
           ),
         ),

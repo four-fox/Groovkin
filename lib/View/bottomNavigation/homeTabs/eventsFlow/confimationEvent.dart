@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/button.dart';
@@ -27,147 +25,65 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
   num? totalAmount;
   num? subTotal;
   double? hoursDifference;
-  DateFormat format = DateFormat("yyyy-MM-dd");
-  DateFormat timeFormat = DateFormat("hh:mm a");
 
   double CalculateHoursFromDate() {
-    String startDate = _controller.eventDateController.text;
-    String endDate = _controller.eventEndDateController.text;
-
-    String time =
-        _controller.proposedTimeWindowsController.text.toString().trim();
-    List<String> parts = time.split(RegExp(r'\s+'));
-
-    DateTime dt1 = DateFormat(
-      "dd-MM-yyyy hh:mm a",
-    ).parse("$startDate ${parts.first} ${parts.last}");
-
-    String time2 = _controller.endTimeController.text.toString().trim();
-    List<String> parts2 = time2.split(RegExp(r'\s+'));
-    print(parts2);
-    DateTime dt2 = DateFormat(
-      "dd-MM-yyyy hh:mm a",
-    ).parse("$endDate ${parts2.first} ${parts2.last}");
-
-    Duration diff = dt2.difference(dt1);
-    double totalHours = diff.inMinutes / 60;
-
-    return totalHours;
+    final startDate = _controller.eventDateController.text.trim();
+    final endDate = _controller.eventEndDateController.text.trim();
+    final startClock = _controller.proposedTimeWindowsController.text.trim();
+    final endClock = _controller.endTimeController.text.trim();
+    if (startDate.isEmpty ||
+        endDate.isEmpty ||
+        startClock.isEmpty ||
+        endClock.isEmpty) {
+      return 0;
+    }
+    final start = DateFormat('dd-MM-yyyy HH:mm').parse('$startDate $startClock');
+    var end = DateFormat('dd-MM-yyyy HH:mm').parse('$endDate $endClock');
+    if (!end.isAfter(start)) {
+      end = end.add(const Duration(days: 1));
+    }
+    return end.difference(start).inMinutes / 60;
   }
 
   @override
   void initState() {
     super.initState();
 
-    if (_controller.datePost != null &&
-        _controller.postTime != null &&
-        _controller.endDatePost != null &&
-        _controller.postEndTime != null) {
-      // String startStr = '${_controller.datePost} ${_controller.postTime}';
-      // String endStr = '${_controller.endDatePost} ${_controller.postEndTime}';
-      String startStr = '${_controller.datePost} ';
-      String endStr = '${_controller.endDatePost} ';
-      String startTi = _controller.postTime!;
-      String endTi = _controller.postEndTime!;
+    _applyApiOrLocalPrice();
+  }
 
-      // Normalize the input string by replacing non-breaking spaces with regular spaces
-      startStr = startStr.replaceAll('\u202F', ' ');
-      endStr = endStr.replaceAll('\u202F', ' ');
-      startTi = startTi.replaceAll('\u202F', ' ').trim();
-      endTi = endTi.replaceAll('\u202F', ' ').trim();
-      // Parse start and end times
-      DateTime startTime = timeFormat.parse(startTi);
-      DateTime endTime = timeFormat.parse(endTi);
-      DateTime startDt = format.parse(startStr);
-      DateTime endDt = format.parse(endStr);
-      // Check if the end time is earlier than the start time (indicating it is the next day)
-      if (endTime.isBefore(startTime)) {
-        // If so, add 1 day to the end time
-        endTime = endTime.add(const Duration(days: 1));
-      }
-
-      Duration difference = endTime.difference(startTime);
-      double dailyHours =
-          difference.inHours + (difference.inMinutes % 60) / 60.0;
-
-      // Calculate total days
-      int totalDays = endDt.difference(startDt).inDays;
-
-      // Total hours across all days
-      double totalHours = dailyHours * totalDays;
-      hoursDifference = totalHours;
-
-      if (_controller.rateType!.value == "hourly") {
-        // subTotal = (double.tryParse(_controller.hourlyRateController.text)) ??
-        //     0 * hoursDifference!;
-        // double tempDownPayment = (subTotal! *
-        //     (double.parse(_controller.paymentSchedule!.value) / 100));
-        // stripeTax = 0.10 * subTotal!;
-        // groovkinTax = 0.05 * subTotal!;
-        // subTotalWithTax = subTotal! + (0.20 * subTotal!);
-        // tax = 0.05 * subTotal!;
-        // downPayment = tempDownPayment + (0.20 * subTotal!);
-        // balanceDue = subTotalWithTax! - downPayment!;
-        //-----------------------
-        calcPerHour();
-      } else {
-        // subTotal = double.parse(_controller.hourlyRateController.text);
-        // double tempDownPayment = (subTotal! *
-        //     (double.parse(_controller.paymentSchedule!.value) / 100));
-        // stripeTax = 0.10 * subTotal!;
-        // groovkinTax = 0.05 * subTotal!;
-        // subTotalWithTax = subTotal! + (0.20 * subTotal!);
-        // tax = 0.05 * subTotal!;
-        // downPayment = tempDownPayment + (0.20 * subTotal!);
-        // balanceDue = subTotalWithTax! - downPayment!;
-        //-----------------------
-        calcFlatRate();
-      }
+  void _applyApiOrLocalPrice() {
+    final detail = _controller.eventDetail?.data;
+    final apiPrice = double.tryParse(
+      detail?.eventPrice ?? detail?.baseAmount ?? '',
+    );
+    final hourly =
+        (detail?.rateType ?? _controller.rateType?.value) == 'hourly';
+    final rate = double.tryParse(
+          detail?.rate ?? _controller.hourlyRateController.text,
+        ) ??
+        0;
+    final apiHours = double.tryParse(detail?.durationHours ?? '');
+    hoursDifference = apiHours ?? CalculateHoursFromDate();
+    if (apiPrice != null) {
+      subTotal = apiPrice;
+    } else if (hourly) {
+      subTotal = rate * (hoursDifference ?? 0);
+    } else {
+      subTotal = rate;
     }
+    final apiTotal = double.tryParse(detail?.totalAmount ?? '');
+    totalAmount = apiTotal ?? (subTotal! * 1.2);
+    groovkinFee = totalAmount! - subTotal!;
+    final schedulePercent =
+        double.tryParse(_controller.paymentSchedule?.value ?? '0') ?? 0;
+    downPayment = (subTotal! / 100) * schedulePercent;
+    balanceDue = totalAmount! - downPayment!;
   }
 
-  void calcPerHour() {
-    log("In Hourly Rate");
-    subTotal = ((double.tryParse(_controller.hourlyRateController.text) ?? 0) *
-        CalculateHoursFromDate());
-    log("per hour rate : ${double.tryParse(_controller.hourlyRateController.text)}");
-    log("total hours : ${CalculateHoursFromDate()}");
-    log("subTotal : $subTotal");
-
-    groovkinFee = 0.1 * subTotal!;
-    log("groovkinFee: $groovkinFee");
-
-    totalAmount = subTotal! + groovkinFee!;
-    log("totalAmount: $totalAmount");
-
-    double schedulePercent =
-        double.tryParse(_controller.paymentSchedule?.value ?? "0") ?? 0;
-    downPayment = (subTotal! / 100) * schedulePercent;
-    log("downPayment: $downPayment");
-
-    balanceDue = totalAmount! - downPayment!;
-    log("balanceDue: $balanceDue");
-  }
-
-  void calcFlatRate() {
-    log("In Flat Rate");
-    subTotal = (double.tryParse(_controller.hourlyRateController.text) ?? 0);
-    log("flat rate : ${double.tryParse(_controller.hourlyRateController.text)}");
-    log("subTotal : $subTotal");
-
-    groovkinFee = 0.1 * subTotal!;
-    log("groovkinFee: $groovkinFee");
-
-    totalAmount = subTotal! + groovkinFee!;
-    log("totalAmount: $totalAmount");
-
-    double schedulePercent =
-        double.tryParse(_controller.paymentSchedule?.value ?? "0") ?? 0;
-    downPayment = (subTotal! / 100) * schedulePercent;
-    log("downPayment: $downPayment");
-
-    balanceDue = totalAmount! - downPayment!;
-    log("balanceDue: $balanceDue");
+  bool get _hourlyCalculated {
+    final detail = _controller.eventDetail?.data;
+    return (detail?.rateType ?? _controller.rateType?.value) == 'hourly';
   }
 
   @override
@@ -267,14 +183,36 @@ class _ConfirmationEventScreenState extends State<ConfirmationEventScreen> {
             customWidget(
               theme: theme,
               context: context,
-              title: "Subtotal",
+              title: _hourlyCalculated
+                  ? "Calculated event price"
+                  : "Event price",
               value: "\$ ${subTotal?.toStringAsFixed(2) ?? "0.00"}",
             ),
+            if (_hourlyCalculated) ...[
+              const SizedBox(height: 10),
+              customWidget(
+                theme: theme,
+                context: context,
+                title: "Rate",
+                value:
+                    "\$ ${detail?.rate ?? _controller.hourlyRateController.text}",
+              ),
+              const SizedBox(height: 10),
+              customWidget(
+                theme: theme,
+                context: context,
+                title: "Duration hours",
+                value: (detail?.durationHours ??
+                        hoursDifference?.toStringAsFixed(2) ??
+                        '')
+                    .toString(),
+              ),
+            ],
             const SizedBox(height: 10),
             customWidget(
               theme: theme,
               context: context,
-              title: "Groovkin Fee (10%)",
+              title: "Fees (20%)",
               value: "\$${groovkinFee?.toStringAsFixed(2) ?? "0.00"}",
             ),
             const SizedBox(height: 10),

@@ -11,6 +11,7 @@ import 'package:groovkin/View/GroovkinManager/venueDetailsModel.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/hashtagCollectionModel.dart'
     as hashtag_model;
 import 'package:groovkin/View/bottomNavigation/homeTabs/organizerHomeModel/alleventsModel.dart';
+import 'package:groovkin/model/event_counter_model.dart';
 import 'package:groovkin/utils/json_parsers.dart';
 
 UserEventDetailsModel userEventDetailsModelFromJson(String str) =>
@@ -18,6 +19,16 @@ UserEventDetailsModel userEventDetailsModelFromJson(String str) =>
 
 String userEventDetailsModelToJson(UserEventDetailsModel data) =>
     json.encode(data.toJson());
+
+User? _eventUser(Map<String, dynamic> json) {
+  final createdBy = json['created_by'];
+  if (createdBy is Map) {
+    return User.fromJson(Map<String, dynamic>.from(createdBy));
+  }
+  final user = json['user'];
+  if (user is Map) return User.fromJson(Map<String, dynamic>.from(user));
+  return null;
+}
 
 class UserEventDetailsModel {
   bool? status;
@@ -57,6 +68,9 @@ class EventDetails {
   String? downPayment;
   String? balanceDue;
   String? totalAmount;
+  String? eventPrice;
+  String? baseAmount;
+  String? durationHours;
   String? rateType;
   String? paymentSchedule;
   String? comment;
@@ -84,10 +98,12 @@ class EventDetails {
   bool canEditRequest;
   String? negotiationStage;
   String? counterComment;
+  EventCounterState counter;
   Venue? venue;
   List<BannerImage>? profilePicture;
   BannerImage? bannerImage;
   User? user;
+  User? createdBy;
   List<Service>? services;
   List<HardwareProvide>? hardwareProvide;
   List<MusicGenre>? musicGenre;
@@ -110,6 +126,9 @@ class EventDetails {
     this.downPayment,
     this.balanceDue,
     this.totalAmount,
+    this.eventPrice,
+    this.baseAmount,
+    this.durationHours,
     this.rateType,
     this.paymentSchedule,
     this.comment,
@@ -136,10 +155,12 @@ class EventDetails {
     this.canEditRequest = false,
     this.negotiationStage,
     this.counterComment,
+    this.counter = const EventCounterState(),
     this.venue,
     this.profilePicture,
     this.bannerImage,
     this.user,
+    this.createdBy,
     this.services,
     this.hardwareProvide,
     this.musicGenre,
@@ -169,7 +190,10 @@ class EventDetails {
         rate: json["rate"],
         downPayment: json["down_payment"],
         balanceDue: json["balance_due"],
-        totalAmount: json["total_amount"],
+        totalAmount: json["total_amount"]?.toString(),
+        eventPrice: json["event_price"]?.toString(),
+        baseAmount: json["base_amount"]?.toString(),
+        durationHours: json["duration_hours"]?.toString(),
         rateType: json["rate_type"],
         paymentSchedule: json["payment_schedule"],
         comment: json["comment"],
@@ -202,6 +226,7 @@ class EventDetails {
         canEditRequest: parseBool(json["can_edit_request"]),
         negotiationStage: parseString(json["negotiation_stage"]),
         counterComment: parseString(json["counter_comment"]),
+        counter: EventCounterState.fromJson(json["counter"] ?? json),
         venue: json["venue"] == null ? null : Venue.fromJson(json["venue"]),
         profilePicture: json["profile_picture"] == null
             ? []
@@ -210,7 +235,10 @@ class EventDetails {
         bannerImage: json["banner_image"] == null
             ? null
             : BannerImage.fromJson(json["banner_image"]),
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        user: _eventUser(json),
+        createdBy: json["created_by"] is Map
+            ? User.fromJson(Map<String, dynamic>.from(json["created_by"]))
+            : null,
         services: json["services"] == null
             ? []
             : List<Service>.from(

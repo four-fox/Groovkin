@@ -190,7 +190,7 @@ class _GroovkinInviteScreenState extends State<GroovkinInviteScreen> {
                             (invite) => Padding(
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: Text(
-                                '${invite.inviteType ?? ''} • ${invite.email ?? 'no email'} • ${invite.status ?? ''}',
+                                '${invite.code ?? ''} • ${invite.inviteType ?? ''} • ${invite.email ?? 'no email'} • ${invite.status ?? ''}',
                                 style: poppinsRegularStyle(
                                   fontSize: 12,
                                   context: context,
@@ -241,7 +241,9 @@ class _InviteSuccessCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Invite created successfully',
+              invite.inviteType == kInviteTypeVenueManager
+                  ? 'Venue Manager Invite Created'
+                  : 'Invite created successfully',
               style: poppinsMediumStyle(
                 fontSize: 16,
                 context: context,
@@ -249,6 +251,15 @@ class _InviteSuccessCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+            if (invite.email != null && invite.email!.isNotEmpty)
+              Text(
+                'Invited: ${invite.email}',
+                style: poppinsRegularStyle(
+                  fontSize: 14,
+                  context: context,
+                  color: theme.primaryColor,
+                ),
+              ),
             if (invite.code != null)
               Text(
                 'Code: ${invite.code}',

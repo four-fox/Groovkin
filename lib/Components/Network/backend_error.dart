@@ -33,6 +33,19 @@ String backendErrorMessage(
   return message ?? fallback;
 }
 
+/// Hide raw SQL / database exceptions from event-tag loads.
+String eventTagLoadMessage(dynamic response) {
+  final message = backendErrorMessage(response);
+  final lower = message.toLowerCase();
+  if (lower.contains('sql') ||
+      lower.contains('exception') ||
+      lower.contains('sqlstate') ||
+      lower.contains('syntax error')) {
+    return 'Unable to load event hashtags. Please try again.';
+  }
+  return message;
+}
+
 String? _messageValue(dynamic value) {
   if (value is String && value.trim().isNotEmpty) return value.trim();
   if (value is List && value.isNotEmpty) return _messageValue(value.first);

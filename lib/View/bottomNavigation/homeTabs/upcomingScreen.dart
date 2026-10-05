@@ -802,7 +802,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
 
             eventDateTime(
               text:
-                  "${DateFormat.jm().format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat.jm().format(controller.eventDetail!.data!.endDateTime!)}",
+                  "${DateFormat('HH:mm').format(controller.eventDetail!.data!.startDateTime!)} to ${DateFormat('HH:mm').format(controller.eventDetail!.data!.endDateTime!)}",
               theme: theme,
               context: context,
               iconClr: DynamicColor.yellowClr,
@@ -1869,7 +1869,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     ),
                     pw.Spacer(),
                     pw.Text(
-                      DateFormat.jm().format(
+                      DateFormat('HH:mm').format(
                         controller.eventDetail!.data!.startDateTime!,
                       ),
                       style: pw.TextStyle(
@@ -1892,7 +1892,7 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
                     ),
                     pw.Spacer(),
                     pw.Text(
-                      DateFormat.jm().format(
+                      DateFormat('HH:mm').format(
                         controller.eventDetail!.data!.endDateTime!,
                       ),
                       style: pw.TextStyle(
