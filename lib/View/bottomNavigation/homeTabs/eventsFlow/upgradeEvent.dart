@@ -145,13 +145,12 @@ class _UpGradeEventsState extends State<UpGradeEvents> {
       showTimePicker(
         context: context,
         initialEntryMode: TimePickerEntryMode.dial,
-
         initialTime: EventController.eventTimePickerInitial(
           isEnd: isEnd,
           displayText: currentDisplay,
         ),
         builder: (ctx, child) => MediaQuery(
-          data: MediaQuery.of(ctx).copyWith(alwaysUse24HourFormat: true),
+          data: MediaQuery.of(ctx).copyWith(alwaysUse24HourFormat: false),
           child: Theme(
             data: Theme.of(ctx).copyWith(
               colorScheme: const ColorScheme.light(

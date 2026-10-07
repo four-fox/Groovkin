@@ -225,7 +225,7 @@ class EditEventScreen extends StatelessWidget {
                       builder: (context, child) {
                         return MediaQuery(
                           data: MediaQuery.of(context)
-                              .copyWith(alwaysUse24HourFormat: true),
+                              .copyWith(alwaysUse24HourFormat: false),
                           child: Theme(
                             data: Theme.of(context).copyWith(
                               colorScheme: const ColorScheme.light(
@@ -306,7 +306,7 @@ class EditEventScreen extends StatelessWidget {
                       builder: (context, child) {
                         return MediaQuery(
                           data: MediaQuery.of(context)
-                              .copyWith(alwaysUse24HourFormat: true),
+                              .copyWith(alwaysUse24HourFormat: false),
                           child: Theme(
                             data: Theme.of(context).copyWith(
                               colorScheme: const ColorScheme.light(
