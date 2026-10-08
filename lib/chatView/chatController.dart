@@ -898,16 +898,15 @@ class ChatController extends GetxController {
       multipleImageList.clear();
       chatFileList.clear();
       file = null;
-      FilePickerResult? result;
+      List<PlatformFile>? result;
       if (type == 'gallery') {
         result = await FilePicker.pickFiles(
-          allowMultiple: true,
           type: FileType.any,
         );
-        for (int i = 0; i < result!.files.length; i++) {
+        for (int i = 0; i < result.length; i++) {
           multipleImageList.add(MediaClass(
-            filename: result.files[i].path,
-            fileType: result.files[i].extension,
+            filename: result[i].path,
+            fileType: result[i].extension,
           ));
           // chatFileList.add(form.MultipartFile.fromFileSync(
           //   result.files[i].path!,

@@ -4,6 +4,8 @@ analyzer:
     deprecated_member_use: ignore
     must_be_immutable: ignore
     unused_field: ignore
+  exclude:
+    - build/**
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

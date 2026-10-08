@@ -100,32 +100,19 @@ class ManagerController extends GetxController {
   List<String> pickFilePath = [];
 
   Future<void> pickFileee() async {
-    FilePickerResult? result = await FilePicker.pickFiles(
-        allowMultiple: true,
+    List<PlatformFile>? result = await FilePicker.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ["png", "jpg", "jpeg", "pdf"]);
+        allowedExtensions: ["png", "jpg", "jpeg", "pdf", "mov", "mp4"]);
 
-    if (result == null) {
+    if (result.isEmpty) {
       // User canceled the picker
       return;
     }
 
-    for (int i = 0; i < result.files.length; i++) {
-      PlatformFile file = result.files[i];
+    for (int i = 0; i < result.length; i++) {
+      PlatformFile file = result[i];
       String extension = file.extension?.toLowerCase() ?? '';
       if (extension == 'mov' || extension == 'mp4') {
-        // Replace "MOV" with "mp4" in the file path
-        String modifiedPath = file.path!.replaceAll('.mov', '.mp4');
-        // Create a new PlatformFile with the modified path
-        PlatformFile modifiedFile = PlatformFile(
-          name: file.name.replaceAll('.mov', '.mp4'),
-          size: file.size,
-          bytes: file.bytes,
-          path: modifiedPath,
-        );
-
-        // Replace the original file with the modified one
-        result.files[i] = modifiedFile;
         String? thumbnail = await generateThumbnail(file.path!);
         if (updateAmenities.value == true) {
           profilePictures.add(venueDtail.ProfilePicture(
