@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,6 +14,8 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/profile/editProfileScreen.dart';
 import 'package:groovkin/Components/searchRadiusSelector.dart';
 import 'package:groovkin/Components/inviteCodeFormatter.dart';
+import 'package:groovkin/location/location_controller.dart';
+import 'package:groovkin/location/location_fields.dart';
 import 'package:groovkin/utils/invite_code.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -485,58 +486,7 @@ class _CreateProfileState extends State<CreateProfile> {
                         height: 15,
                       ),
 
-                      CountryStateCityPicker(
-                          country: controller.countryController,
-                          state: controller.stateController,
-                          // dialogColor: Colors.grey.shade200,
-                          textFieldDecoration: InputDecoration(
-                            hintStyle: const TextStyle(
-                                fontSize: 14, color: Color(0xff9DA3B5)),
-                            fillColor: Colors.transparent,
-                            filled: true,
-                            // suffixIcon: Icon(Icons.arrow_downward_rounded),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                  color: DynamicColor.grayClr
-                                      .withValues(alpha: 0.6)), //<-- SEE HERE
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                  color: DynamicColor.grayClr
-                                      .withValues(alpha: 0.6)), //<-- SEE HERE
-                            ),
-
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide(
-                                  color: DynamicColor.grayClr
-                                      .withValues(alpha: 0.6)), //<-- SEE HERE
-                            ),
-                          )),
-
-                      // sp.read("role")=="eventOrganizer"? CustomTextFields(
-                      //   labelText: "Select State",
-                      //   validationError: "select state",
-                      //   controller: controller.stateController,
-                      // ):SizedBox.shrink(),
-
-                      sp.read("role") == "eventOrganizer"
-                          ? const SizedBox(
-                              height: 15,
-                            )
-                          : const SizedBox.shrink(),
-
-                      CustomTextFields(
-                        labelText: "Zip Code",
-                        hintText: "Zip Code",
-                        controller: controller.zipController,
-                        validationError: "zip code",
-                        isOptional: false,
-                        keyBoardType: true,
-                        autofillHints: const [],
-                      ),
+                      const LocationFields(),
                       const SizedBox(height: 15),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -663,13 +613,29 @@ class _CreateProfileState extends State<CreateProfile> {
                         bottomToast(text: "Please enter birth year");
                         return;
                       }
-                      if (_controller.stateController.text.trim().isEmpty) {
-                        bottomToast(text: "Please select state");
+                      final location =
+                          Get.isRegistered<LocationAvailabilityController>()
+                              ? Get.find<LocationAvailabilityController>()
+                              : null;
+                      if (location != null && location.loadingCountries) {
+                        bottomToast(text: "Still loading locations. Try again.");
                         return;
                       }
-                      if (_controller.zipController.text.trim().isEmpty) {
-                        bottomToast(text: "Please enter zip code");
-                        return;
+                      if (location?.catalogsReady == true) {
+                        final postal = location!.draft.postalCode.trim().isEmpty
+                            ? _controller.zipController.text.trim()
+                            : location.draft.postalCode.trim();
+                        final stateName =
+                            (location.draft.stateName ?? _controller.stateController.text)
+                                .trim();
+                        if (stateName.isEmpty) {
+                          bottomToast(text: "Please select state");
+                          return;
+                        }
+                        if (postal.isEmpty) {
+                          bottomToast(text: "Please enter zip code");
+                          return;
+                        }
                       }
                       if (completeAfterSocial) {
                         _controller.createProfile(
@@ -679,6 +645,9 @@ class _CreateProfileState extends State<CreateProfile> {
                         return;
                       }
                       Future<void> submitRegistration({String? role}) async {
+                        final allowed = await _controller
+                            .prepareRegistrationLocation(context);
+                        if (!allowed || !context.mounted) return;
                         final isUser = API().sp.read("role") == "User";
                         final hasInvite =
                             _controller.inviteCodeController.text.trim().isNotEmpty;

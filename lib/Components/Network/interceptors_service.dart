@@ -6,6 +6,7 @@ import 'package:get/get.dart' as getx;
 import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/Network/backend_error.dart';
 import 'package:groovkin/Routes/app_pages.dart';
+import 'package:groovkin/services/socket_io_class.dart';
 
 import '../colors.dart';
 
@@ -24,6 +25,7 @@ class InterceptorsServices extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.statusCode == 401) {
       if (response.data["message"] == "Unauthenticated.") {
+        SocketIoClass().disconnect();
         API().sp.erase();
         API().sp.write("intro", true);
         getx.Get.offAllNamed(Routes.loginScreen);
@@ -31,7 +33,9 @@ class InterceptorsServices extends Interceptor {
       }
     }
 
-    if (response.statusCode! > 400) {
+    final suppressToast =
+        response.requestOptions.extra['suppressErrorToast'] == true;
+    if (response.statusCode! > 400 && !suppressToast) {
       BotToast.closeAllLoading();
       BotToast.showText(text: backendErrorMessage(response));
     }

@@ -42,8 +42,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../model/invite_model.dart';
+import '../../services/socket_io_class.dart';
 import '../../model/single_ton_data.dart';
 import '../../model/switch_model.dart';
+import '../../location/location_contract.dart';
+import '../../location/location_controller.dart';
+import '../../location/location_dialog.dart';
 import '../../utils/backend_contract.dart';
 import '../../utils/invite_code.dart';
 import '../../utils/json_parsers.dart';
@@ -69,6 +73,140 @@ class _EventBannerAspectRatioPreset implements CropAspectRatioPresetData {
 
 class AuthController extends GetxController {
   String? accessToken;
+  final RxInt unseenNotificationCount = 0.obs;
+
+  /// True only after signup preflight passes. Login must not inherit it.
+  bool attachRegistrationLocation = false;
+  Future<bool>? _registrationGate;
+
+  LocationAvailabilityController? get _locationController {
+    if (!Get.isRegistered<LocationAvailabilityController>()) return null;
+    return Get.find<LocationAvailabilityController>();
+  }
+
+  Future<bool> prepareRegistrationLocation(BuildContext context) {
+    final inFlight = _registrationGate;
+    if (inFlight != null) return inFlight;
+    final future = _runRegistrationLocation(context);
+    _registrationGate = future;
+    return future.whenComplete(() {
+      if (identical(_registrationGate, future)) {
+        _registrationGate = null;
+      }
+    });
+  }
+
+  Future<bool> _runRegistrationLocation(BuildContext context) async {
+    final location = _locationController;
+    if (location == null || !location.catalogsReady) {
+      attachRegistrationLocation = false;
+      return true;
+    }
+    final result = await location.gateRegistration();
+    _syncLocationTextFields();
+    if (result.allowed) {
+      attachRegistrationLocation = true;
+      return true;
+    }
+    attachRegistrationLocation = false;
+    if (context.mounted) {
+      await showLocationMessage(context, result);
+    }
+    return false;
+  }
+
+  void _syncLocationTextFields() {
+    final draft = _locationController?.draft;
+    if (draft == null) return;
+    if ((draft.countryName ?? '').isNotEmpty) {
+      countryController.text = draft.countryName!;
+    }
+    if ((draft.stateName ?? '').isNotEmpty) {
+      stateController.text = draft.stateName!;
+    }
+    if (draft.postalCode.isNotEmpty) {
+      zipController.text = draft.postalCode;
+    }
+  }
+
+  Map<String, String> _registrationLocationFields() {
+    if (!attachRegistrationLocation) return const {};
+    _syncLocationTextFields();
+    return _locationController?.fieldsForSubmit(includeCodes: true) ??
+        const {};
+  }
+
+  bool _profileLocationChanged() {
+    final location = _locationController;
+    if (location?.confirmed != null) {
+      return !location!.locationMatchesConfirmed;
+    }
+    final profile = userData?.data?.profile;
+    if (profile == null) {
+      return countryController.text.trim().isNotEmpty ||
+          stateController.text.trim().isNotEmpty ||
+          normalizePostal(zipController.text).isNotEmpty;
+    }
+    return countryController.text.trim() != (profile.country ?? '').trim() ||
+        stateController.text.trim() != (profile.selectState ?? '').trim() ||
+        normalizePostal(zipController.text) !=
+            normalizePostal('${profile.zipCode ?? ''}');
+  }
+
+  Map<String, String> _profileLocationFields() {
+    _syncLocationTextFields();
+    final location = _locationController;
+    if (location != null &&
+        (location.draft.countryCode != null ||
+            location.draft.postalCode.isNotEmpty)) {
+      return location.fieldsForSubmit(
+        includeCodes: location.draft.countryCode != null,
+      );
+    }
+    return {
+      if (stateController.text.trim().isNotEmpty)
+        'select_state': stateController.text.trim(),
+      if (countryController.text.trim().isNotEmpty)
+        'country': countryController.text.trim(),
+      if (normalizePostal(zipController.text).isNotEmpty)
+        'zip_code': normalizePostal(zipController.text),
+    };
+  }
+
+  Future<void> _presentRequestFailure(
+    dynamic response, {
+    required bool returnToLocation,
+  }) async {
+    final result = interpretLocationResponse(response);
+    if (isLocationErrorCode(result.code)) {
+      if (returnToLocation) {
+        _locationController?.restoreConfirmed();
+      }
+      final dialogContext = Get.context;
+      if (dialogContext != null && dialogContext.mounted) {
+        await showLocationMessage(dialogContext, result);
+      }
+      if (returnToLocation && result.code != null) {
+        return;
+      }
+      return;
+    }
+    BotToast.showText(
+      text: result.message.trim().isEmpty
+          ? backendErrorMessage(response)
+          : result.message,
+    );
+  }
+
+  void bindRealtimeNotifications() {
+    SocketIoClass().onNotificationCount = (count) {
+      unseenNotificationCount.value = count;
+      update();
+      if (notificationModel != null) {
+        getAllNotification(silent: true);
+      }
+    };
+  }
 
   ///intro functionality
   final _index = 0.obs;
@@ -80,21 +218,21 @@ class AuthController extends GetxController {
       title: "Event Attendee",
       body:
           "Groovkin is an innovative event management app designed to enhance your event experience as an attendee. Discover a wide range of events happening around you, from concerts and workshops to conferences and parties.",
-      image: "assets/intro1.png",
+      image: "assets/introo 1.jpg",
       btnText: "Next",
     ),
     intro(
       title: "Event Organizer",
       body:
           "Groovkin provides event organizers with a comprehensive platform to plan, organize, and execute successful events. As an event organizer, you can leverage the power of Groovkin to streamline your event management process.",
-      image: "assets/intro3.png",
+      image: "assets/introo 3.jpg",
       btnText: "Next",
     ),
     intro(
       title: "Venue Manager",
       body:
           "Groovkin offers property owners a seamless way to monetize their venues by connecting them with event organizers in need of suitable spaces. Whether you own a conference hall, a  venue.",
-      image: "assets/intro2.png",
+      image: "assets/introo 2.jpg",
       btnText: "Get Started",
     ),
   ];
@@ -142,6 +280,10 @@ class AuthController extends GetxController {
   /// user register
   sigUp(context,
       {String? signUpPlatform, String? platformId, String? role}) async {
+    if (attachRegistrationLocation && context is BuildContext) {
+      final allowed = await prepareRegistrationLocation(context);
+      if (!allowed) return;
+    }
     NotificationService notificationService = NotificationService();
     String? token = await notificationService.getDeviceToken();
     List imageList = [];
@@ -152,6 +294,7 @@ class AuthController extends GetxController {
     }
 
     final inviteCode = canonicalInviteCodeOrNull(inviteCodeController.text);
+    final locationFields = _registrationLocationFields();
     var formData = form.FormData.fromMap({
       "first_name": firstNameController.text,
       "last_name": lastNameController.text,
@@ -166,10 +309,15 @@ class AuthController extends GetxController {
           (companyNameController.text.isNotEmpty))
         "company_name": companyNameController.text,
       "password_confirmation": confirmPasswordController.text,
-      /*if(API().sp.read("role") == "eventOrganizer" && stateController.text.isNotEmpty)*/ "select_state":
-          stateController.text,
-      /*if(API().sp.read("role") == "eventOrganizer" && countryController.text.isNotEmpty)*/ "country":
-          countryController.text,
+      if ((locationFields['select_state'] ?? '').trim().isNotEmpty)
+        "select_state": locationFields['select_state'],
+      if ((locationFields['country'] ?? '').trim().isNotEmpty)
+        "country": locationFields['country'],
+      if (locationFields['country_code'] != null)
+        "country_code": locationFields['country_code'],
+      if (locationFields['state_code'] != null)
+        "state_code": locationFields['state_code'],
+      if (locationFields['city'] != null) "city": locationFields['city'],
       if (role != null)
         "role": API().sp.read("role") == "User"
             ? "user"
@@ -181,7 +329,8 @@ class AuthController extends GetxController {
       "platform_id": platformId,
       if (imageList.isNotEmpty) "image[]": imageList,
       "device_token": token,
-      "zip_code": zipController.text,
+      if ((locationFields['zip_code'] ?? '').isNotEmpty)
+        "zip_code": locationFields['zip_code'],
       "instagram_link": instagramController.text,
       "twitter_link": twitterXController.text,
       "youtube_link": youtubeController.text,
@@ -189,8 +338,18 @@ class AuthController extends GetxController {
       if (inviteCode != null) "invite_code": inviteCode,
     });
 
-    var response = await API().postApi(formData, "register",
-        multiPart: imageList.isNotEmpty ? true : false);
+    var response = await API().postApi(
+      formData,
+      "register",
+      multiPart: imageList.isNotEmpty ? true : false,
+      suppressErrorToast: true,
+    );
+
+    if (response == null) return;
+    if (response.statusCode != 200) {
+      await _presentRequestFailure(response, returnToLocation: false);
+      return;
+    }
 
     if (response.statusCode == 200) {
       inviteCodeController.clear();
@@ -264,7 +423,27 @@ class AuthController extends GetxController {
       var response = await API().postApi(
         formData,
         "verify-otp",
+        suppressErrorToast: true,
       );
+
+      if (response == null) return;
+      if (response.statusCode != 200) {
+        final result = interpretLocationResponse(response);
+        if (isLocationErrorCode(result.code)) {
+          final dialogContext = Get.context;
+          if (dialogContext != null && dialogContext.mounted) {
+            await showLocationMessage(dialogContext, result);
+          }
+          Get.offAllNamed(Routes.loginOrSignUpScreen);
+        } else {
+          BotToast.showText(
+            text: result.message.trim().isEmpty
+                ? backendErrorMessage(response)
+                : result.message,
+          );
+        }
+        return;
+      }
 
       if (response.statusCode == 200) {
         if (response.data["data"]["user_details"]["signup_platform"] == "app") {
@@ -274,6 +453,7 @@ class AuthController extends GetxController {
               response.data['data']['user_details']['is_complete_profile']);
           API().sp.write("signupPlatform",
               response.data['data']['user_details']['signup_platform']);
+          SocketIoClass().syncSession();
           configureSDK();
           _applyBackendRoles(response.data['data']);
           clearTextFields();
@@ -617,6 +797,7 @@ class AuthController extends GetxController {
     }
     evaluateProfileCompletion(userDetails: details);
     _applySearchRadiusFromPayload(details);
+    SocketIoClass().syncSession();
   }
 
   void _applyBackendRoles(dynamic payload) {
@@ -704,6 +885,16 @@ class AuthController extends GetxController {
     } else if (countryController.text.isEmpty) {
       countryController.text = "United States";
     }
+    if (Get.isRegistered<LocationAvailabilityController>()) {
+      Get.find<LocationAvailabilityController>().applySaved(
+        countryName: countryController.text,
+        stateName: stateController.text,
+        postalCode: zipController.text,
+        city: profile["city"]?.toString(),
+        countryCode: profile["country_code"]?.toString(),
+        stateCode: profile["state_code"]?.toString(),
+      );
+    }
   }
 
   Future<void> continueAfterSocialProfileSave() async {
@@ -746,6 +937,7 @@ class AuthController extends GetxController {
     instagramController.clear();
     aboutController.clear();
     inviteCodeController.clear();
+    attachRegistrationLocation = false;
   }
 
   /// todo create profile functionality
@@ -1001,8 +1193,10 @@ class AuthController extends GetxController {
         var a = multiPartingImage(imageBytes);
         imageList.add(a);
       }
-      final zip = zipController.text.trim();
+      _syncLocationTextFields();
+      final zip = normalizePostal(zipController.text);
       final existingZip = userData?.data?.profile?.zipCode?.toString().trim();
+      final sendLocation = _profileLocationChanged();
       final payload = <String, dynamic>{
         "first_name": firstNameController.text,
         "last_name": lastNameController.text,
@@ -1013,10 +1207,7 @@ class AuthController extends GetxController {
         if ((API().sp.read("role") == "eventManager") &&
             (companyNameController.text.isNotEmpty))
           "company_name": companyNameController.text,
-        "select_state": stateController.text,
-        "country": countryController.text.isEmpty
-            ? "United States"
-            : countryController.text,
+        if (sendLocation) ..._profileLocationFields(),
         if (imageList.isNotEmpty) "image[]": imageList,
         if (instagramController.text.isNotEmpty)
           "instagram_link": instagramController.text,
@@ -1026,13 +1217,21 @@ class AuthController extends GetxController {
           "youtube_link": youtubeController.text,
         "search_radius_miles": searchRadiusMiles,
       };
-      if (zip.isNotEmpty) {
-        payload["zip_code"] = zip;
-      } else if (existingZip != null && existingZip.isNotEmpty) {
-        payload["zip_code"] = existingZip;
+      if (sendLocation &&
+          (payload["zip_code"]?.toString().trim().isEmpty ?? true)) {
+        if (zip.isNotEmpty) {
+          payload["zip_code"] = zip;
+        } else if (existingZip != null && existingZip.isNotEmpty) {
+          payload["zip_code"] = existingZip;
+        }
       }
       var formData = form.FormData.fromMap(payload);
-      var response = await API().postApi(formData, "update-profile/$userId");
+      var response = await API().postApi(
+        formData,
+        "update-profile/$userId",
+        suppressErrorToast: true,
+      );
+      if (response == null) return;
       if (response.statusCode == 200) {
         _persistAuthUser(response.data['data'] ?? response.data);
         await getProfile(userId: userId);
@@ -1053,8 +1252,7 @@ class AuthController extends GetxController {
         }
         Get.back();
       } else {
-        final message = backendErrorMessage(response, field: 'zip_code');
-        BotToast.showText(text: message);
+        await _presentRequestFailure(response, returnToLocation: true);
       }
     } finally {
       savingProfile(false);
@@ -1062,20 +1260,24 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> persistSearchRadius(int miles) async {
+  Future<bool> persistSearchRadius(int miles) async {
+    final previous = searchRadiusMiles;
     final sanitized = sanitizeSearchRadius(miles, allowed: allowedSearchRadii);
-    searchRadiusMiles = sanitized;
     final userId = API().sp.read("userId");
-    if (userId == null) return;
+    if (userId == null) return false;
     final response = await API().postApi(
       form.FormData.fromMap({"search_radius_miles": sanitized}),
       "update-profile/$userId",
     );
-    if (response.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       _applySearchRadiusFromPayload(
           response.data['data'] ?? response.data['user_details']);
       API().sp.write('searchRadiusMiles', sanitized);
+      return true;
     }
+    searchRadiusMiles = previous;
+    update();
+    return false;
   }
 
   ///>>>>>>>>>>>>>>>>>>>>> edit profile
@@ -1097,6 +1299,7 @@ class AuthController extends GetxController {
       } catch (e) {
         print(e);
       }
+      SocketIoClass().disconnect();
       API().sp.erase();
       API().sp.write("intro", true);
       // Get.offAllNamed(Routes.loginScreen);
@@ -1934,6 +2137,7 @@ class AuthController extends GetxController {
       if (data.data?.profile?.userId != null) {
         API().sp.write("userId", data.data!.profile!.userId);
       }
+      SocketIoClass().syncSession();
       _applyBackendRoles(response.data['data']);
       if (parseString(data.data?.activeRole) == null) {
         final fallback = storageRoleFromBackend(userType);
@@ -1974,6 +2178,7 @@ class AuthController extends GetxController {
     int userId = await API().sp.read("userId");
     final response = await API().postApi({}, "delete-account/$userId");
     if (response.statusCode == 200) {
+      SocketIoClass().disconnect();
       await API().sp.erase();
       await API().sp.write("intro", true);
       Get.offAllNamed(Routes.loginScreen);
@@ -2302,9 +2507,13 @@ class AuthController extends GetxController {
   NotificationModel? notificationModel;
 
   Future<dynamic> getAllNotification(
-      {fullUrl, String url = 'notifications'}) async {
-    isNotificationLoading.value = true; // Start loading
-    final response = await API().getApi(url: "notifications", fullUrl: fullUrl);
+      {fullUrl, String url = 'notifications', bool silent = false}) async {
+    if (!silent) isNotificationLoading.value = true;
+    final response = await API().getApi(
+      url: "notifications",
+      fullUrl: fullUrl,
+      isLoader: silent ? false : true,
+    );
     if (response.statusCode == 200) {
       if (fullUrl == null) {
         notificationModel = NotificationModel.fromJson(response.data);
@@ -2316,7 +2525,7 @@ class AuthController extends GetxController {
         notificationWait = false;
       }
     }
-    isNotificationLoading.value = false; // Stop loading
+    if (!silent) isNotificationLoading.value = false;
     update();
   }
 
@@ -2779,8 +2988,7 @@ class AuthController extends GetxController {
         // checkUserSubscriptionIsActive();
       }
       // BotToast.closeAllLoading();
-    } on PlatformException catch (e, _) {
-      // BotToast.closeAllLoading();
+    } on PlatformException {
       rethrow;
     }
   }

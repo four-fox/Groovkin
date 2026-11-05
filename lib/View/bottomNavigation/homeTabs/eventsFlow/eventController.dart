@@ -33,6 +33,9 @@ import 'hashtagCollectionRepository.dart';
 import 'ongoingEvents/ongoingEventsModel.dart';
 import 'venueDiscoveryModel.dart';
 import 'venueDiscoveryRepository.dart';
+import 'package:groovkin/discovery/discovery_config.dart';
+import 'package:groovkin/discovery/discovery_contract.dart';
+import 'package:groovkin/discovery/discovery_repository.dart';
 import 'package:groovkin/utils/backend_contract.dart';
 import 'package:groovkin/utils/json_parsers.dart';
 import 'package:groovkin/utils/search_radius.dart';
@@ -1520,7 +1523,20 @@ class EventController extends GetxController {
       await homeController.invalidateRecommendations();
       await homeController.getEventNearByMe();
       await homeController.getTopRatedEvent();
+      if (DiscoveryConfig.compileTime.enabled &&
+          shouldRefreshDiscoveryList(
+            keys,
+            DiscoveryConfig.searchInvalidationKey,
+          )) {
+        await runDiscoverySearch(page: 1, refresh: true);
+      }
       return;
+    }
+    if (shouldRefreshDiscoveryList(
+      keys,
+      DiscoveryConfig.recommendedInvalidationKey,
+    )) {
+      await homeController.invalidateRecommendations();
     }
     final joined = keys.map((key) => key.toLowerCase()).join(' ');
     final refreshUpcoming = keys.isEmpty ||
@@ -1807,7 +1823,39 @@ class EventController extends GetxController {
 
   ///searching events
   final searchingController = TextEditingController();
+  final DiscoverySearchDraft discoverySearch = DiscoverySearchDraft();
+  final TextEditingController discoveryPostalController =
+      TextEditingController();
+  final TextEditingController discoveryActivityController =
+      TextEditingController();
+  final TextEditingController discoveryMusicController =
+      TextEditingController();
+  final DiscoveryRequestGate _discoverySearchGate = DiscoveryRequestGate();
+  final DiscoveryDebouncer _discoverySearchDebounce = DiscoveryDebouncer();
+  List<DiscoveryCatalogOption> discoveryActivities = [];
+  List<DiscoveryCatalogOption> discoveryMusic = [];
+  bool discoveryCatalogsLoaded = false;
+  String? discoverySearchError;
+  String? discoverySearchErrorCode;
+  String? discoveryPostalError;
+  String? discoverySearchLocationStatus;
+  bool discoverySearchRateLimited = false;
+  bool discoverySearchActive = false;
+  int? discoverySearchNextPage;
+  int _discoverySearchToken = 0;
+
+  bool get discoveryCoordinatesAvailable {
+    if (!Get.isRegistered<HomeController>()) return false;
+    final point = Get.find<HomeController>().locationLatLng;
+    return DiscoveryCoordinate.tryCreate(point?.latitude, point?.longitude) !=
+        null;
+  }
+
   searchingEvent({nextUrl}) async {
+    if (DiscoveryConfig.compileTime.enabled) {
+      await runDiscoverySearch(page: 1, refresh: true);
+      return;
+    }
     getAllEventsLoader(false);
     var response = await API().getApi(
         url: "search-events?search=${searchingController.text}",
@@ -1826,6 +1874,223 @@ class EventController extends GetxController {
       getAllEventsLoader(true);
       update();
     }
+  }
+
+  Future<void> prepareDiscoverySearch() async {
+    discoverySearchActive = true;
+    await _loadDiscoveryCatalogs();
+    await runDiscoverySearch(page: 1, refresh: false);
+  }
+
+  Future<void> _loadDiscoveryCatalogs() async {
+    if (discoveryCatalogsLoaded) return;
+    discoveryCatalogsLoaded = true;
+    final repository = DiscoveryRepository.shared;
+    discoveryActivities =
+        await repository.catalog(DiscoveryConfig.activityCatalogType);
+    discoveryMusic = await repository.catalog(DiscoveryConfig.musicCatalogType);
+    update();
+  }
+
+  void scheduleDiscoverySearch() {
+    if (discoverySearchRateLimited) return;
+    discoverySearch.text = searchingController.text;
+    _discoverySearchDebounce.schedule(() {
+      runDiscoverySearch(page: 1, refresh: true);
+    });
+  }
+
+  Future<void> runDiscoverySearch({
+    required int page,
+    bool refresh = false,
+  }) async {
+    discoverySearch.text = searchingController.text;
+    discoverySearch.postalCode = discoveryPostalController.text;
+    discoverySearch.activityText = discoveryActivityController.text;
+    discoverySearch.musicText = discoveryMusicController.text;
+    discoveryPostalError = postalFieldMessage(discoverySearch.postalCode);
+    if (refresh || page <= 1) {
+      if (refresh) DiscoveryRepository.shared.serverDisabled = false;
+      _discoverySearchToken = _discoverySearchGate.begin();
+    }
+    final token = _discoverySearchToken;
+    if (discoveryPostalError != null) {
+      getAllEventsLoader(true);
+      update();
+      return;
+    }
+    if (!discoverySearch.hasMeaningfulFilter) {
+      allEvents = emptyEventList();
+      discoverySearchError = null;
+      discoverySearchErrorCode = null;
+      discoverySearchNextPage = null;
+      getAllEventsLoader(true);
+      update();
+      return;
+    }
+    if (discoverySearch.sort == 'nearest' && !discoveryCoordinatesAvailable) {
+      discoverySearch.sort = 'relevance';
+    }
+    getAllEventsLoader(false);
+    update();
+    if (page <= 1 && Get.isRegistered<HomeController>()) {
+      await Get.find<HomeController>().ensureDiscoveryLocation();
+    }
+    if (!_discoverySearchGate.isCurrent(token)) {
+      getAllEventWaiting = false;
+      return;
+    }
+    final home = Get.isRegistered<HomeController>()
+        ? Get.find<HomeController>()
+        : null;
+    final point = home?.locationLatLng;
+    final outcome = await DiscoveryRepository.shared.search(
+      draft: discoverySearch.copy(),
+      page: page,
+      latitude: point?.latitude,
+      longitude: point?.longitude,
+      allowedRadii: home?.allowedSearchRadii,
+    );
+    if (!_discoverySearchGate.isCurrent(token)) {
+      getAllEventWaiting = false;
+      return;
+    }
+    _applyDiscoverySearch(outcome, replace: page <= 1 || outcome.usedLegacy);
+    getAllEventsLoader(true);
+    getAllEventWaiting = false;
+    update();
+  }
+
+  void _applyDiscoverySearch(
+    DiscoveryOutcome outcome, {
+    required bool replace,
+  }) {
+    final problem = outcome.problem;
+    if (problem != null) {
+      discoverySearchRateLimited = problem.isRateLimited;
+      discoverySearchErrorCode = problem.code;
+      discoverySearchError = problem.isUnauthorized ? null : problem.message;
+      if (problem.code == 'invalid_postal_code') {
+        discoveryPostalError = problem.message;
+      }
+      if (replace && allEvents == null) {
+        allEvents = emptyEventList(
+          success: false,
+          message: discoverySearchError,
+        );
+      }
+      discoverySearchNextPage = null;
+      return;
+    }
+    final page = outcome.page!;
+    discoverySearchError = null;
+    discoverySearchErrorCode = null;
+    discoverySearchRateLimited = false;
+    discoverySearchLocationStatus = page.locationStatus;
+    if (page.filters?.radiusApplied == true) {
+      discoverySearch.applyRadius = true;
+    }
+    final cursor = DiscoveryListCursor.fromPage(page);
+    discoverySearchNextPage = cursor.nextPage;
+    final events = (!replace && allEvents?.data != null)
+        ? mergeDiscoveryEvents(allEvents!.data!.data, page.events)
+        : page.events;
+    allEvents = eventListFromPage(page, events: events);
+  }
+
+  Future<void> loadNextDiscoverySearch() async {
+    final next = discoverySearchNextPage;
+    if (next == null || getAllEventWaiting) return;
+    getAllEventWaiting = true;
+    await runDiscoverySearch(page: next);
+  }
+
+  void setDiscoverySort(String sort) {
+    if (sort == 'nearest' && !discoveryCoordinatesAvailable) return;
+    discoverySearch.sort = sort;
+    _restartDiscoverySearch();
+  }
+
+  void setDiscoveryRadius(int radius) {
+    discoverySearch.radius = radius;
+    discoverySearch.applyRadius = true;
+    _restartDiscoverySearch();
+  }
+
+  void setDiscoveryRadiusEnabled(bool enabled) {
+    if (enabled && !discoveryCoordinatesAvailable) return;
+    discoverySearch.applyRadius = enabled;
+    _restartDiscoverySearch();
+  }
+
+  void toggleDiscoveryActivity(int id) {
+    final ids = List<int>.from(discoverySearch.activityIds);
+    if (!ids.remove(id)) ids.add(id);
+    discoverySearch.activityIds = ids;
+    _restartDiscoverySearch();
+  }
+
+  void setDiscoveryMusic(int? id) {
+    discoverySearch.musicGenreId = id;
+    if (id != null) discoverySearch.musicText = '';
+    _restartDiscoverySearch();
+  }
+
+  void onDiscoveryPostalChanged(String value) {
+    discoverySearch.postalCode = value;
+    discoveryPostalError = postalFieldMessage(value);
+    update();
+    if (discoveryPostalError != null || discoverySearchRateLimited) return;
+    _discoverySearchDebounce.schedule(() {
+      runDiscoverySearch(page: 1, refresh: true);
+    });
+  }
+
+  void onDiscoveryActivityText(String value) {
+    discoverySearch.activityText = value;
+    scheduleDiscoverySearch();
+  }
+
+  void onDiscoveryMusicText(String value) {
+    discoverySearch.musicText = value;
+    discoverySearch.musicGenreId = null;
+    scheduleDiscoverySearch();
+  }
+
+  void clearDiscoveryFilters() {
+    _discoverySearchDebounce.cancel();
+    _discoverySearchGate.begin();
+    searchingController.clear();
+    discoveryPostalController.clear();
+    discoveryActivityController.clear();
+    discoveryMusicController.clear();
+    discoverySearch
+      ..text = ''
+      ..postalCode = ''
+      ..activityText = ''
+      ..musicText = ''
+      ..activityIds = []
+      ..musicGenreId = null
+      ..sort = 'relevance'
+      ..applyRadius = false;
+    discoveryPostalError = null;
+    discoverySearchError = null;
+    discoverySearchErrorCode = null;
+    discoverySearchNextPage = null;
+    allEvents = emptyEventList();
+    getAllEventsLoader(true);
+    update();
+  }
+
+  Future<void> retryDiscoverySearch() async {
+    discoverySearchRateLimited = false;
+    discoverySearchError = null;
+    await runDiscoverySearch(page: 1, refresh: true);
+  }
+
+  void _restartDiscoverySearch() {
+    _discoverySearchDebounce.cancel();
+    runDiscoverySearch(page: 1, refresh: true);
   }
 
   ///>>>>>>>>>>>> get all event sending requests
@@ -2320,6 +2585,10 @@ class EventController extends GetxController {
   @override
   void onClose() {
     _venueSearchDebounce?.cancel();
+    _discoverySearchDebounce.cancel();
+    discoveryPostalController.dispose();
+    discoveryActivityController.dispose();
+    discoveryMusicController.dispose();
     super.onClose();
   }
 

@@ -5,6 +5,7 @@
 import 'dart:convert';
 import '../../../../Components/Network/API.dart';
 import '../../../../Components/Network/Url.dart';
+import '../../../../discovery/discovery_contract.dart';
 import '../../../../links.dart';
 import '../../../GroovkinManager/venueDetailsModel.dart';
 
@@ -150,6 +151,8 @@ class EventData {
   List<EventMusicChoiceTag>? eventActivityChoiceTags;
   List<EventHashtag>? hashtags;
   Recommendation? recommendation;
+  DiscoverySignal? discovery;
+  DiscoverySignal? searchSignal;
   double? distance;
   String? requestStatus;
   bool canReviseRequest;
@@ -196,6 +199,8 @@ class EventData {
     this.eventActivityChoiceTags,
     this.hashtags,
     this.recommendation,
+    this.discovery,
+    this.searchSignal,
     this.distance,
     this.requestStatus,
     this.canReviseRequest = false,
@@ -284,6 +289,8 @@ class EventData {
             ? Recommendation.fromJson(
                 Map<String, dynamic>.from(json["recommendation"]))
             : null,
+        discovery: DiscoverySignal.tryParse(json["discovery"]),
+        searchSignal: DiscoverySignal.tryParse(json["search"]),
         distance: json["distance"] is num
             ? (json["distance"] as num).toDouble()
             : double.tryParse(json["distance"]?.toString() ?? ""),

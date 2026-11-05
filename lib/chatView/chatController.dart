@@ -1,17 +1,15 @@
 // ignore_for_file: unnecessary_import
 
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:socket_io_client/socket_io_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
@@ -19,8 +17,9 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:dio/dio.dart' as form;
 import 'package:http_parser/http_parser.dart';
 import '../Components/Network/API.dart';
-import '../Components/Network/Url.dart';
 import '../Components/mediaModel.dart';
+import '../services/socket_io_class.dart';
+import '../services/socket_session.dart';
 import 'chatInnerDataModel.dart';
 import 'chatNewUserModel.dart';
 import 'chatRoomModel.dart';
@@ -90,72 +89,24 @@ class ChatController extends GetxController {
   ];
 
   var sp = GetStorage();
-  IO.Socket? socket;
-  // var token = sp.read('token');
+  RxBool peerTyping = false.obs;
+  String? _boundConversationId;
+  bool? _lastTypingEmit;
 
   @override
   void onInit() {
     super.onInit();
-    // executeConditionalCode();
-    _socketConnect();
-    // getAllUser();
     initDatabase();
+    SocketIoClass().addSessionBinder(_bindRealtimeEvents);
+    SocketIoClass().start();
   }
 
-  /// socket initialization
-  void _socketConnect() async {
-    log("Socket Initilaized");
-
-    socket = IO.io(
-        Url().socketUrl,
-        // );
-
-        OptionBuilder()
-            .setTransports(['websocket'])
-            .setQuery({
-              'token': API().sp.read("token"),
-              'user_id': API().sp.read("userId"),
-            })
-            .enableAutoConnect()
-            .build());
-
-    socket!.connect();
-
-    socket!.onConnect((data) {
-      if (kDebugMode) {
-        log("connected");
-      }
-    });
-
-    // socket!.on('receiver-message-${API().sp.read("id")}', (data) {
-    //   receiveMessageEvent(data);
-    // });
-
-    // socket!.onConnect((_) {
-    //   socket!.emit('user-connect', {'user_id': API().sp.read('userId')});
-    //   print('socket is connect');
-    // });
-
-    socket!.onDisconnect((_) {
-      if (kDebugMode) {
-        print('disconnect');
-      }
-    });
-
-    socket!.onError((e) {
-      if (kDebugMode) {
-        print('socket error ${e.toString()}');
-      }
-    });
-
-    socket!.onConnectError((e) {
-      if (kDebugMode) {
-        print('onConnectError  ${e.toString()}');
-      }
-    });
-
-    // connectDisconnect();
-    receiveMessage();
+  @override
+  void onClose() {
+    emitTyping(false);
+    _unbindRealtimeEvents();
+    SocketIoClass().removeSessionBinder(_bindRealtimeEvents);
+    super.onClose();
   }
 
   ///Data base initialized
@@ -206,65 +157,6 @@ class ChatController extends GetxController {
     }
   }
 
-  ///user check online or offline
-  // connectDisconnect() {
-  //   socket!.on('user-connected', (data) {
-  //     print('user is connected');
-  //     var d = UserData.fromJson(data);
-  //     if(isChat.value == false){
-  //       if(chatRoomData != null) {
-  //         for (var element in chatRoomData!.data!.data!) {
-  //           if (d.id == element.user!.id) {
-  //             if (element.user!.userStatus!.value != true) {
-  //               element.user!.userStatus!.value = true;
-  //             }
-  //           }
-  //           update();
-  //         }
-  //       }
-  //     }else{
-  //       if(innerScreenChatData!.data!.data != null){
-  //         if(/*(*/jsonDecode(innerScreenChatData!.data!.data![0].user!)['user_status'] != true/*) && d.id == jsonDecode(innerScreenChatData!.data!.data![0].user!)['id']*/){
-  //           jsonDecode(innerScreenChatData!.data!.data![0].user!)['user_status'] = true;
-  //           innerUserOnline.value = true;
-  //           update();
-  //         }
-  //       }
-  //     }
-  //
-  //   });
-  //   socket!.on('user-dis-connected', (dataaa) {
-  //     print('user is disConnected');
-  //     var d = UserData.fromJson(dataaa);
-  //     if((isChat.value == false) && (innerUserOnline.value == false)){
-  //       if (chatRoomData != null) {
-  //         int i = chatRoomData!.data!.data!
-  //             .indexWhere((element) => element.user!.id == d.id);
-  //         if (i >= 0) {
-  //           chatRoomData!.data!.data![i].user!.userStatus!.value = false;
-  //         }
-  //         update();
-  //         // for (var element in chatRoomData!.data!.data!) {
-  //         //   if (/*users != null &&*/ d.id == element.user!.id) {
-  //         //     if (element.user!.userStatus!.value != false) {
-  //         //       element.user!.userStatus!.value = false;
-  //         //     }
-  //         //   }
-  //         //   update();
-  //         // }
-  //       }
-  //     }else{
-  //       if(innerScreenChatData!.data!.data != null){
-  //         if(jsonDecode(innerScreenChatData!.data!.data![0].user!)['user_status'] == true){
-  //           jsonDecode(innerScreenChatData!.data!.data![0].user!)['user_status'] = false;
-  //           innerUserOnline.value = false;
-  //           update();
-  //         }
-  //       }
-  //     }
-  //   });
-  // }
-
   ///get chat room
   RxBool getAllChatRoomLoader = true.obs;
   ChatRoomModel? chatRoomData;
@@ -292,9 +184,6 @@ class ChatController extends GetxController {
         getNewUserWait = false;
       }
 
-      for (int i = 0; i < chatRoomData!.data!.data!.length; i++) {
-        disposedReceiverSocket();
-      }
       getAllChatRoomLoader(true);
       update();
     }
@@ -330,8 +219,7 @@ class ChatController extends GetxController {
           innerUserOnline.value = true;
         }
         conversationID = chatData!.data!.data![0].conversationId;
-        print("User Id ${API().sp.read("userId")}");
-        print("Creator ID ${response.data['data']['data'][0]['creator_id']}");
+        _ensureConversationBindings();
         if (response.data['data']['data'][0]['creator_id'] !=
             API().sp.read("userId")) {
           messageSeen(conversationID);
@@ -379,6 +267,7 @@ class ChatController extends GetxController {
       var d = ChatData.fromJson(response.data['data']);
       if (d.senderId == API().sp.read("userId")) {
         conversationID = d.conversationId;
+        _ensureConversationBindings();
         chatData!.data!.data!.insert(0, d);
       }
       insertChatDatabase(oneInsertion: true, model: d);
@@ -393,6 +282,7 @@ class ChatController extends GetxController {
   }
 
   clearData() async {
+    emitTyping(false);
     messageController.clear();
     chatFileList.clear();
     replyModel = null;
@@ -402,56 +292,131 @@ class ChatController extends GetxController {
     multipleImageList.clear();
   }
 
-  /// socket disposed receiver
-
-  disposedReceiverSocket() async {
-    socket!.off(
-        'receiver-message-${API().sp.read("userId")}',
-        (data) => {
-              print(data),
-            });
+  void closeOpenThread() {
+    emitTyping(false);
+    peerTyping.value = false;
   }
 
-  ///receive message from socket
+  /// Tell the server this user is typing. Payload matches the broadcast
+  /// contract (`conversation_id`, `user_id`, `is_typing`), not the old
+  /// `typing` boolean.
+  void emitTyping(bool isTyping) {
+    final conversationId = conversationID;
+    if (conversationId == null || conversationId.isEmpty) return;
+    if (_lastTypingEmit == isTyping) return;
+    _lastTypingEmit = isTyping;
+    SocketIoClass().emit(
+      kTypingEmitEvent,
+      typingEmitPayload(
+        conversationId: conversationId,
+        userId: API().sp.read('userId'),
+        isTyping: isTyping,
+      ),
+    );
+  }
+
+  void _bindRealtimeEvents() {
+    final userId = normalizeUserId(API().sp.read('userId'));
+    if (userId != null) {
+      SocketIoClass().on('receiver-message-$userId', _onIncomingMessage);
+    }
+    _ensureConversationBindings();
+  }
+
+  void _unbindRealtimeEvents() {
+    final userId = normalizeUserId(API().sp.read('userId'));
+    if (userId != null) {
+      SocketIoClass().off('receiver-message-$userId');
+    }
+    _releaseConversationBindings();
+  }
+
+  void _ensureConversationBindings() {
+    final conversationId = conversationID;
+    if (_boundConversationId != null &&
+        _boundConversationId != conversationId) {
+      _releaseConversationBindings();
+    }
+    if (conversationId == null || conversationId.isEmpty) return;
+    _boundConversationId = conversationId;
+    final realtime = SocketIoClass();
+    realtime.on('seen-message-$conversationId', _onSeen);
+    realtime.on('message-delete-everyone-$conversationId', (data) {
+      _onDeleted(data);
+    });
+    realtime.on('typing-$conversationId', _onTyping);
+  }
+
+  void _releaseConversationBindings() {
+    final conversationId = _boundConversationId;
+    _boundConversationId = null;
+    _lastTypingEmit = null;
+    if (conversationId == null || conversationId.isEmpty) return;
+    final realtime = SocketIoClass();
+    realtime.off('seen-message-$conversationId');
+    realtime.off('message-delete-everyone-$conversationId');
+    realtime.off('typing-$conversationId');
+  }
 
   bool receiver = false;
-  receiveMessage() async {
-    socket!.on('receiver-message-${API().sp.read("userId")}', (data) {
-      if (receiver == false) {
-        receiver = true;
-        if (isChat.value == true) {
-          messageSeen(conversationID);
-        }
-        Future.delayed(const Duration(seconds: 1), () {
-          receiver = false;
-        });
-        receiveMessageEvent(data);
+
+  void _onIncomingMessage(dynamic data) {
+    final message = parseIncomingMessage(data);
+    if (message == null) return;
+    if (receiver == false) {
+      receiver = true;
+      if (isChat.value == true) {
+        messageSeen(conversationID);
       }
-      if (conversationID == data['message']['conversation_id']) {
-        messageNotificationSocket(data['message']['id']);
-      }
-    });
+      Future.delayed(const Duration(seconds: 1), () {
+        receiver = false;
+      });
+      receiveMessageEvent(data);
+    }
+    if (conversationID == message['conversation_id']) {
+      messageNotificationSocket(message['id']);
+    }
   }
 
   ///socket value updation
   receiveMessageEvent(data) {
-    if (isChat.value == false) {
-      var d = LastMessage.fromJson(data['message']);
-      for (int a = 0; a < chatRoomData!.data!.data!.length; a++) {
-        if (chatRoomData!.data!.data![a].conversationId == d.conversationId) {
-          chatRoomData!.data!.data![a].lastMessage = d;
-          chatRoomData!.data!.data![a].updatedAt = d.updatedAt;
-        }
-        chatRoomData!.data!.data!
-            .sort((a, b) => b.updatedAt!.compareTo(a.updatedAt!));
-        update();
+    final message = parseIncomingMessage(data);
+    if (message == null) return;
+    try {
+      _applyIncomingMessage(message);
+    } catch (_) {
+      if (kDebugMode) {
+        debugPrint('incoming chat event ignored');
       }
+    }
+  }
+
+  void _applyIncomingMessage(Map<String, dynamic> message) {
+    if (isChat.value == false) {
+      final rooms = chatRoomData?.data?.data;
+      if (rooms == null) return;
+      final lastMessage = LastMessage.fromJson(message);
+      for (int a = 0; a < rooms.length; a++) {
+        if (rooms[a].conversationId == lastMessage.conversationId) {
+          rooms[a].lastMessage = lastMessage;
+          rooms[a].updatedAt = lastMessage.updatedAt;
+        }
+      }
+      rooms.sort((a, b) {
+        final left = a.updatedAt;
+        final right = b.updatedAt;
+        if (left == null && right == null) return 0;
+        if (left == null) return 1;
+        if (right == null) return -1;
+        return right.compareTo(left);
+      });
+      update();
     } else {
-      print(API().sp.read("userId"));
-      var d = ChatData.fromJson(data['message']);
-      if (d.senderId != API().sp.read("userId")) {
-        // insertChatDatabase(oneInsertion: true, model: d);
-        chatData!.data!.data!.insert(0, d);
+      final items = chatData?.data?.data;
+      if (items == null) return;
+      final incoming = ChatData.fromJson(message);
+      if (incoming.senderId != API().sp.read("userId")) {
+        items.insert(0, incoming);
       }
       update();
     }
@@ -498,9 +463,9 @@ class ChatController extends GetxController {
     }
   }
 
-  ///message notification socket
+  /// Existing client ack. The production event list does not rename this emit.
   messageNotificationSocket(id) {
-    socket!.emit("message-ack", {
+    SocketIoClass().emit("message-ack", {
       "id": id,
     });
   }
@@ -521,41 +486,17 @@ class ChatController extends GetxController {
     }
   }
 
-  ///seen all message from both side
+  /// Kept so older call sites still attach the conversation listener once.
   seenMessageSocket(conversationId, i) {
-    socket!.on(
-        'seen-message-$conversationId',
-        (data) => {
-              print(data),
-
-              // for (int i = 0; i < data["message_count"]; i++) {
-              if (chatData != null)
-                {
-                  if (chatData!.data!.data![i].isSeen == 0)
-                    {
-                      chatData!.data!.data![i].isSeen = 1,
-                      // } else {
-                      // break;
-                    }
-                },
-              // },
-              insertChatDatabase(),
-              update(),
-            });
+    if (conversationId != null) {
+      conversationID = conversationId.toString();
+      _ensureConversationBindings();
+    }
   }
 
-  ///disposed all seen message
-  disposedAllSeen(messageId) async {
-    socket!.on('seen-message-$messageId', (data) => {});
-  }
-
-  ///inner screen condition in socket
-  chatInnerScreenSocket() async {
-    socket!.on(
-        'chat-screen-active-conversationID',
-        (data) => {
-              print(data),
-            });
+  disposedAllSeen(messageId) {
+    if (messageId == null) return;
+    SocketIoClass().off('seen-message-$messageId');
   }
 
   ///insert data in db
@@ -621,28 +562,72 @@ class ChatController extends GetxController {
     });
   }
 
-  ///delete for every one socket on
-  deleteForEveryOneSocket(conversationId) async {
-    socket!.on('message-delete-everyone-$conversationId', (data) async {
-      // ChatItem.fromJson(response!.data['data']);
-      var d = ChatData.fromJson(data['data']);
-      d.isDeleted = 1;
-      if (isChat.value == true) {
-        int index =
-            chatData!.data!.data!.indexWhere((element) => element.id == d.id);
-        chatData!.data!.data![index].isDeleted = 1;
-        var dbs = await _chatDatabase.getDatabase;
-        dbs.update('UserChat', d.toJson(), where: '(id = ${d.id})');
-        update();
-      } else {
-        // getChatRoom();
+  void _onSeen(dynamic raw) {
+    final items = chatData?.data?.data;
+    if (items == null) return;
+    final ids = parseSeenMessageIds(raw);
+    var changed = false;
+    for (final item in items) {
+      final inConversation = item.conversationId == conversationID;
+      final matched = ids.isEmpty
+          ? inConversation
+          : item.id != null && ids.contains(item.id);
+      if (matched && item.isSeen != 1) {
+        item.isSeen = 1;
+        changed = true;
       }
-    });
+    }
+    if (!changed) return;
+    insertChatDatabase();
+    update();
   }
 
-  ///disposed delete message socket
-  disposedDeleteForEveryOneSocket(conversationId) async {
-    socket!.on('message-delete-everyone-$conversationId', (data) async {});
+  void _onTyping(dynamic raw) {
+    final event = parseTypingEvent(raw);
+    if (event == null) return;
+    if (event.conversationId != null &&
+        event.conversationId != conversationID) {
+      return;
+    }
+    final self = normalizeUserId(API().sp.read('userId'));
+    if (event.userId != null && self != null && event.userId == self) return;
+    peerTyping.value = event.isTyping;
+    update();
+  }
+
+  Future<void> _onDeleted(dynamic raw) async {
+    final payload = parseDeleteEveryoneData(raw);
+    if (payload == null || isChat.value != true) return;
+    final items = chatData?.data?.data;
+    if (items == null) return;
+    ChatData deleted;
+    try {
+      deleted = ChatData.fromJson(payload);
+    } catch (_) {
+      return;
+    }
+    deleted.isDeleted = 1;
+    final index = items.indexWhere((element) => element.id == deleted.id);
+    if (index < 0) return;
+    items[index].isDeleted = 1;
+    final database = await _chatDatabase.getDatabase;
+    await database.update(
+      'UserChat',
+      items[index].toJson(),
+      where: '(id = ${deleted.id})',
+    );
+    update();
+  }
+
+  deleteForEveryOneSocket(conversationId) {
+    if (conversationId == null) return;
+    conversationID = conversationId.toString();
+    _ensureConversationBindings();
+  }
+
+  disposedDeleteForEveryOneSocket(conversationId) {
+    if (conversationId == null) return;
+    SocketIoClass().off('message-delete-everyone-$conversationId');
   }
 
   alertDialog(

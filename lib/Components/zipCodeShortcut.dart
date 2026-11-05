@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
@@ -22,7 +23,8 @@ class ZipCodeShortcut extends StatelessWidget {
         final hasZip = zip != null && zip.isNotEmpty;
         final label = hasZip ? 'ZIP Code: $zip' : 'ZIP Code: Add';
         return GestureDetector(
-          onTap: () {
+          onTap: () async{
+            await     controller.getProfile(userId: API().sp.read("userId"));
             if (controller.userData?.data?.profile != null) {
               controller.profileDataBind(scrollToZip: true);
             } else {

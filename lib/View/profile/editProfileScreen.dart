@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
@@ -12,6 +11,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/Components/searchRadiusSelector.dart';
+import 'package:groovkin/location/location_fields.dart';
 import 'package:groovkin/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -425,44 +425,11 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    sp.read("role") == "eventOrganizer" ||
-                            sp.read("role") == "User"
-                        ? Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: CountryStateCityPicker(
-                                country: controller.countryController,
-                                state: controller.stateController,
-                                // dialogColor: Colors.grey.shade200,
-
-                                textFieldDecoration: InputDecoration(
-                                  hintStyle: const TextStyle(
-                                      fontSize: 14, color: Color(0xff9DA3B5)),
-                                  fillColor: Colors.transparent,
-                                  filled: true,
-
-                                  // suffixIcon: Icon(Icons.arrow_downward_rounded),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                        color: DynamicColor.grayClr.withValues(
-                                            alpha: 0.6)), //<-- SEE HERE
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                        color: DynamicColor.grayClr.withValues(
-                                            alpha: 0.6)), //<-- SEE HERE
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(
-                                        color: DynamicColor.grayClr.withValues(
-                                            alpha: 0.6)), //<-- SEE HERE
-                                  ),
-                                )),
-                          )
-                        : const SizedBox.shrink(),
+                    Padding(
+                      key: _zipFieldKey,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: const LocationFields(),
+                    ),
                     SizedBox(
                       height: (API().sp.read("role") == "eventOrganizer" ||
                               API().sp.read("role") == "User")
@@ -605,26 +572,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     //   ),
                     // ),
                     Column(
-                      key: _zipFieldKey,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: CustomTextFields(
-                            labelText: "Zip Code",
-                            hintText: "Zip Code",
-                            iconShow: false,
-                            readOnly: false,
-                            controller: controller.zipController,
-                            validationError: "zip code",
-                            isOptional: false,
-                            keyBoardType: true,
-                            autofillHints: const [],
-                            labelStyling: poppinsRegularStyle(
-                                context: context,
-                                fontSize: 14,
-                                color: DynamicColor.grayClr),
-                          ),
-                        ),
                         const SizedBox(height: 15),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),

@@ -3,7 +3,15 @@ import 'package:get/get.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/switchWidget.dart';
 import 'package:groovkin/Components/textStyle.dart';
+import 'package:groovkin/discovery/discovery_widgets.dart';
 import 'package:groovkin/utils/utils.dart';
+
+bool _eventMetaVisible(dynamic reasons, dynamic badge, dynamic distance) {
+  for (final value in [reasons, badge, distance]) {
+    if (value != null && value.toString().trim().isNotEmpty) return true;
+  }
+  return false;
+}
 
 /// custom Event Widget
 userCustomEvent(
@@ -15,6 +23,8 @@ userCustomEvent(
     subtitle,
     location,
     recommendationText,
+    badgeText,
+    distanceText,
     bool networkImg = false,
     datee,
     dayy,
@@ -94,20 +104,15 @@ userCustomEvent(
                         ],
                       ),
                     ),
-                    if (recommendationText != null &&
-                        recommendationText.toString().trim().isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 3),
-                        child: Text(
-                          recommendationText.toString(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: poppinsRegularStyle(
-                            fontSize: 11,
-                            context: context,
-                            color: DynamicColor.yellowClr,
-                          ),
-                        ),
+                    if (_eventMetaVisible(
+                      recommendationText,
+                      badgeText,
+                      distanceText,
+                    ))
+                      DiscoveryMetaLines(
+                        badge: badgeText?.toString(),
+                        reasons: recommendationText?.toString(),
+                        distance: distanceText?.toString(),
                       ),
                   ],
                 ),

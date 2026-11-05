@@ -6,6 +6,7 @@ import 'package:groovkin/Components/textFields.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
+import 'package:groovkin/location/location_fields.dart';
 
 class LoginOrSignUpScreen extends StatelessWidget {
   LoginOrSignUpScreen({super.key});
@@ -67,6 +68,10 @@ class LoginOrSignUpScreen extends StatelessWidget {
                       isEmail: true,
                       validationError: "email",
                     ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const LocationFields(),
                     const SizedBox(
                       height: 15,
                     ),
@@ -165,6 +170,9 @@ class LoginOrSignUpScreen extends StatelessWidget {
                       _controller.passwordController.text) {
                     if (_controller.confirmPasswordController.text.length >=
                         6) {
+                      final allowed = await _controller
+                          .prepareRegistrationLocation(context);
+                      if (!allowed || !context.mounted) return;
                       Get.toNamed(Routes.createProfile);
                       // await _controller.validateInviteCode();
                     } else {

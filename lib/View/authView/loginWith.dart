@@ -9,6 +9,7 @@ import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/social_sign_in.dart';
+import 'package:groovkin/location/location_fields.dart';
 
 class LoginWithScreen extends StatefulWidget {
   const LoginWithScreen({super.key});
@@ -32,7 +33,8 @@ class _LoginWithScreenState extends State<LoginWithScreen> {
             image: DecorationImage(
                 image: AssetImage("assets/loginSelection1.png"),
                 fit: BoxFit.fill)),
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
@@ -71,7 +73,11 @@ class _LoginWithScreenState extends State<LoginWithScreen> {
               ),
             ),
             const SizedBox(
-              height: kToolbarHeight * 1.4,
+              height: 24,
+            ),
+            const LocationFields(),
+            const SizedBox(
+              height: 20,
             ),
             CustomButton(
               onTap: () {
@@ -97,9 +103,11 @@ class _LoginWithScreenState extends State<LoginWithScreen> {
               height: 20,
             ),
             SocialSignIn(
+              requireLocationCheck: true,
               showSpotify: API().sp.read("role") == "User" ? true : false,
             ),
           ],
+        ),
         ),
       ),
     );

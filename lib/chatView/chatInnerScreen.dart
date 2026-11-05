@@ -31,35 +31,34 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
   Offset? _tapDownPosition;
   Timer? onStoppedTyping;
   bool firstTime = false;
-  RxBool typing = false.obs;
 
   _onChangeHandler(value) {
-    const duration = Duration(
-        milliseconds:
-            800); // set the duration that you want call stopTyping() after that.
-    if (onStoppedTyping != null) {
-      // if (_controller.conversationID != null) {
-      //   if (firstTime == false) {
-      //     firstTime = true;
-      //     _controller.socket!.emit("typing", {
-      //       "conversation_id": _controller.conversationID,
-      //       "typing": true,
-      //     });
-      //   }
-      // }
-      onStoppedTyping!.cancel(); // clear timer
+    const duration = Duration(milliseconds: 800);
+    final text = value?.toString() ?? '';
+    if (text.isEmpty) {
+      onStoppedTyping?.cancel();
+      firstTime = false;
+      _controller.emitTyping(false);
+      return;
     }
-    onStoppedTyping = Timer(duration, () => stopTyping());
+    if (firstTime == false) {
+      firstTime = true;
+      _controller.emitTyping(true);
+    }
+    onStoppedTyping?.cancel();
+    onStoppedTyping = Timer(duration, stopTyping);
   }
 
   stopTyping() {
     firstTime = false;
-    // if (_controller.conversationID != null) {
-    //   _controller.socket!.emit("typing", {
-    //     "conversation_id": _controller.conversationID,
-    //     "typing": false,
-    //   });
-    // }
+    _controller.emitTyping(false);
+  }
+
+  @override
+  void dispose() {
+    onStoppedTyping?.cancel();
+    _controller.emitTyping(false);
+    super.dispose();
   }
 
   @override
@@ -125,6 +124,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
           isOnChat.value = false;
           _controller.isChat.value = false;
           _controller.innerUserOnline.value = false;
+          _controller.closeOpenThread();
         }
       },
       child: GetBuilder<ChatController>(initState: (v) {
@@ -152,6 +152,7 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                 controller.isChat.value = false;
                                 isOnChat.value = false;
                                 _controller.innerUserOnline.value = false;
+                                _controller.closeOpenThread();
                                 // _controller.offChatInnerScreenSocket();
                                 ///Todo latter on
                                 Get.back();
@@ -229,24 +230,16 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
                                   const SizedBox(
                                     height: 1,
                                   ),
-
-                                  ///ToDo latter on
-                                  /*   Obx(()=> _controller.innerUserOnline.value == true?
-                                      Text(
-                                        typing.value == false? "Online":"Typing....." ,
-                                        style: TextStyle(
+                                  Obx(() => _controller.peerTyping.value
+                                      ? const Text(
+                                          'Typing.....',
+                                          style: TextStyle(
                                             fontFamily: 'Montserrat',
                                             fontSize: 10,
-                                            color: DynamicColors.primaryColor),
-                                      ):Text(
-                                        typing.value == false? "":"Typing....." ,
-                                        style: TextStyle(
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 10,
-                                            color: DynamicColors.primaryColor),
-                                      )
-                                      ),*/
-                                  ///ToDo latter on
+                                            color: Colors.grey,
+                                          ),
+                                        )
+                                      : const SizedBox.shrink()),
                                 ],
                               ),
                             )
@@ -667,44 +660,6 @@ class _ChatInnerScreenState extends State<ChatInnerScreen> {
         return headerDateTime(dates);
       },
       indexedItemBuilder: (context, chatMessageItem, index) {
-        if (_controller.chatData!.data!.data![index].isSeen == 0) {
-          ///ToDo latter on
-          _controller.disposedAllSeen(
-              _controller.chatData!.data!.data![index].conversationId);
-          _controller.seenMessageSocket(
-              _controller.chatData!.data!.data![index].conversationId, index);
-
-          ///ToDo latter on
-        }
-
-        ///ToDo latter on
-        /* _controller.socket!.on('typing-${_controller.chatData!.data!.data![index].conversationId}', (data) {
-          print(data);
-          for (var element in _controller.chatRoomData!.data!.data!) {
-            if(element.conversationId == data['conversation_id']){
-              typing.value = data['typing'];
-              // _controller.update();
-            }
-          }
-        });*/
-
-        if (_controller.chatData!.data!.data![index].isDeleted == 1) {
-          _controller.disposedDeleteForEveryOneSocket(
-              _controller.chatData!.data!.data![index].conversationId);
-          _controller.deleteForEveryOneSocket(
-              _controller.chatData!.data!.data![index].conversationId);
-        }
-
-        ///ToDo latter on
-        // for (int a = 0; a < _controller.chatData!.data!.data!.length; a++) {
-        //   _controller.disposedDeleteForEveryOneSocket(
-        //       _controller.chatData!.data!.data![index].conversationId);
-        //   _controller.deleteForEveryOneSocket(
-        //       _controller.chatData!.data!.data![index].conversationId);
-        // }
-        // _controller.socket!.on('typing-${_controller.innerScreenChatData!.data!.data![index].conversationId}', (data) => {
-        //
-        // });
         return Stack(
           children: [
             _controller.selectedIndexes == index

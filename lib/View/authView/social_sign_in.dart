@@ -15,12 +15,17 @@ import 'package:http/http.dart' as http;
 class SocialSignIn extends StatefulWidget {
   final bool showGoogle, showFacebook, showApple, showSpotify;
 
+  /// Signup screens collect a location and check it before the native SDK.
+  /// Login keeps the same buttons for returning users and does not.
+  final bool requireLocationCheck;
+
   const SocialSignIn({
     super.key,
     this.showApple = true,
     this.showFacebook = true,
     this.showGoogle = true,
     this.showSpotify = false,
+    this.requireLocationCheck = false,
   });
 
   @override
@@ -41,7 +46,16 @@ class _SocialSignInState extends State<SocialSignIn> {
     }
   }
 
+  Future<bool> _allowSocialStart() async {
+    if (!widget.requireLocationCheck) {
+      _authController.attachRegistrationLocation = false;
+      return true;
+    }
+    return _authController.prepareRegistrationLocation(context);
+  }
+
   Future<void> loginWithSpotify() async {
+    if (!await _allowSocialStart()) return;
     const clientId = con.clientId;
     const clientSecret = con.clientSecret;
     const redirectUri = "groovkin://callback";
@@ -132,7 +146,8 @@ class _SocialSignInState extends State<SocialSignIn> {
         if (widget.showApple)
           if (Platform.isIOS)
             CustomButtonWithIcon(
-              onTap: () {
+              onTap: () async {
+                if (!await _allowSocialStart()) return;
                 _authController.appleSignIn();
               },
               text: "Continue with Apple",
@@ -154,7 +169,8 @@ class _SocialSignInState extends State<SocialSignIn> {
         if (widget.showFacebook)
           // if (Platform.isAndroid)
           CustomButtonWithIcon(
-              onTap: () {
+              onTap: () async {
+                if (!await _allowSocialStart()) return;
                 _authController.loginWithFacebook();
               },
               text: "Continue with Facebook",
@@ -173,7 +189,8 @@ class _SocialSignInState extends State<SocialSignIn> {
         if (widget.showGoogle)
           // if (Platform.isAndroid)
           CustomButtonWithIcon(
-              onTap: () {
+              onTap: () async {
+                if (!await _allowSocialStart()) return;
                 _authController.googleSignIn();
               },
               text: "Continue with Google",
@@ -191,30 +208,22 @@ class _SocialSignInState extends State<SocialSignIn> {
           const SizedBox(
             height: 20,
           ),
-        // if (widget.showSpotify)
-        //   if (Platform.isAndroid)
-        //     CustomButtonWithIcon(
-        //         onTap: () {
-        //           // Navigator.push(
-        //           //     context,
-        //           //     MaterialPageRoute(
-        //           //         builder: (context) => const SpotifyWebView(
-        //           //               clientId: clientId,
-        //           //               clientSecret: clientSecret,
-        //           //               redirectUri: redirectUri,
-        //           //             )));
-        //           loginWithSpotify();
-        //         },
-        //         text: "Continue with Spotify",
-        //         iconValue: true,
-        //         bgColor: Colors.transparent,
-        //         gradientClr: true,
-        //         color2: DynamicColor.grayClr.withValues(alpha: 0.4),
-        //         color1: DynamicColor.grayClr.withValues(alpha: 0.1),
-        //         imageIconn: ImageIcon(
-        //           const AssetImage("assets/spotify.png"),
-        //           color: theme.primaryColor,
-        //         )),
+        if (widget.showSpotify)
+          CustomButtonWithIcon(
+            onTap: () {
+              loginWithSpotify();
+            },
+            text: "Continue with Spotify",
+            iconValue: true,
+            bgColor: Colors.transparent,
+            gradientClr: true,
+            color2: DynamicColor.grayClr.withValues(alpha: 0.4),
+            color1: DynamicColor.grayClr.withValues(alpha: 0.1),
+            imageIconn: ImageIcon(
+              const AssetImage("assets/spotify.png"),
+              color: theme.primaryColor,
+            ),
+          ),
       ],
     );
   }

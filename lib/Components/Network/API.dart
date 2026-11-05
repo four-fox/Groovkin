@@ -49,6 +49,7 @@ class API {
     Map<String, dynamic>? queryParameters,
     bool isLoader = true,
     bool isFromSpotify = false,
+    bool suppressErrorToast = false,
   }) async {
     dio.options.headers['Authorization'] = isFromSpotify
         ? "Bearer ${sp.read('accessToken')}"
@@ -60,8 +61,13 @@ class API {
           showLoading();
         }
 
-        final response = await dio.get(fullUrl ?? Url().baseUrl + url,
-            queryParameters: queryParameters);
+        final response = await dio.get(
+          fullUrl ?? Url().baseUrl + url,
+          queryParameters: queryParameters,
+          options: Options(
+            extra: {'suppressErrorToast': suppressErrorToast},
+          ),
+        );
 
         BotToast.closeAllLoading();
         return response;
@@ -94,6 +100,7 @@ class API {
     auth = true,
     multiPart = false,
     showProgress = true,
+    suppressErrorToast = false,
     context,
     /*required RoundedLoadingButtonController postButton*/
   }) async {
@@ -117,12 +124,14 @@ class API {
                 headers: {
                   Headers.acceptHeader: "application/json",
                 },
+                extra: {'suppressErrorToast': suppressErrorToast},
                 contentType: 'multipart/form-data',
               )
             : Options(
                 headers: {
                   Headers.acceptHeader: "application/json",
                 },
+                extra: {'suppressErrorToast': suppressErrorToast},
               ),
         onSendProgress: (int progress, int total) {},
       );

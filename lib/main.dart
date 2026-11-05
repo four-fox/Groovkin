@@ -18,6 +18,7 @@ import 'package:groovkin/firebase/notification_services.dart';
 import 'package:groovkin/firebase_options.dart';
 import 'package:groovkin/model/single_ton_data.dart';
 import 'package:groovkin/payment/payment_deep_links.dart';
+import 'package:groovkin/services/socket_io_class.dart';
 import 'package:groovkin/payment/stripe_connect_controller.dart';
 import 'package:groovkin/utils/constant.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -128,6 +129,7 @@ void main() async {
   );
   await GetStorage.init();
   Get.put(ThemeController());
+  SocketIoClass().start();
   runApp(const MyApp());
 }
 
@@ -159,6 +161,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     } else {
       authController = Get.put(AuthController());
     }
+    authController.bindRealtimeNotifications();
 
     print("Role :${API().sp.read("role")}");
     final role = API().sp.read("role") ?? "User"; // default role

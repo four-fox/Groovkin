@@ -17,6 +17,9 @@ import 'package:groovkin/View/bottomNavigation/homeController.dart';
 import 'package:groovkin/View/bottomNavigation/homeTabs/eventsFlow/eventController.dart';
 import 'package:groovkin/Components/searchRadiusSelector.dart';
 import 'package:groovkin/Components/zipCodeShortcut.dart';
+import 'package:groovkin/discovery/discovery_config.dart';
+import 'package:groovkin/discovery/discovery_contract.dart';
+import 'package:groovkin/discovery/discovery_widgets.dart';
 import 'package:groovkin/utils/search_radius.dart';
 import 'package:intl/intl.dart';
 
@@ -306,21 +309,70 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                         if (recommendedVal.value)
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8),
-                            child: SearchRadiusSelector(
-                              selected: controller.recommendedRadius,
-                              options: controller.allowedSearchRadii,
-                              onSelected: controller.setRecommendationRadius,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SearchRadiusSelector(
+                                  selected: controller.recommendedRadius,
+                                  options: controller.allowedSearchRadii,
+                                  onSelected: controller.setRecommendationRadius,
+                                ),
+                                if (DiscoveryConfig.compileTime.enabled &&
+                                    controller.radiusPendingSave)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: Text(
+                                      'Showing this radius for now. It was not saved to your profile.',
+                                      style: poppinsRegularStyle(
+                                        fontSize: 12,
+                                        context: context,
+                                        color: DynamicColor.grayClr,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         controller.getRecommendedLoader.value == false
-                            ? const SizedBox.shrink()
+                            ? DiscoveryConfig.compileTime.enabled
+                                ? const Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  )
+                                : const SizedBox.shrink()
                             : Visibility(
                                 visible: recommendedVal.value,
                                 child: controller.recommendedEventData ==
                                             null ||
                                         controller.recommendedEventData!.data!
                                             .data!.isEmpty
-                                    ? noData(theme: theme, context: context)
+                                    ? DiscoveryConfig.compileTime.enabled
+                                        ? DiscoveryFeedNotice(
+                                            message: controller
+                                                    .discoveryRecommendationNotice ??
+                                                recommendationEmptyMessage(
+                                                  locationStatus: controller
+                                                      .recommendationLocationStatus,
+                                                  locationDenied: false,
+                                                ),
+                                            actionLabel: controller
+                                                    .discoveryRecommendationCanRetry
+                                                ? 'Try again'
+                                                : controller
+                                                        .discoveryRecommendationNeedsLocation
+                                                    ? 'Use my location'
+                                                    : null,
+                                            onAction: controller
+                                                        .discoveryRecommendationCanRetry ||
+                                                    controller
+                                                        .discoveryRecommendationNeedsLocation
+                                                ? controller
+                                                    .onDiscoveryRecommendationAction
+                                                : null,
+                                          )
+                                        : noData(theme: theme, context: context)
                                     : Column(
                                         children: [
                                           ListView.builder(
@@ -348,19 +400,24 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                         .recommendedEventData!
                                                         .data!
                                                         .data![index];
+                                                final cardCopy =
+                                                    DiscoveryCardCopy.fromEvent(
+                                                        singleEventData);
+                                                final start = singleEventData
+                                                    .startDateTime;
                                                 return userCustomEvent(
                                                     isDelete: singleEventData
                                                                 .user?.isDelete ==
                                                             null
                                                         ? false
                                                         : true,
-                                                    dayy: DateFormat
-                                                            .MMM()
-                                                        .format(
-                                                            singleEventData
-                                                                .startDateTime!),
-                                                    datee:
-                                                        "${singleEventData.startDateTime!.day}\n",
+                                                    dayy: start == null
+                                                        ? ''
+                                                        : DateFormat.MMM()
+                                                            .format(start),
+                                                    datee: start == null
+                                                        ? ''
+                                                        : "${start.day}\n",
                                                     networkImg: singleEventData
                                                                 .bannerImage ==
                                                             null
@@ -382,10 +439,14 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                                     subtitle: singleEventData
                                                             .venue?.venueName ??
                                                         '',
-                                                    recommendationText:
+                                                    recommendationText: cardCopy
+                                                            .reasons ??
                                                         singleEventData
                                                             .recommendation
                                                             ?.displayReason,
+                                                    badgeText: cardCopy.badge,
+                                                    distanceText:
+                                                        cardCopy.distance,
                                                     onTap: () {
                                                       Get.toNamed(
                                                           Routes
@@ -946,9 +1007,8 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
   Timer? onStoppedTyping;
 
   _onChangeHandler() {
-    const duration = Duration(
-        milliseconds:
-            800); // set the duration that you want call stopTyping() after that.
+    onStoppedTyping?.cancel();
+    const duration = Duration(milliseconds: 800);
     onStoppedTyping = Timer(duration, () => stopTyping());
   }
 
@@ -987,6 +1047,11 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                     child: SearchTextFields(
                       controller: _eventController.searchingController,
                       onChanged: (v) {
+                        if (DiscoveryConfig.compileTime.enabled &&
+                            searchingShow == true) {
+                          _eventController.scheduleDiscoverySearch();
+                          return;
+                        }
                         if (v != "") {
                           _onChangeHandler();
                         } else {
@@ -999,6 +1064,11 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
             Expanded(
               child: GetBuilder<EventController>(initState: (v) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (DiscoveryConfig.compileTime.enabled &&
+                      searchingShow == true) {
+                    _eventController.prepareDiscoverySearch();
+                    return;
+                  }
                   _eventController.searchingController.clear();
                   if (searchingShow == true) {
                     _eventController.searchingEvent();
@@ -1012,6 +1082,14 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                     if (scroll.metrics.pixels ==
                         scroll.metrics.maxScrollExtent) {
                       if (controller.getAllEventWaiting == false) {
+                        if (DiscoveryConfig.compileTime.enabled &&
+                            searchingShow == true) {
+                          if (controller.discoverySearchNextPage != null) {
+                            controller.loadNextDiscoverySearch();
+                            return true;
+                          }
+                          return false;
+                        }
                         controller.getAllEventWaiting = true;
                         if (controller.allEvents!.data!.nextPageUrl != null) {
                           if (searchingShow == true) {
@@ -1033,11 +1111,78 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                     }
                     return false;
                   },
-                  child: controller.getAllEventsLoader.value == false
-                      ? const SizedBox.shrink()
+                  child: Column(
+                    children: [
+                      if (DiscoveryConfig.compileTime.enabled &&
+                          searchingShow == true)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: DiscoverySearchPanel(
+                            draft: controller.discoverySearch,
+                            activities: controller.discoveryActivities,
+                            music: controller.discoveryMusic,
+                            radiusOptions: _controller.allowedSearchRadii,
+                            coordinatesAvailable:
+                                controller.discoveryCoordinatesAvailable,
+                            postalController:
+                                controller.discoveryPostalController,
+                            activityController:
+                                controller.discoveryActivityController,
+                            musicController: controller.discoveryMusicController,
+                            postalError: controller.discoveryPostalError,
+                            activeSummary: discoveryActiveFilterLabels(
+                              draft: controller.discoverySearch,
+                              activities: controller.discoveryActivities,
+                              music: controller.discoveryMusic,
+                            ),
+                            onSort: controller.setDiscoverySort,
+                            onPostal: controller.onDiscoveryPostalChanged,
+                            onToggleRadius: controller.setDiscoveryRadiusEnabled,
+                            onRadius: controller.setDiscoveryRadius,
+                            onToggleActivity: controller.toggleDiscoveryActivity,
+                            onMusic: controller.setDiscoveryMusic,
+                            onActivityText: controller.onDiscoveryActivityText,
+                            onMusicText: controller.onDiscoveryMusicText,
+                            onClear: controller.clearDiscoveryFilters,
+                          ),
+                        ),
+                      if (DiscoveryConfig.compileTime.enabled &&
+                          searchingShow == true &&
+                          isCompleteUsZip(controller.discoverySearch.postalCode) &&
+                          !controller.discoverySearch.applyRadius)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            'Exact ZIP match. No distance radius was applied.',
+                          ),
+                        ),
+                      Expanded(
+                        child: controller.getAllEventsLoader.value == false
+                      ? DiscoveryConfig.compileTime.enabled &&
+                              searchingShow == true
+                          ? const Center(child: CircularProgressIndicator())
+                          : const SizedBox.shrink()
                       : controller.allEvents == null ||
                               controller.allEvents!.data!.data.isEmpty
-                          ? noData(context: context, theme: theme)
+                          ? DiscoveryConfig.compileTime.enabled &&
+                                  searchingShow == true
+                              ? DiscoveryFeedNotice(
+                                  message: controller.discoverySearchError ??
+                                      controller.discoveryPostalError ??
+                                      (!controller.discoverySearch
+                                              .hasMeaningfulFilter
+                                          ? 'Search events by name, #hashtag, ZIP, activity, or music.'
+                                          : searchEmptyMessage()),
+                                  actionLabel:
+                                      controller.discoverySearchError != null
+                                          ? 'Try again'
+                                          : null,
+                                  onAction: controller.discoverySearchError !=
+                                          null
+                                      ? controller.retryDiscoverySearch
+                                      : null,
+                                )
+                              : noData(context: context, theme: theme)
                           : Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12.0, vertical: 8),
@@ -1045,7 +1190,22 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: DynamicColor.darkGrayClr),
-                                child: ListView.builder(
+                                child: RefreshIndicator(
+                                  onRefresh: () async {
+                                    if (DiscoveryConfig.compileTime.enabled &&
+                                        searchingShow == true) {
+                                      await controller.retryDiscoverySearch();
+                                      return;
+                                    }
+                                    if (searchingShow == true) {
+                                      await controller.searchingEvent();
+                                      return;
+                                    }
+                                    await controller.getAllEvents();
+                                  },
+                                  child: ListView.builder(
+                                    keyboardDismissBehavior:
+                                        ScrollViewKeyboardDismissBehavior.onDrag,
                                     itemCount:
                                         controller.allEvents!.data!.data.length,
                                     shrinkWrap: true,
@@ -1054,18 +1214,25 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                     itemBuilder: (BuildContext context, index) {
                                       EventData singleEventDat = controller
                                           .allEvents!.data!.data[index];
+                                      final cardCopy =
+                                          DiscoveryCardCopy.fromEvent(
+                                              singleEventDat);
+                                      final start = singleEventDat.startDateTime;
                                       return userCustomEvent(
                                           isDelete: singleEventDat
                                                       .user?.isDelete ==
                                                   null
                                               ? false
                                               : true,
-                                          dayy: DateFormat
-                                                  .MMM()
-                                              .format(singleEventDat
-                                                  .startDateTime!),
-                                          datee:
-                                              "${singleEventDat.startDateTime!.day}\n",
+                                          dayy: start == null
+                                              ? ''
+                                              : DateFormat.MMM().format(start),
+                                          datee: start == null
+                                              ? ''
+                                              : "${start.day}\n",
+                                          recommendationText: cardCopy.reasons,
+                                          badgeText: cardCopy.badge,
+                                          distanceText: cardCopy.distance,
                                           networkImg:
                                               singleEventDat.bannerImage == null
                                                   ? false
@@ -1100,8 +1267,12 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                           context: context,
                                           theme: theme);
                                     }),
+                                  ),
                               ),
                             ),
+                      ),
+                    ],
+                  ),
                 );
               }),
             ),

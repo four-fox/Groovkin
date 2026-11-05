@@ -4,6 +4,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:groovkin/Components/colors.dart';
+import 'package:groovkin/services/socket_io_class.dart';
+
 import 'API.dart';
 
 dynamic returnResponse(Response? responseData) {
@@ -27,6 +29,7 @@ dynamic returnResponse(Response? responseData) {
               text: "Session has been expired!! Please Sign in again"
                   "",
               duration: const Duration(seconds: 2));
+          SocketIoClass().disconnect();
           API().sp.erase();
           // getx.Get.offAllNamed(Routes.signUpScreen);
         } else {

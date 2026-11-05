@@ -1,6 +1,11 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 import 'package:get/get.dart';
 import 'package:groovkin/Components/Network/API.dart';
+import 'package:groovkin/discovery/discovery_config.dart';
+import 'package:groovkin/discovery/discovery_contract.dart';
+import 'package:groovkin/discovery/discovery_repository.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/RecommendedForUserModel.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/eventsNearByMeUserModel.dart';
 import 'package:groovkin/View/GroovkinUser/UserBottomView/topRatedEventUserModel.dart';
@@ -81,10 +86,48 @@ class HomeController extends GetxController {
   String nearbySectionLabel = kNearbyThisWeekLabel;
   RxBool savingSurvey = false.obs;
 
+  bool usingDiscoveryV2 = false;
+  bool radiusPendingSave = false;
+  int? recommendationNextPage;
+  String? recommendationLocationStatus;
+  String? recommendationErrorMessage;
+  String? recommendationErrorCode;
+  bool recommendationRateLimited = false;
+  String discoveryLocationAccess = 'unknown';
+  bool _discoveryLocationChecked = false;
+  bool _radiusErrorRetried = false;
+  final DiscoveryRepository discoveryRepository = DiscoveryRepository.shared;
+
   bool get hasMoreRecommendations {
+    if (DiscoveryConfig.compileTime.enabled) {
+      return recommendationNextPage != null;
+    }
     final page = recommendedEventData?.data;
     return (page?.currentPage ?? 0) < (page?.lastPage ?? 0);
   }
+
+  String? get discoveryRecommendationNotice {
+    if (!DiscoveryConfig.compileTime.enabled) return null;
+    if (recommendationErrorMessage != null) return recommendationErrorMessage;
+    if (getRecommendedLoader.value == false) return null;
+    final events = recommendedEventData?.data?.data ?? const [];
+    if (events.isNotEmpty || recommendedEventData == null) return null;
+    return recommendationEmptyMessage(
+      locationStatus: recommendationLocationStatus,
+      locationDenied: discoveryLocationAccess == 'denied' ||
+          discoveryLocationAccess == 'denied_forever' ||
+          discoveryLocationAccess == 'service_disabled',
+    );
+  }
+
+  bool get discoveryRecommendationCanRetry =>
+      recommendationErrorMessage != null || recommendationRateLimited;
+
+  bool get discoveryRecommendationNeedsLocation =>
+      recommendationLocationStatus == 'unavailable' ||
+      discoveryLocationAccess == 'denied' ||
+      discoveryLocationAccess == 'denied_forever' ||
+      discoveryLocationAccess == 'service_disabled';
 
   getRecommended(
       {fullUrl,
@@ -101,6 +144,14 @@ class HomeController extends GetxController {
             : _recommendationRequestGeneration)
         : 0;
     getRecommendedLoader(false);
+    if (isRecommendation && DiscoveryConfig.compileTime.enabled) {
+      await _loadDiscoveryRecommendations(
+        page: page,
+        refresh: refresh || page == 1,
+        generation: generation,
+      );
+      return;
+    }
     final query = <String, dynamic>{};
     if (filter != null) query['filter'] = filter;
     if (isRecommendation) {
@@ -152,8 +203,169 @@ class HomeController extends GetxController {
   Future<void> loadNextRecommended() async {
     if (newsFeedWait || !hasMoreRecommendations) return;
     newsFeedWait = true;
-    final nextPage = (recommendedEventData?.data?.currentPage ?? 0) + 1;
+    final nextPage = DiscoveryConfig.compileTime.enabled
+        ? recommendationNextPage
+        : (recommendedEventData?.data?.currentPage ?? 0) + 1;
+    if (nextPage == null) {
+      newsFeedWait = false;
+      return;
+    }
     await getRecommended(page: nextPage);
+  }
+
+  Future<void> _loadDiscoveryRecommendations({
+    required int page,
+    required bool refresh,
+    required int generation,
+  }) async {
+    if (refresh) {
+      discoveryRepository.serverDisabled = false;
+      _radiusErrorRetried = false;
+    }
+    if (page <= 1) {
+      await ensureDiscoveryLocation();
+    }
+    final point = locationLatLng;
+    final outcome = await discoveryRepository.recommended(
+      page: page,
+      radius: recommendedRadius,
+      latitude: point?.latitude,
+      longitude: point?.longitude,
+      allowedRadii: allowedSearchRadii,
+    );
+    if (generation != _recommendationRequestGeneration) {
+      newsFeedWait = false;
+      return;
+    }
+    if (outcome.problem?.code == 'invalid_radius' && !_radiusErrorRetried) {
+      _radiusErrorRetried = true;
+      recommendedRadius = sanitizeSearchRadius(
+        recommendedRadius,
+        allowed: allowedSearchRadii,
+      );
+      currentSliderValue = recommendedRadius.toDouble();
+      recommendationErrorMessage = outcome.problem!.message;
+      await _loadDiscoveryRecommendations(
+        page: 1,
+        refresh: false,
+        generation: generation,
+      );
+      return;
+    }
+    _applyDiscoveryRecommendation(
+      outcome,
+      replace: page <= 1 || outcome.usedLegacy,
+    );
+    getRecommendedLoader(true);
+    newsFeedWait = false;
+    update();
+  }
+
+  void _applyDiscoveryRecommendation(
+    DiscoveryOutcome outcome, {
+    required bool replace,
+  }) {
+    final problem = outcome.problem;
+    recommendationRateLimited = problem?.isRateLimited == true;
+    if (problem != null) {
+      recommendationErrorCode = problem.code;
+      recommendationErrorMessage =
+          problem.isUnauthorized ? null : problem.message;
+      recommendationNextPage = null;
+      usingDiscoveryV2 = false;
+      if (replace) {
+        recommendedEventData = emptyRecommendedModel(
+          message: recommendationErrorMessage,
+        );
+      }
+      return;
+    }
+    final page = outcome.page!;
+    recommendationErrorCode = null;
+    recommendationErrorMessage = null;
+    recommendationRateLimited = false;
+    recommendationLocationStatus = page.locationStatus;
+    usingDiscoveryV2 = page.isV2;
+    if (page.location.allowedRadiiMiles.isNotEmpty) {
+      allowedSearchRadii = page.location.allowedRadiiMiles;
+      API().sp.write('allowedSearchRadii', allowedSearchRadii);
+    }
+    final cursor = DiscoveryListCursor.fromPage(page);
+    recommendationNextPage = cursor.nextPage;
+    final incoming = recommendedModelFromPage(page);
+    if (replace || recommendedEventData?.data?.data == null) {
+      recommendedEventData = incoming;
+      return;
+    }
+    recommendedEventData!.data!
+      ..data = mergeDiscoveryEvents(recommendedEventData!.data!.data!, page.events)
+      ..currentPage = cursor.currentPage
+      ..lastPage = cursor.lastPage
+      ..perPage = cursor.perPage
+      ..total = cursor.total
+      ..nextPageUrl = cursor.nextPage;
+  }
+
+  Future<void> ensureDiscoveryLocation({bool requestPermission = false}) async {
+    if (_discoveryLocationChecked && !requestPermission) return;
+    try {
+      final enabled = await geo.Geolocator.isLocationServiceEnabled();
+      if (!enabled) {
+        discoveryLocationAccess = 'service_disabled';
+        return;
+      }
+      var permission = await geo.Geolocator.checkPermission();
+      if (permission == geo.LocationPermission.denied && requestPermission) {
+        permission = await geo.Geolocator.requestPermission();
+      }
+      if (permission == geo.LocationPermission.denied ||
+          permission == geo.LocationPermission.deniedForever) {
+        discoveryLocationAccess =
+            permission == geo.LocationPermission.deniedForever
+                ? 'denied_forever'
+                : 'denied';
+        return;
+      }
+      final position = await geo.Geolocator.getCurrentPosition(
+        locationSettings: const geo.LocationSettings(
+          accuracy: geo.LocationAccuracy.medium,
+        ),
+      ).timeout(const Duration(seconds: 12));
+      final point = DiscoveryCoordinate.tryCreate(
+        position.latitude,
+        position.longitude,
+      );
+      if (point == null) {
+        discoveryLocationAccess = 'unavailable';
+        return;
+      }
+      locationLatLng = LatLng(point.latitude, point.longitude);
+      discoveryLocationAccess = 'granted';
+    } catch (_) {
+      discoveryLocationAccess = 'unavailable';
+    } finally {
+      _discoveryLocationChecked = true;
+    }
+  }
+
+  Future<void> requestDiscoveryLocation() async {
+    _discoveryLocationChecked = false;
+    await ensureDiscoveryLocation(requestPermission: true);
+    if (discoveryLocationAccess == 'denied_forever' ||
+        discoveryLocationAccess == 'service_disabled') {
+      await AppSettings.openAppSettings(type: AppSettingsType.location);
+    }
+    await invalidateRecommendations();
+  }
+
+  Future<void> onDiscoveryRecommendationAction() async {
+    if (discoveryRecommendationCanRetry) {
+      recommendationRateLimited = false;
+      recommendationErrorMessage = null;
+      await invalidateRecommendations();
+      return;
+    }
+    await requestDiscoveryLocation();
   }
 
   Future<void> invalidateRecommendations({bool refetch = true}) async {
@@ -174,14 +386,26 @@ class HomeController extends GetxController {
     final changed = sanitized != recommendedRadius;
     recommendedRadius = sanitized;
     currentSliderValue = sanitized.toDouble();
-    API().sp.write('searchRadiusMiles', sanitized);
     if (changed && persist) {
+      var saved = false;
       if (Get.isRegistered<AuthController>()) {
-        await Get.find<AuthController>().persistSearchRadius(sanitized);
+        saved = await Get.find<AuthController>().persistSearchRadius(sanitized);
+      }
+      radiusPendingSave = RadiusPersistDecision.apply(
+        previousConfirmed: sanitized,
+        requested: sanitized,
+        saveSucceeded: saved,
+      ).pending;
+      if (saved) {
+        API().sp.write('searchRadiusMiles', sanitized);
       }
       await invalidateRecommendations();
       await getEventNearByMe();
     } else {
+      if (!persist) {
+        API().sp.write('searchRadiusMiles', sanitized);
+        radiusPendingSave = false;
+      }
       update();
     }
   }
