@@ -72,6 +72,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       _eventController = Get.put(EventController());
     }
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _authController.ensureAuthenticatedProfile();
+    });
   }
 
   @override

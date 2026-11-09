@@ -11,6 +11,7 @@ abstract class Routes {
   static const oTPScreen = _Path.oTPScreen;
   static const loginOrSignUpScreen = _Path.loginOrSignUpScreen;
   static const loginScreen = _Path.loginScreen;
+  static const googleRegistrationScreen = _Path.googleRegistrationScreen;
   static const sendEmailForOtp = _Path.sendEmailForOtp;
   static const newPasswordScreen = _Path.newPasswordScreen;
   static const createProfile = _Path.createProfile;
@@ -140,6 +141,7 @@ abstract class _Path {
   static const oTPScreen = "/OTPScreen";
   static const loginOrSignUpScreen = "/LoginOrSignUpScreen";
   static const loginScreen = "/LoginScreen";
+  static const googleRegistrationScreen = "/GoogleRegistrationScreen";
   static const sendEmailForOtp = "/SendEmailForOtp";
   static const newPasswordScreen = "/NewPasswordScreen";
   static const createProfile = "/CreateProfile";

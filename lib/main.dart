@@ -169,6 +169,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     themeController.fetchUserTheme(role);
     if (API().sp.read("userId") != null) {
       fetchSubscription();
+      if (API().sp.read("token") != null) {
+        authController.ensureAuthenticatedProfile();
+      }
     }
 
     // Todo Firebase Notification Start

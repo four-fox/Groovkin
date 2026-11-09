@@ -21,7 +21,11 @@ class ZipCodeShortcut extends StatelessWidget {
         final zip =
             controller.userData?.data?.profile?.zipCode?.toString().trim();
         final hasZip = zip != null && zip.isNotEmpty;
-        final label = hasZip ? 'ZIP Code: $zip' : 'ZIP Code: Add';
+        final label = hasZip
+            ? 'ZIP Code: $zip'
+            : (controller.profileZipLoading
+                ? 'ZIP Code: …'
+                : 'ZIP Code: Add');
         return GestureDetector(
           onTap: () async{
             await     controller.getProfile(userId: API().sp.read("userId"));

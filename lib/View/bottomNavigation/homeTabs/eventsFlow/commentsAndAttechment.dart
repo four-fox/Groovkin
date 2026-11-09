@@ -192,7 +192,7 @@ class _CommentsAndAttachmentState extends State<CommentsAndAttachment> {
                                     //   managerController.pickFile();
                                     // } else {
                                     // }
-                                    managerController.pickFileee();
+                                    managerController.pickEventAttachments();
                                   },
                                   child: Container(
                                     width: 120,

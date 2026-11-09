@@ -9,6 +9,7 @@ import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/colors.dart';
 import 'package:groovkin/Components/mediaModel.dart';
+import 'package:groovkin/utils/event_media.dart';
 import 'package:groovkin/Components/textStyle.dart';
 import 'package:groovkin/Routes/app_pages.dart';
 import 'package:groovkin/View/GroovkinManager/addVenueItems/addVenueMedel.dart';
@@ -161,6 +162,69 @@ class ManagerController extends GetxController {
       }
     }
 
+    update();
+  }
+
+  /// Event create/edit attachments. Images and PDF only — videos never enter
+  /// the event multipart body. Venue uploads keep [pickFileee].
+  Future<void> pickEventAttachments() async {
+    final List<PlatformFile> result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: eventAttachmentExtensions.toList(),
+    );
+    if (result.isEmpty) return;
+
+    var sawVideo = false;
+    var sawOther = false;
+    if (mediaClass.any(eventAttachmentIsVideo)) {
+      mediaClass.removeWhere(eventAttachmentIsVideo);
+      sawVideo = true;
+    }
+
+    for (final file in result) {
+      final path = file.path;
+      final name = file.name;
+      if (path == null || path.isEmpty) {
+        sawOther = true;
+        continue;
+      }
+      final header = await readEventFileHeader(path);
+      final verdict = classifyEventFile(
+        path: name.isNotEmpty ? name : path,
+        header: header,
+        purpose: EventMediaPurpose.attachment,
+      );
+      if (!verdict.accept) {
+        if (verdict.isVideo) {
+          sawVideo = true;
+        } else {
+          sawOther = true;
+        }
+        continue;
+      }
+      final extension = (verdict.extension ?? file.extension ?? '').toLowerCase();
+      if (extension == 'pdf') {
+        mediaClass.add(MediaClass(filename: path, fileType: 'pdf', id: 'pdf'));
+        multiPartImg.add(await form.MultipartFile.fromFile(
+          path,
+          filename: 'Image.pdf',
+          contentType: MediaType('application', 'pdf'),
+        ));
+      } else {
+        mediaClass.add(MediaClass(filename: path, fileType: extension));
+        multiPartImg.add(await form.MultipartFile.fromFile(
+          path,
+          filename: 'Image.$extension',
+          contentType: MediaType('image', extension == 'jpg' ? 'jpeg' : extension),
+        ));
+      }
+    }
+
+    if (sawVideo) {
+      BotToast.showText(text: eventVideoRejectedMessage);
+    } else if (sawOther) {
+      BotToast.showText(text: eventUnsupportedFileMessage);
+    }
     update();
   }
 

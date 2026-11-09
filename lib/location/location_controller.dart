@@ -156,6 +156,27 @@ class LocationAvailabilityController extends GetxController {
     update();
   }
 
+  /// Drops signup country/state/ZIP without touching the loaded country catalog.
+  /// In-flight state, city, and eligibility calls are ignored afterwards.
+  void resetRegistrationDraft() {
+    _stateGeneration++;
+    _cityGeneration++;
+    _checkGeneration++;
+    checking = false;
+    _inFlight = null;
+    draft = const LocationDraft();
+    confirmed = null;
+    postalController.clear();
+    states = const [];
+    cities = const [];
+    fieldError = null;
+    fieldErrorTarget = null;
+    _allowedKey = null;
+    loadingStates = false;
+    loadingCities = false;
+    update();
+  }
+
   void restoreConfirmed() {
     final saved = confirmed;
     if (saved == null) return;

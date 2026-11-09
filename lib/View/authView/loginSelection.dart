@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:groovkin/View/authView/autController.dart';
-import 'package:groovkin/Components/Network/API.dart';
 import 'package:groovkin/Components/alertmessage.dart';
 import 'package:groovkin/Components/button.dart';
 import 'package:groovkin/Components/colors.dart';
@@ -111,10 +110,8 @@ class _LoginSelectionState extends State<LoginSelection> {
                             text: "Register as Groovkin User",
                             heights: 45,
                             onTap: () {
-                              sp.write("currentRole", "User");
-                              sp.write('role', 'User');
+                              authController.beginRoleRegistration('User');
                               Get.toNamed(Routes.loginWithScreen);
-                              // Get.toNamed(Routes.welComeScreen);
                             },
                           ),
                         ],
@@ -156,13 +153,9 @@ class _LoginSelectionState extends State<LoginSelection> {
                             heights: 45,
                             borderClr: Colors.transparent,
                             onTap: () {
-                              sp.write("currentRole", "eventOrganizer");
-                              sp.write('role', 'eventOrganizer');
-                              // Get.toNamed(Routes.loginWithScreen);
-                              authController.emailController.clear();
-                              authController.passwordController.clear();
-                              authController.confirmPasswordController.clear();
-                              API().sp.write("emailSocial", null);
+                              authController.beginRoleRegistration(
+                                'eventOrganizer',
+                              );
                               Get.toNamed(Routes.loginOrSignUpScreen);
                             },
                             text: "Register as Event Organizer",
@@ -175,13 +168,9 @@ class _LoginSelectionState extends State<LoginSelection> {
                             borderClr: Colors.transparent,
                             text: "Register as Venue Manager",
                             onTap: () {
-                              sp.write("currentRole", "eventManager");
-                              sp.write('role', 'eventManager');
-                              // Get.toNamed(Routes.loginWithScreen);
-                              authController.emailController.clear();
-                              authController.passwordController.clear();
-                              authController.confirmPasswordController.clear();
-                              API().sp.write("emailSocial", null);
+                              authController.beginRoleRegistration(
+                                'eventManager',
+                              );
                               Get.toNamed(Routes.loginOrSignUpScreen);
                             },
                           ),

@@ -27,6 +27,7 @@ import 'package:groovkin/View/authView/autController.dart';
 import 'package:groovkin/View/authView/email_verify_screen.dart';
 import 'package:groovkin/View/authView/forgotPassword/otpScreen.dart';
 import 'package:groovkin/View/authView/forgotPassword/sendEmailScreen.dart';
+import 'package:groovkin/View/authView/google_registration_screen.dart';
 import 'package:groovkin/View/authView/loginScreen.dart';
 import 'package:groovkin/View/authView/newPasswordScreen.dart';
 import 'package:groovkin/View/authView/otp_screen.dart';
@@ -141,6 +142,11 @@ class AppPages {
     GetPage(
       name: _Path.loginScreen,
       page: () => LoginScreen(),
+      binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Path.googleRegistrationScreen,
+      page: () => const GoogleRegistrationScreen(),
       binding: AuthBinding(),
     ),
     GetPage(

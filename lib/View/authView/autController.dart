@@ -45,9 +45,13 @@ import '../../model/invite_model.dart';
 import '../../services/socket_io_class.dart';
 import '../../model/single_ton_data.dart';
 import '../../model/switch_model.dart';
+import '../../auth/profile_zip.dart';
+import '../../auth/session_cleanup.dart';
+import '../../auth/social_register_decision.dart';
 import '../../location/location_contract.dart';
 import '../../location/location_controller.dart';
 import '../../location/location_dialog.dart';
+import '../../utils/event_media.dart';
 import '../../utils/backend_contract.dart';
 import '../../utils/invite_code.dart';
 import '../../utils/json_parsers.dart';
@@ -78,6 +82,183 @@ class AuthController extends GetxController {
   /// True only after signup preflight passes. Login must not inherit it.
   bool attachRegistrationLocation = false;
   Future<bool>? _registrationGate;
+
+  /// Role for the signup currently in progress. Null on the login screen.
+  String? activeSignupRole;
+  bool _signupInFlight = false;
+  bool googleAuthBusy = false;
+  final PendingSocialCredential pendingSocial = PendingSocialCredential();
+  final ProfileLoadGate profileLoadGate = ProfileLoadGate();
+  bool profileZipLoading = false;
+
+  String? get socialPlatformToken {
+    if (pendingSocial.isHeld) return pendingSocial.token;
+    final stored = API().sp.read('accessToken');
+    return stored?.toString();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    onSessionRevoked = clearAuthenticatedProfile;
+  }
+
+  @override
+  void onClose() {
+    if (onSessionRevoked == clearAuthenticatedProfile) {
+      onSessionRevoked = null;
+    }
+    super.onClose();
+  }
+
+  LocationAvailabilityController _ensureLocationController() {
+    if (Get.isRegistered<LocationAvailabilityController>()) {
+      return Get.find<LocationAvailabilityController>();
+    }
+    return Get.put(LocationAvailabilityController(), permanent: true);
+  }
+
+  /// A role button starts a new registration. Forward/back inside that role
+  /// does not call this, so country, state, and ZIP stay put.
+  void beginRoleRegistration(String storageRole) {
+    activeSignupRole = storageRole;
+    API().sp.write('currentRole', storageRole);
+    API().sp.write('role', storageRole);
+    _registrationGate = null;
+    attachRegistrationLocation = false;
+    _signupInFlight = false;
+    pendingSocial.clear();
+    API().sp.remove('emailSocial');
+    API().sp.remove('nameSocial');
+    API().sp.remove('accessToken');
+    emailController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    firstNameController.clear();
+    lastNameController.clear();
+    displayNameController.clear();
+    countryController.clear();
+    stateController.clear();
+    zipController.clear();
+    inviteCodeController.clear();
+    _ensureLocationController().resetRegistrationDraft();
+    update();
+  }
+
+  void discardRegistrationDraft() {
+    activeSignupRole = null;
+    attachRegistrationLocation = false;
+    _registrationGate = null;
+    countryController.clear();
+    stateController.clear();
+    zipController.clear();
+    if (Get.isRegistered<LocationAvailabilityController>()) {
+      Get.find<LocationAvailabilityController>().resetRegistrationDraft();
+    }
+  }
+
+  void clearPendingSocial() {
+    pendingSocial.clear();
+  }
+
+  void clearAuthenticatedProfile() {
+    profileLoadGate.invalidate();
+    userData = null;
+    profileZipLoading = false;
+    update();
+  }
+
+  bool adoptAuthenticatedProfile(dynamic payload) {
+    final details = userDetailsMap(payload);
+    final id = details?['id']?.toString() ?? API().sp.read('userId')?.toString();
+    profileLoadGate.start(id);
+    final model = profileModelFromAuthPayload(payload);
+    if (model == null) return false;
+    userData = model;
+    profileZipLoading = false;
+    update();
+    return true;
+  }
+
+  Future<void> ensureAuthenticatedProfile() async {
+    final userId = API().sp.read('userId')?.toString();
+    final token = API().sp.read('token');
+    if (userId == null || userId.isEmpty || token == null) return;
+    final zip = userData?.data?.profile?.zipCode?.toString().trim();
+    if (profileLoadGate.userId == userId && zip != null && zip.isNotEmpty) {
+      return;
+    }
+    final showLoading = zip == null || zip.isEmpty;
+    if (showLoading && !profileZipLoading) {
+      profileZipLoading = true;
+      update();
+    }
+    await getProfile(userId: userId);
+  }
+
+  void _captureAuthenticatedProfile(dynamic payload) {
+    final seeded = adoptAuthenticatedProfile(payload);
+    if (!seeded) {
+      ensureAuthenticatedProfile();
+    }
+  }
+
+  void _assignRoleAfterAuth(
+    dynamic payload, {
+    required bool keepSelectedRole,
+  }) {
+    API().sp.remove('role');
+    API().sp.remove('currentRole');
+    _applyBackendRoles(payload);
+    if (API().sp.read('role') == null) {
+      final fallback =
+          keepSelectedRole ? (activeSignupRole ?? 'User') : 'User';
+      API().sp.write('role', fallback);
+      API().sp.write('currentRole', fallback);
+    }
+  }
+
+  void _openRoleHome(dynamic payload) {
+    final data = parseMap(payload) ?? {};
+    final details = parseMap(data['user_details']) ?? data;
+    if (requiresProfileCompletion &&
+        (API().sp.read('role') == 'User' ||
+            details['active_role'] == 'user')) {
+      _bindControllersFromAuthPayload(payload);
+      Get.offAllNamed(Routes.createProfile, arguments: {
+        'socialType': API().sp.read('socialType'),
+        'accessToken': socialPlatformToken,
+        'isClear': false,
+        'completeAfterSocial': true,
+      });
+      return;
+    }
+    if (API().sp.read('role') == 'User') {
+      API().sp.write('isUserCreated', details['is_user_created']);
+      if (details['is_user_created'] == 0) {
+        Get.offAllNamed(Routes.surveyLifeStyleScreen, arguments: {
+          'update': false,
+        });
+      } else {
+        selectUserIndexxx.value = 0;
+        Get.offAllNamed(Routes.userBottomNavigationNav);
+      }
+      return;
+    }
+    if (API().sp.read('role') == 'eventOrganizer') {
+      API().sp.write('isEventCreated', details['is_event_created']);
+      if (details['is_event_created'] == 0) {
+        Get.offAllNamed(Routes.serviceScreen, arguments: {'addMoreService': 1});
+      } else {
+        selectIndexxx.value = 0;
+        Get.offAllNamed(Routes.bottomNavigationView,
+            arguments: {'indexValue': 0});
+      }
+      return;
+    }
+    selectIndexxx.value = 0;
+    Get.offAllNamed(Routes.bottomNavigationView, arguments: {'indexValue': 0});
+  }
 
   LocationAvailabilityController? get _locationController {
     if (!Get.isRegistered<LocationAvailabilityController>()) return null;
@@ -280,6 +461,10 @@ class AuthController extends GetxController {
   /// user register
   sigUp(context,
       {String? signUpPlatform, String? platformId, String? role}) async {
+    if (_signupInFlight) return;
+    _signupInFlight = true;
+    final locationWasAttached = attachRegistrationLocation;
+    try {
     if (attachRegistrationLocation && context is BuildContext) {
       final allowed = await prepareRegistrationLocation(context);
       if (!allowed) return;
@@ -345,8 +530,48 @@ class AuthController extends GetxController {
       suppressErrorToast: true,
     );
 
-    if (response == null) return;
+    if (response == null) {
+      BotToast.showText(text: kLocationNetworkMessage);
+      return;
+    }
     if (response.statusCode != 200) {
+      if (signUpPlatform == 'google') {
+        final decision = decideSocialRegister(
+          response,
+          locationWasAttached: locationWasAttached,
+        );
+        if (decision.needsLocation) {
+          if (platformId != null && platformId.isNotEmpty) {
+            pendingSocial.hold('google', platformId);
+          }
+          if (!locationWasAttached) {
+            activeSignupRole = null;
+            countryController.clear();
+            stateController.clear();
+            zipController.clear();
+            _ensureLocationController().resetRegistrationDraft();
+          }
+          if (Get.currentRoute == Routes.googleRegistrationScreen) {
+            await _presentRequestFailure(response, returnToLocation: false);
+          } else {
+            Get.toNamed(Routes.googleRegistrationScreen);
+          }
+          return;
+        }
+        if (decision.outcome == SocialRegisterOutcome.expiredCredential) {
+          clearPendingSocial();
+          BotToast.showText(text: decision.message);
+          return;
+        }
+        if (decision.outcome == SocialRegisterOutcome.failed) {
+          BotToast.showText(
+            text: decision.message.isEmpty
+                ? kLocationNetworkMessage
+                : decision.message,
+          );
+          return;
+        }
+      }
       await _presentRequestFailure(response, returnToLocation: false);
       return;
     }
@@ -362,9 +587,12 @@ class AuthController extends GetxController {
       } else {
         API().sp.write("socialType", signUpPlatform);
         _persistAuthUser(response.data['data']);
+        _assignRoleAfterAuth(
+          response.data['data'],
+          keepSelectedRole: locationWasAttached,
+        );
         configureSDK();
-        API().sp.write("currentRole", "User");
-        API().sp.write("role", "User");
+        _captureAuthenticatedProfile(response.data['data']);
         API().sp.write("isUserCreated",
             response.data['data']['user_details']['is_user_created']);
         if (requiresProfileCompletion) {
@@ -376,9 +604,11 @@ class AuthController extends GetxController {
                 API().sp.read("nameSocial")?.toString() ?? "";
           }
           update();
+          final token = socialPlatformToken;
+          clearPendingSocial();
           Get.offAllNamed(Routes.createProfile, arguments: {
             "socialType": API().sp.read("socialType"),
-            "accessToken": API().sp.read("accessToken"),
+            "accessToken": token,
             "isClear": false,
             "completeAfterSocial": true,
           });
@@ -387,28 +617,25 @@ class AuthController extends GetxController {
         clearTextFields();
         final profile = response.data["data"]["user_details"]["profile"];
         if (profile != null && profile["id"] != null) {
-          if (API().sp.read("role") == "User") {
-            if (response.data['data']['user_details']['is_user_created'] == 0) {
-              Get.offAllNamed(Routes.surveyLifeStyleScreen,
-                  arguments: {"update": false});
-            } else {
-              selectUserIndexxx.value = 0;
-              Get.offAllNamed(Routes.userBottomNavigationNav);
-            }
-          } else {
-            Get.offAllNamed(Routes.welComeScreen);
-          }
+          discardRegistrationDraft();
+          clearPendingSocial();
+          _openRoleHome(response.data['data']);
         } else {
-          emailController.text = API().sp.read("emailSocial");
+          emailController.text = API().sp.read("emailSocial") ?? '';
           update();
+          final token = socialPlatformToken;
+          clearPendingSocial();
           Get.toNamed(Routes.createProfile, arguments: {
             "socialType": API().sp.read("socialType"),
-            "accessToken": API().sp.read("accessToken"),
+            "accessToken": token,
             "isClear": false,
             "completeAfterSocial": true,
           });
         }
       }
+    }
+    } finally {
+      _signupInFlight = false;
     }
   }
 
@@ -456,7 +683,9 @@ class AuthController extends GetxController {
           SocketIoClass().syncSession();
           configureSDK();
           _applyBackendRoles(response.data['data']);
+          _captureAuthenticatedProfile(response.data['data']);
           clearTextFields();
+          discardRegistrationDraft();
           if (API().sp.read("role") == "User") {
             API().sp.write("isUserCreated",
                 response.data['data']['user_details']['is_user_created']);
@@ -572,10 +801,12 @@ class AuthController extends GetxController {
         return;
       }
 
+      clearAuthenticatedProfile();
       API().sp.write("token", response.data['data']['token']);
       _persistAuthUser(response.data['data']);
       API().sp.remove("currentRole");
       API().sp.remove("role");
+      _captureAuthenticatedProfile(response.data['data']);
       await configureSDK();
 
       Future.delayed(const Duration(microseconds: 1000), () {
@@ -978,6 +1209,24 @@ class AuthController extends GetxController {
         return;
       }
 
+      if (isEventBanner) {
+        final header = await readEventFileHeader(files!.path);
+        final verdict = classifyEventFile(
+          path: files!.path,
+          mimeType: files!.mimeType,
+          header: header,
+          purpose: EventMediaPurpose.banner,
+        );
+        if (verdict.isVideo) {
+          files = null;
+          imageBytes = null;
+          imageLoaders(true);
+          update();
+          bottomToast(text: eventVideoRejectedMessage);
+          return;
+        }
+      }
+
       CroppedFile? file;
       if (isEventBanner) {
         final sourceError =
@@ -1094,18 +1343,48 @@ class AuthController extends GetxController {
   ProfileModel? userData;
   RxBool getProfileLoader = true.obs;
 
-  getProfile({userId}) async {
+  Future<void>? _profileInFlight;
+  String? _profileInFlightUser;
+
+  getProfile({userId}) {
+    final id = userId?.toString();
+    if (_profileInFlight != null && _profileInFlightUser == id) {
+      return _profileInFlight!;
+    }
+    final epoch = profileLoadGate.epoch;
+    profileLoadGate.start(id);
+    final future = _loadProfile(id, epoch);
+    _profileInFlight = future;
+    _profileInFlightUser = id;
+    return future.whenComplete(() {
+      if (identical(_profileInFlight, future)) {
+        _profileInFlight = null;
+        _profileInFlightUser = null;
+      }
+    });
+  }
+
+  Future<void> _loadProfile(String? userId, int epoch) async {
     getProfileLoader(false);
-    var response = await API().getApi(url: "user-profile/$userId");
-    if (response.statusCode == 200) {
-      userData = ProfileModel.fromJson(response.data);
-      evaluateProfileCompletion(
-        userDetails: response.data['data'],
-        profile: response.data['data']?['profile'],
-      );
-      _applySearchRadiusFromPayload(response.data['data']);
-      getProfileLoader(true);
-      update();
+    try {
+      final response = await API().getApi(url: "user-profile/$userId");
+      if (!profileLoadGate.accepts(epoch: epoch, userId: userId)) return;
+      if (response != null && response.statusCode == 200) {
+        userData = ProfileModel.fromJson(response.data);
+        evaluateProfileCompletion(
+          userDetails: response.data['data'],
+          profile: response.data['data']?['profile'],
+        );
+        _applySearchRadiusFromPayload(response.data['data']);
+      }
+    } catch (_) {
+      if (!profileLoadGate.accepts(epoch: epoch, userId: userId)) return;
+    } finally {
+      if (profileLoadGate.accepts(epoch: epoch, userId: userId)) {
+        getProfileLoader(true);
+        profileZipLoading = false;
+        update();
+      }
     }
   }
 
@@ -1300,6 +1579,9 @@ class AuthController extends GetxController {
         print(e);
       }
       SocketIoClass().disconnect();
+      clearAuthenticatedProfile();
+      discardRegistrationDraft();
+      clearPendingSocial();
       API().sp.erase();
       API().sp.write("intro", true);
       // Get.offAllNamed(Routes.loginScreen);
@@ -2179,6 +2461,9 @@ class AuthController extends GetxController {
     final response = await API().postApi({}, "delete-account/$userId");
     if (response.statusCode == 200) {
       SocketIoClass().disconnect();
+      clearAuthenticatedProfile();
+      discardRegistrationDraft();
+      clearPendingSocial();
       await API().sp.erase();
       await API().sp.write("intro", true);
       Get.offAllNamed(Routes.loginScreen);
@@ -2563,6 +2848,8 @@ class AuthController extends GetxController {
 
   // Todo Social Sign IN
   Future<dynamic> googleSignIn() async {
+    if (googleAuthBusy || _signupInFlight) return null;
+    googleAuthBusy = true;
     try {
       EasyLoading.show();
 
@@ -2620,29 +2907,82 @@ class AuthController extends GetxController {
             '';
         API().sp.write("emailSocial", userCredential.user!.email ?? "");
         API().sp.write("nameSocial", userCredential.user!.displayName ?? "");
-        API().sp.write("accessToken", platformToken);
+        pendingSocial.hold('google', platformToken);
         update();
 
         await firebase_auth.FirebaseAuth.instance.signOut();
         await GoogleSignIn.instance.signOut();
-        // Get.toNamed(Routes.createProfile, arguments: {
-        //   "socialType": "google",
-        //   "accessToken": API().sp.read("accessToken"),
-        //   "isClear": false,
-        // });
-        sigUp(
+        final registrationRole = attachRegistrationLocation
+            ? (activeSignupRole ?? API().sp.read('role')?.toString())
+            : null;
+        if (!attachRegistrationLocation) {
+          activeSignupRole = null;
+        }
+        await sigUp(
           Get.context,
           signUpPlatform: "google",
           platformId: platformToken,
+          role: registrationRole,
         );
       }
-      log(userCredential.toString());
     } catch (e, stackTrace) {
-      log('googleSignIn failed: $e', stackTrace: stackTrace);
+      log('googleSignIn failed', stackTrace: stackTrace);
       BotToast.showText(text: 'Google Sign-In failed. Please try again.');
     } finally {
+      googleAuthBusy = false;
       EasyLoading.dismiss();
     }
+    return null;
+  }
+
+  void selectPendingSignupRole(String storageRole) {
+    activeSignupRole = storageRole;
+    API().sp.write('role', storageRole);
+    API().sp.write('currentRole', storageRole);
+    update();
+  }
+
+  Future<void> completePendingGoogleRegistration(BuildContext context) async {
+    if (googleAuthBusy || _signupInFlight) return;
+    googleAuthBusy = true;
+    try {
+      if (!pendingSocial.isHeld || pendingSocial.platform != 'google') {
+        BotToast.showText(
+          text: 'Google sign-in expired. Please continue with Google again.',
+        );
+        cancelGoogleOnboarding();
+        return;
+      }
+      if (activeSignupRole == null) {
+        BotToast.showText(text: 'Select an account type.');
+        return;
+      }
+      API().sp.write('role', activeSignupRole);
+      API().sp.write('currentRole', activeSignupRole);
+      final allowed = await prepareRegistrationLocation(context);
+      if (!allowed || !context.mounted) return;
+      final isUser = activeSignupRole == 'User';
+      final hasInvite = inviteCodeController.text.trim().isNotEmpty;
+      if (!isUser || hasInvite) {
+        final valid = await validateInviteCode(required: !isUser);
+        if (!valid) return;
+      }
+      await sigUp(
+        context,
+        signUpPlatform: 'google',
+        platformId: pendingSocial.token,
+        role: activeSignupRole,
+      );
+    } finally {
+      googleAuthBusy = false;
+    }
+  }
+
+  void cancelGoogleOnboarding() {
+    clearPendingSocial();
+    attachRegistrationLocation = false;
+    _registrationGate = null;
+    Get.offAllNamed(Routes.loginScreen);
   }
 
   // Todo Facebook Sign In

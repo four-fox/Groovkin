@@ -37,6 +37,7 @@ import 'package:groovkin/discovery/discovery_config.dart';
 import 'package:groovkin/discovery/discovery_contract.dart';
 import 'package:groovkin/discovery/discovery_repository.dart';
 import 'package:groovkin/utils/backend_contract.dart';
+import 'package:groovkin/utils/event_media.dart';
 import 'package:groovkin/utils/json_parsers.dart';
 import 'package:groovkin/utils/search_radius.dart';
 import 'pendingEventFlow/eventCounterRepository.dart';
@@ -947,6 +948,26 @@ class EventController extends GetxController {
     ));
   }
 
+  Future<bool> _keepSupportedEventMedia(AuthController authController) async {
+    final gate = await guardEventUploads(
+      attachments: managerController.mediaClass,
+      bannerPath: authController.imageBytes,
+    );
+    if (gate.canSubmit) return true;
+    if (gate.rejected.isNotEmpty) {
+      managerController.mediaClass.removeWhere(gate.rejected.contains);
+      managerController.update();
+    }
+    if (gate.clearBanner) {
+      authController.imageBytes = null;
+      authController.update();
+    }
+    BotToast.showText(
+      text: gate.message ?? eventVideoRejectedMessage,
+    );
+    return false;
+  }
+
   postEventFunction(context, theme, {bool draft = false}) async {
     print(
         "lora lae $datePost ${postTime.toString().split(" ")[0]} $endDatePost $postEndTime");
@@ -957,21 +978,20 @@ class EventController extends GetxController {
       return;
     }
     AuthController authController = Get.find();
+    if (!await _keepSupportedEventMedia(authController)) return;
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
-      if (element.thumbnail != null) {
-        mediaList.add(form.MultipartFile.fromFileSync(
-          element.filename!,
-          filename: "Video.${element.filename!.split('.').last}",
-          contentType: MediaType("video", element.filename!.split('.').last),
-        ));
-      } else {
-        mediaList.add(form.MultipartFile.fromFileSync(
-          element.filename!,
-          filename: "Image.${element.filename!.split('.').last}",
-          contentType: MediaType("image", element.filename!.split('.').last),
-        ));
+      if (eventAttachmentIsVideo(element) || element.filename == null) {
+        continue;
       }
+      final extension = element.filename!.split('.').last.toLowerCase();
+      mediaList.add(form.MultipartFile.fromFileSync(
+        element.filename!,
+        filename: extension == 'pdf' ? 'Image.pdf' : 'Image.$extension',
+        contentType: extension == 'pdf'
+            ? MediaType('application', 'pdf')
+            : MediaType('image', extension == 'jpg' ? 'jpeg' : extension),
+      ));
     }
 
     ///bannerImage
@@ -1224,21 +1244,24 @@ class EventController extends GetxController {
       Get.toNamed(Routes.listOfVenuesScreen);
       return;
     }
+    if (!await _keepSupportedEventMedia(authController)) {
+      savingEvent(false);
+      update();
+      return;
+    }
     List<form.MultipartFile> mediaList = [];
     for (var element in managerController.mediaClass) {
-      if (element.thumbnail != null) {
-        mediaList.add(form.MultipartFile.fromFileSync(
-          element.filename!,
-          filename: "Video.${element.filename!.split('.').last}",
-          contentType: MediaType("video", element.filename!.split('.').last),
-        ));
-      } else {
-        mediaList.add(form.MultipartFile.fromFileSync(
-          element.filename!,
-          filename: "Image.${element.filename!.split('.').last}",
-          contentType: MediaType("image", element.filename!.split('.').last),
-        ));
+      if (eventAttachmentIsVideo(element) || element.filename == null) {
+        continue;
       }
+      final extension = element.filename!.split('.').last.toLowerCase();
+      mediaList.add(form.MultipartFile.fromFileSync(
+        element.filename!,
+        filename: extension == 'pdf' ? 'Image.pdf' : 'Image.$extension',
+        contentType: extension == 'pdf'
+            ? MediaType('application', 'pdf')
+            : MediaType('image', extension == 'jpg' ? 'jpeg' : extension),
+      ));
     }
 
     ///bannerImage
