@@ -1114,58 +1114,58 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                     }
                     return false;
                   },
-                  child: Column(
-                    children: [
-                      if (DiscoveryConfig.compileTime.enabled &&
-                          searchingShow == true)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: DiscoverySearchPanel(
-                            draft: controller.discoverySearch,
-                            activities: controller.discoveryActivities,
-                            music: controller.discoveryMusic,
-                            radiusOptions: _controller.allowedSearchRadii,
-                            coordinatesAvailable:
-                                controller.discoveryCoordinatesAvailable,
-                            postalController:
-                                controller.discoveryPostalController,
-                            activityController:
-                                controller.discoveryActivityController,
-                            musicController: controller.discoveryMusicController,
-                            postalError: controller.discoveryPostalError,
-                            activeSummary: discoveryActiveFilterLabels(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        if (DiscoveryConfig.compileTime.enabled &&
+                            searchingShow == true)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: DiscoverySearchPanel(
                               draft: controller.discoverySearch,
                               activities: controller.discoveryActivities,
                               music: controller.discoveryMusic,
+                              radiusOptions: _controller.allowedSearchRadii,
+                              coordinatesAvailable:
+                                  controller.discoveryCoordinatesAvailable,
+                              postalController:
+                                  controller.discoveryPostalController,
+                              activityController:
+                                  controller.discoveryActivityController,
+                              musicController: controller.discoveryMusicController,
+                              postalError: controller.discoveryPostalError,
+                              activeSummary: discoveryActiveFilterLabels(
+                                draft: controller.discoverySearch,
+                                activities: controller.discoveryActivities,
+                                music: controller.discoveryMusic,
+                              ),
+                              onSort: controller.setDiscoverySort,
+                              onPostal: controller.onDiscoveryPostalChanged,
+                              onToggleRadius: controller.setDiscoveryRadiusEnabled,
+                              onRadius: controller.setDiscoveryRadius,
+                              onToggleActivity: controller.toggleDiscoveryActivity,
+                              onMusic: controller.setDiscoveryMusic,
+                              onActivityText: controller.onDiscoveryActivityText,
+                              onMusicText: controller.onDiscoveryMusicText,
+                              onClear: controller.clearDiscoveryFilters,
                             ),
-                            onSort: controller.setDiscoverySort,
-                            onPostal: controller.onDiscoveryPostalChanged,
-                            onToggleRadius: controller.setDiscoveryRadiusEnabled,
-                            onRadius: controller.setDiscoveryRadius,
-                            onToggleActivity: controller.toggleDiscoveryActivity,
-                            onMusic: controller.setDiscoveryMusic,
-                            onActivityText: controller.onDiscoveryActivityText,
-                            onMusicText: controller.onDiscoveryMusicText,
-                            onClear: controller.clearDiscoveryFilters,
                           ),
-                        ),
-                      if (DiscoveryConfig.compileTime.enabled &&
-                          searchingShow == true &&
-                          isCompleteUsZip(controller.discoverySearch.postalCode) &&
-                          !controller.discoverySearch.applyRadius)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            'Exact ZIP match. No distance radius was applied.',
+                        if (DiscoveryConfig.compileTime.enabled &&
+                            searchingShow == true &&
+                            isCompleteUsZip(controller.discoverySearch.postalCode) &&
+                            !controller.discoverySearch.applyRadius)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Text(
+                              'Exact ZIP match. No distance radius was applied.',
+                            ),
                           ),
-                        ),
-                      Expanded(
-                        child: controller.getAllEventsLoader.value == false
-                      ? DiscoveryConfig.compileTime.enabled &&
+                        controller.getAllEventsLoader.value == false
+                                                ? DiscoveryConfig.compileTime.enabled &&
                               searchingShow == true
                           ? const Center(child: CircularProgressIndicator())
                           : const SizedBox.shrink()
-                      : controller.allEvents == null ||
+                                                : controller.allEvents == null ||
                               controller.allEvents!.data!.data.isEmpty
                           ? DiscoveryConfig.compileTime.enabled &&
                                   searchingShow == true
@@ -1273,8 +1273,9 @@ class _ViewAllEventListScreenState extends State<ViewAllEventListScreen> {
                                   ),
                               ),
                             ),
-                      ),
-                    ],
+                        SizedBox(height: 30,)
+                      ],
+                    ),
                   ),
                 );
               }),
